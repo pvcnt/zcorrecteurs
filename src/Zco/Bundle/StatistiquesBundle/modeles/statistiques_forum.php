@@ -171,26 +171,30 @@ function RecupererStatistiquesForum()
 			array_keys($last_posts),
 			array_keys($last_topics),
 			array_keys($coup_coeur));
-		$stmt = $dbh->prepare('SELECT lunonlu_sujet_id, '
-			.'lunonlu_message_id, lunonlu_participe '
-			.'FROM '.Container::getParameter('database.prefix').'forum_lunonlu '
-			.'WHERE lunonlu_utilisateur_id = :id_user '
-				.' AND lunonlu_sujet_id IN('
-				.implode(', ', $sids)
-				.')');
-		$stmt->bindParam(':id_user', $_SESSION['id']);
-		$stmt->execute();
-		while($d = $stmt->fetch())
+		
+		if (!empty($sids))
 		{
-			if(isset($last_posts[$d['lunonlu_sujet_id']]))
-			$last_posts[$d['lunonlu_sujet_id']] = array_merge(
-				$last_posts[$d['lunonlu_sujet_id']], $d);
-			if(isset($last_topics[$d['lunonlu_sujet_id']]))
-			$last_topics[$d['lunonlu_sujet_id']] = array_merge(
-				$last_topics[$d['lunonlu_sujet_id']], $d);
-			if(isset($coup_coeur[$d['lunonlu_sujet_id']]))
-			$coup_coeur[$d['lunonlu_sujet_id']] = array_merge(
-				$coup_coeur[$d['lunonlu_sujet_id']], $d);
+			$stmt = $dbh->prepare('SELECT lunonlu_sujet_id, '
+				.'lunonlu_message_id, lunonlu_participe '
+				.'FROM '.Container::getParameter('database.prefix').'forum_lunonlu '
+				.'WHERE lunonlu_utilisateur_id = :id_user '
+					.' AND lunonlu_sujet_id IN('
+					.implode(', ', $sids)
+					.')');
+			$stmt->bindParam(':id_user', $_SESSION['id']);
+			$stmt->execute();
+			while($d = $stmt->fetch())
+			{
+				if(isset($last_posts[$d['lunonlu_sujet_id']]))
+				$last_posts[$d['lunonlu_sujet_id']] = array_merge(
+					$last_posts[$d['lunonlu_sujet_id']], $d);
+				if(isset($last_topics[$d['lunonlu_sujet_id']]))
+				$last_topics[$d['lunonlu_sujet_id']] = array_merge(
+					$last_topics[$d['lunonlu_sujet_id']], $d);
+				if(isset($coup_coeur[$d['lunonlu_sujet_id']]))
+				$coup_coeur[$d['lunonlu_sujet_id']] = array_merge(
+					$coup_coeur[$d['lunonlu_sujet_id']], $d);
+			}
 		}
 	}
 
