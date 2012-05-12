@@ -21,7 +21,7 @@ window.addEvent('domready', function() {
     			xhr = new Request({method: 'post', url: '/forum/ajax-multi-citer.html',
     				onSuccess: function(text)
 					{
-						$('texte').value = $('texte').value.replace(text, '');
+						$('texte').value = $('texte').value.replace(new RegExp("<citation rid=\"" + text + "\">[\\s\\S]*</citation>", "igm"), '');
 					}
     			});
     			xhr.send('action=supprime&url='+encodeURIComponent(elem.href));

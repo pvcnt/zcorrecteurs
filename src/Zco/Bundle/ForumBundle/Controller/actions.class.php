@@ -20,6 +20,7 @@
  */
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 class ForumActions extends Controller
 {
@@ -217,35 +218,36 @@ class ForumActions extends Controller
 		//Inclusion du modèle
 		include(BASEPATH.'/src/Zco/Bundle/ForumBundle/modeles/messages.php');
 
-		if(!empty($_POST['action']) && !empty($_POST['url']) && verifier('connecte'))
+		if (!empty($_POST['action']) && !empty($_POST['url']) && verifier('connecte'))
 		{
 			if(preg_match('`repondre-([0-9]+)-([0-9]+)\.html`', $_POST['url'], $matches))
 			{
 				$id_suj = $matches[1];
 				$id_msg = $matches[2];
 				$infos = InfosMessage($id_msg);
-				if(!empty($infos) && verifier('voir_sujets', $infos['sujet_forum_id']))
+				if (!empty($infos) && verifier('voir_sujets', $infos['sujet_forum_id']))
 				{
-					if($_POST['action'] == 'ajoute')
+					if ($_POST['action'] == 'ajoute')
 					{
 						$_SESSION['forum_citations'][$id_suj][] = $id_msg;
-
+						
+						return new Response('<citation rid="'.$id_msg.'">'.$infos['message_texte'].'</citation>');
 					}
 					else
 					{
 						unset($_SESSION['forum_citations'][$id_suj][array_search($infos['message_id'], $_SESSION['forum_citations'][$id_suj])]);
+						
+						return new Response($id_msg);
 					}
-
-					return new Symfony\Component\HttpFoundation\Response('<citation rid="'.$id_msg.'">'.$infos['message_texte'].'</citation>');
 				}
 				else
-					return new Symfony\Component\HttpFoundation\Response('Message inexistant.');
+					return new Response('Message inexistant.');
 			}
 			else
-				return new Symfony\Component\HttpFoundation\Response('URL incorrecte.');
+				return new Response('URL incorrecte.');
 		}
 		else
-			return new Symfony\Component\HttpFoundation\Response('Vous n\'avez pas les droits requis ou un paramètre a été omis.');
+			return new Response('Vous n\'avez pas les droits requis ou un paramètre a été omis.');
 	}
 
 	public function executeAjaxReponseAuto()
