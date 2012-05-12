@@ -72,6 +72,13 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 					'title' => 'Si vous avez besoin de contacter les administrateurs de ce site.'
 				),
 			));
+		
+		$event
+			->getRoot()
+			->addChild('Code source', array(
+				'uri'    => $this->container->get('router')->generate('zco_about_opensource'),
+				'weight' => 25,
+			));
 	}
 	
 	/**

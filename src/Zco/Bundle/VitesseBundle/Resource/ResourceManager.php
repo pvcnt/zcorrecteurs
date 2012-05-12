@@ -64,23 +64,23 @@ class ResourceManager implements ResourceManagerInterface
 	 * @param LoggerInterface|null $logger
 	 */
 	public function __construct(
-	    AssetManager $am, 
-	    ResourceMap $map, 
-	    RouterInterface $router, 
-	    $webDir, 
-	    $combine = true, 
-	    $debug = false, 
-	    LoggerInterface $logger = null
+		AssetManager $am, 
+		ResourceMap $map, 
+		RouterInterface $router, 
+		$webDir, 
+		$combine = true, 
+		$debug = false, 
+		LoggerInterface $logger = null
 	)
 	{
-	    $this->am = $am;
-	    $this->map = $map;
-	    $this->router = $router;
-	    $this->webDir = $webDir;
-	    $this->combine = $combine;
-	    $this->debug = $debug;
-	    $this->logger = $logger;
-	    $this->writer = new AssetWriter($webDir);
+		$this->am = $am;
+		$this->map = $map;
+		$this->router = $router;
+		$this->webDir = $webDir;
+		$this->combine = $combine;
+		$this->debug = $debug;
+		$this->logger = $logger;
+		$this->writer = new AssetWriter($webDir);
 	}
 	
 	/**
@@ -88,8 +88,8 @@ class ResourceManager implements ResourceManagerInterface
 	 */
 	public function requireResource($symbol)
 	{
-        $this->symbols[$symbol] = true;
-        $this->needsResolve     = true;
+		$this->symbols[$symbol] = true;
+		$this->needsResolve	 = true;
 	}
 	
 	/**
@@ -97,11 +97,11 @@ class ResourceManager implements ResourceManagerInterface
 	 */
 	public function requireResources(array $symbols)
 	{
-	    foreach ($symbols as $symbol)
-	    {
-            $this->symbols[$symbol] = true;
-        }
-        $this->needsResolve     = true;
+		foreach ($symbols as $symbol)
+		{
+			$this->symbols[$symbol] = true;
+		}
+		$this->needsResolve	 = true;
 	}
 	
 	/**
@@ -109,10 +109,10 @@ class ResourceManager implements ResourceManagerInterface
 	 */
 	public function stylesheets(array $stylesheets = array())
 	{
-	    $filters    = array(new CssMinFilter(), new CssRewriteFilter());
-	    $collection = new AssetCollection(array(), $filters);
-	    
-	    return $this->render($collection, 'css', $stylesheets);
+		$filters	= array(new CssMinFilter(), new CssRewriteFilter());
+		$collection = new AssetCollection(array(), $filters);
+		
+		return $this->render($collection, 'css', $stylesheets);
 	}
 	
 	/**
@@ -120,10 +120,10 @@ class ResourceManager implements ResourceManagerInterface
 	 */
 	public function javascripts(array $javascripts = array())
 	{
-	    $filters    = array(new JavascriptMinifierFilter());
-	    $collection = new AssetCollection(array(), $filters);
-	    
-	    return $this->render($collection, 'js', $javascripts);
+		$filters	= array(new JavascriptMinifierFilter());
+		$collection = new AssetCollection(array(), $filters);
+		
+		return $this->render($collection, 'js', $javascripts);
 	}
 	
 	public function addFeeds(array $feeds)
@@ -167,35 +167,35 @@ class ResourceManager implements ResourceManagerInterface
 	 */
 	private function render(AssetCollection $collection, $type, array $assets = array())
 	{
-	    $assets = !empty($assets) ? $assets : array_keys($this->symbols);
-	    foreach ($assets as $i => $asset)
-	    {
-	        $assets[$i] = $this->map->getAssetName($asset);
-	    }
-	    
-	    if (empty($assets) && !$this->needsResolve)
-        {
-            $resolved = $this->resolved;
-        }
-        else
-        {
-            $resolved = $this->map->resolveResources($assets);
-            if (empty($assets))
-            {
-                $this->resolved = $resolved;
-            }
-	    }
-	    
-	    $symbols = $this->buildCollection($collection, $resolved, $type);
-	    
-	    if ($this->combine)
-	    {
-	        $this->writeCollection($collection);
-	    
-	        return array($collection->getTargetPath());
-        }
-        
-        return $this->buildUrls($symbols);
+		$assets = !empty($assets) ? $assets : array_keys($this->symbols);
+		foreach ($assets as $i => $asset)
+		{
+			$assets[$i] = $this->map->getAssetName($asset);
+		}
+		
+		if (empty($assets) && !$this->needsResolve)
+		{
+			$resolved = $this->resolved;
+		}
+		else
+		{
+			$resolved = $this->map->resolveResources($assets);
+			if (empty($assets))
+			{
+				$this->resolved = $resolved;
+			}
+		}
+		
+		$symbols = $this->buildCollection($collection, $resolved, $type);
+		
+		if ($this->combine)
+		{
+			$this->writeCollection($collection);
+		
+			return array($collection->getTargetPath());
+		}
+		
+		return $this->buildUrls($symbols);
 	}
 	
 	/**
@@ -208,52 +208,52 @@ class ResourceManager implements ResourceManagerInterface
 	 */
 	private function buildCollection(AssetCollection $collection, array $resolved, $type)
 	{
-	    $suffix  = '_'.$type;
-	    $len     = -strlen($suffix);
-	    $symbols = array();
-	    $hashes  = array();
-	    	    
-	    foreach (array_keys($resolved) as $symbol)
-	    {
-	        if (
-	            substr($symbol, $len) === $suffix
-	            && empty($this->rendered[$symbol])
-	        )
-	        {
-	            try
-	            {
-	                $asset = $this->am->get($symbol);
-                }
-                catch (\InvalidArgumentException $e)
-                {
-                    if ($this->debug)
-                    {
-                        $name = array_search($symbol, $this->aliases);
-                        throw new \InvalidArgumentException(
-                            str_replace($symbol, $name, $e->getMessage()),
-                            $e->getCode(),
-                            $e->getPrevious()
-                        );
-                    }
-                    if ($this->logger)
-            	    {
-            		    $this->logger->warn(sprintf(
-            		        'Cannot find resource "%s".', $name
-            		    ));
-            		}
-            		continue;
-                }
-                
-	            $collection->add($asset);
-	            $this->rendered[$symbol] = true;
-	            $symbols[] = $symbol;
-	            $hashes[] = $symbol.':'.$asset->getLastModified();
-            }
-	    }
-        
-	    $collection->setTargetPath('/compiled/'.substr(sha1(implode("\n", $hashes)), 0, 10).'.min.'.$type);
-	    
-	    return $symbols;
+		$suffix  = '_'.$type;
+		$len	 = -strlen($suffix);
+		$symbols = array();
+		$hashes  = array();
+				
+		foreach (array_keys($resolved) as $symbol)
+		{
+			if (
+				substr($symbol, $len) === $suffix
+				&& empty($this->rendered[$symbol])
+			)
+			{
+				try
+				{
+					$asset = $this->am->get($symbol);
+				}
+				catch (\InvalidArgumentException $e)
+				{
+					if ($this->debug)
+					{
+						$name = array_search($symbol, $this->aliases);
+						throw new \InvalidArgumentException(
+							str_replace($symbol, $name, $e->getMessage()),
+							$e->getCode(),
+							$e->getPrevious()
+						);
+					}
+					if ($this->logger)
+					{
+						$this->logger->warn(sprintf(
+							'Cannot find resource "%s".', $name
+						));
+					}
+					continue;
+				}
+				
+				$collection->add($asset);
+				$this->rendered[$symbol] = true;
+				$symbols[] = $symbol;
+				$hashes[] = $symbol.':'.$asset->getLastModified();
+			}
+		}
+		
+		$collection->setTargetPath('/compiled/'.substr(sha1(implode("\n", $hashes)), 0, 10).'.min.'.$type);
+		
+		return $symbols;
 	}
 	
 	/**
@@ -263,10 +263,10 @@ class ResourceManager implements ResourceManagerInterface
 	 */
 	private function writeCollection(AssetCollection $collection)
 	{
-	    if (!is_file($this->webDir.$collection->getTargetPath()))
-	    {
-	        $this->writer->writeAsset($collection);
-	    }
+		if (!is_file($this->webDir.$collection->getTargetPath()))
+		{
+			$this->writer->writeAsset($collection);
+		}
 	}
 	
 	/**
@@ -277,15 +277,15 @@ class ResourceManager implements ResourceManagerInterface
 	 */
 	private function buildUrls(array $symbols)
 	{
-	    $urls = array();
-        foreach ($symbols as $symbol)
-        {
-            $urls[] = $this->router->generate(
-                'zco_vitesse_asset', 
-                array('hash' => str_replace('_', '.', $symbol))
-            );
-        }
-        
-        return $urls;
+		$urls = array();
+		foreach ($symbols as $symbol)
+		{
+			$urls[] = $this->router->generate(
+				'zco_vitesse_asset', 
+				array('hash' => str_replace('_', '.', $symbol))
+			);
+		}
+		
+		return $urls;
 	}	
 }
