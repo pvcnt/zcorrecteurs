@@ -1,0 +1,13 @@
+zco_user_api_searchUsername:
+    pattern:   /chercher-pseudo
+    defaults:  { _controller: ZcoUserBundle:Api:searchUsername }
+    options:   { expose: true }
+    requirements:
+        _method: post
+
+zco_user_api_validateUsername:
+    pattern:   /valider-pseudo
+    defaults:  { _controller: ZcoUserBundle:Api:validateUsername }
+    options:   { expose: true }
+    requirements:
+        _method: post

@@ -1,0 +1,209 @@
+/**
+* Forum style
+*/
+
+/**
+* Liste des sujets
+*/
+
+/* On rÃ©duit la marge du titre de la page pour les MP et forums, afin de gagner de l'espace */
+.titre_forum {
+	margin-bottom: 10px;
+}
+
+.sous_titre {
+	font-size: .8em;
+}
+
+.liste_messages .message {
+	padding: 5px;
+}
+
+.aucun_sujet,.pas_de_message {
+	text-align: center;
+	font-size: 1.3em;
+	border: 1px solid #a3c0d5;
+	background-color: #e9f0f5;
+}
+
+.dernier_msg {
+	font-family: Verdana;
+	font-style: italic;
+	padding: 2px 2px 2px 5px;
+}
+
+.dernier_msg a {
+	font-style: normal;
+}
+
+.description_forum {
+	font-size: .8em;
+}
+
+.cats_colonne_flag {
+	width: 4%;
+}
+
+.cats_colonne_sujets,.cats_colonne_reponses,.cats_colonne_connectes {
+	width: 8%;
+}
+
+.cats_colonne_dernier_msg {
+	width: 25%;
+}
+
+.forum_colonne_flag {
+	width: 4%;
+}
+
+.forum_colonne_flag2 {
+	width: 6%;
+}
+
+.forum_colonne_page {
+	width: 6%;
+}
+
+.forum_colonne_createur {
+	width: 9%;
+}
+
+.forum_colonne_reponses {
+	width: 4%;
+}
+
+.forum_colonne_dernier_msg {
+	width: 18%;
+}
+
+/**
+* Affichage d'un sujet
+*/
+.boite_message {
+	overflow: auto;
+}
+
+.message_edite {
+	margin-top: 15px;
+	padding-left: 30px;
+	font-style: italic;
+	font-size: .8em;
+	clear: both;
+}
+
+.reprise_dernier_message {
+	text-indent: 20px;
+	font-size: 1.1em;
+	font-weight: bold;
+	margin-top: 10px;
+	margin-bottom: 20px;
+}
+
+.retour_forum {
+	text-align: center;
+}
+
+.options_forum {
+	border: 1px solid #d6d6d6;
+	background-color: #efefef;
+	margin-bottom: 10px;
+}
+
+.options_forum li span {
+	display: inline-block;
+	text-align: center;
+	width: 35px;
+}
+
+.options_forum li img {
+	vertical-align: middle;
+}
+
+.options_forum li form {
+	display: inline;
+}
+
+.sujet_resolu {
+	background-color: #cbfcb2;
+	padding-left: 5px;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	margin-left: 20px;
+	width: 98%;
+	margin: auto;
+}
+
+.sujet_resolu img {
+	vertical-align: middle;
+}
+
+.thread_colonne_auteur {
+	width: 155px;
+}
+
+.info_bonne_reponse {
+	background-color: #9dbfae;
+	padding-left: 5px;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	margin-bottom: 20px;
+	width: 98%;
+	margin-left: 1%;
+	margin-right: 1%;
+	font-size: 1.1em;
+}
+
+.boite_message .tags {
+	margin-top: 15px;
+	padding: 3px;
+	border: 1px solid #d6d6d6;
+}
+
+.boite_message .label {
+	font-size: 0.9em;
+	font-style: italic;
+}
+
+/**
+* Formulaires
+*/
+.saut_forum {
+	text-align: right;
+}
+
+#derniers_msg {
+	width: 95%;
+	margin: auto;
+	height: 700px;
+	border: 1px dashed #d6d6d6;
+	padding: 5px;
+	padding-bottom: 10px;
+	overflow: auto;
+}
+
+.reponse_ajout_sujet {
+	text-align: right;
+	padding-right: 30px;
+}
+
+.reglement {
+	padding: 3px;
+	border-bottom: 1px solid #76c969;
+	border-top: 1px solid #76c969;
+	background-color: #d6eed2;
+	margin-bottom: 10px;
+}
+
+input {
+	background-color: #efefef;
+	color: #333;
+	font-size: 12px;
+	border: 1px solid #d6d6d6;
+	padding: 2px;
+	margin-bottom: 3px;
+}
+
+.btn_supprimer_msg {
+	margin-bottom: 10px;
+	text-align: right;
+}

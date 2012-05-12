@@ -1,0 +1,122 @@
+/**
+* Home page style
+*
+* @author	zopieux
+* @valid	false: -moz, -webkit
+* @todo		rendre compatible IE les coins arrondis
+*/
+
+.mod_blog
+{
+	background: url(../img/sprite-home.png) no-repeat 0 -10px;
+}
+
+.mod_une
+{
+	background: url(../img/sprite-home.png) no-repeat 0 -10px;
+}
+
+.mod_dictees
+{
+	background: url(../img/sprite-home.png) no-repeat 0 -10px;
+}
+
+.mod_sondage
+{
+	background: url(../img/sprite-home.png) no-repeat 0 -160px;
+}
+
+.mod_citation
+{
+	background: url(../img/sprite-home.png) no-repeat 0 -40px;
+}
+
+.mod_communaute
+{
+	background: url(../img/sprite-home.png) no-repeat 0 -70px;
+}
+
+.mod_twitter
+{
+	background: url(../img/sprite-home.png) no-repeat 0 -70px;
+}
+
+.mod_forum
+{
+	background: url(../img/sprite-home.png) no-repeat 0 -100px;
+}
+
+.mod_zcorrection
+{
+	background: url(../img/sprite-home.png) no-repeat 0 -190px;
+}
+
+.mod_quiz
+{
+	background: url(../img/sprite-home.png) no-repeat 0 -130px;
+}
+
+div.breve_rapide
+{
+	border-left: 3px solid #888;
+	padding: 0 5px 3px;
+	margin: 3px 14px 0 0;
+}
+
+ul.forum_stats
+{
+	background: url('../img/table-chart.png') no-repeat left center;
+	padding: 0 0 0 1em;
+}
+
+ul.lightning
+{
+	background: url('../img/table-lightning.png') no-repeat left center;
+	padding: 0 0 0 1em;
+	min-height: 24px;
+}
+
+ul.add
+{
+	background: url('../img/table-add.png') no-repeat left center;
+	padding: 0 0 0 1em;
+	min-height: 24px;
+}
+
+ul.heart
+{
+	background: url('../img/table-heart.png') no-repeat left center;
+	padding: 0 0 0 1em;
+	min-height: 24px;
+}
+
+ul.wand
+{
+	background: url('../img/table-wand.png') no-repeat left center;
+	padding: 0 0 0 1em;
+	height: 26px;
+}
+
+ul.tutos_envoyes
+{
+	background: url('../img/chart_pie.png') no-repeat left center;
+	padding: 0 0 0 4px;
+}
+
+div.quiz_de_la_semaine
+{
+	padding: 0 5px;
+	margin: 3px 14px 0 0;
+}
+
+.accueil-twitter .tweet
+{
+	border: solid #BBBBBB 1px;
+	padding: 5px;
+	border-radius: 0px 0px 7px 7px;
+	-webkit-border-radius: 0px 0px 7px 7px;
+	-moz-border-radius: 0px 0px 7px 7px;
+	margin-bottom: 10px;
+	background-color: #EFEFFF;
+	min-height: 50px;
+}

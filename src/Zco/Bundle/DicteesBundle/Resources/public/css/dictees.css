@@ -1,0 +1,36 @@
+/**
+* Module de dictées
+*/
+
+.dictee-outils {
+	float: right;
+	border: solid #D6D6D6 1px;
+	width: 200px;
+}
+
+.dictee-outils dd {
+	padding: 0px;
+	margin: 0px;
+}
+
+.dictee-description {
+	color: #7F7F7F;
+}
+
+div.dictee-description {
+	font-size: 0.8em;
+}
+
+.dictee-correction ins, .dictee-correction del {
+	font-weight: bold;
+}
+
+.dictee-correction ins {
+	color: green;
+	text-decoration: none;
+}
+
+.dictee-correction del {
+	color: red;
+	text-decoration: line-through;
+}

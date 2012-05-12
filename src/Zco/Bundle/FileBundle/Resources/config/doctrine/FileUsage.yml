@@ -1,0 +1,13 @@
+#Garde une trace de toutes les utilisations des fichiers et miniatures 
+#à travers le site.
+FileUsage:
+    columns:
+        id:                 { type: integer(11), autoincrement: true, primary: true }
+        file_id:            { type: integer(11), notnull: true }
+        thumbnail_id:       { type: integer(11), notnull: false }
+        part:               { type: integer(11), notnull: true }
+        entity_class:       { type: string(255), notnull: true }
+        entity_id:          { type: integer(11), notnull: true }
+    relations:
+        Thumbnail:          { class: FileThumbnail, local: thumbnail_id }
+        File:               { local: file_id }

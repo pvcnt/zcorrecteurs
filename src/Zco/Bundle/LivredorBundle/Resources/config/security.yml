@@ -1,0 +1,11 @@
+index:
+    credentials:  [livredor]
+
+editer:
+    credentials:  [livredor_editer]
+
+supprimer:
+    credentials:  [livredor_supprimer]
+
+ecrire:
+    credentials:  [livredor_ecrire]

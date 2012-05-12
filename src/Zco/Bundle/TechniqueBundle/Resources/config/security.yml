@@ -1,0 +1,8 @@
+configuration:
+  credentials:   [gerer_config]
+gestion_caches:
+  credentials:   [gerer_caches]
+apc:
+  credentials:   [gerer_caches]
+maintenance:
+  credentials:   [gerer_maintenance]

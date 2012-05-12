@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<meta http-equiv="Content-Language" content="fr" />
+		<title>Erreur interne</title>
+	</head>
+
+	<body style="font-family: 'Lucida Sans Unicode', 'Trebuchet MS', Verdana, Geneva, Arial, Helvetica, sans-serif; background: #fff; font-size: 12px; padding: 0; margin: 0;">
+		<div style="border-bottom: 5px solid #d6d6d6; background-color: #31CCF7;">
+			<h1 style="margin-top: 0px; padding: 5px; padding-top: 8px; border-bottom: none; font-size: 22px; color: white; text-align: center;">
+				Erreur interne
+			</h1>
+		</div>
+
+		<p style="padding: 10px 0; margin-right: 10px; margin-left: 10px; width: 750px; margin: auto;">
+			Le serveur a rencontré une erreur interne, probablement due à une
+			erreur de configuration. Si en réactualisant cette page le problème
+			persiste et que cela vous semble anormal, nous vous invitons à
+			rapporter l'erreur en passant par notre module de gestion des
+			anomalies, ou bien par le formulaire de contact. Nos développeurs
+			tentent de réparer le problème au plus vite.<br />
+			Merci de votre compréhension !<br /><br />
+
+			<em>L'équipe du site.</em>
+		</p>
+
+		<p style="text-align: center; font-weight: bold;">
+			<a href="/" style="color: #166070; text-decoration: none;">
+			    <strong>Retour à l'accueil</strong>
+			</a> -
+			<a href="#" style="color: #166070; text-decoration: none;" onclick="history.back(); return false;">
+			    <strong>Retour à la page précédente</strong>
+			</a>
+		</p>
+		
+		{% if app.environment == 'prod' %}
+		<script type="text/javascript">
+		  var _gaq = _gaq || [];
+		  _gaq.push(['_setAccount', 'UA-1725896-5']);
+		  _gaq.push(['_setCookieTimeout', 259200]);
+		  _gaq.push(['_setCustomVar', 1, 'erreur', '500-server-error', 3]);
+		  _gaq.push(['_trackPageview']);
+
+		  (function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ga);
+		  })();
+		</script>
+		{% endif %}
+	</body>
+</html>

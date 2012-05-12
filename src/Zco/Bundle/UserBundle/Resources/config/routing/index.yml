@@ -1,0 +1,15 @@
+zco_user_default:
+    resource: "@ZcoUserBundle/Resources/config/routing/default.yml"
+    prefix:   /membres
+
+zco_user_api:
+    resource: "@ZcoUserBundle/Resources/config/routing/api.yml"
+    prefix:   /_api/membres
+
+zco_user_session:
+    resource: "@ZcoUserBundle/Resources/config/routing/session.yml"
+    prefix:   /membres
+
+zco_user_admin:
+    resource: "@ZcoUserBundle/Resources/config/routing/admin.yml"
+    prefix:   /membres

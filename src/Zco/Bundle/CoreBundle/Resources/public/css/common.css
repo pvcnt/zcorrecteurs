@@ -1,0 +1,632 @@
+/**
+ * Feuille de style comportant les classes CSS génériques relatives
+ * à l'interface utilisateur.
+ *
+ * @author vincent1870 <vincent@zcorrecteurs.fr>
+ */
+
+/**
+ * Boites contenant des informations diverses.
+ *
+ * .UI_box : simple section encadrée.
+ * .UI_errorbox : message d'erreur.
+ * .UI_infobox: message de confirmation.
+ * .UI_msgbox : message dans une discussion d'un utilisateur.
+ */
+div.UI_box, p.UI_box
+{
+	border: 1px solid #d6d6d6;
+	background-color: #efefef;
+	margin-bottom: 5px;
+	padding: 10px;
+}
+
+div.UI_errorbox, p.UI_errorbox
+{
+	padding: 3px;
+	color: #ec5f54;
+	border-bottom: 1px solid #ec5f54;
+	border-top: 1px solid #ec5f54;
+	background-color: #f9b9af;
+	text-align: center;
+}
+
+div.UI_infobox, p.UI_infobox
+{
+	padding: 3px;
+	color: #76c969;
+	border-bottom: 1px solid #76c969;
+	border-top: 1px solid #76c969;
+	background-color: #d6eed2;
+	text-align: center;
+}
+
+div.UI_msgbox, p.UI_msgbox
+{
+	border: 1px solid #d6d6d6;
+	background-color: #efefef;
+	margin-bottom: 5px;
+	padding: 10px;
+	min-height: 105px;
+	width: 80%;
+}
+
+div.UI_msgbox img.avatar, p.UI_msgbox img.avatar
+{
+	max-height: 70px !important;
+	max-width: 70px;
+	margin: 5px;
+	float: right;
+	vertical-align: middle;
+}
+
+/**
+ * Gestion des onglets en haut de page.
+ *
+ * .UI_tabs : le conteneur des onglets.
+ * .UI_tabs .tab : un onglet simple.
+ * .UI_tabs .tab.selected : l'onglet actif.
+ */
+.UI_tabs
+{
+	margin-bottom: 10px;
+	border-bottom: 1px solid #D6D6D6;
+	overflow: auto;
+	width: 100%;
+}
+
+.UI_tabs .tab
+{
+	padding: 6px;
+	background-color: #EFEFEF;
+	color: #166070;
+	font-weight: bold;
+	float: left;
+	margin: 0 2px;
+	text-decoration: none;
+	border-color: #D6D6D6;
+	border-width: 1px 1px 0;
+	border-style: solid;
+	border-radius: 5px 5px 0px 0px;
+	-moz-border-radius: 5px 5px 0px 0px;
+	-webkit-border-radius: 5px 5px 0px 0px;
+}
+
+.UI_tabs .tab:hover, .UI_tabs .tab.selected
+{
+	background-color: #D6D6D6;
+	cursor: pointer;
+}
+
+.UI_tabs .tab.inactive:hover
+{
+	background-color: #EFEFEF;
+	cursor: default;
+}
+
+.UI_tabs .tab.inactive
+{
+	color: grey;
+}
+
+/**
+ * Gestion d'un menu déroulant.
+ *
+ * .UI_tabs : le conteneur des onglets.
+ * .UI_tabs .tab : un onglet simple.
+ * .UI_tabs .tab.selected : l'onglet actif.
+ */
+ul.UI_dropDown, ol.UI_dropDown
+{
+
+}
+
+
+/**
+ * Gestion d'un menu personnalisé flottant à droite.
+ *
+ * .UI_column_text : colonne contenant le corps de la page.
+ * .UI_column_menu : colonne contenant le menu personnalisé.
+ * .UI_column_box : boite du menu contenant des liens ou informations.
+ * .UI_column_box label : label flottant à côté de l'information.
+ * .UI_clearer : annule les effets des flottants.
+ */
+.UI_column_text
+{
+	width: 80%;
+}
+
+.UI_column_text_right
+{
+	float: right;
+	width: 80%;
+}
+
+.UI_column_menu
+{
+	float: right;
+	width: 18%;
+	min-width: 19%;
+}
+
+.UI_column_menu_left
+{
+	float: left;
+	width: 18%;
+	min-width: 19%;
+}
+
+.UI_column_menu .box, .UI_column_menu_left .box
+{
+	border: 1px solid #d6d6d6;
+	background-color: #efefef;
+	padding: 5px;
+	margin: 5px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.UI_column_menu .box .label, .UI_column_menu_left .box .label
+{
+	float: left;
+	width: 100px;
+	font-weight: bold;
+}
+
+.UI_column_menu .box h3, .UI_column_menu_left .box H3
+{
+	font-size: 0.8em;
+}
+
+.UI_clearer
+{
+	clear: both;
+}
+
+/**
+ * Des modules prenant toute la page, pour organiser l'information.
+ * Sépare l'espace en boites, regroupées dans un tableau.
+ *
+ * .UI_boxes : tableau regroupant les boites.
+ * .UI_boxes.home : modifie légèrement le style pour la page d'accueil.
+ */
+table.UI_boxes
+{
+	width: 100%;
+	margin: 0 auto;
+	border-spacing: 7px;
+}
+
+table.UI_boxes td
+{
+	width: 50%;
+	vertical-align: top;
+	border: 1px solid #d6d6d6;
+	background-color: #efefef;
+	border-radius: 9px;
+	-moz-border-radius: 9px;
+	-webkit-border-radius: 9px;
+
+	padding: 5px;
+	margin: 0;
+}
+
+table.UI_boxes h2
+{
+	text-align: right;
+	border-bottom: 2px #25c7f6 solid;
+	font-size: 15px;
+	margin: 0 5px 5px;
+	padding-bottom: 3px;
+	color: #333;
+	font-style: normal;
+}
+
+.UI_boxes.home a
+{
+	color: #333;
+}
+
+/**
+ * Des blocs déroulants lors d'un clic de la souris.
+ *
+ * .UI_rollbox : boite contenant l'ensemble du bloc déroulant.
+ * .UI_rollbox .title : titre permettant de dérouler le contenu caché.
+ * .UI_rollbox .content : contenu visible en permanence dans la boite.
+ * .UI_rollbox .hidden : contenu affiché au clic sur le titre.
+ */
+div.UI_rollbox
+{
+	background-color: #efefef;
+	border: 1px solid #d6d6d6;
+	margin-bottom: 10px;
+}
+
+div.UI_rollbox .content, div.UI_rollbox div.hidden
+{
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-top: 5px;
+}
+
+div.UI_rollbox .content
+{
+	padding-top: 5px;
+	padding-bottom: 5px;
+	margin-top: 5px;
+}
+
+div.UI_rollbox div.title
+{
+	cursor: pointer;
+	padding: 5px;
+	padding-left: 30px;
+	font-size: 1.1em;
+	font-weight: bold;
+	border-bottom: 1px solid #d6d6d6;
+	background: url(../img/less.png) no-repeat 5px;
+}
+
+div.UI_rollbox div.title:hover
+{
+	background-color: #3874b0;
+	color: white;
+}
+
+div.UI_rollbox div.hidden.hr
+{
+	border-top: 1px solid #d6d6d6;
+	padding-top: 5px;
+}
+
+/**
+ * Style pour l'affichage d'une barre de progression.
+ *
+ * .UI_progress : tableau contenant la barre de progression.
+ * .UI_progress .finished : progression terminée.
+ * .UI_progress .running : progression non achevée.
+ */
+table.UI_progress
+{
+	margin-right: 10px;
+	float: left;
+	border-collapse: collapse;
+	border: 1px solid #D7D7D7;
+}
+
+table.UI_progress td.finished
+{
+	background-color: #BAE0BA;
+}
+
+table.UI_progress td.running
+{
+	background-color: #FFF;
+}
+
+/**
+ * .UI_infojs: cadre apparaissant au survol d'un élément.
+ */
+.UI_infojs
+{
+	position: absolute;
+	border: 1.5px solid black;
+	margin: 2px;
+	padding: 2px;
+	background:#ffffdc;
+}
+
+/**
+ * .UI_wrapper : un simple tableau servant à la mise en page comme un wrapper.
+ */
+table.UI_wrapper
+{
+	border: none;
+	width: 100%;
+}
+
+table.UI_wrapper td
+{
+	width: 50%;
+	vertical-align: top;
+}
+
+table.UI_wrapper td select
+{
+	width: 150px;
+}
+
+table.UI_wrapper.cols4 td
+{
+	width: 25%;
+}
+
+/**
+ * Tableaux de listages divers (messages, billets, etc.). Destiné au listage
+ * d'éléments simples, sans découpage précis en sous-catégories.
+ * @todo : modifier les styles des premières et dernières lignes, qui sont coupées.
+ *
+ * .UI_items : tableau standard destiné à recevoir des listes d'objets.
+ * .UI_items.messages : tableau contenant des messages, avec un header_message.
+ * .UI_items.simple : tableau ne comportant pas de header.
+ * .UI_items.details : tableau listant des membres avec un avatar (.avatar), 80px de haut pour les lignes.
+ * .UI_items.smalldetails : idem que dessus, mais avec 40px de haut pour les lignes.
+ */
+ table.UI_items
+{
+	width: 98%;
+	margin: auto;
+	overflow: hidden;
+	margin-top: 10px;
+	border-collapse: collapse;
+	border: 2px solid #d6d6d6;
+}
+
+table.UI_items tr
+{
+	border: 1px solid #d6d6d6;
+}
+
+table.UI_items thead td, table.UI_items tfoot td
+{
+	background-color: #efefef;
+	padding: 2px;
+	border: 1px solid #d6d6d6;
+}
+
+table.UI_items thead th, table.UI_items tfoot th
+{
+	text-align: center;
+	background: #4fd5fa url('../img/header_tableaux.png') repeat-x;
+	color: #fff;
+	font-size: 12px;
+	font-weight: normal;
+	width: auto;
+	height: 22px;
+	border-left: 1px solid #d6d6d6;
+	border-right: 1px solid #d6d6d6;
+}
+
+table.UI_items th a
+{
+	color: white;
+}
+
+table.UI_items.noborder thead th, table.UI_items.noborder tfoot th
+{
+	border-left: none;
+	border-right: none;
+}
+
+table.UI_items tbody
+{
+	border-bottom: 1px solid #d6d6d6;
+	border-top: 1px solid #d6d6d6;
+	background-color: #efefef;
+}
+
+table.UI_items td
+{
+	background-color: #efefef;
+	color: #333;
+	border-left: 1px solid #d6d6d6;
+	border-right: 1px solid #d6d6d6;
+	border-top: 1px solid #fff;
+	border-bottom: 1px solid #fff;
+	vertical-align: top;
+	padding: 2px;
+}
+
+table.UI_items.noborder td
+{
+	padding-left: 10px;
+	border-left: none;
+	border-right: none;
+}
+
+table.UI_items.messages td
+{
+	border: 1px solid #d6d6d6;
+	padding-left: 2px;
+	padding-right: 2px;
+	color: black;
+}
+
+table.UI_items tr.bigcat td, table.UI_items tr.bigcat td a
+{
+	background-color: #ff75ea;
+	color: #fff;
+	padding-left: 5px;
+}
+
+table.UI_items .header_message td
+{
+	background-color: #d6d6d6;
+	font-size: 0.9em;
+}
+
+table.UI_items .header_message td.pseudo_membre
+{
+	width: 130px;
+}
+
+table.UI_items td.message
+{
+	vertical-align: top;
+	padding: 3px;
+}
+
+table.UI_items td.message div.signature
+{
+	margin-top: 20px;
+	clear: both;
+	max-height: 100px;
+	max-width: 450px;
+	overflow: hidden;
+	font-size: .8em;
+	padding-top: 3px;
+}
+
+table.UI_items td.message div.msgbox
+{
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+
+table.UI_items td.infos_membre
+{
+	vertical-align: top;
+	text-align: center;
+	font-size: 0.8em;
+	padding-top: 1em;
+}
+
+table.UI_items tr.odd td /* lignes impaires (sombres) */
+{
+	background-color: #e6e6e6;
+}
+
+table.UI_items tr.even td /* lignes paires */
+{
+	background-color: #efefef;
+}
+
+table.UI_items thead th.avatar, table.UI_items tfoot th.avatar
+{
+	width: 100px;
+}
+
+table.UI_items thead th.pseudo, table.UI_items tfoot th.pseudo
+{
+	width: 200px;
+}
+
+table.UI_items .title
+{
+	background:url(../img/puce.png) 3px 4px no-repeat;
+	padding: 0 0 0 20px;
+}
+
+table.UI_items.smalldetails tbody td.avatar img
+{
+	height: 40px;
+	width: 40px;
+	margin-left: 15px;
+}
+
+table.UI_items.smalldetails tbody td.avatar, table.UI_items.details tbody td.avatar
+{
+	text-align: center;
+	vertical-align: middle;
+	padding: 3px 0;
+}
+
+table.UI_items.smalldetails tbody tr
+{
+	width: 100%;
+	height: 40px;
+}
+
+table.UI_items.details tbody tr
+{
+	width: 100%;
+	height: 80px;
+}
+
+table.UI_items.details td, table.UI_items.smalldetails td
+{
+	background-color: #efefff;
+	vertical-align: middle;
+}
+
+table.UI_items.simple
+{
+	width: 98%;
+	margin: auto;
+	overflow: hidden;
+	border: 1px solid grey;
+	background-color: #efefef;
+	border-collapse: collapse;
+}
+
+table.UI_items.simple td
+{
+	padding: 3px;
+	vertical-align: top;
+}
+
+/**
+ * Les tables contenant du code (à laisser dans ce
+ * fichier sinon cela sera écrasé par ce qui précède).
+ */
+table.UI_items table.syntaxtable,
+table.UI_items table.syntaxtable tr,
+table.UI_items table.syntaxtable th,
+table.UI_items table.syntaxtable td,
+table.UI_items table.syntaxtable tbody
+{
+	border: none;
+	background-color: white;
+}
+
+table.UI_items div.code2.console table.syntaxtable,
+table.UI_items div.code2.console table.syntaxtable tr,
+table.UI_items div.code2.console table.syntaxtable th,
+table.UI_items div.code2.console table.syntaxtable td,
+table.UI_items div.code2.console table.syntaxtable tbody
+{
+	background-color: black;
+	color: white;
+}
+
+/**
+ * Mise en valeur de certaines lignes d'un tableau.
+ *
+ * .UI_errorrow : ligne surlignée en rouge, de type action prioritaire à faire.
+ * .UI_inforow : ligne importante surlignée en vert.
+ */
+table .UI_errorrow td, span.UI_errorrow, div.UI_errorrow
+{
+	background-color: #f9e5e5;
+	font-weight: bold;
+}
+
+table .UI_inforow td, span.UI_inforow, div.UI_inforow
+{
+	background-color: #e5f9e5;
+	font-weight: bold;
+}
+
+/**
+ * À utiliser pour les textes présentant une page, au début de celle-ci,
+ * sous le titre.
+ * .UI_descr : un paragraphe de présentation, mis légèrement en valeur.
+ */
+.UI_descr
+{
+	font-size: 13px;
+	padding: 0 20px;
+	color: #666;
+}
+
+/**
+ * .UI_pageon : style de la page courante lors de l'affichage d'une pagination.
+ */
+.UI_pageon
+{
+	color: red;
+}
+
+/**
+ * .UI_underlined : section mise en valeur par une barre de soulignement.
+ */
+div.UI_underlined, p.UI_underlined
+{
+	border-bottom: 1px solid grey;
+	font-weight: bold;
+	color: grey;
+	margin-top: 20px;
+	margin-bottom: 10px;
+}

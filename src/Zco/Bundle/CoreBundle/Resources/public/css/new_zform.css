@@ -1,0 +1,149 @@
+.zform {
+	width: 95%;
+}
+
+.zform-wrapper {
+	width: 100%;
+}
+
+.zform textarea {
+	width: 99%;
+	height: 200px;
+}
+
+.zform-toolbar {
+	border: 1px solid #ccc;
+	background-color: whiteSmoke;
+	width: 100%;
+	margin-bottom: 5px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}
+
+.zform-sections {
+	display: table;
+	background-color: whiteSmoke;
+	width: 100%;
+	line-height: 30px;
+	border-top: 1px solid #ccc;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}
+
+.zform-section {
+	display: table;
+}
+
+.zform-postbar {
+	line-height: 30px;
+	border: 1px solid #ccc;
+	border-top: none;
+	display: table;
+	width: 100%;
+}
+
+.zform-section-rawlinks {
+	display: table;
+	background-color: whiteSmoke;
+	width: 100%;
+	border-top: 1px solid #ccc;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}
+
+.zform-main {
+	width: 100%;
+	display: table;
+	line-height: 30px;
+}
+
+.zform-visible {
+	display: inherit;
+}
+
+.zform-invisible {
+	display: none;
+}
+
+.zform-group {
+	float: left;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	border-right: 1px solid #ccc;
+}
+
+.zform-group:last-child, .zform-postbar .zform-group {
+	border-right: none;
+}
+
+.zform-group span {
+	padding-left: 10px;
+}
+
+.zform-group span:first-child {
+	padding-left: 0;
+}
+
+.zform-section-main, .zform-tabs {
+	float: left;
+}
+
+.zform-tabs {
+	display: table;
+}
+
+.zform-tab {
+	float: left;
+	padding-left: 20px;
+	padding-right: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	background-repeat: no-repeat;
+	background-position: 3px;
+}
+
+.zform-tab-invisible {
+	background-image: url(/bundles/zcocore/img/zform/arrow.png);
+}
+
+.zform-tab-visible {
+	background-image: url(/bundles/zcocore/img/zform/arrow-down.png);
+}
+
+.zform-tab-visible a {
+	color: black;
+}
+
+.zform-tool-label {
+	color: grey;
+}
+
+.zform-tool-select-title {
+	font-weight: bold;
+	text-align: center;
+}
+
+.zform-tool-select select {
+	width: auto;
+	line-height: normal;
+}
+
+.zform-rawlink {
+	float: left;
+	padding-left: 25px;
+	padding-right: 10px;
+	background-repeat: no-repeat;
+	background-position: 3px;
+}
+
+.zform-preview-area {
+	border: 1px solid #ccc;
+	border-top: none;
+	background-color: whiteSmoke;
+	padding: 4px;
+}

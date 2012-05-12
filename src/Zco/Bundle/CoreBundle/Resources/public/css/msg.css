@@ -1,0 +1,44 @@
+/**
+ * Style des messages de redirection par un template intermédiaire.
+ */
+
+/**
+ * Message 0 : erreur.
+ * Message 1 : indécis.
+ * Message 2 : action correctement effectuée.
+ */
+#message_0,#message_1,#message_2
+{
+	background-color: #fff;
+	border: 1px solid #000;
+	padding: 8px;
+	padding-left: 40px;
+	background-repeat: no-repeat;
+	background-position: 5px 5px;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: 400px;
+	height: 150px;
+	margin-top: -75px;
+	margin-left: -200px;
+}
+
+#message_1,#message_2
+{
+	background-image: url('../img/zcode/info.png');
+	color: green;
+}
+
+#message_0
+{
+	background-image: url('../img/zcode/erreur.png');
+	color: red;
+}
+
+#pas_attendre
+{
+	font-style: italic;
+	width: 100%;
+	text-align: center;
+}

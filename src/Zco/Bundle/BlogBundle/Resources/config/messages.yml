@@ -1,0 +1,38 @@
+msg:
+    7: Le billet a bien été dévalidé.
+    8: Le billet a bien été édité.
+    9: Le billet a bien été supprimé.
+    10: Le billet a bien été ajouté.
+    11: Le billet a bien été mis dans les brouillons.
+    12: Votre billet a bien été proposé. Votre demande sera examinée par les administrateurs.
+    13: Le billet a bien été refusé.
+    14: Le billet a bien été validé.
+    137: Le commentaire a bien été ajouté.
+    136: Le commentaire a bien été édité.
+    135: Le commentaire a bien été supprimé.
+    172: L'auteur a bien été ajouté.
+    173: L'auteur a bien été édité.
+    174: L'auteur a bien été supprimé.
+    206: Le changement de version s'est bien effectué.
+    207: Les commentaires ont bien été fermés.
+    208: Tous les commentaires ont bien été supprimés.
+    209: Les commentaires ont bien été ouverts.
+    441: Le mot clé a bien été associé à ce billet.
+    442: Le mot clé a bien été retiré de ce billet.
+    427: Les mots clés ont bien été modifiés.
+    443: Le logo de ce billet a bien été changé.
+    444: La date de publication de ce billet a bien été changée.
+    445: Le nouveau choix de commentaires a bien été mémorisé.
+    446: La nouvelle adresse de l'article virtuel a bien été mémorisée.
+    20: Vous n'avez pas spécifié de billet dans l'URL.
+    475: Vous n'avez pas spécifié de version dans l'URL.
+    138: Vous n'avez pas spécifié de commentaire dans l'URL.
+    175: Cet auteur n'est pas affecté à ce billet.
+    210: Ce billet n'existe pas.
+    476: Cette version n'existe pas.
+    252: Ce commentaire n'existe pas.
+
+    500: Les commentaires sélectionnés ont été marqués comme lus.
+
+# Statuts pour le blog
+BlogStatuts:   { 1: Lecteur, 2: Rédacteur, 3: Créateur }

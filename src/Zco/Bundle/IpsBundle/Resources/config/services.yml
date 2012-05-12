@@ -1,0 +1,7 @@
+services:
+    zco_ips.event_listener:
+        class: Zco\Bundle\IpsBundle\EventListener\EventListener
+        calls:
+            - [setContainer, [@service_container]]
+        tags:
+            - { name: kernel.event_subscriber }

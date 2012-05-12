@@ -1,0 +1,3 @@
+zco_vitesse_asset:
+    pattern:   /{hash}
+    defaults:  { _controller: ZcoVitesseBundle:Assets:render }

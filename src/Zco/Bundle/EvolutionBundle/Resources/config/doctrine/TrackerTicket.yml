@@ -1,0 +1,13 @@
+TrackerTicket:
+  tableName: zcov2_tracker_tickets
+  columns:
+    ticket_id:                  { type: integer(11), primary: true, autoincrement: true, name: ticket_id as id }
+    ticket_id_utilisateur:      { type: integer(11), name: ticket_id_utilisateur as user_id }
+    ticket_id_version_first:    { type: integer(11), name: ticket_id_version_first as first_version }
+    ticket_id_version_courante: { type: integer(11), name: ticket_id_version_courante as current_version }
+    ticket_titre:               { type: string(255), name: ticket_titre as title }
+    ticket_description:         { type: string(), name: ticket_description as description }
+    ticket_date:                { type: timestamp, name: ticket_date as date }
+    ticket_prive:               { type: boolean, name: ticket_prive as private }
+    ticket_critique:            { type: boolean, name: ticket_critique as critical }
+    ticket_url:                 { type: string(255), name: ticket_url as url }

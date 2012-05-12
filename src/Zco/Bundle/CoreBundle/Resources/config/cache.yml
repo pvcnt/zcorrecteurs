@@ -1,0 +1,15 @@
+services:
+    zco_core.cache:
+        alias: zco_core.cache.file
+    
+    zco_core.cache.file:
+        class: Zco\Bundle\CoreBundle\Cache\FileCache
+        arguments: [%kernel.cache_dir%/zco_core_cache, %cache_default_lifetime%]
+    
+    zco_core.cache.memcache:
+        class: Zco\Bundle\CoreBundle\Cache\MemcacheCache
+        arguments: [%cache_default_lifetime%]
+    
+    zco_core.cache.memory:
+        class: Zco\Bundle\CoreBundle\Cache\MemoryCache
+        arguments: [%cache_default_lifetime%]

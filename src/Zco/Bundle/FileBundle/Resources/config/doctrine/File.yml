@@ -1,0 +1,25 @@
+#Liste des fichiers envoyés sur le serveur par les utilisateurs.
+File:
+    actAs:
+        Timestampable:
+            created:        { name: date }
+            updated:        { name: edition_date }
+    columns:
+        id:                 { type: integer, primary: true, autoincrement: true }
+        user_id:            { type: integer, notnull: false }
+        license_id:         { type: integer, notnull: false }
+        thumbnail_id:       { type: integer, notnull: false }
+        name:               { type: string(255), notnull: true }
+        extension:          { type: string(50), notnull: true }
+        path:               { type: string(255), notnull: true }
+        major_mime:         { type: string(20), notnull: true }
+        minor_mime:         { type: string(30), notnull: true }
+        type:               { type: integer(4), notnull: true, default: 0 }
+        size:               { type: integer(4), notnull: true }
+        width:              { type: integer(4), notnull: false }
+        height:             { type: integer(4), notnull: false }
+        quota_affected:     { type: boolean, default: 1 }
+    relations:
+        License:            { local: license_id }
+        User:               { class: Utilisateur, local: user_id, foreign: utilisateur_id }
+        Thumbnail:          { class: FileThumbnail, local: thumbnail_id }

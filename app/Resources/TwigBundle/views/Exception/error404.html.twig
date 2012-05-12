@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<meta http-equiv="Content-Language" content="fr" />
+		<title>Page non trouvée</title>
+	</head>
+
+	<body style="font-family: 'Lucida Sans Unicode', 'Trebuchet MS', Verdana, Geneva, Arial, Helvetica, sans-serif; background: #fff; font-size: 12px; padding: 0; margin: 0;">
+		<div style="border-bottom: 5px solid #d6d6d6; background-color: #31CCF7;">
+			<h1 style="margin-top: 0px; padding: 5px; padding-top: 8px; border-bottom: none; font-size: 22px; color: white; text-align: center;">
+				Page non trouvée
+			</h1>
+		</div>
+
+		<p style="padding: 10px 0; margin-right: 10px; margin-left: 10px; width: 750px; margin: auto;">
+			La page que vous cherchez n'existe pas ou n'existe plus.<br />
+			Si vous êtes tombé(e) ici suite à un clic sur un lien, merci de 
+			<a href="/apropos/contact" style="color: #166070; text-decoration: none;">nous
+			signaler</a> le lien et la page concernés.<br />
+			Merci !<br /><br />
+
+			<em>L'équipe du site.</em>
+		</p>
+
+		<p style="text-align: center; font-weight: bold;">
+			<a href="/" style="color: #166070; text-decoration: none;">
+			    <strong>Retour à l'accueil</strong>
+			</a> -
+			<a href="#" style="color: #166070; text-decoration: none;" onclick="history.back(); return false;">
+			    <strong>Retour à la page précédente</strong>
+			</a> -
+            <a href="/recherche" style="color: #166070; text-decoration: none;">
+                <strong>Faire une recherche sur le site</strong>
+            </a>
+		</p>
+		
+		{% if app.environment == 'prod' %}
+		<script type="text/javascript">
+		  var _gaq = _gaq || [];
+		  _gaq.push(['_setAccount', 'UA-1725896-5']);
+		  _gaq.push(['_setCookieTimeout', 259200]);
+		  _gaq.push(['_setCustomVar', 1, 'erreur', '404-not-found', 3]);
+		  _gaq.push(['_trackPageview']);
+
+		  (function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ga);
+		  })();
+		</script>
+		{% endif %}
+	</body>
+</html>

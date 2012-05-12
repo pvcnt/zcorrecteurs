@@ -1,0 +1,52 @@
+/**
+* Correction d'un tutoriel
+*
+* @author Savageman, .skaz
+*/
+
+/* Surlignage du paragraphe */
+.hover {
+	background-color: #eaeaff;
+	border: 1px dotted #000;
+	margin: 5px;
+}
+
+/* Affichage des tableaux */
+table,tr,td,th {
+	border-collapse: collapse;
+	border: 1px solid #000;
+}
+
+/* Affichage des spoilers */
+.spoiler3,.spoiler3_hidden {
+	display: block;
+	visibility: visible;
+}
+
+/* Pop-up */
+#popup_commentaires {
+	padding: 10px;
+}
+
+#popup_commentaires textarea {
+	width: 75%;
+}
+
+/* Marque de correction */
+a.zco_marque {
+	float: right;
+	margin-right: 10px;
+}
+
+div.zco_marque {
+	background-color: #D7FFF9;
+	padding: 5px;
+	margin: 2px;
+	border: 0.5px solid #569DFF;
+}
+
+#ajax_loader {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+}

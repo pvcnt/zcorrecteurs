@@ -1,0 +1,139 @@
+/**
+ * Style de l'administration automatique.
+ */
+.generator-list {
+	width: 98%;
+	margin: auto;
+	overflow: hidden;
+	margin-top: 10px;
+	border-collapse: collapse;
+	border: 1px solid #d6d6d6;
+}
+
+.generator-list tr {
+	border: 1px solid #d6d6d6;
+}
+
+.generator-list thead td, table.generator-list tfoot td {
+	background-color: #efefef;
+}
+
+.generator-list thead th {
+	text-align: center;
+	background: #4fd5fa url('../img/header_tableaux.png') repeat-x;
+	color: #fff;
+	font-size: 12px;
+	font-weight: normal;
+}
+
+.generator-list thead th a {
+	color: #fff;
+}
+
+.generator-list tbody {
+	border-bottom: 1px solid #d6d6d6;
+	border-top: 1px solid #d6d6d6;
+	background-color: #efefef;
+}
+
+.generator-list th {
+	border-left: 1px solid #d6d6d6;
+	border-right: 1px solid #d6d6d6;
+}
+
+.generator-list td {
+	border: 1px solid #d6d6d6;
+	padding-left: 2px;
+	padding-right: 2px;
+	vertical-align: top;
+}
+
+/**
+ * Style des formulaires.
+ */
+.choose_action {
+	text-align: center;
+	font-weight: bold;
+}
+
+fieldset {
+}
+
+/* Fieldsets « collapsed » */
+fieldset.collapsed * { display: none; }
+fieldset.collapsed h2 {
+	background-image: url(../img/generator/nav-bg.gif);
+	background-position: bottom left;
+	color: #999;
+	font-style: normal;
+	font-size: 14px;
+}
+
+/* Fieldsets « wide » */
+.wide label { width: 15em !important; }
+form .wide p { margin-left: 15em; }
+form .wide span.help { padding-left: 38px; }
+
+/**
+ * Filtres à droite.
+*/
+#generator-filters {
+	float: right;
+	z-index: 1000;
+	width: 160px;
+	border: 1px solid #ddd;
+	background: #efefef;
+	margin: 0;
+	overflow:  hidden;
+	background: url(../img/generator/changelist-bg.gif) repeat;
+}
+
+#generator-filters h2 {
+	font-size: 11px;
+	padding: 2px 5px;
+	margin: 0;
+	border-bottom: 1px solid #ddd;
+	background: url(../img/generator/default-bg.gif) repeat-x;
+	color: white;
+	font-style: normal;
+	font-weight: bold;
+}
+
+#generator-filters h3 {
+	font-size: 13px;
+	margin-left: 0;
+	text-align: left;
+	color: black;
+	border: none;
+	font-weight: bold;
+}
+
+#generator-filters ul {
+	padding-left: 0;
+	margin-left: 10px;
+	margin-bottom: 5px;
+}
+
+#generator-filters li {
+	list-style-type: none;
+	margin-left: 0;
+	padding-left: 0;
+}
+
+#generator-filters a {
+	color: #999;
+}
+
+#generator-filters a:hover {
+	color: #036;
+}
+
+#generator-filters li.selected {
+	border-left: 5px solid #ccc;
+	padding-left: 5px;
+	margin-left: -10px;
+}
+
+#generator-filters li.selected a {
+	color: #5b80b2 !important;
+}

@@ -1,0 +1,134 @@
+options:
+  collate: utf8_unicode_ci
+  charset: utf8
+
+Blog:
+  tableName: zcov2_blog
+  columns:
+    blog_id:               { type: integer(11), primary: true, autoincrement: true, name: blog_id as id }
+    blog_id_categorie:     { type: integer(11), notnull: true, name: blog_id_categorie as category_id }
+    blog_id_version_courante: { type: integer(11), notnull: true, name: blog_id_version_courante as current_version_id }
+    blog_date:             { type: timestamp, notnull: true, name: blog_date as date }
+    blog_date_edition:     { type: timestamp, notnull: false, name: blog_date_edition as edition_date }
+    blog_date_proposition: { type: timestamp, notnull: false, name: blog_date_proposition as proposition_date }
+    blog_date_validation:  { type: timestamp, notnull: false, name: blog_date_validation as validation_date }
+    blog_date_publication: { type: timestamp, notnull: false, name: blog_date_publication as publication_date }
+    blog_etat:             { type: integer(1), name: blog_etat as status }
+    blog_lien_topic:       { type: string(255), name: blog_lien_topic as topic_url }
+    blog_commentaires:     { type: boolean, default: 1, name: blog_commentaires as comments_status }
+    blog_image:            { type: string(255), name: blog_image as image }
+    blog_url_redirection:  { type: string(255), notnull: false, name: blog_url_redirection as redirection_url }
+    blog_lien_nom:         { type: string(100), name: blog_lien_nom as link_name }
+    blog_lien_url:         { type: string(255), name: blog_lien_url as link_url }
+  relations:
+    Category:              { class: Categorie, local: category_id, foreign: cat_id }
+    CurrentVersion:        { class: BlogVersion, local: current_version_id, foreign: version_id }
+
+BlogAuteur:
+  tableName: zcov2_blog_auteurs
+  columns:
+    auteur_id_utilisateur: { type: integer(11), primary: true }
+    auteur_id_billet:      { type: integer(11), primary: true }
+    auteur_statut:         { type: integer(1), notnull: true, name: auteur_statut as status }
+    auteur_date:           { type: timestamp, notnull: true, name: auteur_date as date }
+  relations:
+    User:                  { class: Utilisateur, local: auteur_id_utilisateur, foreign: utilisateur_id }
+    Article:               { class: Blog, local: auteur_id_billet, foreign: blog_id, foreignAlias: Authors }
+
+BlogCommentaire:
+  tableName: zcov2_blog_commentaires
+  columns:
+    commentaire_id:
+      type: integer(4)
+      primary: true
+      autoincrement: true
+    commentaire_id_utilisateur:
+      type: integer(4)
+      notnull: false
+    commentaire_id_billet:
+      type: integer(4)
+    commentaire_texte:
+      type: string()
+    commentaire_date:
+      type: timestamp(25)
+    commentaire_edite_date:
+      type: timestamp(25)
+    commentaire_id_edite:
+      type: integer(4)
+    commentaire_ip:
+      type: integer(4)
+BlogLunonlu:
+  tableName: zcov2_blog_lunonlu
+  columns:
+    lunonlu_id_utilisateur:
+      type: integer(4)
+      primary: true
+    lunonlu_id_billet:
+      type: integer(4)
+      primary: true
+    lunonlu_id_commentaire:
+      type: integer(4)
+BlogValidation:
+  tableName: zcov2_blog_validation
+  columns:
+    valid_id:
+      type: integer(4)
+      primary: true
+      autoincrement: true
+    valid_id_billet:
+      type: integer(4)
+    valid_id_version:
+      type: integer(4)
+      notnull: false
+    valid_id_utilisateur:
+      type: integer(4)
+      notnull: false
+    valid_date:
+      type: timestamp(25)
+    valid_ip:
+      type: integer(4)
+    valid_commentaire:
+      type: string()
+    valid_decision:
+      type: integer(1)
+BlogVersion:
+  tableName: zcov2_blog_versions
+  columns:
+    version_id:
+      type: integer(4)
+      primary: true
+      autoincrement: true
+    version_id_billet:
+      type: integer(4)
+      notnull: false
+    version_id_utilisateur:
+      type: integer(4)
+      notnull: false
+    version_id_fictif:
+      type: integer(4)
+    version_date:
+      type: timestamp(25)
+    version_ip:
+      type: integer(4)
+    version_titre:
+      type: string(100)
+      name: version_titre as title
+    version_sous_titre:
+      type: string(100)
+      name: version_sous_titre as subtitle
+    version_texte:
+      type: string()
+      name: version_texte as content
+    version_intro:
+      type: string()
+      name: version_intro as introduction
+    version_commentaire:
+      type: string()
+
+BlogTag:
+  tableName: zcov2_blog_tags
+  columns:
+    id_tag:              { type: integer(11), primary: true }
+    id_blog:             { type: integer(11), primary: true }
+  relations:
+    Tag:                 { local: id_tag, foreign: tag_id }

@@ -1,0 +1,33 @@
+.correction {
+	padding: 5px;
+}
+
+.correction.faux {
+	background-color: #F9B9AF;
+	border: 1px solid #EC5E54;
+}
+.correction.juste {
+	background-color: #d6eed2;
+	border: 1px solid #76c969;
+}
+
+.correction .type {
+	font-size: 1.2em;
+	padding-left: 20px;
+}
+.correction.faux .type {
+	color: red;
+	background-image: url(../img/quiz/faux.png);
+	background-repeat: no-repeat;
+}
+.correction.juste .type {
+	color: green;
+	background-image: url(../img/quiz/juste.png);
+	background-repeat: no-repeat;
+}
+
+.correction .explication {
+	margin-left: 50px;
+	padding: 5px;
+	border: 1px dashed #787878;
+}

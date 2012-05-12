@@ -1,0 +1,24 @@
+zco_about_index:
+    pattern:   /
+    defaults:  { _controller: ZcoAboutBundle:Default:index }
+
+zco_about_banners:
+    pattern:   /bannieres
+    defaults:  { _controller: ZcoAboutBundle:Default:banners }
+
+zco_about_team:
+    pattern:   /equipe
+    defaults:  { _controller: ZcoAboutBundle:Default:team }
+
+zco_about_corrigraphie:
+    pattern:   /association-corrigraphie
+    defaults:  { _controller: ZcoAboutBundle:Default:corrigraphie }
+
+zco_about_opensource:
+    pattern:   /logiciel-libre
+    defaults:  { _controller: ZcoAboutBundle:Default:openSource }
+
+zco_about_contact:
+    pattern:   /contact
+    defaults:  { _controller: ZcoAboutBundle:Default:contact }
+

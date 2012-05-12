@@ -1,0 +1,1 @@
+<legend><?php echo $view->escape($view['translator']->trans($label)) ?></legend>

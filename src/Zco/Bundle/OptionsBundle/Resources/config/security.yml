@@ -1,0 +1,4 @@
+all:
+  login_required:  true
+tests:
+  credentials:     [admin]

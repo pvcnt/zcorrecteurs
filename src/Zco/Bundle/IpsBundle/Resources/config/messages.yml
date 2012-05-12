@@ -1,0 +1,10 @@
+msg:
+    1:  Le masque d'adresse IP est invalide.
+    2:  L'adresse IP a bien été bannie.
+    3:  L'adresse IP a bien été débannie.
+    4:  L'adresse IP a bien été supprimée de l'historique.
+    5:  Erreur de l'interface chaise / clavier.<br />L'adresse IP spécifiée n'est pas valide.
+    6:  L'adresse IP n'est pas valide.
+    7:  L'adresse IP est une adresse privée (de type locale).
+    8:  L'adresse IP n'a pas pu être localisée.
+    9:  Ce membre n'existe pas.

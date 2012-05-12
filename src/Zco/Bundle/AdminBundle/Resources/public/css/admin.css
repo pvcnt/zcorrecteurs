@@ -1,0 +1,230 @@
+/**
+ * Style de la page d'accueil de l'administration.
+ *
+ * @author	Zopieux, Skydreamer
+ * @valid	false: -moz;
+ */
+
+.admin-wrapper
+{
+	margin: 0;
+	padding: 10px 0 0;
+}
+
+.admin-wrapper table td
+{
+	vertical-align: top;
+}
+
+div.admin_bloc
+{
+	margin: 6px 12px;
+	margin-top: 20px;
+	border: 1px solid #e9e9e9;
+	border-top: none;
+}
+
+div.admin_titre
+{
+	background-image: url(../img/top.png);
+	height: 32px;
+	padding: 0;
+	margin: 0;
+	margin-top: -64px;
+}
+
+div.admin_bloc h5
+{
+	font-size: 14px;
+	font-family: "Trebuchet MS", serif;
+	padding: 8px 5px 5px 32px;
+	margin-right: 5px;
+	background-repeat: no-repeat;
+	background-position: right;
+	background-color: inherit;
+	font-weight: normal;
+}
+
+div.admin_bloc div.admin_content
+{
+	margin-top: 20;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	background-color: #f2f2f2;
+}
+
+div.admin_bloc div.admin_content a
+{
+	color: #000;
+}
+
+
+div.admin_content ul li
+{
+	list-style-image: url(../img/puce.png)
+}
+
+.admin_icone
+{
+	width: 60px;
+	height: 60px;
+	position: relative;
+	top: -30px;
+	left: -35px;
+}
+
+div.bloc_documents .admin_icone
+{
+	background: url(../img/documents.png) no-repeat;
+}
+
+div.bloc_recrutements .admin_icone
+{
+	background: url(../img/recrutements.png) no-repeat;
+}
+
+div.bloc_membres .admin_icone
+{
+	background: url(../img/membres.png) no-repeat;
+}
+
+div.bloc_adresses_ip .admin_icone
+{
+	background: url(../img/ip.png) no-repeat;
+}
+
+div.bloc_uploads .admin_icone
+{
+	background: url(../img/uploads.png) no-repeat;
+}
+
+div.bloc_messagerie_privee .admin_icone
+{
+	background: url(../img/mps.png) no-repeat;
+}
+
+div.bloc_groupes .admin_icone
+{
+	background: url(../img/groupes.png) no-repeat;
+}
+
+div.bloc_twitter .admin_icone
+{
+	background: url(../img/twitter.png) no-repeat;
+}
+
+div.bloc_textes .admin_icone
+{
+	background: url(../img/textes.png) no-repeat;
+}
+
+div.bloc_statistiques_de_zcorrection .admin_icone
+{
+	background: url(../img/stats_zco.png) no-repeat;
+}
+
+div.bloc_statistiques_generales .admin_icone
+{
+	background: url(../img/stats_generales.png) no-repeat;
+}
+
+div.bloc_forums .admin_icone
+{
+	background: url(../img/forums.png) no-repeat;
+}
+
+div.bloc_blog .admin_icone
+{
+	background: url(../img/blog.png) no-repeat;
+}
+
+div.bloc_contact .admin_icone
+{
+	background: url(../img/contact.png) no-repeat;
+}
+
+div.bloc_dons .admin_icone
+{
+	background: url(../img/dons.png) no-repeat;
+}
+
+div.bloc_publicite .admin_icone
+{
+	background: url(../img/publicite.png) no-repeat;
+}
+
+div.bloc_communication .admin_icone
+{
+	background: url(../img/newsletter.png) no-repeat;
+}
+
+div.bloc_quiz .admin_icone
+{
+	background: url(../img/quiz.png) no-repeat;
+}
+
+div.bloc_sondages .admin_icone
+{
+	background: url(../img/sondages.png) no-repeat;
+}
+
+div.bloc_projets .admin_icone
+{
+	background: url(../img/projets.png) no-repeat;
+}
+
+div.bloc_ressources .admin_icone
+{
+	background: url(../img/ressources.png) no-repeat;
+}
+
+div.bloc_statistiques_des_recherches .admin_icone
+{
+	background: url(../img/stats_recherche.png) no-repeat;
+}
+
+div.bloc_dictees .admin_icone
+{
+	background: url(../img/dictee.png) no-repeat;
+}
+
+div.bloc_journaux .admin_icone
+{
+	background: url(../img/journaux.png) no-repeat;
+}
+
+div.bloc_citations .admin_icone
+{
+	background: url(../img/citation.png) no-repeat;
+}
+
+div.bloc_categories .admin_icone
+{
+	background: url(../img/categories.png) no-repeat;
+}
+
+div.bloc_options .admin_icone
+{
+	background: url(../img/options.png) no-repeat;
+}
+
+div.bloc_modifications_en_ligne .admin_icone
+{
+	background: url(../img/modif_en_ligne.png) no-repeat;
+}
+
+.action_a_faire
+{
+	font-weight: bold !important;
+	color: #e33f13 !important;
+}
+
+.admin_sep
+{
+	margin-top: 16px;
+}
+
+.tab_lighted
+{
+	color: #2c778a;
+}

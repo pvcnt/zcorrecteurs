@@ -1,0 +1,43 @@
+/**
+ * Style spécifique à la page de profil.
+ *
+ * @author vincent1870 <vincent@zcorrecteurs.fr>
+ * @valid	true
+ * @todo
+ */
+
+.liens_modo
+{
+	float: right;
+	margin: 2px;
+}
+
+.spacer
+{
+	height: 5px;
+}
+
+.cellule_large
+{
+	padding: 10px;
+}
+
+.pseudo
+{
+	font-size: 1.2em;
+}
+
+#avatar
+{
+	text-align: center;
+}
+
+.cellule_titre
+{
+	padding: 5px;
+}
+
+li img
+{
+	vertical-align: middle;
+}

@@ -1,0 +1,15 @@
+options:
+  collate: utf8_unicode_ci
+  charset: utf8
+
+Livredor:
+  tableName: zcov2_livredor
+  columns:
+    utilisateur_id:          { type: integer(11) }
+    date:                    { type: timestamp(25) }
+    note:                    { type: integer(1) }
+    message:                 { type: string() }
+    ip:                      { type: integer(11) }
+  relations:
+    Utilisateur:             { local: utilisateur_id, foreign: utilisateur_id }
+

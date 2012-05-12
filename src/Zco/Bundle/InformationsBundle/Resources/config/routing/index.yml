@@ -1,0 +1,19 @@
+zco_info_static_mentions:
+    pattern:   /legal/mentions
+    defaults:  { _controller: ZcoInformationsBundle:Static:mentions }
+
+zco_info_static_privacy:
+    pattern:   /legal/confidentialite
+    defaults:  { _controller: ZcoInformationsBundle:Static:privacy }
+
+zco_info_static_rules:
+    pattern:   /legal/reglement
+    defaults:  { _controller: ZcoInformationsBundle:Static:rules }
+
+zco_info_sitemap:
+    pattern:   /sitemap.xml
+    defaults:  { _controller: ZcoInformationsBundle:Default:sitemap }
+
+zco_info_feed:
+    pattern:   /informations/flux.xml
+    defaults:  { _controller: ZcoInformationsBundle:Feed:home }

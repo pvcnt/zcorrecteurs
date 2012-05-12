@@ -1,0 +1,405 @@
+/**
+ * @requires @ZcoCoreBundle/Resources/public/css/bootstrap.css
+ *           @ZcoCoreBundle/Resources/public/css/famfamfam.css
+ */
+
+/**
+ * Remise en forme des titres pour les rendre plus fins.
+ */
+h1 {
+	margin: 18px 0;
+    padding-bottom: 5px;
+	border-bottom: 1px solid #EEE;
+	line-height: 1;
+	margin-bottom: 15px !important;
+	font-size: 30px;
+	letter-spacing: 0.5px;
+	font-weight: normal;
+}
+
+h2 {
+	font-size: 18px;
+	margin-bottom: 5px;
+}
+
+/**
+ * Paragraphe mis en forme naturellement : espacement avec les autres, 
+ * texte justifié.
+ */
+p.good {
+	margin-top: 15px;
+	margin-bottom: 15px;
+	text-align: justify;
+}
+
+/**
+ * Lorsque la barre de navigation se fixe en haut de page, on a besoin de 
+ * conserver un espace avec le corps de la page.
+ */
+body > .container-fluid, body > .container {
+	margin-top: 18px;
+}
+
+/**
+ * Conserve les marges lors de la transition de la barre simple à la barre 
+ * fixée en haut de la page.
+ */
+.navbar-fixed-top .container {
+	width: auto;
+}
+
+.navbar-fixed-top .navbar-inner {
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+/**
+ * Pas d'arrondis au coin de la barre de navigation.
+ */
+.navbar-inner {
+    border-radius: 0px !important;
+    -moz-border-radius: 0px !important;
+	-webkit-border-radius: 0px !important;
+}
+
+/**
+ * Style d'un label qu'on force à ne pas flotter à côté de son champ.
+ */
+label.nofloat {
+	display: inline;
+	margin: 0;
+}
+
+label.nofloat input {
+	display: inline !important;
+}
+
+/**
+ * Section éliminant les restes de flottants.
+ */
+.cleaner {
+    clear: both;
+    height: 0px;
+}
+
+/**
+ * Styles pour une mise en forme rapide.
+ */
+.center {
+    text-align: center;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.italic {
+    font-style: italic;
+}
+
+/**
+ * Supprime la correction des marges, inutile sur le nouveau design.
+ */
+.container .liste_cadratin, .container-fluid .liste_cadratin {
+	margin-left: 0px;
+}
+
+/**
+ * On ménage un espace entre la fin du contenu et le pied de page.
+ */
+div.content {
+    margin-bottom: 20px;
+}
+
+/**
+ * Boîte à tout faire.
+ */
+.box {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #EEE;
+    background-color: whiteSmoke;
+    padding: 15px;
+}
+
+.box.message {
+	min-height: 105px;
+}
+
+.box ul {
+    list-style-type: none;
+    text-indent: -15px;
+}
+
+.box .avatar {
+	max-height: 50px !important;
+	max-width: 50px;
+	margin: 5px;
+	float: right;
+	vertical-align: middle;
+}
+
+/**
+ * Texte introductif destiné à être placé sur les pages contenant beaucoup 
+ * d'éléments graphiques. Il est mis en valeur par une taille plus imposante.
+ */
+p.intro-text {
+	margin-top: 15px;
+	font-size: 16px;
+	text-align: justify;
+	line-height: 22px;
+	margin-bottom: 25px;
+}
+
+p.intro-text.center {
+	text-align: center;
+}
+
+/**
+ * En-tête du site.
+ */
+#header {
+	background: url('../img/header-title-bg.png') top left repeat-x;
+	height: 96px;
+}
+
+#header a {
+	display: block;
+	text-indent: -5000px;
+	overflow: hidden;
+}
+
+#header-oreilles {
+	float: left;
+}
+
+#header-oreilles a {
+	height: 96px;
+	width: 220px;
+	background: url('../img/title-oreilles.png') 30px 7px no-repeat;
+}
+
+#header-zcorrecteurs {
+	margin-left: 220px;
+}
+
+#header-zcorrecteurs a {
+	height: 96px;
+	width: 428px;
+	background: url('../img/title-zcorrecteurs.png') bottom left no-repeat;
+}
+
+/* Zone de texte redimensionnable */
+.resizable-textarea {
+	background:#EEEEEE url(/bundles/zcocore/img/zform/grippie.png) no-repeat scroll center 2px;
+	border-color:#DDDDDD;
+	border-style:solid;
+	border-width:0pt 1px 1px;
+	cursor:s-resize;
+	height:9px;
+	overflow:hidden;
+}
+
+textarea.textarea, .textarea textarea {
+	width: 90%;
+	height: 200px;
+}
+
+/**
+ * Tableaux.
+ */
+td.center, th.center {
+    text-align: center;
+}
+
+table.table th {
+	text-align: center;
+}
+
+table.table-bordered th {
+	background-color: #EEE;
+}
+
+table.table-avatar td.avatar {
+	text-align: center;
+	vertical-align: middle;
+	padding: 3px 0;
+}
+
+table.table-avatar td.avatar img {
+	height: 40px;
+	width: 40px;
+	margin-left: 15px;
+}
+
+table.table-avatar td {
+	vertical-align: middle;
+}
+
+table.table-small {
+    width: 800px;
+    margin: auto;
+}
+
+/**
+ * Style commun aux annonces.
+ */
+.annonce {
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	padding: 5px;
+	margin-bottom: 5px;
+}
+
+/**
+ * Barre de navigation latérale.
+ */
+.sidebar .bloc {
+    padding-bottom: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #EEE;
+    background-color: whiteSmoke;
+}
+
+.sidebar .bloc h4 {
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+	border-bottom: 1px solid #EEE;
+}
+
+.sidebar .bloc li {
+    text-indent: 10px;
+}
+
+.sidebar form#sidebarLogin input#connexion_auto {
+ 	margin-right: 5px;
+}
+
+.sidebar form#sidebarLogin input#sideLogin,.sidebar form#sidebarLogin input#sidePassword {
+ 	display: block;
+ 	width: 88px;
+ 	margin: 0 auto;
+ 	padding: 4px 0 4px 22px;
+ 	font-size: 12px;
+ 	color: #666;
+ 	border: 1px solid #ddd;
+ 	border-bottom: 0;
+ 	background-color: #fff;
+ 	background-position: 2px 2px;
+ 	background-repeat: no-repeat;
+}
+
+.sidebar form#sidebarLogin input#sideLogin.error,.sidebar form#sidebarLogin input#sidePassword.error {
+ 	color: #f30;
+}
+
+.sidebar form#sidebarLogin input#sideLogin {
+ 	background-image: url('../img/login-user.png');
+}
+
+.sidebar form#sidebarLogin input#sidePassword {
+ 	background-image: url('../img/login-password.png');
+}
+
+.sidebar form#sidebarLogin #sideSubmit,.sidebar form#sidebarLogin #sideConnexion_auto {
+ 	margin-left: 10px;
+}
+ 
+/**
+* Pied de page.
+*/
+#footer, .footer {
+	clear: both;
+	background: #09bef2 url('../img/footer-bg.png') top left repeat-x;
+	height: 140px;
+	overflow: hidden;
+}
+
+#footer .left, #footer .right {
+	height: 100%;
+}
+
+#footer .left {
+    margin-left: 10px;
+	width: 150px;
+	text-align: center;
+	position: relative;
+	top: 65px;
+	float: left;
+}
+
+#footer .left a, #footer .right a {
+	display: block;
+	text-indent: -5000px;
+	width: 100%;
+	height: 100%;
+	background-repeat: no-repeat;
+}
+
+#footer .left span {
+    color: white;
+    font-style: italic;
+    font-size: 0.8em;
+}
+
+#footer .left a {
+	background-image: url('../img/corrigraphie-blanc.png');
+}
+
+#footer .right {
+	width: 100px;
+	float: right;
+}
+
+#footer .right a {
+	background-position: bottom right;
+	background-image: url('../img/footer-right-bg.png');
+}
+
+#footer .right a:hover {
+	background-image: url('../img/footer-right-bg-hover.png');
+}
+
+#footer .center {
+	width: 520px;
+	padding-top: 30px;
+	margin: 0 auto;
+	text-align: center;
+	color: #fff;
+}
+
+#footer .center p {
+	line-height: 18px;
+	margin-bottom: 5px;
+	font-size: 12px;
+}
+
+#footer .center p a, .footer a {
+	color: #fff;
+}
+
+#footer .center p a:hover, .footer a:hover {
+	background-color: #ff00ea;
+	text-decoration: none;
+	color: white;
+}
+
+#footer .center p a#toplink {
+	display: block;
+	height: 20px;
+	width: 120px;
+	margin: 0 auto;
+	margin-top: 5px;
+	margin-bottom: 15px;
+}
+
+#footer .center p.links {
+	font-size: 10px;
+}

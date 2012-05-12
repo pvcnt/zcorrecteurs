@@ -1,0 +1,16 @@
+.zMessage {
+	border: 1px solid black;
+	width: 400px;
+	text-align: center;
+	padding: 8px;
+}
+
+.zMessage.msg_info {
+	background-color: #cfc;
+	color: green;
+}
+
+.zMessage.msg_error {
+	background-color: #fcc;
+	color: red;
+}

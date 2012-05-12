@@ -1,0 +1,95 @@
+msg:
+    34: Le message a bien été ajouté.
+    66: Le message automatique a bien été ajouté.
+    35: Le message a bien été édité.
+    36: Le message a bien été supprimé.
+    134: Vous devez attendre 12 heures pour pouvoir poster deux fois de suite.
+    44: Vous n'avez pas spécifié de message dans l'URL.
+    46: Ce message n'existe pas ou vous n'avez pas l'autorisation de le voir.
+    48: Vous n'avez pas les droits requis pour éditer ce message.
+    63: Le message que vous désirez citer n'existe pas ou vous n'avez pas l'autorisation de le voir.
+    74: 'La suppression du message a échoué : on ne peut pas supprimer le premier message du sujet.'
+
+    37: Le sujet a bien été créé.
+    38: Le titre du sujet a bien été édité.
+    39: Le sujet a bien été supprimé.
+    53: Le sujet a bien été marqué comme résolu.
+    54: Le sujet a bien été marqué comme non résolu.
+    292: Le message a bien été marqué comme vous ayant aidé(e).
+    293: Le message a bien été marqué comme ne vous ayant pas aidé(e).
+    55: Le sujet a bien été déplacé.
+    56: Le sujet a bien été fermé.
+    57: Le sujet a bien été ouvert.
+    58: Le sujet a bien été épinglé.
+    59: Le sujet a bien été désépinglé.
+    60: Le sujet a bien été supprimé.
+    61: Le sujet a bien été mis en corbeille.
+    62: Le sujet a bien été restauré.
+    478: Le sondage a bien été ajouté.
+    68: Le sondage a bien été édité.
+    69: Le sondage a bien été supprimé.
+    72: Le sondage a bien été fermé.
+    73: Le sondage a bien été ouvert.
+    255: Le sujet a bien été divisé.
+    256: Les sujets ont bien été fusionnés.
+    298: Le sujet a bien été mis en coup de c&oelig;ur.
+    299: Le sujet a bien été retiré des coups de c&oelig;ur.
+    261: 'Vous ne pouvez pas diviser ce sujet : il contient moins de deux messages.'
+    52: Les opérations multiples ont bien été effectuées.
+    89: Le forum a bien été élagué.
+    371: Le sujet a bien été mis en favori.
+    372: Le sujet a bien été enlevé de vos favoris.
+
+    75: Le forum source doit être différent du forum cible.
+    49: Vous n'avez pas spécifié de forum dans l'URL.
+    50: Ce forum n'existe pas ou vous n'avez pas l'autorisation de le voir.
+    64: Vous n'avez pas spécifié de catégorie dans l'URL.
+    65: Cette catégorie n'existe pas ou vous n'avez pas l'autorisation de le voir.
+    51: Vous n'avez pas l'autorisation de voir les sujets en corbeille.
+    70: Vous n'avez pas les droits requis pour effectuer cette action.
+    45: Vous n'avez pas spécifié de sujet dans l'URL.
+    47: Ce sujet n'existe pas ou vous n'avez pas l'autorisation de le voir.
+    104: Vous n'avez pas l'autorisation de voir les alertes sur ce sujet.
+
+    40: Les modérateurs ont bien été alertés.
+    41: 'Vous ne pouvez pas alerter les modérateurs sur ce sujet : il est fermé.'
+    42: Les modérateurs ont déjà été prévenus.
+    101: L'alerte a bien été marquée comme résolue.
+    102: L'alerte a bien été marquée comme non résolue.
+    103: L'alerte a bien été supprimée.
+
+     # Sondages
+    98: Le sondage a bien été ajouté.
+    96: Le sondage a bien été édité.
+    97: Le sondage a bien été supprimé
+    91: Votre vote a bien été pris en compte. Merci d'avoir voté !
+    99: Veuillez remplir au moins deux réponses.
+    100: Veuillez remplir la question.
+    90: 'Impossible de voter : vous avez déjà voté.'
+    92: Ce choix n'existe pas, ou le sondage est fermé.
+
+    93: Que voulez-vous voter ?
+    94: Vous n'avez pas spécifié de sondage dans l'URL.
+    95: Ce sondage n'existe pas ou vous n'avez pas l'autorisation de le voir.
+
+    300: 'Le sondage a bien été ajouté, vous pouvez maintenant lui ajouter des questions.'
+    301: Erreur de l'interface chause / clavier.<br />Vous n'avez spécifié aucun sondage dans l'url.
+    302: La question a bien été ajoutée.
+    303: La question a bien été éditée.
+    304: La question a bien été supprimée.
+    306: Cette question n'existe pas.
+    305: Erreur de l'interface chaise / clavier.<br />Vous n'avez spécifié aucune question dans l'url.
+
+    348: Les sujets sélectionnés ont été marqués comme lus.
+    349: Les sujets sélectionnés ont été marqués comme non lus.
+
+    350: Tous les sujets ont été marqués comme lus.
+    351: Tous les sujets ont été marqués comme non lus.
+
+    352: Cette page n'existe pas.
+    353: Ce membre n'existe pas.
+
+    354: Vous n'avez jamais lu ce sujet.
+    355: Le message a bien été marqué comme le dernier lu du sujet
+
+    356: Le sujet a bien été marqué comme non-lu.

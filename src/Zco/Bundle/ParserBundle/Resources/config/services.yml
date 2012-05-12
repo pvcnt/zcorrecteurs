@@ -1,0 +1,30 @@
+parameters:
+    zco_parser.default_parser: zcode
+
+services:
+    zco_parser.parser:
+        class: Zco\Bundle\ParserBundle\Parser\DelegatingParser
+        arguments: ['%zco_parser.default_parser%', {zcode: '@zco_parser.parser.zcode', sdz: '@zco_parser.parser.sdz'}]
+    
+    zco_parser.parser.zcode:
+        class: Zco\Bundle\ParserBundle\Parser\zCodeParser
+        arguments: [@event_dispatcher]
+    
+    zco_parser.parser.sdz:
+        class: Zco\Bundle\ParserBundle\Parser\SdzParser
+    
+    zco_parser.feature.cache:
+        class: Zco\Bundle\ParserBundle\Feature\CacheFeature
+        arguments: [@zco_core.cache]
+        tags:
+            - { name: kernel.event_subscriber }
+
+    zco_parser.feature.core:
+        class: Zco\Bundle\ParserBundle\Feature\CoreFeature
+        tags:
+            - { name: kernel.event_subscriber }
+
+    zco_parser.feature.smilies:
+        class: Zco\Bundle\ParserBundle\Feature\SmiliesFeature
+        tags:
+            - { name: kernel.event_subscriber }

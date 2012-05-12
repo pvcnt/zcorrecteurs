@@ -1,0 +1,339 @@
+<?php
+
+/**
+ * Copyright 2012 Corrigraphie
+ * 
+ * This file is part of zCorrecteurs.fr.
+ *
+ * zCorrecteurs.fr is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * zCorrecteurs.fr is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with zCorrecteurs.fr. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+namespace Zco\Bundle\InformationsBundle\Controller;
+
+use Zco\Bundle\InformationsBundle\Event\FilterSitemapEvent;
+use Zco\Bundle\InformationsBundle\InformationsEvents;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
+
+/**
+ * Contrôleur gérant les pages génériques d'information du site (pages
+ * statiques, plan du site, etc.).
+ *
+ * @author vincent1870 <vincent@zcorrecteurs.fr>
+ */
+class DefaultController extends Controller
+{
+	/**
+	 * Affichage d'un sitemap pour le site.
+	 *
+	 * @return Response
+	 */
+	public function sitemapAction()
+	{
+		$cache = $this->container->get('zco_core.cache');
+		if (($content = $cache->get('zco_informations.sitemap')) === false)
+		{
+			$xml = new \DomDocument();
+			$xml->formatOutput = true;
+			
+			$urlset = $xml->createElement('urlset');
+			$urlset->setAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
+			$urlset->setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
+			$urlset->setAttribute('xsi:schemaLocation', 'http://www.sitemaps.org/schemas/sitemap/0.9
+				http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd');
+			$urlset = $xml->appendChild($urlset);
+			
+			$dispatcher = $this->container->get('event_dispatcher');
+			$event = new FilterSitemapEvent();
+			$dispatcher->dispatch(InformationsEvents::SITEMAP, $event);
+			
+			//Ajout des pages au sitemap
+			foreach ($event->getLinks() as $link => $options)
+			{
+				$url = $xml->createElement('url');
+				$url = $urlset->appendChild($url);
+
+				$loc = $xml->createElement('loc');
+				$loc = $url->appendChild($loc);
+				$loc->appendChild($xml->createTextNode($link));
+
+				$changefreq = $xml->createElement('changefreq');
+				$changefreq = $url->appendChild($changefreq);
+				$changefreq->appendChild($xml->createTextNode($options['changefreq']));
+
+				$priority = $xml->createElement('priority');
+				$priority = $url->appendChild($priority);
+				$priority->appendChild($xml->createTextNode($options['priority']));
+			}
+			
+			//Sauvegarde du XML
+			$content = $xml->saveXML();
+			$cache->set('zco_informations.sitemap', $content, 3600 * 24);
+		}
+		
+		$response = new Response($content);
+		$response->headers->set('Content-type',  'text/xml');
+		
+		return $response;
+	}
+	
+	public function ajaxParseZcodeAction(Request $request)
+	{
+		if ($request->get('_module') === 'zcorrection')
+		{
+			return new Response($this->get('zco_parser.parser')->with('sdz')->parse($_POST['texte']));
+		}
+
+		return new Response($this->get('zco_parser.parser')->parse($_POST['texte']));
+
+	}
+
+	public function ajaxSaveZformAction(Request $request)
+	{
+		$dbh = \Doctrine_Manager::connection()->getDbh();
+
+		$stmt = $dbh->prepare("INSERT INTO zcov2_sauvegardes_zform(sauvegarde_id_utilisateur, sauvegarde_date, sauvegarde_texte, sauvegarde_url)
+		VALUES(:id, NOW(), :texte, :url)");
+		$stmt->bindValue(':id', $_SESSION['id']);
+		$stmt->bindValue(':url', $request->request->get('url'));
+		$stmt->bindValue(':texte', $request->request->get('texte'));
+		$stmt->execute();
+
+		return new Response('OK');
+	}
+	
+	/**
+	 * Action permettant l'édition des annonces en page d'accueil.
+	 */
+	public function editerAnnoncesAction()
+	{
+		$registry = $this->get('zco_core.registry');
+
+		if (!empty($_POST))
+			$this->get('zco_core.cache')->set('accueil_maj', date('c'), 0);
+
+		//--- Si on veut modifier le bloc ---
+		$bloc_accueil = $registry->get('bloc_accueil');
+		if(isset($_POST['choix_bloc']))
+		{
+			$registry->set('bloc_accueil', $_POST['choix_bloc']);
+			return redirect(1);
+		}
+
+		//--- Cas de l'annonce personnalisée ---
+		$texte_zform = $registry->get('accueil_informations');
+		if(isset($_POST['texte']))
+		{
+			$registry->set('accueil_informations', $_POST['texte']);
+			return redirect(1);
+		}
+
+		//Cas du sujet mis en valeur
+		//Inclusion des modèles
+		include(BASEPATH.'/src/Zco/Bundle/ForumBundle/modeles/sujets.php');
+		include(BASEPATH.'/src/Zco/Bundle/ForumBundle/modeles/forums.php');
+
+		$infos_sujet = $registry->get('accueil_sujet');
+		if(empty($infos_sujet)) $infos_sujet = array();
+		$image_sujet = array_key_exists('image', $infos_sujet) ? $infos_sujet['image'] : '';
+
+		if(!empty($_POST['sujet']))
+		{
+			$choix_sujets = ListerSujetsTitre($_POST['sujet']);
+			if(count($choix_sujets) == 1)
+			{
+				$sujet = array(
+					'sujet_id' => $choix_sujets[0]['sujet_id'],
+					'sujet_titre' => $choix_sujets[0]['sujet_titre'],
+					'sujet_sous_titre' => $choix_sujets[0]['sujet_sous_titre'],
+					'cat_id' => $choix_sujets[0]['cat_id'],
+					'cat_nom' => $choix_sujets[0]['cat_nom'],
+					'image' => $image_sujet,
+				);
+				$registry->set('accueil_sujet', $sujet);
+				return redirect(1);
+			}
+		}
+		if(!empty($_GET['sujet']) && is_numeric($_GET['sujet']))
+		{
+			$sujet = InfosSujet($_GET['sujet']);
+			if(!empty($sujet))
+			{
+				$cat = InfosCategorie($sujet['sujet_forum_id']);
+				$sujet = array(
+					'sujet_id' => $sujet['sujet_id'],
+					'sujet_titre' => $sujet['sujet_titre'],
+					'sujet_sous_titre' => $sujet['sujet_sous_titre'],
+					'cat_id' => $sujet['sujet_forum_id'],
+					'cat_nom' => $cat['cat_nom'],
+					'image' => $image_sujet,
+				);
+				$registry->set('accueil_sujet', $sujet);
+				return redirect(1);
+			}
+		}
+		if(isset($_POST['image_sujet']))
+		{
+			$infos_sujet['image'] = $_POST['image_sujet'];
+			$registry->set('accueil_sujet', $infos_sujet);
+			return redirect(1);
+		}
+
+		//--- Cas du quiz mis en valeur ---
+		$infos_quiz = $registry->get('accueil_quiz');
+		if(empty($infos_quiz)) $infos_quiz = array();
+		$image_quiz = array_key_exists('image', $infos_quiz) ? $infos_quiz['image'] : '';
+
+		if(!empty($_POST['quiz']))
+		{
+			$choix_quiz = Doctrine_Core::getTable('Quiz')->findByNom($_POST['quiz']);
+			if(count($choix_quiz) == 1)
+			{
+				$quiz = array(
+					'id' => $choix_quiz[0]['id'],
+					'nom' => $choix_quiz[0]['nom'],
+					'description' => $choix_quiz[0]['description'],
+					'image' => $image_quiz,
+					'Categorie' => array(
+						'id' => $choix_quiz[0]->Categorie['id'],
+						'nom' => $choix_quiz[0]->Categorie['nom'],
+					),
+				);
+				$registry->set('accueil_quiz', $quiz);
+				return redirect(1);
+			}
+		}
+		if(!empty($_GET['quiz']) && is_numeric($_GET['quiz']))
+		{
+			$choix_quiz = Doctrine_Core::getTable('Quiz')->find($_GET['quiz']);
+			if($choix_quiz !== false)
+			{
+				$quiz = array(
+					'id' => $choix_quiz['id'],
+					'nom' => $choix_quiz['nom'],
+					'description' => $choix_quiz['description'],
+					'image' => $image_quiz,
+					'Categorie' => array(
+						'id' => $choix_quiz->Categorie['id'],
+						'nom' => $choix_quiz->Categorie['nom'],
+					),
+				);
+				$registry->set('accueil_quiz', $quiz);
+				return redirect(1);
+			}
+		}
+		if(isset($_POST['image_quiz']))
+		{
+			$infos_quiz['image'] = $_POST['image_quiz'];
+			$registry->set('accueil_quiz', $infos_quiz);
+			return redirect(1);
+		}
+
+		//--- Cas du blog mis en valeur ---
+		//Inclusion des modèles
+		include(BASEPATH.'/src/Zco/Bundle/BlogBundle/modeles/blog.php');
+
+		$infos_billet = $registry->get('accueil_billet');
+		if(empty($infos_billet)) $infos_billet = array();
+		$image_billet = array_key_exists('image', $infos_billet) ? $infos_billet['image'] : '';
+
+		if(!empty($_POST['billet']))
+		{
+			$choix_billet = ChercherBillets($_POST['billet']);
+			if(count($choix_billet) == 1)
+			{
+				$billet = array(
+					'billet_id' => $choix_billet[0]['blog_id'],
+					'billet_nom' => $choix_billet[0]['version_titre'],
+					'cat_nom' => $choix_billet[0]['cat_nom']
+				);
+				$registry->set('accueil_billet', $billet);
+				return redirect(1);
+			}
+		}
+		if(!empty($_GET['billet']))
+		{
+			$billet = InfosBillet($_GET['billet']);
+			if(!empty($billet))
+			{
+				$billet = array(
+					'billet_id' => $billet[0]['blog_id'],
+					'billet_nom' => $billet[0]['version_titre'],
+					'cat_nom' => $billet[0]['cat_nom']
+				);
+				$registry->set('accueil_billet', $billet);
+				return redirect(1);
+			}
+		}
+
+		$categories = ListerEnfants(GetIdCategorie('blog'), false);
+		$categories_actuelles = $registry->get('categories_billet_hasard');
+
+		if(isset($_POST['categories']))
+		{
+			$registry->set('categories_billet_hasard', $_POST['categories']);
+			return redirect(1);
+		}
+
+		if(isset($_GET['supprimer_cache']))
+		{
+			$this->get('zco_core.cache')->delete('billet_hasard');
+			
+			return redirect(2, 'index.html');
+		}
+
+
+		// Twitter
+		$accueil_tweets = $registry->get('accueil_tweets');
+		if(isset($_POST['tweets']))
+		{
+			$nb = (int)$_POST['tweets'];
+			$nb < 1  && $nb = 1;
+			$nb > 10 && $nb = 10;
+
+			$registry->set('accueil_tweets', $nb);
+			return redirect(1);
+		}
+
+		//Inclusion de la vue
+		fil_ariane('Modifier les annonces');
+		
+		return render_to_response(compact(
+			'bloc_accueil',
+			'texte_zform',
+			'choix_quiz',
+			'infos_quiz',
+			'image_quiz',
+			'infos_sujet',
+			'image_sujet',
+			'infos_billet',
+			'image_billet',
+			'choix_billet',
+			'categories',
+			'categories_actuelles',
+			'accueil_tweets'
+		));
+	}
+	
+	/**
+	 * Action affichant une page d'erreur demandée par Apache.
+	 */
+	public function erreurAction()
+	{
+	    $erreur = !empty($_GET['erreur']) && in_array($_GET['erreur'], array(403, 404, 500)) ? $_GET['erreur'] : 404;
+	    
+	    return render_to_response('TwigBundle:Exception:error'.$erreur.'.html.twig');
+	}
+}

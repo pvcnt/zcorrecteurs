@@ -1,0 +1,7 @@
+services:
+    zco_publicite.event_listener:
+        class: Zco\Bundle\PubliciteBundle\EventListener\EventListener
+        calls:
+            - [setContainer, [@service_container]]
+        tags:
+            - { name: kernel.event_subscriber }

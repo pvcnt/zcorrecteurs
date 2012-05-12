@@ -1,0 +1,12 @@
+options:
+  collate: utf8_unicode_ci
+  charset: utf8
+
+Don:
+  tableName: zcov2_dons
+  columns:
+    utilisateur_id:   { type: integer, notnull: true }
+    date:             { type: date }
+    nom:              { type: string(255) }
+  relations:
+    Utilisateur:      { local: utilisateur_id, foreign: utilisateur_id }

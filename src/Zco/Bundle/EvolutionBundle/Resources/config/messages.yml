@@ -1,0 +1,33 @@
+msg:
+    # Retour d'expérience
+    1: Votre retour a bien été pris en compte. Nous vous remercions d'avoir contribué à l'amélioration continue du site !
+
+    # Anomalies
+    360: Votre demande a bien été envoyée. Merci de votre contribution !
+    361: La demande a bien été supprimée.
+    362: La demande a bien été mise à jour.
+    363: La réponse a bien été supprimée.
+    359: Cette demande a bien été indiquée comme étant un doublon.
+    387: Cette anomalie a bien été convertie en tâche.
+    388: Vous suivez maintenant cette demande.
+    389: Vous ne suivez plus cette demande.
+    390: Votre commentaire a bien été ajouté.
+    424: Cette révision a bien été liée à la demande.
+    192: La réponse a bien été modifiée.
+    474: La personne désignée a bien été ajoutée à la liste de suivi.
+    364: Vous n'avez pas spécifié de demande dans l'URL.
+    357: Cette demande n'existe pas ou vous n'avez pas le droit de la voir.
+    358: Cette réponse n'existe pas ou vous n'avez pas le droit de la voir.
+    406: Erreur de l'interface chaise / clavier. <br />Cette révision n'existe pas.
+
+    # Feuille de route
+    366: Le projet a bien été ajouté.
+    367: Le projet a bien été modifié.
+    368: Le projet a bien été supprimé.
+    369: Erreur de l'interface chaise / clavier. <br />Ce projet n'existe pas ou vous n'avez pas le droit de le voir.
+    365: Erreur de l'interface chaise / clavier. <br />Vous n'avez pas spécifié de projet dans l'URL.
+    385: Erreur de l'interface chaise / clavier. <br />Vous n'avez pas spécifié de série dans l'URL.
+
+    # Code
+    440: Le dépôt a bien été mis à jour.
+

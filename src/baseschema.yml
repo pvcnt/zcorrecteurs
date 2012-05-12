@@ -1,0 +1,408 @@
+#Schéma résultant d'un export Doctrine depuis la base de données. Les tables 
+#décrites ici n'ont pas encore été intégrées à des bundles comme modèles.
+
+IpsBannies:
+  tableName: zcov2_ips_bannies
+  columns:
+    ip_id:
+      type: integer(4)
+      primary: true
+      autoincrement: true
+    ip_ip:
+      type: integer(8)
+    ip_id_admin:
+      type: integer(3)
+    ip_date:
+      type: timestamp(25)
+    ip_duree:
+      type: integer(4)
+    ip_duree_restante:
+      type: integer(4)
+    ip_raison:
+      type: string()
+    ip_raison_admin:
+      type: string()
+    ip_fini:
+      type: integer(1)
+
+MpAlertes:
+  tableName: zcov2_mp_alertes
+  columns:
+    mp_alerte_id:
+      type: integer(4)
+      unsigned: true
+      primary: true
+      autoincrement: true
+    mp_alerte_mp_id:
+      type: integer(4)
+      unsigned: true
+    mp_alerte_auteur:
+      type: integer(4)
+      unsigned: true
+    mp_alerte_date:
+      type: timestamp(25)
+    mp_alerte_raison:
+      type: string()
+    mp_alerte_ip:
+      type: integer(4)
+    mp_alerte_resolu:
+      type: integer(1)
+      unsigned: true
+      default: '0'
+    mp_alerte_modo:
+      type: integer(4)
+      unsigned: true
+MpDossiers:
+  tableName: zcov2_mp_dossiers
+  columns:
+    mp_dossier_id:
+      type: integer(4)
+      unsigned: true
+      primary: true
+      autoincrement: true
+    mp_dossier_auteur_id:
+      type: integer(4)
+      unsigned: true
+    mp_dossier_titre:
+      type: string(40)
+MpMessages:
+  tableName: zcov2_mp_messages
+  columns:
+    mp_message_id:
+      type: integer(4)
+      unsigned: true
+      primary: true
+      autoincrement: true
+    mp_message_mp_id:
+      type: integer(4)
+      unsigned: true
+    mp_message_auteur_id:
+      type: integer(4)
+      unsigned: true
+    mp_message_date:
+      type: timestamp(25)
+    mp_message_texte:
+      type: string()
+    mp_message_ip:
+      type: integer(4)
+MpMp:
+  tableName: zcov2_mp_mp
+  columns:
+    mp_id:
+      type: integer(4)
+      unsigned: true
+      primary: true
+      autoincrement: true
+    mp_titre:
+      type: string(150)
+    mp_sous_titre:
+      type: string(255)
+    mp_date:
+      type: timestamp(25)
+    mp_premier_message_id:
+      type: integer(4)
+      unsigned: true
+    mp_dernier_message_id:
+      type: integer(4)
+      unsigned: true
+    mp_reponses:
+      type: integer(4)
+      unsigned: true
+    mp_ferme:
+      type: integer(1)
+      default: '0'
+    mp_crypte:
+      type: integer(1)
+MpParticipants:
+  tableName: zcov2_mp_participants
+  columns:
+    mp_participant_mp_id:
+      type: integer(4)
+      unsigned: true
+      primary: true
+    mp_participant_mp_dossier_id:
+      type: integer(4)
+      default: '0'
+    mp_participant_id:
+      type: integer(4)
+      unsigned: true
+      primary: true
+    mp_participant_statut:
+      type: integer(1)
+      default: '0'
+    mp_participant_dernier_message_lu:
+      type: integer(4)
+      unsigned: true
+      default: '0'
+
+PushBigTutos:
+  tableName: zcov2_push_big_tutos
+  columns:
+    big_tuto_id:
+      type: integer(4)
+      unsigned: true
+      primary: true
+      autoincrement: true
+    big_tuto_titre:
+      type: string(128)
+    big_tuto_avancement:
+      type: integer(1)
+      unsigned: true
+    big_tuto_difficulte:
+      type: integer(1)
+    big_tuto_introduction:
+      type: string()
+    big_tuto_conclusion:
+      type: string()
+    big_tuto_id_sdz:
+      type: integer(4)
+      unsigned: true
+PushBigTutosParties:
+  tableName: zcov2_push_big_tutos_parties
+  columns:
+    partie_id:
+      type: integer(4)
+      unsigned: true
+      primary: true
+      autoincrement: true
+    partie_id_big_tuto:
+      type: integer(4)
+      unsigned: true
+    partie_titre:
+      type: string(64)
+    partie_introduction:
+      type: string()
+    partie_conclusion:
+      type: string()
+    partie_id_sdz:
+      type: integer(4)
+      unsigned: true
+PushCorrections:
+  tableName: zcov2_push_corrections
+  columns:
+    correction_id:
+      type: integer(4)
+      unsigned: true
+      primary: true
+      autoincrement: true
+    correction_id_tuto_corrige:
+      type: integer(4)
+      unsigned: true
+    correction_id_correcteur:
+      type: integer(4)
+      unsigned: true
+    correction_abandonee:
+      type: integer(1)
+      unsigned: true
+    correction_date_debut:
+      type: timestamp(25)
+      notnull: false
+    correction_date_fin:
+      type: timestamp(25)
+      notnull: false
+    correction_commentaire:
+      type: string()
+    correction_correcteur_invisible:
+      type: integer(1)
+      default: '0'
+    correction_marque:
+      type: string(255)
+PushMiniTutoSousParties:
+  tableName: zcov2_push_mini_tuto_sous_parties
+  columns:
+    sous_partie_id:
+      type: integer(4)
+      unsigned: true
+      primary: true
+      autoincrement: true
+    sous_partie_id_mini_tuto:
+      type: integer(4)
+      unsigned: true
+    sous_partie_titre:
+      type: string(128)
+    sous_partie_texte:
+      type: string()
+    sous_partie_id_sdz:
+      type: integer(4)
+      unsigned: true
+PushMiniTutos:
+  tableName: zcov2_push_mini_tutos
+  columns:
+    mini_tuto_id:
+      type: integer(4)
+      unsigned: true
+      primary: true
+      autoincrement: true
+    mini_tuto_id_partie:
+      type: integer(4)
+      unsigned: true
+    mini_tuto_titre:
+      type: string(128)
+    mini_tuto_avancement:
+      type: integer(1)
+      unsigned: true
+    mini_tuto_difficulte:
+      type: integer(1)
+    mini_tuto_introduction:
+      type: string()
+    mini_tuto_conclusion:
+      type: string()
+    mini_tuto_id_sdz:
+      type: integer(4)
+      unsigned: true
+PushQcmQuestions:
+  tableName: zcov2_push_qcm_questions
+  columns:
+    question_id:
+      type: integer(4)
+      unsigned: true
+      primary: true
+      autoincrement: true
+    question_id_mini_tuto:
+      type: integer(4)
+      unsigned: true
+    question_label:
+      type: string()
+    question_explications:
+      type: string()
+    question_id_sdz:
+      type: integer(4)
+      unsigned: true
+PushQcmReponses:
+  tableName: zcov2_push_qcm_reponses
+  columns:
+    reponse_id:
+      type: integer(4)
+      unsigned: true
+      primary: true
+      autoincrement: true
+    reponse_id_qcm_question:
+      type: integer(4)
+      unsigned: true
+    reponse_texte:
+      type: string()
+    reponse_vrai:
+      type: integer(1)
+    reponse_id_sdz:
+      type: integer(4)
+      unsigned: true
+PushSoumissions:
+  tableName: zcov2_push_soumissions
+  columns:
+    soumission_id:
+      type: integer(4)
+      unsigned: true
+      primary: true
+      autoincrement: true
+    soumission_id_utilisateur:
+      type: integer(4)
+      unsigned: true
+    soumission_pseudo_utilisateur:
+      type: string(50)
+    soumission_id_valido:
+      type: integer(4)
+      unsigned: true
+      default: '0'
+    soumission_pseudo_valido:
+      type: string(50)
+    soumission_description:
+      type: string()
+    soumission_sauvegarde:
+      type: string(255)
+    soumission_date:
+      type: timestamp(25)
+    soumission_type_tuto:
+      type: integer(1)
+      unsigned: true
+    soumission_id_tuto:
+      type: integer(4)
+      unsigned: true
+    soumission_id_correction_1:
+      type: integer(2)
+      unsigned: true
+      notnull: false
+    soumission_id_correction_2:
+      type: integer(2)
+      unsigned: true
+      notnull: false
+    soumission_prioritaire:
+      type: integer(1)
+      default: '0'
+    soumission_recorrection:
+      type: integer(1)
+      default: '0'
+    soumission_ip:
+      type: integer(4)
+    soumission_commentaire:
+      type: string()
+    soumission_news:
+      type: integer(1)
+    soumission_avancement:
+      type: integer(2)
+      default: '0'
+    soumission_etat:
+      type: integer(1)
+    soumission_token:
+      type: string(40)
+PushSoumissionsRefus:
+  tableName: zcov2_push_soumissions_refus
+  columns:
+    refus_id:
+      type: integer(4)
+      primary: true
+      autoincrement: true
+    refus_id_soumission:
+      type: integer(4)
+    refus_id_admin:
+      type: integer(4)
+    refus_date:
+      type: timestamp(25)
+    refus_raison:
+      type: string()
+    refus_raison_admin:
+      type: string()
+
+
+
+
+Registry:
+  tableName: zcov2_registry
+  columns:
+    registry_key:
+      type: string(50)
+      primary: true
+    registry_value:
+      type: string()
+
+SauvegardesZform:
+  tableName: zcov2_sauvegardes_zform
+  columns:
+    sauvegarde_id:
+      type: integer(3)
+      primary: true
+      autoincrement: true
+    sauvegarde_id_utilisateur:
+      type: integer(3)
+    sauvegarde_date:
+      type: timestamp(25)
+    sauvegarde_texte:
+      type: string()
+    sauvegarde_url:
+      type: string(255)
+
+ZingleLogsFlux:
+  tableName: zcov2_zingle_logs_flux
+  columns:
+    log_ip:
+      type: integer(4)
+      primary: true
+    log_date:
+      type: timestamp(25)
+      primary: true
+    log_nb_views:
+      type: string(100)
+    log_user_agent:
+      type: string(255)
+    log_id:
+      type: integer(4)
+      notnull: false

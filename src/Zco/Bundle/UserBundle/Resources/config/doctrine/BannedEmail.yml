@@ -1,0 +1,8 @@
+BannedEmail:
+  tableName: zcov2_mails_bannis
+  columns:
+    utilisateur_id:           { type: integer }
+    mail:                     { type: string(255), unique: true }
+    raison:                   { type: string() }
+  relations:
+    User:                     { class: Utilisateur, local: utilisateur_id, foreign: utilisateur_id }

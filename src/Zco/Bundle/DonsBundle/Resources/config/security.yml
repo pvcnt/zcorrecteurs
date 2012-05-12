@@ -1,0 +1,6 @@
+ajouter:
+  credentials:   [dons_ajouter]
+modifier:
+  credentials:   [dons_editer]
+gestion:
+  credentials:   [[dons_ajouter, dons_editer, dons_supprimer]]

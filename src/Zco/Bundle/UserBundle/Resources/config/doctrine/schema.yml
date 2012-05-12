@@ -1,0 +1,14 @@
+Tentative:
+  tableName: zcov2_tentatives
+  columns:
+    ip:                { type: integer(11) }
+    blocage:           { type: boolean, default: '0' }
+    user:              { type: integer(11) }
+  actAs:
+    Timestampable:
+      created:
+        name: date
+      updated:
+        disabled: true
+  relations:
+    Utilisateur:       { local: user, foreign: utilisateur_id }

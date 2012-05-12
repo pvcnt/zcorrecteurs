@@ -1,0 +1,8 @@
+all:
+  credentials:  [sondages_voir]
+ajouter:
+  credentials:  [sondages_ajouter]
+gestion:
+  credentials:  [[sondages_ajouter, sondages_supprimer, sondages_editer, sondages_editer_siens, sondages_supprimer_siens]]
+voter:
+  credentials:  [[sondages_voter]]

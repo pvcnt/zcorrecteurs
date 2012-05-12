@@ -1,0 +1,36 @@
+TrackerTicketVersion:
+  tableName: zcov2_tracker_tickets_versions
+  columns:
+    version_id:
+      type: integer(4)
+      primary: true
+      autoincrement: true
+    version_id_ticket:
+      type: integer(4)
+    version_id_utilisateur:
+      type: integer(4)
+    version_id_categorie_concernee:
+      type: integer(4)
+    version_id_admin:
+      type: integer(4)
+      notnull: false
+    version_id_projet:
+      type: integer(4)
+      notnull: false
+    version_date:
+      type: timestamp(25)
+    version_priorite:
+      type: integer(1)
+    version_resume:
+      type: string(255)
+    version_commentaire:
+      type: string()
+      notnull: false
+    version_ip:
+      type: integer(4)
+    version_temps_estime:
+      type: integer(1)
+    version_ferme:
+      type: integer(1)
+    version_etat:
+      type: integer(1)

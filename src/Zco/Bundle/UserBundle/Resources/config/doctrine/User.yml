@@ -1,0 +1,43 @@
+Utilisateur:
+  tableName: zcov2_utilisateurs
+  columns:
+    utilisateur_id:                   { name: utilisateur_id as id, type: integer(11), unsigned: true, primary: true, autoincrement: true }
+    utilisateur_id_groupe:            { type: integer(1), name: utilisateur_id_groupe as groupe_id }
+    utilisateur_pseudo:               { name: utilisateur_pseudo as pseudo, type: string(32) }
+    utilisateur_email:                { name: utilisateur_email as email, type: string(128) }
+    utilisateur_nouvel_email:         { type: string(128) }
+    utilisateur_avatar:               { name: utilisateur_avatar as avatar, type: string(20) }
+    utilisateur_mot_de_passe:         { type: string(40), name: utilisateur_mot_de_passe as mot_de_passe }
+    utilisateur_nouveau_mot_de_passe: { type: string(40) }
+    utilisateur_signature:            { type: string(), name: utilisateur_signature as signature }
+    utilisateur_forum_messages:       { type: integer(11), default: '0', name: utilisateur_forum_messages as forum_messages }
+    utilisateur_date_inscription:     { type: timestamp(25), name: utilisateur_date_inscription as date_inscription }
+    utilisateur_date_derniere_visite: { type: timestamp(25), name: utilisateur_date_derniere_visite as date_derniere_visite }
+    utilisateur_valide:               { type: boolean, name: utilisateur_valide as valide }
+    utilisateur_hash_validation:      { type: string(40), name: utilisateur_hash_validation as registration_hash }
+    utilisateur_hash_validation2:     { type: string(100) }
+    utilisateur_ip:                   { type: integer(11), name: utilisateur_ip as ip }
+    utilisateur_titre:                { type: string(50), name: utilisateur_titre as title }
+    utilisateur_adresse:              { type: string(80), name: utilisateur_adresse as address }
+    utilisateur_latitude:             { type: 'decimal(10, 6)', name: utilisateur_latitude as latitude }
+    utilisateur_longitude:            { type: 'decimal(10, 6)', name: utilisateur_longitude as longitude }
+    utilisateur_nb_sanctions:         { type: integer(1), name: utilisateur_nb_sanctions as nb_sanctions }
+    utilisateur_pourcentage:          { type: integer(1), name: utilisateur_pourcentage as percentage }
+    utilisateur_afficher_mail:        { type: boolean, name: utilisateur_afficher_mail as email_displayed }
+    utilisateur_profession:           { type: string(255), name: utilisateur_profession as job }
+    utilisateur_date_naissance:       { type: date, name: utilisateur_date_naissance as birth_date }
+    utilisateur_site_web:             { type: string(255), name: utilisateur_site_web as website }
+    utilisateur_localisation:         { type: string(100), name: utilisateur_localisation as localisation }
+    utilisateur_afficher_pays:        { type: boolean, default: '1', name: utilisateur_afficher_pays as country_displayed }
+    utilisateur_biographie:           { type: string(), name: utilisateur_biographie as biography }
+    utilisateur_passions:             { type: string(60), name: utilisateur_passions as hobbies }
+    utilisateur_citation:   { type: string(30), name: utilisateur_citation as citation }
+    utilisateur_absent:     { type: boolean, name: utilisateur_absent as absent }
+    utilisateur_fin_absence: { type: timestamp(25), notnull: false, name: utilisateur_fin_absence as absence_end_date }
+    utilisateur_motif_absence: { type: string(), name: utilisateur_motif_absence as absenceReason }
+    utilisateur_cle_pgp:    { type: string(), name: utilisateur_cle_pgp as pgk_key }
+    utilisateur_debut_absence:     { type: date(25), notnull: false }
+    utilisateur_derniere_lecture:  { type: timestamp(25), notnull: false }
+    utilisateur_sexe:              { type: integer(1), name: utilisateur_sexe as sexe, default: 0 }
+  relations:
+    Groupe:                { local: utilisateur_id_groupe, foreign: groupe_id, foreignAlias: Utilisateurs }

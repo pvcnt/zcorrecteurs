@@ -1,0 +1,14 @@
+options:
+  collate: utf8_unicode_ci
+  charset: utf8
+
+Tag:
+  tableName: zcov2_tags
+  columns:
+    utilisateur_id:      { type: integer(11), notnull: false }
+    nom:                 { type: string(100) }
+    couleur:             { type: string(50) }
+    moderation:          { type: boolean }
+  relations:
+    Utilisateur:         { local: utilisateur_id, foreign: utilisateur_id }
+    Citations:           { foreignAlias: Tags, class: Citation, refClass: TagCitation }

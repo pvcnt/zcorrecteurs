@@ -1,0 +1,8 @@
+SecondaryGroup:
+    tableName: zcov2_groupes_secondaires
+    columns:
+        groupe_id:        { type: integer, primary: true, autoincrement: true }
+        utilisateur_id:   { type: integer, primary: true, autoincrement: true }
+    relations:
+        User:             { class: Utilisateur, local: utilisateur_id, foreignAlias: SecondaryGroups }
+        Group:            { class: Groupe, local: groupe_id }

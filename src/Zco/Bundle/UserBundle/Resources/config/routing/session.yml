@@ -1,0 +1,22 @@
+zco_user_session_logout:
+    pattern:   /deconnexion
+    defaults:  { _controller: ZcoUserBundle:Session:logout }
+
+zco_user_session_login:
+    pattern:   /connexion
+    defaults:  { _controller: ZcoUserBundle:Session:login }
+
+zco_user_session_register:
+    pattern:   /inscription
+    defaults:  { _controller: ZcoUserBundle:Session:register }
+
+zco_user_session_confirm:
+    pattern:   /inscription/{id}/{hash}
+    defaults:  { _controller: ZcoUserBundle:Session:confirmAccount }
+    requirements:
+        id: \d+
+        hash: '[a-f0-9]{40}'
+
+zco_user_session_newPassword:
+    pattern:   /connexion/mot-de-passe
+    defaults:  { _controller: ZcoUserBundle:Session:newPassword }

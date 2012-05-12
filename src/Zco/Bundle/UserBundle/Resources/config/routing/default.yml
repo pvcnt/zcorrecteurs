@@ -1,0 +1,36 @@
+zco_user_index:
+    pattern:   /{page}
+    defaults:  { _controller: ZcoUserBundle:Default:index, page: 1 }
+    requirements:
+        page: \d+
+
+zco_user_online:
+    pattern:   /connectes
+    defaults:  { _controller: ZcoUserBundle:Default:online, showAnonymousUsers: false }
+
+zco_user_online_all:
+    pattern:   /connectes/tous
+    defaults:  { _controller: ZcoUserBundle:Default:online, showAnonymousUsers: true }
+
+zco_user_profile:
+    pattern:   /{id}/{slug}
+    defaults:  { _controller: ZcoUserBundle:Default:profile }
+    requirements:
+        id: \d+
+        slug: '[a-z0-9-]+'
+
+zco_user_editTitle:
+    pattern:   /modifier-titre/{id}
+    defaults:  { _controller: ZcoUserBundle:Default:editTitle }
+    requirements:
+        page: \d+
+
+zco_user_newPseudo:
+    pattern:   /nouveau-pseudo/{id}
+    defaults:  { _controller: ZcoUserBundle:Default:newPseudo, id: ~ }
+    requirements:
+        id: \d+
+
+zco_user_localisation:
+    pattern:   /carte
+    defaults:  { _controller: ZcoUserBundle:Default:localisation }

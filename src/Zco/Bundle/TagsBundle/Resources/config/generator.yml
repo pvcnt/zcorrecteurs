@@ -1,0 +1,45 @@
+##  Configuration de l'interface d'administration automatique.  ##
+
+# Paramètres de la classe Citation.
+Tag:
+    config:
+        singular:            Tag
+        plural:              Tags
+
+    actions:
+        _delete:     { label: Supprimer, credentials: [tags_editer] }
+        _new:        { label: Ajouter un nouveau mot clé, credentials: [tags_ajouter] }
+        _edit:       { label: Modifier, credentials: [tags_editer] }
+
+    form:
+        fieldsets:
+            NONE:
+                display:        [nom, couleur]
+    
+    list:
+        title:              Gestion des tags
+        description:        |
+          Les mots clés sont des mots brefs pouvant être associés à diverses composantes
+          du site (billets sur le blog, sujet sur le forum, etc.). Vous visualisez ici
+          la liste de tous les mots clés utilisés sur le site.
+        display:            ['ZcoTagsBundle::_nom.html.php']
+        ordering:           nom
+        search_field:       nom
+        max_per_page:       50
+        object_actions:
+            _edit:          ~
+            _delete:        ~
+        actions:
+            _new:           ~
+        fields:
+            nom:      { attributes: { style: 'width: 70%;', class: centre } }
+    
+    new:
+        title:       Ajouter un nouveau mot clé
+    
+    edit:
+        title:       Modifier le mot clé %nom%
+
+    delete:
+        title:       Supprimer le mot clé %nom%
+        message:     Voulez-vous vraiment supprimer le mot clé <span style="color: %couleur%">%nom%</span> ?

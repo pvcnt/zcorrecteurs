@@ -1,0 +1,10 @@
+msg:
+    1: La catégorie a bien été ajoutée.
+    2: La catégorie a bien été éditée.
+    3: La catégorie a bien été supprimée.
+    4: La catégorie a bien été montée.
+    5: La catégorie a bien été descendue.
+    6: La catégorie n'existe pas.
+    7: Vous ne pouvez pas supprimer cette catégorie car elle a des sous-catégories.
+    8: Impossible de monter cette catégorie car elle est déjà en haut.
+    9: Impossible de descendre cette catégorie car elle est déjà en bas.

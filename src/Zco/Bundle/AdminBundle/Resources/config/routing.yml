@@ -1,0 +1,3 @@
+zco_admin_index:
+    pattern:   /
+    defaults:  { _controller: ZcoAdminBundle:Default:index }

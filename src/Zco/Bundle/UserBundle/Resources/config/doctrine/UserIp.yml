@@ -1,0 +1,11 @@
+UtilisateurIp:
+  tableName: zcov2_utilisateurs_ips
+  columns:
+    ip_id_utilisateur:     { type: integer(11), primary: true }
+    ip_ip:                 { type: integer(8), primary: true }
+    ip_date_debut:         { type: timestamp(25), name: ip_date_debut as date_debut }
+    ip_date_last:          { type: timestamp(25), name: ip_date_last as date_last }
+    ip_localisation:       { type: string(50), name: ip_localisation as localisation }
+    ip_proxy:              { type: integer(11), unsigned: true, notnull: false, name: ip_proxy as proxy }
+  relations:
+    Utilisateur:           { local: ip_id_utilisateur, foreign: utilisateur_id }

@@ -1,0 +1,15 @@
+TwitterMention:
+  tableName: zcov2_twitter_mentions
+  columns:
+    id:               { type: integer, primary: true }
+    compte_id:        { type: integer, notnull: true }
+    nouvelle:         { type: boolean, notnull: true, default: 1 }
+    creation:         { type: timestamp }
+    pseudo:           { type: string(255) }
+    nom:              { type: string(255) }
+    avatar:           { type: string(255) }
+    texte:            { type: string() }
+    reponse_id:       { type: integer }
+  relations:
+    Compte:           { class: TwitterCompte, local: compte_id, foreign: id }
+    Utilisateur:      { local: utilisateur_id, foreign: id }

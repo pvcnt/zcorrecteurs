@@ -1,0 +1,20 @@
+ajouter_message_auto:
+    credentials:  [gerer_mess_autos]
+editer_message_auto:
+    credentials:  [gerer_mess_autos]
+gestion_messages_auto:
+    credentials:  [gerer_mess_autos]
+alertes:
+    credentials:  [voir_alertes]
+editer_sondage:
+    credentials:  [editer_sondages]
+statistiques_temporelles:
+    credentials:  [forum_stats_generales]
+voter:
+    login_required: true
+marquer_lu:
+    login_required: true
+suivi:
+    login_required: true
+sujets_coups_coeur:
+    credentials:  [mettre_sujets_coup_coeur]

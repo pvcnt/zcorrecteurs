@@ -1,0 +1,106 @@
+div.recrutement_boite {
+	border: 1px solid #EEE;
+	background-color: whiteSmoke;
+	padding: 10px;
+	border-radius: 5px;
+	margin-bottom: 20px;
+}
+
+div.recrutement_boite p.description {
+    margin-top: 15px !important;
+	font-size: 13px;
+	text-align: justify;
+	margin-bottom: 20px;
+}
+
+div.recrutement_boite p.lien {
+	font-size: 13px;
+	text-align: right;
+	font-weight: bold;
+}
+
+.team-avatar {
+	max-width: 50px;
+	max-height: 50px;
+	margin-left: 5px;
+}
+
+table.recrutement_raisons, table.recrutement_postes {
+	width: 100%;
+	margin: auto;
+}
+
+table.recrutement_postes td {
+	width: 25%;
+	vertical-align: top;
+	margin-bottom: 20px;
+}
+
+table.recrutement_raisons td a, table.recrutement_postes td a {
+	display: block;
+	padding: 15px;
+}
+
+table.recrutement_raisons td {
+	width: 50%;
+	vertical-align: top;
+}
+
+table.recrutement_raisons td:hover, table.recrutement_postes td:hover {
+	background-color: #EEE;
+	border-radius: 5px;
+}
+
+table.recrutement_postes td:hover a:hover {
+    text-decoration: none;
+}
+
+table.recrutement_raisons td span.description, table.recrutement_postes td span.description {
+	color: grey;
+}
+
+table.recrutement_raisons td span.titre, table.recrutement_postes td span.titre {
+	font-size: 14px;
+}
+
+table.recrutement_raisons2 {
+	width: 950px;
+	margin: auto;
+}
+
+table.recrutement_raisons2 td {
+	width: 33%;
+	padding: 15px;
+	vertical-align: top;
+}
+
+table.recrutement_raisons2 td div.image {
+	text-align: center;
+	height: 200px;
+}
+
+table.recrutement_raisons2 td div.titre {
+	font-size: 16px;
+	margin-bottom: 10px;
+}
+
+table.recrutement_raisons2 td div.description {
+	font-size: 13px;
+	text-align: justify;
+}
+
+p.recrutement_invitation {
+	font-weight: bold;
+	font-size: 13px;
+	text-align: center;
+}
+
+p.recrutement_question {
+	font-weight: bold;
+	text-indent: 30px;
+}
+
+p.recrutement_reponse {
+	margin-bottom: 20px;
+	text-align: justify;
+}

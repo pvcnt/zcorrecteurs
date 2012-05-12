@@ -1,0 +1,15 @@
+Aide:
+    tableName: zcov2_aide
+    actAs:
+        Timestampable:
+            created:         { name: date }
+            updated:         { name: date_edition }
+    columns:
+        categorie_id:      { type: integer(11), notnull: true }
+        titre:             { type: string(100), notnull: true }
+        icone:             { type: string(255), notnull: true }
+        contenu:           { type: string() }
+        racine:            { type: boolean, default: 1 }
+        ordre:             { type: integer(11), notnull: true }
+    relations:
+        Categorie:         { local: categorie_id, foreign: id, foreignAlias: Aide }

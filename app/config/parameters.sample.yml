@@ -1,0 +1,22 @@
+parameters:
+    ### Configuration de la connexion à la base de données
+    database.prefix:      zcov2_             # Préfixe des tables, à ne pas changer
+    database.host:        localhost          # Machine hébergeant la base de données
+    database.base:        zco_dev            # Nom de la base de données à utiliser
+    database.username:    root               # Utilisateur ayant les droits sur la base
+    database.password:    ''                 # Mot de passe de l'utilisateur
+
+    ### Autre configuration
+    secret: dDj85§fd+dedS9-sE4
+    cache_default_lifetime: 600
+    
+    ### Accès aux outils tiers
+    gmaps_api_key:  ''
+    analytics_account: ''
+    analytics_domain: 'zcorrecteurs.fr'
+    aviary_api_key: ''
+    aviary_api_secret:  ''
+    twitter_api_key: ''
+    twitter_api_secret: ''
+    bitly_login: ''
+    bitly_api_key: ''

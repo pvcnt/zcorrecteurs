@@ -1,0 +1,15 @@
+services:
+    zco_twitter.event_listener:
+        class: Zco\Bundle\TwitterBundle\EventListener\EventListener
+        calls:
+            - [setContainer, [@service_container]]
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    zco_twitter.bitly:
+        class: Zco\Bundle\TwitterBundle\Service\BitLy
+        arguments: ['%bitly_login%', '%bitly_api_key%', 'http://api.bit.ly/v3/']
+    
+    zco_twitter.twitter:
+        class: Zco\Bundle\TwitterBundle\Service\Twitter
+        arguments: ['http://api.twitter.com/1/', 'http://api.twitter.com/oauth/', ['%twitter_api_key%', '%twitter_api_secret%']]

@@ -1,0 +1,83 @@
+# Optimisation des requêtes http
+<IfModule expires_module>
+		ExpiresActive On
+		ExpiresDefault "access"
+
+		ExpiresByType text/javascript "access plus 1 year"
+		ExpiresByType application/javascript "access plus 1 year"
+		ExpiresByType application/x-javascript "access plus 1 year"
+		ExpiresByType text/css "access plus 1 year"
+		ExpiresByType image/gif "access plus 1 year"
+		ExpiresByType image/jpg "access plus 1 year"
+		ExpiresByType image/jpeg "access plus 1 year"
+		ExpiresByType image/png "access plus 1 year"
+		ExpiresByType image/bmp "access plus 1 year"
+		ExpiresByType image/svg "access plus 1 year"
+		ExpiresByType image/svg+xml "access plus 1 year"
+</IfModule>
+
+<IfModule deflate_module>
+		AddOutputFilterByType DEFLATE text/php text/html text/txt text/javascript text/css application/javascript application/x-javascript
+</IfModule>
+
+FileETag none
+
+# Pages d'erreurs
+ErrorDocument 401 /informations/erreur.html?erreur=403
+ErrorDocument 403 /informations/erreur.html?erreur=403
+ErrorDocument 404 /informations/erreur.html?erreur=404
+ErrorDocument 500 /informations/erreur.html?erreur=500
+
+# Démarrage de l'URL Rewriting
+RewriteEngine on
+RewriteBase /
+
+# Si jamais on tente d'accéder à zcorrecteurs.fr
+RewriteCond %{HTTP_HOST} ^zcorrecteurs.fr$
+RewriteRule ^(.*) http://www.zcorrecteurs.fr/$1 [L,R=301]
+
+# Si aucun bêta-test n'est en cours.
+#RewriteCond %{HTTP_HOST} ^test.zcorrecteurs.fr$
+#RewriteRule ^(.*) http://www.zcorrecteurs.fr/$1 [L,R=301]
+
+# Redirections de compatiblité avec les anciennes url
+RewriteRule ^blog/categorie-4-insolite\.html /blog/categorie-25-insolite.html [R=301,L]
+RewriteRule ^blog/categorie-2-orthographe\.html /blog/categorie-24-orthographe.html [R=301,L]
+RewriteRule ^forum/rapports-de-bugs-f3\.html /forum/forum-48-rapports-de-bugs.html [R=301,L]
+RewriteRule ^forum/suggestions-et-commentaires-f8\.html /forum/forum-47-suggestions-et-commentaires.html [R=301,L]
+RewriteRule ^forum/typographie-f42.html /forum/forum-46-typographie.html [R=301,L]
+RewriteRule ^equipe\.html /apropos/equipe [R=301,L]
+RewriteRule ^membres\.html /membres/ [R=301,L]
+RewriteRule ^engagements\.html$ /aide/page-17-nos-engagements.html [R=301,L]
+RewriteRule ^historique\.html$ /aide/page-14-historique-rapide.html [R=301,L]
+RewriteRule ^profil-([0-9]+)\.html$ /membres/$1/inconnu [L,R=301]
+RewriteRule ^membres/profil-([0-9]+)\.html$ /membres/$1/inconnu [L,R=301]
+RewriteRule ^membres/profil-([0-9]+)-([a-zA-Z0-9-]+)\.html$ /membres/$1/$2 [L,R=301]
+RewriteRule ^images/(zcorrecteur\.jpg|zcorrige\.png)$ ext/$1 [L]
+
+RewriteRule ^(blog|informations)/fil-rss(?:-([0-9]+))?\.html$ /$1/flux-$2.html [L,R=301]
+RewriteRule ^forum/messages-rss(?:-([0-9]+))?\.html$ /forum/message-flux-$2.html [L,R=301]
+RewriteRule ^informations/flux\.html$ /informations/flux.xml [L,R=301]
+RewriteRule ^favicon\.ico$ favicon.png [L,R=301]
+RewriteRule ^publicite/signature\.html$ ext/signature.php [L,R=301]
+RewriteRule ^ext/signature\.png$ ext/signature.php [L]
+RewriteRule ^contact/$ /apropos/contact [L,R=301]
+RewriteRule ^inscription/$ /membres/inscription [L,R=301]
+RewriteRule ^connexion/$ /membres/connexion [L,R=301]
+RewriteRule ^zeditor.html$ http://www.siteduzero.com/tutoriel-3-61374-guide-d-utilisation-de-zeditor.html [L,R=301]
+
+# Règles spécifiques
+RewriteRule ^index\.html$ / [R=301,L]
+RewriteRule ^accueil/index\.html$ / [L,R=301]
+
+# Canonisation des adresses
+#RewriteRule ^([a-zA-Z]+)$ /$1/ [R=301,L]
+RewriteRule ^(.*)-\.html$ $1.html [L,R=301]
+
+# Règles de routage principales
+RewriteRule ^$ index.php?page=accueil [QSA,L]
+RewriteRule ^([a-zA-Z]+)/(index\.html)?$ index.php?page=$1&index=$2 [QSA,L]
+RewriteRule ^([a-zA-Z-]+)/([a-zA-Z-]+)(?:-([0-9]+))?(?:-([0-9]+))?(?:-p([0-9]+))?(?:-([a-zA-Z0-9-]*))?\.html$ index.php?page=$1&act=$2&id=$3&id2=$4&p=$5&titre=$6 [QSA,L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ index.php [QSA,L]

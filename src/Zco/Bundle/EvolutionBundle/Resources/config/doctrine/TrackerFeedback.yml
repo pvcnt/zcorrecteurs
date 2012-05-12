@@ -1,0 +1,14 @@
+EvolutionFeedback:
+  tableName: zcov2_tracker_feedback
+  columns:
+    id:              { type: integer(11), primary: true, autoincrement: true }
+    utilisateur_id:  { type: integer(11), notnull: false }
+    email:           { type: string(255) }
+    contenu:         { type: string() }
+    ip:              { type: integer(11) }
+  actAs:
+    Timestampable:
+      created:       { name: date }
+      updated:       { disabled: true }
+  relations:
+    Utilisateur:   { local: utilisateur_id, foreign: utilisateur_id }

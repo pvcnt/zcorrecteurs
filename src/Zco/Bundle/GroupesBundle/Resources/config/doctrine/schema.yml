@@ -1,0 +1,54 @@
+options:
+  collate: utf8_unicode_ci
+  charset: utf8
+
+Groupe:
+  tableName: zcov2_groupes
+  columns:
+    groupe_id:             { type: integer(1), primary: true, autoincrement: true, name: groupe_id as id }
+    groupe_nom:            { type: string(32), name: groupe_nom as nom }
+    groupe_logo:           { type: string(255), name: groupe_logo as logo }
+    groupe_logo_feminin:   { type: string(255), name: groupe_logo_feminin as logo_feminin }
+    groupe_class:          { type: string(255), name: groupe_class as class }
+    groupe_sanction:       { type: boolean, name: groupe_sanction as sanction }
+    groupe_team:           { type: boolean, name: groupe_team as team }
+    groupe_secondaire:     { type: boolean, name: groupe_secondaire as secondary }
+
+GroupeDroit:
+  tableName: zcov2_groupes_droits
+  columns:
+    gd_id_droit:        { type: integer(11), primary: true }
+    gd_id_groupe:       { type: integer(11), primary: true }
+    gd_id_categorie:    { type: integer(11), primary: true }
+    gd_valeur:          { type: integer(11) }
+  relations:
+    Groupe:             { local: gd_id_groupe, foreign: groupe_id }
+    Droit:              { local: gd_id_droit, foreign: droit_id }
+    Categorie:          { local: gd_id_categorie, foreign: cat_id }
+
+Droit:
+  tableName: zcov2_droits
+  columns:
+    droit_id:                 { type: integer(11), primary: true, autoincrement: true }
+    droit_id_categorie:       { type: integer(11) }
+    droit_nom:                { type: string(100) }
+    droit_description:        { type: string(255) }
+    droit_choix_categorie:    { type: boolean }
+    droit_choix_binaire:      { type: boolean }
+    droit_description_longue: { type: string() }
+  relations:
+    Categorie:                { local: droit_id_categorie, foreign: cat_id }
+
+HistoriqueGroupe:
+  tableName: zcov2_historique_groupes
+  columns:
+    utilisateur_id:          { type: integer(4) }
+    date:                    { type: timestamp(25) }
+    admin_id:                { type: integer(4) }
+    nouveau_groupe:          { type: integer(1) }
+    ancien_groupe:           { type: integer(1) }
+  relations:
+    Utilisateur:             { local: utilisateur_id, foreign: utilisateur_id }
+    Admin:                   { class: Utilisateur, local: admin_id, foreign: utilisateur_id }
+    AncienGroupe:            { class: Groupe, local: ancien_groupe, foreign: groupe_id }
+    NouveauGroupe:           { class: Groupe, local: nouveau_groupe, foreign: groupe_id }

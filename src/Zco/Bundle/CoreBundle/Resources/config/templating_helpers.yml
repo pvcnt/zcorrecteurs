@@ -1,0 +1,34 @@
+services:
+    zco_core.templating.helper.humanize:
+        class: Zco\Bundle\CoreBundle\Templating\Helper\HumanizeHelper
+        tags:
+            - { name: templating.helper, alias: humanize }
+
+    zco_core.templating.helper.messages:
+        class: Zco\Bundle\CoreBundle\Templating\Helper\MessagesHelper
+        arguments: [@zco_parser.parser, @zco_vitesse.resource_manager]
+        tags:
+            - { name: templating.helper, alias: messages }
+
+    zco_core.templating.helper.widget:
+        class: Zco\Bundle\CoreBundle\Templating\Helper\WidgetHelper
+        tags:
+            - { name: templating.helper, alias: widget }
+    
+    zco_core.templating.helper.ui:
+        class: Zco\Bundle\CoreBundle\Templating\Helper\UiHelper
+        arguments: [@service_container]
+        tags:
+            - { name: templating.helper, alias: ui }
+
+    zco_core.templating.helper.cache:
+        class: Zco\Bundle\CoreBundle\Templating\Helper\CacheHelper
+        arguments: [@zco_core.cache]
+        tags:
+            - { name: templating.helper, alias: cache }
+    
+    zco_core.templating.helper.resources:
+        class: Zco\Bundle\CoreBundle\Templating\Helper\ResourcesHelper
+        arguments: [@zco_vitesse.resource_manager]
+        tags:
+            - { name: templating.helper, alias: resources }

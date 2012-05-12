@@ -1,0 +1,18 @@
+zcorrection:
+    credentials:  [stats_prive]
+inscription:
+    credentials:  [stats_inscription]
+activite:
+    credentials:  [voir_rapport_zcorr]
+blog_flux:
+    credentials:  [stats_blog_flux]
+developpement:
+    credentials:  [stats_developpement]
+geolocalisation:
+    credentials:  [stats_geolocalisation]
+log_erreurs:
+    credentials:  [code]
+graphique_ages:
+    credentials:  [voir_stats_ages]
+alexa:
+    credentials:  [voir_stats_generales]

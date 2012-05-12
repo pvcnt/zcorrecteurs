@@ -1,0 +1,12 @@
+TwitterTweet:
+  tableName: zcov2_twitter_tweets
+  columns:
+    id:               { type: integer, primary: true, autoincrement: true }
+    compte_id:        { type: integer, notnull: true }
+    twitter_id:       { type: integer, notnull: true }
+    utilisateur_id:   { type: integer }
+    creation:         { type: timestamp }
+    texte:            { type: string() }
+  relations:
+    Compte:           { class: TwitterCompte, local: compte_id, foreign: id }
+    Utilisateur:      { local: utilisateur_id, foreign: id }

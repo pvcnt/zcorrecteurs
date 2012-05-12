@@ -1,0 +1,11 @@
+UserPreference:
+    tableName: zcov2_utilisateurs_preferences
+    columns:
+        preference_id_utilisateur:           { type: integer(4), primary: true, name: preference_id_utilisateur as user_id }
+        preference_activer_rep_rapide:       { type: boolean }
+        preference_afficher_admin_rapide:    { type: boolean }
+        preference_afficher_signatures:      { type: boolean }
+        preference_temps_redirection:        { type: boolean }
+        preference_beta_tests:               { type: boolean, name: preference_beta_tests as beta_tests }
+    relations:
+        User:        { class: Utilisateur, local: user_id, foreign: id }

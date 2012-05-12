@@ -1,0 +1,17 @@
+ajouter:
+  credentials: [annonces_ajouter]
+
+modifier:
+  credentials: [annonces_modifier]
+
+supprimer:
+  credentials: [annonces_supprimer]
+
+index:
+  credentials: [[annonces_ajouter, annonces_modifier, annonces_supprimer, annonces_publier]]
+
+statistiques:
+  credentials: [annonces_publier]
+
+allocation:
+  credentials: [annonces_publier]

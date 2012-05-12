@@ -1,0 +1,96 @@
+.sidebar-nav {
+    padding: 1px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.sidebar-nav a.action {
+    padding: 0px;
+    margin: 0px;
+    margin-right: 5px;
+    display: inline;
+}
+
+.sidebar-nav a.action:hover {
+    background-color: transparent;
+}
+
+.submit-upload {
+    text-align: right;
+}
+
+.thumbnails {
+    margin-top: 15px !important;
+}
+
+.thumbnail {
+    overflow: hidden;
+    text-align: center;
+    height: 160px !important;
+}
+
+.thumbnail:hover {
+    border-color: #ddd;
+    background-color: whiteSmoke;
+}
+
+.thumbnail > a img, .thumbnail > img {
+    padding: 5px;
+}
+
+.thumbnail-actions {
+    text-align: left;
+    vertical-align: bottom;
+}
+
+.thumbnail-actions img {
+    margin: 10px;
+}
+
+.droppable {
+  border: #ccc 1px dashed;
+  background: whiteSmoke;
+  border-radius: 8px;
+  color: #666;
+  padding: 20px;
+  margin: 10px;
+  height: 60px;
+  text-align: center;
+}
+
+.droppable.hover {
+  background: #eee;
+  border-color: #999;
+}
+
+.uploadList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.uploadItem {
+  overflow: hidden;
+  margin: 0 20px;
+  padding: 3px;
+}
+
+.uploadItem span {
+  float: left;
+  display: block;
+}
+
+.uploadItem a {
+  display: inline-block;
+  background: url(/img/misc/ajouter.png) no-repeat;
+  height: 16px;
+  width: 16px;
+  text-indent: -999px;
+}
+
+.uploadItem a {
+  float: left;
+  display: block;
+  margin-left: 20px;
+  background-image: url(/img/supprimer.png);
+}

@@ -1,0 +1,15 @@
+TrackerTicketFlag:
+  tableName: zcov2_tracker_tickets_flags
+  columns:
+    lunonlu_id_utilisateur:
+      type: integer(4)
+      primary: true
+    lunonlu_id_ticket:
+      type: integer(4)
+      primary: true
+    lunonlu_id_version:
+      type: integer(4)
+    lunonlu_suivi:
+      type: integer(1)
+    lunonlu_suivi_envoye:
+      type: integer(1)

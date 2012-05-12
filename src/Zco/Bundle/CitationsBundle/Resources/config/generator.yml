@@ -1,0 +1,66 @@
+##  Configuration de l'interface d'administration automatique.  ##
+
+# Paramètres de la classe Citation.
+Citation:
+    config:
+        singular:            Citation
+        plural:              Citations
+
+    actions:
+        _delete:     { label: Supprimer, credentials: [citations_supprimer] }
+        _new:        { label: Ajouter une nouvelle citation, credentials: [citations_ajouter] }
+        _edit:       { label: Modifier, credentials: [citations_modifier] }
+
+    fields:
+        date:                 { label: Création }
+        statut:               { label: Activée, help: Ce statut est modifiable dans l'interface de gestion. }
+
+    form:
+        fieldsets:
+            NONE:
+                display:        [auteur_prenom, auteur_nom, auteur_autres, contenu]
+            Affichage:
+                display:         [statut]
+                classes:        []
+                description:    |
+                    Indique si la citation est susceptible d'être affichée dans
+                    l'en-tête du site.
+    
+    list:
+        title:              Gestion des citations
+        description:        |
+            Les citations sont de courtes phrases célèbres qui apparaissent dans
+            l'en-tête du site à droite de la bannière. Elles sont en rotation
+            automatique parmi celles qui ont été activées depuis cette interface. La
+            citation affichée change toutes les heures.
+        display:            [utilisateur_id, auteur_prenom, auteur_nom, auteur_autres, contenu, date, statut]
+        ordering:           -date
+        search_field:       contenu
+        filter:             [statut]
+        max_per_page:       50
+        object_actions:
+            _edit:          ~
+            _delete:        ~
+        batch_actions:
+            _delete:        ~
+            autorisations:  { credentials: [citations_autoriser], label: Afficher / cacher de l'en-tête }
+        actions:
+            _new:           ~
+        fields:
+            utilisateur_id:      { attributes: { style: 'width: 7%;' } }
+            auteur_prenom:       { attributes: { style: 'width: 10%;' } }
+            auteur_nom:          { attributes: { style: 'width: 10%;' } }
+            auteur_autres:       { attributes: { style: 'width: 10%;' } }
+            contenu:             { attributes: { style: 'width: 45%;' } }
+            date:                { attributes: { style: 'width: 15%;' } }
+            statut:              { attributes: { style: 'width: 3%;', class: centre } }
+    
+    new:
+        title:       Ajouter une nouvelle citation
+    
+    edit:
+        title:       Modifier la citation de %auteur_prenom% %auteur_nom%
+
+    delete:
+        title:       Supprimer la citation de %auteur_prenom% %auteur_nom%
+        message:     Voulez-vous vraiment supprimer cette citation de <strong>%auteur_prenom% %auteur_nom%</strong> ?

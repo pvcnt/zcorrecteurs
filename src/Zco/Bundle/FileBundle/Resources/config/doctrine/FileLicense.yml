@@ -1,0 +1,14 @@
+#Garde une trace des changements de licence.
+FileLicense:
+    actAs:
+        Timestampable:
+            created:        { name: date }
+            updated:        { disabled: true }
+    columns:
+        id:                 { type: integer(11), autoincrement: true, primary: true }
+        file_id:            { type: integer(11), notnull: true }
+        license_id:         { type: integer(11), notnull: true }
+        pseudo:             { type: string(255), notnull: true}
+    relations:
+        License:            { class: FichierLicense, local: licence_id }
+        File:               { local: file_id }

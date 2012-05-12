@@ -1,0 +1,5 @@
+services:
+    zco_recherche.event_listener:
+        class: Zco\Bundle\RechercheBundle\EventListener\EventListener
+        tags:
+            - { name: kernel.event_subscriber }

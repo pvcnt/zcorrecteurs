@@ -1,0 +1,6 @@
+Pays:
+  tableName: zcov2_pays
+  columns:
+    id:     { type: integer(11), primary: true, autoincrement: true }
+    code:   { type: string(3) }
+    nom:    { type: string(255) }

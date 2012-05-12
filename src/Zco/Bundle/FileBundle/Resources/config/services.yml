@@ -1,0 +1,19 @@
+services:
+    zco_file.uploader:
+        class: Zco\Bundle\FileBundle\Util\FileUploader
+        arguments: [@gaufrette.uploads_filesystem, @imagine, @event_dispatcher]
+
+    zco_file.mediawiki_api.wikimedia_commons:
+        class: Zco\Bundle\FileBundle\Mediawiki\API
+        arguments: ['http://commons.wikimedia.org/w/api.php']
+
+    zco_file.parser_feature.files:
+        class: Zco\Bundle\FileBundle\Parser\Feature\FilesFeature
+        arguments: [@gaufrette.uploads_filesystem, @imagine]
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    zco_file.event_listener:
+        class: Zco\Bundle\FileBundle\EventListener\EventListener
+        tags:
+            - { name: kernel.event_subscriber }

@@ -1,0 +1,29 @@
+zco_file_index:
+    pattern:   /
+    defaults:  { _controller: ZcoFileBundle:Default:index }
+    options:   { expose: true }
+
+zco_file_folder:
+    pattern:   /dossier/{id}
+    defaults:  { _controller: ZcoFileBundle:Default:folder, id: 1 }
+    requirements:
+        id: \d+
+
+zco_file_file:
+    pattern:   /fichier/{id}
+    defaults:  { _controller: ZcoFileBundle:Default:file }
+    options:   { expose: true }
+    requirements:
+        id: \d+
+
+zco_file_commons:
+    pattern:   /commons
+    defaults:  { _controller: ZcoFileBundle:Default:commons }
+    requirements:
+        id: \d+
+                
+zco_file_commons_file:
+    pattern:   /commons/{id}
+    defaults:  { _controller: ZcoFileBundle:Default:commonsFile }
+    requirements:
+        id: \d+

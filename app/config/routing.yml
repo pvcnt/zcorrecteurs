@@ -1,0 +1,26 @@
+zco_about:
+    resource: "@ZcoAboutBundle/Resources/config/routing.yml"
+    prefix:   /apropos
+
+zco_admin:
+    resource: "@ZcoAdminBundle/Resources/config/routing.yml"
+    prefix:   /admin
+
+zco_file:
+    resource: "@ZcoFileBundle/Resources/config/routing/index.yml"
+
+zco_twitter:
+    resource: "@ZcoTwitterBundle/Resources/config/routing/index.yml"
+
+zco_user:
+    resource: "@ZcoUserBundle/Resources/config/routing/index.yml"
+
+zco_info:
+    resource: "@ZcoInformationsBundle/Resources/config/routing/index.yml"
+
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+
+_imagine:
+    resource: .
+    type:     imagine

@@ -1,0 +1,110 @@
+#cadre_todo_list {
+	background-color: #efefef;
+	border: 1px solid grey;
+	padding: 5px;
+	width: 48%;
+	margin-top: 15px;
+	margin-bottom: 10px;
+	float: right;
+}
+
+/**
+* Blocs flottants Ã  droite
+*/
+.blocs_droite {
+	width: 20%;
+	float: right;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+.bloc_droite {
+	margin-bottom: 5px;
+	background-color: #efefef;
+	border: 1px solid grey;
+	padding: 3px;
+}
+
+.bloc_droite dl dd strong {
+	float: left;
+	display: block;
+	width: 75px;
+	text-align: right;
+	margin-right: 6px;
+}
+
+.bloc_texte {
+	max-width: 70%;
+	min-height: 150px;
+	vertical-align: top;
+	overflow-y: hidden;
+}
+
+.bloc_texte.grand {
+	max-width: 78%;
+}
+
+.bloc_droite.actions_bug {
+	background-color: #f9e5e5;
+}
+
+.bloc_droite.actions_tache {
+	background-color: #e5f9e5;
+}
+
+.moyen_tab {
+	max-width: 85%;
+}
+
+#recherche_roadmap {
+	width: 30%;
+	float: right;
+}
+
+/**
+* Styles pour les prioritÃ©s
+*/
+.urgent {
+	background-color: #F2B1B1;
+}
+
+.basse_priorite {
+	background-color: #D4E5F9;
+}
+
+.haute_priorite {
+	background-color: #F2CBCE;
+}
+
+.tres_basse_priorite {
+	background-color: #e5f9e5;
+}
+
+.priorite_normale {
+	background-color: #C3DBF7;
+}
+
+/**
+* Gestionnaire de spï¿½cifications
+*/
+.cadre_infos {
+	float: right;
+	margin: 10px;
+	padding: 10px;
+}
+
+.cadre_infos ul {
+	list-style-type: none;
+}
+
+.cadre_infos ul li strong {
+	float: left;
+	display: block;
+	width: 200px;
+	text-align: right;
+	margin-right: 5px;
+}
+
+.hover {
+	background-color: #CEDBDB;
+}

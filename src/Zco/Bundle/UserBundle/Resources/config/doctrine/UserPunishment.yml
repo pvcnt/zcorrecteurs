@@ -1,0 +1,20 @@
+UserPunishment:
+    tableName: zcov2_sanctions
+    columns:
+        sanction_id:                 { type: integer, primary: true, autoincrement: true, name: sanction_id as id }
+        sanction_id_utilisateur:     { type: integer, name: sanction_id_utilisateur as user_id }
+        sanction_id_admin:           { type: integer, name: sanction_id_admin as admin_id }
+        sanction_id_groupe_origine:  { type: integer, name: sanction_id_groupe_origine as from_group_id }
+        sanction_id_groupe_sanction: { type: integer, name: sanction_id_groupe_sanction as to_group_id }
+        sanction_date:               { type: timestamp, name: sanction_date as date }
+        sanction_duree:              { type: integer, name: sanction_duree as duration }
+        sanction_duree_restante:     { type: integer, name: sanction_duree_restante as remaining_duration }
+        sanction_litige:             { type: string(255), name: sanction_litige as link }
+        sanction_raison:             { type: string, name: sanction_raison as reason }
+        sanction_raison_admin:       { type: string, name: sanction_raison_admin as admin_reason }
+        sanction_finie:              { type: boolean, name: sanction_finie as finished }
+    relations:
+        User:           { class: Utilisateur, local: user_id, foreign: utilisateur_id }
+        Admin:          { class: Utilisateur, local: admin_id, foreign: utilisateur_id }
+        Group:          { class: Groupe, local: to_group_id, foreign: groupe_id }
+        OriginalGroup:  { class: Groupe, local: from_group_id, foreign: groupe_id }

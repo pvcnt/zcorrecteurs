@@ -1,0 +1,95 @@
+options:
+  collate: utf8_unicode_ci
+  charset: utf8
+
+Recrutement:
+  tableName: zcov2_recrutements
+  columns:
+    recrutement_id:                { type: integer(11), name: recrutement_id as id }
+    recrutement_id_quiz:           { type: integer(11), name: recrutement_id_quiz as quiz_id }
+    recrutement_id_groupe:         { type: integer(11), name: recrutement_id_groupe as groupe_id }
+    recrutement_nom:               { type: string(100), notnull: true, name: recrutement_nom as nom }
+    recrutement_date:              { type: timestamp, notnull: true, name: recrutement_date as date }
+    recrutement_date_fin_depot:    { type: timestamp, notnull: false, name: recrutement_date_fin_depot as date_fin_depot }
+    recrutement_etat:              { type: integer(1), name: recrutement_etat as etat }
+    recrutement_texte:             { type: string(), name: recrutement_texte as texte }
+    recrutement_nb_lus:            { type: integer(11), name: recrutement_nb_lus as nb_lus }
+    recrutement_redaction:         { type: boolean, default: false, name: recrutement_redaction as redaction }
+    recrutement_test:              { type: boolean, default: false, name: recrutement_test as test }
+    recrutement_lien:              { type: string(255), name: recrutement_lien as lien }
+  relations:
+    Quiz:                          { local: recrutement_id_quiz }
+    Groupe:                        { local: recrutement_id_groupe }
+
+RecrutementCandidature:
+  tableName: zcov2_recrutements_candidatures
+  columns:
+    candidature_id:                     { type: integer(11), name: candidature_id as id }
+    candidature_id_utilisateur:         { type: integer(11), notnull: false, name: candidature_id_utilisateur as utilisateur_id }
+    candidature_id_recrutement:         { type: integer(11), notnull: true, name: candidature_id_recrutement as recrutement_id }
+    candidature_id_admin:               { type: integer(11), notnull: false, name: candidature_id_admin as admin_id }
+    candidature_correcteur:             { type: integer(11), notnull: false, name: candidature_correcteur as correcteur_id }
+    candidature_pseudo:                 { type: string(255), name: candidature_pseudo as pseudo }
+    candidature_date:                   { type: timestamp(25), name: candidature_date as date }
+    candidature_date_debut_correction:  { type: timestamp(25), name: candidature_date_debut_correction as date_debut_correction }
+    candidature_date_correction:        { type: timestamp(25), name: candidature_date_correction as date_correction }
+    candidature_date_fin_correction:    { type: timestamp(25), name: candidature_date_fin_correction as date_fin_correction }
+    candidature_date_reponse:           { type: timestamp(25), name: candidature_date_reponse as date_reponse }
+    candidature_texte:                  { type: string(), name: candidature_texte as texte }
+    candidature_redaction:              { type: string(), name: candidature_redaction as redaction }
+    candidature_quiz_score:             { type: integer(4), name: candidature_quiz_score as quiz_score }
+    candidature_quiz_debut:             { type: timestamp, name: candidature_quiz_debut as quiz_debut }
+    candidature_quiz_fin:               { type: timestamp, name: candidature_quiz_fin as quiz_fin }
+    candidature_etat:                   { type: string(255), name: candidature_etat as etat }
+    candidature_test_tuto:              { type: string(100), name: candidature_test_tuto as test_tuto }
+    candidature_test_texte:             { type: string(), name: candidature_test_texte as test_texte }
+    candidature_correction_original:    { type: string(), name: candidature_correction_original as correction_original }
+    candidature_correction_corrige:     { type: string(), name: candidature_correction_note as correction_corrige }
+    candidature_correction_note:        { type: float(), name: candidature_correction_note as correction_note }
+    candidature_ip:                     { type: integer(11), name: candidature_ip as ip }
+    candidature_commentaire:            { type: string(), name: candidature_commentaire as commentaire }
+    candidature_correcteur_note:        { type: integer(6), notnull: false, name: candidature_correcteur_note as correcteur_note }
+  relations:
+    Recrutement:						{ local: candidature_id_recrutement, foreign: recrutement_id }
+    Utilisateur:                        { local: candidature_id_utilisateur, foreign: utilisateur_id }
+    Admin:                              { class: Utilisateur, local: candidature_id_admin, foreign: utilisateur_id }
+    Correcteur:                         { class: Utilisateur, local: candidature_correcteur, foreign: utilisateur_id }
+    Avis:                               { class: RecrutementAvis, type: many, local: candidature_id, foreign: candidature_id }
+    LuNonLu:                            { class: RecrutementLuNonLu, type: many, local: candidature_id, foreign: lunonlu_candidature_id }
+    Commentaires:                       { class: RecrutementCommentaire, type: many, local: candidature_id, foreign: candidature_id }
+
+RecrutementCommentaire:
+  tableName: zcov2_recrutements_commentaires
+  actAs:
+    Timestampable:
+      created:          { name: commentaire_date as date }
+      updated:          { disabled: true }
+  columns:
+    commentaire_id:                 { type: integer, primary: true, autoincrement: true, name: commentaire_id as id }
+    commentaire_candidature_id:     { type: integer(11), notnull: true, name: commentaire_candidature_id as candidature_id }
+    commentaire_utilisateur_id:     { type: integer(11), name: commentaire_utilisateur_id as utilisateur_id }
+    commentaire_texte:              { type: string(), name: commentaire_texte as texte }
+  relations:
+    Utilisateur:             { local: utilisateur_id, foreign: utilisateur_id }
+    Candidature:             { class: RecrutementCandidature, local: candidature_id, foreign: id }
+
+RecrutementLuNonLu:
+    tableName: zcov2_recrutements_lunonlu
+    columns:
+        lunonlu_candidature_id:      { type: integer, primary: true, name: lunonlu_candidature_id as candidature_id }
+        lunonlu_utilisateur_id:      { type: integer, primary: true, name: lunonlu_utilisateur_id as utilisateur_id }
+        lunonlu_commentaire_id:      { type: integer, name: lunonlu_commentaire_id as commentaire_id }
+        lunonlu_participe:           { type: boolean, name: lunonlu_participe as participe }
+    relations:
+        Utilisateur:                 { local: lunonlu_utilisateur_id, foreign: utilisateur_id }
+        Candidature:                 { class: RecrutementCandidature, local: lunonlu_candidature_id, foreign: candidature_id }
+
+RecrutementAvis:
+  tableName: zcov2_recrutements_avis
+  columns:
+    utilisateur_id:          { type: integer(11), primary: true }
+    candidature_id:          { type: integer(11), primary: true }
+    type:                    { type: integer(11) }
+  relations:
+    Utilisateur:             { local: utilisateur_id, foreign: utilisateur_id }
+    Candidature:             { class: RecrutementCandidature, local: candidature_id, foreign: id }

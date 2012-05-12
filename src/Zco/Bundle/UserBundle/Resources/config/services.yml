@@ -1,0 +1,25 @@
+services:
+    zco_user.event_listener:
+        class: Zco\Bundle\UserBundle\EventListener\EventListener
+        calls:
+            - [setContainer, [@service_container]]
+        tags:
+            - { name: kernel.event_subscriber }
+
+    zco_user.ui_listener:
+        class: Zco\Bundle\UserBundle\EventListener\UiListener
+        calls:
+            - [setContainer, [@service_container]]
+        tags:
+            - { name: kernel.event_subscriber }
+
+    zco_user.login_listener:
+        class: Zco\Bundle\UserBundle\EventListener\LoginListener
+        calls:
+            - [setContainer, [@service_container]]
+        tags:
+            - { name: kernel.event_subscriber }
+
+    zco_user.user:
+        class:     Zco\Bundle\UserBundle\User\User
+        arguments: [@event_dispatcher]

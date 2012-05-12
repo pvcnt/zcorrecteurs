@@ -1,0 +1,49 @@
+zco_file_api_save:
+    pattern:   /sauvegarder/{id}
+    defaults:  { _controller: ZcoFileBundle:Api:save, _format: json }
+    options:   { expose: true }
+    requirements:
+        id: \d+
+        _method: post
+
+zco_file_api_edit:
+    pattern:   /modifier/{id}
+    defaults:  { _controller: ZcoFileBundle:Api:edit, _format: json }
+    options:   { expose: true }
+    requirements:
+        id: \d+
+        _method: post
+
+zco_file_api_delete:
+    pattern:   /supprimer/{id}
+    defaults:  { _controller: ZcoFileBundle:Api:delete, _format: json }
+    options:   { expose: true }
+    requirements:
+        id: \d+
+
+zco_file_api_upload:
+    pattern:   /upload
+    defaults:  { _controller: ZcoFileBundle:Api:upload, _format: json }
+    options:   { expose: true }
+    requirements:
+        _method: post
+
+zco_file_api_search:
+    pattern:   /recherche/{folder}
+    defaults:  { _controller: ZcoFileBundle:Api:search, _format: json }
+    options:   { expose: true }
+    requirements:
+        folder: \d+
+        _method: post
+
+zco_file_api_search_commons:
+    pattern:   /recherche/commons
+    defaults:  { _controller: ZcoFileBundle:Api:searchCommons, _format: json }
+    options:   { expose: true }
+    requirements:
+        _method: post
+
+zco_file_api_usage:
+    pattern:   /usage
+    defaults:  { _controller: ZcoFileBundle:Api:usage, _format: json }
+    options:   { expose: true }

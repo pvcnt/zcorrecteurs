@@ -1,0 +1,45 @@
+# Ce fichier vous permet de modifier la configuration à votre convenance sans 
+# impacter les autres développeurs. Les paramètres donnés ici le sont à titre 
+# d'exemple, vous pouvez accéder à tout ce qui l'est dans le fichier principal.
+#
+# N'effectuez pas de modifications directement dans ce fichier mais copiez-le 
+# en retirant la particule ".sample" et modifiez le nouveau fichier qui est 
+# ignoré par Git.
+
+framework:
+    # Décommentez la ligne suivante pour ouvrir les fichiers fautifs directement 
+    # depuis les traces d'exceptions.
+    #ide: "txmt://open?url=file://%%f&line=%%l"
+
+swiftmailer:
+    # Si vous n'avez pas configuré l'envoi des mails, préférez les désactiver 
+    # complètement. Vous pourrez toujours les voir dans le profiler.
+    #disable_delivery: false
+    
+    # Si vous avez configuré l'envoi des mails, spécifiez une adresse où 
+    # recevoir tous les mails envoyés par le système.
+    #delivery_address: moi@moi.fr
+
+web_profiler:
+    # Si vous ne souhaitez pas afficher la barre de débogage en local vous 
+    # pouvez décommenter la ligne suivante.
+    #toolbar: false
+    
+    # Si vous ne souhaitez voir les redirections s'afficher explicitement vous 
+    # pouvez décommenter la ligne suivante.
+    #intercept_redirects: false
+
+zco_core:
+    mandrill:
+        # Si vous disposez d'un compte de test sur Mandrill, spécifiez ici votre 
+        # clé d'API pour pouvoir envoyer des mails.
+        #api_key: ''
+        
+        #Vous pouvez ici spécifier des tags personnalisés qui seront ajoutés à 
+        #tous les messages envoyés.
+        #tags: []
+
+zco_vitesse:
+    # Pour éviter de ralentir le chargement des pages en dehors de la phase de 
+    # débogage du JS/CSS, il est conseillé de concaténer les ressources.
+    #combine_assets: true

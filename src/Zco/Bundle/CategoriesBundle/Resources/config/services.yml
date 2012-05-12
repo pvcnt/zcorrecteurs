@@ -1,0 +1,5 @@
+services:
+    zco_catgories.event_listener:
+        class: Zco\Bundle\CategoriesBundle\EventListener\EventListener
+        tags:
+            - { name: kernel.event_subscriber }

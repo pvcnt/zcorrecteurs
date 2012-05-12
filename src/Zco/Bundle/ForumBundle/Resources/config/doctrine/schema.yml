@@ -1,0 +1,110 @@
+options:
+  collate: utf8_unicode_ci
+  charset: utf8
+
+ForumAlerte:
+  tableName: zcov2_forum_alertes
+  columns:
+    utilisateur_id:          { type: integer(11) }
+    admin_id:                { type: integer(11) }
+    sujet_id:                { type: integer(11) }
+    date:                    { type: timestamp(25) }
+    raison:                  { type: string() }
+    resolu:                  { type: boolean }
+    ip:                      { type: integer(11) }
+  relations:
+    Utilisateur:             { local: utilisateur_id, foreign: utilisateur_id }
+    Admin:                   { class: Utilisateur, local: admin_id, foreign: utilisateur_id }
+    Sujet:                   { class: ForumSujet, local: sujet_id, foreign: sujet_id }
+
+ForumLunonlu:
+  tableName: zcov2_forum_lunonlu
+  columns:
+    lunonlu_utilisateur_id:  { type: integer(11), primary: true }
+    lunonlu_sujet_id:        { type: integer(11), primary: true }
+    lunonlu_message_id:      { type: integer(11) }
+    lunonlu_participe:       { type: boolean }
+    lunonlu_favori:          { type: boolean }
+  relations:
+    Utilisateur:             { local: lunonlu_utilisateur_id, foreign: utilisateur_id }
+    Sujet:                   { class: ForumSujet, local: lunonlu_sujet_id, foreign: sujet_id }
+    Message:                 { class: ForumMessage, local: lunonlu_message_id, foreign: message_id }
+
+ForumMessage:
+  tableName: zcov2_forum_messages
+  columns:
+    message_id:              { type: integer(11), name: message_id as id, primary: true, autoincrement: true }
+    message_sujet_id:        { type: integer(11), name: message_sujet_id as sujet_id }
+    message_edite_auteur:    { type: integer(11) }
+    message_auteur:          { type: integer(11) }
+    message_texte:           { type: string(), name: message_texte as texte }
+    message_date:            { type: timestamp(25), name: message_date as date }
+    message_edite_date:      { type: timestamp(25), name: message_edite_date as edite_date }
+    message_ip:              { type: integer(11), name: message_ip as ip }
+    message_help:            { type: boolean, name: message_help as help }
+  relations:
+    Utilisateur:             { local: message_auteur, foreign: utilisateur_id }
+    Editeur:                 { class: Utilisateur, local: message_edite_auteur, foreign: utilisateur_id }
+    Sujet:                   { class: ForumSujet, local: sujet_id, foreign: sujet_id }
+
+ForumMessageAuto:
+  tableName: zcov2_forum_messages_autos
+  columns:
+    id:                 { type: integer(1), primary: true, autoincrement: true }
+    nom:                { type: string(255) }
+    tag:                { type: string(255) }
+    texte:              { type: string() }
+    ferme:              { type: boolean }
+    resolu:             { type: boolean }
+
+ForumSujet:
+  tableName: zcov2_forum_sujets
+  columns:
+    sujet_id:                 { type: integer(11), primary: true, autoincrement: true, name: sujet_id as id }
+    sujet_forum_id:           { type: integer(11), name: sujet_forum_id as forum_id }
+    sujet_titre:              { type: string(150), name: sujet_titre as titre }
+    sujet_sous_titre:         { type: string(255), name: sujet_sous_titre as sous_titre }
+    sujet_auteur:             { type: integer(11) }
+    sujet_date:               { type: timestamp(25), name: sujet_date as date }
+    sujet_premier_message:    { type: integer(11) }
+    sujet_dernier_message:    { type: integer(11) }
+    sujet_reponses:           { type: integer(11), default: '0', name: sujet_reponses as reponses }
+    sujet_sondage:            { type: integer(11), name: sujet_sondage as sondage, notnull: false }
+    sujet_annonce:            { type: boolean, name: sujet_annonce as annonce }
+    sujet_ferme:              { type: boolea, name: sujet_ferme as ferme }
+    sujet_resolu:             { type: boolean, name: sujet_resolu as resolu }
+    sujet_corbeille:          { type: boolean, name: sujet_corbeille as corbeille }
+    sujet_coup_coeur:         { type: boolean, name: sujet_coup_coeur as coup_coeur }
+  relations:
+    Utilisateur:              { local: sujet_auteur, foreign: utilisateur_id }
+    Categorie:                { local: sujet_forum_id, foreign: cat_id }
+    PremierMessage:           { class: ForumMessage, local: sujet_premier_message, foreign: message_id }
+    DernierMessage:           { class: ForumMessage, local: sujet_dernier_message, foreign: message_id }
+    Sondage:                  { class: ForumSondage, local: sujet_sondage, foreign: sondage_id }
+
+ForumSondage:
+  tableName: zcov2_forum_sondages
+  columns:
+    sondage_id:         { type: integer(11), unsigned: true, primary: true, autoincrement: true }
+    sondage_question:   { type: string }
+    sondage_ferme:      { type: boolean }
+
+ForumSondageChoix:
+  tableName: zcov2_forum_sondages_choix
+  columns:
+    choix_id:           { type: integer(11), unsigned: true, primary: true, autoincrement: true }
+    choix_sondage_id:   { type: integer(11), unsigned: true }
+    choix_texte:        { type: string() }
+  relations:
+    Sondage:            { class: ForumSondage, local: choix_sondage_id, foreign: sondage_id }
+
+ForumSondageVote:
+  tableName: zcov2_forum_sondages_votes
+  columns:
+    vote_membre_id:     { type: integer(11), unsigned: true, primary: true }
+    vote_sondage_id:    { type: integer(11), unsigned: true, primary: true }
+    vote_choix:         { type: integer(11), unsigned: true }
+    vote_date:          { type: timestamp(25) }
+  relations:
+    Utilisateur:        { local: vote_membre_id, foreign: utilisateur_id }
+    Sondage:            { class: ForumSondage, local: vote_sondage_id, foreign: sondage_id }

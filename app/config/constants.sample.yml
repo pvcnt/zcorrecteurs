@@ -1,0 +1,85 @@
+# Fichier de configuration des constantes
+# =======================================
+# C'est moi que vous devez modifier pour ajouter une constante !
+#
+# desc  est la description de la constante
+# value est sa valeur
+# type  est son type : string, integer, boolean (et float)
+# help  est un supplément à la description (aide) ; c'est facultatif
+# group est le groupe auquel appartient le paramètre
+#
+# /!\ Le type est utile pour l'interface d'administration, vous ne pouvez pas
+# l'omettre.
+#
+# Les groupes sont d'une utilité purement esthétique et organisationnelle.
+
+groups:
+    general: Configuration générale
+    membres: Configuration des membres
+    zco: Configuration de la zCorrection
+    quiz: Configuration du quiz
+    nogroup: Sans groupe
+    demandes: Gestion des demandes
+    infos: Gestion du module d'informations
+constants:
+    GROUPE_ADMINISTRATEURS:
+        desc: ID du groupe des administrateurs
+        group: membres
+        type: integer
+        value: 5
+    GROUPE_DEVELOPPEURS:
+        desc: ID du groupe des développeurs
+        group: membres
+        type: integer
+        value: 4
+    GROUPE_ZCORRECTEURS:
+        desc: ID du groupe des zCorrecteurs
+        group: membres
+        type: integer
+        value: 3
+    GROUPE_ANCIENS:
+        desc: ID du groupe des anciens
+        group: membres
+        type: integer
+        value: 36
+    GROUPE_DEFAUT:
+        desc: ID du groupe par défaut
+        group: membres
+        type: integer
+        value: 1
+    GROUPE_VISITEURS:
+        desc: ID du groupe des visiteurs
+        group: membres
+        type: integer
+        value: 7
+    NOMBRE_MINUTES_CONNECTE:
+        desc: Nombre de minutes pour être marqué connecté
+        group: membres
+        type: integer
+        value: 2
+    QUIZ_ALEATOIRE_NB_QUESTIONS:
+        desc: Nombre de questions choisies dans un quiz aléatoire
+        group: quiz
+        type: integer
+        value: 10
+    URL_SITE:
+        desc: URL du site
+        group: general
+        type: string
+        value: http://www.zcorrecteurs.fr
+    ID_MBR_CHEF_SECURITE:
+        desc: ID du membre étant le superviseur de la sécurité
+        group: demandes
+        type: integer
+        help: ce membre recevra automatiquement un MP en cas d'anomalie critique
+        value: 31
+    TEMPS_BILLET_HASARD:
+        desc: Temps de rafraîchissement entre deux billets au hasard (en minutes)
+        group: infos
+        type: integer
+        value: 30
+    ADMIN_TUTOS:
+        desc: Administrateur responsable des retards sur les tutoriels
+        group: zco
+        type: integer
+        value: 16

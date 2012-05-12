@@ -1,0 +1,20 @@
+msg:
+    500: La dictée a été ajoutée.
+    501: Cette dictée n'existe pas.
+    502: La dictée a été mise en ligne.
+    503: La dictée n'est plus en ligne.
+    504: La dictée a été supprimée.
+    505: La dictée a été modifiée.
+    506: La proposition a été acceptée.
+    507: La proposition a été refusée.
+    508: Cette dictée n'est pas proposée.
+    509: Une erreur est survenue lors de l'envoi du fichier audio.
+    510: Vous ne pouvez proposer que vos brouillons.
+    511: Votre dictée a été proposée.
+    512: Format du fichier audio invalide.
+    513: Soit vous avez fait beaucoup trop de fautes, soit vous n'avez pas terminé la dictée, soit vous vous êtes trompé de texte !
+    514: Une erreur est survenue lors de l'envoi de l'icône : le format est peut-être invalide.
+
+DicteeDifficultes: { 1: Facile, 2: Moyen, 3: Difficile, 4: Cauchemardesque }
+DicteeCouleurs:    { 1: green, 2: orange, 3: red, 4: '#770000' }
+DicteeEtats:       { 1: Brouillon, 2: Proposée, 3: Validée }

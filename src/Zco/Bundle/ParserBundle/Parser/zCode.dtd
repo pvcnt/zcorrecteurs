@@ -1,0 +1,163 @@
+<!--
+/**
+ * Parseur de zCode, Doctype pour la validation.
+ *
+ * @copyright  mwsaz <mwksaz@gmail.com> 2010
+ */
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+
+<!-- Entités pour simplifier la suite -->
+
+<!-- Éléments de type Block -->
+<!ENTITY % titre "titre1 | titre2">
+<!ENTITY % remarques "attention | erreur | information | question">
+<!ENTITY % positions "flottant | position">
+<!ENTITY % blocs "citation | code | secret">
+
+<!ENTITY % block "%titre; | %remarques; | %positions; | %blocs; | liste | tableau">
+<!ENTITY % Block "(%block;)*">
+
+<!-- Éléments de type Inline -->
+<!ENTITY % style "barre | gras | italique | souligne">
+<!ENTITY % phrase "acronyme | exposant | indice">
+<!ENTITY % liens "email | lien">
+<!ENTITY % images "image | math">
+<!ENTITY % apparence "couleur | police | taille | minicode | touche">
+
+<!ENTITY % inline "%style; | %phrase; | %liens; | %images; | %apparence;">
+<!ENTITY % Inline "(#PCDATA | %inline;)*">
+
+<!ENTITY % Tout "(#PCDATA | %inline; | %block;)*">
+
+
+<!-- Début des règles -->
+<!ELEMENT zcode %Tout;>
+
+<!-- Balises de type Block -->
+<!ELEMENT titre1 %Inline;>
+<!ELEMENT titre2 %Inline;>
+
+<!ELEMENT attention %Tout;>
+<!ELEMENT erreur %Tout;>
+<!ELEMENT information %Tout;>
+<!ELEMENT question %Tout;>
+
+<!ELEMENT flottant %Tout;>
+<!ATTLIST flottant
+  valeur  (gauche | droite | aucune)  #REQUIRED
+  >
+<!ELEMENT position %Tout;>
+<!ATTLIST position
+  valeur  (gauche | centre | droite | justifie)  #REQUIRED
+  >
+
+<!ELEMENT citation %Tout;>
+<!ATTLIST citation
+  rid   CDATA  #IMPLIED
+  nom   CDATA  #IMPLIED
+  lien  CDATA  #IMPLIED
+  >
+<!ELEMENT code %Inline;>
+<!ATTLIST code
+  type      CDATA  #IMPLIED
+  titre     CDATA  #IMPLIED
+  url       CDATA  #IMPLIED
+  surligne  CDATA  #IMPLIED
+  debut     CDATA  #IMPLIED
+  >
+<!ELEMENT secret %Tout;>
+<!ATTLIST secret
+  cache  (0 | 1)  #IMPLIED
+  >
+
+<!ELEMENT liste (puce)+>
+<!ATTLIST liste
+  type  (1 | i | I | a | A | disque | cercle | rectangle | rien)  #IMPLIED
+  >
+<!ELEMENT puce %Inline;>
+
+<!ELEMENT tableau (legende?, ligne+)>
+<!ELEMENT legende %Inline;>
+<!ELEMENT ligne (entete | cellule)+>
+
+<!ENTITY % fusionAttrs
+ "fusion_col  CDATA  #IMPLIED
+  fusion_lig  CDATA  #IMPLIED"
+  >
+
+<!ELEMENT entete %Tout;>
+<!ATTLIST entete
+  %fusionAttrs;
+  >
+
+<!ELEMENT cellule %Tout;>
+<!ATTLIST cellule
+  %fusionAttrs;
+  >
+
+<!-- Balises de type Inline -->
+<!ELEMENT barre %Inline;>
+<!ELEMENT gras %Inline;>
+<!ELEMENT italique %Inline;>
+<!ELEMENT souligne %Inline;>
+
+<!ELEMENT acronyme %Inline;>
+<!ATTLIST acronyme
+  valeur  CDATA  #REQUIRED
+  >
+<!ELEMENT exposant %Inline;>
+<!ELEMENT indice %Inline;>
+
+<!ELEMENT email %Inline;>
+<!ATTLIST email
+  nom  CDATA  #IMPLIED
+  >
+
+<!ELEMENT lien %Inline;>
+<!ATTLIST lien
+  url  CDATA  #IMPLIED
+  >
+
+<!-- Devrait être #PCDATA, mais liens cliquables ;
+     sera nettoyé par la feuille XSL. -->
+<!ELEMENT image %Inline;>
+<!ATTLIST image
+  legende  CDATA  #IMPLIED
+>
+
+<!ELEMENT math %Inline;>
+
+<!ELEMENT couleur %Inline;>
+<!ATTLIST couleur
+  nom  (argent | blanc | bleu | bleugris | gris | jaune | marine | marron | noir | olive | orange | rose | rouge | turquoise | vertc | vertf | violet)  #REQUIRED
+  >
+
+<!ELEMENT taille %Inline;>
+<!ATTLIST taille
+  valeur  (ttpetit | tpetit | petit | normal | gros | tgros | ttgros)  #REQUIRED
+  >
+
+<!ELEMENT police %Inline;>
+<!ATTLIST police
+  nom  (arial | courier | geneva | impact | optima | times)  #REQUIRED
+  >
+<!ELEMENT minicode %Inline;>
+<!ATTLIST minicode
+  type  CDATA  #IMPLIED
+  >
+
+<!ELEMENT touche %Inline;>

@@ -1,0 +1,16 @@
+msg:
+    1: La question a bien été ajoutée.
+    2: La question a bien été modfiée.
+    3: La question a bien été supprimée.
+    4: Le quiz a bien été ajouté.
+    5: Le quiz a bien été modfié.
+    6: Le quiz a bien été supprimé.
+    7: Cette question n'existe pas.
+    8: Vous avez indiqué une réponse comme juste alors que son contenu est vide !
+    10: Ce quiz n'existe pas.
+    11: Le quiz est maintenant visible par tout le monde.
+    12: Le quiz a été masqué.
+    13: La question a été déplacée.
+
+# Difficultés pour le quiz
+QuizDifficultes: { 1: Facile, 2: Moyen, 3: Difficile }

@@ -1,0 +1,116 @@
+/**
+* zForm edition style
+*
+* @author	karamilo, M@teo21
+* @valid	true
+* @todo
+*/
+
+/* Quelques éléments de formulaire de base */
+#corps label.label_cote {
+	float: left;
+	width: 150px;
+	margin-right: 8px;
+	text-align: right;
+	font-weight: bold;
+}
+
+fieldset {
+	margin-bottom: 20px;
+	padding: 5px 5px 20px;
+}
+
+legend {
+	color: #2c485c;
+	font-weight: bold;
+	font-family: Arial, times, 'Times new roman', serif;
+}
+
+.cadre_previsualisation_finale {
+	color: #333;
+	border: 1px dotted #d6d6d6;
+	margin-top: 10px;
+	width: 95%;
+	background-color: #fff;
+	padding: 3px;
+}
+
+.bouton_prev_finale {
+	text-align: center;
+}
+
+.code_parse_final {
+	max-height: 500px;
+	overflow: auto;
+}
+
+.apercu_tps_reel {
+	background-color: #fff;
+	color: #333;
+	border: 1px dashed #d6d6d6;
+	overflow: auto;
+	margin-top: 1px;
+	width: 650px;
+	padding: .2em;
+}
+
+html>body .apercu_tps_reel {
+	width: 95%;
+}
+
+#prev,#prev_texte,#prev_notepad,#prev_avert {
+	height: 250px;
+}
+
+#prev_intro,#prev_conclu,#prev_qst,#prev_explic,#prev_sig,#prev_bio,#prev_nws_texte,#nws_texte,#prev_cmt_texte,#cmt_texte {
+	height: 200px;
+}
+
+textarea {
+	background-color: #efefef;
+	color: #333;
+	font-size: 12px;
+	border: 1px solid #d6d6d6;
+	margin-bottom: 3px;
+	width: 650px;
+	height: 200px;
+	font-family: 'Lucida Sans Unicode', 'Trebuchet MS', Verdana, Geneva, Arial, Helvetica;
+	padding: 2px;
+}
+
+html>body textarea {
+	width: 95%;
+}
+
+.cleaner {
+	clear: both;
+}
+
+.boutons {
+	margin-right: 20px;
+}
+
+.smilies_zform {
+	width: 130px;
+	height: 180px;
+	clear: left;
+	float: left;
+}
+
+.boutons_zform,.zform {
+	margin-left: 130px;
+}
+
+.smilies_zform_grande {
+	width: 130px;
+	height: 280px;
+	float: left;
+}
+
+.smiley_cliquable,.bouton_cliquable {
+	cursor: pointer;
+}
+
+.zform_caracteres {
+    text-align: center;
+}

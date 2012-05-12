@@ -1,0 +1,14 @@
+services:
+    zco_blog.event_listener:
+        class: Zco\Bundle\BlogBundle\EventListener\EventListener
+        calls:
+            - [setContainer, [@service_container]]
+        tags:
+            - { name: kernel.event_subscriber }
+
+    zco_blog.ui_listener:
+        class: Zco\Bundle\BlogBundle\EventListener\UiListener
+        calls:
+            - [setContainer, [@service_container]]
+        tags:
+            - { name: kernel.event_subscriber }
