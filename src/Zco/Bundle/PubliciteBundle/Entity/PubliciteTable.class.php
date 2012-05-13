@@ -35,7 +35,7 @@ class PubliciteTable extends Doctrine_Table
 	 */
 	public function getFor($emplacement, $maj_affichages = true)
 	{
-		if (!($pks = Container::getService('zco_core.cache')->get('pub-'.$emplacement)))
+		if (($pks = Container::getService('zco_core.cache')->get('pub-'.$emplacement)) === false)
 		{
 			//Permier tri des publicités, on ne prend que celles actives pour la zone donnée.
 			$publicites = $this->createQuery('p')

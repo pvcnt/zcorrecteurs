@@ -75,7 +75,6 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 		//Ajoute un lien vers le formulaire de contact si le bundle est activé.
 		if (array_key_exists('ZcoAboutBundle', $this->container->getParameter('kernel.bundles')))
 		{
-			
 			$class = $block->getAttribute('class', '');
 			$block->setAttribute('class', trim($class.' bloc_partenaires'));
 			$block->addChild('Votre site ici ?', array(
@@ -128,7 +127,7 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 		$partenaires = \Doctrine_Core::getTable('Publicite')->getFor($section);
 		if ($partenaires !== false)
 		{
-			foreach($partenaires as $p)
+			foreach ($partenaires as $p)
 			{
 				if ($p['contenu_js'] == true)
 				{
