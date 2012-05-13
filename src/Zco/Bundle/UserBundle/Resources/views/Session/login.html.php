@@ -46,4 +46,4 @@
 	<a href="<?php echo $view['router']->generate('zco_user_session_newPassword') ?>">demande de nouveau mot de passe</a>.
 </p>
 
-<?php $view['javelin']->initBehavior('autofocus', array('id' => 'utilisateur')) ?>
+<?php $view['javelin']->initBehavior('autofocus', array('id' => $form['pseudo']->get('id'))) ?>

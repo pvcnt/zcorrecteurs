@@ -97,7 +97,7 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 		
 		//Tentative de connexion depuis l'environnement courant. Normalement seul
 		//->login() peut générer une LoginException, mais on préfère encadrer le 
-		//tout par un try{ } en cas de listener mal écrit.
+		//tout par un try{ } en cas d'observateur mal écrit.
 		try
 		{
 			if (($userEntity = $user->attemptEnvLogin($event->getRequest())) instanceof \Utilisateur)
@@ -151,7 +151,9 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 	public function onKernelController(FilterControllerEvent $event)
 	{
 		$request = $this->container->get('request');
-		if (//Requête asynchrone type Ajax
+		
+		if (
+			//Requête asynchrone type Ajax
 			!$request->isXmlHttpRequest()
 			//Chargement d'une page non HMTL (flux, Javascript, etc.)
 			&& $request->attributes->get('_format', 'html') === 'html'
@@ -196,6 +198,10 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 		));
 	}
 	
+	/**
+	 * Met à jour les différentes données liées à la session, en particulier la 
+	 * table gardant une trace des visiteurs navigant actuellement sur le site.
+	 */
 	private function refreshSession()
 	{
 		$dbh = \Doctrine_Manager::connection()->getDbh();
@@ -256,7 +262,6 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 				$stmt->execute();
 				$stmt->closeCursor();
 			}
-			
 
 			$_SESSION['last_ip'] = $ip;
 		}

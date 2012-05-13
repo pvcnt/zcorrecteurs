@@ -1,10 +1,15 @@
 /**
+ * Feuille de style principale des sections du site ayant migré sous Bootstrap.
+ * Définit la structure générale du site par de nouveaux styles et en 
+ * redéfinissant certains styles par défaut.
+ *
  * @requires @ZcoCoreBundle/Resources/public/css/bootstrap.css
  *           @ZcoCoreBundle/Resources/public/css/famfamfam.css
  */
 
 /**
- * Remise en forme des titres pour les rendre plus fins.
+ * Remise en forme des titres pour les rendre plus fins que ceux par défaut 
+ * de Bootstrap.
  */
 h1 {
 	margin: 18px 0;
@@ -191,9 +196,11 @@ p.intro-text.center {
 	background: url('../img/title-zcorrecteurs.png') bottom left no-repeat;
 }
 
-/* Zone de texte redimensionnable */
+/**
+ * Zone de texte redimensionnable.
+ */
 .resizable-textarea {
-	background:#EEEEEE url(/bundles/zcocore/img/zform/grippie.png) no-repeat scroll center 2px;
+	background:#EEEEEE url('../img/zform/grippie.png') no-repeat scroll center 2px;
 	border-color:#DDDDDD;
 	border-style:solid;
 	border-width:0pt 1px 1px;
@@ -202,6 +209,9 @@ p.intro-text.center {
 	overflow:hidden;
 }
 
+/**
+ * Zone de texte large.
+ */
 textarea.textarea, .textarea textarea {
 	width: 90%;
 	height: 200px;
@@ -278,43 +288,19 @@ table.table-small {
     text-indent: 10px;
 }
 
-.sidebar form#sidebarLogin input#connexion_auto {
- 	margin-right: 5px;
+/* Adaptations pour le bloc contenant le formulaire de connexion rapide */
+.sidebar .bloc li.quick-login-form {
+	margin-top: 10px;
+	text-indent: 0px;
 }
 
-.sidebar form#sidebarLogin input#sideLogin,.sidebar form#sidebarLogin input#sidePassword {
- 	display: block;
- 	width: 88px;
- 	margin: 0 auto;
- 	padding: 4px 0 4px 22px;
- 	font-size: 12px;
- 	color: #666;
- 	border: 1px solid #ddd;
- 	border-bottom: 0;
- 	background-color: #fff;
- 	background-position: 2px 2px;
- 	background-repeat: no-repeat;
-}
-
-.sidebar form#sidebarLogin input#sideLogin.error,.sidebar form#sidebarLogin input#sidePassword.error {
- 	color: #f30;
-}
-
-.sidebar form#sidebarLogin input#sideLogin {
- 	background-image: url('../img/login-user.png');
-}
-
-.sidebar form#sidebarLogin input#sidePassword {
- 	background-image: url('../img/login-password.png');
-}
-
-.sidebar form#sidebarLogin #sideSubmit,.sidebar form#sidebarLogin #sideConnexion_auto {
- 	margin-left: 10px;
+.sidebar li.quick-login-form input {
+	width: 90%;
 }
  
 /**
-* Pied de page.
-*/
+ * Pied de page.
+ */
 #footer, .footer {
 	clear: both;
 	background: #09bef2 url('../img/footer-bg.png') top left repeat-x;

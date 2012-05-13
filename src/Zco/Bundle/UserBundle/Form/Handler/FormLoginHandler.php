@@ -83,8 +83,9 @@ class FormLoginHandler
 		$data = $this->form->getData();
 		try
 		{
+			$remember = isset($data['remember']) ? (bool) $data['remember'] : true;
 			$userEntity = $this->user->attemptFormLogin($data, $this->request);
-			$this->user->login($userEntity, $data['remember']);
+			$this->user->login($userEntity, $remember);
 		}
 		catch (LoginException $e)
 		{
