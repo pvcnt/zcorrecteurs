@@ -272,6 +272,7 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 		$stmt->bindValue(':cat', $cat, \PDO::PARAM_INT);
 		$stmt->bindValue(':agent', $request->server->get('HTTP_USER_AGENT'));
 		$stmt->execute();
+		
 		if (!$stmt->rowCount())
 		{
 			$stmt->closeCursor();
@@ -284,7 +285,15 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 			$stmt->bindParam(':u', $id);
 			$stmt->bindParam(':cat', $cat);
 			$stmt->bindValue(':agent', $request->server->get('HTTP_USER_AGENT'));
-			$stmt->execute();
+			try
+			{
+				$stmt->execute();
+			}
+			catch (\PDOException $e)
+			{
+				//Bloque des erreurs survenant quelquefois lors de l'insertion 
+				//d'un nouvel enregistrement (clé primaire dupliquée).
+			}
 		}
 		$stmt->closeCursor();
 	}
