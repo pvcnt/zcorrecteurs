@@ -277,8 +277,8 @@ class Version
 		catch (\Exception $e)
 		{
 			$output->writeln(sprintf(
-				'<error>Migration %s failed during %s. Error %s</error>',
-				$this->version, $this->getExecutionState(), $e->getMessage()
+				'<error>Migration %s failed during %s.</error>',
+				$this->version, $this->getExecutionState()
 			));
 
 			$this->connection->rollback();
