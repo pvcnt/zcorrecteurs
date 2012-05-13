@@ -21,7 +21,6 @@
 
 namespace Zco\Bundle\Doctrine1Bundle;
 
-use Zco\Bundle\Doctrine1Bundle\DoctrineListener\QueryListener;
 use Zco\Bundle\Doctrine1Bundle\Adapter\PDOAdapter;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\HttpFoundation\Response;
@@ -45,7 +44,6 @@ class ZcoDoctrine1Bundle extends Bundle
 			$conn->setOption('dsn', $dbh->getDsn());
 			$conn->setOption('username', $dbh->getUsername());
 			$conn->setOption('password', $dbh->getPassword());
-			$conn->addListener($this->container->get('zco_doctrine1.query_listener'));
 		}
 		catch (\Exception $e)
 		{

@@ -21,7 +21,6 @@
 
 namespace Zco\Bundle\Doctrine1Bundle\DataCollector;
 
-use Zco\Bundle\Doctrine1Bundle\EventListener\DoctrineListener;
 use Zco\Bundle\Doctrine1Bundle\Adapter\PDOAdapter;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,35 +33,14 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class DoctrineDataCollector extends DataCollector
 {
-	private $listener;
-	
-	/**
-	 * Constructeur.
-	 *
-	 * @param DoctrineListener $listener
-	 */
-	public function __construct(DoctrineListener $listener)
-	{
-		$this->listener = $listener;
-	}
-	
 	/**
 	 * {@inheritdoc}
 	 */
 	public function collect(Request $request, Response $response, \Exception $exception = null)
 	{
-		$dbh = \Doctrine_Manager::connection()->getDbh();
+		$dbh     = \Doctrine_Manager::connection()->getDbh();
 		$queries = $dbh->getQueries();
-		
-		$doctrineQueries = $this->listener->getQueries();
-		$doctrineTimes = $this->listener->getTimes();
-		foreach ($doctrineQueries as $i => $query)
-		{
-			$query['time'] = $doctrineTimes[$i];
-			$query['doctrine'] = true;
-			$queries[] = $query;
-		}
-		
+				
 		$manager     = \Doctrine_Manager::getInstance();
 		$connections = array();
 		foreach ($manager->getConnections() as $conn)

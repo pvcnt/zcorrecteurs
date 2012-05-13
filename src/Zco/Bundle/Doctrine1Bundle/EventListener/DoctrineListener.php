@@ -23,7 +23,7 @@ namespace Zco\Bundle\Doctrine1Bundle\EventListener;
 
 /**
  * Garde une trace des méta-données de toutes les requêtes Doctrine 
- * exécutées.
+ * exécutées. Non utilisé pour l'instant car l'adaptateur PDO le fait déjà.
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
@@ -76,7 +76,7 @@ class DoctrineListener extends \Doctrine_EventListener
 	private function startQuery(\Doctrine_Event $event)
 	{
 	    $this->queries[] = array('sql' => $event->getQuery(), 'params' => $event->getParams());
-		$this->stack[]= microtime(true);
+		$this->stack[] = microtime(true);
 	}
 	
 	private function stopQuery()

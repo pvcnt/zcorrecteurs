@@ -18,13 +18,9 @@ services:
     
     zco_doctrine1.data_collector:
         class: Zco\Bundle\Doctrine1Bundle\DataCollector\DoctrineDataCollector
-        arguments: [@zco_doctrine1.query_listener]
         tags:
             - { name: data_collector, template: "ZcoDoctrine1Bundle::collector", id: doctrine1 }
     
-    zco_doctrine1.query_listener:
-        class: Zco\Bundle\Doctrine1Bundle\EventListener\DoctrineListener
-
     zco_core.pagination_listener:
         class: Zco\Bundle\Doctrine1Bundle\EventListener\PaginationListener
         tags:
