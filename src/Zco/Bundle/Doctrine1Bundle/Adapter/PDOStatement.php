@@ -79,7 +79,7 @@ class PDOStatement extends BasePDOStatement
 	{
 		$this->bind[$parameter] = $value;
 		
-		return $retval = parent::bindValue($parameter, $value, $dataType);
+		return parent::bindValue($parameter, $value, $dataType);
 	}
 
 	/**
