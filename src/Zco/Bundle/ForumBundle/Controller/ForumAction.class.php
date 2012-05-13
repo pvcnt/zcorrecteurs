@@ -340,6 +340,9 @@ class ForumAction extends ForumActions
 				$parent = array_pop($parent);
 			else
 				$parent = null;
+			
+			//Mise à jour de la position sur le site.
+			\Doctrine_Core::getTable('Online')->updateUserPosition($_SESSION['id'], 'ZcoForumBundle:forum', $_GET['id']);
 
 			// Inclusion de la vue
 			fil_ariane($_GET['id'], 'Liste des sujets'.(!empty($_GET['trash']) ? ' dans la corbeille' : ''));

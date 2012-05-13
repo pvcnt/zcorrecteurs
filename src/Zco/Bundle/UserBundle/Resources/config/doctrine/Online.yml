@@ -7,6 +7,8 @@ Online:
         connecte_debut:           { type: timestamp(25), name: connecte_debut as first_action }
         connecte_derniere_action: { type: timestamp(25), name: connecte_derniere_action as last_action }
         connecte_user_agent:      { type: string(255), name: connecte_user_agent as user_agent }
+        connecte_nom_action:      { type: string(255), name: connecte_nom_action as action }
+        connecte_id1:             { type: integer(11), name: connecte_id1 as action_identifier }
     relations:
         User:                     { class: Utilisateur, local: user_id, foreign: utilisateur_id }
         Category:                 { class: Categorie, local: category_id, foreign: cat_id }

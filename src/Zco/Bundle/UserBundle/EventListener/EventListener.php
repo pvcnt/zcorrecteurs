@@ -150,7 +150,13 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 	 */
 	public function onKernelController(FilterControllerEvent $event)
 	{
-		if (!$this->container->get('request')->isXmlHttpRequest())
+		$request = $this->container->get('request');
+		if (//Requête asynchrone type Ajax
+			!$request->isXmlHttpRequest()
+			//Chargement d'une page non HMTL (flux, Javascript, etc.)
+			&& $request->attributes->get('_format', 'html') === 'html'
+			//Route interne (type profiler)
+			&& substr($request->attributes->get('_route'), 0, 1) !== '_')
 		{
 			$this->refreshSession();
 		}
@@ -200,7 +206,7 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 		$id1 = !empty($_GET['id']) ? $_GET['id'] : 0;
 		$id2 = !empty($_GET['id2']) ? $_GET['id2'] : 0;
 		$id = $_SESSION['id'];
-
+		
 		//Si la dernière IP diffère, on la met à jour (en cas de membre connecté uniquement)
 		if (!isset($_SESSION['last_ip']) || $_SESSION['last_ip'] != $ip)
 		{
@@ -250,20 +256,36 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 				$stmt->execute();
 				$stmt->closeCursor();
 			}
+			
 
 			$_SESSION['last_ip'] = $ip;
 		}
-
+		
 		//On met à jour la table des sessions.
-		$stmt = $dbh->prepare('REPLACE INTO '.$this->container->getParameter('database.prefix').'connectes(connecte_ip, '
-			.'connecte_id_utilisateur, connecte_debut, connecte_derniere_action, '
-			.'connecte_id_categorie, connecte_user_agent) '
-			.'VALUES(:ip, :u, NOW(), NOW(), :cat, :agent)');
-		$stmt->bindParam('ip', $ip);
-		$stmt->bindParam('u', $id);
-		$stmt->bindParam('cat', $cat);
-		$stmt->bindValue('agent', $request->server->get('HTTP_USER_AGENT'));
+		$stmt = $dbh->prepare('UPDATE '.$this->container->getParameter('database.prefix').'connectes '
+			.'SET connecte_ip = :ip, connecte_derniere_action = NOW(), '
+			.'connecte_id_categorie = :cat, connecte_user_agent = :agent, '
+			.'connecte_nom_action = \'\' '
+			.'WHERE connecte_id_utilisateur = :u');
+		$stmt->bindValue(':ip', $ip, \PDO::PARAM_INT);
+		$stmt->bindValue(':u', $id, \PDO::PARAM_INT);
+		$stmt->bindValue(':cat', $cat, \PDO::PARAM_INT);
+		$stmt->bindValue(':agent', $request->server->get('HTTP_USER_AGENT'));
 		$stmt->execute();
+		if (!$stmt->rowCount())
+		{
+			$stmt->closeCursor();
+			
+			$stmt = $dbh->prepare('INSERT INTO '.$this->container->getParameter('database.prefix').'connectes(connecte_ip, '
+				.'connecte_id_utilisateur, connecte_debut, connecte_derniere_action, '
+				.'connecte_id_categorie, connecte_user_agent) '
+				.'VALUES(:ip, :u, NOW(), NOW(), :cat, :agent)');
+			$stmt->bindParam(':ip', $ip);
+			$stmt->bindParam(':u', $id);
+			$stmt->bindParam(':cat', $cat);
+			$stmt->bindValue(':agent', $request->server->get('HTTP_USER_AGENT'));
+			$stmt->execute();
+		}
 		$stmt->closeCursor();
 	}
 }

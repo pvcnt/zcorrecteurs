@@ -364,8 +364,7 @@ function ListerVisiteursForum($id)
 	LEFT JOIN zcov2_groupes ON utilisateur_id_groupe = groupe_id
 	LEFT JOIN zcov2_forum_sujets ON connecte_id1 = sujet_id
 	WHERE connecte_derniere_action >= NOW() - INTERVAL ".NOMBRE_MINUTES_CONNECTE." MINUTE
-	AND connecte_id1 = :id AND connecte_nom_module = 'forum' AND
-	((connecte_nom_action = 'forum' AND connecte_id1 = :id) OR (connecte_nom_action = 'sujet' AND sujet_forum_id = :id))");
+	AND ((connecte_nom_action = 'ZcoForumBundle:forum' AND connecte_id1 = :id) OR (connecte_nom_action = 'ZcoForumBundle:sujet' AND sujet_forum_id = :id))");
 	$stmt->bindParam(':id', $id);
 	$stmt->execute();
 	return $stmt->fetchAll();

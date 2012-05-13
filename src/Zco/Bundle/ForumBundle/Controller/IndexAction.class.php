@@ -19,6 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
+
 /**
  * Contrôleur gérant l'accueil des forums (listage des catégories + forums).
  *
@@ -33,8 +35,11 @@ class IndexAction extends ForumActions
 		//Redirection si demandé
 		if(!empty($_POST['saut_forum']))
 		{
-			return new Symfony\Component\HttpFoundation\RedirectResponse('/forum/'.htmlspecialchars($_POST['saut_forum']));
+			return new RedirectResponse('/forum/'.htmlspecialchars($_POST['saut_forum']));
 		}
+		
+		//Mise à jour de la position sur le site.
+		\Doctrine_Core::getTable('Online')->updateUserPosition($_SESSION['id'], 'ZcoForumBundle:index');
 
 		//Inclusion du modèle
 		include(dirname(__FILE__).'/../modeles/categories.php');
@@ -73,16 +78,23 @@ class IndexAction extends ForumActions
 		}
 
 		//Inclusion de la vue
-		if(!empty($_GET['trash']))
+		if (!empty($_GET['trash']))
+		{
 			fil_ariane('Accueil de la corbeille');
-		elseif(!empty($_GET['favori']))
+		}
+		elseif (!empty($_GET['favori']))
+		{
 			fil_ariane('Liste des sujets en favoris');
+		}
 		else
+		{
 			fil_ariane('Accueil des forums');
-
-		$resourceManager = $this->get('zco_vitesse.resource_manager');
-		$resourceManager->requireResource('@ZcoCoreBundle/Resources/public/css/tableaux_messages.css');
-		$resourceManager->requireResource('@ZcoForumBundle/Resources/public/js/forum.js');
+		}
+		
+		$this->get('zco_vitesse.resource_manager')->requireResources(array(
+			'@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
+			'@ZcoForumBundle/Resources/public/js/forum.js',
+		));
 		
 		$response = render_to_response(array(
 			'ListerCategories' => $ListerCategories,

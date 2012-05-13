@@ -27,6 +27,23 @@
 class OnlineTable extends Doctrine_Table
 {
 	/**
+	 * Met à jour la position de l'utilisateur sur le site.
+	 *
+	 * @param integer $userId L'identifiant de l'utilisateur
+	 * @param string $action L'action courante
+	 * @param integer $identifier L'identifiant associé à l'action courante
+	 */
+	public function updateUserPosition($userId, $action, $identifier = 0)
+	{
+		$this->createQuery()
+			->update()
+			->set('action', '?', $action)
+			->set('action_identifier', '?', $identifier)
+			->where('user_id = ?', $userId)
+			->execute();
+	}
+	
+	/**
 	 * Renvoie la liste de tous les visiteurs connectés.
 	 *
 	 * @param  boolean $showAnonymousUsers Retourner les anonymes ?

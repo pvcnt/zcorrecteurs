@@ -60,6 +60,16 @@ class Online extends BaseOnline
 		return $this->ip;
 	}
 	
+	public function getAction()
+	{
+		return $this->action;
+	}
+	
+	public function getActionIdentifier()
+	{
+		return $this->action_identifier;
+	}
+	
 	public function isAuthenticated()
 	{
 		return $this->user_id > 0;

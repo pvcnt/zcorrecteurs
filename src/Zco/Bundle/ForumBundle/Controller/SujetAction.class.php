@@ -130,6 +130,9 @@ class SujetAction extends ForumActions
 		{
 			$nombreDeMessagesAafficher = $nbMessagesParPage;
 		}
+		
+		//Mise à jour de la position sur le site.
+		\Doctrine_Core::getTable('Online')->updateUserPosition($_SESSION['id'], 'ZcoForumBundle:sujet', $_GET['id']);
 
 		$ListerMessages = ListerMessages($_GET['id'], $debut, $nombreDeMessagesAafficher);
 		$ListerVisiteurs = ListerVisiteursSujet($_GET['id']);

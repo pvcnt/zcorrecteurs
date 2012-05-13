@@ -254,7 +254,7 @@ function ListerVisiteursForumEntier()
 	LEFT JOIN zcov2_utilisateurs ON connecte_id_utilisateur = utilisateur_id
 	LEFT JOIN zcov2_groupes ON utilisateur_id_groupe = groupe_id
 	WHERE connecte_derniere_action >= NOW() - INTERVAL ".NOMBRE_MINUTES_CONNECTE." MINUTE
-	AND connecte_nom_module = 'forum'");
+	AND LOCATE('ZcoForumBundle', connecte_nom_action) = 1");
 	$stmt->execute();
 
 
