@@ -161,15 +161,8 @@ class FileTable extends Doctrine_Table
 		{
 			$targetDate = date('Y-m-d H:i:s', strtotime('-1 week'));
 			$query
-				->andWhere('date >= ? OR edition_date >= ?', array($targetDate, $targetDate))
-				->orderBy('edition_date DESC');
-		}
-		elseif ($id === self::FOLDER_THIS_MONTH)
-		{
-			$targetDate = date('Y-m-d H:i:s', strtotime('-1 month'));
-			$query
 				->andWhere('date >= ?', $targetDate)
-				->orderBy('date DESC');
+				->orderBy('edition_date DESC');
 		}
 		elseif ($id === self::FOLDER_THIS_MONTH)
 		{
