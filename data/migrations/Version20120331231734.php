@@ -45,6 +45,7 @@ class Version20120331231734 extends AbstractMigration
 		$stmt = $this->dbh->prepare('SELECT * FROM zcov2_uploads LEFT JOIN zcov2_categories ON upload_dossier = cat_id');
 		$stmt->execute();
 		$uploads = $stmt->fetchAll();
+		$stmt->closeCursor();
 
 		foreach ($uploads as $upload)
 		{
@@ -107,7 +108,7 @@ class Version20120331231734 extends AbstractMigration
 				$path 		= sys_get_temp_dir().'/'.$file['id'].'-'.$size->getWidth().'x'.$size->getHeight().'.'.$file['extension'];
 
 				$thumbnail->save($path);
-				$thumbnail = null;
+				unset($thumbnail);
 
 				$thumbnail = new \FileThumbnail();
 				$thumbnail->File	 = $file;
@@ -123,6 +124,8 @@ class Version20120331231734 extends AbstractMigration
 				//On écrit cette miniature sur le système de fichiers.
 				$filesystem->write($thumbnail->getRelativePath(), file_get_contents($path));
 				unlink($path);
+				
+				unset($thumbnail);
 			}
 
 			//Et on sauvegarde à nouveau le fichier !
@@ -159,7 +162,12 @@ class Version20120331231734 extends AbstractMigration
 				$usage['entity_class'] = $entityClass;
 				$usage['entity_id']	= $upload['upload_element'];
 				$usage->save();
+				
+				unset($usage);
 			}
+			
+			unset($uploadedFile);
+			unset($file);
 		}
 	}
 
