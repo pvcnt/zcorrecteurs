@@ -81,7 +81,7 @@ abstract class ListRenderer extends BaseListRenderer
      * @param integer $level
      * @return string
      */
-    protected function format($html, $type, $level)
+    protected function format($html, $type, $level, array $options)
     {
         if ($this->renderCompressed)
         {
