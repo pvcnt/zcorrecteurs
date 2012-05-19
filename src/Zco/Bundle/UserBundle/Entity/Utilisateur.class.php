@@ -219,7 +219,7 @@ class Utilisateur extends BaseUtilisateur
 	
 	public function hasBirthDate()
 	{
-		return !empty($this->birth_date);
+		return !empty($this->birth_date) && $this->birth_date != '0000-00-00';
 	}
 	
 	public function getBirthDate()
