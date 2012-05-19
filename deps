@@ -64,6 +64,7 @@
 
 [KnpMenu]
     git=https://github.com/KnpLabs/KnpMenu.git
+    version=v1.1.1
 
 [Imagine]
     git=http://github.com/avalanche123/Imagine.git

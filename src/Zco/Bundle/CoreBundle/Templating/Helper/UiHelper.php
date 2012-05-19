@@ -76,7 +76,7 @@ class UiHelper extends Helper
 	public function speedbarre($template)
 	{
 		$factory = new MenuFactory();
-		$menu = $factory->createItem('speedbarre', array('attributes' => array('class' => 'nav')));
+		$menu = $factory->createItem('speedbarre', array('childrenAttributes' => array('class' => 'nav')));
 		
 		return $this->renderMenu($menu, new SpeedbarreRenderer(), $template);
 	}
@@ -84,7 +84,7 @@ class UiHelper extends Helper
 	public function speedbarreRight($template)
 	{
 		$factory = new MenuFactory();
-		$menu = $factory->createItem('speedbarre_right', array('attributes' => array('class' => 'nav pull-right')));
+		$menu = $factory->createItem('speedbarre_right', array('childrenAttributes' => array('class' => 'nav pull-right')));
 		
 		return $this->renderMenu($menu, new SpeedbarreRenderer(), $template);
 	}

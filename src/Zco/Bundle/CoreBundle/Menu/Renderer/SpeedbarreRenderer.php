@@ -24,30 +24,37 @@ namespace Zco\Bundle\CoreBundle\Menu\Renderer;
 use Knp\Menu\ItemInterface;
 use Zco\Bundle\CoreBundle\Menu\MenuItem;
 
+/**
+ * Moteur de rendu pour la barre de navigation rapide.
+ *
+ * @author vincent1870 <vincent@zcorrecteurs.fr>
+ */
 class SpeedbarreRenderer extends ListRenderer
 {
-	public function render(ItemInterface $item, array $options = array())
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function renderList(ItemInterface $item, array $attributes, array $options)
 	{
-		$options = array_merge($this->getDefaultOptions(), $options);
-
 		/**
 		 * Return an empty string if any of the following are true:
 		 *   a) The menu has no children eligible to be displayed
 		 *   b) The depth is 0
 		 *   c) This menu item has been explicitly set to hide its children
 		 */
-		if (!$item->hasChildren() || 0 === $options['depth'] || !$item->getDisplayChildren()) {
+		if (!$item->hasChildren() || 0 === $options['depth'] || !$item->getDisplayChildren())
+		{
 			return '';
 		}
 
 		$html = '';
-		$html  = $this->format('<ul'.$this->renderHtmlAttributes($item->getAttributes()).'>', 'ul', $item->getLevel());
+		$html  = $this->format('<ul'.$this->renderHtmlAttributes($attributes).'>', 'ul', $item->getLevel(), $options);
 		
 		$html .= ($item instanceof MenuItem) ? $item->getHtml('prefix') : '';
 		$html .= ($item instanceof MenuItem && $item->getHtml()) ? $item->getHtml() : $this->renderChildren($item, $options);
 		$html .= ($item instanceof MenuItem) ? $item->getHtml('suffix') : '';
 		
-		$html .= $this->format('</ul>', 'ul', $item->getLevel());
+		$html .= $this->format('</ul>', 'ul', $item->getLevel(), $options);
 
 		return $html;
 	}

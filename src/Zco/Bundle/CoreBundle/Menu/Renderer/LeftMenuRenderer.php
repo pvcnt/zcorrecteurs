@@ -25,59 +25,53 @@ use Knp\Menu\ItemInterface;
 use Zco\Bundle\CoreBundle\Menu\MenuItem;
 
 /**
- * Renders MenuItem tree as unordered list
+ * Moteur de rendu pour l'affichage des liens dans le menu de gauche du site.
+ * Celui-ci est organisé en différents blocs contenant chacun une liste de 
+ * liens ordonnés.
+ *
+ * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
 class LeftMenuRenderer extends ListRenderer
 {
-    /**
-     * @see RendererInterface::render
-     */
-    public function render(ItemInterface $item, array $options = array())
-    {
-        $options = array_merge($this->getDefaultOptions(), $options);
-
-        /**
-         * Return an empty string if any of the following are true:
-         *   a) The menu has no children eligible to be displayed
-         *   b) The depth is 0
-         *   c) This menu item has been explicitly set to hide its children
-         */
-        if (!$item->hasChildren() || 0 === $options['depth'] || !$item->getDisplayChildren())
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function renderList(ItemInterface $item, array $attributes, array $options)
+	{
+		/**
+		 * Return an empty string if any of the following are true:
+		 *   a) The menu has no children eligible to be displayed
+		 *   b) The depth is 0
+		 *   c) This menu item has been explicitly set to hide its children
+		 */
+		if (!$item->hasChildren() || 0 === $options['depth'] || !$item->getDisplayChildren())
 		{
-            return '';
-        }
+			return '';
+		}
 
-        $html = '';
+		$html = '';
 		$options['depth'] = 1;
-        foreach ($item->getChildren() as $child)
+		foreach ($item->getChildren() as $child)
 		{
-            $html .= $this->renderItem($child, $options);
-        }
+			$html .= $this->renderItem($child, $options);
+		}
 
-        return $html;
-    }
+		return $html;
+	}
 	
-    /**
-     * Called by the parent menu item to render this menu.
-     *
-     * This renders the li tag to fit into the parent ul as well as its
-     * own nested ul tag if this menu item has children
-     *
-     * @param \Knp\Menu\ItemInterface $item
-     * @param array $options The options to render the item
-     * @return string
-     */
-    public function renderItem(ItemInterface $item, array $options = array())
-    {
-        $options = array_merge($this->getDefaultOptions(), $options);
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function renderItem(ItemInterface $item, array $options)
+	{
+		// if we don't have access or this item is marked to not be shown
+		if (!$item->isDisplayed())
+		{
+			return '';
+		}
 
-        // if we don't have access or this item is marked to not be shown
-        if (!$item->isDisplayed()) {
-            return '';
-        }
-
-        // explode the class string into an array of classes
-        $class = ($item->getAttribute('class')) ? explode(' ', $item->getAttribute('class')) : array();
+		// explode the class string into an array of classes
+		$class = ($item->getAttribute('class')) ? explode(' ', $item->getAttribute('class')) : array();
 
 		if ($options['depth'] === 1)
 		{
@@ -85,36 +79,37 @@ class LeftMenuRenderer extends ListRenderer
 			$class[] = str_replace('-', '', rewrite($item->getName()));
 		}
 
-        if ($item->isCurrent())
+		if ($item->isCurrent())
 		{
-            $class[] = $options['currentClass'];
-        }
+			$class[] = $options['currentClass'];
+		}
 		elseif ($item->isCurrentAncestor())
 		{
-            $class[] = $options['ancestorClass'];
-        }
+			$class[] = $options['ancestorClass'];
+		}
 
-        if ($item->actsLikeFirst())
+		if ($item->actsLikeFirst())
 		{
-            $class[] = $options['firstClass'];
-        }
-        if ($item->actsLikeLast())
+			$class[] = $options['firstClass'];
+		}
+		if ($item->actsLikeLast())
 		{
-            $class[] = $options['lastClass'];
-        }
+			$class[] = $options['lastClass'];
+		}
 
-        // retrieve the attributes and put the final class string back on it
-        $attributes = $item->getAttributes();
-        if (!empty($class)) {
-            $attributes['class'] = implode(' ', $class);
-        }
+		// retrieve the attributes and put the final class string back on it
+		$attributes = $item->getAttributes();
+		if (!empty($class))
+		{
+			$attributes['class'] = implode(' ', $class);
+		}
 
 		$html = '';
 
-        // opening block
+		// opening block
 		if ($options['depth'] === 1)
 		{
-        	$html .= $this->format('<div'.$this->renderHtmlAttributes($attributes).'>', 'div', $item->getLevel());
+			$html .= $this->format('<div'.$this->renderHtmlAttributes($attributes).'>', 'div', $item->getLevel(), $options);
 			$html .= '<h4>'.$item->getName().'</h4>';
 			$html .= ($item instanceof MenuItem) ? $item->getHtml('prefix') : '';
 			$html .= '<ul class="nav nav-list">';
@@ -127,19 +122,19 @@ class LeftMenuRenderer extends ListRenderer
 			
 			$html .= '</ul>';
 			$html .= ($item instanceof MenuItem) ? $item->getHtml('suffix') : '';
-			$html .= $this->format('</div>', 'div', $item->getLevel());
+			$html .= $this->format('</div>', 'div', $item->getLevel(), $options);
 		}
 		else
 		{
-			$html = $this->format('<li'.$this->renderHtmlAttributes($attributes).'>', 'li', $item->getLevel());
+			$html = $this->format('<li'.$this->renderHtmlAttributes($attributes).'>', 'li', $item->getLevel(), $options);
 			$html .= ($item instanceof MenuItem) ? $item->getHtml('prefix') : '';
 			
 			$html .= $this->renderLink($item, $options);
 			
 			$html .= ($item instanceof MenuItem) ? $item->getHtml('suffix') : '';
-			$html .= $this->format('</li>', 'li', $item->getLevel());
+			$html .= $this->format('</li>', 'li', $item->getLevel(), $options);
 		}
 
-        return $html;
-    }
+		return $html;
+	}
 }

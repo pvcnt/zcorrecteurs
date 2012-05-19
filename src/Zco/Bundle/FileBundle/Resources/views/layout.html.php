@@ -123,7 +123,7 @@
 				
 				<?php echo $view['ui']->footer(1); ?>
 				<?php echo $view['ui']->footer(2); ?>
-				<?php echo $view['ui']->footer(3, array('attributes' => array('class' => 'links bloc_partenaires'), 'preHtml' => 'Partenaires : ')); ?>
+				<?php echo $view['ui']->footer(3, array('childrenAttributes' => array('class' => 'links bloc_partenaires'), 'preHtml' => 'Partenaires : ')); ?>
 			</div>
 		</div>
 	    <?php endif ?>
