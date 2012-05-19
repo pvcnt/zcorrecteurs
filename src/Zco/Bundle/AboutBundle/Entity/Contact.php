@@ -46,9 +46,9 @@ class Contact
 		'Inscription' => 'Inscription, désinscription, connexion',
 		'Partenariat' => 'Partenariat et échange de visibilité',
 		'Don' => 'Dons et mécénat',
-		'Question sur l’association' => 'Question sur notre association',
-		'Question sur le service' => 'Question sur notre service',
-		'Bénévolat' => 'Bénévolat (site et association)',
+		'Association' => 'Question sur l\'association Corrigraphie',
+		'Question' => 'Question sur notre service',
+		'Bénévolat' => 'Bénévolat au sein de l\'équipe du site',
 		'Anomalie' => 'Anomalie importante, sécurité',
 		'Autre' => 'Autre',
 	);

@@ -38,8 +38,8 @@ class SujetsParticipeAction extends ForumActions
 			return redirect(123, '/forum/', MSG_ERROR);
 
 		Page::$titre = 'Liste des sujets auxquels '.htmlspecialchars($InfosUtilisateur['utilisateur_pseudo']).' a participé';
-		Page::$description = 'Descriptif rapide de l\'activité de '.htmlspecialchars($InfosUtilisateur['utilisateur_pseudo'])
-			.' sur les forums, à travers la liste des sujets auxquels il a participé.';
+		Page::$description = 'Activité de '.htmlspecialchars($InfosUtilisateur['utilisateur_pseudo']).' sur les forums';
+		$titre = $InfosUtilisateur['utilisateur_pseudo'];
 
 		if(!empty($_GET['id2']))
 		{
@@ -49,6 +49,7 @@ class SujetsParticipeAction extends ForumActions
 				return redirect(50, 'sujets-participe-'.$_GET['id'].'.html', MSG_ERROR);
 			}
 			Page::$titre .= ' - '.$InfosCategorie['cat_nom'];
+			$titre .= '-'.$InfosCategorie['cat_nom'];
 		}
 		else
 		{
@@ -60,9 +61,7 @@ class SujetsParticipeAction extends ForumActions
 
 		$nbSujetsParPage = 30;
 		$NombreDePages = ceil($CompterSujetsParticipe / $nbSujetsParPage);
-		$titre = $InfosUtilisateur['utilisateur_pseudo'];
-		if(isset($InfosCategorie))
-			$titre .= '-'.$InfosCategorie['cat_nom'];
+			
 		zCorrecteurs::VerifierFormatageUrl($titre, true, true, $NombreDePages);
 		$_GET['p'] = !empty($_GET['p']) && is_numeric($_GET['p']) ? $_GET['p'] : $NombreDePages;
 		if ($_GET['p'] > 1)

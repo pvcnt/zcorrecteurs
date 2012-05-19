@@ -40,7 +40,8 @@ class DefaultController extends Controller
 	public function indexAction()
 	{
 		\Page::$titre = 'À propos des zCorrecteurs';
-		\Page::$description = 'En savoir plus sur le site et son histoire.';
+		\Page::$description = 'Apprenez-en plus sur le site et son histoire et '
+			.'découvrez quelques chiffres marquants.';
 		fil_ariane();
 		
 		return render_to_response('ZcoAboutBundle::index.html.php');
@@ -52,7 +53,7 @@ class DefaultController extends Controller
 	public function bannersAction()
 	{
 		\Page::$titre = 'Aider et promouvoir le site';
-		\Page::$description = 'Découvrez une série de bannières et images que nous mettons à votre disposition si vous souhaitez faire la promotion du site';
+		\Page::$description = 'Découvrez une série de bannières et images que nous mettons à votre disposition si vous souhaitez faire la promotion du site.';
 		
 		return render_to_response('ZcoAboutBundle::banners.html.php', array(
 			'bannieres' => array(
@@ -73,7 +74,9 @@ class DefaultController extends Controller
 	public function teamAction()
 	{
 		\Page::$titre = 'Notre équipe';
-		\Page::$description = 'Ceux qui font vivre le site jour après jour, en corrigeant vos écrits et en nourissant le contenu du site';
+		\Page::$description = 'Ceux qui font vivre le site jour après jour, en '
+			.'corrigeant vos écrits, nourissant le contenu ou maintenant le site '
+			.'en état de marche.';
 		
 		return render_to_response('ZcoAboutBundle::team.html.php', array(
 			'equipe' => \Doctrine_Core::getTable('Utilisateur')->listerEquipe(),
@@ -87,7 +90,8 @@ class DefaultController extends Controller
 	public function corrigraphieAction()
 	{
 		\Page::$titre = 'L\'association Corrigraphie';
-		\Page::$description = 'Venez découvrir l\'association qui se cache derrière le site, Corrigraphie, son rôle et ses activités.';
+		\Page::$description = 'Venez découvrir l\'association qui se cache derrière '
+			.'le site, Corrigraphie, son rôle et ses activités.';
 		
 		return render_to_response('ZcoAboutBundle::corrigraphie.html.php');
 	}
@@ -99,7 +103,8 @@ class DefaultController extends Controller
 	public function openSourceAction()
 	{
 		\Page::$titre = 'Logiciel libre';
-		\Page::$description = 'Découvrez comment zCorrecteurs.fr utilise et contribue au monde des logiciels libres';
+		\Page::$description = 'zCorrecteurs.fr utilise de nombreux logiciels '
+			.'libres et en retour met à disposition son code source sous licence AGPL.';
 		
 		return render_to_response('ZcoAboutBundle::openSource.html.php');
 	}
@@ -112,7 +117,6 @@ class DefaultController extends Controller
 	public function contactAction(Request $request)
 	{
 		\Page::$titre = 'Demande de contact';
-		\Page::$description = 'Joignez l\'équipe du site zCorrecteurs.fr de manière personnalisée.';
 		
 		$contact = new Contact(!empty($_GET['objet']) ? $_GET['objet'] : null);
 		$form = $this->get('form.factory')->create(new ContactType(), $contact);
@@ -120,6 +124,14 @@ class DefaultController extends Controller
 		if ($contact->raison)
 		{
 			\Page::$titre .= ' - '.$contact->raison;
+			\Page::$description = 'Si vous avez une question ou une demande '
+				.'ayant pour objet « '.$contact->raison.' », vous pouvez joindre '
+				.'l\'équipe du site zCorrecteurs.fr de manière personnalisée.';
+		}
+		else
+		{
+			\Page::$description = 'Si vous avez une question ou une demande particulière, '
+				.'vous pouvez joindre l\'équipe du site zCorrecteurs.fr de manière personnalisée.';
 		}
 		
 		if ($request->getMethod() == 'POST')
