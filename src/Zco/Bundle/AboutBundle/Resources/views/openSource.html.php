@@ -23,7 +23,7 @@
 <h2>Code disponible sous licence libre</h2>
 
 <p class="good">
-	Le code source de ce site est disponible sous licence GPL, ce qui signifie 
+	Le code source de ce site est disponible sous licence AGPL, ce qui signifie 
 	que vous pouvez librement le consulter, l’analyser et y contribuer. Il est 
 	publié <a href="https://github.com/zcorrecteurs/zcorrecteurs.fr">sur notre dépôt GitHub</a>.
 	Toute personne souhaitant aider au développement de ce site peut dorénavant 
