@@ -82,4 +82,16 @@ final class Container
 	{
 		return self::getInstance()->getParameter($parameter);
 	}
+	
+	/**
+	 * Shortcut to check if a parameter exists using the
+	 * container instance.
+	 *
+	 * @param string $parameter		The parameter name.
+	 * @return Boolean				The presence of parameter in container.
+	 */
+	public static function hasParameter($parameter)
+	{
+		return self::getInstance()->hasParameter($parameter);
+	}
 }
