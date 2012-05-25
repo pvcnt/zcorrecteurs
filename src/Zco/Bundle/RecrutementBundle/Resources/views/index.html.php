@@ -35,7 +35,7 @@
 	<tr>
 		<td><a href="/recrutement/recrutement-12-integrez-l-equipe-des-zcorrecteurs.html">
 			<span class="titre">Correcteurs</span><br />
-			<span class="description">Corriger des documents et aider leurs auteurs</span>
+			<span class="description">Corriger des documents et aider les auteurs</span>
 		</a></td>
 		<td><a href="/recrutement/recrutement-14-rejoignez-nos-valeureux-developpeurs.html">
 			<span class="titre">Développeurs</span><br />
@@ -47,7 +47,7 @@
 		</a></td>
 		<td><a href="http://www.corrigraphie.org/adherer">
 			<span class="titre">Bénévoles associatifs</span><br />
-			<span class="description">Contribuer à la croissance de l’association</span>
+			<span class="description">Participer à la vie et la croissance de l’association</span>
 		</a></td>
 	</tr>
 </table>
