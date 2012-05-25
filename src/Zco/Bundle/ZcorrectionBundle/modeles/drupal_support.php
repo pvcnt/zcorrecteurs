@@ -44,7 +44,7 @@ function ListerTicketsSupportDrupal(array $cond = array())
 	* Etape préliminaire : les tickets ne sont retournés que si les 
 	* identifiants du compte drupal sont renseignés.
 	*/
-	if(!Container::hasParameter('zco_zcorrection.drupal_username') || Container::hasParameter('zco_zcorrection.drupal_password'))
+	if (!Container::hasParameter('zco_zcorrection.drupal_username') || !Container::hasParameter('zco_zcorrection.drupal_password'))
 	{
 		return array();
 	}
