@@ -48,6 +48,8 @@ RewriteRule ^forum/suggestions-et-commentaires-f8\.html /forum/forum-47-suggesti
 RewriteRule ^forum/typographie-f42.html /forum/forum-46-typographie.html [R=301,L]
 RewriteRule ^equipe\.html /apropos/equipe [R=301,L]
 RewriteRule ^membres\.html /membres/ [R=301,L]
+RewriteRule ^membres/$ /membres [R=301,L]
+RewriteRule ^membres/connectes.html$ /membres/connectes [R=301,L]
 RewriteRule ^engagements\.html$ /aide/page-17-nos-engagements.html [R=301,L]
 RewriteRule ^historique\.html$ /aide/page-14-historique-rapide.html [R=301,L]
 RewriteRule ^profil-([0-9]+)\.html$ /membres/$1/inconnu [L,R=301]
