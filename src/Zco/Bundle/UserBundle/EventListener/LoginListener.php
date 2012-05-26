@@ -1,22 +1,22 @@
 <?php
 
 /**
- * Copyright 2012 Corrigraphie
- * 
- * This file is part of zCorrecteurs.fr.
+ * zCorrecteurs.fr est le logiciel qui fait fonctionner www.zcorrecteurs.fr
  *
- * zCorrecteurs.fr is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * Copyright (C) 2012 Corrigraphie
  *
- * zCorrecteurs.fr is distributed in the hope that it will be useful,
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with zCorrecteurs.fr. If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 namespace Zco\Bundle\UserBundle\EventListener;
@@ -31,6 +31,12 @@ use Zco\Bundle\UserBundle\User\User;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\DependencyInjection\ContainerAware;
 
+/**
+ * Observateur lié intégrations les actions de connexion et déconnexion au 
+ * reste du site.
+ *
+ * @author vincent1870 <vincent@zcorrecteurs.fr>
+ */
 class LoginListener extends ContainerAware implements EventSubscriberInterface
 {
 	/**
@@ -39,14 +45,20 @@ class LoginListener extends ContainerAware implements EventSubscriberInterface
 	static public function getSubscribedEvents()
 	{
 		return array(
-			UserEvents::FORM_LOGIN => 'onFormLogin',
-			UserEvents::ENV_LOGIN => 'onEnvLogin',
-			UserEvents::PRE_LOGIN => 'onPreLogin',
-			UserEvents::POST_LOGIN => 'onPostLogin',
+			UserEvents::FORM_LOGIN  => 'onFormLogin',
+			UserEvents::ENV_LOGIN   => 'onEnvLogin',
+			UserEvents::PRE_LOGIN   => 'onPreLogin',
+			UserEvents::POST_LOGIN  => 'onPostLogin',
 			UserEvents::POST_LOGOUT => 'onPostLogout',
 		);
 	}
 	
+	/**
+	 * Tente de connecter l'utilisateur grâce aux informations stockées dans 
+	 * ses cookies (présents s'il a choisi la connexion automatique).
+	 *
+	 * @param EnvLoginEvent $event
+	 */
 	public function onEnvLogin(EnvLoginEvent $event)
 	{
 		if ($event->getState() > User::AUTHENTICATED_ANONYMOUSLY)
@@ -67,6 +79,11 @@ class LoginListener extends ContainerAware implements EventSubscriberInterface
 		}
 	}
 	
+	/**
+	 * Tente de connecter l'utilisateur suite à une soumission de formulaire.
+	 *
+	 * @param FormLoginEvent $event
+	 */
 	public function onFormLogin(FormLoginEvent $event)
 	{
 		$data = $event->getData();
@@ -75,8 +92,7 @@ class LoginListener extends ContainerAware implements EventSubscriberInterface
 			$event->setUser($user);
 		}
 		
-		$tentatives = \Doctrine_Core::getTable('Tentative')->countByIp(
-			ip2long($event->getRequest()->getClientIp()));
+		$tentatives = \Doctrine_Core::getTable('Tentative')->countByIp(ip2long($event->getRequest()->getClientIp()));
 		if ($tentatives >= 5)
 		{
 			$this->captcha = true;
@@ -94,6 +110,12 @@ class LoginListener extends ContainerAware implements EventSubscriberInterface
 		}
 	}
 	
+	/**
+	 * Vérifie que l'utilisateur souhaitant se connecter ne soit pas banni et 
+	 * que son compte ait bien été activé.
+	 * 
+	 * @param FilterLoginEvent $event
+	 */
 	public function onPreLogin(FilterLoginEvent $event)
 	{
 		if (!verifier('connexion', 0, $event->getUser()->getGroupId()))
@@ -106,13 +128,18 @@ class LoginListener extends ContainerAware implements EventSubscriberInterface
 		}
 	}
 	
+	/**
+	 * Supprime toutes les tentatives de connexion ratées et dépose les cookies 
+	 * nécessaires à une future connexion automatique après une connexion 
+	 * réalisée avec succès.
+	 * 
+	 * @param LoginEvent $event
+	 */
 	public function onPostLogin(LoginEvent $event)
 	{
-		//Supprime toutes les tentatives de connexion ratées pour cet utilisateur.
 		\Doctrine_Core::getTable('Tentative')->deleteByUserIdAndIp(
 			$event->getUser()->getId(), ip2long($this->container->get('request')->getClientIp()));
 		
-		//Dépose les cookies nécessaires à une future connexion automatique.
 		if ($event->isRemember())
 		{
 			setcookie('violon', $this->generateRememberKey($event->getUser()), strtotime("+1 year"), '/');
@@ -130,11 +157,18 @@ class LoginListener extends ContainerAware implements EventSubscriberInterface
 		\Doctrine_Core::getTable('Online')->deleteByUserId($event->getUser()->getId());
 	}
 	
+	/**
+	 * Génère une clé qui sera stockée dans les cookies du visiteur afin de 
+	 * se souvenir de lui lors de sa prochaine visite et prouver son identité.
+	 *
+	 * @param  Utilisateur $user
+	 * @return string
+	 */
 	private function generateRememberKey(\Utilisateur $user)
 	{
 		$browser = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
 		
-		return sha1($browser.$user['pseudo'].$user['mot_de_passe'].'ezgnmlwxsainymktiwuv');
+		return sha1($browser.$user->getUsername().$user->getPassword().'ezgnmlwxsainymktiwuv');
 	}
 }
 
@@ -163,13 +197,6 @@ if (false !== (list($id, $groupe, $user_pseudo, $user_mdp, $age) = Connexion($_P
 }
 else
 {
-	unset($_SESSION['id'], $_SESSION['pseudo'],
-		$_SESSION['groupe'], $_SESSION['groupes_secondaires'],
-		$_SESSION['refresh_droits']);
-	$user = Doctrine_Query::create()
-		->from('Utilisateur u')
-		->where('u.pseudo = ?', $_POST['utilisateur'])
-		->fetchOne();
 	$tentative = new Tentative;
 	$tentative->ip = ip2long(User::getIp());
 	$tentative->user = $user->id;
@@ -182,8 +209,5 @@ else
 			."Son IP est " . User::getIp() . "\n\nCordialement,\nzGardien.");
 	}
 	$tentative->save();
-	
-	return redirect('Couple pseudonyme/mot de passe inexistant !', 
-		$this->generateUrl('zco_user_session_login'), MSG_ERROR);
 }
 }*/

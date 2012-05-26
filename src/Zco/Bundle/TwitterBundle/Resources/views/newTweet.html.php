@@ -83,8 +83,6 @@
 		'chars_id' => 'tweet_chars',
 		'button_id' => 'tweet_submit',
 	)) ?>
-	<script type="text/javascript" src="/bundles/fosjsrouting/js/router.js"></script>
-    <script type="text/javascript" src="<?php echo $view['router']->generate('fos_js_routing_js', array('callback' => 'fos.Router.setData')) ?>"></script>
 	<?php $view['javelin']->initBehavior('twitter-bitly', array(
 		'textarea_id' => 'tweet_texte',
 		'button_id' => 'tweet_submit',

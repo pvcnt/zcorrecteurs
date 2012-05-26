@@ -1,23 +1,25 @@
 <?php
 
 /**
- * Copyright 2012 Corrigraphie
- * 
- * This file is part of zCorrecteurs.fr.
+ * zCorrecteurs.fr est le logiciel qui fait fonctionner www.zcorrecteurs.fr
  *
- * zCorrecteurs.fr is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * Copyright (C) 2012 Corrigraphie
  *
- * zCorrecteurs.fr is distributed in the hope that it will be useful,
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with zCorrecteurs.fr. If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Contrôleur gérant la réponse à un sujet.
@@ -32,9 +34,7 @@ class RepondreAction extends ForumActions
 		include(dirname(__FILE__).'/../modeles/sujets.php');
 		include(dirname(__FILE__).'/../modeles/messages.php');
 
-		$this->get('zco_vitesse.resource_manager')->requireResource('@ZcoForumBundle/Resources/public/js/sujet.js');
-
-		if(empty($_GET['id']) || !is_numeric($_GET['id']))
+		if (empty($_GET['id']) || !is_numeric($_GET['id']))
 		{
 			return redirect(45, '/forum/', MSG_ERROR);
 		}
@@ -42,40 +42,39 @@ class RepondreAction extends ForumActions
 		{
 			$InfosSujet = InfosSujet($_GET['id']);
 			$InfosForum = InfosCategorie($InfosSujet['sujet_forum_id']);
-			if(!$InfosSujet)
+			if (!$InfosSujet)
 			{
 				return redirect(47, '/forum/', MSG_ERROR);
 			}
-			elseif( (!verifier('repondre_sujets', $InfosSujet['sujet_forum_id']) AND !$InfosSujet['sujet_ferme']) OR (!verifier('repondre_sujets_fermes', $InfosSujet['sujet_forum_id']) AND $InfosSujet['sujet_ferme']))
+			if ((!verifier('repondre_sujets', $InfosSujet['sujet_forum_id']) AND !$InfosSujet['sujet_ferme']) OR (!verifier('repondre_sujets_fermes', $InfosSujet['sujet_forum_id']) AND $InfosSujet['sujet_ferme']))
 			{
-				throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+				throw new AccessDeniedHttpException;
 			}
 		}
+		
+		//Mise à jour de la position sur le site.
+		\Doctrine_Core::getTable('Online')->updateUserPosition($_SESSION['id'], 'ZcoForumBundle:repondre');
 
 		zCorrecteurs::VerifierFormatageUrl($InfosSujet['sujet_titre'], true, true);
 
-		//Vérification Anti-UP
-		function mysql2timestamp($datetime)
-		{
-			   $val = explode(" ",$datetime);
-			   $date = explode("-",$val[0]);
-			   $time = explode(":",$val[1]);
-			   return mktime($time[0],$time[1],$time[2],$date[1],$date[2],$date[0]);
-		}
-
-		if(empty($InfosSujet['dernier_message_auteur']))
+		if (empty($InfosSujet['dernier_message_auteur']))
 		{
 			$InfosSujet['dernier_message_auteur'] = $InfosSujet['sujet_auteur'];
 			$InfosSujet['dernier_message_date'] = $InfosSujet['sujet_date'];
 		}
-		$InfosSujet['dernier_message_date'] = mysql2timestamp($InfosSujet['dernier_message_date']);
+		
+		$InfosSujet['dernier_message_date'] = strtotime($InfosSujet['dernier_message_date']);
 		$timestamp_actuel = time();
-		if(verifier('anti_up', $InfosSujet['sujet_forum_id']) != 0)
+		if (verifier('anti_up', $InfosSujet['sujet_forum_id']) != 0)
+		{
 			$secondes = 3600*verifier('anti_up', $InfosSujet['sujet_forum_id']) - ($timestamp_actuel-$InfosSujet['dernier_message_date']);
+		}
 		else
+		{
 			$secondes = 0;
+		}
 
-		if(!verifier('epargne_anti_up') AND ($secondes > 0) AND $InfosSujet['dernier_message_auteur'] == $_SESSION['id'])
+		if (!verifier('epargne_anti_up') AND ($secondes > 0) AND $InfosSujet['dernier_message_auteur'] == $_SESSION['id'])
 		{
 			return redirect(134, '/forum/sujet-'.$_GET['id'].'-'.$InfosSujet['sujet_dernier_message'].'-'.rewrite($InfosSujet['sujet_titre']).'.html', MSG_ERROR);
 		}
@@ -83,29 +82,28 @@ class RepondreAction extends ForumActions
 		Page::$titre = htmlspecialchars($InfosSujet['sujet_titre']).' - Ajout d\'une réponse';
 
 		//--- Si rien n'a été envoyé ---
-		if(!isset($_POST['send']) && !isset($_POST['send_reponse_rapide']))
+		if (!isset($_POST['send']) && !isset($_POST['send_reponse_rapide']))
 		{
 			//La réponse rapide passe par-dessus le reste
-			if(isset($_POST['plus_options']))
+			if (isset($_POST['plus_options']))
+			{
 				$texte_zform = $_POST['texte'];
-
+			}
 			//En cas de citation simple
-			elseif(!empty($_GET['id2']) AND is_numeric($_GET['id2']))
+			elseif (!empty($_GET['id2']) AND is_numeric($_GET['id2']))
 			{
 				$InfosMessage = InfosMessage($_GET['id2']);
-				if(!$InfosMessage)
+				if ($InfosMessage)
 				{
-					return redirect(63, '/forum/', MSG_ERROR);
+					$texte_zform = '<citation rid="'.$_GET['id2'].'">'.$InfosMessage['message_texte'].'</citation>';
 				}
-				$texte_zform = '<citation rid="'.$_GET['id2'].'">'.$InfosMessage['message_texte'].'</citation>';
 			}
-
-			//En cas de multicitation
-			elseif(!empty($_SESSION['forum_citations'][$_GET['id']]))
+			//En cas de citation multiple
+			elseif (!empty($_SESSION['forum_citations'][$_GET['id']]))
 			{
 				$texte_zform = '';
 				$i = 0;
-				foreach($_SESSION['forum_citations'][$_GET['id']] as $id_msg)
+				foreach ($_SESSION['forum_citations'][$_GET['id']] as $id_msg)
 				{
 					$infos = InfosMessage($id_msg);
 					$texte_zform .= ($i != 0 ? "\n\n" : '').
@@ -114,13 +112,15 @@ class RepondreAction extends ForumActions
 				}
 				unset($_SESSION['forum_citations'][$_GET['id']]);
 			}
-
 			//Si on doit afficher une MAP
-			elseif(!empty($InfosForum['cat_map']) && $InfosForum['cat_map_type'] == MAP_ALL)
+			elseif (!empty($InfosForum['cat_map']) && $InfosForum['cat_map_type'] == MAP_ALL)
+			{
 				!isset($texte_zform) ? $texte_zform = $InfosForum['cat_map'] : $texte_zform .= "\n".$InfosForum['cat_map'];
-
+			}
 			else
+			{
 				$texte_zform = '';
+			}
 
 			//On stocke le dernier message du sujet
 			$_SESSION['sujet_dernier_message'][$_GET['id']] = $InfosSujet['sujet_dernier_message'];
@@ -130,9 +130,10 @@ class RepondreAction extends ForumActions
 				htmlspecialchars($InfosSujet['sujet_titre']) => 'sujet-'.intval($_GET['id']).'-'.rewrite($InfosSujet['sujet_titre']).'.html',
 				'Ajout d\'une réponse au sujet'
 			));
-			$this->get('zco_vitesse.resource_manager')->requireResource(
-			    '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css'
-			);
+			$this->get('zco_vitesse.resource_manager')->requireResources(array(
+			    '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
+				'@ZcoForumBundle/Resources/public/js/sujet.js'
+			));
 			
 			return render_to_response(array(
 				'InfosSujet' => $InfosSujet,
@@ -146,20 +147,21 @@ class RepondreAction extends ForumActions
 		else
 		{
 			//On a validé le formulaire. Des vérifications s'imposent.
-			if(empty($_POST['texte']))
+			if (empty($_POST['texte']))
 			{
 				return redirect(17, '/forum/', MSG_ERROR);
 			}
-			elseif(!empty($_SESSION['sujet_dernier_message'][$_GET['id']]) && $_SESSION['sujet_dernier_message'][$_GET['id']] != $InfosSujet['sujet_dernier_message'])
+			elseif (!empty($_SESSION['sujet_dernier_message'][$_GET['id']]) && $_SESSION['sujet_dernier_message'][$_GET['id']] != $InfosSujet['sujet_dernier_message'])
 			{
 				//On stocke le dernier message du sujet
 				$_SESSION['sujet_dernier_message'][$_GET['id']] = $InfosSujet['sujet_dernier_message'];
 
 				//Inclusion de la vue
 				fil_ariane($InfosSujet['sujet_forum_id'], 'Ajout d\'une réponse au sujet');
-				$this->get('zco_vitesse.resource_manager')->requireResource(
-				    '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css'
-				);
+				$this->get('zco_vitesse.resource_manager')->requireResources(array(
+				    '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
+					'@ZcoForumBundle/Resources/public/js/sujet.js'
+				));
 				
 				return render_to_response(array(
 					'InfosSujet' => $InfosSujet,
@@ -173,7 +175,7 @@ class RepondreAction extends ForumActions
 			else
 			{
 				unset($_SESSION['sujet_dernier_message'][$_GET['id']]);
-				if(!isset($_POST['send_reponse_rapide']))
+				if (!isset($_POST['send_reponse_rapide']))
 				{
 					if(verifier('epingler_sujets', $InfosSujet['sujet_forum_id']))
 						$InfosSujet['sujet_annonce'] = isset($_POST['annonce']);
@@ -197,13 +199,13 @@ class RepondreAction extends ForumActions
 				$nouveau_message_id = EnregistrerNouveauMessage($_GET['id'], $InfosSujet['sujet_forum_id'], $InfosSujet['sujet_annonce'], $InfosSujet['sujet_ferme'], $InfosSujet['sujet_resolu'], $InfosSujet['sujet_corbeille'], $InfosSujet['sujet_auteur']);
 
 				//On restaure ou met en corbeille le sujet si besoin
-				if($changer_corbeille != $InfosSujet['sujet_corbeille'])
+				if ($changer_corbeille != $InfosSujet['sujet_corbeille'])
 				{
-					if($changer_corbeille == 1)
+					if ($changer_corbeille == 1)
 					{
 						Corbeille($_GET['id'], $InfosSujet['sujet_forum_id']);
 					}
-					elseif($changer_corbeille == 0)
+					elseif ($changer_corbeille == 0)
 					{
 						Restaurer($_GET['id'], $InfosSujet['sujet_forum_id']);
 					}

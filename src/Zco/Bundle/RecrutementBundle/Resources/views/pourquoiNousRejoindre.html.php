@@ -21,7 +21,7 @@
 			<p class="intro-text">
 				Participez aux discussions internes avec les autres 
 				bénévoles, contribuez à la définition de nos objectifs 
-				et permettez les réaliser. Soyez informés de façon 
+				et permettez de les réaliser. Soyez informés de façon 
 				privilégiée de toutes nos activités et réagissez.
 			</p>
 		</td>

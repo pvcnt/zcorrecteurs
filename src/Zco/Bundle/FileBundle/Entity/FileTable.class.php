@@ -1,22 +1,22 @@
 <?php
 
 /**
- * Copyright 2012 Corrigraphie
- * 
- * This file is part of zCorrecteurs.fr.
+ * zCorrecteurs.fr est le logiciel qui fait fonctionner www.zcorrecteurs.fr
  *
- * zCorrecteurs.fr is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * Copyright (C) 2012 Corrigraphie
  *
- * zCorrecteurs.fr is distributed in the hope that it will be useful,
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with zCorrecteurs.fr. If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /**
@@ -161,21 +161,14 @@ class FileTable extends Doctrine_Table
 		{
 			$targetDate = date('Y-m-d H:i:s', strtotime('-1 week'));
 			$query
-				->andWhere('date >= ? OR edition_date >= ?', array($targetDate, $targetDate))
+				->andWhere('date >= ?', $targetDate)
 				->orderBy('edition_date DESC');
 		}
 		elseif ($id === self::FOLDER_THIS_MONTH)
 		{
 			$targetDate = date('Y-m-d H:i:s', strtotime('-1 month'));
 			$query
-				->andWhere('date >= ? OR edition_date >= ?', array($targetDate, $targetDate))
-				->orderBy('date DESC');
-		}
-		elseif ($id === self::FOLDER_THIS_MONTH)
-		{
-			$targetDate = date('Y-m-d H:i:s', strtotime('-1 month'));
-			$query
-				->andWhere('date >= ? OR edition_date >= ?', array($targetDate, $targetDate))
+				->andWhere('date >= ?', $targetDate)
 				->orderBy('date DESC');
 		}
 		elseif ($id === self::FOLDER_LAST_IMPORT)

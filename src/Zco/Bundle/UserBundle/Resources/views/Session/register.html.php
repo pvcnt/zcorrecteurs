@@ -12,7 +12,7 @@
 	de vous réinscrire.</p>
 <p>
 	En cas de problème quelconque, vous pouvez 
-	<a href="<?php echo $view['router']->generate('zco_about_contact') ?>">nous joindre</a>.
+	<a href="<?php echo $view['router']->generate('zco_about_contact', array('objet' => 'Inscription')) ?>">nous joindre</a>.
 	<a href="/aide/page-1-inscription.html">
 		<img src="/img/misc/aide.png" alt="" />
 		Plus d’informations sur l’inscription.

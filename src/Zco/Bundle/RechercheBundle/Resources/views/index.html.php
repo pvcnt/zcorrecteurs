@@ -154,7 +154,7 @@
 		</p>
 
 		<?php
-			echo $view->render('ZcoRechercheBundle::_'.$_flags['section'].'.php',
+			echo $view->render('ZcoRechercheBundle::_'.$_flags['section'].'.html.php',
 				array('Resultats' => $Resultats,
 				      'Pages' => $pages
 			));

@@ -11,9 +11,9 @@
 	<li<?php if ($currentTab === 'banners') echo ' class="active"'; ?>>
 		<a href="<?php echo $view['router']->generate('zco_about_banners') ?>">Bannières</a>
 	</li>
-	<?php /*<li<?php if ($currentTab === 'opensource') echo ' class="active"'; ?>>
+	<li<?php if ($currentTab === 'opensource') echo ' class="active"'; ?>>
 		<a href="<?php echo $view['router']->generate('zco_about_opensource') ?>">Logiciel libre</a>
-	</li>*/ ?>
+	</li>
 	<li<?php if ($currentTab === 'contact') echo ' class="active"'; ?>>
 		<a href="<?php echo $view['router']->generate('zco_about_contact') ?>">Contact</a>
 	</li>

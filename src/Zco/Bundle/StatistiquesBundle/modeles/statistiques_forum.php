@@ -1,22 +1,22 @@
 <?php
 
 /**
- * Copyright 2012 Corrigraphie
- * 
- * This file is part of zCorrecteurs.fr.
+ * zCorrecteurs.fr est le logiciel qui fait fonctionner www.zcorrecteurs.fr
  *
- * zCorrecteurs.fr is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * Copyright (C) 2012 Corrigraphie
  *
- * zCorrecteurs.fr is distributed in the hope that it will be useful,
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with zCorrecteurs.fr. If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -171,26 +171,30 @@ function RecupererStatistiquesForum()
 			array_keys($last_posts),
 			array_keys($last_topics),
 			array_keys($coup_coeur));
-		$stmt = $dbh->prepare('SELECT lunonlu_sujet_id, '
-			.'lunonlu_message_id, lunonlu_participe '
-			.'FROM '.Container::getParameter('database.prefix').'forum_lunonlu '
-			.'WHERE lunonlu_utilisateur_id = :id_user '
-				.' AND lunonlu_sujet_id IN('
-				.implode(', ', $sids)
-				.')');
-		$stmt->bindParam(':id_user', $_SESSION['id']);
-		$stmt->execute();
-		while($d = $stmt->fetch())
+		
+		if (!empty($sids))
 		{
-			if(isset($last_posts[$d['lunonlu_sujet_id']]))
-			$last_posts[$d['lunonlu_sujet_id']] = array_merge(
-				$last_posts[$d['lunonlu_sujet_id']], $d);
-			if(isset($last_topics[$d['lunonlu_sujet_id']]))
-			$last_topics[$d['lunonlu_sujet_id']] = array_merge(
-				$last_topics[$d['lunonlu_sujet_id']], $d);
-			if(isset($coup_coeur[$d['lunonlu_sujet_id']]))
-			$coup_coeur[$d['lunonlu_sujet_id']] = array_merge(
-				$coup_coeur[$d['lunonlu_sujet_id']], $d);
+			$stmt = $dbh->prepare('SELECT lunonlu_sujet_id, '
+				.'lunonlu_message_id, lunonlu_participe '
+				.'FROM '.Container::getParameter('database.prefix').'forum_lunonlu '
+				.'WHERE lunonlu_utilisateur_id = :id_user '
+					.' AND lunonlu_sujet_id IN('
+					.implode(', ', $sids)
+					.')');
+			$stmt->bindParam(':id_user', $_SESSION['id']);
+			$stmt->execute();
+			while($d = $stmt->fetch())
+			{
+				if(isset($last_posts[$d['lunonlu_sujet_id']]))
+				$last_posts[$d['lunonlu_sujet_id']] = array_merge(
+					$last_posts[$d['lunonlu_sujet_id']], $d);
+				if(isset($last_topics[$d['lunonlu_sujet_id']]))
+				$last_topics[$d['lunonlu_sujet_id']] = array_merge(
+					$last_topics[$d['lunonlu_sujet_id']], $d);
+				if(isset($coup_coeur[$d['lunonlu_sujet_id']]))
+				$coup_coeur[$d['lunonlu_sujet_id']] = array_merge(
+					$coup_coeur[$d['lunonlu_sujet_id']], $d);
+			}
 		}
 	}
 

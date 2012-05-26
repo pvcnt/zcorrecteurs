@@ -1,22 +1,22 @@
 <?php
 
 /**
- * Copyright 2012 Corrigraphie
- * 
- * This file is part of zCorrecteurs.fr.
+ * zCorrecteurs.fr est le logiciel qui fait fonctionner www.zcorrecteurs.fr
  *
- * zCorrecteurs.fr is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * Copyright (C) 2012 Corrigraphie
  *
- * zCorrecteurs.fr is distributed in the hope that it will be useful,
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with zCorrecteurs.fr. If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 namespace Zco\Bundle\PubliciteBundle\EventListener;
@@ -62,20 +62,23 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 	 */
 	public function onFilterLeftMenu(FilterMenuEvent $event)
 	{
-		if ($this->container->getParameter('kernel.environment') === 'prod' && is_file(BASEPATH.'/vendor/linklift/liens.php'))
+		$block = $event->getRoot()->getChild('Partenaires');
+		
+		//Ajout des liens Linklift si nécessaire.
+		if ($this->container->getParameter('kernel.environment') === 'prod' 
+			&& is_file(BASEPATH.'/vendor/linklift/liens.php'))
 		{
 			ob_start();
 			include(BASEPATH.'/vendor/linklift/liens.php');
-			$event->getRoot()->setHtml(ob_get_clean(), 'prefix');
+			$block->setHtml(ob_get_clean(), 'prefix');
 		}
 		
-		$block = $event->getRoot()->getChild('Partenaires');
+		//Génération du corps du menu.
 		$this->generateHtml('menu', $block);
 		
 		//Ajoute un lien vers le formulaire de contact si le bundle est activé.
 		if (array_key_exists('ZcoAboutBundle', $this->container->getParameter('kernel.bundles')))
 		{
-			
 			$class = $block->getAttribute('class', '');
 			$block->setAttribute('class', trim($class.' bloc_partenaires'));
 			$block->addChild('Votre site ici ?', array(
@@ -128,7 +131,7 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 		$partenaires = \Doctrine_Core::getTable('Publicite')->getFor($section);
 		if ($partenaires !== false)
 		{
-			foreach($partenaires as $p)
+			foreach ($partenaires as $p)
 			{
 				if ($p['contenu_js'] == true)
 				{

@@ -29,7 +29,7 @@
 
 	<fieldset>
 		<legend>Contenu de l'aide</legend>
-		<?php echo $view->render('::zform.html.php', array('texte' => htmlspecialchars($page['contenu']), 'tabindex' => 5)) ?>
+		<?php echo $view->render('::zform.html.php', array('texte' => $page['contenu'], 'tabindex' => 5)) ?>
 	</fieldset>
 
 	<div class="send"><input type="submit" value="Envoyer" tabindex="6" /></div>

@@ -2,7 +2,7 @@
 
 <?php echo $view->render('ZcoAboutBundle::tabs.html.php', array('currentTab' => 'opensource')) ?>
 
-<h1>Nous utilisons et publions des logiciels libres.</h1>
+<h1>Ce site est un logiciel libre. <a href="http://developpeurs.zcorrecteurs.fr">En savoir plus &rarr;</a></h1>
 
 <p class="good">
 	L’équipe de zCorrecteurs.fr a la particularité de mélanger en son sein 
@@ -23,17 +23,17 @@
 <h2>Code disponible sous licence libre</h2>
 
 <p class="good">
-	Le code source de ce site est disponible sous licence GPL, ce qui signifie 
+	Le code source de ce site est disponible sous licence AGPL, ce qui signifie 
 	que vous pouvez librement le consulter, l’analyser et y contribuer. Il est 
-	publié <a href="https://github.com/zcorrecteurs/zcorrecteurs.fr">sur GitHub</a>.
+	publié <a href="https://github.com/zcorrecteurs/zcorrecteurs.fr">sur notre dépôt GitHub</a>.
 	Toute personne souhaitant aider au développement de ce site peut dorénavant 
 	le faire, que ce soit en nous aidant à corriger des dysfontionnements ou en 
 	développant de nouvelles fonctionnalités demandées par la communauté.
 </p>
 
-<p class="well center" style="font-size: 1.1em; padding: 10px;">
-	Toutes les ressources pour les développeurs sont disponibles sur 
-	<a href="http://developpeurs.zcorrecteurs.fr">developpeurs.zcorrecteurs.fr</a>.
+<p class="well center" style="font-size: 1.1em; padding: 10px; line-height: 1.5em;">
+	Toutes les ressources pour les développeurs sont disponibles sur notre portail dédié<br />
+	<a href="http://developpeurs.zcorrecteurs.fr" class="bold">developpeurs.zcorrecteurs.fr</a>
 </p>
 
 <h2>Logiciels libres utilisés</h2>
@@ -59,3 +59,8 @@
 	<li><a href="http://symfony.com/">Symfony</a></li>
 	<li><a href="http://swiftmailer.org/">Swiftmailer</a></li>
 </ul>
+
+<p class="good">
+	Certaines icônes du site proviennent du site <a href="http://www.famfamfam.com/lab/icons/silk/">FamFamFam</a>, 
+	que nous remercions au passage.
+</p>

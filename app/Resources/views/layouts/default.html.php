@@ -150,14 +150,15 @@
 					
 					<?php echo $view['ui']->footer(1); ?>
 					<?php echo $view['ui']->footer(2); ?>
-					<?php echo $view['ui']->footer(3, array('attributes' => array('class' => 'links bloc_partenaires'), 'preHtml' => 'Partenaires : ')); ?>
+					<?php echo $view['ui']->footer(3, array('childrenAttributes' => array('class' => 'links bloc_partenaires'), 'preHtml' => 'Partenaires : ')); ?>
 				</div>
 			</div>
 		    <?php endif ?>
 		
 			<?php foreach ($view['vitesse']->javascripts() as $assetUrl): ?>
     		    <script type="text/javascript" src="<?php echo $assetUrl ?>"></script>
-    		<?php endforeach ?>    		
+    		<?php endforeach ?>
+			<script type="text/javascript" src="<?php echo $view['router']->generate('fos_js_routing_js', array('callback' => 'fos.Router.setData')) ?>"></script>
 			<?php echo $view['javelin']->renderHTMLFooter() ?>
 		</div>
 	</body>

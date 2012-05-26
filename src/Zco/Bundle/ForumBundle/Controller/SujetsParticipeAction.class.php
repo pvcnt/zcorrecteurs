@@ -1,22 +1,22 @@
 <?php
 
 /**
- * Copyright 2012 Corrigraphie
- * 
- * This file is part of zCorrecteurs.fr.
+ * zCorrecteurs.fr est le logiciel qui fait fonctionner www.zcorrecteurs.fr
  *
- * zCorrecteurs.fr is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * Copyright (C) 2012 Corrigraphie
  *
- * zCorrecteurs.fr is distributed in the hope that it will be useful,
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with zCorrecteurs.fr. If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /**
@@ -38,8 +38,8 @@ class SujetsParticipeAction extends ForumActions
 			return redirect(123, '/forum/', MSG_ERROR);
 
 		Page::$titre = 'Liste des sujets auxquels '.htmlspecialchars($InfosUtilisateur['utilisateur_pseudo']).' a participé';
-		Page::$description = 'Descriptif rapide de l\'activité de '.htmlspecialchars($InfosUtilisateur['utilisateur_pseudo'])
-			.' sur les forums, à travers la liste des sujets auxquels il a participé.';
+		Page::$description = 'Activité de '.htmlspecialchars($InfosUtilisateur['utilisateur_pseudo']).' sur les forums';
+		$titre = $InfosUtilisateur['utilisateur_pseudo'];
 
 		if(!empty($_GET['id2']))
 		{
@@ -49,6 +49,7 @@ class SujetsParticipeAction extends ForumActions
 				return redirect(50, 'sujets-participe-'.$_GET['id'].'.html', MSG_ERROR);
 			}
 			Page::$titre .= ' - '.$InfosCategorie['cat_nom'];
+			$titre .= '-'.$InfosCategorie['cat_nom'];
 		}
 		else
 		{
@@ -60,9 +61,7 @@ class SujetsParticipeAction extends ForumActions
 
 		$nbSujetsParPage = 30;
 		$NombreDePages = ceil($CompterSujetsParticipe / $nbSujetsParPage);
-		$titre = $InfosUtilisateur['utilisateur_pseudo'];
-		if(isset($InfosCategorie))
-			$titre .= '-'.$InfosCategorie['cat_nom'];
+			
 		zCorrecteurs::VerifierFormatageUrl($titre, true, true, $NombreDePages);
 		$_GET['p'] = !empty($_GET['p']) && is_numeric($_GET['p']) ? $_GET['p'] : $NombreDePages;
 		if ($_GET['p'] > 1)

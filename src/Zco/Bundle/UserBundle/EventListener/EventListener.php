@@ -1,22 +1,22 @@
 <?php
 
 /**
- * Copyright 2012 Corrigraphie
- * 
- * This file is part of zCorrecteurs.fr.
+ * zCorrecteurs.fr est le logiciel qui fait fonctionner www.zcorrecteurs.fr
  *
- * zCorrecteurs.fr is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * Copyright (C) 2012 Corrigraphie
  *
- * zCorrecteurs.fr is distributed in the hope that it will be useful,
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with zCorrecteurs.fr. If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 namespace Zco\Bundle\UserBundle\EventListener;
@@ -97,7 +97,7 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 		
 		//Tentative de connexion depuis l'environnement courant. Normalement seul
 		//->login() peut générer une LoginException, mais on préfère encadrer le 
-		//tout par un try{ } en cas de listener mal écrit.
+		//tout par un try{ } en cas d'observateur mal écrit.
 		try
 		{
 			if (($userEntity = $user->attemptEnvLogin($event->getRequest())) instanceof \Utilisateur)
@@ -150,7 +150,15 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 	 */
 	public function onKernelController(FilterControllerEvent $event)
 	{
-		if (!$this->container->get('request')->isXmlHttpRequest())
+		$request = $this->container->get('request');
+		
+		if (
+			//Requête asynchrone type Ajax
+			!$request->isXmlHttpRequest()
+			//Chargement d'une page non HMTL (flux, Javascript, etc.)
+			&& $request->attributes->get('_format', 'html') === 'html'
+			//Route interne (type profiler)
+			&& substr($request->attributes->get('_route'), 0, 1) !== '_')
 		{
 			$this->refreshSession();
 		}
@@ -190,6 +198,10 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 		));
 	}
 	
+	/**
+	 * Met à jour les différentes données liées à la session, en particulier la 
+	 * table gardant une trace des visiteurs navigant actuellement sur le site.
+	 */
 	private function refreshSession()
 	{
 		$dbh = \Doctrine_Manager::connection()->getDbh();
@@ -200,7 +212,7 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 		$id1 = !empty($_GET['id']) ? $_GET['id'] : 0;
 		$id2 = !empty($_GET['id2']) ? $_GET['id2'] : 0;
 		$id = $_SESSION['id'];
-
+		
 		//Si la dernière IP diffère, on la met à jour (en cas de membre connecté uniquement)
 		if (!isset($_SESSION['last_ip']) || $_SESSION['last_ip'] != $ip)
 		{
@@ -253,17 +265,41 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 
 			$_SESSION['last_ip'] = $ip;
 		}
-
+		
 		//On met à jour la table des sessions.
-		$stmt = $dbh->prepare('REPLACE INTO '.$this->container->getParameter('database.prefix').'connectes(connecte_ip, '
-			.'connecte_id_utilisateur, connecte_debut, connecte_derniere_action, '
-			.'connecte_id_categorie, connecte_user_agent) '
-			.'VALUES(:ip, :u, NOW(), NOW(), :cat, :agent)');
-		$stmt->bindParam('ip', $ip);
-		$stmt->bindParam('u', $id);
-		$stmt->bindParam('cat', $cat);
-		$stmt->bindValue('agent', $request->server->get('HTTP_USER_AGENT'));
+		$stmt = $dbh->prepare('UPDATE '.$this->container->getParameter('database.prefix').'connectes '
+			.'SET connecte_ip = :ip, connecte_derniere_action = NOW(), '
+			.'connecte_id_categorie = :cat, connecte_user_agent = :agent, '
+			.'connecte_nom_action = \'\' '
+			.'WHERE connecte_id_utilisateur = :u');
+		$stmt->bindValue(':ip', $ip, \PDO::PARAM_INT);
+		$stmt->bindValue(':u', $id, \PDO::PARAM_INT);
+		$stmt->bindValue(':cat', $cat, \PDO::PARAM_INT);
+		$stmt->bindValue(':agent', $request->server->get('HTTP_USER_AGENT'));
 		$stmt->execute();
+		
+		if (!$stmt->rowCount())
+		{
+			$stmt->closeCursor();
+			
+			$stmt = $dbh->prepare('INSERT INTO '.$this->container->getParameter('database.prefix').'connectes(connecte_ip, '
+				.'connecte_id_utilisateur, connecte_debut, connecte_derniere_action, '
+				.'connecte_id_categorie, connecte_user_agent) '
+				.'VALUES(:ip, :u, NOW(), NOW(), :cat, :agent)');
+			$stmt->bindParam(':ip', $ip);
+			$stmt->bindParam(':u', $id);
+			$stmt->bindParam(':cat', $cat);
+			$stmt->bindValue(':agent', $request->server->get('HTTP_USER_AGENT'));
+			try
+			{
+				$stmt->execute();
+			}
+			catch (\PDOException $e)
+			{
+				//Bloque des erreurs survenant quelquefois lors de l'insertion 
+				//d'un nouvel enregistrement (clé primaire dupliquée).
+			}
+		}
 		$stmt->closeCursor();
 	}
 }

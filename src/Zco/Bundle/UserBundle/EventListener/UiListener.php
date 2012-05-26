@@ -1,28 +1,29 @@
 <?php
 
 /**
- * Copyright 2012 Corrigraphie
- * 
- * This file is part of zCorrecteurs.fr.
+ * zCorrecteurs.fr est le logiciel qui fait fonctionner www.zcorrecteurs.fr
  *
- * zCorrecteurs.fr is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * Copyright (C) 2012 Corrigraphie
  *
- * zCorrecteurs.fr is distributed in the hope that it will be useful,
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with zCorrecteurs.fr. If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 namespace Zco\Bundle\UserBundle\EventListener;
 
 use Zco\Bundle\AdminBundle\AdminEvents;
 use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
+use Zco\Bundle\UserBundle\Form\Type\FormLoginType;
 use Knp\Menu\ItemInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\DependencyInjection\ContainerAware;
@@ -231,23 +232,18 @@ class UiListener extends ContainerAware implements EventSubscriberInterface
 			),
 		));
 		
-		/*if (!verifier('connecte'))
+		//Intégration du formulaire de connexion rapide sous Bootstrap.
+		if (!verifier('connecte') && $event->getTemplate() === 'bootstrap')
 		{
-			// Sinon formulaire de connexion rapide si la personne n'est pas connectée.
-			$event->getRoot()->getChild('Mon compte')->setHtml('<form id="sidebarLogin" method="post" class="connexion" action="'.$this->container->get('router')->generate('zco_user_session_login').'">', 'prefix');
-			$event->getRoot()->getChild('Mon compte')->setHtml('</form>', 'suffix');
+			$form     = $this->container->get('form.factory')->create(new FormLoginType());
+			$formView = $form->createView();
+			unset($formView['remember']);
 			
-			$event->getRoot()->getChild('Mon compte')->addChild('Nom d\'utilisateur')
-				 ->setHtml('<input type="text" name="utilisateur" id="sideLogin" />');
-		
-			$event->getRoot()->getChild('Mon compte')->addChild('Mot de passe')
-				 ->setHtml('<input type="password" name="mot_de_passe" id="sidePassword" />');
-		
-			$event->getRoot()->getChild('Mon compte')->addChild('Connexion automatique')
-				 ->setHtml('<input name="connexion_auto" id="sideConnexion_auto" type="checkbox" checked="checked" size="1" style="width: auto; display: inline;"/> Automatique');
-		
-			$event->getRoot()->getChild('Mon compte')->addChild('Se connecter')
-				 ->setHtml('<input id="sideSubmit" class="btn" type="submit" value="Se connecter" />');
-		}*/
+			$event
+				->getRoot()
+				->getChild('Mon compte')
+				->addChild('Formulaire connexion', array('attributes' => array('class' => 'quick-login-form')))
+				->setHtml(render_to_string('ZcoUserBundle:Session:quickLogin.html.php', array('form' => $formView)));
+		}
 	}
 }

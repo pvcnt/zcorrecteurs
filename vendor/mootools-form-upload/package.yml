@@ -1,0 +1,13 @@
+name: Form.Upload
+author: astolwijk
+current: 0.1
+category: utilities
+tags: [upload, html5, file, "drag and drop"]
+license: MIT
+description: HTML5 Upload for multiple files
+demo: http://aryweb.nl/projects/mootools-form-upload/Demos/Upload.html
+
+sources:
+  - "Source/Form.MultipleFileInput.js"
+  - "Source/Request.File.js"
+  - "Source/Form.Upload.js"
