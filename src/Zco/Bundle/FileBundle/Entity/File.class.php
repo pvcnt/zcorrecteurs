@@ -135,11 +135,11 @@ class File extends BaseFile
         {
             if (strpos($this->getMimetype(), $mime) === 0)
             {
-                return '/bundles/zcofiles/img/mimetypes/'.$icon;
+                return '/bundles/zcofile/img/mimetypes/'.$icon;
             }
         }
         
-        return '/bundles/zcofiles/img/placeholder.png';
+        return '/bundles/zcofile/img/placeholder.png';
     }
     
     /**

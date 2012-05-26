@@ -120,11 +120,18 @@ Form.MultipleFileInput = new Class({
 		.grab(div)
 		.inject(this.list);
 		
-		reader = new FileReader();
-        reader.onload = function (event) {
-            img.set('src', event.target.result);
-        };
-        reader.readAsDataURL(file);
+		if (file.type.indexOf('image/') == 0)
+		{
+			reader = new FileReader();
+	        reader.onload = function (event) {
+	            img.set('src', event.target.result);
+	        };
+	        reader.readAsDataURL(file);
+		}
+		else
+		{
+			img.set('src', '/bundles/zcofile/img/placeholder.png')
+		}
         
 		this.fireEvent('add', file);
 		return this;

@@ -224,7 +224,7 @@ var Editor = new Class({
 			'class': 'zform-rawlink zform-squeezebox-link',
 			'href': '/fichiers?xhr=1&textarea=' + id,
 			'text': 'Envoi de fichiers',
-			'style': 'background-image: url(/bundles/zcofiles/img/zform_icon.png)'
+			'style': 'background-image: url(/bundles/zcofile/img/zform_icon.png)'
 		}));
 	
 		var previewButton = new Element('a', {
