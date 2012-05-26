@@ -37,8 +37,8 @@ RewriteCond %{HTTP_HOST} ^zcorrecteurs.fr$
 RewriteRule ^(.*) http://www.zcorrecteurs.fr/$1 [L,R=301]
 
 # Si aucun bêta-test n'est en cours.
-#RewriteCond %{HTTP_HOST} ^test.zcorrecteurs.fr$
-#RewriteRule ^(.*) http://www.zcorrecteurs.fr/$1 [L,R=301]
+RewriteCond %{HTTP_HOST} ^test.zcorrecteurs.fr$
+RewriteRule ^(.*) http://www.zcorrecteurs.fr/$1 [L,R=301]
 
 # Redirections de compatiblité avec les anciennes url
 RewriteRule ^blog/categorie-4-insolite\.html /blog/categorie-25-insolite.html [R=301,L]
