@@ -59,7 +59,7 @@
 			<td class="centre">
 				<?php if(verifier('quiz_ajouter_questions') || ($q['utilisateur_id'] == $_SESSION['id'] && verifier('quiz_ajouter_questions_siens'))){ ?>
 				<a href="ajouter-question-<?php echo $quiz['id']; ?>.html">
-					<img src="/img/quiz/ajouter.png" alt="Ajouter" />
+					<img src="/bundles/zcoquiz/img/ajouter.png" alt="Ajouter" />
 				</a>
 				<?php }
 				if(verifier('quiz_ajouter_questions') || verifier('quiz_editer_questions')

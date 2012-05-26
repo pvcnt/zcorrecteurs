@@ -69,7 +69,7 @@ function flecheOrdre($col, $tri)
 			<?php echo str_repeat(
 				'<img title="'.$DicteeDifficultes[$Dictee->difficulte].'"
 				alt="'.$DicteeDifficultes[$Dictee->difficulte].'"
-				src="/img/quiz/etoile.png" />',
+				src="/bundles/zcoquiz/img/etoile.png" />',
 				$Dictee->difficulte);
 			?>
 			</td>

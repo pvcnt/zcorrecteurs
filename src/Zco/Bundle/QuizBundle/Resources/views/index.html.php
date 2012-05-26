@@ -2,7 +2,7 @@
 
 <h1>Quiz sur la langue française et la culture générale</h1>
 
-<img src="/img/quiz/img_accueil.png" alt="" style="float: right;" />
+<img src="/bundles/zcoquiz/img/img_accueil.png" alt="" style="float: right;" />
 
 <p>
 	Voici la liste de tous les quiz du site, classés par catégorie. Ils vous
