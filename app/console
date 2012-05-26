@@ -5,8 +5,23 @@ umask(0000);
 
 set_time_limit(0);
 
-define('BASEPATH', __DIR__.'/..');
+define('BASEPATH', realpath(__DIR__.'/..'));
 define('APP_PATH', BASEPATH.'/app');
+if (in_array(BASEPATH, array('/home/web/zcorrecteurs.fr/prod', '/home/web/zcorrecteurs.fr/test')))
+{
+    $env   = 'prod';
+    $debug = false;
+}
+elseif (strpos(BASEPATH, '/home/web/zcorrecteurs.fr/dev') === 0)
+{
+    $env   = 'dev';
+    $debug = false;
+}
+else
+{
+    $env   = 'dev';
+    $debug = true;
+}
 
 require_once __DIR__.'/autoload.php';
 require_once __DIR__.'/AppKernel.php';
@@ -15,8 +30,8 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
 
 $input = new ArgvInput();
-$env = $input->getParameterOption(array('--env', '-e'), getenv('SYMFONY_ENV') ?: 'dev');
-$debug = !$input->hasParameterOption(array('--no-debug', ''));
+$env = $input->getParameterOption(array('--env', '-e'), getenv('SYMFONY_ENV') ?: $env);
+$debug = $debug && !$input->hasParameterOption(array('--no-debug', ''));
 
 $kernel = new AppKernel($env, $debug);
 $application = new Application($kernel);
