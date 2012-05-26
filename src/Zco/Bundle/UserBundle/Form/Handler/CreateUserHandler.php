@@ -76,9 +76,7 @@ class CreateUserHandler
 			$this->form->bindRequest($this->request);
 			if ($this->form->isValid())
 			{
-				$this->onSuccess($user);
-				
-				return true;
+				return $this->onSuccess($user);
 			}
 		}
 
@@ -88,7 +86,8 @@ class CreateUserHandler
 	/**
 	 * Action à effectuer lorsque le formulaire est valide.
 	 *
-	 * @param Utilisateur $user L'entité liée au formulaire
+	 * @param  Utilisateur $user L'entité liée au formulaire
+	 * @return boolean L'utilisateur a-t-il été réellement créé ?
 	 */
 	protected function onSuccess(\Utilisateur $user)
 	{
@@ -97,25 +96,29 @@ class CreateUserHandler
 		if ($event->isAborted())
 		{
 			$this->form->addError(new FormError($event->getErrorMessage() ?: 'Erreur lors de l\'inscription.'));
+			
+			return false;
 		}
 		elseif (!Captcha::verifier($this->request->request->get('captcha')))
 		{
 			$this->form->addError(new FormError('Erreur lors de la vérification de l\'anti-spam.'));
-		}
-		else
-		{
-			\Doctrine_Core::getTable('Utilisateur')->insert($user);
 			
-			$message = render_to_string('ZcoUserBundle:Mail:registration.html.php', array(
-				'pseudo' => $user->getUsername(),
-				'id'	 => $user->getId(),
-				'hash'   => $user->getRegistrationHash(),
-			));
-			send_mail($user->getEmail(), $user->getUsername(), 
-				'[zCorrecteurs.fr] Confirmation de votre inscription', $message);
-			
-			$event = new RegisterEvent($user);
-			$this->eventDispatcher->dispatch(UserEvents::POST_REGISTER, $event);
+			return false;
 		}
+		
+		\Doctrine_Core::getTable('Utilisateur')->insert($user);
+		
+		$message = render_to_string('ZcoUserBundle:Mail:registration.html.php', array(
+			'pseudo' => $user->getUsername(),
+			'id'	 => $user->getId(),
+			'hash'   => $user->getRegistrationHash(),
+		));
+		send_mail($user->getEmail(), $user->getUsername(), 
+			'[zCorrecteurs.fr] Confirmation de votre inscription', $message);
+		
+		$event = new RegisterEvent($user);
+		$this->eventDispatcher->dispatch(UserEvents::POST_REGISTER, $event);
+		
+		return true;
 	}
 }

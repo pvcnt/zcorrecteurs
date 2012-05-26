@@ -70,7 +70,7 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 		{
 			ob_start();
 			include(BASEPATH.'/vendor/linklift/liens.php');
-			$block->setHtml(ob_get_clean(), 'prefix');
+			$block->setHtml(str_replace('<ul>', '<ul class="nav nav-list">', ob_get_clean()), 'prefix');
 		}
 		
 		//Génération du corps du menu.
