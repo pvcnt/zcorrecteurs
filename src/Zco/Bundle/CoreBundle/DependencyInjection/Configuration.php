@@ -48,6 +48,12 @@ class Configuration implements ConfigurationInterface
 						->end()
 					->end()
 				->end()
+				->arrayNode('cache')
+					->addDefaultsIfNotSet()
+					->children()
+						->scalarNode('default')->defaultValue('file')->end()
+					->end()
+				->end()
 			->end()
 		;
 
