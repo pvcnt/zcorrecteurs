@@ -69,7 +69,10 @@ class CacheFeature implements EventSubscriberInterface
      */
     public function preProcessText(FilterContentEvent $event)
     {
-        $this->cacheKey = 'zco_core:parser:'.sha1($event->getContent());
+		//Prendre en compte dans la clé de cache les options. Exemple typique : on 
+		//peut demander ou non à afficher des ancres à côté des titres.
+        $this->cacheKey = 'zco_core:parser:'.sha1($event->getContent()).'_'.sha1(serialize($event->getOptions()));
+		
 		if (($text = $this->cache->get($this->cacheKey)) !== false)
 		{
 		    if ($this->debug)
