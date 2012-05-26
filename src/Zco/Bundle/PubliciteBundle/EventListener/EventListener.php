@@ -62,14 +62,18 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 	 */
 	public function onFilterLeftMenu(FilterMenuEvent $event)
 	{
-		if ($this->container->getParameter('kernel.environment') === 'prod' && is_file(BASEPATH.'/vendor/linklift/liens.php'))
+		$block = $event->getRoot()->getChild('Partenaires');
+		
+		//Ajout des liens Linklift si nécessaire.
+		if ($this->container->getParameter('kernel.environment') === 'prod' 
+			&& is_file(BASEPATH.'/vendor/linklift/liens.php'))
 		{
 			ob_start();
 			include(BASEPATH.'/vendor/linklift/liens.php');
-			$event->getRoot()->setHtml(ob_get_clean(), 'prefix');
+			$block->setHtml(ob_get_clean(), 'prefix');
 		}
 		
-		$block = $event->getRoot()->getChild('Partenaires');
+		//Génération du corps du menu.
 		$this->generateHtml('menu', $block);
 		
 		//Ajoute un lien vers le formulaire de contact si le bundle est activé.
