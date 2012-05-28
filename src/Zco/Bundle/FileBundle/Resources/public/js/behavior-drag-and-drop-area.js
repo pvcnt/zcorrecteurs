@@ -14,6 +14,7 @@ Behavior.create('zco-files-drag-and-drop-area', function(config)
 	
 	var drop  = document.id('droppable');
 	var files = document.id('files');
+	var file = document.id('file');
 	var form  = document.id('uploadForm');
 	
 	Locale.use('fr-FR');
