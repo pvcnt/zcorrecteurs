@@ -57,7 +57,7 @@ class Quiz extends BaseQuiz
 		$ret = '';
 		for ($i = 1 ; $i <= $conv[$this['difficulte']] ; $i++)
 		{
-			$ret .= '<img src="/img/quiz/etoile.png" alt="'.$this['difficulte'].'" title="'.$this['difficulte'].'" />';
+			$ret .= '<img src="/bundles/zcoquiz/img/etoile.png" alt="'.$this['difficulte'].'" title="'.$this['difficulte'].'" />';
 		}
 		return $ret;
 	}

@@ -53,7 +53,7 @@ class DefaultController extends Controller
 		$query     = \Doctrine_Core::getTable('TwitterTweet')->getByAccountQuery(null);
 		$paginator = $this->get('knp_paginator');
 		$tweets    = $paginator->paginate($query, $page, 15);
-		$tweets->setUsedRoute('zco_twitter_index');
+		$tweets->setUsedRoute('zco_twitter_indexWithPage');
 		
 		return render_to_response('ZcoTwitterBundle::index.html.php', array(
 			'tweets'   => $tweets,

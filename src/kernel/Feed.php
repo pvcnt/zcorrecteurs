@@ -138,7 +138,7 @@ abstract class Feed extends Controller
 		$stmt->bindValue(':ip', ip2long($this->get('request')->getClientIp(true)));
 		$stmt->bindValue(':id', !empty($_GET['id']) ? $_GET['id'] : null);
 		$stmt->bindValue(':user_agent',	isset($_SERVER['HTTP_USER_AGENT'])
-			? $_SERVER['HTTP_USER_AGENT'] : null);
+			? $_SERVER['HTTP_USER_AGENT'] : '');
 		$stmt->execute();
 	}
 

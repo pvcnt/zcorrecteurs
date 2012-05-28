@@ -17,12 +17,12 @@
 }
 .correction.faux .type {
 	color: red;
-	background-image: url(../img/quiz/faux.png);
+	background-image: url(../img/faux.png);
 	background-repeat: no-repeat;
 }
 .correction.juste .type {
 	color: green;
-	background-image: url(../img/quiz/juste.png);
+	background-image: url(../img/juste.png);
 	background-repeat: no-repeat;
 }
 

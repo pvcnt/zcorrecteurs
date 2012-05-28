@@ -1,4 +1,8 @@
 zco_twitter_index:
+    pattern:   /
+    defaults:  { _controller: ZcoTwitterBundle:Default:index, page: 1 }
+
+zco_twitter_indexWithPage:
     pattern:   /{page}
     defaults:  { _controller: ZcoTwitterBundle:Default:index, page: 1 }
     requirements:

@@ -37,9 +37,9 @@
 
 		<p style="font-size: 1.2em;">
 			<?php if ($_POST['rep'.$question['id']] == $question['reponse_juste'] && $_POST['rep'.$question['id']] != 0){ ?>
-				<img src="/img/quiz/juste.png" alt="" /> <span class="vertf">Réponse juste</span>
+				<img src="/bundles/zcoquiz/img/juste.png" alt="" /> <span class="vertf">Réponse juste</span>
 			<?php } else{ ?>
-				<img src="/img/quiz/faux.png" alt="" /> <span class="rouge">Réponse fausse</span>
+				<img src="/bundles/zcoquiz/img/faux.png" alt="" /> <span class="rouge">Réponse fausse</span>
 			<?php } ?>
 		</p>
 

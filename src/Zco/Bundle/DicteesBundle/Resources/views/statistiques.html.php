@@ -52,7 +52,7 @@ sur <?php echo $MesStatistiques->participations; ?>
 			<?php echo str_repeat(
 				'<img title="'.$DicteeDifficultes[$note->Dictee->difficulte].'"
 				alt="'.$DicteeDifficultes[$note->Dictee->difficulte].'"
-				src="/img/quiz/etoile.png" />',
+				src="/bundles/zcoquiz/img/etoile.png" />',
 				$note->Dictee->difficulte);
 			?>
 			</td>
