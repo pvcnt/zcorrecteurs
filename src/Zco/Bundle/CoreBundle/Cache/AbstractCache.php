@@ -21,6 +21,8 @@
 
 namespace Zco\Bundle\CoreBundle\Cache;
 
+use Symfony\Component\HttpKernel\Log\LoggerInterface;
+
 /**
  * Implémentation de base d'un cache émulant les différentes fonctionnalités 
  * à partir d'opérations de base (lire, écrire, supprimer).
@@ -32,6 +34,7 @@ abstract class AbstractCache implements CacheInterface
 	const INDEX_ID = '__index';
 	
 	protected $index = array();
+	protected $logger;
 	protected $defaultLifetime;
 	
 	/**
@@ -39,8 +42,9 @@ abstract class AbstractCache implements CacheInterface
 	 *
 	 * @param $defaultLifetime integer Durée de vie par défaut des caches
 	 */
-	public function __construct($defaultLifetime)
+	public function __construct($defaultLifetime, LoggerInterface $logger = null)
 	{
+		$this->logger = $logger;
 		$this->defaultLifetime = $defaultLifetime;
 		$this->readIndex();
 	}
@@ -129,9 +133,18 @@ abstract class AbstractCache implements CacheInterface
 	{
 		if (!$this->has($id))
 		{
+			if ($this->logger)
+			{
+				$this->logger->debug(sprintf('Cache miss (%s)', $id));
+			}
 			$this->delete($id);
 			
 			return $default;
+		}
+		
+		if ($this->logger)
+		{
+			$this->logger->debug(sprintf('Cache hit (%s)', $id));
 		}
 		
 		return $this->read($id);

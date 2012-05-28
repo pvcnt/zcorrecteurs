@@ -21,6 +21,8 @@
 
 namespace Zco\Bundle\CoreBundle\Cache;
 
+use Symfony\Component\HttpKernel\Log\LoggerInterface;
+
 /**
  * Implémentation d'un cache stockant toutes les données sur le 
  * système de fichiers.
@@ -37,7 +39,7 @@ class FileCache extends AbstractCache
 	 * @param string $path Chemin physique vers le cache
 	 * @param integer $defaultLifetime Durée de vie par défaut des caches
 	 */
-	public function __construct($path, $defaultLifetime)
+	public function __construct($path, $defaultLifetime, LoggerInterface $logger = null)
 	{
 		$this->path = rtrim($path, '/');
 		
@@ -53,7 +55,7 @@ class FileCache extends AbstractCache
 			throw new \RuntimeException(sprintf('Cannot write into cache directory "%s".', $this->path));
 		}
 		
-		parent::__construct($defaultLifetime);
+		parent::__construct($defaultLifetime, $logger);
 	}
 
 	/**
