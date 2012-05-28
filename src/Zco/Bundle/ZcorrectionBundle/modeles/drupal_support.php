@@ -115,7 +115,6 @@ function ConstruireTicketSupportDrupal($nid, array $cookies, array $cond = array
 			//et ignore silencieusement l'erreur.
 			if ($e->getCode() === 404)
 			{
-				Container::getService('zco_core.cache')->delete('zcorrection-node_nids');
 				return false;
 			}
 			
