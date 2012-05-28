@@ -39,10 +39,9 @@ function CompterTicketsSupportDrupal(array $cond = array())
  */
 function ListerTicketsSupportDrupal(array $cond = array())
 {
-
 	/** 
 	* Etape préliminaire : les tickets ne sont retournés que si les 
-	* identifiants du compte drupal sont renseignés.
+	* identifiants du compte Drupal sont renseignés.
 	*/
 	if (!Container::hasParameter('zco_zcorrection.drupal_username') || !Container::hasParameter('zco_zcorrection.drupal_password'))
 	{
@@ -50,22 +49,22 @@ function ListerTicketsSupportDrupal(array $cond = array())
 	}
 	
 	/**
-	 * Partie 1 : connexion au compte utilisateur Drupal.
+	 * Récupération des tickets de support correspondant à des textes 
+	 * en attente de correction.
 	 */
-	$user = EnvoyerRequeteDrupal('user/login', array(), array(
-	  'username' => Container::getParameter('zco_zcorrection.drupal_username'),
-	  'password' => Container::getParameter('zco_zcorrection.drupal_password'),
-	), 'post');
-	$cookies = array($user['session_name'] => $user['sessid']);
-	
-	/**
-	 * Partie 2 : récupération des tickets de support correspondant à 
-	 * des textes en attente de correction.
-	 */
-	if (($nids = Container::getService('zco_core.cache')->get('zcorrection-node_nids')) === false)
+	if (true || ($nids = Container::getService('zco_core.cache')->get('zcorrection-node_nids')) === false)
 	{
+		//Connexion au compte utilisateur Drupal.
+		$user = EnvoyerRequeteDrupal('user/login', array(), array(
+		  'username' => Container::getParameter('zco_zcorrection.drupal_username'),
+		  'password' => Container::getParameter('zco_zcorrection.drupal_password'),
+		), 'post');
+		$cookies = array($user['session_name'] => $user['sessid']);
+		
 		$nids = array();
-		$nodes = EnvoyerRequeteDrupal('node', $cookies);
+		//pagesize = 10000, sinon on n'a que 20 tickets de listés.
+		//TODO : changer ça, c'est très moche…
+		$nodes = EnvoyerRequeteDrupal('node', $cookies, array('pagesize' => '10000'));
 		foreach ($nodes as $node)
 		{
 			if ($node['type'] === 'support_ticket')
@@ -74,7 +73,18 @@ function ListerTicketsSupportDrupal(array $cond = array())
 			}
 		}
 		
-		Container::getService('zco_core.cache')->set('zcorrection-node_nids', $nids, 60*15);
+		Container::getService('zco_core.cache')->set('zcorrection-node_nids', $nids, 0);
+	}
+	
+	//Si on ne s'était pas encore connecté au compte Drupal, c'est le moment 
+	//ou jamais de le faire.
+	if (!empty($nids) && !isset($cookies))
+	{
+		$user = EnvoyerRequeteDrupal('user/login', array(), array(
+		  'username' => Container::getParameter('zco_zcorrection.drupal_username'),
+		  'password' => Container::getParameter('zco_zcorrection.drupal_password'),
+		), 'post');
+		$cookies = array($user['session_name'] => $user['sessid']);
 	}
 	
 	$retour = array();
@@ -127,7 +137,11 @@ function ConstruireTicketSupportDrupal($nid, array $cookies, array $cond = array
 		RECORRECTION          => 5,
 	);
 	
-	if (!is_array($cond['etat']))
+	if (!isset($cond['etat']))
+	{
+		$cond['etat'] = array();
+	}
+	elseif (!is_array($cond['etat']))
 	{
 		$cond['etat'] = array($cond['etat']);
 	}
@@ -155,7 +169,7 @@ function ConstruireTicketSupportDrupal($nid, array $cookies, array $cond = array
 					$node['assigned'] = EnvoyerRequeteDrupal('user/'.$node['assigned'], $cookies);
 				}
 			
-				Container::getService('zco_core.cache')->set('zcorrection-node_'.$nid, $node, 60*15);
+				Container::getService('zco_core.cache')->set('zcorrection-node_'.$nid, $node, 0);
 			}
 			
 			if (empty($cond['assigne']) || (!empty($node['assigned']) && $node['assigned']['name'] == $cond['assigne']))
@@ -183,10 +197,7 @@ function EnvoyerRequeteDrupal($service, $cookies = array(), $data = array(), $me
 {
 	if (!empty($data))
 	{
-		$data = array_map(function($key, $value){
-			return $key.'='.$value;
-		}, array_keys($data), array_values($data));
-		$data = ($method === 'get' ? '?' : '').implode('&', $data);
+		$data = ($method === 'get' ? '?' : '').http_build_query($data);
 	}
 	else
 	{
@@ -217,11 +228,7 @@ function EnvoyerRequeteDrupal($service, $cookies = array(), $data = array(), $me
 	
 	if (!empty($cookies))
 	{
-		$cookies = array_map(function($key, $value){
-			return $key.'='.$value;
-		}, array_keys($cookies), array_values($cookies));
-		$cookies = implode('&', $cookies);
-		curl_setopt($curl, CURLOPT_COOKIE, $cookies);
+		curl_setopt($curl, CURLOPT_COOKIE, http_build_query($cookies));
 	}
 	
 	$response = curl_exec($curl);
