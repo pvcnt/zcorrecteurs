@@ -36,7 +36,7 @@ RewriteBase /
 RewriteCond %{HTTP_HOST} ^zcorrecteurs.fr$
 RewriteRule ^(.*) http://www.zcorrecteurs.fr/$1 [L,R=301]
 
-# Si aucun bêta-test n'est en cours.
+# Si jamais on tente d'accéder à test.zcorrecteurs.fr et qu'aucun bêta-test n'est en cours.
 RewriteCond %{HTTP_HOST} ^test.zcorrecteurs.fr$
 RewriteRule ^(.*) http://www.zcorrecteurs.fr/$1 [L,R=301]
 
@@ -48,7 +48,7 @@ RewriteRule ^forum/suggestions-et-commentaires-f8\.html /forum/forum-47-suggesti
 RewriteRule ^forum/typographie-f42.html /forum/forum-46-typographie.html [R=301,L]
 RewriteRule ^equipe\.html /apropos/equipe [R=301,L]
 RewriteRule ^membres\.html /membres/ [R=301,L]
-RewriteRule ^membres/$ /membres [R=301,L]
+RewriteRule ^uploads/?$ /fichiers/ [R=301,L]
 RewriteRule ^membres/connectes.html$ /membres/connectes [R=301,L]
 RewriteRule ^engagements\.html$ /aide/page-17-nos-engagements.html [R=301,L]
 RewriteRule ^historique\.html$ /aide/page-14-historique-rapide.html [R=301,L]
@@ -56,6 +56,7 @@ RewriteRule ^profil-([0-9]+)\.html$ /membres/$1/inconnu [L,R=301]
 RewriteRule ^membres/profil-([0-9]+)\.html$ /membres/$1/inconnu [L,R=301]
 RewriteRule ^membres/profil-([0-9]+)-([a-zA-Z0-9-]+)\.html$ /membres/$1/$2 [L,R=301]
 RewriteRule ^images/(zcorrecteur\.jpg|zcorrige\.png)$ ext/$1 [L]
+RewriteRule ^css/img/zcode/smilies/([a-z_]+\.png)$ /bundles/zcocore/img/zcode/smilies/$1 [L,R=301]
 
 RewriteRule ^(blog|informations)/fil-rss(?:-([0-9]+))?\.html$ /$1/flux-$2.html [L,R=301]
 RewriteRule ^forum/messages-rss(?:-([0-9]+))?\.html$ /forum/message-flux-$2.html [L,R=301]
@@ -73,7 +74,7 @@ RewriteRule ^index\.html$ / [R=301,L]
 RewriteRule ^accueil/index\.html$ / [L,R=301]
 
 # Canonisation des adresses
-#RewriteRule ^([a-zA-Z]+)$ /$1/ [R=301,L]
+RewriteRule ^([a-zA-Z]+)$ /$1/ [R=301,L]
 RewriteRule ^(.*)-\.html$ $1.html [L,R=301]
 
 # Règles de routage principales

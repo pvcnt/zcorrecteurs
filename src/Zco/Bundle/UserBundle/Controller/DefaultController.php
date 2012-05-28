@@ -104,7 +104,7 @@ class DefaultController extends Controller
 		//Pagination.
 		$paginator = $this->get('knp_paginator');
 		$users = $paginator->paginate(\Doctrine_Core::getTable('Utilisateur')->getQuery($query), $page, 30);
-		$users->setUsedRoute('zco_user_index');
+		$users->setUsedRoute('zco_user_indexWithPage');
 		
 		//Paramétrage de la vue.
 		fil_ariane(null);
