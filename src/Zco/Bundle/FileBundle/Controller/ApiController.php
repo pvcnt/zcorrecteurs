@@ -38,51 +38,6 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 class ApiController extends Controller
 {
 	/**
-	 * Téléverse un ou plusieurs fichiers vers le site. Les fichiers sont 
-	 * attendus sous la clé "file".
-	 *
-	 * @return Response Réponse JSON avec "status" (OK ou ERROR) et "failed"
-	 *				  (noms des fichiers dont le téléversement a échoué)
-	 */
-	public function uploadAction(Request $request)
-	{
-		if (!verifier('connecte'))
-		{
-			throw new AccessDeniedHttpException();
-		}
-		
-		$_SESSION['fichiers']['last_import'] = array();
-		$response = array('status' => 'OK', 'failed' => array());
-		
-		foreach ($request->files->get('file') as $uploadedFile)
-		{
-			if (!$uploadedFile->isValid())
-			{
-				$response['status'] = 'ERROR';
-				$response['failed'][] = array('name' => $uploadedFile->getClientOriginalName());
-				continue;
-			}
-			
-			try 
-			{
-				$file = $this->get('zco_file.uploader')->upload($uploadedFile, array(
-					'user_id'   => $_SESSION['id'],
-					'pseudo'	=> $_SESSION['pseudo'],
-				));
-				
-				$_SESSION['fichiers']['last_import'][] = $file['id'];
-			}
-			catch (UploadRejectedException $e)
-			{
-				$response['status'] = 'ERROR';
-				$response['failed'][] = array('name' => $uploadedFile->getClientOriginalName(), 'message' => $e->getMessage());
-			}
-		}
-		
-		return new Response(json_encode($response));
-	}
-	
-	/**
 	 * Récupère la liste des fichiers correspondant à une recherche donnée. Les 
 	 * fichiers sont filtrés par dossier ainsi que selon une chaîne donnée 
 	 * (optionnelle).

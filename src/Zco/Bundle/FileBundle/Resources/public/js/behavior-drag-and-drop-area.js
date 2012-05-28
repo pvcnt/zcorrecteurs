@@ -8,17 +8,17 @@
  */
 Behavior.create('zco-files-drag-and-drop-area', function(config)
 {
-	/*<div class="droppable" id="droppable">
-        <p>Déposez les fichiers depuis votre ordinateur dans cette zone.</p>
-    </div>*/
-	
-	var drop  = document.id('droppable');
 	var files = document.id('files');
 	var file = document.id('file');
 	var form  = document.id('uploadForm');
 	
+	var drop = new Element('div', {
+		'class': 'droppable', 
+		'id': 'droppable', 
+		'html': '<p>Vous pouvez aussi déposer les fichiers directement depuis votre ordinateur dans cette zone.</p>'
+	}).inject(file, 'after');
+	
 	Locale.use('fr-FR');
-	file.setStyle('display', 'none');
 	var inputFiles = new Form.MultipleFileInput('file', 'files', 'droppable', {
 		onDragenter: drop.addClass.pass('hover', drop),
 		onDragleave: drop.removeClass.pass('hover', drop),
@@ -27,6 +27,8 @@ Behavior.create('zco-files-drag-and-drop-area', function(config)
 			drop.removeClass.pass('hover', drop);
 		}
 	});
+	
+	return;
 	
 	form.addEvent('submit', function(event)
     {

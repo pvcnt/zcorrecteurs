@@ -90,6 +90,53 @@ class DefaultController extends Controller
 	}
 	
 	/**
+	 * Téléverse un ou plusieurs fichiers vers le site. Les fichiers sont 
+	 * attendus sous la clé "file".
+	 *
+	 * @param Request $request
+	 */
+	public function uploadAction(Request $request)
+	{
+		if (!verifier('connecte'))
+		{
+			throw new AccessDeniedHttpException();
+		}
+		
+		$retval = $this->get('zco_file.uploader')->batchUpload($request, array(
+			'user_id'   => $_SESSION['id'],
+			'pseudo'	=> $_SESSION['pseudo'],
+		));
+		
+		$_SESSION['fichiers']['last_import'] = array();
+		foreach ($retval['success'] as $item)
+		{
+			$_SESSION['fichiers']['last_import'][] = $item['id'];
+		}
+		
+		$failed = $retval['failed'];
+		if (count($failed) > 0)
+		{
+			$message = array();
+			foreach ($failed as $item)
+			{
+				$message[] = 'Erreur lors de l\'envoi de '.$item['name']. '('.
+					(isset($item['message']) ? $item['message'] : 'erreur inconnue').').';
+			}
+			
+			return redirect(implode("\n", $message), 
+				count($failed) >= $retval['total'] ? 
+					$this->generateUrl('zco_file_folder', array('id' => \FileTable::FOLDER_LAST_IMPORT))
+					: $this->generateUrl('zco_file_index'),
+				MSG_ERROR);
+		}
+		
+		return redirect('Tous les fichiers ont été envoyés avec succès.', 
+			$this->generateUrl('zco_file_folder', array('id' => \FileTable::FOLDER_LAST_IMPORT)));
+		
+		return new Response(json_encode($response));
+	}
+	
+	/**
 	 * Affichage d'une page permettant de rechercher rapidement des images 
 	 * sur Wikimédia Commons.
 	 *
