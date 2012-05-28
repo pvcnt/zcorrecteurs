@@ -24,18 +24,17 @@ namespace Zco\Bundle\AdminBundle;
 use Zco\Bundle\CoreBundle\Cache\CacheInterface;
 
 /**
- * Classe de comptage des tâches admin.
+ * Classe facilitant l'enregistrement et le comptage des tâches d'administration.
+ * Chaque tâche est accessible uniquement à des personnes possédant certains 
+ * droits. Le comptage des tâches en lui-même se fait ailleurs.
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
 class Admin
 {
 	private $taches = array();
-	private $time = 600;
+	private $time = 3600;
 	private $cache;
-
-	const MANUAL = 1;
-	const AUTO = 2;
 
 	/**
 	 * Constructeur.
@@ -50,25 +49,17 @@ class Admin
 	 * Enregistre une certaine tâche.
 	 *
 	 * @param string $name Le nom de la tâche
-	 * @param array $droits Les droits nécessaires pour la voir
+	 * @param array $credentials Les droits nécessaires pour la voir
 	 * @param array $options Des options...
 	 */
-	public function register($name, $droits, array $options = array())
+	public function register($name, $credentials, array $options = array())
 	{
-		if (!is_array($droits))
-		{
-			$droits = array($droits);
-		}
-		$type = array_key_exists('type', $options) ? $options['type'] : self::AUTO;
-		$count = array_key_exists('count', $options) ? $options['count'] : true;
-		
+		$count = isset($options['count']) ? $options['count'] : true;
 		$this->taches[$name] = array(
-			'compteur' => null,
-			'type' => $type,
-			'droits' => $droits,
-			'compteur' => null,
+			'credentials' => (array) $credentials,
+			'value' => null,
 			'count' => $count,
-			'refresh' => false,
+			'fresh' => false,
 		);
 	}
 
@@ -81,74 +72,51 @@ class Admin
 	 */
 	public function get($name, $forceRefresh = false)
 	{
-		if (array_key_exists($name, $this->taches))
+		if (!isset($this->taches[$name]))
 		{
-			//On rafraichit automatiquement si on est sur l'accueil de
-			//l'administration.
-			$module = \Container::getService('request')->attributes->get('_module');
-			if ($module == 'admin')
-			{
-				$forceRefresh = true;
-			}
-
-			//On ne force pas le rafraichissement d'un cache manuel, cela
-			//n'a pas de sens.
-			if ($this->taches[$name]['type'] == self::MANUAL && $forceRefresh)
-			{
-				$forceRefresh = false;
-			}
-
-			//Si le cache a déjà été rafraichi, ça suffit !
-			if ($this->taches[$name]['refresh'] == true && $forceRefresh)
-			{
-				$forceRefresh = false;
-			}
-
-			//Si la donnée est déjà calculée, on la renvoie.
-			if (!is_null($this->taches[$name]['compteur']) && !$forceRefresh)
-			{
-				return $this->taches[$name]['compteur'];
-			}
-
-			//Sinon si on peut la récupérer du cache.
-			if (($admin = $this->cache->get('taches_admin_'.$name)) !== false && !$forceRefresh)
-			{
-				$this->taches[$name]['compteur'] = $admin;
-				return (int) $admin;
-			}
-
-			//Si on doit mettre à jour un compteur automatique.
-			elseif ($this->taches[$name]['type'] == self::AUTO)
-			{
-				if (function_exists($f = 'CompterTaches'.ucfirst($name)))
-				{
-					$this->write($name, call_user_func($f));
-					return $this->taches[$name]['compteur'];
-				}
-				else
-				{
-					trigger_error('La fonction de comptage CompterTaches'.ucfirst($name).' n\'existe pas', E_USER_NOTICE);
-					$this->write($name, 0);
-					
-					return 0;
-				}
-			}
-
-			//Si on doit mettre à jour un compteur manuel.
-			else
-			{
-				$this->write($name, 0);
-				return 0;
-			}
+			return 0;
 		}
 		
+		//Si le cache a déjà été rafraichi, ça suffit !
+		if ($this->taches[$name]['fresh'] && $forceRefresh)
+		{
+			$forceRefresh = false;
+		}
+
+		//Si la donnée est déjà calculée, on la renvoie.
+		if (!is_null($this->taches[$name]['value']) && !$forceRefresh)
+		{
+			return $this->taches[$name]['value'];
+		}
+
+		//Si on peut la récupérer du cache.
+		if (($value = $this->cache->get('zco_admin:task_'.$name)) !== false && !$forceRefresh)
+		{
+			$value = (int) $value;
+			$this->taches[$name]['value'] = $value;
+			
+			return $value;
+		}
+		
+		//Sinon on doit mettre à jour le compteur.
+		if (function_exists($func = 'CompterTaches'.ucfirst($name)))
+		{
+			$value = (int) call_user_func($func);
+			$this->write($name, $value);
+			
+			return $value;
+		}
+		
+		trigger_error('La fonction de comptage CompterTaches'.ucfirst($name).' n\'existe pas', E_USER_NOTICE);
+		$this->write($name, 0);
+			
 		return 0;
 	}
 
 	/**
-	 * Force le rafraichissement de toutes les tâches.
+	 * Déclenche le rafraichissement de toutes les tâches.
 	 */
-	public function autoRefresh()
+	public function refresh()
 	{
 		foreach ($this->taches as $key => $value)
 		{
@@ -166,10 +134,10 @@ class Admin
 		$count = 0;
 		foreach ($this->taches as $key => $value)
 		{
-			if ($value['count'] == true)
+			if ($value['count'])
 			{
 				$current = true;
-				foreach ($value['droits'] as $d)
+				foreach ($value['credentials'] as $d)
 				{
 					if (!verifier($d))
 					{
@@ -189,17 +157,6 @@ class Admin
 	}
 
 	/**
-	 * Incrémente un compteur admin.
-	 *
-	 * @param string $name Le nom du compteur
-	 */
-	public function increment($name)
-	{
-		$admin = $this->get($name);
-		$this->write($name, ++$admin);
-	}
-	
-	/**
 	 * Affecte une valeur à un compteur.
 	 *
 	 * @param integer $name Le nom du cache
@@ -207,12 +164,8 @@ class Admin
 	 */
 	public function write($name, $value)
 	{
-		if (array_key_exists($name, $this->taches))
-		{
-			$this->taches[$name]['compteur'] = (int) $value;
-			$this->taches[$name]['refresh'] = true;
-
-			$this->cache->set('taches_admin_'.$name, $value, $this->time);
-		}
+		$this->taches[$name]['value'] = (int) $value;
+		$this->taches[$name]['fresh'] = true;
+		$this->cache->set('zco_admin:task_'.$name, $value, $this->time);
 	}
 }
