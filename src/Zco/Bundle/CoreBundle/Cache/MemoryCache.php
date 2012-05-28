@@ -21,6 +21,8 @@
 
 namespace Zco\Bundle\CoreBundle\Cache;
 
+use Symfony\Component\HttpKernel\Log\LoggerInterface;
+
 /**
  * Implémentation d'un cache stockant toutes les données en mémoire. Est utile 
  * principalement pour les tests.

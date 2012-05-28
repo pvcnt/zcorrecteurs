@@ -44,12 +44,15 @@ class SecurityListener extends ContainerAware implements EventSubscriberInterfac
     {
         return array(
             KernelEvents::REQUEST => array('onKernelRequest', 31),
-            /* Le RouterListener par défaut a une priorité de 32, on se place juste après */
+            /* Le RouterListener par défaut a une priorité de 32, on se place juste avant */
         );
     }
     
 	/**
-	 * Vérifie que l'utilisateur actuel soit autorisé à accéder à la page demandée.
+	 * Vérifie que l'utilisateur actuel soit autorisé à accéder à la page 
+	 * demandée. Ce système repose sur une configuration définie dans un fichier 
+	 * security.yml devant se trouver avec les autres fichiers de configuration 
+	 * du bundle.
 	 *
 	 * @param GetResponseEvent $event
 	 */
@@ -62,8 +65,8 @@ class SecurityListener extends ContainerAware implements EventSubscriberInterfac
         
         $request = $event->getRequest();
         
-        //Si on n'est pas sur une page gérée par un bundle du site de zCorrection 
-        //on n'a pas à vérifier la sécurité.
+        //Si on n'est pas sur une page gérée par un bundle utilisant l'ancien 
+		//mécanisme de routage et de sécurité, rien ne sert de continuer.
 	    if (!$request->attributes->has('_bundle'))
 	    {
 	        return;
@@ -95,7 +98,7 @@ class SecurityListener extends ContainerAware implements EventSubscriberInterfac
 		if ($access['login_required'] && !verifier('connecte'))
 		{
 			$event->setResponse(redirect('Vous devez être inscrit et connecté pour accéder à cette page.', 
-				$this->container->get('router')->generate('zco_user_session_login'), MSG_ERROR, -1));
+				$this->container->get('router')->generate('zco_user_session_login'), MSG_ERROR));
 		}
 		elseif ($access['anonymous_required'] && verifier('connecte'))
 		{

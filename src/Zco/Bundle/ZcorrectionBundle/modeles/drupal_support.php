@@ -48,6 +48,8 @@ function ListerTicketsSupportDrupal(array $cond = array())
 		return array();
 	}
 	
+	$cookies = array();
+	
 	/**
 	 * Récupération des tickets de support correspondant à des textes 
 	 * en attente de correction.
@@ -76,17 +78,6 @@ function ListerTicketsSupportDrupal(array $cond = array())
 		Container::getService('zco_core.cache')->set('zcorrection-node_nids', $nids, 0);
 	}
 	
-	//Si on ne s'était pas encore connecté au compte Drupal, c'est le moment 
-	//ou jamais de le faire.
-	if (!empty($nids) && !isset($cookies))
-	{
-		$user = EnvoyerRequeteDrupal('user/login', array(), array(
-		  'username' => Container::getParameter('zco_zcorrection.drupal_username'),
-		  'password' => Container::getParameter('zco_zcorrection.drupal_password'),
-		), 'post');
-		$cookies = array($user['session_name'] => $user['sessid']);
-	}
-	
 	$retour = array();
 	foreach ($nids as $nid)
 	{
@@ -99,13 +90,24 @@ function ListerTicketsSupportDrupal(array $cond = array())
 	return $retour;
 }
 
-function ConstruireTicketSupportDrupal($nid, array $cookies, array $cond = array())
+function ConstruireTicketSupportDrupal($nid, array &$cookies, array $cond = array())
 {
 	if (($node = Container::getService('zco_core.cache')->get('zcorrection-node_'.$nid)) === false)
 	{
 		$cache = true;
 		try
 		{
+			//Si on ne s'était pas encore connecté au compte Drupal, c'est le moment 
+			//ou jamais de le faire.
+			if (empty($cookies))
+			{
+				$user = EnvoyerRequeteDrupal('user/login', array(), array(
+				  'username' => Container::getParameter('zco_zcorrection.drupal_username'),
+				  'password' => Container::getParameter('zco_zcorrection.drupal_password'),
+				), 'post');
+				$cookies = array($user['session_name'] => $user['sessid']);
+			}
+			
 			$node = EnvoyerRequeteDrupal('node/'.$nid, $cookies);
 		}
 		catch (DrupalException $e)

@@ -45,6 +45,8 @@ class IndexController extends Controller
 			throw new AccessDeniedHttpException();
 		}
 		
+		$this->get('zco_admin.manager')->refresh();
+		
 		\Page::$titre = 'Accueil de l\'administration';
 		fil_ariane('Administration');
 		

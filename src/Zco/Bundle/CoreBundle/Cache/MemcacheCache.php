@@ -21,6 +21,8 @@
 
 namespace Zco\Bundle\CoreBundle\Cache;
 
+use Symfony\Component\HttpKernel\Log\LoggerInterface;
+
 /**
  * Implémentation d'un cache stockant ses données en Memcache.
  *
@@ -35,12 +37,12 @@ class MemcacheCache extends AbstractCache
 	 *
 	 * @param integer $defaultLifetime Durée de vie par défaut des caches
 	 */
-	public function __construct($defaultLifetime)
+	public function __construct($defaultLifetime, LoggerInterface $logger = null)
 	{
 		$this->memcache = new \Memcache;
 		$this->memcache->connect('localhost', 11211);
 		
-		parent::__construct($defaultLifetime);
+		parent::__construct($defaultLifetime, $logger);
 	}
 	
 	/**

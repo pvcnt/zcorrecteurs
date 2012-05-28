@@ -1,5 +1,4 @@
 parameters:
-#    session_listener.class: Zco\Bundle\CoreBundle\EventListener\SessionListener
     test.client.class: Zco\Bundle\CoreBundle\Client
 
 services:

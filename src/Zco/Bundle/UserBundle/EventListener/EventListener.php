@@ -168,7 +168,7 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 		$cache = $this->container->get('zco_core.cache');
 		if (!$cache->get('nb_connectes'))
 		{
-			$cache->set('nb_connectes', \Doctrine_Core::getTable('Online')->countAll(), 60);
+			$cache->set('nb_connectes', \Doctrine_Core::getTable('Online')->countAll(), 60 * 5);
 		}
 	}
 	

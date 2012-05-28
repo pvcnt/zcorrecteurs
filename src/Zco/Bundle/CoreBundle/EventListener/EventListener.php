@@ -78,7 +78,7 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 			$this->maintenance = true;
 			if (strpos(
 				file_get_contents(APP_PATH.'/config/maintenance'), 
-				$this->container->get('request')->getClientIp(true)) === false)
+				$event->getRequest()->getClientIp(true)) === false)
 			{
 				$event->setResponse(new Response(render_to_string('ZcoCoreBundle::maintenance.html.php')));
 			}
