@@ -67,7 +67,7 @@ class RouterListener extends ContainerAware implements EventSubscriberInterface
 			return;
 		}
 		
-	    //Initialisation des variables pour VerifierFormatageUrl().
+	    //Initialisation des variables pour zCorrecteurs::VerifierFormatageUrl().
 		!isset($_GET['id']) && $_GET['id'] = '';
 		!isset($_GET['id2']) && $_GET['id2'] = '';
 		!isset($_GET['p']) && $_GET['p'] = '';
