@@ -52,7 +52,7 @@ function ListerTicketsSupportDrupal(array $cond = array())
 	 * Récupération des tickets de support correspondant à des textes 
 	 * en attente de correction.
 	 */
-	if (true || ($nids = Container::getService('zco_core.cache')->get('zcorrection-node_nids')) === false)
+	if (($nids = Container::getService('zco_core.cache')->get('zcorrection-node_nids')) === false)
 	{
 		//Connexion au compte utilisateur Drupal.
 		$user = EnvoyerRequeteDrupal('user/login', array(), array(
