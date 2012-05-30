@@ -81,6 +81,17 @@ class HtpasswdCommand extends Command
         $stmt->execute();
         $data_htaccess_munin = $stmt->fetchAll();
 
+		//Ajout de DJ Fox en dur à la liste des personnes autorisées.
+		$stmt2 = $dbh->prepare("SELECT DISTINCT u.utilisateur_id, u.utilisateur_pseudo, u.utilisateur_mot_de_passe
+        FROM zcov2_utilisateurs u
+		WHERE utilisateur_id = 14");
+		$stmt2->execute();
+		$djfox = $stmt->fetch();
+		if ($djfox)
+		{
+			$data_htaccess_munin[] = $djfox;
+		}
+
         /*
         * Droit htaccess_dev (accéder à la version de développement).
         * Édite le fichier /home/web/zcorrecteurs.fr/.htpasswd_dev
