@@ -21,13 +21,6 @@ zco_file_api_delete:
     requirements:
         id: \d+
 
-zco_file_api_upload:
-    pattern:   /upload
-    defaults:  { _controller: ZcoFileBundle:Api:upload, _format: json }
-    options:   { expose: true }
-    requirements:
-        _method: post
-
 zco_file_api_search:
     pattern:   /recherche/{folder}
     defaults:  { _controller: ZcoFileBundle:Api:search, _format: json }

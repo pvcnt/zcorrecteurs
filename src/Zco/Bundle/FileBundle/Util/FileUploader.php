@@ -28,6 +28,7 @@ use Zco\Bundle\FileBundle\Exception\UploadRejectedException;
 use Gaufrette\Filesystem;
 use Imagine\Image\ImagineInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -55,6 +56,35 @@ class FileUploader
 		$this->filesystem 	= $filesystem;
 		$this->imagine		= $imagine;
 		$this->dispatcher 	= $dispatcher;
+	}
+	
+	public function batchUpload(Request $request, array $options)
+	{
+		$retval = array('failed' => array(), 'success' =>  array(), 'total' => count($request->files->get('file')));
+		foreach ($request->files->get('file') as $uploadedFile)
+		{
+			if (!$uploadedFile->isValid())
+			{
+				$retval['failed'][] = array('name' => $uploadedFile->getClientOriginalName());
+				continue;
+			}
+			
+			try 
+			{
+				$file = $this->upload($uploadedFile, array(
+					'user_id'   => $_SESSION['id'],
+					'pseudo'	=> $_SESSION['pseudo'],
+				));
+				
+				$retval['success'][] = array('name' => $uploadedFile->getClientOriginalName(), 'id' => $file['id']);
+			}
+			catch (UploadRejectedException $e)
+			{
+				$retval['failed'][] = array('name' => $uploadedFile->getClientOriginalName(), 'message' => $e->getMessage());
+			}
+		}
+		
+		return $retval;
 	}
 	
 	/**

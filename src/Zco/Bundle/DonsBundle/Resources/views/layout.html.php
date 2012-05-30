@@ -24,19 +24,19 @@
 		<?php echo $view['vitesse']->renderFeeds() ?>
 		
 		<link rel="icon" type="image/png" href="/favicon.png" />
-		<link rel="start" title="zCorrecteurs.fr - Correction de tutoriels pour le Site du Zéro" href="/" />
+		<link rel="start" title="zCorrecteurs.fr - Les réponses à toutes vos questions concernant la langue française !" href="/" />
 	</head>
 
 	<body>
 		<div id="header">
 			<div id="header-oreilles">
-				<a href="/" title="zCorrecteurs.fr - Corrections orthographiques, forum, blog, quiz, et bien plus encore !">
-					zCorrecteurs.fr - Corrections orthographiques, forum, blog, quiz, et bien plus encore !
+				<a href="/" title="zCorrecteurs.fr - Les réponses à toutes vos questions concernant la langue française !">
+					zCorrecteurs.fr - Les réponses à toutes vos questions concernant la langue française !
 				</a>
 			</div>
 			<div id="header-zcorrecteurs">
-				<a href="/" title="zCorrecteurs.fr - Corrections orthographiques, forum, blog, quiz, et bien plus encore !">
-					zCorrecteurs.fr - Corrections orthographiques, forum, blog, quiz, et bien plus encore !
+				<a href="/" title="zCorrecteurs.fr - Les réponses à toutes vos questions concernant la langue française !">
+					zCorrecteurs.fr - Les réponses à toutes vos questions concernant la langue française !
 				</a>
 			</div>
 		</div> <!-- /header -->

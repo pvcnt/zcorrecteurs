@@ -254,12 +254,12 @@ Behavior.create('zco-files-load-files-async', function(config, statics)
 				)
 				.addEvent('mouseenter', function(e)
 				{
-					var li = (e.target.tagName == 'li') ? e.target : e.target.getParent('li');
+					var li = (e.target.tagName.toLowerCase() == 'li') ? e.target : e.target.getParent('li');
 					li.getElement('.thumbnail-actions').setStyle('display', '');
 				})
 				.addEvent('mouseleave', function(e)
 				{
-					var li = (e.target.tagName == 'li') ? e.target : e.target.getParent('li');
+					var li = (e.target.tagName.toLowerCase() == 'li') ? e.target : e.target.getParent('li');
 					li.getElement('.thumbnail-actions').setStyle('display', 'none');
 				})
 				.inject(area);

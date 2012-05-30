@@ -18,21 +18,18 @@
 	<div class="bar" style="width: <?php echo $ratio > 5 ? $ratio : 5 ?>%;"><?php echo $ratio ?> %</div>
 </div>
 
-<form method="post" action="<?php echo $view['router']->generate('zco_file_api_upload') ?>" enctype="multipart/form-data" id="uploadForm">
-    <div class="droppable" id="droppable">
-        <p>Déposez les fichiers depuis votre ordinateur dans cette zone.</p>
-    </div>
-    
-    <input type="file" id="file" name="file[]" multiple="multiple" />
+<form method="post" action="<?php echo $view['router']->generate('zco_file_upload') ?>" enctype="multipart/form-data" id="uploadForm">    
+	<div>
+	    <div class="submit-upload">
+	        <input type="submit" class="btn btn-primary" value="Importer les fichiers" />
+	        <?php if (!empty($_SESSION['fichiers']['last_import'])): ?>
+	            <a class="btn" href="<?php echo $redirectUrl ?>">Voir le dernier import</a>
+	        <?php endif ?>
+	    </div>
+		<input type="file" id="file" name="file[]" multiple="multiple" />
+	</div>
         
     <ul class="thumbnails" id="files"></ul>
-    
-    <div class="submit-upload">
-        <input type="submit" class="btn btn-primary" value="Importer les fichiers" />
-        <?php if (!empty($_SESSION['fichiers']['last_import'])): ?>
-            <a class="btn" href="<?php echo $redirectUrl ?>">Voir le dernier import</a>
-        <?php endif ?>
-    </div>
 </form>
 <?php endif ?>
 
