@@ -239,7 +239,7 @@ function RepondreDictee(Dictee $Dictee, RepondreForm &$Form)
 		$titre = 'Votre dictée a été refusée';
 	}
 
-	$message = render_to_string('::mp_auto/'.$mp.'.php', array(
+	$message = render_to_string('ZcoDicteesBundle:Mp:'.$mp.'.html.php', array(
 		'id'		=> $_SESSION['id'],
 		'pseudo'	=> $_SESSION['pseudo'],
 		'url'		=> '/dictees/dictee-'.$Dictee->id.'-'.rewrite($Dictee->titre).'.html',
