@@ -166,11 +166,11 @@ var Editor = new Class({
 					
 					link.addEvent('mouseenter', function(e)
 					{
-						if (this.get('data-target'))
+						if (this.tagName.toLowerCase() == 'a')
 						{
 							$$('.zform-tool-block').removeClass('zform-visible').addClass('zform-invisible');
 							
-							var target = document.id('zform-block-button-' + this.get('data-target'));
+							var target = this.getParent('span').getElement('.zform-tool-block');
 							var main = target.getParent('.zform-main');
 							target.setStyle('top', (main.getPosition().y + main.getSize().y) + 'px');
 							target.setStyle('left', (this.getPosition().x - 11) + 'px');
@@ -186,8 +186,8 @@ var Editor = new Class({
 					groupDiv.grab(span);
 					
 					var block = new Element('span', {
-						'id': 'zform-block-button-' + group + '-' + tool,
-						'class': 'zform-tool-block zform-invisible',
+						//'id': 'zform-block-button-' + group + '-' + tool,
+						'class': 'zform-tool-block zform-invisible'
 					});
 					var i = 0;
 					var perRow = conf.per_row != undefined ? conf.per_row : 0;
@@ -195,7 +195,7 @@ var Editor = new Class({
 					{						
 						conf.block[symbol]['link_class'] = conf.block[symbol]['link_class'] != undefined ? conf.block[symbol]['link_class'] : '';
 						conf.block[symbol]['wrapper_class'] = conf.block[symbol]['wrapper_class'] != undefined ? conf.block[symbol]['wrapper_class'] : 'zform-block-button';
-						var button = _createButton(conf.block[symbol], group, tool, symbol);
+						var button = _createButton(conf.block[symbol], group, tool);
 						block.grab(button);
 						
 						i++;
