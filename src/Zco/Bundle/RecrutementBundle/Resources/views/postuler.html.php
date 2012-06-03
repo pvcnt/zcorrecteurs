@@ -2,7 +2,7 @@
 
 <?php echo $view->render('ZcoRecrutementBundle::_onglets.html.php') ?>
 
-<h1>Postuler à un recrutement</h1>
+<h1>Postuler <small><?php echo htmlspecialchars($InfosRecrutement['recrutement_nom']) ?></small></h1>
 
 <?php /* Première fois */ if(empty($InfosCandidature)){ ?>
 <p class="rmq information bold" style="font-size: 13px;">
@@ -26,34 +26,51 @@
 	<?php endif; ?>
 </p>
 
-<form method="post" action="">
-	<fieldset>
-		<legend>Rédiger votre texte de motivation</legend>
-		<div class="send">
-			<input type="submit" value="Enregistrer le brouillon" />
-		</div>
+<form method="post" action="" class="form-horizontal">
+	<?php if (!empty($InfosRecrutement['recrutement_id_quiz'])): ?>
+		<p class="center">
+			La réponse à <strong>un questionnaire de langue française</strong>
+			a été requise pour tous les candidats. Vous pourrez y répondre dès
+			que vous aurez <strong>enregistré votre premier brouillon</strong>
+			de lettre de motivation.
+		</p><br />
+	<?php endif; ?>
 
-		<?php if (!empty($InfosRecrutement['recrutement_id_quiz'])): ?>
-			<p class="centre">
-				La réponse à <strong>un questionnaire de langue française</strong>
-				a été requise pour tous les candidats. Vous pourrez y répondre dès
-				que vous aurez <strong>enregistré votre premier brouillon</strong>
-				de lettre de motivation.
-			</p><br />
-		<?php endif; ?>
-
-		<label for="texte">Texte de motivation</label>
-		<?php echo $view->render('::zform.html.php', array('texte' => $texte_zform)); ?>
-		<br />
-		<?php if($InfosRecrutement['recrutement_redaction']){ ?><br />
-			<label for="redaction">Rédaction</label>
-			<?php echo $view->render('::zform.html.php', array('id' => 'redaction')) ?>
-		<?php } ?>
-		<br />
-		<div class="send">
-			<input type="submit" value="Enregistrer le brouillon" />
+	<div class="control-group">
+		<label for="texte" class="control-label">Texte de motivation</label>
+		<div class="controls">
+			<div class="zform">
+				<div class="zform-wrapper">
+					<textarea name="texte" id="texte"></textarea>
+				</div>
+				<div class="zform-preview-area zform-invisible"></div>
+			</div>
+			<?php $view['javelin']->initBehavior('zform', array('id' => 'texte')) ?>
+			<?php $view['javelin']->initBehavior('resizable-textarea', array('id' =>'texte')) ?>
 		</div>
-	</fieldset>
+	</div>
+	
+	<?php if ($InfosRecrutement['recrutement_redaction']){ ?>
+	<div class="control-group">
+		<label for="redaction" class="control-label">Rédaction</label>
+		<div class="controls">
+			<div class="zform">
+				<div class="zform-wrapper">
+					<textarea name="redaction" id="redaction"></textarea>
+				</div>
+				<div class="zform-preview-area zform-invisible"></div>
+			</div>
+			<?php $view['javelin']->initBehavior('zform', array('id' => 'redaction')) ?>
+			<?php $view['javelin']->initBehavior('resizable-textarea', array('id' =>'redaction')) ?>
+		</div>
+	</div>
+	<?php } ?>
+	<?php $view['javelin']->initBehavior('squeezebox', array('selector' => '.zform-squeezebox-link', 'options' => array('handler' => 'iframe'))) ?>
+	<?php $view['javelin']->initBehavior('twipsy', array('selector' => '.zform-tool-button a')) ?>
+	
+	<div class="form-actions">
+		<input type="submit" class="btn btn-primary" value="Enregistrer le brouillon" />
+	</div>
 </form>
 
 <?php } /* Rédaction */ elseif($InfosCandidature['candidature_etat'] == CANDIDATURE_REDACTION){ ?>
@@ -74,64 +91,83 @@
 
 <?php if(!isset($_POST['valider1'])){ ?>
 <form method="post" action="">
-	<fieldset>
-		<legend>Valider ma candidature</legend>
+	<div class="box">
 		<p>
 			En cliquant sur ce bouton, vous validez définitivement votre candidature
 			et ne pourrez plus la modifier. <strong>C'est irréversible !</strong>
 		</p>
 
 		<?php if (!$InfosRecrutement['depot_possible']){ ?>
-		<p class="centre gras rouge">
-			Vous avez dépassé la date limite d'envoi.
-		</p>
-		<?php } else{ ?>
-		<div class="centre">
+		<p class="center bold rouge">Vous avez dépassé la date limite d'envoi.</p>
+		<?php } else { ?>
+		<div class="center">
 			<?php if (isset($quiz) && $InfosCandidature['candidature_quiz_score'] === NULL): ?>
-				<p class="gras rouge">Vous devez répondre au questionnaire avant d'envoyer votre candidature.</p>
+				<p class="bold rouge">Vous devez répondre au questionnaire avant d'envoyer votre candidature.</p>
 			<?php endif; ?>
-			<input type="submit" name="valider1" value="Envoyer ma candidature aux administrateurs"<?php
-				if (isset($quiz) && $InfosCandidature['candidature_quiz_score'] === NULL) echo ' disabled="disabled" class="gris"' ?> />
+			<input type="submit" name="valider1" class="btn" value="Envoyer ma candidature aux administrateurs"<?php
+				if (isset($quiz) && $InfosCandidature['candidature_quiz_score'] === NULL) echo ' disabled="disabled"' ?> />
 		</div>
 		<?php } ?>
-	</fieldset>
+	</div>
 </form>
 
 <?php if (isset($quiz)): ?>
-<p class="centre">
+<p class="center">
 	<a href="#bloc_motivation"
 	   onclick="$('bloc_motivation').slide('show'); $('bloc_motivation').fade('in'); $('bloc_quiz').slide('hide'); $('bloc_quiz').fade('hide');">
 		Modifier votre texte de motivation
 	</a> |
 	<a href="#bloc_quiz"
 	   onclick="$('bloc_quiz').slide('show'); $('bloc_quiz').fade('in'); $('bloc_motivation').slide('hide'); $('bloc_motivation').fade('hide');"<?php
-	   if ($InfosCandidature['candidature_quiz_score'] === NULL) echo ' class="gras"' ?>>
+	   if ($InfosCandidature['candidature_quiz_score'] === NULL) echo ' class="bold"' ?>>
 		Répondre au questionnaire à choix multiples
 	</a>
 </p>
 <?php endif; ?>
 
 <div id="bloc_motivation">
-	<form method="post" action="">
+	<form method="post" action="" class="form-horizontal">
 		<fieldset>
-			<legend>Modifier votre texte de motivation</legend>
-			<div class="send">
-				<input type="submit" value="Enregistrer le brouillon" />
+			<p class="center">Dernière modification <?php echo dateformat($InfosCandidature['candidature_date'], MINUSCULE); ?>.</p>
+			
+			<div class="control-group">
+				<label for="texte" class="control-label">Texte de motivation</label>
+				<div class="controls">
+					<div class="zform">
+						<div class="zform-wrapper">
+							<textarea name="texte" id="texte"><?php echo htmlspecialchars($texte_zform) ?></textarea>
+						</div>
+						<div class="zform-preview-area">
+							<?php echo $view['messages']->parse($texte_zform) ?>
+						</div>
+					</div>
+					<?php $view['javelin']->initBehavior('zform', array('id' => 'texte')) ?>
+					<?php $view['javelin']->initBehavior('resizable-textarea', array('id' =>'texte')) ?>
+				</div>
 			</div>
 
-			<p class="centre">Dernière modification <?php echo dateformat($InfosCandidature['candidature_date'], MINUSCULE); ?>.</p>
-
-			<label for="texte">Texte de motivation</label>
-			<?php echo $view->render('::zform.html.php', array('texte' => $texte_zform)); ?>
-			<br />
-
-			<?php if($InfosCandidature['recrutement_redaction']) { ?><br />
-			<label for="redaction">Rédaction</label>
-			<?php echo $view->render('::zform.html.php', array('id' => 'redaction', 'texte' => $InfosCandidature['candidature_redaction'])) ?>
+			<?php if ($InfosRecrutement['recrutement_redaction']){ ?>
+			<div class="control-group">
+				<label for="redaction" class="control-label">Rédaction</label>
+				<div class="controls">
+					<div class="zform">
+						<div class="zform-wrapper">
+							<textarea name="redaction" id="redaction"><?php echo htmlspecialchars($InfosCandidature['candidature_redaction']) ?></textarea>
+						</div>
+						<div class="zform-preview-area">
+							<?php echo $view['messages']->parse($InfosCandidature['candidature_redaction']) ?>
+						</div>
+					</div>
+					<?php $view['javelin']->initBehavior('zform', array('id' => 'redaction')) ?>
+					<?php $view['javelin']->initBehavior('resizable-textarea', array('id' =>'redaction')) ?>
+				</div>
+			</div>
 			<?php } ?>
+			<?php $view['javelin']->initBehavior('squeezebox', array('selector' => '.zform-squeezebox-link', 'options' => array('handler' => 'iframe'))) ?>
+			<?php $view['javelin']->initBehavior('twipsy', array('selector' => '.zform-tool-button a')) ?>
 
-			<div class="send">
-				<input type="submit" value="Enregistrer le brouillon" />
+			<div class="form-actions">
+				<input type="submit" class="btn btn-primary" value="Enregistrer le brouillon" />
 			</div>
 		</fieldset>
 	</form>
@@ -149,7 +185,7 @@
 					Notez que le temps de réponse au quiz est pris en compte.
 					Sans être un critère de notation, il pourra servir à départager deux candidats.<br/><br/>
 				</p>
-				<p class="centre gras"><a href="quiz-<?php echo $_GET['id'] ?>.html">Accéder au quiz</a></p>
+				<p class="center bold"><a href="quiz-<?php echo $_GET['id'] ?>.html">Accéder au quiz</a></p>
 			<?php endif; ?>
 		</fieldset>
 	</div>
@@ -166,7 +202,7 @@
 			<strong>C'est irréversible !</strong>
 		</p>
 
-		<p class="centre">
+		<p class="center">
 			<input type="submit" name="confirmer1" value="Confirmer l'envoi" /> <input type="submit" name="annuler" value="Annuler" />
 		</p>
 	</fieldset>
@@ -244,7 +280,7 @@
 <form action="" method="post" enctype="multipart/form-data">
 	<fieldset>
 		<legend>Envoyer ma correction</legend>
-		<p class="centre gras">
+		<p class="center bold">
 			<a href="/tutos/recrutement/originaux/<?php echo $InfosCandidature['candidature_test_tuto']; ?>">Récupérer le tutoriel à corriger</a>
 		</p><br />
 
@@ -263,7 +299,7 @@
 <form action="" method="post" enctype="multipart/form-data">
 	<fieldset>
 		<legend>Envoyer mes corrections</legend>
-		<p class="centre gras">
+		<p class="center bold">
 			<a href="/tutos/recrutement/originaux/0101010101.tuto">Récupérer le tutoriel à corriger</a><br />
 			<a href="/tutos/recrutement/originaux/0101010101.txt">Récupérer le texte littéraire à corriger</a>
 		</p><br />
@@ -291,7 +327,7 @@
 			et ne pourrez plus la modifier. <strong>C'est irréversible !</strong>
 		</p>
 
-		<p class="centre">
+		<p class="center">
 			<input type="submit" name="valider2" value="Envoyer ma correction aux administrateurs" />
 		</p>
 	</fieldset>
@@ -304,7 +340,7 @@
 			<input type="submit" value="Enregistrer le brouillon" />
 		</div>
 
-		<p class="centre">
+		<p class="center">
 			<?php if($InfosCandidature['candidature_date_correction'] != '0000-00-00 00:00:00'){ ?>
 			Dernière modification <?php echo dateformat($InfosCandidature['candidature_date_correction'], MINUSCULE); ?>.<br />
 			<?php } ?>
@@ -335,7 +371,7 @@
 			<strong>C'est irréversible !</strong>
 		</p>
 
-		<p class="centre">
+		<p class="center">
 			<input type="submit" name="confirmer2" value="Confirmer l'envoi" />
 			<input type="submit" name="annuler" value="Annuler" />
 		</p>
@@ -350,7 +386,7 @@
 	correction d'un texte comportant des fautes. C'est une mise en situation du
 	travail de zCorrection.<br />
 
-	<span class="gras rouge">
+	<span class="bold rouge">
 		Vous avez dépassé la date limite d'envoi pour cette	correction qui était
 		<strong><?php echo dateformat($InfosCandidature['candidature_date_fin_correction'], MINUSCULE); ?></strong>.
 	</span>
