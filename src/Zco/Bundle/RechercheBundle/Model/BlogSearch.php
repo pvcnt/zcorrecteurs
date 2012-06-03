@@ -30,7 +30,7 @@ class BlogSearch extends Searchable
 {
 	protected $index = 'blog_billets';
 
-	public function getResults($query)
+	public function getResults($query, $checkCredentials = true)
 	{
 	    include_once(BASEPATH.'/src/Zco/Bundle/BlogBundle/modeles/blog.php');
 	    

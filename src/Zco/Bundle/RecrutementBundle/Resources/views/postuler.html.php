@@ -46,7 +46,6 @@
 				<div class="zform-preview-area zform-invisible"></div>
 			</div>
 			<?php $view['javelin']->initBehavior('zform', array('id' => 'texte')) ?>
-			<?php $view['javelin']->initBehavior('resizable-textarea', array('id' =>'texte')) ?>
 		</div>
 	</div>
 	
@@ -61,12 +60,9 @@
 				<div class="zform-preview-area zform-invisible"></div>
 			</div>
 			<?php $view['javelin']->initBehavior('zform', array('id' => 'redaction')) ?>
-			<?php $view['javelin']->initBehavior('resizable-textarea', array('id' =>'redaction')) ?>
 		</div>
 	</div>
 	<?php } ?>
-	<?php $view['javelin']->initBehavior('squeezebox', array('selector' => '.zform-squeezebox-link', 'options' => array('handler' => 'iframe'))) ?>
-	<?php $view['javelin']->initBehavior('twipsy', array('selector' => '.zform-tool-button a')) ?>
 	
 	<div class="form-actions">
 		<input type="submit" class="btn btn-primary" value="Enregistrer le brouillon" />
@@ -142,7 +138,6 @@
 						</div>
 					</div>
 					<?php $view['javelin']->initBehavior('zform', array('id' => 'texte')) ?>
-					<?php $view['javelin']->initBehavior('resizable-textarea', array('id' =>'texte')) ?>
 				</div>
 			</div>
 
@@ -159,12 +154,9 @@
 						</div>
 					</div>
 					<?php $view['javelin']->initBehavior('zform', array('id' => 'redaction')) ?>
-					<?php $view['javelin']->initBehavior('resizable-textarea', array('id' =>'redaction')) ?>
 				</div>
 			</div>
 			<?php } ?>
-			<?php $view['javelin']->initBehavior('squeezebox', array('selector' => '.zform-squeezebox-link', 'options' => array('handler' => 'iframe'))) ?>
-			<?php $view['javelin']->initBehavior('twipsy', array('selector' => '.zform-tool-button a')) ?>
 
 			<div class="form-actions">
 				<input type="submit" class="btn btn-primary" value="Enregistrer le brouillon" />
@@ -194,8 +186,7 @@
 <?php } else{ ?>
 
 <form method="post" action="">
-	<fieldset>
-		<legend>Confirmer l'envoi de ma candidature</legend>
+	<div class="box">
 		<p>
 			En cliquant sur ce bouton, vous validez définitivement votre
 			candidature et ne pourrez plus la modifier.
@@ -203,9 +194,10 @@
 		</p>
 
 		<p class="center">
-			<input type="submit" name="confirmer1" value="Confirmer l'envoi" /> <input type="submit" name="annuler" value="Annuler" />
+			<input type="submit" class="btn btn-primary" name="confirmer1" value="Confirmer l'envoi" />
+			<input type="submit" class="btn" name="annuler" value="Annuler" />
 		</p>
-	</fieldset>
+	</div>
 </form>
 
 <span class="citation">Citation : votre candidature</span>
