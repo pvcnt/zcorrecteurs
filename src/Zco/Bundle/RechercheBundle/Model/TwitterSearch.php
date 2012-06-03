@@ -31,7 +31,7 @@ class TwitterSearch extends Searchable
 {
 	protected $index = 'twitter_tweets';
 
-	public function getResults($query)
+	public function getResults($query, $checkCredentials = true)
 	{
 		return Doctrine_Core::getTable('TwitterTweet')
 			->getByIds($this->idsArray(parent::getResults($query, false)));
