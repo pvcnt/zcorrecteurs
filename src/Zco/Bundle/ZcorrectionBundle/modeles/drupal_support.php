@@ -40,10 +40,12 @@ function CompterTicketsSupportDrupal(array $cond = array())
 function ListerTicketsSupportDrupal(array $cond = array())
 {
 	/** 
-	* Etape préliminaire : les tickets ne sont retournés que si les 
-	* identifiants du compte Drupal sont renseignés.
-	*/
-	if (!Container::hasParameter('zco_zcorrection.drupal_username') || !Container::hasParameter('zco_zcorrection.drupal_password'))
+	 * Etape préliminaire : les tickets ne sont retournés que si les 
+	 * identifiants du compte Drupal sont renseignés.
+	 */
+	$drupal_username = (Container::hasParameter('zco_zcorrection.drupal_username')) ? Container::getParameter('zco_zcorrection.drupal_username') : null;
+	$drupal_password = (Container::hasParameter('zco_zcorrection.drupal_password')) ? Container::getParameter('zco_zcorrection.drupal_password') : null;
+	if (empty($drupal_username) || empty($drupal_password))
 	{
 		return array();
 	}
@@ -58,8 +60,8 @@ function ListerTicketsSupportDrupal(array $cond = array())
 	{
 		//Connexion au compte utilisateur Drupal.
 		$user = EnvoyerRequeteDrupal('user/login', array(), array(
-		  'username' => Container::getParameter('zco_zcorrection.drupal_username'),
-		  'password' => Container::getParameter('zco_zcorrection.drupal_password'),
+		  'username' => $drupal_username,
+		  'password' => $drupal_password,
 		), 'post');
 		$cookies = array($user['session_name'] => $user['sessid']);
 		
