@@ -6,9 +6,12 @@
 var Editor = new Class({
 	Implements: Options,
 	
+	actions: [],
+	
 	initialize: function(id, options)
 	{
 		this.setOptions(options);
+		actions = this.actions;
 		
 		var _insertCallback = function(zform, action)
 		{
@@ -26,6 +29,58 @@ var Editor = new Class({
 			}
 		};
 		
+		var _createLink = function(conf, group, tool, subtool)
+		{
+			var link = new Element('a', {
+				'title': conf.label,
+				'href': '#',
+				'data-target': (group && tool) ? group + '-' + tool + (subtool ? '-' + subtool : '') : ''
+			});
+			
+			if (conf.icon)
+			{
+				link.grab(new Element('img', {
+					'src': conf.icon,
+					'alt': conf.label
+				}));
+			}
+			else
+			{
+				link.addClass(conf['link_class'] != undefined ? conf['link_class'] : 'btn');
+				link.set('text', conf.label);
+				link.set('title', conf.title != undefined ? conf.title : conf.label)
+			}
+			
+			return link;
+		};
+		
+		var _createButton = function(conf, group, tool, subtool)
+		{
+			var span = new Element('span', {
+				'class': conf['wrapper_class'] != undefined ? conf['wrapper_class'] : 'zform-tool-button'
+			});
+			var link = _createLink(conf, group, tool, subtool);
+			
+			if (group && tool)
+			{
+				actions[group + '-' + tool + (subtool ? '-' + subtool : '')] = conf.action;
+			}
+			
+			link.addEvent('click', function(e)
+			{
+				e.preventDefault();
+				if (this.get('data-target'))
+				{
+					var target = this.get('data-target');
+					_insertCallback(zform, actions[target]);
+				}
+			});
+			
+			span.grab(link);
+			
+			return span;
+		}
+		
 		var zform = document.id(id);
 		var toolbar = new Element('div', {
 			'class': 'zform-toolbar'
@@ -36,179 +91,130 @@ var Editor = new Class({
 		var main = new Element('div', {
 			'class': 'zform-main'
 		})
-		var sections = new Element('div', {
-			'class': 'zform-sections',
-			'style': 'display: none'
-		});
-		var tabs = new Element('div', {
-			'class': 'zform-tabs'
-		});
 	
-		for (section in options)
+		for (group in options)
 		{
-			var sectionDiv = new Element('div', {
-				'class': 'zform-section zform-section-' + section,
-				'id': 'zform-section-' + section
-			});
-		
-			for (group in options[section])
+			if (group[0] == '_')
 			{
-				if (group[0] == '_')
+				continue;
+			}
+			var groupDiv = new Element('div', {
+				'class': 'zform-group zform-group-' + group
+			});
+			if (options[group]._label)
+			{
+				groupDiv.grab(new Element('span', {
+					'class': 'zform-tool-label',
+					'html': options[group]._label + ' &rarr;'
+				}));
+			}
+		
+			for (tool in options[group])
+			{
+				if (tool[0] == '_')
 				{
 					continue;
 				}
-				var groupDiv = new Element('div', {
-					'class': 'zform-group zform-group-' + group
-				});
-				if (options[section][group]._label)
-				{
-					groupDiv.grab(new Element('span', {
-						'class': 'zform-tool-label',
-						'html': options[section][group]._label + ' &rarr;'
-					}));
-				}
 			
-				for (tool in options[section][group])
+				var conf = options[group][tool];
+				if (conf.type == 'button')
 				{
-					if (tool[0] == '_')
+					groupDiv.grab(_createButton(conf, group, tool));
+				} /* end of "button" tool type */
+				else if (conf.type == 'select')
+				{
+					var span = new Element('span', {
+						'class': 'zform-tool-select'
+					});
+					var select = new Element('select', {
+						'data-target': group + '-' + tool
+					});
+					select.grab(new Element('option', {
+						'class': 'zform-tool-select-title',
+						'text': conf.label,
+						'value': '_default',
+					}));
+				
+					for (option in conf.list)
 					{
-						continue;
+						select.grab(new Element('option', {
+							'value': option,
+							'text': conf.list[option].label
+						}));
+						actions[group + '-' + tool + '-' + option] = conf.list[option].action;
 					}
 				
-					var conf = options[section][group][tool];
-					if (conf.type == 'button')
+					select.addEvent('change', function(e)
 					{
-						var span = new Element('span', {
-							'class': 'zform-tool-button'
-						});
-						var link = new Element('a', {
-							'title': conf.label,
-							'href': '#',
-							'data-target': section + '.' + group + '.' + tool
-						});
-					
-						link.addEvent('click', function(e)
+						if (this.get('data-target'))
 						{
-							e.preventDefault();
-							if (this.get('data-target'))
-							{
-								var target = this.get('data-target');
-								var parts = target.split('.');
-								_insertCallback(zform, options[parts[0]][parts[1]][parts[2]].action);
-							}
-						});
-					
-						if (conf.icon)
-						{
-							link.grab(new Element('img', {
-								'src': conf.icon,
-								'alt': conf.label
-							}));
+							var target = this.get('data-target');
+							_insertCallback(zform, actions[target + '-' + this.value].action);
+							this.value = '_default';
 						}
-						else
-						{
-							link.addClass('btn');
-							link.set('text', conf.label);
-						}
-						span.grab(link),
-						groupDiv.grab(span);
-					} /* end of "button" tool type */
-					else if (conf.type == 'select')
-					{
-						var span = new Element('span', {
-							'class': 'zform-tool-select'
-						});
-						var select = new Element('select', {
-							'data-target': section + '.' + group + '.' + tool
-						});
-						select.grab(new Element('option', {
-							'class': 'zform-tool-select-title',
-							'text': conf.label,
-							'value': '_default',
-						}));
-					
-						for (option in conf.list)
-						{
-							select.grab(new Element('option', {
-								'value': option,
-								'text': conf.list[option].label
-							}));
-						}
-					
-						select.addEvent('change', function(e)
-						{
-							if (this.get('data-target'))
-							{
-								var target = this.get('data-target');
-								var parts = target.split('.');
-								_insertCallback(zform, options[parts[0]][parts[1]][parts[2]].list[this.value].action);
-								this.value = '_default';
-							}
-						});
-					
-						span.grab(select),
-						groupDiv.grab(span);
-					}
-				}
-				sectionDiv.grab(groupDiv);
-			}
-		
-			if (section == 'main')
-			{
-				sectionDiv.addClass('zform-section-visible');
-				sectionDiv.removeClass('zform-section');
-				main.grab(sectionDiv);
-			}
-			else
-			{
-				sectionDiv.addClass('zform-invisible');
-				sections.grab(sectionDiv);
-			
-				var tabDiv = new Element('div', {
-					'class': 'zform-tab zform-tab-invisible zform-tab-' + group
-				});
-				var tabLink = new Element('a', {
-					href: '#',
-					text: options[section]._label ? options[section]._label : group,
-					'data-target': sectionDiv.get('id')
-				});
-			
-				tabLink.addEvent('click', function(e)
+					});
+				
+					span.grab(select),
+					groupDiv.grab(span);
+				} /* end of "select"" tool type */
+				else if (conf.type == 'block')
 				{
-					e.preventDefault();
-					var tab = e.target.getParent('.zform-tab');
-					var section = document.id(e.target.get('data-target'));
-					if (tab.hasClass('zform-tab-invisible'))
+					var span = new Element('span', {
+						'class': 'zform-tool-button'
+					});
+					var link = _createLink(conf, group, tool);
+					
+					link.addEvent('mouseenter', function(e)
 					{
-						$$('.zform-tab').removeClass('zform-tab-visible');
-						$$('.zform-tab').addClass('zform-tab-invisible');
-						$$('.zform-section').removeClass('zform-visible');
-						$$('.zform-section').addClass('zform-invisible');
+						if (this.get('data-target'))
+						{
+							$$('.zform-tool-block').removeClass('zform-visible').addClass('zform-invisible');
+							
+							var target = document.id('zform-block-button-' + this.get('data-target'));
+							var main = target.getParent('.zform-main');
+							target.setStyle('top', (main.getPosition().y + main.getSize().y) + 'px');
+							target.setStyle('left', (this.getPosition().x - 11) + 'px');
+							target.removeClass('zform-invisible').addClass('zform-visible');
+						}
+					});
+					link.addEvent('click', function(e){
+						event.preventDefault();
+						return false;
+					});
+					
+					span.grab(link),
+					groupDiv.grab(span);
+					
+					var block = new Element('span', {
+						'id': 'zform-block-button-' + group + '-' + tool,
+						'class': 'zform-tool-block zform-invisible',
+					});
+					var i = 0;
+					var perRow = conf.per_row != undefined ? conf.per_row : 0;
+					for (symbol in conf.block)
+					{						
+						conf.block[symbol]['link_class'] = conf.block[symbol]['link_class'] != undefined ? conf.block[symbol]['link_class'] : '';
+						conf.block[symbol]['wrapper_class'] = conf.block[symbol]['wrapper_class'] != undefined ? conf.block[symbol]['wrapper_class'] : 'zform-block-button';
+						var button = _createButton(conf.block[symbol], group, tool, symbol);
+						block.grab(button);
 						
-						tab.addClass('zform-tab-visible');
-						tab.removeClass('zform-tab-invisible');
-						section.removeClass('zform-invisible');
-						section.addClass('zform-visible');
-						sections.setStyle('display', '');
+						i++;
+						if ((i % perRow) == 0)
+						{
+							block.grab(new Element('br'));
+						}
 					}
-					else
-					{
-						tab.addClass('zform-tab-invisible');
-						tab.removeClass('zform-tab-visible');
-						section.removeClass('zform-visible');
-						section.addClass('zform-invisible');
-						sections.setStyle('display', 'none');
-					}
-				});
-			
-				tabDiv.grab(tabLink);
-				tabs.grab(tabDiv);
+					block.inject(link, 'after');
+				} /* end of "block" tool type */
 			}
+			main.grab(groupDiv);
 		}
 	
-		main.grab(tabs);
+		document.addEvent('click', function(e)
+		{
+			$$('.zform-tool-block').removeClass('zform-visible').addClass('zform-invisible');
+		});
 		toolbar.grab(main);
-		toolbar.grab(sections);
 	
 		var rawLinks = new Element('div', {
 			'class': 'zform-group',

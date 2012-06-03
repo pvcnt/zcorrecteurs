@@ -5,9 +5,21 @@
  *           @ZcoCoreBundle/Resources/public/js/Editor.js
  * 			 @ZcoCoreBundle/Resources/public/css/zcode.css
  *		     @ZcoCoreBundle/Resources/public/css/new_zform.css
+ *           vitesse-behavior-squeezebox
+ *           vitesse-behavior-twipsy
+ *           vitesse-behavior-resizable-textarea
  */
-Behavior.create('zform', function(config)
+Behavior.create('zform', function(config, statics)
 {
+	if (!statics.count)
+	{
+		statics.count = 1;
+	}
+	else
+	{
+		statics.count++;
+	}
+	
 	var listCallback = function(zform, action)
 	{
 		var lines = zform.getSelectedText().split("\n");
@@ -19,490 +31,489 @@ Behavior.create('zform', function(config)
 	
 	if (!config.options)
 	{
+		var colors = {};
+		var colorsDict = {
+			'pink': {'label': 'Rose', value: 'rose'},
+			'red': {'label': 'Rouge', value: 'rouge'},
+			'orange': {'label': 'Orange', value: 'orange'},
+			'yellow': {'label': 'Jaune', value: 'jaune'},
+			'dgreen': {'label': 'Vert foncé', value: 'vertf'},
+			'lgreen': {'label': 'Vert clair', value: 'vertc'},
+			'turquoise': {'label': 'Turquoise', value: 'turquoise'},
+			'bluegrey': {'label': 'Bleu-gris', value: 'bleugris'},
+			'marine': {'label': 'Marine', value: 'marine'},
+			'violet': {'label': 'Violet', value: 'violet'},
+			'maroon': {'label': 'Marron', value: 'marron'},
+			'black': {'label': 'Noir', value: 'noir'},
+			'grey': {'label': 'Gris', value: 'gris'},
+			'silver': {'label': 'Argent', value: 'argent'},
+			'white': {'label': 'Blanc', value: 'blanc'}
+		};
+		for (var key in colorsDict)
+		{
+			colors[key] = {
+				label: colorsDict[key].label,
+				link_class: 'zform-block-button-color zform-button-' + key,
+				action: {
+					type: 'encapsulate',
+					options: {
+						'pre': '<couleur nom="' + colorsDict[key].value + '">',
+						'post': '</couleur>'
+					}
+				}
+			};
+		}
+		
+		var smilies = {};
+		var smiliesDict = {
+			    ':)': 'smile.png',
+			    ':D': 'heureux.png',
+			    ';)': 'clin.png',
+			    ':p': 'langue.png',
+			    ':lol:': 'rire.gif',
+			    ':euh:': 'unsure.gif',
+			    ':(': 'triste.png',
+			    ':o': 'huh.png',
+			    ':colere2:': 'mechant.png',
+			    'o_O': 'blink.gif',
+			    '^^': 'hihi.png',
+			    ':-°': 'siffle.png',
+			    ':diable:': 'diable.png',
+			    ':ninja:': 'ninja.png',
+			    '>_<': 'pinch.png',
+			    ':pirate:': 'pirate.png',
+			    ':\'(': 'pleure.png',
+			    ':honte:': 'rouge.png',
+			    ':soleil:': 'soleil.png',
+			    ':waw:': 'waw.png',
+			    ':zorro:': 'zorro.png'/*,
+				':magicien:': 'magicien.png',
+				':ange:': 'ange.png',
+				':colere:': 'angry.gif'*/
+		};
+		var i = 0;
+		for (var key in smiliesDict)
+		{
+			i++;
+			smilies['smilie' + i] = {
+				label: key,
+				icon: '/bundles/zcocore/img/zcode/smilies/' + smiliesDict[key],
+				action: {
+					type: 'encapsulate',
+					options: {
+						'pre': key,
+					}
+				}
+			};
+		}
+		
 		config.options = {
-			'main': {
-				'basic': {
-					'bold': {
-						type: 'button',
-						label: 'Gras',
-						icon: '/bundles/zcocore/img/zcode/gras.png',
-						action: {
-							type: 'encapsulate',
-							options: {
-								'pre': '<gras>',
-								'post': '</gras>'
-							}
+			'basic': {
+				'bold': {
+					type: 'button',
+					label: 'Gras',
+					icon: '/bundles/zcocore/img/zcode/gras.png',
+					action: {
+						type: 'encapsulate',
+						options: {
+							'pre': '<gras>',
+							'post': '</gras>'
 						}
-					},
-					'italic': {
-						type: 'button',
-						label: 'Italique',
-						icon: '/bundles/zcocore/img/zcode/italique.png',
-						action: {
-							type: 'encapsulate',
-							options: {
-								'pre': '<italique>',
-								'post': '</italique>'
-							}
+					}
+				},
+				'italic': {
+					type: 'button',
+					label: 'Italique',
+					icon: '/bundles/zcocore/img/zcode/italique.png',
+					action: {
+						type: 'encapsulate',
+						options: {
+							'pre': '<italique>',
+							'post': '</italique>'
 						}
-					},
-					'underline': {
-						type: 'button',
-						label: 'Souligné',
-						icon: '/bundles/zcocore/img/zcode/souligne.png',
-						action: {
-							type: 'encapsulate',
-							options: {
-								'pre': '<souligne>',
-								'post': '</souligne>'
-							}
+					}
+				},
+				'underline': {
+					type: 'button',
+					label: 'Souligné',
+					icon: '/bundles/zcocore/img/zcode/souligne.png',
+					action: {
+						type: 'encapsulate',
+						options: {
+							'pre': '<souligne>',
+							'post': '</souligne>'
 						}
-					},
-					'strike': {
-						type: 'button',
-						label: 'Barré',
-						icon: '/bundles/zcocore/img/zcode/barre.png',
-						action: {
-							type: 'encapsulate',
-							options: {
-								'pre': '<barre>',
-								'post': '</barre>'
+					}
+				},
+				'strike': {
+					type: 'button',
+					label: 'Barré',
+					icon: '/bundles/zcocore/img/zcode/barre.png',
+					action: {
+						type: 'encapsulate',
+						options: {
+							'pre': '<barre>',
+							'post': '</barre>'
+						}
+					}
+				},
+			}, /* end of group "basic"" */
+			formatting: {
+				'color': {
+					type: 'block',
+					label: 'Couleur',
+					icon: '/bundles/zcocore/img/zform/palette.png',
+					block: colors,
+					per_row: 5
+				}
+			}, /* end of group "formatting" */
+			verticalpos: {
+				'sup': {
+					type: 'button',
+					label: 'Exposant',
+					icon: '/bundles/zcocore/img/zcode/exposant.png',
+					action: {
+						type: 'encapsulate',
+						options: {
+							'pre': '<exposant>',
+							'post': '</exposant>'
+						}
+					}
+				},
+				'inf': {
+					type: 'button',
+					label: 'Indice',
+					icon: '/bundles/zcocore/img/zcode/indice.png',
+					action: {
+						type: 'encapsulate',
+						options: {
+							'pre': '<indice>',
+							'post': '</indice>'
+						}
+					}
+				}
+			}, /* end of group "verticalpos"" */
+			positions: {
+				left: {
+					type: 'button',
+					label: 'Texte aligné à gauche',
+					icon: '/bundles/zcocore/img/zform/align-left.png',
+					action: {
+						type: 'encapsulate',
+						options: {
+							'pre': '<position valeur="gauche">',
+							'post': '</position>'
+						}
+					}
+				},
+				center: {
+					type: 'button',
+					label: 'Texte centré',
+					icon: '/bundles/zcocore/img/zform/align-center.png',
+					action: {
+						type: 'encapsulate',
+						options: {
+							'pre': '<position valeur="centre">',
+							'post': '</position>'
+						}
+					}
+				},
+				right: {
+					type: 'button',
+					label: 'Texte aligné à droite',
+					icon: '/bundles/zcocore/img/zform/align-right.png',
+					action: {
+						type: 'encapsulate',
+						options: {
+							'pre': '<position valeur="droite">',
+							'post': '</position>'
+						}
+					}
+				},
+				justify: {
+					type: 'button',
+					label: 'Texte justifié',
+					icon: '/bundles/zcocore/img/zform/align-justify.png',
+					action: {
+						type: 'encapsulate',
+						options: {
+							'pre': '<position valeur="justifie">',
+							'post': '</position>'
+						}
+					}
+				}
+			}, /* end of group "positions" */
+			lists: {
+				unordered: {
+					type: 'button',
+					label: 'Liste avec tirets cadratins',
+					icon: '/bundles/zcocore/img/zform/unordered-list.png',
+					action: {
+						type: 'callback',
+						execute: listCallback,
+						options: {
+							'pre': '<liste>' + "\n",
+							'post': "\n" + '</liste>'
+						}
+					}
+				},
+				ordered: {
+					type: 'button',
+					label: 'Liste numérotée',
+					icon: '/bundles/zcocore/img/zform/ordered-list.png',
+					action: {
+						type: 'callback',
+						execute: listCallback,
+						options: {
+							'pre': '<liste type="1">' + "\n",
+							'post': "\n" + '</liste>'
+						}
+					}
+				}
+			}, /* end of group "lists" */
+			semantic: {
+				heading1: {
+					type: 'button',
+					label: 'Titre de premier niveau',
+					icon: '/bundles/zcocore/img/zform/heading1.png',
+					action: {
+						type: 'encapsulate',
+						options: {
+							'pre': '<titre1>',
+							'post': '</titre1>'
+						}
+					}
+				},
+				heading2: {
+					type: 'button',
+					label: 'Titre de second niveau',
+					icon: '/bundles/zcocore/img/zform/heading2.png',
+					action: {
+						type: 'encapsulate',
+						options: {
+							'pre': '<titre2>',
+							'post': '</titre2>'
+						}
+					}
+				}
+			}, /* end of group "semantic" */
+			objects: {
+				link: {
+					type: 'button',
+					label: 'Lien',
+					icon: '/bundles/zcocore/img/zcode/lien.png',
+					action: {
+						type: 'encapsulate',
+						options: {
+							'pre': '<lien url="">',
+							'post': '</lien>'
+						}
+					}
+				},
+				image: {
+					type: 'button',
+					label: 'Image',
+					icon: '/bundles/zcocore/img/zcode/image.png',
+					action: {
+						type: 'encapsulate',
+						options: {
+							'pre': '<image>',
+							'post': '</image>'
+						}
+					}
+				},
+				'blocks': {
+					type: 'block',
+					label: 'Blocs spéciaux',
+					icon: '/bundles/zcocore/img/zform/blocks.png',
+					block: {
+						info: {
+							type: 'button',
+							label: 'Information',
+							icon: '/bundles/zcocore/img/zcode/info.png',
+							action: {
+								type: 'encapsulate',
+								options: {
+									'pre': '<information>',
+									'post': '</information>'
+								}
+							}
+						},
+						warning: {
+							type: 'button',
+							label: 'Attention',
+							icon: '/bundles/zcocore/img/zcode/attention.png',
+							action: {
+								type: 'encapsulate',
+								options: {
+									'pre': '<attention>',
+									'post': '</attention>'
+								}
+							}
+						},
+						error: {
+							type: 'button',
+							label: 'Erreur',
+							icon: '/bundles/zcocore/img/zcode/erreur.png',
+							action: {
+								type: 'encapsulate',
+								options: {
+									'pre': '<erreur>',
+									'post': '</erreur>'
+								}
+							}
+						},
+						question: {
+							type: 'button',
+							label: 'Question',
+							icon: '/bundles/zcocore/img/zcode/question.png',
+							action: {
+								type: 'encapsulate',
+								options: {
+									'pre': '<question>',
+									'post': '</question>'
+								}
+							}
+						},
+					}
+				},
+				quote: {
+					type: 'button',
+					label: 'Citation',
+					icon: '/bundles/zcocore/img/zcode/citation.png',
+					action: {
+						type: 'encapsulate',
+						options: {
+							'pre': '<citation>',
+							'post': '</citation>'
+						}
+					}
+				},
+				secret: {
+					type: 'button',
+					label: 'Secret',
+					icon: '/bundles/zcocore/img/zcode/secret.png',
+					action: {
+						type: 'encapsulate',
+						options: {
+							'pre': '<secret>',
+							'post': '</secret>'
+						}
+					}
+				},
+				symbol: {
+					type: 'block',
+					label: 'Caractères spéciaux',
+					icon: '/bundles/zcocore/img/zform/symbol.png',
+					block: {
+						char1: {
+							type: 'button',
+							label: 'À',
+							action: {
+								type: 'encapsulate',
+								options: {
+									'pre': 'À',
+								}
+							}
+						},
+						char2: {
+							type: 'button',
+							label: 'Ç',
+							action: {
+								type: 'encapsulate',
+								options: {
+									'pre': 'Ç',
+								}
+							}
+						},
+						char3: {
+							type: 'button',
+							label: 'É',
+							action: {
+								type: 'encapsulate',
+								options: {
+									'pre': 'É',
+								}
+							}
+						},
+						char4: {
+							type: 'button',
+							label: 'È',
+							action: {
+								type: 'encapsulate',
+								options: {
+									'pre': 'È',
+								}
+							}
+						},
+						char5: {
+							type: 'button',
+							label: '« »',
+							action: {
+								type: 'encapsulate',
+								options: {
+									'pre': '« ',
+									'post': ' »'
+								}
+							}
+						},
+						char6: {
+							type: 'button',
+							label: '—',
+							title: 'Tiret cadratin',
+							action: {
+								type: 'encapsulate',
+								options: {
+									'pre': '—',
+								}
+							}
+						},
+						char7: {
+							type: 'button',
+							label: '–',
+							title: 'Tiret demi-cadratin',
+							action: {
+								type: 'encapsulate',
+								options: {
+									'pre': '–',
+								}
+							}
+						},
+						char8: {
+							type: 'button',
+							label: '…',
+							action: {
+								type: 'encapsulate',
+								options: {
+									'pre': '…',
+								}
+							}
+						},
+						char9: {
+							type: 'button',
+							label: 'œ',
+							action: {
+								type: 'encapsulate',
+								options: {
+									'pre': 'œ',
+								}
 							}
 						}
 					}
-				}, /* end of group "basic"" */
-				objects: {
-					link: {
-						type: 'button',
-						label: 'Lien',
-						icon: '/bundles/zcocore/img/zcode/lien.png',
-						action: {
-							type: 'encapsulate',
-							options: {
-								'pre': '<lien url="">',
-								'post': '</lien>'
-							}
-						}
-					},
-					image: {
-						type: 'button',
-						label: 'Image',
-						icon: '/bundles/zcocore/img/zcode/image.png',
-						action: {
-							type: 'encapsulate',
-							options: {
-								'pre': '<image>',
-								'post': '</image>'
-							}
-						}
-					}
-				} /* end of group "objects" */
-			}, /* end of section "main" */
-			advanced: {
-				_label: 'Avancé',
-				verticalpos: {
-					_label: 'Position',
-					sup: {
-						type: 'button',
-						label: 'Exposant',
-						icon: '/bundles/zcocore/img/zcode/exposant.png',
-						action: {
-							type: 'encapsulate',
-							options: {
-								'pre': '<exposant>',
-								'post': '</exposant>'
-							}
-						}
-					},
-					inf: {
-						type: 'button',
-						label: 'Indice',
-						icon: '/bundles/zcocore/img/zcode/indice.png',
-						action: {
-							type: 'encapsulate',
-							options: {
-								'pre': '<indice>',
-								'post': '</indice>'
-							}
-						}
-					}
-				}, /* end of group "verticalpos" */
-				blocks: {
-					_label: 'Blocs',
-					unorderedList: {
-						type: 'button',
-						label: 'Liste non ordonnée',
-						icon: '/bundles/zcocore/img/zcode/liste.png',
-						action: {
-							type: 'callback',
-							execute: listCallback,
-							options: {
-								'pre': '<liste>' + "\n",
-								'post': "\n" + '</liste>'
-							}
-						}
-					},
-					orderedList: {
-						type: 'button',
-						label: 'Liste ordonnée',
-						icon: '/bundles/zcocore/img/zform/ordered_list.png',
-						action: {
-							type: 'callback',
-							execute: listCallback,
-							options: {
-								'pre': '<liste type="1">' + "\n",
-								'post': "\n" + '</liste>'
-							}
-						}
-					},
-					sup: {
-						type: 'button',
-						label: 'Citation',
-						icon: '/bundles/zcocore/img/zcode/citation.png',
-						action: {
-							type: 'encapsulate',
-							options: {
-								'pre': '<citation>',
-								'post': '</citation>'
-							}
-						}
-					},
-					inf: {
-						type: 'button',
-						label: 'Secret',
-						icon: '/bundles/zcocore/img/zcode/secret.png',
-						action: {
-							type: 'encapsulate',
-							options: {
-								'pre': '<secret>',
-								'post': '</secret>'
-							}
-						}
-					}
-				}, /* end of group "blocks" */
-				remarks: {
-					_label: 'Remarques',
-					info: {
-						type: 'button',
-						label: 'Information',
-						icon: '/bundles/zcocore/img/zcode/info.png',
-						action: {
-							type: 'encapsulate',
-							options: {
-								'pre': '<information>',
-								'post': '</information>'
-							}
-						}
-					},
-					attention: {
-						type: 'button',
-						label: 'Attention',
-						icon: '/bundles/zcocore/img/zcode/attention.png',
-						action: {
-							type: 'encapsulate',
-							options: {
-								'pre': '<attention>',
-								'post': '</attention>'
-							}
-						}
-					},
-					erreur: {
-						type: 'button',
-						label: 'Erreur',
-						icon: '/bundles/zcocore/img/zcode/erreur.png',
-						action: {
-							type: 'encapsulate',
-							options: {
-								'pre': '<erreur>',
-								'post': '</erreur>'
-							}
-						}
-					},
-					question: {
-						type: 'button',
-						label: 'Question',
-						icon: '/bundles/zcocore/img/zcode/question.png',
-						action: {
-							type: 'encapsulate',
-							options: {
-								'pre': '<question>',
-								'post': '</question>'
-							}
-						}
-					}
-				} /* end of group "remarks" */
-			}, /* end of section "advanced" */
+				},
+				smilies: {
+					type: 'block',
+					label: 'Frimousses',
+					icon: '/bundles/zcocore/img/zform/smilie.png',
+					block: smilies,
+					per_row: 7
+				}
+			} /* end of group "objects" */
+		};
+/*			}
 			formatting: {
 				_label: 'Mise en forme',
 				formatting: {
-					semantic: {
-						type: 'select',
-						label: 'Sémantique',
-						list: {
-							title1: {
-								label: 'Titre 1',
-								action: {
-									type: 'encapsulate',
-									options: {
-										'pre': '<titre1>',
-										'post': '</titre1>'
-									}
-								}
-							},
-							title2: {
-								label: 'Titre 2',
-								action: {
-									type: 'encapsulate',
-									options: {
-										'pre': '<titre2>',
-										'post': '</titre2>'
-									}
-								}
-							}
-						}
-					}, /* end of tool "semantic" */
-					position: {
-						type: 'select',
-						label: 'Position',
-						list: {
-							left: {
-								label: 'Gauche',
-								action: {
-									type: 'encapsulate',
-									options: {
-										'pre': '<position valeur="gauche">',
-										'post': '</position>'
-									}
-								}
-							},
-							right: {
-								label: 'Droite',
-								action: {
-									type: 'encapsulate',
-									options: {
-										'pre': '<position valeur="droite">',
-										'post': '</position>'
-									}
-								}
-							},
-							center: {
-								label: 'Centré',
-								action: {
-									type: 'encapsulate',
-									options: {
-										'pre': '<position valeur="centre">',
-										'post': '</position>'
-									}
-								}
-							},
-							justify: {
-								label: 'Justifié',
-								action: {
-									type: 'encapsulate',
-									options: {
-										'pre': '<position valeur="justifie">',
-										'post': '</position>'
-									}
-								}
-							},
-							floatLeft: {
-								label: 'Flottant gauche',
-								action: {
-									type: 'encapsulate',
-									options: {
-										'pre': '<flottant valeur="gauche">',
-										'post': '</flottant>'
-									}
-								}
-							},
-							floatRight: {
-								label: 'Flottant droit',
-								action: {
-									type: 'encapsulate',
-									options: {
-										'pre': '<flottant valeur="droite">',
-										'post': '</flottant>'
-									}
-								}
-							}
-						}
-					}, /* end of tool "position" */
-					color: {
-						type: 'select',
-						label: 'Couleur',
-						list: {
-							pink: {
-								label: 'Rose',
-								action: {
-									type: 'encapsulate',
-									options: {
-										'pre': '<couleur nom="rose">',
-										'post': '</couleur>'
-									}
-								}
-							},
-							red: {
-								label: 'Rouge',
-								action: {
-									type: 'encapsulate',
-									options: {
-										'pre': '<couleur nom="rouge">',
-										'post': '</couleur>'
-									}
-								}
-							},
-							orange: {
-								label: 'Orange',
-								action: {
-									type: 'encapsulate',
-									options: {
-										'pre': '<couleur nom="orange">',
-										'post': '</couleur>'
-									}
-								}
-							},
-							yellow: {
-								label: 'Jaune',
-								action: {
-									type: 'encapsulate',
-									options: {
-										'pre': '<couleur nom="jaune">',
-										'post': '</couleur>'
-									}
-								}
-							},
-							darkGreen: {
-								label: 'Vert foncé',
-								action: {
-									type: 'encapsulate',
-									options: {
-										'pre': '<couleur nom="vertf">',
-										'post': '</couleur>'
-									}
-								}
-							},
-							lightGreen: {
-								label: 'Vert clair',
-								action: {
-									type: 'encapsulate',
-									options: {
-										'pre': '<couleur nom="vertc">',
-										'post': '</couleur>'
-									}
-								}
-							},
-							olive: {
-								label: 'Olive',
-								action: {
-									type: 'encapsulate',
-									options: {
-										'pre': '<couleur nom="olive">',
-										'post': '</couleur>'
-									}
-								}
-							},
-							turquoise: {
-								label: 'Turquoise',
-								action: {
-									type: 'encapsulate',
-									options: {
-										'pre': '<couleur nom="turquoise">',
-										'post': '</couleur>'
-									}
-								}
-							},
-							blueGrey: {
-								label: 'Bleu-gris',
-								action: {
-									type: 'encapsulate',
-									options: {
-										'pre': '<couleur nom="bleugris">',
-										'post': '</couleur>'
-									}
-								}
-							},
-							blue: {
-								label: 'Bleu',
-								action: {
-									type: 'encapsulate',
-									options: {
-										'pre': '<couleur nom="bleu">',
-										'post': '</couleur>'
-									}
-								}
-							},
-							marine: {
-								label: 'Marine',
-								action: {
-									type: 'encapsulate',
-									options: {
-										'pre': '<couleur nom="marine">',
-										'post': '</couleur>'
-									}
-								}
-							},
-							violet: {
-								label: 'Violet',
-								action: {
-									type: 'encapsulate',
-									options: {
-										'pre': '<couleur nom="violet">',
-										'post': '</couleur>'
-									}
-								}
-							},
-							maroon: {
-								label: 'Marron',
-								action: {
-									type: 'encapsulate',
-									options: {
-										'pre': '<couleur nom="marron">',
-										'post': '</couleur>'
-									}
-								}
-							},
-							black: {
-								label: 'Noir',
-								action: {
-									type: 'encapsulate',
-									options: {
-										'pre': '<couleur nom="noir">',
-										'post': '</couleur>'
-									}
-								}
-							},
-							grey: {
-								label: 'Gris',
-								action: {
-									type: 'encapsulate',
-									options: {
-										'pre': '<couleur nom="gris">',
-										'post': '</couleur>'
-									}
-								}
-							},
-							silver: {
-								label: 'Argent',
-								action: {
-									type: 'encapsulate',
-									options: {
-										'pre': '<couleur nom="argent">',
-										'post': '</couleur>'
-									}
-								}
-							},
-							white: {
-								label: 'Blanc',
-								action: {
-									type: 'encapsulate',
-									options: {
-										'pre': '<couleur nom="blanc">',
-										'post': '</couleur>'
-									}
-								}
-							}
-						}
-					}, /* end of tool "color" */
 					font: {
 						type: 'select',
 						label: 'Police',
@@ -569,7 +580,7 @@ Behavior.create('zform', function(config)
 							}
 						}
 					}, /* end of tool "font" */
-					size: {
+					/*size: {
 						type: 'select',
 						label: 'Taille',
 						list: {
@@ -634,111 +645,19 @@ Behavior.create('zform', function(config)
 								}
 							},
 						}
-					} /* end of tool "size" */
-				} /* end of group "formatting" */
-			}, /* end of section "formatting" */
-			characters: {
-				_label: 'Caractères spéciaux',
-				accents: {
-					_label: 'Majuscules',
-					char1: {
-						type: 'button',
-						label: 'À',
-						action: {
-							type: 'encapsulate',
-							options: {
-								'pre': 'À',
-							}
-						}
-					},
-					char2: {
-						type: 'button',
-						label: 'Ç',
-						action: {
-							type: 'encapsulate',
-							options: {
-								'pre': 'Ç',
-							}
-						}
-					},
-					char3: {
-						type: 'button',
-						label: 'É',
-						action: {
-							type: 'encapsulate',
-							options: {
-								'pre': 'É',
-							}
-						}
-					},
-					char4: {
-						type: 'button',
-						label: 'È',
-						action: {
-							type: 'encapsulate',
-							options: {
-								'pre': 'È',
-							}
-						}
 					}
-				}, /* end of group "majuscules" */
-				typography: {
-					_label: 'Typographie',
-					char5: {
-						type: 'button',
-						label: '« »',
-						action: {
-							type: 'encapsulate',
-							options: {
-								'pre': '« ',
-								'post': ' »'
-							}
-						}
-					},
-					char6: {
-						type: 'button',
-						label: '–',
-						action: {
-							type: 'encapsulate',
-							options: {
-								'pre': '—',
-							}
-						}
-					},
-					char7: {
-						type: 'button',
-						label: '–',
-						action: {
-							type: 'encapsulate',
-							options: {
-								'pre': '–',
-							}
-						}
-					},
-					char8: {
-						type: 'button',
-						label: '…',
-						action: {
-							type: 'encapsulate',
-							options: {
-								'pre': '…',
-							}
-						}
-					},
-					char9: {
-						type: 'button',
-						label: 'œ',
-						action: {
-							type: 'encapsulate',
-							options: {
-								'pre': 'œ',
-							}
-						}
-					}
-				} /* end of group "typography" */
-			} /* end of section "characters" */
-		};
+				} 
+			} */
 	}
 	
 	new Editor(config.id, config.options);
+	
+	var additionalBehaviors = {};
+	additionalBehaviors['resizable-textarea'] = [{'id': config.id}];
+	if (statics.count == 1)
+	{
+		additionalBehaviors['squeezebox'] = [{'selector': '.zform-squeezebox-link', 'options': {'handler': 'iframe'}}];
+		additionalBehaviors['twipsy'] = [{'selector': '.zform-tool-button > a'}];
+	}
+	Behavior.init(additionalBehaviors);
 });

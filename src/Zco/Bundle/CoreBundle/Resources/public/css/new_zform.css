@@ -21,37 +21,12 @@
 	border-radius: 3px;
 }
 
-.zform-sections {
-	display: table;
-	background-color: whiteSmoke;
-	width: 100%;
-	line-height: 30px;
-	border-top: 1px solid #ccc;
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
-	border-radius: 3px;
-}
-
-.zform-section {
-	display: table;
-}
-
 .zform-postbar {
 	line-height: 30px;
 	border: 1px solid #ccc;
 	border-top: none;
 	display: table;
 	width: 100%;
-}
-
-.zform-section-rawlinks {
-	display: table;
-	background-color: whiteSmoke;
-	width: 100%;
-	border-top: 1px solid #ccc;
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
-	border-radius: 3px;
 }
 
 .zform-main {
@@ -81,42 +56,12 @@
 	border-right: none;
 }
 
-.zform-group span {
+.zform-group > span {
 	padding-left: 10px;
 }
 
-.zform-group span:first-child {
+.zform-group > span:first-child {
 	padding-left: 0;
-}
-
-.zform-section-main, .zform-tabs {
-	float: left;
-}
-
-.zform-tabs {
-	display: table;
-}
-
-.zform-tab {
-	float: left;
-	padding-left: 20px;
-	padding-right: 10px;
-	padding-top: 5px;
-	padding-bottom: 5px;
-	background-repeat: no-repeat;
-	background-position: 3px;
-}
-
-.zform-tab-invisible {
-	background-image: url(/bundles/zcocore/img/zform/arrow.png);
-}
-
-.zform-tab-visible {
-	background-image: url(/bundles/zcocore/img/zform/arrow-down.png);
-}
-
-.zform-tab-visible a {
-	color: black;
 }
 
 .zform-tool-label {
@@ -146,4 +91,118 @@
 	border-top: none;
 	background-color: whiteSmoke;
 	padding: 4px;
+	max-height: 500px;
+	overflow: auto;
+}
+
+.zform-block-button {
+	margin-left: 10px;
+}
+
+.zform-tool-block {
+	padding-right: 10px;
+	border: 1px solid #ccc;
+	background-color: whiteSmoke;
+	position: absolute;
+	z-index: 10;
+	
+	-webkit-border-bottom-right-radius: 3px;
+	-webkit-border-bottom-left-radius: 3px;
+	-moz-border-radius-bottomright: 3px;
+	-moz-border-radius-bottomleft: 3px;
+	border-bottom-right-radius: 3px;
+	border-bottom-left-radius: 3px;
+}
+
+.zform-block-button-color, .zform-block-button-color:hover {
+	width: 15px;
+	height: 15px;
+	overflow: hidden;
+	display: inline-block;
+	text-decoration: none;
+}
+
+.zform-button-orange, .zform-button-orange:hover {
+	color: #ec7600;
+	background-color: #ec7600;
+}
+
+.zform-button-black, .zform-button-black:hover {
+	color: #000;
+	background-color: #000;
+}
+
+.zform-button-maroon, .zform-button-maroon:hover {
+	color: maroon;
+	background-color: maroon;
+}
+
+.zform-button-dgreen, .zform-button-dgreen:hover {
+	color: green;
+	background-color: green;
+}
+
+.zform-button-olive, .zform-button-olive:hover {
+	color: olive;
+	background-color: olive;
+}
+
+.zform-button-marine, .zform-button-marine:hover {
+	color: navy;
+	background-color: navy;
+}
+
+.zform-button-violet, .zform-button-violet:hover {
+	color: purple;
+	background-color: purple;
+}
+
+.zform-button-bluegrey {
+	color: teal;
+	background-color: teal;
+}
+
+.zform-button-silver, .zform-button-silver:hover {
+	color: silver;
+	background-color: silver;
+}
+
+.zform-button-grey, .zform-button-grey:hover {
+	color: #646464;
+	background-color: #646464;
+}
+
+.zform-button-red, .zform-button-red:hover {
+	color: red;
+	background-color: red;
+}
+
+.zform-button-lgreen, .zform-button-lgreen:hover {
+	color: lime;
+	background-color: lime;
+}
+
+.zform-button-yellow, .zform-button-yellow:hover {
+	color: #ff0;
+	background-color: #ff0;
+}
+
+.zform-button-blue, .zform-button-blue:hover {
+	color: blue;
+	background-color: blue;
+}
+
+.zform-button-pink, .zform-button-pink:hover {
+	color: #f0f;
+	background-color: #f0f;
+}
+
+.zform-button-turquoise, .zform-button-turquoise:hover {
+	color: aqua;
+	background-color: aqua;
+}
+
+.zform-button-white, .zform-button-white:hover {
+	color: #fff;
+	background-color: #fff;
 }
