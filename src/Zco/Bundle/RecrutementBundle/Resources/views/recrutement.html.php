@@ -5,7 +5,7 @@
 <h1><?php echo htmlspecialchars($recrutement['nom']) ?></h1>
 
 <?php if (verifier('recrutements_postuler') && ($recrutement->depotPossible() || !empty($maCandidature))){ ?>
-<div class="box center">
+<div class="box center" style="font-size: 1.1em;">
 	<?php if ($recrutement->depotPossible() && empty($maCandidature)){ ?>
 	<a href="postuler-<?php echo $recrutement['id']; ?>.html" class="bold">Postuler maintenant</a>
 	<?php } elseif (!empty($maCandidature) && $maCandidature['etat'] == \RecrutementCandidature::ATTENTE_TEST){ ?>
