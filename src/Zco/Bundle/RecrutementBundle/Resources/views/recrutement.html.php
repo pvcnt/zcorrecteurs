@@ -4,6 +4,18 @@
 
 <h1><?php echo htmlspecialchars($recrutement['nom']) ?></h1>
 
+<?php if (verifier('recrutements_postuler') && ($recrutement->depotPossible() || !empty($maCandidature))){ ?>
+<div class="box center">
+	<?php if ($recrutement->depotPossible() && empty($maCandidature)){ ?>
+	<a href="postuler-<?php echo $recrutement['id']; ?>.html" class="bold">Postuler maintenant</a>
+	<?php } elseif (!empty($maCandidature) && $maCandidature['etat'] == \RecrutementCandidature::ATTENTE_TEST){ ?>
+	<a href="postuler-<?php echo $recrutement['id']; ?>.html" class="bold">Passer le test</a>
+	<?php } elseif (!empty($maCandidature)){ ?>
+	<a href="postuler-<?php echo $recrutement['id']; ?>.html" class="bold">Voir ma candidature</a>
+	<?php } ?>
+</div>
+<?php } ?>
+
 <p class="italic">
 	<a href="https://twitter.com/share?text=<?php echo urlencode(str_replace('zCorrecteurs', '@zCorrecteurs', $recrutement['nom'])) ?>&url=<?php echo URL_SITE ?>/recrutement/recrutement-<?php echo $recrutement['id'] ?>-<?php echo rewrite($recrutement['nom']) ?>.html">
 		<img src="/bundles/zcotwitter/img/oiseau_16px.png" alt="Twitter" />
@@ -16,18 +28,6 @@
 </div>
 
 <div class="span3">
-	<?php if (verifier('recrutements_postuler') && ($recrutement->depotPossible() || !empty($maCandidature))){ ?>
-	<div class="box center">
-		<?php if ($recrutement->depotPossible() && empty($maCandidature)){ ?>
-		<a href="postuler-<?php echo $recrutement['id']; ?>.html" class="bold">Postuler maintenant</a>
-		<?php } elseif (!empty($maCandidature) && $maCandidature['etat'] == \RecrutementCandidature::ATTENTE_TEST){ ?>
-		<a href="postuler-<?php echo $recrutement['id']; ?>.html" class="bold">Passer le test</a>
-		<?php } elseif (!empty($maCandidature)){ ?>
-		<a href="postuler-<?php echo $recrutement['id']; ?>.html" class="bold">Voir ma candidature</a>
-		<?php } ?>
-	</div>
-	<?php } ?>
-	
 	<div class="box">
 		<?php if ($recrutement['lien']){ ?>
 		<p class="bold center">

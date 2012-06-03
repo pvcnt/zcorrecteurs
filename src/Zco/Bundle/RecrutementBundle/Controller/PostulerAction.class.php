@@ -20,6 +20,7 @@
  */
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Contrôleur gérant l'affichage de la page recueillant une candidature (envoi de
@@ -192,14 +193,15 @@ class PostulerAction extends Controller
 			//Si on annule
 			if(isset($_POST['annuler']))
 			{
-				return new Symfony\Component\HttpFoundation\RedirectResponse('postuler-'.$_GET['id'].'.html');
+				return new RedirectResponse('postuler-'.$_GET['id'].'.html');
 			}
 
-			//Inclusion de la vue
+			//Paramétrage de la vue
 			fil_ariane(array(
 				htmlspecialchars($InfosRecrutement['recrutement_nom']) => 'recrutement-'.$InfosRecrutement['recrutement_id'].'-'.rewrite($InfosRecrutement['recrutement_nom']).'.html',
-				'Postuler au recrutement'
+				'Postuler'
 			));
+			\Page::$titre = 'Postuler - '.$InfosRecrutement['recrutement_nom'];
 			
 			return render_to_response(array(
 				'InfosRecrutement' => $InfosRecrutement,

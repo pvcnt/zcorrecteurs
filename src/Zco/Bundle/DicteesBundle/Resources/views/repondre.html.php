@@ -1,7 +1,7 @@
 <?php $view->extend('::layouts/default.html.php') ?>
 
 <h1>Répondre à une soumission : <?php echo htmlspecialchars($Dictee->titre); ?></h1>
-<?php echo $view->render('ZcoDicteesBundle::_dictee.html.php', compact('Dictee', 'DicteeEtats')); ?>
+<?php echo $view->render('ZcoDicteesBundle::_dictee.html.php', compact('Dictee', 'DicteeEtats', 'DicteeDifficultes')); ?>
 
 <h2>Texte</h2>
 <p><?php echo nl2br(htmlspecialchars($Dictee->texte)); ?></p>
