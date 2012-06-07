@@ -22,23 +22,23 @@
 		</div>
 
 		<input type="radio" value="1" id="<?php echo 'id'.(++$i); ?>" name="rep<?php echo $question['id']; ?>" />
-		<label style="float: none;" for="<?php echo 'id'.$i; ?>"> <em>1.</em> <?php echo $view['messages']->parse($question['reponse1']); ?></label><br />
+		<label style="float: none;" for="<?php echo 'id'.$i; ?>" id="q<?php echo $question['id'] ?>r1"> <em>1.</em> <?php echo $view['messages']->parse($question['reponse1']); ?></label><br />
 
 		<input type="radio" value="2" id="<?php echo 'id'.(++$i); ?>" name="rep<?php echo $question['id']; ?>" />
-		<label style="float: none;" for="<?php echo 'id'.$i; ?>"> <em>2.</em> <?php echo $view['messages']->parse($question['reponse2']); ?></label><br />
+		<label style="float: none;" for="<?php echo 'id'.$i; ?>" id="q<?php echo $question['id'] ?>r2"> <em>2.</em> <?php echo $view['messages']->parse($question['reponse2']); ?></label><br />
 
 		<?php if (!empty($question['reponse3'])){ ?>
 		<input type="radio" value="3" id="id<?php echo ++$i; ?>" name="rep<?php echo $question['id']; ?>" />
-		<label style="float: none;" for="id<?php echo $i; ?>"> <em>3.</em> <?php echo $view['messages']->parse($question['reponse3']); ?></label><br />
+		<label style="float: none;" for="id<?php echo $i; ?>" id="q<?php echo $question['id'] ?>r3"> <em>3.</em> <?php echo $view['messages']->parse($question['reponse3']); ?></label><br />
 		<?php } ?>
 
 		<?php if (!empty($question['reponse4'])){ ?>
 		<input type="radio" value="4" id="id<?php echo ++$i; ?>" name="rep<?php echo $question['id']; ?>" />
-		<label style="float: none;" for="id<?php echo $i; ?>"> <em>4.</em> <?php echo $view['messages']->parse($question['reponse4']); ?></label><br />
+		<label style="float: none;" for="id<?php echo $i; ?>" id="q<?php echo $question['id'] ?>r4"> <em>4.</em> <?php echo $view['messages']->parse($question['reponse4']); ?></label><br />
 		<?php } ?>
 
 		<input type="radio" value="0" id="id<?php echo ++$i; ?>" name="rep<?php echo $question['id']; ?>" checked="checked" />
-		<label style="float: none;" for="id<?php echo $i; ?>"> <em>Je ne sais pas.</em></label>
+		<label style="float: none;" for="id<?php echo $i; ?>" id="q<?php echo $question['id'] ?>r0"> <em>Je ne sais pas.</em></label>
 
 		<?php if (isset($_justification)): ?>
 		<div class="qz_justification">

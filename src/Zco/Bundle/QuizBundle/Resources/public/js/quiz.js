@@ -21,6 +21,18 @@ $('form_jouer').addEvent('submit', function(e){
 		for (i in data.reponses)
 		{
 			$('correction_'+i).set('html', data.reponses[i]);
+
+			for(r=0; r<= 4; r++)
+			{
+				if(data.enfait[i] == r)
+				{
+					$('q'+i+'r'+r).setStyles({'font-weight': 'bold', 'color': 'green'});
+				}
+				else if(data.achoisi[i] == r && data.achoisi[i] != data.enfait[i])
+				{
+					$('q'+i+'r'+r).setStyles({'font-weight': 'bold', 'color': 'red'});
+				}
+			}
 		}
 
 		//On affiche les corrections et cache les explications.

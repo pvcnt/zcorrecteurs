@@ -76,6 +76,8 @@ class DefaultController extends Controller
 			}
 
 			$ret['reponses'][$question['id']] = $tmp.'</div>';
+			$ret['achoisi'][$question['id']] = $_POST['rep'.$question['id']];
+			$ret['enfait'][$question['id']] = $question['reponse_juste'];
 		}
 
 		return new Response(json_encode($ret));
