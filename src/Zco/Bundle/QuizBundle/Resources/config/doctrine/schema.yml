@@ -11,7 +11,7 @@ Quiz:
     description:        { type: string(255) }
     difficulte:         { type: enum, values: [Facile, Moyen, Difficile] }
     date:               { type: timestamp(25) }
-    aleatoire:          { type: boolean }
+    aleatoire:          { type: integer(11) }
     visible:            { type: boolean }
   relations:
     Categorie:          { local: categorie_id, foreign: cat_id }

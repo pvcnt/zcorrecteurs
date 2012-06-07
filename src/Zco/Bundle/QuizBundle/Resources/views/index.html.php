@@ -91,8 +91,8 @@ if (count($ListerQuiz) > 0):
 			</td>
 			<td class="centre">
 				<?php echo $quiz['nb_questions'] ?>
-				<?php if ($quiz['aleatoire'] == true): ?>
-					<em>(aléatoire)</em>
+				<?php if ($quiz['aleatoire'] >= 2): ?>
+					<em>(<?php echo $quiz['aleatoire'] ?> aléatoires)</em>
 				<?php endif; ?>
 			</td>
 		</tr>

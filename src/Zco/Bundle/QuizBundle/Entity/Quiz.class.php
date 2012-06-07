@@ -104,7 +104,7 @@ class Quiz extends BaseQuiz
 	/**
 	 * Récupère les questions liées au quiz.
 	 *
-	 * @param null|boolean|array $aleatoire		Si null, comportement par défaut
+	 * @param null|integer|array $aleatoire	Si null, comportement par défaut
 	 * du quiz. Sinon, réécrit par-dessus ce comportement. Si c'est un array, les
 	 * questions sont prises uniquements dans la liste des id donnés.
 	 * @return Doctrine_Collection
@@ -117,14 +117,14 @@ class Quiz extends BaseQuiz
 			->from('QuizQuestion')
 			->where('quiz_id = ?', $this['id']);
 
-		if (($aleatoire === true) || (is_null($aleatoire) && $this['aleatoire'] == true))
+                if (is_array($aleatoire))
+		{
+                        $query->andWhereIn('id', $aleatoire);
+		}
+		else if (($aleatoire >= 2) || (is_null($aleatoire) && $this['aleatoire'] >= 2))
 		{
 			$query->orderBy('RAND()');
-			$query->limit(QUIZ_ALEATOIRE_NB_QUESTIONS);
-		}
-		elseif (is_array($aleatoire))
-		{
-			$query->andWhereIn('id', $aleatoire);
+			$query->limit(is_null($aleatoire) ? $this['aleatoire'] : $aleatoire);
 		}
 
 		return $query->execute();

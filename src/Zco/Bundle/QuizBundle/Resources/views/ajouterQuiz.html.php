@@ -30,9 +30,14 @@
 			<?php } ?>
 		</select><br />
 
-		<label for="aleatoire">Réponses choisies dans un ordre aléatoire : </label>
-		<input type="checkbox" name="aleatoire" id="aleatoire" />
-		<em>Si vous cochez cette case, <?php echo QUIZ_ALEATOIRE_NB_QUESTIONS; ?> réponses seront choisies aléatoirement à chaque fois qu'un utilisateur y jouera.</em>
+		<label for="aleatoire">Nombre de réponses choisies dans un ordre aléatoire : </label>
+		<select name="aleatoire" id="aleatoire">
+                        <option value="0">0</option>
+		<?php for($i = 2; $i <= 200; $i++) { ?>
+			<option value="<?php echo $i ?>"><?php echo $i ?></option>
+		<?php } ?>
+		</select>
+		<em>Le fait de choisir zéro permet d'afficher toutes les questions et dans l'ordre (mode aléatoire désactivé).</em>
 	</fieldset>
 
 	<div class="send">

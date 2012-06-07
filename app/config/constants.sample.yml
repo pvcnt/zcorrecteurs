@@ -57,11 +57,6 @@ constants:
         group: membres
         type: integer
         value: 2
-    QUIZ_ALEATOIRE_NB_QUESTIONS:
-        desc: Nombre de questions choisies dans un quiz aléatoire
-        group: quiz
-        type: integer
-        value: 10
     URL_SITE:
         desc: URL du site
         group: general

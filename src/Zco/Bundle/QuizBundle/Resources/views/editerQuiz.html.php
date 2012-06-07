@@ -3,6 +3,7 @@
 <h1><?php echo htmlspecialchars($InfosQuiz['nom']) ?></h1>
 
 <?php if (verifier('quiz_editer') || ($InfosQuiz['utilisateur_id'] == $_SESSION['id'] && verifier('quiz_editer_siens'))){ ?>
+
 <form method="post" action="">
 	<fieldset>
 		<legend>Modifier le quiz</legend>
@@ -30,9 +31,14 @@
 			<?php } ?>
 		</select><br />
 
-		<label for="aleatoire">Réponses choisies dans un ordre aléatoire : </label>
-		<input type="checkbox" name="aleatoire" id="aleatoire"<?php if($InfosQuiz['aleatoire'] == true) echo ' checked="checked"'; ?> />
-		<em>Si vous cochez cette case, <?php echo QUIZ_ALEATOIRE_NB_QUESTIONS; ?> réponses seront choisies aléatoirement à chaque fois qu'un utilisateur y jouera.</em>
+		<label for="aleatoire">Nombre de réponses choisies dans un ordre aléatoire : </label>
+		<select name="aleatoire" id="aleatoire">
+                        <option value="0" <?php if($InfosQuiz['aleatoire'] == 0) echo 'selected' ?>>0</option>
+		<?php for($i = 2; $i <= 200; $i++) { ?>
+			<option value="<?php echo $i ?>" <?php if($InfosQuiz['aleatoire'] == $i) echo 'selected' ?>><?php echo $i ?></option>
+		<?php } ?>
+		</select>
+		<em>Le fait de choisir zéro permet d'afficher toutes les questions et dans l'ordre (mode aléatoire désactivé).</em>
 	</fieldset>
 
 	<div class="send">
