@@ -80,7 +80,7 @@ if (count($ListerQuiz) > 0):
 					<?php echo htmlspecialchars($quiz['nom']); ?>
 				</a>
 
-				<?php if (!empty($quiz['quiz_description'])): ?><br />
+				<?php if (!empty($quiz['description'])): ?><br />
 				<em><?php echo htmlspecialchars($quiz['description']) ?></em>
 				<?php endif; ?>
 			</td>
