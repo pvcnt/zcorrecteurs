@@ -80,7 +80,7 @@ if (count($ListerQuiz) > 0):
 					<?php echo htmlspecialchars($quiz['nom']); ?>
 				</a>
 
-				<?php if (!empty($quiz['quiz_description'])): ?><br />
+				<?php if (!empty($quiz['description'])): ?><br />
 				<em><?php echo htmlspecialchars($quiz['description']) ?></em>
 				<?php endif; ?>
 			</td>
@@ -91,8 +91,8 @@ if (count($ListerQuiz) > 0):
 			</td>
 			<td class="centre">
 				<?php echo $quiz['nb_questions'] ?>
-				<?php if ($quiz['aleatoire'] == true): ?>
-					<em>(aléatoire)</em>
+				<?php if ($quiz['aleatoire'] >= 2): ?>
+					<em>(<?php echo $quiz['aleatoire'] ?> aléatoires)</em>
 				<?php endif; ?>
 			</td>
 		</tr>
