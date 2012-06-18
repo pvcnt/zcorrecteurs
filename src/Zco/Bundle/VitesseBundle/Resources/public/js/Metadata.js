@@ -16,7 +16,7 @@ var Metadata = {
 		if (meta_id[0] && meta_id[1])
 		{
 			var block = this.data[meta_id[0]];
-			var index = meta_id[1][0];
+			var index = meta_id[1];
 			if (block && (index in block))
 			{
 				return block[index];
