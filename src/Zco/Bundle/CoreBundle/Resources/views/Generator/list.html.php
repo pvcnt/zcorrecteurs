@@ -46,7 +46,7 @@
 			<td colspan="<?php echo $colspan; ?>">
 				<form method="get" action="<?php echo $filters_url; ?>">
 					<img src="/bundles/zcocore/img/generator/search.png" />
-					<input type="text" name="<?php echo $search['name']; ?>" size="40" value="<?php echo !empty($search['value']) ? $search['value'] : $search['default']; ?>" onfocus="if(this.value == '<?php echo $search['default']; ?>') this.value='';" onblur="if(this.value == '') this.value='<?php echo $search['default']; ?>';" />
+					<input type="text" name="<?php echo $search['name']; ?>" size="40" value="<?php echo !empty($search['value']) ? htmlspecialchars($search['value']) : $search['default']; ?>" onfocus="if(this.value == '<?php echo $search['default']; ?>') this.value='';" onblur="if(this.value == '') this.value='<?php echo $search['default']; ?>';" />
 
 					<input type="submit" value="Rechercher" id="generator-rechercher"/>
 
