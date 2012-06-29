@@ -63,9 +63,35 @@ class FileUploader
 		$retval = array('failed' => array(), 'success' =>  array(), 'total' => count($request->files->get('file')));
 		foreach ($request->files->get('file') as $uploadedFile)
 		{
+			//Si le fichier est invalide, il s'agit d'une erreur interne de PHP.
 			if (!$uploadedFile->isValid())
 			{
-				$retval['failed'][] = array('name' => $uploadedFile->getClientOriginalName());
+				//On tente de déterminer de quelle erreur il s'agit pour faciliter 
+				//le rapport des erreurs et le débogage.
+				switch ($uploadedFile->getError())
+				{
+					case UPLOAD_ERR_INI_SIZE:
+					case UPLOAD_ERR_FORM_SIZE:
+						$message = 'fichier trop volumineux';
+						break;
+					case UPLOAD_ERR_PARTIAL:
+						$message = 'téléchargement échoué';
+						break;
+					case UPLOAD_ERR_NO_FILE:
+						$message = 'aucun fichier trouvé';
+						break;
+					case UPLOAD_ERR_NO_TMP_DIR:
+					case UPLOAD_ERR_CANT_WRITE:
+					case UPLOAD_ERR_EXTENSION:
+						$message = 'erreur interne';
+						break;
+					default:
+						$message = null;
+				}
+				$retval['failed'][] = array(
+					'name' => $uploadedFile->getClientOriginalName(), 
+					'message' => $message,
+				);
 				continue;
 			}
 			

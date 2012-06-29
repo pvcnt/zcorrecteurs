@@ -18,6 +18,16 @@
 	<div class="bar" style="width: <?php echo $ratio > 5 ? $ratio : 5 ?>%;"><?php echo $ratio ?> %</div>
 </div>
 
+<div class="modal hide" id="progress-modal">
+	<div class="modal-header">
+		<h3>Envoi des fichiers en cours…</h3>
+	</div>
+	<div class="modal-body">
+		<div class="progress progress-striped active" id="progress-bar" style="display: none;"><div class="bar"></div></div>
+	</div>
+</div>
+
+
 <form method="post" action="<?php echo $view['router']->generate('zco_file_upload') ?>" enctype="multipart/form-data" id="uploadForm">    
 	<div>
 	    <div class="submit-upload">

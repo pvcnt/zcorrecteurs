@@ -1,6 +1,8 @@
 /**
  * @provides vitesse-behavior-zco-files-drag-and-drop-area
  * @requires mootools
+ *         jquery-no-conflict
+ *         bootstrap-js
  *		   @ZcoFileBundle/Resources/public/js/FormUpload/Form.Upload.js
  *		   @ZcoFileBundle/Resources/public/js/FormUpload/Form.MultipleFileInput.js
  *		   @ZcoFileBundle/Resources/public/js/FormUpload/Request.File.js
@@ -11,6 +13,8 @@ Behavior.create('zco-files-drag-and-drop-area', function(config)
 	var files = document.id('files');
 	var file = document.id('file');
 	var form  = document.id('uploadForm');
+	var progress = document.id('progress-bar');
+	var modal = jQuery('#progress-modal').modal({"keyboard": false, "show": false});
 	
 	var drop = new Element('div', {
 		'class': 'droppable', 
@@ -22,59 +26,38 @@ Behavior.create('zco-files-drag-and-drop-area', function(config)
 	var inputFiles = new Form.MultipleFileInput('file', 'files', 'droppable', {
 		onDragenter: drop.addClass.pass('hover', drop),
 		onDragleave: drop.removeClass.pass('hover', drop),
-		onDrop: function()
-		{
+		onDrop: function() {
 			drop.removeClass.pass('hover', drop);
 		}
 	});
-	
-	return;
-	
-	form.addEvent('submit', function(event)
-    {
-        event.preventDefault();
-		
+	form.addEvent('submit', function(e)
+	{
+		e.preventDefault();	
 		var request = new Request.File({
 			url: form.get('action'), 
-			onSuccess: function(text)
-			{
-				response = JSON.decode(text);
-				if (response.status == 'OK')
-				{
-					if (config.redirect_url)
-					{
-						document.location = config.redirect_url;
-					}
+			onSuccess: function(text) {
+				var json = JSON.decode(text);
+				if (json.type == 'error') {
+					modal.modal('hide');
+					zMessage.error(json.msg);
+				} else {
+					document.location = json.url;
 				}
-				else
-				{
-					var append = [];
-					var i;
-					for (i = 0; i < response.failed.length; i++)
-					{
-						append.push(response.failed[i].name + (response.failed[i].message ? ' (' + response.failed[i].message + ')' : ''));
-					}
-					zMessage.error(
-						'Il y a eu une erreur lors de l’import des fichiers '
-						+ 'suivants : ' + append.join(', ') + '.'
-					);
-				}
-			}, onFailure: function(text)
-			{
+			},
+			onFailure: function() {
 				zMessage.error('Il y a eu une erreur lors de l’import des fichiers.');
+			},
+			onProgress: function(event) {
+				var percent = (event.loaded / event.total) * 100;
+				progress.getChildren()[0].setStyle('width', percent + '%');
 			}
-		
-			/*,
-			onProgress: function(text)
-			{
-				alert(text);
-			}*/
 		});
-	
-		inputFiles.getFiles().each(function(file)
-		{
+		inputFiles.getFiles().each(function(file) {
 			request.append('file[]' , file);
 		});
+		progress.setStyle('display', 'block');
+		progress.getChildren()[0].setStyle('width', '0%');
+		modal.modal('show');
 		request.send();
 	});
 });
