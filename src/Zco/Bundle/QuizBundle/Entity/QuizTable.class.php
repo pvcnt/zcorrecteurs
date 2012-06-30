@@ -19,9 +19,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Zco\Bundle\Doctrine1Bundle\Model\NamedDoctrineTableInterface;
+
 /**
  */
-class QuizTable extends Doctrine_Table
+class QuizTable extends Doctrine_Table implements NamedDoctrineTableInterface
 {
 	/**
 	 * Retourne la liste de tous les quiz, classés par catégorie.
@@ -171,5 +173,10 @@ class QuizTable extends Doctrine_Table
 			->select('id, nom')
 			->where('visible = 1')
 			->execute(array(), Doctrine_Core::HYDRATE_ARRAY);
+	}
+	
+	public function getName()
+	{
+		return 'Quiz';
 	}
 }

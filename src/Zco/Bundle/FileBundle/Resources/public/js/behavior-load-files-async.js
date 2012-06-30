@@ -18,28 +18,15 @@ Behavior.create('zco-files-load-files-async', function(config, statics)
 	var spinner = document.id('thumbnails-loader');
 	var area = document.id('thumbnails');
 	var table = document.id('thumbnails-table')
-	var apiUrl = '/_api/fichiers/recherche/' + config.folder;
+	var apiUrl = Routing.generate('zco_file_api_search', Object.merge(
+		{"folder": config.folder}, 
+		config.contentFolder ? {"entities": config.contentFolder} : {}, 
+		config.urlExtraData
+	));
 	var isCommons = (config.folder == 'commons');
 	var button = document.id('delete_button');
 	var timer;
-	
-	var urlExtraData = [];
-	for (key in config.urlExtraData)
-	{
-		if (config.urlExtraData[key])
-		{
-			urlExtraData.push(key + '=' + config.urlExtraData[key]);
-		}
-	}
-	if (urlExtraData.length)
-	{
-		urlExtraData = '?' + urlExtraData.join('&');
-	}
-	else
-	{
-		urlExtraData = '';
-	}
-	
+		
 	var noData = new Element('p')
 		.set('html', 'Aucun fichier correspondant n’a été trouvé.<br />' 
 		+ (!isCommons ? '<a href="' + Routing.generate('zco_file_index') + '">Je veux en envoyer maintenant !</a>' : ''));
@@ -50,7 +37,6 @@ Behavior.create('zco-files-load-files-async', function(config, statics)
 		$$('#thumbnails li').destroy();
 		$$('#thumbnails-table td').destroy();
 		spinner.setStyle('display', '');
-		
 		timer = setTimeout(function(){ loadFiles(input.get('value')) }, 200);
 	});
 	input.addEvent('keydown', function()

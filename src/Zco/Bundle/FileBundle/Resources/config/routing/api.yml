@@ -22,12 +22,12 @@ zco_file_api_delete:
         id: \d+
 
 zco_file_api_search:
-    pattern:   /recherche/{folder}
-    defaults:  { _controller: ZcoFileBundle:Api:search, _format: json }
+    pattern:   /recherche/{folder}/{entities}
+    defaults:  { _controller: ZcoFileBundle:Api:search, _format: json, entities: '' }
     options:   { expose: true }
     requirements:
-        folder: \d+
         _method: post
+        folder: \d+
 
 zco_file_api_search_commons:
     pattern:   /recherche/commons

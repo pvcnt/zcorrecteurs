@@ -19,9 +19,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Zco\Bundle\Doctrine1Bundle\Model\NamedDoctrineTableInterface;
+
 /**
  */
-class DicteeTable extends Doctrine_Table
+class DicteeTable extends Doctrine_Table implements NamedDoctrineTableInterface
 {
 	public function getTags(Dictee $Dictee)
 	{
@@ -68,5 +70,10 @@ class DicteeTable extends Doctrine_Table
 	        ->select('id, titre')
 	        ->where('etat = ?', DICTEE_VALIDEE)
 	        ->execute(array(), Doctrine_Core::HYDRATE_ARRAY);
+	}
+	
+	public function getName()
+	{
+		return 'Dictée';
 	}
 }

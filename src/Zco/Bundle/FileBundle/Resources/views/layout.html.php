@@ -63,7 +63,33 @@
     		                <?php foreach ($smartFolders as $folder): ?>
     		                    <?php if (!$folder['hidden'] || ($currentFolder && $currentFolder['id'] == $folder['id'])): ?>
     		                    <li<?php if ($currentFolder && $currentFolder['id'] == $folder['id']) echo ' class="active"' ?>>
-    		                        <a href="<?php echo $view['router']->generate('zco_file_folder', array('id' => $folder['id'], 'textarea' => $textarea, 'input' => $input)) ?>">
+    		                        <a href="<?php echo $view['router']->generate('zco_file_folder', array('id' => $folder['id'], 'entities' => $currentContentFolder ? $currentContentFolder['id'] : '', 'textarea' => $textarea, 'input' => $input)) ?>">
+    		                            <i class="icon-<?php echo $folder['icon'] ?>"></i>
+    		                            <?php echo htmlspecialchars($folder['name']) ?>
+    		                        </a>
+    		                    </li>
+		                        <?php endif ?>
+    		                <?php endforeach ?>
+
+							<li class="nav-header">Filtres par contenu</li>
+    		                <?php foreach ($contentFolders as $folder): ?>
+    		                    <?php if (!$folder['hidden'] || ($currentFolder && $currentFolder['id'] == $folder['id'])): ?>
+    		                    <li<?php if ($currentContentFolder && $currentContentFolder['id'] == $folder['id']) echo ' class="active"' ?>>
+									<?php if ($currentContentFolder && $currentContentFolder['id'] == $folder['id']): ?>
+									<a style="float: right;" 
+									   title="Retirer le filtre" 
+									   href="<?php echo $view['router']->generate('zco_file_folder', array(
+											'id' => $currentFolder ? $currentFolder['id'] : FileTable::FOLDER_ALL, 
+											'textarea' => $textarea, 
+											'input' => $input,
+										)) ?>"><i class="icon-remove"></i></a>
+									<?php endif ?>
+    		                        <a href="<?php echo $view['router']->generate('zco_file_folder', array(
+										'id' => $currentFolder ? $currentFolder['id'] : FileTable::FOLDER_ALL, 
+										'entities' => $folder['id'], 
+										'textarea' => $textarea, 
+										'input' => $input,
+									)) ?>">
     		                            <i class="icon-<?php echo $folder['icon'] ?>"></i>
     		                            <?php echo htmlspecialchars($folder['name']) ?>
     		                        </a>

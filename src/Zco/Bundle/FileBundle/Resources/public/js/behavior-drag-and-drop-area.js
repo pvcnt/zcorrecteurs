@@ -33,6 +33,12 @@ Behavior.create('zco-files-drag-and-drop-area', function(config)
 	form.addEvent('submit', function(e)
 	{
 		e.preventDefault();	
+		
+		if (inputFiles.getFiles().length <= 0) {
+			zMessage.error('Veuillez sélectionner au moins un fichier à envoyer.');
+			return;
+		}
+		
 		var request = new Request.File({
 			url: form.get('action'), 
 			onSuccess: function(text) {
@@ -45,6 +51,7 @@ Behavior.create('zco-files-drag-and-drop-area', function(config)
 				}
 			},
 			onFailure: function() {
+				modal.modal('hide');
 				zMessage.error('Il y a eu une erreur lors de l’import des fichiers.');
 			},
 			onProgress: function(event) {

@@ -28,7 +28,7 @@
 </div>
 
 
-<form method="post" action="<?php echo $view['router']->generate('zco_file_upload') ?>" enctype="multipart/form-data" id="uploadForm">    
+<form method="post" action="<?php echo $view['router']->generate('zco_file_upload', compact('input', 'textarea')) ?>" enctype="multipart/form-data" id="uploadForm">    
 	<div>
 	    <div class="submit-upload">
 	        <input type="submit" class="btn btn-primary" value="Importer les fichiers" />

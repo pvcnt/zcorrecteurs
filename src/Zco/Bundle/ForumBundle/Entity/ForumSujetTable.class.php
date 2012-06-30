@@ -20,8 +20,9 @@
  */
 
 use Zco\Bundle\FileBundle\Model\GenericEntityTableInterface;
+use Zco\Bundle\Doctrine1Bundle\Model\NamedDoctrineTableInterface;
 
-class ForumSujetTable extends Doctrine_Table implements GenericEntityTableInterface
+class ForumSujetTable extends Doctrine_Table implements NamedDoctrineTableInterface
 {
 	public function Forum($forum_id)
 	{
@@ -42,4 +43,9 @@ class ForumSujetTable extends Doctrine_Table implements GenericEntityTableInterf
             ->whereIn('s.id', $pks)
             ->execute();
     }
+
+	public function getName()
+	{
+		return 'Sujet du forum';
+	}
 }

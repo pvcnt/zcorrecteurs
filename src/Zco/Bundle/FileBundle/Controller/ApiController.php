@@ -45,7 +45,7 @@ class ApiController extends Controller
 	 * @return Response Réponse JSON contenant la liste des fichiers retrouvés
 	 *				  (les données sont formatées et prêtes à l'affichage)
 	 */
-	public function searchAction($folder)
+	public function searchAction($folder, $entities)
 	{
 		if (!verifier('connecte'))
 		{
@@ -54,18 +54,18 @@ class ApiController extends Controller
 		
 		$search = !empty($_POST['search']) ? trim($_POST['search']) : '';
 		$files = \Doctrine_Core::getTable('File')
-			->getByFolderAndSearch($folder, $_SESSION['id'], $search);
+			->getByFolderAndSearch((int) $folder, $_SESSION['id'], $search, $entities);
 		
 		$response = array();
 		foreach ($files as $i => $file)
 		{
 			$response[] = array(
 				'id'			 => (int) $file['id'],
-				'name'		   	=> htmlspecialchars($file['name']),
+				'name'		   	 => htmlspecialchars($file['name']),
 				'size'		  	 => sizeformat($file['size']),
-				'date'		   	=> dateformat($file['date']),
+				'date'		   	 => dateformat($file['date']),
 				'thumbnail_path' => htmlspecialchars($file->getImageWebPath()),
-				'path'		   => htmlspecialchars($file->getWebPath()),
+				'path'		     => htmlspecialchars($file->getWebPath()),
 			);
 		}
 		

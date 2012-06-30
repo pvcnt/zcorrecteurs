@@ -43,7 +43,8 @@ class DefaultController extends Controller
 	 */
 	public function __construct()
 	{
-		$this->smartFolders = \Doctrine_Core::getTable('File')->getFolders();
+		$this->smartFolders = \Doctrine_Core::getTable('File')->getSmartFolders();
+		$this->contentFolders = \Doctrine_Core::getTable('File')->getContentFolders($_SESSION['id']);
 	}
 	
 	/**
@@ -113,25 +114,39 @@ class DefaultController extends Controller
 			$_SESSION['fichiers']['last_import'][] = $item['id'];
 		}
 		
+		$vars = $this->getVariables($request);
+		
 		$failed = $retval['failed'];
 		if (count($failed) > 0)
 		{
 			$message = array();
 			foreach ($failed as $item)
 			{
-				$message[] = 'Erreur lors de l\'envoi de '.$item['name']. '('.
+				$message[] = 'Erreur lors de l\'envoi de '.$item['name'].  '('.
 					(isset($item['message']) ? $item['message'] : 'erreur inconnue').').';
 			}
 			
 			return redirect(implode("\n", $message), 
 				count($failed) >= $retval['total'] ? 
-					$this->generateUrl('zco_file_folder', array('id' => \FileTable::FOLDER_LAST_IMPORT))
-					: $this->generateUrl('zco_file_index'),
+					$this->generateUrl('zco_file_folder', array(
+						'id' => \FileTable::FOLDER_LAST_IMPORT,
+						'input'    => $vars['input'], 
+						'textarea' => $vars['textarea'],
+					))
+					: $this->generateUrl('zco_file_index', array(
+						'input'    => $vars['input'], 
+						'textarea' => $vars['textarea'],
+					)),
 				MSG_ERROR);
 		}
 		
 		return redirect('Tous les fichiers ont été envoyés avec succès.', 
-			$this->generateUrl('zco_file_folder', array('id' => \FileTable::FOLDER_LAST_IMPORT)));
+			$this->generateUrl('zco_file_folder', array(
+				'id'       => \FileTable::FOLDER_LAST_IMPORT, 
+				'input'    => $vars['input'], 
+				'textarea' => $vars['textarea'],
+			))
+		);
 		
 		return new Response(json_encode($response));
 	}
@@ -163,8 +178,9 @@ class DefaultController extends Controller
 	 *
 	 * @param Request $request
 	 * @param integer $id
+	 * @param string $entities
 	 */
-	public function folderAction(Request $request, $id)
+	public function folderAction(Request $request, $id, $entities)
 	{
 		if (!verifier('connecte'))
 		{
@@ -181,15 +197,24 @@ class DefaultController extends Controller
 		$usageClass = $ratio > 80 ? 'danger' : ($ratio < 50 ? 'success' : 'warning');
 		
 		$folder = $this->getSmartFolder((int) $id);
+		if (!empty($entities))
+		{
+			$contentFolder = $this->getContentFolder($entities);
+		}
+		else
+		{
+			$contentFolder = null;
+		}
 		\Page::$titre = $folder['name'];
 		
 		return render_to_response(
 			'ZcoFileBundle::folder.html.php', $this->getVariables($request, array(
 				'currentPage'   => 'folder',
 				'currentFolder' => $folder,
-				'usage'		 => $usage,
+				'currentContentFolder' => $contentFolder,
+				'usage'		    => $usage,
 				'quota'			=> $quota,
-				'ratio'		 => $ratio,
+				'ratio'		    => $ratio,
 				'usageClass'	=> $usageClass,
 			))
 		);
@@ -257,16 +282,28 @@ class DefaultController extends Controller
 	 */
 	private function getSmartFolder($id)
 	{
-		$folders = \Doctrine_Core::getTable('File')->getFolders();
-		foreach ($this->smartFolders as $folder)
+		if (isset($this->smartFolders[$id]))
 		{
-			if ($folder['id'] === $id)
-			{
-				return $folder;
-			}
+			return $this->smartFolders[$id];
 		}
 		
-		throw new NotFoundHttpException(sprintf('Cannot find folder #%s.', $id));
+		throw new NotFoundHttpException(sprintf('Cannot find smart folder #%s.', $id));
+	}
+	
+	/**
+	 * Renvoie les informations sur un dossier de contenu.
+	 *
+	 * @param  string $id
+	 * @return array
+	 */
+	private function getContentFolder($id)
+	{
+		if (isset($this->contentFolders[$id]))
+		{
+			return $this->contentFolders[$id];
+		}
+		
+		throw new NotFoundHttpException(sprintf('Cannot find content folder "%s".', $id));
 	}
 	
 	/**
@@ -279,11 +316,13 @@ class DefaultController extends Controller
 	private function getVariables(Request $request, array $variables = array())
 	{
 		return array_merge(array(
-			'smartFolders'  => $this->smartFolders,
-			'currentFolder' => array(),
-			'input'		    => $request->query->has('input') ? htmlspecialchars($request->query->get('input')) : null,
-			'textarea'	    => $request->query->has('textarea') ? htmlspecialchars($request->query->get('textarea')) : null,
-			'xhr'		    => $request->query->has('xhr') && $request->query->get('xhr'),
+			'smartFolders'   => $this->smartFolders,
+			'contentFolders' => $this->contentFolders,
+			'currentFolder'  => array(),
+			'currentContentFolder' => array(),
+			'input'		     => $request->query->has('input') ? htmlspecialchars($request->query->get('input')) : null,
+			'textarea'	     => $request->query->has('textarea') ? htmlspecialchars($request->query->get('textarea')) : null,
+			'xhr'		     => $request->query->has('xhr') && $request->query->get('xhr'),
 		), $variables);
 	}
 }

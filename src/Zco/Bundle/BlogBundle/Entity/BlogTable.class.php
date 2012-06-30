@@ -19,11 +19,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Zco\Bundle\FileBundle\Model\GenericEntityTableInterface;
+use Zco\Bundle\Doctrine1Bundle\Model\NamedDoctrineTableInterface;
 
 /**
  */
-class BlogTable extends Doctrine_Table implements GenericEntityTableInterface
+class BlogTable extends Doctrine_Table implements NamedDoctrineTableInterface
 {
     public function getEntities(array $pks)
     {
@@ -34,6 +34,11 @@ class BlogTable extends Doctrine_Table implements GenericEntityTableInterface
             ->leftJoin('b.CurrentVersion v')
             ->execute();
     }
+
+	public function getName()
+	{
+		return 'Blog';
+	}
 
 	public function query(array $options)
 	{

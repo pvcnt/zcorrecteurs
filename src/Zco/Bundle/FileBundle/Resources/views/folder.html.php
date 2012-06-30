@@ -77,6 +77,7 @@
 
 <?php $view['javelin']->initBehavior('zco-files-load-files-async', array(
     'folder' => $currentFolder['id'],
+	'contentFolder' => $currentContentFolder ? $currentContentFolder['id'] : null,
     'urlExtraData' => array(
         'textarea' => $textarea,
         'input' => $input,

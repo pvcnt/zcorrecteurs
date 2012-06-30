@@ -23,3 +23,4 @@ File:
         License:            { local: license_id }
         User:               { class: Utilisateur, local: user_id, foreign: utilisateur_id }
         Thumbnail:          { class: FileThumbnail, local: thumbnail_id }
+        Usage:              { class: FileUsage, local: id, foreign: file_id, type: many }

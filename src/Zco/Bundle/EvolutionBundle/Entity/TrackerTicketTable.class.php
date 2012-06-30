@@ -19,9 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Zco\Bundle\Doctrine1Bundle\Model\NamedDoctrineTableInterface;
+
 /**
  */
-class TrackerTicketTable extends Doctrine_Table
+class TrackerTicketTable extends Doctrine_Table implements NamedDoctrineTableInterface
 {
-
+	public function getName()
+	{
+		return 'Ticket';
+	}
 }

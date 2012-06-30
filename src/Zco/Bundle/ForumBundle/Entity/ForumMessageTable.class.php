@@ -20,11 +20,11 @@
  */
 
 use Zco\Bundle\CoreBundle\Paginator\Paginator;
-use Zco\Bundle\FileBundle\Model\GenericEntityTableInterface;
+use Zco\Bundle\Doctrine1Bundle\Model\NamedDoctrineTableInterface;
 
 /**
  */
-class ForumMessageTable extends Doctrine_Table implements GenericEntityTableInterface
+class ForumMessageTable extends Doctrine_Table implements NamedDoctrineTableInterface
 {
 	public function messagesUtilisateur($uid, $cats)
 	{
@@ -62,4 +62,9 @@ class ForumMessageTable extends Doctrine_Table implements GenericEntityTableInte
             ->whereIn('m.id', $pks)
             ->execute();
     }
+
+	public function getName()
+	{
+		return 'Message du forum';
+	}
 }
