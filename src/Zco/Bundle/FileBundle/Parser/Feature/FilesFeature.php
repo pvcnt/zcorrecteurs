@@ -144,7 +144,21 @@ class FilesFeature implements EventSubscriberInterface
 			$file = \Doctrine_Core::getTable('File')->find($id);
 			if (!$file)
 			{
-				//TODO : afficher une image personnalisée indiquant l'erreur.
+				if (!$height && !$width)
+				{
+					$height = 100;
+					$width = 100;
+				}
+				elseif (!$height)
+				{
+					$height = $width;
+				}
+				else
+				{
+					$width = $height;
+				}
+				$node->nodeValue = 'http://placehold.it/'.$width.'x'.$height.'&amp;text=%3F';
+				$node->setAttribute('legende', 'L\'image utilisateur n\'existe pas ou plus !');
 				
 				return;
 			}

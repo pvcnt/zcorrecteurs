@@ -252,7 +252,7 @@ class DefaultController extends Controller
 				'</lien>';
 			$vars['insertThumbnail'] =
 				'<lien url="'.$file->getWebPath().'">'.
-					'<image largeur="'.$file->Thumbnail['width'].'" hauteur="'.$file->Thumbnail['height'].'">'.
+					'<image largeur="'.$file->Thumbnail['width'].'">'.
 						$file['id'].':'.$file->getFullname().
 					'</image>'.
 				'</lien>';
