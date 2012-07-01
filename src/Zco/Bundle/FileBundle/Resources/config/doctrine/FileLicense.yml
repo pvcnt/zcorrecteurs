@@ -10,5 +10,5 @@ FileLicense:
         license_id:         { type: integer(11), notnull: true }
         pseudo:             { type: string(255), notnull: true}
     relations:
-        License:            { class: FichierLicense, local: licence_id }
+        License:            { class: License, local: licence_id }
         File:               { local: file_id }

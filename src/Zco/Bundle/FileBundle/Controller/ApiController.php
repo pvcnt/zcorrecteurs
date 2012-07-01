@@ -154,13 +154,13 @@ class ApiController extends Controller
 		}
 		if (!empty($_POST['license']) && !empty($_POST['pseudo']))
 		{
-			$license = \Doctrine_Core::getTable('Licence')->find($_POST['license']);
+			$license = \Doctrine_Core::getTable('License')->find($_POST['license']);
 			
 			if ($license['id'] != $file['licence_id'])
 			{
 				$file['license_id'] = $license['id'];
 				
-				$license = new \FichierLicense();
+				$license = new \FileLicense();
 				$license['file_id']	= $file['id'];
 				$license['license_id'] = $file['licence_id'];
 				$license['pseudo']	   = trim($_POST['pseudo']);
