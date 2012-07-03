@@ -134,7 +134,7 @@ class FilesFeature implements EventSubscriberInterface
 				$height = null;
 			}
 			
-			if (strpos($node->nodeValue, ':') === false)
+			if (strpos($node->nodeValue, ':') === false || strpos($node->nodeValue, '://') !== false)
 			{
 				continue;
 			}
