@@ -1,7 +1,6 @@
 /**
  * @provides vitesse-behavior-popover
  * @requires vitesse-behavior
- *           mootools
  *           bootstrap-js
  */
 Behavior.create('popover', function(config)

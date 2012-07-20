@@ -24,7 +24,7 @@ var Metadata = {
 			else
 			{
 		  		throw new Error(
-					'JX.Stratcom.getData(<element>): Tried to access data (block ' +
+					'Metadata.getData(<element>): Tried to access data (block ' +
 					meta_id[0] + ', index ' + index + ') that was not present. This ' +
 					'probably means you are calling getData() before the block ' +
 					'is provided by mergeData().'
