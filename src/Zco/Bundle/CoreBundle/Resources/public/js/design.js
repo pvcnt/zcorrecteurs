@@ -44,7 +44,7 @@ jQuery(function() {
 					alert('loaded');
 				}
 			};
-			script.src = "/bundles/zcocore/js/vendor/asteroids.js?v=3";
+			script.src = "/bundles/zcocore/js/vendor/asteroids.js?v=4";
 			document.getElementsByTagName('head')[0].appendChild(script);
 
             konami = [];
