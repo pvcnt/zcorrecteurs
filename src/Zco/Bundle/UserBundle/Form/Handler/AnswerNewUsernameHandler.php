@@ -104,8 +104,8 @@ class AnswerNewUsernameHandler
 				'pseudo'         => $query->getUser()->getUsername(),
 				'newPseudo'      => $query->getNewUsername(),
 				'reason'         => $query->getAdminResponse(),
-				'adminPseudo'    => $query->getAdmin()->getUsername(),
-				'adminId'        => $query->getAdmin()->getId(),
+				'adminPseudo'    => $_SESSION['pseudo'],
+				'adminId'        => $_SESSION['id'],
 			));
 
 			send_mail($query->getUser()->getEmail(), $query->getUser()->getUsername(), '[zCorrecteurs.fr] Votre changement de pseudo a été refusé', $message);
