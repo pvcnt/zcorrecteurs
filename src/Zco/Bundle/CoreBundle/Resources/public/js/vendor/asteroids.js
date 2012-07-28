@@ -530,13 +530,9 @@ function Asteroids() {
 	// Is IE
 	if ( typeof G_vmlCanvasManager != 'undefined' ) {
 		this.canvas = G_vmlCanvasManager.initElement(this.canvas);
-		if ( ! this.canvas.getContext ) {
-			alert("So... you're using IE?  Please join me at http://github.com/erkie/erkie.github.com if you think you can help");
-		}
-	} else {
-		if ( ! this.canvas.getContext ) {
-			alert('This program does not yet support your browser. Please join me at http://github.com/erkie/erkie.github.com if you think you can help');
-		}
+	}
+	if ( ! this.canvas.getContext ) {
+		return;
 	}
 	
 	addEvent(this.canvas, 'mousedown', function(e) {
@@ -546,7 +542,7 @@ function Asteroids() {
 		message.style.border = '1px solid #999';
 		message.style.background = 'white';
 		message.style.color = "black";
-		message.innerHTML = 'Press Esc to quit';
+		message.innerHTML = 'Appuyez sur Échap pour quitter.';
 		document.body.appendChild(message);
 		
 		var x = e.pageX || (e.clientX + document.documentElement.scrollLeft);
