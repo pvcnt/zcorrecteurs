@@ -60,14 +60,14 @@ class Javelin
 	 */
 	public function __destruct()
 	{
-		if ($this->dirty)
+		/*if ($this->dirty)
 		{
 			throw new \LogicException(
 				'Javelin has behaviors, metadata or onload functions to include in '.
 				'the response but you did not call renderHTMLFooter() or '.
 				'renderAjaxResponse() after registering them.'
 			);
-		}
+		}*/
 	}
 	
 	/**
@@ -179,14 +179,14 @@ class Javelin
 			$this->behavior = array();
 		}
 
-		if ($this->onload)
+		/*if ($this->onload)
 		{
 			throw new \LogicException(
 				'Javelin onload functions have been registered, but the response is '.
 				'being rendered as an Ajax response. This is invalid; use behaviors '.
 				'instead.'
 			);
-		}
+		}*/
 
 		$this->dirty = false;
 		
