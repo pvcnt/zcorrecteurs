@@ -26,14 +26,13 @@ namespace Zco\Bundle\RechercheBundle\Model;
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-
 class TwitterSearch extends Searchable
 {
 	protected $index = 'twitter_tweets';
 
 	public function getResults($query, $checkCredentials = true)
 	{
-		return Doctrine_Core::getTable('TwitterTweet')
+		return \Doctrine_Core::getTable('TwitterTweet')
 			->getByIds($this->idsArray(parent::getResults($query, false)));
 	}
 }
