@@ -40,6 +40,8 @@
 					zCorrecteurs.fr - Les réponses à toutes vos questions concernant la langue française !
 				</a>
 			</div>
+
+			<?php echo $view['ui']->headerRight('bootstrap') ?>
 		</div> <!-- /header -->
 
 		<div class="navbar">
