@@ -31,7 +31,9 @@
 	<div class="control-group">
 		<label class="control-label">Expérience utilisateur</label>
 		<div class="controls">
-			<?php echo $view['form']->row($form['display_admin_bar'], array('style' => 'checkbox')) ?>
+			<?php if (verifier('admin')): ?>
+				<?php echo $view['form']->row($form['display_admin_bar'], array('style' => 'checkbox')) ?>
+			<?php endif ?>
 			<?php echo $view['form']->row($form['beta_tests'], array('style' => 'checkbox')) ?>
 		</div>
 	</div>

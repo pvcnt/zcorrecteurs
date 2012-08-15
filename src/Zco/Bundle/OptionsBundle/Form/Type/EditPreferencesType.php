@@ -37,10 +37,13 @@ class EditPreferencesType extends AbstractType
 	 */
 	public function buildForm(FormBuilder $builder, array $options)
 	{
-		$builder->add('display_admin_bar', null, array(
-			'label' => 'Afficher la barre d\'administration rapide',
-			'required' => false,
-		));
+		if (verifier('admin'))
+		{
+			$builder->add('display_admin_bar', null, array(
+				'label' => 'Afficher la barre d\'administration rapide',
+				'required' => false,
+			));
+		}
 		$builder->add('beta_tests', null, array(
 			'label' => 'Activer les nouveautés en avant-première', 
 			'required' => false,
