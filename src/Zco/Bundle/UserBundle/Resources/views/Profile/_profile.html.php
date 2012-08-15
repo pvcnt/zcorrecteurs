@@ -14,14 +14,14 @@
 		<?php if ($user->hasJob()): ?>
 			<?php if ($c > 0): ?>|<?php endif ?>
 			<i class="icon-briefcase"></i> 
-			<span class="gris"><?php echo htmlspecialchars($user->getJob()) ?>.</span>
+			<span class="gris"><?php echo htmlspecialchars($user->getJob()) ?></span>
 		<?php ++$c; endif ?>
 	</li>
 	<?php if ($user->hasHobbies()): ?>
 	<li>
 		<i class="icon-heart"></i> 
 		<span class="gris">Intéressé par</span>
-		<strong><span class="gris"><?php echo htmlspecialchars($user->getHobbies()) ?>.</span></strong>
+		<strong><?php echo htmlspecialchars($user->getHobbies()) ?></strong>
 	</li>
 	<?php endif ?>
 	<?php if ($user->hasWebsite() || $user->hasTwitter()): ?>
