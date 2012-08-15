@@ -21,22 +21,39 @@
 
 namespace Zco\Bundle\OptionsBundle\EventListener;
 
+use Zco\Bundle\CoreBundle\CoreEvents;
+use Zco\Bundle\CoreBundle\Event\CronEvent;
 use Zco\Bundle\AdminBundle\AdminEvents;
 use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+/**
+ * Observateur principal pour le module d'options.
+ *
+ * @author vincent1870 <vincent@zcorrecteurs.fr>
+ */
 class EventListener extends ContainerAware implements EventSubscriberInterface
 {
+	/**
+	 * {@inheritdoc}
+	 */
 	static public function getSubscribedEvents()
 	{
 		return array(
-			'zco_core.filter_menu.left_menu' => 'onFilterLeftMenu',
+			'zco_core.filter_menu.left_menu'        => 'onFilterLeftMenu',
 			'zco_core.filter_menu.speedbarre_right' => 'onFilterSpeedbarreRight',
-			AdminEvents::MENU => 'onFilterAdmin',
+			AdminEvents::MENU                       => 'onFilterAdmin',
+			CoreEvents::DAILY_CRON                  => 'onDailyCron',
 		);
 	}
 	
+	/**
+	 * Ajoute le lien vers le réglage des paramètres utilisateur dans le menu 
+	 * de gauche sur l'ancien design.
+	 *
+	 * @param FilterMenuEvent $event
+	 */
 	public function onFilterLeftMenu(FilterMenuEvent $event)
 	{
 		if (!verifier('connecte') || $event->getTemplate() !== 'legacy')
@@ -54,6 +71,12 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 		));
 	}
 	
+	/**
+	 * Ajoute le lien vers le réglage des paramètres utilisateur dans la barre 
+	 * de navigation sur le nouveau design.
+	 *
+	 * @param FilterMenuEvent $event
+	 */
 	public function onFilterSpeedbarreRight(FilterMenuEvent $event)
 	{
 		if (!verifier('connecte') || $event->getTemplate() !== 'bootstrap')
@@ -67,6 +90,11 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 		));
 	}
 	
+	/**
+	 * Ajoute des liens sur le panneau d'administration.
+	 *
+	 * @param FilterMenuEvent $event
+	 */
 	public function onFilterAdmin(FilterMenuEvent $event)
 	{
 	    $tab = $event
@@ -77,5 +105,15 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 		$tab->addChild('Modifier les options de navigation par défaut', array(
 			'uri' => $this->container->get('router')->generate('zco_options_preferences', array('id' => '0')),
 		))->secure('options_editer_defaut');
+	}
+
+	/**
+	 * Met à jour les absences chaque jour.
+	 *
+	 * @param CronEvent $event
+	 */
+	public function onDailyCron(CronEvent $event)
+	{
+		\Doctrine_Core::getTable('Utilisateur')->purgeAbsences();
 	}
 }

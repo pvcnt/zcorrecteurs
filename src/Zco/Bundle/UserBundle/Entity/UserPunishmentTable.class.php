@@ -60,4 +60,31 @@ class UserPunishmentTable extends Doctrine_Table
 			->where('p.user_id = ?', $userId)
 			->execute(array(), $hydrationMode);
 	}
+
+	/**
+	 * Met à jour les sanctions données aux membres.
+	 */
+	public function purge()
+	{
+		//Décrémente le nombre de jours restants sur les sanctions en cours.
+		$this->createQuery('p')
+			->update()
+			->set('remaining_duration', 'remaining_duration - 1')
+			->where('finished = ?', false)
+			->andWhere('remaining_duration > 0')
+			->execute();
+		
+		//Arrêt des sanctions trop vieilles.
+		$punishments = $this->createQuery()
+			->select('*')
+			->where('duration > 0')
+			->andWhere('remaining_duration = 0')
+			->execute();
+
+		foreach ($punishments as $punishment)
+		{
+			$punishment->complete();
+			$punishment->getUser()->unapplyPunishment($punishment);
+		}
+	}
 }

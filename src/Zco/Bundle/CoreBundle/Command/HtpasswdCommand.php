@@ -43,7 +43,7 @@ class HtpasswdCommand extends Command
 	protected function configure()
 	{
 		$this
-			->setName('cron:htpasswd')
+			->setName('zco:htpasswd')
 			->setDescription('Recreates all .htpasswd files');
 	}
 

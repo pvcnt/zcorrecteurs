@@ -1,5 +1,7 @@
 services:
     zco_statistiques.event_listener:
         class: Zco\Bundle\StatistiquesBundle\EventListener\EventListener
+        calls:
+            - [setContainer, [@service_container]]
         tags:
             - { name: kernel.event_subscriber }

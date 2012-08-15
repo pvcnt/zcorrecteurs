@@ -21,6 +21,8 @@
 
 namespace Zco\Bundle\UserBundle\EventListener;
 
+use Zco\Bundle\CoreBundle\CoreEvents;
+use Zco\Bundle\CoreBundle\Event\CronEvent;
 use Zco\Bundle\InformationsBundle\Event\FilterSitemapEvent;
 use Zco\Bundle\InformationsBundle\InformationsEvents;
 use Zco\Bundle\UserBundle\UserEvents;
@@ -50,6 +52,8 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 			KernelEvents::CONTROLLER 	=> 'onKernelController',
 			UserEvents::VALIDATE_EMAIL  => 'onValidateEmail',
 			InformationsEvents::SITEMAP => 'onFilterSitemap',
+			CoreEvents::DAILY_CRON      => 'onDailyCron',
+			CoreEvents::HOURLY_CRON     => 'onHourlyCron',
 		);
 	}
 		
@@ -196,6 +200,44 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 			'changefreq' => 'daily',
 			'priority'	 => '0.5',
 		));
+	}
+
+	/**
+	 * Actions à exécuter quotidiennement.
+	 *
+	 * @param CronEvent $event
+	 */
+	public function onDailyCron(CronEvent $event)
+	{
+		//Supprime les sauvegardes de zForm vieilles de plus d'un jour.
+		\Doctrine_Core::getTable('ZformBackup')->purge();
+
+		//Supprime les comptes non-validés de plus d'un jour.
+		\Doctrine_Core::getTable('Utilisateur')->purge();
+
+		if ($event->ensureDaily())
+		{
+			//Mise à jour des sanctions.
+			\Doctrine_Core::getTable('UserPunishment')->purge();
+		}
+
+		//Supprime les blocages de comptes suite à trop de tentatives ratées
+		\Doctrine_Core::getTable('Tentative')->purge();
+
+		//Suppression de l'historique des adresses IP de plus d'un an.
+		//Ne surtout pas supprimer (déclaration CNIL, toussa).
+		\Doctrine_Core::getTable('UtilisateurIp')->purge();
+	}
+
+	/**
+	 * Actions à exécuter toutes les heures.
+	 *
+	 * @param CronEvent $event
+	 */
+	public function onHourlyCron(CronEvent $event)
+	{
+		//Mise à jour de la table des sessions.
+		\Doctrine_Core::getTable('Online')->purge();
 	}
 	
 	/**

@@ -443,6 +443,48 @@ class UtilisateurTable extends Doctrine_Table
 
 		return true;
 	}
+
+	/**
+	 * Supprime tous les comptes n'étant pas validés depuis plus d'un jour.
+	 *
+	 * @return integer Nombre de comptes supprimés
+	 */
+	public function purge()
+	{
+		return $this->createQuery()
+			->delete()
+			->where('valide = ?', false)
+			->andWhere('date_inscription <= NOW() - INTERVAL 1 DAY')
+			->execute();
+	}
+
+	/**
+	 * Met à jour les absences qui doivent débuter et celles qui doivent 
+	 * se terminer.
+	 */
+	public function purgeAbsences()
+	{
+		//Désactivation des absences dont la date de fin est passée.
+		$this->createQuery()
+			->update()
+			->set('absent', '?', false)
+			->set('absence_reason', '?', '')
+			->set('absence_start_date', new \Doctrine_Expression('NULL'))
+			->set('absence_end_date', new \Doctrine_Expression('NULL'))
+			->where('absent = ?', true)
+			->andWhere('absence_end_date IS NOT NULL')
+			->andWhere('absence_end_date < NOW()')
+			->execute();
+
+		//Activation des absences dont la date de début est passé.
+		$this->createQuery()
+			->update()
+			->set('absent', '?', true)
+			->where('absent = ?', false)
+			->andWhere('absence_start_date IS NOT NULL')
+			->andWhere('absence_start_date < NOW()')
+			->execute();
+	}
 	
 	public function getMarkersForMap($router)
 	{

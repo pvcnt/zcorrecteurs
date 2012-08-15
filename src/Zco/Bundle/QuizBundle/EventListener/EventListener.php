@@ -21,19 +21,22 @@
 
 namespace Zco\Bundle\QuizBundle\EventListener;
 
+use Zco\Bundle\CoreBundle\CoreEvents;
+use Zco\Bundle\CoreBundle\Event\CronEvent;
 use Zco\Bundle\InformationsBundle\Event\FilterSitemapEvent;
 use Zco\Bundle\InformationsBundle\InformationsEvents;
 use Zco\Bundle\AdminBundle\AdminEvents;
 use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
 use Knp\Menu\ItemInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\DependencyInjection\ContainerAware;
 
 /**
  * Observateur principal pour le module de quiz.
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class EventListener implements EventSubscriberInterface
+class EventListener extends ContainerAware implements EventSubscriberInterface
 {
 	/**
 	 * {@inheritdoc}
@@ -42,8 +45,9 @@ class EventListener implements EventSubscriberInterface
 	{
 		return array(
 			'zco_core.filter_menu.speedbarre' => 'onFilterSpeedbarre',
-			AdminEvents::MENU => 'onFilterAdmin',
-			InformationsEvents::SITEMAP => 'onFilterSitemap',
+			AdminEvents::MENU                 => 'onFilterAdmin',
+			InformationsEvents::SITEMAP       => 'onFilterSitemap',
+			CoreEvents::DAILY_CRON            => 'onDailyCron',
 		);
 	}
 	
@@ -121,5 +125,16 @@ class EventListener implements EventSubscriberInterface
 				'priority'	 => '0.5',
 			));
 		}
+	}
+
+	/**
+	 * Actions à exécuter chaque jour.
+	 *
+	 * @param CronEvent $event
+	 */
+	public function onDailyCron(CronEvent $event)
+	{
+		//Mise en cache des quiz les plus fréquentés
+		$this->container->get('zco_core.cache')->delete('quiz_liste_frequentes');
 	}
 }

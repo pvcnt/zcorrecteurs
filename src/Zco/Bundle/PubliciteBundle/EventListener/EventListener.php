@@ -21,6 +21,8 @@
 
 namespace Zco\Bundle\PubliciteBundle\EventListener;
 
+use Zco\Bundle\CoreBundle\CoreEvents;
+use Zco\Bundle\CoreBundle\Event\CronEvent;
 use Zco\Component\Templating\TemplatingEvents;
 use Zco\Component\Templating\Event\FilterResourcesEvent;
 use Zco\Bundle\AdminBundle\AdminEvents;
@@ -29,6 +31,11 @@ use Knp\Menu\ItemInterface;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+/**
+ * Observateur principal pour le module de publicités.
+ *
+ * @author vincent1870 <vincent@zcorrecteurs.fr>
+ */
 class EventListener extends ContainerAware implements EventSubscriberInterface
 {
 	/**
@@ -37,10 +44,11 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 	static public function getSubscribedEvents()
 	{
 		return array(
-			'zco_core.filter_menu.left_menu' => 'onFilterLeftMenu',
-			'zco_core.filter_menu.footer3' => 'onFilterFooter3',
+			'zco_core.filter_menu.left_menu'   => 'onFilterLeftMenu',
+			'zco_core.filter_menu.footer3'     => 'onFilterFooter3',
 			TemplatingEvents::FILTER_RESOURCES => 'onTemplatingFilterResources',
-			AdminEvents::MENU => 'onFilterAdmin',
+			AdminEvents::MENU                  => 'onFilterAdmin',
+			CoreEvents::HOURLY_CRON            => 'onHourlyCron',
 		);
 	}
 	
@@ -124,6 +132,57 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 		$tab->addChild('Voir les campagnes inactives', array(
 			'uri' => '/publicite/index.html?all=1&etat[]=termine&etat[]=supprime',
 		))->secure('publicite_voir');
+	}
+
+	/**
+	 * Met à jour les statistiques horaires des publicités.
+	 *
+	 * @param CronEvent $event
+	 */
+	public function onHourlyCron(CronEvent $event)
+	{
+		$cache = $this->container->get('zco_core.cache');
+	    $pks   = \Doctrine_Query::create()
+        	->select('id, campagne_id')
+        	->from('Publicite')
+        	->execute(array(), \Doctrine_Core::HYDRATE_ARRAY);
+
+        foreach ($pks as $pub)
+        {
+        	$nbv = $cache->get('pub_nbv-'.$pub['id'], 0);
+        	$event->getOutput()->writeln('Publicité n°'.$pub['id'].' : '.$nbv.' affichage(s)');
+
+        	if ($nbv > 0)
+        	{
+        		\Doctrine_Query::create()
+        			->update('Publicite')
+        			->set('nb_affichages', 'nb_affichages + ?', $nbv)
+        			->where('id = ?', $pub['id'])
+        			->execute();
+        		\Doctrine_Query::create()
+        			->update('PubliciteCampagne')
+        			->set('nb_affichages', 'nb_affichages + ?', $nbv)
+        			->where('id = ?', $pub['campagne_id'])
+        			->execute();
+        		$ret = \Doctrine_Query::create()
+        			->update('PubliciteStat')
+        			->set('nb_affichages', 'nb_affichages + ?', $nbv)
+        			->where('publicite_id = ?', $pub['id'])
+        			->andWhere('date = DATE(NOW())')
+        			->execute();
+        		if (!$ret)
+        		{
+        			$stat = new \PubliciteStat();
+        			$stat['publicite_id']  = $pub['id'];
+        			$stat['date']          = date('Y-m-d');
+        			$stat['nb_clics']      = 0;
+        			$stat['nb_affichages'] = $nbv;
+        			$stat->save();
+        		}
+        	}
+        	
+        	$cache->delete('pub_nbv-'.$pub['id']);
+        }
 	}
 	
 	private function generateHtml($section, ItemInterface $menu)

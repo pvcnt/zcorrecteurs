@@ -21,12 +21,26 @@
 
 namespace Zco\Bundle\CoreBundle\Command;
 
+use Zco\Bundle\CoreBundle\CoreEvents;
+use Zco\Bundle\CoreBundle\Event\CronEvent;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
 /**
- * Cron quotidien.
+ * Cron. Cette commande en elle-même ne fait rien, elle se contente de propager 
+ * un événement afin de permettre à chaque bundle d'exécuter périodiquement 
+ * les actions qu'ils souhaitent.
+ *
+ * Deux crons différents sont gérés ici :
+ *   - un cron s'exécutant à chaque fin d'heure (en minute 59), utile notamment 
+ *     pour tous les bundles ayant des statistiques à mettre à jour pour l'heure 
+ *     écoulée ;
+ *   - un cron s'exécutant tous les jours à minuit.
+ *
+ * Pour des besoins plus spécifiques, vous devrez créer vos propres commandes 
+ * et demander à les installer dans la crontab.
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
@@ -38,8 +52,11 @@ class CronCommand extends ContainerAwareCommand
 	protected function configure()
 	{
 		$this
-			->setName('cron:quotidien')
-			->setDescription('Launched every day');
+			->setName('zco:cron')
+			->setDescription('Runs periodic commands')
+			->addOption('hourly', null, InputOption::VALUE_NONE, 'Run the hourly cron')
+			->addOption('daily', null, InputOption::VALUE_NONE, 'Run the daily cron')
+			->addOption('force', null, InputOption::VALUE_NONE, 'Force the run');
 	}
 
 	/**
@@ -47,108 +64,57 @@ class CronCommand extends ContainerAwareCommand
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$dbh   = \Doctrine_Manager::connection()->getDbh();
-		$cache = $this->getContainer()->get('zco_core.cache');
-
-		//---Suppression des sauvegardes vieilles de plus d'un jour
-		\Doctrine_Core::getTable('ZformBackup')->purge();
-
-		//---Suppression des comptes non-validés de plus d'un jour
-		$stmt = $dbh->prepare("DELETE FROM zcov2_utilisateurs
-		WHERE utilisateur_date_inscription <= NOW() - INTERVAL 1 DAY AND utilisateur_valide = 0");
-		$stmt->execute();
-		$stmt->closeCursor();
-
-		//---Mise à jour des sanctions
-		$stmt = $dbh->prepare("UPDATE zcov2_sanctions
-		SET sanction_duree_restante = sanction_duree_restante - 1
-		WHERE sanction_finie = 0 AND sanction_duree_restante > 0 AND (DATE(sanction_date) + INTERVAL (sanction_duree - sanction_duree_restante) DAY < DATE(NOW()))");
-		$stmt->execute();
-		$stmt->closeCursor();
-
-		//Arrêt des sanctions trop vieilles
-		$stmt = $dbh->prepare("SELECT sanction_id, sanction_id_utilisateur, sanction_id_groupe_origine
-		FROM zcov2_sanctions
-		WHERE sanction_duree > 0 AND sanction_duree_restante = 0");
-		$stmt->execute();
-		$sanctions = $stmt->fetchAll();
-		$stmt->closeCursor();
-		foreach($sanctions as $s)
+		if (!$input->getOption('daily') && !$input->getOption('hourly'))
 		{
-			// On remet le membre dans son groupe
-			$stmt = $dbh->prepare("UPDATE zcov2_utilisateurs
-			SET utilisateur_id_groupe = :groupe
-			WHERE utilisateur_id = :id");
-			$stmt->bindParam(':groupe', $s['sanction_id_groupe_origine']);
-			$stmt->bindParam(':id', $s['sanction_id_utilisateur']);
-			$stmt->execute();
-			$stmt->closeCursor();
-
-			// On la marque comme finie
-			$stmt = $dbh->prepare("UPDATE zcov2_sanctions
-			SET sanction_finie = 1, sanction_duree_restante = 0
-			WHERE sanction_id = :id");
-			$stmt->bindParam(':id', $s['sanction_id']);
-			$stmt->execute();
-			$stmt->closeCursor();
+			throw new \InvalidArgumentException('You must run the cron in hourly or daily mode.');
 		}
 
-		//---Mise à jour des bans IP
-		$stmt = $dbh->prepare("UPDATE zcov2_ips_bannies
-		SET ip_duree_restante = ip_duree_restante - 1
-		WHERE ip_fini = 0 AND ip_duree_restante > 0 AND (ip_date + INTERVAL (ip_duree - ip_duree_restante) DAY < NOW())");
-		$stmt->execute();
-		$stmt->closeCursor();
+		ignore_user_abort(true);
+  		set_time_limit(0);
 
-		$stmt = $dbh->prepare("UPDATE zcov2_ips_bannies
-		SET ip_fini = 1
-		WHERE ip_duree > 0 AND ip_duree_restante = 0");
-		$stmt->execute();
-		$stmt->closeCursor();
+		$dispatcher = $this->getContainer()->get('event_dispatcher');
+		$registry   = $this->getContainer()->get('zco_core.registry');
 
-		$cache->delete('ips_bannies');
-
-		//---Désactivation des absences dont la date de fin est passée
-		$stmt = $dbh->prepare("
-		UPDATE zcov2_utilisateurs SET utilisateur_absent = 0, utilisateur_motif_absence = '', utilisateur_fin_absence = null, utilisateur_debut_absence = null
-		WHERE utilisateur_absent = 1 AND utilisateur_fin_absence IS NOT NULL AND utilisateur_fin_absence < NOW()
-		");
-		$stmt->execute();
-
-		//---Activation des absences dont la date de début est passé
-		$stmt = $dbh->prepare("
-		UPDATE zcov2_utilisateurs SET utilisateur_absent = 1
-		WHERE utilisateur_debut_absence IS NOT NULL AND utilisateur_debut_absence < NOW() AND utilisateur_absent = 0
-		");
-		$stmt->execute();
-
-		/*---------------- Informations mises en cache pour les modules de l'accueil -------------------------*/
-		//Mise en cache des statistiques de zCorrection
-		$cache->delete('statistiques_zcorrection');
-		include(BASEPATH.'/src/Zco/Bundle/StatistiquesBundle/modeles/statistiques.php');
-		RecupStatistiques();
-
-		//Mise en cache des quiz les plus fréquentés
-		$cache->delete('quiz_liste_frequentes');
-
-		/* Suppression des blocages de comptes suite à trop de tentatives ratées */
-		\Doctrine_Query::create()
-			->delete('Tentative')
-			->addWhere('blocage = 0')
-			->execute();
-
-		/* Mentions Twitter */
-		\Doctrine_Core::getTable('TwitterMention')->retrieveByAccount();
+		//Si on souhaite lancer le cron horaire.
+		if ($input->getOption('hourly'))
+		{
+			$lastRun = $registry->get('zco_core.hourly_cron.last_run');
+			$event = new CronEvent($output, $lastRun);
+			if ($input->getOption('force') || $event->ensureHourly())
+			{
+				$startTime = microtime(true);
+				$dispatcher->dispatch(CoreEvents::HOURLY_CRON, $event);
+				$registry->set('zco_core.hourly_cron.last_run', date('Y-m-d H:i:s'));
+				$output->writeln(
+					'Hourly cron terminated <info>successfully</info> in '
+					.ceil((microtime(true) - $startTime) * 1000).' ms'
+				);
+			}
+			else
+			{
+				$output->writeln(sprintf('<error>Hourly cron already launched less than an hour ago (%s)</error>', $lastRun));
+			}
+		}
 		
-		/* Stats Alexa */
-		include(BASEPATH.'/src/Zco/Bundle/StatistiquesBundle/modeles/alexa.php');
-		SaveAlexaRanks();
-
-		//--- Suppression de l'historique des adresses IP de plus d'un an.
-		//Ne surtout pas supprimer (déclaration CNIL, toussa).
-		$stmt = $dbh->prepare("DELETE FROM zcov2_utilisateurs_ips
-		WHERE ip_date_last <= NOW() - INTERVAL 1 YEAR");
-		$stmt->execute();
-		$stmt->closeCursor();
+		//Si on souhaite lancer le cron quotidien.
+		if ($input->getOption('daily'))
+		{
+			$lastRun = $registry->get('zco_core.daily_cron.last_run');
+			$event = new CronEvent($output, $lastRun);
+			if ($input->getOption('force') || $event->ensureDaily())
+			{
+				$startTime = microtime(true);
+				$dispatcher->dispatch(CoreEvents::DAILY_CRON, new CronEvent($output, $lastRun));
+				$registry->set('zco_core.daily_cron.last_run', date('Y-m-d H:i:s'));
+				$output->writeln(
+					'Daily cron terminated <info>successfully</info> in '
+					.ceil((microtime(true) - $startTime) * 1000).' ms'
+				);
+			}
+			else
+			{
+				$output->writeln(sprintf('<error>Daily cron already launched less than an day ago (%s)</error>', $lastRun));
+			}
+		}
 	}
 }

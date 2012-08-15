@@ -19,64 +19,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace Zco\Bundle\CoreBundle;
+
 /**
- * Représente un visiteur connecté sur le site.
- * 
+ * Événements générés par le ZcoCoreBundle.
+ *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class Online extends BaseOnline
+final class CoreEvents
 {
-	private $botName;
+	/**
+	 * Événement déclenché chaque heure par l'exécution du cron horaire.
+	 *
+	 * L'événement associé est de type Zco\Bundle\CoreBundle\Event\CronEvent.
+	 */
+	const HOURLY_CRON = 'zco_core.hourly_cron';
 	
-	public function isBot()
-	{
-		$this->botName = $this->getTable()->getBotName($this->user_agent);
-		
-		return $this->botName !== null;
-	}
-	
-	public function getBotName()
-	{
-		return $this->botName;
-	}
-	
-	public function getUser()
-	{
-		return $this->User;
-	}
-
-	public function getUserId()
-	{
-		return $this->user_id;
-	}
-	
-	public function getCategory()
-	{
-		return $this->Category;
-	}
-	
-	public function getLastActionDate()
-	{
-		return $this->last_action;
-	}
-	
-	public function getIpAddress()
-	{
-		return $this->ip;
-	}
-	
-	public function getAction()
-	{
-		return $this->action;
-	}
-	
-	public function getActionIdentifier()
-	{
-		return $this->action_identifier;
-	}
-	
-	public function isAuthenticated()
-	{
-		return $this->user_id > 0;
-	}
+	/**
+	 * Événement déclenché chaque jour par l'exécution du cron quotidien.
+	 *
+	 * L'événement associé est de type Zco\Bundle\CoreBundle\Event\CronEvent.
+	 */
+	const DAILY_CRON = 'zco_core.daily_cron';
 }

@@ -127,4 +127,32 @@ class OnlineTable extends Doctrine_Table
 			return $useragents[$userAgent];
 		}
 	}
+
+	/**
+	 * Supprime les vieilles entrées de la table des connectés.
+	 *
+	 * @return integer Nombre de lignes supprimmées
+	 */
+	public function purge()
+	{
+		$users = $this->createQuery('u')
+			->select('u.*')
+			->where('u.last_action < NOW() - INTERVAL '.NOMBRE_MINUTES_CONNECTE.' MINUTE')
+			->andWhere('u.user_id IS NOT NULL')
+			->execute();
+        
+        foreach ($users as $user)
+        {
+        	\Doctrine_Query::create()
+        		->update('Utilisateur')
+        		->set('date_derniere_visite', '?', $user->getLastActionDate())
+        		->where('id = ?', $user->getUserId())
+        		->execute();
+        }
+
+        $retval = count($users);
+        $users->delete();
+
+        return $retval;
+	}
 }
