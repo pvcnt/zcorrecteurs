@@ -25,20 +25,7 @@
 	<div class="span9" style="padding-right: 10px; border-right: 1px solid #EEE;">
 		<div class="pill-content">
 			<div class="pill-pane active" id="profile-profile">
-				<?php if ($user->hasBiography()): ?>
-					<?php echo $view['messages']->parse($user->getBiography(), array('core.anchor_prefix' => 'bio')) ?>
-				<?php else: ?>
-					<div class="alert alert-info">
-						<?php echo htmlspecialchars($user->getUsername()) ?> n’a pas encore écrit sa biographie.
-					</div>
-				<?php endif ?>
-
-				<?php if ($user->hasSignature()): ?>
-					<hr style="margin-bottom: 10px;" />
-					<div style="background-color: #FCF8E3; padding: 10px; border-radius: 5px;">
-						<?php echo $view['messages']->parse($user->getSignature()) ?>
-					</div>
-				<?php endif ?>
+				<?php echo $view->render('ZcoUserBundle:Profile:_content.html.php', compact('user')) ?>
 			</div>
 			<?php if ($canSeeInfos): ?>
 			<div class="pill-pane" id="profile-infos">
@@ -58,7 +45,7 @@
 		</ul>
 		<?php endif ?>
 
-		<?php if ($user->getId() == $_SESSION['id']): ?>
+		<?php if ($own): ?>
         <div style="margin-top: 5px;">
 			<a class="btn btn-success" 
 			   href="<?php echo $view['router']->generate('zco_options_index') ?>" 
@@ -124,11 +111,10 @@
 	            		<?php echo $own ? 'Mes' : 'Ses' ?> billets sur le blog
 	            	</a>
 	            </li>
-	            <?php if(verifier('recrutements_voir_candidatures')): ?>
+	            <?php if (verifier('recrutements_voir_candidatures')): ?>
 	            	<li>
 	            		<a href="/recrutement/candidatures-membre-<?php echo $user->getId(); ?>.html">
-	            			<?php echo $_SESSION['id'] == $user->getId() ? 'Mes' : 'Ses' ?> 
-	            			candidatures aux recrutements
+	            			<?php echo $own ? 'Mes' : 'Ses' ?> candidatures aux recrutements
 	            		</a>
 	            	</li>
 	            <?php endif ?>
@@ -139,7 +125,7 @@
 		            	</a>
 		            </li>
 	        	<?php endif ?>
-	        	<?php if(verifier('quiz_stats')|| $_SESSION['id'] == $user->getId()): ?>
+	        	<?php if (verifier('quiz_stats') || $own): ?>
 	            	<li>
 	            		<a href="/quiz/mes-statistiques-<?php echo $user->getId(); ?>.html">
 	            			<?php echo $own ? 'Mes' : 'Ses' ?> statistiques de quiz

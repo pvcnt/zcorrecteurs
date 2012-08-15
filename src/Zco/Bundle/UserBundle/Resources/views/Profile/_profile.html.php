@@ -17,16 +17,6 @@
 			<span class="gris"><?php echo htmlspecialchars($user->getJob()) ?>.</span>
 		<?php ++$c; endif ?>
 	</li>
-	<?php if ($user->isAbsent()): ?>
-		<li>
-			<i class="icon-off"></i> 
-			<?php if (!$user->getAbsenceEndDate()): ?>
-			<span class="gris">Absent pour une durée indéterminée.</span>
-			<?php else: ?>
-			<span class="gris">Absent jusqu'au <?php echo dateformat($user->getAbsenceEndDate(), DATE, MINUSCULE) ?>.</span></li>
-			<?php endif ?>
-		</li>
-	<?php endif ?>
 	<?php if ($user->hasHobbies()): ?>
 	<li>
 		<i class="icon-heart"></i> 
