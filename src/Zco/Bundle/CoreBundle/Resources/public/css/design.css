@@ -116,6 +116,43 @@ div.content {
     margin-bottom: 20px;
 }
 
+/* Citation */
+#citation {
+  position:    absolute;
+  top:         1em;
+  right:       1em;
+  margin-left: 660px;
+  padding:     4px 8px;
+  width:       auto;
+  text-align:  right;
+  border:      1px solid #04B7E4;
+  background-color: #8CDBEF;
+  -moz-border-radius: 9px;
+  -webkit-border-radius: 9px;
+  max-height: 60px;
+  overflow: hidden;
+}
+
+#citation:hover {
+  max-height: 1000px;
+}
+
+#citation div {
+  text-align: right;
+  background: url('../img/quote-header.gif') no-repeat right bottom;
+  padding-right: 2em;
+  min-height: 18px;
+}
+
+/* Hack CSS Opera 9 */
+@media all and (-webkit-min-device-pixel-ratio:10000), not all and (-webkit-min-device-pixel-ratio:0)
+{
+#citation {
+  border: 0;
+  background:  url("../img/radius-header-citation.svg");
+}
+}
+
 /**
  * Affinage du fil d'Ariane.
  */
