@@ -3,13 +3,13 @@
 		<?php $c = 0; if ($user->hasBirthDate()): ?>
 			<i class="icon-gift"></i>
 			<span class="gris">Âgé de</span>
-			<strong rel="tooltip" title="<?php echo $view['humanize']->dateformat($user->getBirthDate(), MINUSCULE, DATE) ?>"><?php echo $user->getAge() ?> ans</strong><span class="gris">.</span>
+			<strong rel="tooltip" title="<?php echo $view['humanize']->dateformat($user->getBirthDate(), MINUSCULE, DATE) ?>"><?php echo $user->getAge() ?> ans</strong>
 		<?php ++$c; endif ?>
 		<?php if ($user->isCountryDisplayed() && $user->hasLocalisation()): ?>
 			<?php if ($c > 0): ?>|<?php endif ?>
 			<i class="icon-plane"></i> 
 			<span class="gris">Vit en</span>
-			<strong><?php echo htmlspecialchars($user->getLocalisation()) ?></strong><span class="gris">.</span>
+			<strong><?php echo htmlspecialchars($user->getLocalisation()) ?></strong>
 		<?php ++$c; endif ?>
 		<?php if ($user->hasJob()): ?>
 			<?php if ($c > 0): ?>|<?php endif ?>
@@ -21,7 +21,7 @@
 	<li>
 		<i class="icon-heart"></i> 
 		<span class="gris">Intéressé par</span>
-		<strong><span class="gris"><?php echo htmlspecialchars($user->getHobbies()) ?>.</span></strong><span class="gris">.</span>
+		<strong><span class="gris"><?php echo htmlspecialchars($user->getHobbies()) ?>.</span></strong>
 	</li>
 	<?php endif ?>
 	<?php if ($user->hasWebsite() || $user->hasTwitter()): ?>
@@ -43,7 +43,7 @@
 			<?php else: ?>
 				<span class="gris">Présent sur Twitter <em>via</em></span> 
 			<?php endif ?>
-			<a href="http://twitter.com/<?php echo htmlspecialchars($user->getTwitter()) ?>">@<?php echo htmlspecialchars($user->getTwitter()) ?></a><span class="gris">.</span>
+			<a href="http://twitter.com/<?php echo htmlspecialchars($user->getTwitter()) ?>">@<?php echo htmlspecialchars($user->getTwitter()) ?></a>
 		<?php endif ?>
 	</li>
 	<?php endif ?>
