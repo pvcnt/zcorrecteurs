@@ -231,7 +231,8 @@ class DefaultController extends Controller
         $vars['canSendEmail'] = verifier('rechercher_mail') || $user->isEmailDisplayed();
         $vars['canSeeInfos'] = verifier('membres_voir_ch_pseudos') || verifier('membres_voir_avertos') || verifier('voir_sanctions') 
         						|| verifier('voir_historique_groupes') || verifier('ips_analyser');
-        $vars['canSeeAdmin'] = verifier('groupes_changer_membre') || verifier('membres_editer_titre') || verifier('options_editer_profils');
+        $vars['canAdmin'] = verifier('groupes_changer_membre') || verifier('membres_editer_titre') || verifier('options_editer_profils');
+        $vars['own'] = $_SESSION['id'] == $user->getId();
 
 		//Paramétrage de la vue
 		fil_ariane(htmlspecialchars($user->getUsername()));

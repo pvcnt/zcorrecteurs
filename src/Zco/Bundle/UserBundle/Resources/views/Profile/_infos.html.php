@@ -9,7 +9,7 @@
         <div id="profile-infos-pseudos" class="accordion-body collapse">
             <div class="accordion-inner">
 				<?php $ch_etats = array(CH_PSEUDO_ACCEPTE => '<span class="vertf">Accepté</span>', CH_PSEUDO_ATTENTE => 'En attente', CH_PSEUDO_AUTO => 'Automatique', CH_PSEUDO_REFUSE => '<span class="rouge">Refusé</span>'); ?>
-				<table class="table table-bordered">
+				<table class="table">
 					<thead>
 						<tr>
 							<th style="width: 9%;">Ancien pseudo</th>
@@ -69,7 +69,7 @@
         </div>
         <div id="profile-infos-warnings" class="accordion-body collapse">
             <div class="accordion-inner">
-            	<table class="table table-bordered">
+            	<table class="table">
 					<thead>
 						<tr>
 							<th style="width: 10%;">Admin</th>
