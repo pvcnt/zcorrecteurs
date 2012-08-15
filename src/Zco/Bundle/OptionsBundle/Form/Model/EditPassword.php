@@ -22,7 +22,6 @@
 namespace Zco\Bundle\OptionsBundle\Form\Model;
 
 use Zco\Bundle\UserBundle\Validator\Constraints\Password;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 /**
@@ -43,6 +42,5 @@ class EditPassword extends CheckPassword
     public static function loadValidatorMetadata(ClassMetadata $metadata)
     {
         $metadata->addPropertyConstraint('new', new Password());
-        $metadata->addPropertyConstraint('new', new NotBlank());
     }
 }
