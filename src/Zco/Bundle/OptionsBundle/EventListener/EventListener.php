@@ -23,9 +23,10 @@ namespace Zco\Bundle\OptionsBundle\EventListener;
 
 use Zco\Bundle\AdminBundle\AdminEvents;
 use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
+use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class EventListener implements EventSubscriberInterface
+class EventListener extends ContainerAware implements EventSubscriberInterface
 {
 	static public function getSubscribedEvents()
 	{
@@ -44,7 +45,7 @@ class EventListener implements EventSubscriberInterface
 	    }
 	    
 		$event->getRoot()->getChild('Mon compte')->addChild('Mes options', array(
-			'uri'    => '/options/',
+			'uri'    => $this->container->get('router')->generate('zco_options_index'),
 			'weight' => 10,
 			'linkAttributes' => array(
 				'rel'   => 'Changer mon pseudo, mot de passe, avatar, profil, etc., ainsi que les options de navigation et tout ce qui concerne votre compte.', 
@@ -60,8 +61,8 @@ class EventListener implements EventSubscriberInterface
 		    return;
 	    }
 	    
-		$event->getRoot()->getChild('Mon compte')->addChild('Mes options', array(
-			'uri'    => '/options/',
+		$event->getRoot()->getChild('Mon compte')->addChild('Mes paramètres', array(
+			'uri'    => $this->container->get('router')->generate('zco_options_index'),
 			'weight' => 20,
 		));
 	}
@@ -74,7 +75,7 @@ class EventListener implements EventSubscriberInterface
 	        ->getChild('Options');
 	    
 		$tab->addChild('Modifier les options de navigation par défaut', array(
-			'uri' => '/options/navigation-0.html',
+			'uri' => $this->container->get('router')->generate('zco_options_preferences', array('id' => '0')),
 		))->secure('options_editer_defaut');
 	}
 }

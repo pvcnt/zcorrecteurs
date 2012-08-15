@@ -51,7 +51,7 @@
 					echo $view['messages']->parse($valeur['mp_message_texte']);
 					?>
 					<?php
-					if(!empty($valeur['utilisateur_signature']) && preference('afficher_signatures'))
+					if(!empty($valeur['utilisateur_signature']))
 					{
 					?>
 					<div class="signature"><hr />

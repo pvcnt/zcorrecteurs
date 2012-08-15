@@ -19,7 +19,7 @@
 	réservé à cet usage.
 </div>
 
-<?php if (verifier('quiz_ses_stats')){ ?>
+<?php if (verifier('connecte')){ ?>
 <p class="gras centre"><a href="mes-statistiques.html">Accéder à mes statistiques personnelles</a></p>
 <?php } ?>
 

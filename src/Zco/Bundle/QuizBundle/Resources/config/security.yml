@@ -1,7 +1,7 @@
 all:
     credentials:  [quiz_voir]
 mes_statistiques:
-    credentials:  [quiz_ses_stats]
+    login_required: true
 statistiques:
     credentials:  [quiz_stats_generales]
 statistiques_popularite:

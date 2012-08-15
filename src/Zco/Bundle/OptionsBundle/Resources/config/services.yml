@@ -1,5 +1,7 @@
 services:
     zco_options.event_listener:
         class: Zco\Bundle\OptionsBundle\EventListener\EventListener
+        calls:
+            - [setContainer, [@service_container]]
         tags:
             - { name: kernel.event_subscriber }

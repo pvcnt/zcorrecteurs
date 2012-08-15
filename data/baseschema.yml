@@ -374,22 +374,6 @@ Registry:
     registry_value:
       type: string()
 
-SauvegardesZform:
-  tableName: zcov2_sauvegardes_zform
-  columns:
-    sauvegarde_id:
-      type: integer(3)
-      primary: true
-      autoincrement: true
-    sauvegarde_id_utilisateur:
-      type: integer(3)
-    sauvegarde_date:
-      type: timestamp(25)
-    sauvegarde_texte:
-      type: string()
-    sauvegarde_url:
-      type: string(255)
-
 ZingleLogsFlux:
   tableName: zcov2_zingle_logs_flux
   columns:

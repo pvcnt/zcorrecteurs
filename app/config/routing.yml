@@ -18,6 +18,10 @@ zco_user:
 zco_info:
     resource: "@ZcoInformationsBundle/Resources/config/routing/index.yml"
 
+zco_options:
+    resource: "@ZcoOptionsBundle/Resources/config/routing.yml"
+    prefix:   /options
+
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
 

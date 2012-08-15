@@ -34,7 +34,7 @@
 		<tr>
 			<td class="avatar">
 				<?php if ($user->hasAvatar()): ?>
-				<img src="/uploads/avatars/<?php echo htmlspecialchars($user->getAvatar()) ?>" 
+				<img src="<?php echo htmlspecialchars($user->getAvatar()) ?>" 
 					alt="Avatar de <?php echo htmlspecialchars($user->getUsername()) ?>" />
 				<?php endif ?>
 			</td>

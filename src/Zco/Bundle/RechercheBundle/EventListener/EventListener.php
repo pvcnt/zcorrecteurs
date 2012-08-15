@@ -42,7 +42,7 @@ class EventListener implements EventSubscriberInterface
 		$section = $module === 'blog' ? 'blog' : ($module === 'twitter' ? 'twitter' : 'forum');
 
 		$html = <<<HTML
-	<form class="navbar-search pull-right" id="search" method="get" action="/recherche/">
+	<form class="navbar-search pull-right form-search" id="search" method="get" action="/recherche/">
 		<input type="hidden" name="section" value="$section" />
 		<input type="text" name="recherche" id="recherche" class="search search-query pull-left" placeholder="Rechercher…" />
 		<input type="submit" class="submit" value="Rechercher" style="display:none" />

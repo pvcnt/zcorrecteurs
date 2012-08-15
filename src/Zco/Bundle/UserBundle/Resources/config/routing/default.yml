@@ -8,7 +8,6 @@ zco_user_indexWithPage:
     requirements:
         page: \d+
 
-
 zco_user_online:
     pattern:   /connectes
     defaults:  { _controller: ZcoUserBundle:Default:online, showAnonymousUsers: false }
@@ -39,3 +38,8 @@ zco_user_newPseudo:
 zco_user_localisation:
     pattern:   /carte
     defaults:  { _controller: ZcoUserBundle:Default:localisation }
+
+zco_user_zformBackups:
+    pattern:   /sauvegardes-zform/{textarea}
+    defaults:  { _controller: ZcoUserBundle:Default:zformBackups, textarea: ~ }
+    options:   { expose: true }

@@ -98,7 +98,11 @@ class UiHelper extends Helper
 	{
 		$fil  = ($template === 'legacy') ? '<p class="arianne">' : '<ul class="breadcrumb">';
 		$fil .= ($template === 'legacy') ? 'Vous êtes ici : ' : '';
-		$fil .= implode(($template === 'legacy') ? ' &gt; ' : '<span class="divider">»</span>', \Page::$fil_ariane);
+		if ($template !== 'legacy') {
+			$fil .= '<li>'.implode('<span class="divider">»</span></li><li>', \Page::$fil_ariane).'</li>';
+		} else {
+			$fil .= implode(' &gt; ', \Page::$fil_ariane);
+		}
 		$fil .= ($template === 'legacy') ? '</p>' : '</ul>';
 
 		return $this->filterBlock($fil, 'breadcrumb', $template);

@@ -246,12 +246,12 @@ class UtilisateurTable extends Doctrine_Table
 	}
 
 	/**
-	 * Applique un mot de passe généré à un membre.
+	 * Confirme un nouveau mot de passe à partir d'un hash.
 	 * 
-	 * @param string $hash La clé de validation.
+	 * @param  string $hash La clé de validation.
 	 * @return boolean La démarche a-t-elle réussi ?
 	 */
-	public function applyNewPassword($hash)
+	public function confirmNewPassword($hash)
 	{	return $this->createQuery()
 			->update()
 			->set('utilisateur_mot_de_passe', 'utilisateur_nouveau_mot_de_passe')
@@ -397,6 +397,13 @@ class UtilisateurTable extends Doctrine_Table
 		$userPrefs->save();
 	}
 	
+	/**
+	 * Confirme un compte utilisateur à partir d'un id et d'un hash.
+	 *
+	 * @param  integer $userId L'id de l'utilisateur
+	 * @param  string $hash Le hash de validation
+	 * @return boolean La confirmation a-t-elle été faite avec succès ?
+	 */
 	public function confirmAccount($userId, $hash)
 	{
 		$user = $this->find($userId);
@@ -409,6 +416,31 @@ class UtilisateurTable extends Doctrine_Table
 		$user->setAccountValid(true);
 		$user->save();
 		
+		return true;
+	}
+
+	/**
+	 * Confirme une adresse courriel à partir d'un hash.
+	 *
+	 * @param  string $hash Le hash de validation
+	 * @return boolean La confirmation a-t-elle été faite avec succès ?
+	 */
+	public function confirmEmail($hash)
+	{
+		$user = $this->createQuery()
+			->select('*')
+			->where('validation_hash = ?', $hash)
+			->fetchOne();
+
+		if (!$user)
+		{
+			return false;
+		}
+
+		$user->setEmail($user->getNewEmail());
+		$user->setValidationHash('');
+		$user->save();
+
 		return true;
 	}
 	
@@ -476,7 +508,7 @@ class UtilisateurTable extends Doctrine_Table
         	    'longitude' => $user->getLongitude(), 
         	    'img' => $fichier,
         	    'pseudo' => $user->getUsername(),
-        	    'avatar' => '/uploads/avatars/'.$user->getAvatar(),
+        	    'avatar' => $user->getAvatar(),
 				'id' => $user->getId(),
         	    'url' => '<a href="'.$router->generate('zco_user_profile', array('id' => $user->getId(), 'slug' => rewrite($user->getUsername()))).'">Voir son profil</a>',
         	);

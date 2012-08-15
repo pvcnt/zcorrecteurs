@@ -325,37 +325,28 @@ function preference($nom)
 	$id = verifier('connecte') ? $_SESSION['id'] : 0;
 	
 	//Si la préférence est déjà en session
-	if(isset($_SESSION['prefs']['id_utilisateur']) && $_SESSION['prefs']['id_utilisateur'] == $id && isset($_SESSION['prefs'][$nom]))
+	if (isset($_SESSION['prefs'][$nom]))
 	{
 		return $_SESSION['prefs'][$nom];
 	}
-	else
+	
+	//Sinon on les récupère toutes et on les met en session.
+	if ($preferences = \Doctrine_Core::getTable('UserPreference')->getById($id))
 	{
-		//Récupération
-		include_once(BASEPATH.'/src/Zco/Bundle/OptionsBundle/modeles/options.php');
-		$prefs = RecupererOptionsNavigation($id);
-		
-		foreach($prefs as $cle => $valeur)
-		{
-			$_SESSION['prefs'][str_replace('preference_', '', $cle)] = $valeur;
-		}
-
-		//Si elle n'existe toujours pas -> erreur
-		if(isset($_SESSION['prefs'][$nom]))
+		$preferences->apply();
+		if (isset($_SESSION['prefs'][$nom]))
 		{
 			return $_SESSION['prefs'][$nom];
 		}
-		else
+		
+		$container = \Container::getInstance();
+		if ($container->has('logger'))
 		{
-			$container = \Container::getInstance();
-			if ($container->has('logger'))
-			{
-				$container->get('logger')->warn(sprintf(
-					'La préférence "%s" n\'existe pas.', $nom
-				));
-			}
-			return false;
+			$container->get('logger')->warn(sprintf(
+				'La préférence "%s" n\'existe pas.', $nom
+			));
 		}
+		return false;
 	}
 }
 
@@ -550,11 +541,12 @@ define('MINUSCULE', 3);
  */
 function dateformat($dateHeure, $casse = MAJUSCULE, $format = DATETIME)
 {
-	// Omission du second paramètre
+	//Omission ou inversion du second paramètre.
 	if ($casse === DATE || $casse === DATETIME)
 	{
+		$_format = $format;
 		$format = $casse;
-		$casse = MAJUSCULE;
+		$casse = in_array($_format, array(MINUSCULE, MAJUSCULE)) ? $_format : MAJUSCULE;
 	}
 
 	if (!is_numeric($dateHeure))
@@ -581,7 +573,7 @@ function dateformat($dateHeure, $casse = MAJUSCULE, $format = DATETIME)
 	static $decalage = false;
 	if ($decalage === false)
 	{
-		$decalage = preference('decalage');
+		$decalage = preference('time_difference');
 		// Les timestamps sont enregistrés en GMT+1 dans la base de données
 		$decalage -= 3600;
 	}
@@ -589,9 +581,9 @@ function dateformat($dateHeure, $casse = MAJUSCULE, $format = DATETIME)
 	// Dates relatives
 	$difference = time() - $dateHeure;
 	$aujourdhui = mktime(0, 0, 0) - $decalage;
-	$jours = ($dateHeure - $aujourdhui) / (3600 * 24);
+	$jours = (int) date('d', $dateHeure) - (int) date('d', $aujourdhui);
 
-	if ($jours >= 0 && $jours < 1) // Même jour
+	if (0 === $jours) // Même jour
 	{
 		// ±4h autour de maintenant
 		if ($format === DATETIME && abs($difference) < 3600 * 4)

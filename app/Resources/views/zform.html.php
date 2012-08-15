@@ -136,7 +136,7 @@ if($id != 'texte'){
 	<br />
 	
 	<span class="flot_droite">
-	    <a href="/options/sauvegardes-zcode.html?id=<?php echo $id ?>&xhr=1" id="zform<?php echo $id ?>-autobackups-link">
+	    <a href="<?php echo $view['router']->generate('zco_user_zformBackups', array('textarea' => $id, 'xhr' => 1)) ?>" id="zform<?php echo $id ?>-autobackups-link">
 	        <img src="/img/popup.png" alt="Ouvre une nouvelle fenêtre" />
 	        Sauvegardes automatiques de zCode
 	    </a>

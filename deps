@@ -102,3 +102,10 @@
 
 [resque]
     git=http://github.com/chrisboulton/php-resque.git
+
+[BazingaGeocoderBundle]
+    git=https://github.com/willdurand/BazingaGeocoderBundle.git
+    target=/bundles/Bazinga/Bundle/GeocoderBundle
+
+[geocoder]
+    git=https://github.com/willdurand/Geocoder.git

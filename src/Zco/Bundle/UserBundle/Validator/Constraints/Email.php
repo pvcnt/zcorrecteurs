@@ -24,12 +24,17 @@ namespace Zco\Bundle\UserBundle\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * @Annotation
+ * Contrainte vérifiant la validité d'une adresse courriel.
+ *
+ * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
 class Email extends Constraint
 {
 	public $message = 'Cette adresse courriel n\'est pas valide.';
 	
+	/**
+	 * {@inheritdoc}
+	 */
 	public function validatedBy()
 	{
 		return 'zco_user_email';

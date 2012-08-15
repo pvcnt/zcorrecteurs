@@ -51,10 +51,7 @@ class CronCommand extends ContainerAwareCommand
 		$cache = $this->getContainer()->get('zco_core.cache');
 
 		//---Suppression des sauvegardes vieilles de plus d'un jour
-		$stmt = $dbh->prepare("DELETE FROM zcov2_sauvegardes_zform
-		WHERE sauvegarde_date <= NOW() - INTERVAL 1 DAY");
-		$stmt->execute();
-		$stmt->closeCursor();
+		\Doctrine_Core::getTable('ZformBackup')->purge();
 
 		//---Suppression des comptes non-validés de plus d'un jour
 		$stmt = $dbh->prepare("DELETE FROM zcov2_utilisateurs

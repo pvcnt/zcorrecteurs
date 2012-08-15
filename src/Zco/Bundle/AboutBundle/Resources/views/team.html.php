@@ -21,7 +21,7 @@
 			<div class="thumbnail center" style="height: 165px;">
 				<a href="<?php echo $view['router']->generate('zco_user_profile', array('id' => $user->getId(), 'slug' => rewrite($user->getUsername()))) ?>" class="avatar-link" title="Groupe : <?php echo htmlspecialchars($user->getGroup()) ?>">
 					<?php if ($user->hasAvatar()): ?>
-						<img src="/uploads/avatars/<?php echo htmlspecialchars($user->getAvatar()) ?>" alt="Avatar de <?php echo htmlspecialchars($user->getUsername()) ?>" style="vertical-align: middle;" />
+						<img src="<?php echo htmlspecialchars($user->getAvatar()) ?>" alt="Avatar de <?php echo htmlspecialchars($user->getUsername()) ?>" style="vertical-align: middle;" />
 					<?php else: ?>
 						<img src="/bundles/zcocore/img/anonyme.png" alt="Aucun avatar" style="vertical-align: middle;" />
 					<?php endif ?>

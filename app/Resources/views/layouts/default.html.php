@@ -87,7 +87,7 @@
 			}
 
 			/* Affichage de l'admin rapide éventuellement */
-			if(empty($xhr) && verifier('admin') && preference('afficher_admin_rapide') == 1){ ?>
+			if(empty($xhr) && verifier('admin') && preference('display_admin_bar') == 1){ ?>
 			<div id="admin_rapide">
 				<?php if(verifier('groupes_gerer')){ ?>
 				<div class="admin_lien">

@@ -16,22 +16,30 @@
 			<ul>
 				<li>
 					<img src="/bundles/zcooptions/img/modifier_profil.png" alt="" />
-					<a href="modifier-profil.html">Modifier mon profil</a>
+					<a href="<?php echo $view['router']->generate('zco_options_profile') ?>">
+						Modifier mon profil
+					</a>
 				</li>
 
 				<li>
 					<img src="/bundles/zcooptions/img/modifier_mail.png" alt="" />
-					<a href="modifier-mail.html">Changer mon adresse mail</a>
+					<a href="<?php echo $view['router']->generate('zco_options_email') ?>">
+						Changer mon adresse mail
+					</a>
 				</li>
 
 				<li>
 					<img src="/bundles/zcooptions/img/modifier_pass.png" alt="" />
-					<a href="modifier-mot-de-passe.html">Changer mon mot de passe</a>
+					<a href="<?php echo $view['router']->generate('zco_options_password') ?>">
+						Changer mon mot de passe
+					</a>
 				</li>
 
 				<li>
 					<img src="/bundles/zcooptions/img/modifier_avatar.png" alt="" />
-					<a href="modifier-avatar.html">Changer mon avatar</a>
+					<a href="<?php echo $view['router']->generate('zco_options_avatar') ?>">
+						Changer mon avatar
+					</a>
 				</li>
 
 				<li>
@@ -43,12 +51,16 @@
 
 				<li>
 					<img src="/bundles/zcooptions/img/gerer_absence.png" alt="" />
-					<a href="gerer-absence.html">Indiquer une période d'absence</a>
+					<a href="<?php echo $view['router']->generate('zco_options_absence') ?>">
+						Indiquer une période d'absence
+					</a>
 				</li>
 
 				<li>
 					<img src="/bundles/zcooptions/img/voir_profil.png" alt="" />
-					<a href="/membres/profil-<?php echo $_SESSION['id']; ?>-<?php echo rewrite($_SESSION['pseudo']); ?>.html">Voir mon profil</a>
+					<a href="<?php echo $view['router']->generate('zco_user_profile', array('id' => $_SESSION['id'], 'slug' => rewrite($_SESSION['pseudo']))) ?>">
+						Voir mon profil
+					</a>
 				</li>
 			</ul>
 		</td>
@@ -56,16 +68,13 @@
 		<td>
 			<h2>Mon activité sur le site</h2>
 			<ul>
-				<?php if(verifier('quiz_ses_stats')){ ?>
 				<li>
 					<img src="/bundles/zcooptions/img/stats_quiz.png" alt="" />
 					<a href="/quiz/mes-statistiques.html">Voir mes statistiques d'utilisation des quiz</a>
 				</li>
-				<?php }?>
-
 				<li>
 					<img src="/bundles/zcooptions/img/voir_uploads.png" alt="" />
-					<a href="/fichiers/">
+					<a href="<?php echo $view['router']->generate('zco_file_index') ?>">
 						Accéder au gestionnaire de fichiers
 					</a>
 				</li>
@@ -93,18 +102,10 @@
 			<ul>
 				<li>
 					<img src="/bundles/zcooptions/img/navigation.png" alt="" />
-					<a href="navigation.html">Modifier mes options de navigation</a>
+					<a href="<?php echo $view['router']->generate('zco_options_preferences') ?>">
+						Modifier mes options de navigation
+					</a>
 				</li>
-				<li>
-					<img src="/pix.gif" class="fff time" alt="" />
-					<a href="decalage.html">Modifier mon décalage horaire</a>
-				</li>
-				<?php if (verifier('admin')): ?>
-				<li>
-					<img src="/bundles/zcooptions/img/tests.png" alt="" />
-					<a href="tests.html">Participer aux tests en avant-première</a>
-				</li>
-				<?php endif; ?>
 			</ul>
 		</td>
 	</tr>

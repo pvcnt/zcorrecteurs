@@ -11,25 +11,28 @@ jQuery(function() {
 	
 	var body = jQuery('body');
 	var nav = jQuery('div.navbar');
-	var navTop = jQuery('.navbar-inner').offset().top;
-	var isFixed = 0;
-
-	var processScroll = function()
+	if (nav.length)
 	{
-		var scrollTop = win.scrollTop();
-		if (scrollTop >= navTop && !isFixed) {
-			isFixed = 1;
-			nav.addClass('navbar-fixed-top');
-			body.css('margin-top', 40);
-		} else if (scrollTop <= navTop && isFixed) {
-			isFixed = 0;
-			nav.removeClass('navbar-fixed-top');
-			body.css('margin-top', 0);
-		}
-	};
+		var navTop = jQuery('.navbar-inner').offset().top;
+		var isFixed = 0;
 
-	processScroll();
-	win.on('scroll', processScroll);
+		var processScroll = function()
+		{
+			var scrollTop = win.scrollTop();
+			if (scrollTop >= navTop && !isFixed) {
+				isFixed = 1;
+				nav.addClass('navbar-fixed-top');
+				body.css('margin-top', 40);
+			} else if (scrollTop <= navTop && isFixed) {
+				isFixed = 0;
+				nav.removeClass('navbar-fixed-top');
+				body.css('margin-top', 0);
+			}
+		};
+
+		processScroll();
+		win.on('scroll', processScroll);
+	}
 
 	//Active le code Konami. Yeah !
     var konami = [];
@@ -44,7 +47,7 @@ jQuery(function() {
 					alert('loaded');
 				}
 			};
-			script.src = "/bundles/zcocore/js/vendor/asteroids.js?v=4";
+			script.src = "/bundles/zcocore/js/vendor/asteroids.js";
 			document.getElementsByTagName('head')[0].appendChild(script);
 
             konami = [];

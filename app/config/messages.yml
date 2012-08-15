@@ -32,29 +32,6 @@ msg:
     183: Vous êtes maintenant inscrit. Votre compte est pour l'instant inactif.<br />N'oubliez pas d'aller valider votre inscription en cliquant sur le lien dans l'email qui vous a été envoyé !
     184: 'Pseudo déjà utilisé, veuillez en choisir un différent !'
 
-    # Options
-    88: Le format de la date est invalide.
-    124: Les options de navigation ont été modifiées avec succès.
-    125: 'Erreur : avatar refusé à cause de son format.'
-    126: 'Erreur : avatar refusé à cause de ses dimensions.<br />Dimensions maximales autorisées : 100x100 pixels.'
-    127: L'URL indiquée ne pointe pas vers un fichier.
-    128: 'Mot de passe trop court : la taille minimale est de 6 caractères.'
-    129: 'Valeur incorrecte : les deux mots de passe de correspondent pas.'
-    130: Votre mot de passe est incorrect.
-    131: Le champ <strong>coordonnées</strong> est vide. Cliquez sur le bouton <strong>Trouver les coordonnées</strong>.
-    132: Le profil a bien été modifié.
-    233: L'adresse mail a bien été modifiée.
-    234: La nouvelle adresse mail est pour l'instant inactive.<br />N'oubliez pas d'aller valider votre inscription en cliquant sur le lien dans l'email qui vous a été envoyé à cette dernière !
-    241: La nouvelle adresse mail a bien été validée. Vous recevrez désormais tous les mails du site à cette adresse.
-    242: 'L''adresse mail n''est pas valide, ou bien déjà utilisée.'
-    243: Le mot de passe a bien été changé.
-    244: L'avatar a bien été changé.
-    330: L'absence a bien été levée.
-    331: Vous devez indiquer une absence valide.
-    332: Votre période d'absence a bien été enregistrée.
-    482: La date que vous avez saisi n'est pas valide.
-    483: L'absence ne peut se terminer avant d'avoir commencé.
-
     # Membres
     122: Vous n'avez pas spécifié de membre dans l'URL.
     123: Ce membre n'existe pas.
