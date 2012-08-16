@@ -157,40 +157,6 @@ class DefaultController extends Controller
 	}
 
 	/**
-	 * Cherche toutes les adresses IP possédées par un membre.
-	 */
-	public function membreAction()
-	{
-		\zCorrecteurs::VerifierFormatageUrl(null, true);
-		\Page::$titre = 'Liste des adresses IP d\'un membre';
-
-		if ((!empty($_GET['id']) && is_numeric($_GET['id'])) || !empty($_GET['pseudo']))
-		{
-			$search = !empty($_GET['pseudo']) ? $_GET['pseudo'] : $_GET['id'];
-			$InfosMembre = InfosUtilisateur($search);
-
-			if (empty($InfosMembre))
-			{
-				return redirect(9, '', MSG_ERROR);
-			}
-
-			fil_ariane('Liste des adresses IP d\'un membre');
-		    
-			return render_to_response(array(
-				'ListerIPs' => ListerIPsMembre($InfosMembre['utilisateur_id']),
-				'InfosMembre' => $InfosMembre,
-			));
-		}
-		else
-		{
-			\zCorrecteurs::VerifierFormatageUrl();
-			fil_ariane('Liste des adresses IP d\'un membre');
-			
-			return render_to_response('ZcoIpsBundle::membreNouveau.html.php');
-		}
-	}
-
-	/**
 	 * Affiche le formulaire permettant de bannir une adresse IP.
 	 */
 	public function bannirAction()
