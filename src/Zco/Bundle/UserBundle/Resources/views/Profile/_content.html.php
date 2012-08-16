@@ -16,7 +16,7 @@
 	<?php echo $view['messages']->parse($user->getBiography(), array('core.anchor_prefix' => 'bio')) ?>
 <?php else: ?>
 	<div class="alert alert-info">
-		<?php echo htmlspecialchars($user->getUsername()) ?> n’a pas encore écrit sa biographie.
+		<?php echo htmlspecialchars($user->getUsername()) ?> n’a pas encore écrit sa présentation personnelle.
 	</div>
 <?php endif ?>
 

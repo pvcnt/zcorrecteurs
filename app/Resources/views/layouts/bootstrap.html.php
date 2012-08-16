@@ -54,7 +54,7 @@
 		</div> <!-- /navbar -->
 		<?php endif ?>
 			
-		<div class="container-fluid">
+		<div class="container-fluid<?php if (empty($xhr)): ?> main-container<?php endif ?>">
 			<div class="row-fluid">
 				<?php if (empty($xhr)): ?>
 			    <div class="span2 sidebar">

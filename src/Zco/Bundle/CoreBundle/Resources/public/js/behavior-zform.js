@@ -652,12 +652,10 @@ Behavior.create('zform', function(config, statics)
 	
 	new Editor(config.id, config.options);
 	
-	var additionalBehaviors = {};
-	additionalBehaviors['resizable-textarea'] = [{'id': config.id}];
-	if (statics.count == 1)
-	{
-		additionalBehaviors['squeezebox'] = [{'selector': '.zform-squeezebox-link', 'options': {'handler': 'iframe'}}];
-		additionalBehaviors['twipsy'] = [{'selector': '.zform-tool-button > a'}];
-	}
+	var additionalBehaviors = {
+		'resizable-textarea': [{'id': config.id}],
+		'squeezebox': [{'selector': '#' + config.id + '_zform .zform-squeezebox-link', 'options': {'handler': 'iframe'}}],
+		'twipsy': [{'selector': '#' + config.id + '_zform .zform-tool-button > a'}]
+	};
 	Behavior.init(additionalBehaviors);
 });
