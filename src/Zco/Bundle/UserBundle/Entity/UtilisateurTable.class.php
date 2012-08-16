@@ -246,12 +246,12 @@ class UtilisateurTable extends Doctrine_Table
 	}
 
 	/**
-	 * Applique un mot de passe généré à un membre.
+	 * Confirme un nouveau mot de passe à partir d'un hash.
 	 * 
-	 * @param string $hash La clé de validation.
+	 * @param  string $hash La clé de validation.
 	 * @return boolean La démarche a-t-elle réussi ?
 	 */
-	public function applyNewPassword($hash)
+	public function confirmNewPassword($hash)
 	{	return $this->createQuery()
 			->update()
 			->set('utilisateur_mot_de_passe', 'utilisateur_nouveau_mot_de_passe')
@@ -397,6 +397,13 @@ class UtilisateurTable extends Doctrine_Table
 		$userPrefs->save();
 	}
 	
+	/**
+	 * Confirme un compte utilisateur à partir d'un id et d'un hash.
+	 *
+	 * @param  integer $userId L'id de l'utilisateur
+	 * @param  string $hash Le hash de validation
+	 * @return boolean La confirmation a-t-elle été faite avec succès ?
+	 */
 	public function confirmAccount($userId, $hash)
 	{
 		$user = $this->find($userId);
@@ -410,6 +417,73 @@ class UtilisateurTable extends Doctrine_Table
 		$user->save();
 		
 		return true;
+	}
+
+	/**
+	 * Confirme une adresse courriel à partir d'un hash.
+	 *
+	 * @param  string $hash Le hash de validation
+	 * @return boolean La confirmation a-t-elle été faite avec succès ?
+	 */
+	public function confirmEmail($hash)
+	{
+		$user = $this->createQuery()
+			->select('*')
+			->where('validation_hash = ?', $hash)
+			->fetchOne();
+
+		if (!$user)
+		{
+			return false;
+		}
+
+		$user->setEmail($user->getNewEmail());
+		$user->setValidationHash('');
+		$user->save();
+
+		return true;
+	}
+
+	/**
+	 * Supprime tous les comptes n'étant pas validés depuis plus d'un jour.
+	 *
+	 * @return integer Nombre de comptes supprimés
+	 */
+	public function purge()
+	{
+		return $this->createQuery()
+			->delete()
+			->where('valide = ?', false)
+			->andWhere('date_inscription <= NOW() - INTERVAL 1 DAY')
+			->execute();
+	}
+
+	/**
+	 * Met à jour les absences qui doivent débuter et celles qui doivent 
+	 * se terminer.
+	 */
+	public function purgeAbsences()
+	{
+		//Désactivation des absences dont la date de fin est passée.
+		$this->createQuery()
+			->update()
+			->set('absent', '?', false)
+			->set('absence_reason', '?', '')
+			->set('absence_start_date', new \Doctrine_Expression('NULL'))
+			->set('absence_end_date', new \Doctrine_Expression('NULL'))
+			->where('absent = ?', true)
+			->andWhere('absence_end_date IS NOT NULL')
+			->andWhere('absence_end_date < NOW()')
+			->execute();
+
+		//Activation des absences dont la date de début est passé.
+		$this->createQuery()
+			->update()
+			->set('absent', '?', true)
+			->where('absent = ?', false)
+			->andWhere('absence_start_date IS NOT NULL')
+			->andWhere('absence_start_date < NOW()')
+			->execute();
 	}
 	
 	public function getMarkersForMap($router)
@@ -476,7 +550,7 @@ class UtilisateurTable extends Doctrine_Table
         	    'longitude' => $user->getLongitude(), 
         	    'img' => $fichier,
         	    'pseudo' => $user->getUsername(),
-        	    'avatar' => '/uploads/avatars/'.$user->getAvatar(),
+        	    'avatar' => $user->getAvatar(),
 				'id' => $user->getId(),
         	    'url' => '<a href="'.$router->generate('zco_user_profile', array('id' => $user->getId(), 'slug' => rewrite($user->getUsername()))).'">Voir son profil</a>',
         	);

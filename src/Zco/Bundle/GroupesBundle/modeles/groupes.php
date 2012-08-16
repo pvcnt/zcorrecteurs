@@ -330,7 +330,8 @@ function ListerChangementGroupeMembre($id)
 
 	$stmt = $dbh->prepare("
 	SELECT chg_id, chg_date, utilisateur_id, IFNULL(utilisateur_pseudo, 'Anonyme') as pseudo_responsable,
-	Ga.groupe_nom as ancien_groupe, Gb.groupe_nom as nouveau_groupe, Ga.groupe_class as couleur_ancien_groupe, Gb.groupe_class as couleur_nouveau_groupe
+	Ga.groupe_nom as ancien_groupe, Gb.groupe_nom as nouveau_groupe, Ga.groupe_class as couleur_ancien_groupe, 
+	Gb.groupe_class as couleur_nouveau_groupe, Gb.groupe_secondaire as nouveau_groupe_secondaire
 		FROM zcov2_historique_groupes
 		LEFT JOIN zcov2_groupes Ga ON Ga.groupe_id = chg_ancien_groupe
 		LEFT JOIN zcov2_groupes Gb ON Gb.groupe_id = chg_nouveau_groupe

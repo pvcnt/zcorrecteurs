@@ -26,7 +26,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
 /**
- * Récupération des derniers tickets disponibles sur Drupal.
+ * Récupération des derniers tickets disponibles sur Drupal. Cette tâche cron a 
+ * besoin de rester séparée du cron principal car sa fréquence de lancement est 
+ * plus resserrée.
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */

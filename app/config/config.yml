@@ -45,3 +45,8 @@ knp_gaufrette:
 knp_paginator:
     template:
         pagination: ZcoCoreBundle:Pagination:sliding.html.twig
+
+bazinga_geocoder:
+    providers:
+        google_maps:
+            locale:     fr_FR

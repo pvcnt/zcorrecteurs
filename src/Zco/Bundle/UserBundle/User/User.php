@@ -90,6 +90,11 @@ class User
 		{
 			return $isAcceptable;
 		}
+
+		if (!$user)
+		{
+			$user = $this->getEntity();
+		}
 		
 		return $user->getPassword() && sha1($password) === $user->getPassword();
 	}

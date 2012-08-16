@@ -28,6 +28,7 @@
 	</head>
 
 	<body>
+		<?php if (empty($xhr)): ?>
 	    <div id="header">
 			<div id="header-oreilles">
 				<a href="/" title="zCorrecteurs.fr - Les réponses à toutes vos questions concernant la langue française !">
@@ -39,6 +40,8 @@
 					zCorrecteurs.fr - Les réponses à toutes vos questions concernant la langue française !
 				</a>
 			</div>
+
+			<?php echo $view['ui']->headerRight('bootstrap') ?>
 		</div> <!-- /header -->
 
 		<div class="navbar">
@@ -49,25 +52,31 @@
 		    	</div>
 			</div>
 		</div> <!-- /navbar -->
+		<?php endif ?>
 			
 		<div class="container-fluid">
 			<div class="row-fluid">
+				<?php if (empty($xhr)): ?>
 			    <div class="span2 sidebar">
 			        <?php echo $view['ui']->leftMenu('bootstrap') ?>
 			    </div>
+				<?php endif ?>
 			    
-			    <div class="span10 content">
+			    <div class="<?php echo empty($xhr) ? 'span10' : 'span12' ?> content">
 			        <?php echo $view->render('::layouts/flashes.html.php', compact('maintenance')) ?>
 			
-        			<div id="postloading-area"></div>
-			
-        			<?php echo $view['ui']->breadcrumb('bootstrap') ?>
+					<?php if (empty($xhr)): ?>
+	        			<div id="postloading-area"></div>
+
+	        			<?php echo $view['ui']->breadcrumb('bootstrap') ?>
+        			<?php endif ?>
 			
         			<?php $view['slots']->output('_content') ?>
 			    </div>
 			</div> <!-- /row-fluid -->
 		</div> <!-- /container-fluid -->
 		
+		<?php if (empty($xhr)): ?>
 		<div id="footer">
 			<div class="left">
 			    <span>Site fièrement édité par</span>
@@ -87,6 +96,7 @@
 				<?php echo $view['ui']->footer(3, array('childrenAttributes' => array('class' => 'links bloc_partenaires'), 'preHtml' => 'Partenaires : ')); ?>
 			</div>
 		</div>
+		<?php endif ?>
 	
 		<?php foreach ($view['vitesse']->javascripts() as $assetUrl): ?>
 		    <script type="text/javascript" src="<?php echo $assetUrl ?>"></script>

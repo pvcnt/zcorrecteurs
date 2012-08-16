@@ -1,0 +1,10 @@
+ZformBackup:
+    tableName: zcov2_sauvegardes_zform
+    columns:
+        sauvegarde_id:  { type: integer, name: sauvegarde_id as id, primary: true, autoincrement: true }
+        sauvegarde_id_utilisateur: { type: integer(3), name: sauvegarde_id_utilisateur as user_id }
+        sauvegarde_date: { type: timestamp, name: sauvegarde_date as date }
+        sauvegarde_texte: { type: string(), name: sauvegarde_texte as content }
+        sauvegarde_url:   { type: string(255), name: sauvegarde_url as url }
+    relations:
+        User:           { class: Utilisateur, local: user_id, foreign: id }

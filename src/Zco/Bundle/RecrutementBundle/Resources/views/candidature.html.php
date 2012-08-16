@@ -326,7 +326,7 @@ in_array($InfosCandidature['candidature_etat'], array(CANDIDATURE_ACCEPTE, CANDI
 				<td class="message">
 					<div class="msgbox">
 						<?php echo preg_replace('`&amp;#(\d+);`', '&#$1;', $view['messages']->parse($valeur['commentaire_texte']));
-						if(!empty($valeur['utilisateur_signature']) && preference('afficher_signatures')): ?>
+						if(!empty($valeur['utilisateur_signature'])): ?>
 							<div class="signature"><hr />
 							<?php echo $view['messages']->parse($valeur['utilisateur_signature']); ?>
 							</div>

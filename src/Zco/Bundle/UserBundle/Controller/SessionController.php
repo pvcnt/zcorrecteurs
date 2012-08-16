@@ -117,7 +117,7 @@ class SessionController extends Controller
 		// Validation du nouveau pass
 		if ($request->query->has('hash'))
 		{
-			if (\Doctrine_Core::getTable('Utilisateur')->applyNewPassword($request->query->get('hash')))
+			if (\Doctrine_Core::getTable('Utilisateur')->confirmNewPassword($request->query->get('hash')))
 			{
 				return redirect('Le mot de passe que vous avez reçu par email a été '.
 					'activé, vous pouvez désormais vous identifier sur le site.', 

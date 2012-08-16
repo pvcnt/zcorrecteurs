@@ -89,10 +89,6 @@
     git=http://github.com/FriendsOfSymfony/FOSTwitterBundle.git
     target=/bundles/FOS/TwitterBundle
 
-[MopaBootstrapBundle]
-    git=http://github.com/phiamo/MopaBootstrapBundle.git
-    target=/bundles/Mopa/Bundle/BootstrapBundle
-
 [knp-components]
     git=http://github.com/KnpLabs/knp-components.git
 
@@ -102,3 +98,10 @@
 
 [resque]
     git=http://github.com/chrisboulton/php-resque.git
+
+[BazingaGeocoderBundle]
+    git=https://github.com/willdurand/BazingaGeocoderBundle.git
+    target=/bundles/Bazinga/Bundle/GeocoderBundle
+
+[geocoder]
+    git=https://github.com/willdurand/Geocoder.git

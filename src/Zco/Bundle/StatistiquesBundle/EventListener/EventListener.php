@@ -21,11 +21,19 @@
 
 namespace Zco\Bundle\StatistiquesBundle\EventListener;
 
+use Zco\Bundle\CoreBundle\CoreEvents;
+use Zco\Bundle\CoreBundle\Event\CronEvent;
 use Zco\Bundle\AdminBundle\AdminEvents;
 use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\DependencyInjection\ContainerAware;
 
-class EventListener implements EventSubscriberInterface
+/**
+ * Observateur principal pour le module de statistiques.
+ *
+ * @author vincent1870 <vincent@zcorrecteurs.fr>
+ */
+class EventListener extends ContainerAware implements EventSubscriberInterface
 {
 	/**
 	 * {@inheritdoc}
@@ -33,10 +41,16 @@ class EventListener implements EventSubscriberInterface
 	static public function getSubscribedEvents()
 	{
 		return array(
-			AdminEvents::MENU => 'onFilterAdmin',
+			AdminEvents::MENU      => 'onFilterAdmin',
+			CoreEvents::DAILY_CRON => 'onDailyCron',
 		);
 	}
 	
+	/**
+	 * Ajoute des liens sur le panneau d'administration.
+	 *
+	 * @param FilterMenuEvent $event
+	 */
 	public function onFilterAdmin(FilterMenuEvent $event)
 	{
 	    $tab = $event
@@ -98,5 +112,22 @@ class EventListener implements EventSubscriberInterface
 			'credentials' => 'stats_developpement', 
 			'uri' => '/statistiques/developpement.html',
 		));
+	}
+
+	/**
+	 * Actions à exécuter chaque jour.
+	 *
+	 * @param CronEvent $event
+	 */
+	public function onDailyCron(CronEvent $event)
+	{
+		//Mise en cache des statistiques de zCorrection.
+		$this->container->get('zco_core.cache')->delete('statistiques_zcorrection');
+		include(__DIR__.'/../modeles/statistiques.php');
+		RecupStatistiques();
+		
+		//Statistiques Alexa.
+		include(__DIR__.'/../modeles/alexa.php');
+		SaveAlexaRanks();
 	}
 }

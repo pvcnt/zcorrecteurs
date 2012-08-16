@@ -1,6 +1,6 @@
 /**
  * @provides vitesse-behavior-admin-homepage
- * @requires @ZcoCoreBundle/Resources/public/js/libs/bootstrap.js
+ * @requires @ZcoCoreBundle/Resources/public/js/vendor/bootstrap.js
  */
 
 /**

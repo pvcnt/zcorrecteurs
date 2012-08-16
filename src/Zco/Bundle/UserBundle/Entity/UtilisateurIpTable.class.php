@@ -61,4 +61,17 @@ class UtilisateurIpTable extends Doctrine_Table
 
 		return $query->execute(array(), $hydrationMode);
 	}
+
+	/**
+	 * Supprime les adresses IP de l'historique datant de plus d'un an.
+	 *
+	 * @return integer Le nombre d'adresses supprimées.
+	 */
+	public function purge()
+	{
+		return $this->createQuery()
+			->delete()
+			->where('date_last <= NOW() - INTERVAL 1 YEAR')
+			->execute();
+	}
 }

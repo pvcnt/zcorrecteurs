@@ -415,7 +415,7 @@ if($InfosSujet['sujet_sondage'] > 0)
 					</div>
 					<?php }*/ ?>
 
-					<?php if(!empty($valeur['auteur_message_signature']) && preference('afficher_signatures')){ ?>
+					<?php if(!empty($valeur['auteur_message_signature'])){ ?>
 					<div class="signature"><hr />
 					<?php
 					if (!isset($cache_signatures[$valeur['message_auteur']]))
@@ -541,7 +541,7 @@ $ReponseRapide = '
 </form>
 </div>';
 
-if(preference('activer_rep_rapide') AND !$InfosSujet['sujet_corbeille'])
+if(!$InfosSujet['sujet_corbeille'])
 {
 	if($InfosSujet['sujet_ferme'] AND verifier('repondre_sujets_fermes', $InfosSujet['sujet_forum_id']) AND verifier('repondre_sujets', $InfosSujet['sujet_forum_id']))
 	{

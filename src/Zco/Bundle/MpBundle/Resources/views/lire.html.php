@@ -282,7 +282,7 @@ if($autoriser_ecrire AND ($NombreParticipants > 1 OR $MPTotal < verifier('mp_quo
 					echo preg_replace('`&amp;#(\d+);`', '&#$1;', $view['messages']->parse($valeur['mp_message_texte']));
 					?>
 					<?php
-					if(!empty($valeur['utilisateur_signature']) && preference('afficher_signatures'))
+					if(!empty($valeur['utilisateur_signature']))
 					{
 					?>
 					<div class="signature"><hr />
@@ -373,7 +373,7 @@ $ReponseRapide = '
 </form>
 </div>';
 
-if(preference('activer_rep_rapide') AND $NombreParticipants > 1 AND $autoriser_ecrire)
+if($NombreParticipants > 1 AND $autoriser_ecrire)
 {
 	if($InfoMP['mp_ferme'] AND verifier('mp_repondre_mp_fermes'))
 	{

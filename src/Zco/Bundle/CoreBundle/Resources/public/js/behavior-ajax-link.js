@@ -4,7 +4,7 @@
  * @provides vitesse-behavior-ajax-link
  * @requires vitesse-behavior
  *           mootools
- *           @ZcoCoreBundle/Resources/public/js/libs/zMessage.js
+ *           @ZcoCoreBundle/Resources/public/js/vendor/zMessage.js
  */
 Behavior.create('ajax-link', function(config, statics)
 {

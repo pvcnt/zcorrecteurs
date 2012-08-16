@@ -227,7 +227,7 @@
 						<?php if($valeur['id_edite'] != $valeur['id_auteur']){ ?></span><?php } ?>
 					</div>
 
-					<?php } if(!empty($valeur['auteur_message_signature']) && preference('afficher_signatures')){ ?>
+					<?php } if(!empty($valeur['auteur_message_signature'])){ ?>
 					<div class="signature"><hr />
 						<?php echo $view['messages']->parse($valeur['signature_auteur']); ?>
 					</div>

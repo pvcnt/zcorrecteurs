@@ -1,5 +1,7 @@
 services:
     zco_quiz.event_listener:
         class: Zco\Bundle\QuizBundle\EventListener\EventListener
+        calls:
+            - [setContainer, [@service_container]]
         tags:
             - { name: kernel.event_subscriber }

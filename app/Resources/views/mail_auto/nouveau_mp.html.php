@@ -14,7 +14,7 @@
 <p>
 	Si vous ne souhaitez plus recevoir d'email quand vous recevez un message
 	privé, vous pouvez désactiver cette option en vous rendant sur
-	<a href="<?php echo URL_SITE ?>/options/navigation.html">votre profil</a>.
+	<a href="<?php echo $view['router']->generate('zco_options_preferences', array(), true) ?>">votre profil</a>.
 </p>
 
 <p>Cordialement,<br />

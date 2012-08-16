@@ -34,9 +34,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
  * leur déconnexion.
  *
  * @author Savageman <savageman@zcorrecteurs.fr>
- *         Ziame <ziame@zcorrecteurs.fr>
- *         vincent1870 <vincent@zcorrecteurs.fr>
- *         DJ Fox <djfox@zcorrecteurs.fr>
+ * @author Ziame <ziame@zcorrecteurs.fr>
+ * @author vincent1870 <vincent@zcorrecteurs.fr>
+ * @author DJ Fox <djfox@zcorrecteurs.fr>
  */
 class DefaultController extends Controller
 {
@@ -45,7 +45,8 @@ class DefaultController extends Controller
 	 * membres suivant divers critères (groupe, pseudo, etc.).
 	 *
 	 * @author vincent1870 <vincent@zcorrecteurs.fr>
-	 *         Ziame <ziame@zcorrecteurs.fr>
+	 * @author Ziame <ziame@zcorrecteurs.fr>
+	 *
 	 * @param  Request $request
 	 * @param  integer $page La page à afficher
 	 */
@@ -204,22 +205,45 @@ class DefaultController extends Controller
 		{
 			$vars['punishments'] = \Doctrine_Core::getTable('UserPunishment')->getByUserId($user->getId());
 		}
-
 		if (verifier('membres_voir_avertos'))
 		{
 			$vars['warnings'] = \Doctrine_Core::getTable('UserWarning')->getByUserId($user->getId());
 		}
-
 		if (verifier('membres_voir_ch_pseudos'))
 		{
 			$vars['newPseudo'] = \Doctrine_Core::getTable('UserNewUsername')->getByUserId($user->getId());
 		}
-
-		if (verifier('voir_historique_groupes'))
+		if (verifier('voir_historique_groupes') || $user->isTeam())
 		{
 			require_once __DIR__.'/../../GroupesBundle/modeles/groupes.php';
 			$vars['ListerGroupes'] = \ListerChangementGroupeMembre($user->getId());
-          }
+			if ($user->isTeam() && count($vars['ListerGroupes']))
+			{
+				for ($i = count($vars['ListerGroupes']) - 1; $i >= 0; --$i)
+				{
+					if (!$vars['ListerGroupes'][$i]['nouveau_groupe_secondaire'])
+					{
+						$vars['lastGroupChange'] = $vars['ListerGroupes'][$i]['chg_date'];
+						break;
+					}
+				}
+			}
+			if ($user->isTeam() && empty($vars['lastGroupChange']))
+			{
+				$vars['lastGroupChange'] = $user->getRegistrationDate();
+			}
+        }
+        if (verifier('ips_analyser'))
+        {
+        	$vars['ListerIPs'] = ListerIPsMembre($user->getId());
+        }
+        $vars['canSendMp'] = $_SESSION['id'] != $user->getId() && verifier('mp_voir') && $user->getId() != ID_COMPTE_AUTO 
+        						&& ($_SESSION['MPs'] < verifier('mp_quota') OR verifier('mp_quota') == -1);
+        $vars['canSendEmail'] = verifier('rechercher_mail') || $user->isEmailDisplayed();
+        $vars['canSeeInfos'] = verifier('membres_voir_ch_pseudos') || verifier('membres_voir_avertos') || verifier('voir_sanctions') 
+        						|| verifier('voir_historique_groupes') || verifier('ips_analyser');
+        $vars['canAdmin'] = verifier('groupes_changer_membre') || verifier('membres_editer_titre') || verifier('options_editer_profils');
+        $vars['own'] = $_SESSION['id'] == $user->getId();
 
 		//Paramétrage de la vue
 		fil_ariane(htmlspecialchars($user->getUsername()));
@@ -310,10 +334,13 @@ class DefaultController extends Controller
 		}
 		if ($id == $_SESSION['id'] && \Doctrine_Core::getTable('UserNewUsername')->hasWaitingQuery($user->getId()))
 		{
-			return redirect('Vous avez déjà une demande changement de pseudonyme en attente.', '/options/');
+			return redirect(
+				'Vous avez déjà une demande changement de pseudonyme en attente.', 
+				$this->generateUrl('zco_options_index')
+			);
 		}
 		
-		$newUsername = new \UserNewUsername;
+		$newUsername = new \UserNewUsername();
 		$newUsername->setUser($user);
 		$form = $this->get('form.factory')->create(new NewUsernameType(), $newUsername);
 		
@@ -339,7 +366,10 @@ class DefaultController extends Controller
 				
 				$newUsername->save();
 				
-				return redirect('Votre demande de changement de pseudonyme a été enregistrée.', '/options/');
+				return redirect(
+					'Votre demande de changement de pseudonyme a été enregistrée.', 
+					$this->generateUrl('zco_options_index')
+				);
 			}
 		}
 		
@@ -350,6 +380,30 @@ class DefaultController extends Controller
 		return render_to_response('ZcoUserBundle::newPseudo.html.php', array(
 			'user' => $user,
 			'form' => $form->createView(),
+		));
+	}
+
+	/**
+	 * Affiche la liste des sauvegardes de zCode.
+	 *
+	 * @param Request $request
+	 * @param integer|null $textarea Identifiant HTML d'un élément où récupérer 
+	 *                               la sauvegarde
+	 */
+	public function zformBackupsAction(Request $request, $textarea = null)
+	{
+		if (!verifier('connecte'))
+		{
+			throw new AccessDeniedHttpException('Vous devez être connecté pour accéder à cette page.');
+		}
+
+		\Page::$titre = 'Sauvegardes automatiques de zCode';
+		fil_ariane('Voir mes textes sauvegardés');
+		
+		return render_to_response('ZcoUserBundle::zformBackups.html.php', array(
+			'backups'  => \Doctrine_Core::getTable('ZformBackup')->getByUserId($_SESSION['id']),
+			'xhr'      => $request->query->get('xhr', false),
+			'textarea' => $textarea,
 		));
 	}
 }

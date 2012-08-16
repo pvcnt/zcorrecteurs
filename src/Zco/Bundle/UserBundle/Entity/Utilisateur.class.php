@@ -21,6 +21,8 @@
 
 use Zco\Bundle\UserBundle\Validator\Constraints;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
+use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\ExecutionContext;
 
 /**
  * Utilisateur inscrit sur le site.
@@ -81,6 +83,16 @@ class Utilisateur extends BaseUtilisateur
 	{
 		$this->email = $email;
 	}
+
+	public function getNewEmail()
+	{
+		return $this->new_email;
+	}
+	
+	public function setNewEmail($email)
+	{
+		$this->new_email = $email;
+	}
 		
 	public function getGroupId()
 	{
@@ -96,6 +108,11 @@ class Utilisateur extends BaseUtilisateur
 	{
 		return $this->Groupe;
 	}
+
+	public function isTeam()
+	{
+		return $this->Groupe->isTeam();
+	}
 	
 	public function isAccountValid()
 	{
@@ -106,10 +123,42 @@ class Utilisateur extends BaseUtilisateur
 	{
 		return $this->valide = (bool) $valid;
 	}
+
+	public function setAbsent($absent)
+	{
+		$this->absent = (bool) $absent;
+		if (!$absent)
+		{
+			$this->absence_start_date = null;
+			$this->absence_end_date = null;
+			$this->absence_reason = '';
+		}
+	}
 	
 	public function isAbsent()
 	{
 		return (bool) $this->absent;
+	}
+
+	public function hasAbsenceStartDate()
+	{
+		return (bool) $this->absence_start_date;
+	}
+
+	public function setAbsenceStartDate($date)
+	{
+		$this->absence_start_date = $date;
+		$this->absent = (strtotime($date) <= time());
+	}
+
+	public function getAbsenceStartDate()
+	{
+		return $this->absence_start_date;
+	}
+
+	public function setAbsenceEndDate($date)
+	{
+		$this->absence_end_date = $date;
 	}
 	
 	public function getAbsenceEndDate()
@@ -121,10 +170,24 @@ class Utilisateur extends BaseUtilisateur
 	{
 		return !empty($this->absence_reason);
 	}
+
+	public function setAbsenceReason($reason)
+	{
+		$this->absence_reason = $reason;
+	}
 	
 	public function getAbsenceReason()
 	{
 		return $this->absence_reason;
+	}
+
+	public function isAbsenceValid(ExecutionContext $context)
+	{
+		if (strtotime($this->absence_start_date) >= strtotime($this->absence_end_date))
+		{
+            $context->setPropertyPath($context->getPropertyPath() . '.absence_start_date');
+            $context->addViolation('La date de début doit être avant la date de fin !', array(), null);
+		}
 	}
 	
 	public function hasCitation()
@@ -174,12 +237,36 @@ class Utilisateur extends BaseUtilisateur
 	
 	public function hasAvatar()
 	{
-		return !empty($this->avatar);
+		return $this->hasLocalAvatar() || $this->hasGravatar();
+	}
+
+	public function hasLocalAvatar()
+	{
+		return (boolean) $this->avatar;
+	}
+
+	public function hasGravatar()
+	{
+		return (boolean) @fopen($this->getGravatarUrl().'?d=404', 'r');
+	}
+
+	public function setAvatar($avatar)
+	{
+		$this->avatar = $avatar;
 	}
 	
-	public function getAvatar()
+	public function getAvatar($size = 80, $default = 'mm')
 	{
-		return $this->avatar;
+		if ($this->avatar) {
+			return '/uploads/avatars/'.$this->avatar;
+		}
+
+		return $this->getGravatarUrl().'?s='.$size.'&d='.$default;
+	}
+
+	protected function getGravatarUrl()
+	{
+		return 'http://www.gravatar.com/avatar/'.md5(strtolower(trim($this->email)));
 	}
 	
 	public function getGender()
@@ -216,10 +303,25 @@ class Utilisateur extends BaseUtilisateur
 	{
 		return $this->date_inscription;
 	}
+
+	public function setValidationHash($hash)
+	{
+		$this->validation_hash = $hash;
+	}
+	
+	public function getValidationHash()
+	{
+		return $this->validation_hash;
+	}
 	
 	public function hasBirthDate()
 	{
 		return !empty($this->birth_date) && $this->birth_date != '0000-00-00';
+	}
+
+	public function setBirthDate($birthdate)
+	{
+		$this->birth_date = $birthdate ?: null;
 	}
 	
 	public function getBirthDate()
@@ -302,6 +404,16 @@ class Utilisateur extends BaseUtilisateur
 	{
 		return $this->website;
 	}
+
+	public function hasTwitter()
+	{
+		return !empty($this->twitter);
+	}
+	
+	public function getTwitter()
+	{
+		return $this->twitter;
+	}
 	
 	public function hasLocalisation()
 	{
@@ -322,10 +434,20 @@ class Utilisateur extends BaseUtilisateur
 	{
 		return $this->address;
 	}
+
+	public function setLatitude($latitude)
+	{
+		$this->latitude = $latitude;
+	}
 	
 	public function getLatitude()
 	{
 		return $this->latitude;
+	}
+
+	public function setLongitude($longitude)
+	{
+		$this->longitude = $longitude;
 	}
 	
 	public function getLongitude()
@@ -342,10 +464,15 @@ class Utilisateur extends BaseUtilisateur
 		
 		return floor((time() - strtotime($this->birth_date)) / (365.25 * 3600 * 24));
 	}
-	
+
 	public function getSecondaryGroups()
 	{
 		return $this->SecondaryGroups;
+	}
+
+	public function getPreferences()
+	{
+		return $this->Preferences;
 	}
 	
 	public function applyPunishment(\UserPunishment $punishment)
@@ -521,10 +648,17 @@ class Utilisateur extends BaseUtilisateur
 			'groups' => 'registration',
 		)));
 		$metadata->addGetterConstraint('rawPassword', new Constraints\Password(array(
-			'groups' => 'registration',
+			'groups' => array('registration', 'editPassword'),
 		)));
 		$metadata->addGetterConstraint('email', new Constraints\Email(array(
 			'groups' => 'registration',
 		)));
+		/*$metadata->addGetterConstraint('nouvel_email', new Constraints\Email(array(
+			'groups' => 'editEmail',
+		)));*/
+		$metadata->addConstraint(new Callback(array(
+			'groups'  => 'absence',
+            'methods' => array('isAbsenceValid'),
+        )));
 	}
 }

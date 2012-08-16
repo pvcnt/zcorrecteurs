@@ -102,14 +102,16 @@ class DefaultController extends Controller
 
 	public function ajaxSaveZformAction(Request $request)
 	{
-		$dbh = \Doctrine_Manager::connection()->getDbh();
-
-		$stmt = $dbh->prepare("INSERT INTO zcov2_sauvegardes_zform(sauvegarde_id_utilisateur, sauvegarde_date, sauvegarde_texte, sauvegarde_url)
-		VALUES(:id, NOW(), :texte, :url)");
-		$stmt->bindValue(':id', $_SESSION['id']);
-		$stmt->bindValue(':url', $request->request->get('url'));
-		$stmt->bindValue(':texte', $request->request->get('texte'));
-		$stmt->execute();
+		if (!verifier('connecte'))
+		{
+			return new Response('ERROR');
+		}
+		
+		$backup = new \ZformBackup();
+		$backup->setUrl($request->request->get('url'));
+		$backup->setUserId($_SESSION['id']);
+		$backup->setContent($request->request->get('texte'));
+		$backup->save();
 
 		return new Response('OK');
 	}

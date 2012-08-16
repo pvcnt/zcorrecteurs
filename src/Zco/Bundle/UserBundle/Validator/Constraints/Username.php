@@ -24,12 +24,17 @@ namespace Zco\Bundle\UserBundle\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * @Annotation
+ * Contrainte vérifiant la validité d'un nom d'utilisateur.
+ *
+ * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
 class Username extends Constraint
 {
 	public $message = 'Ce nom d\'utilisateur n\'est pas valide.';
 	
+	/**
+	 * {@inheritdoc}
+	 */
 	public function validatedBy()
 	{
 		return 'zco_user_username';

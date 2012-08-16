@@ -162,6 +162,25 @@ class HumanizeHelper extends Helper
 	{
 		return sizeformat($size);
 	}
+
+	/**
+	 * Formate une adresse email pour la protéger contre les robots. Cette 
+	 * protection reste relativement basique, mais devrait être un bon compromis
+	 * entre paranoïa et efficacité.
+	 *
+	 * @param  string $email
+	 * @return string
+	 */
+	public function email($email)
+	{
+		$retval = '';
+		for ($i = 0, $len = strlen($email); $i < $len; ++$i)
+		{
+			$retval .= '&#'.ord($email[$i]);
+		}
+
+		return $retval;
+	}
 	
 	/**
 	 * {@inheritdoc}

@@ -4,7 +4,7 @@
  *		   mootools
  *		   bootstrap-js
  *		   javelin-metadata
- *		   @ZcoCoreBundle/Resources/public/js/libs/zMessage.js
+ *		   @ZcoCoreBundle/Resources/public/js/vendor/zMessage.js
  *		   @ZcoFileBundle/Resources/public/js/SqueezeBox.js
  */
 Behavior.create('zco-files-load-files-async', function(config, statics)

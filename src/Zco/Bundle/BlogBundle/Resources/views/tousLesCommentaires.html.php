@@ -99,7 +99,7 @@
 						<?php if(!empty($valeur['id_edite'])) { ?></a><?php } ?>
 						<?php if($valeur['id_edite'] != $valeur['id_auteur']){ ?></span><?php } ?>
 					</div>
-					<?php } if(!empty($valeur['auteur_message_signature']) && $_SESSION['afficher_signatures']){ ?>
+					<?php } if(!empty($valeur['auteur_message_signature'])){ ?>
 					<div class="signature"><hr />
 					<?php echo $view['messages']->parse($valeur['signature_auteur']); ?>
 					</div>

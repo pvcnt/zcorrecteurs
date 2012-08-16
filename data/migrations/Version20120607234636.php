@@ -4,7 +4,9 @@ use Zco\Bundle\Doctrine1Bundle\Migrations\AbstractMigration;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Classe de migration auto-générée. Modifiez-la selon vos besoins !
+ * Mise à jour de la table des quiz pour la nouvelle gestion des quiz aléatoires.
+ *
+ * @author DJ Fox <djfox@zcorrecteurs.fr>
  */
 class Version20120607234636 extends AbstractMigration
 {

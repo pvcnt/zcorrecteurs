@@ -7,9 +7,12 @@ var Editor = new Class({
 	Implements: Options,
 	
 	actions: [],
+	_textareaId: null,
+	_lastBackup: null,
 	
 	initialize: function(id, options)
 	{
+		this._textareaId = id;
 		this.setOptions(options);
 		actions = this.actions;
 		
@@ -222,7 +225,7 @@ var Editor = new Class({
 		});
 		rawLinks.grab(new Element('a', {
 			'class': 'zform-rawlink zform-squeezebox-link',
-			'href': '/options/sauvegardes-zcode.html?id=' + id + '&xhr=1',
+			'href': Routing.generate('zco_user_zformBackups', {'textarea': id, 'xhr': 1}),
 			'text': 'Sauvegardes automatiques',
 			'style': 'background-image: url(/bundles/zcooptions/img/sauvegardes_zcode.png)'
 		}));
@@ -263,5 +266,39 @@ var Editor = new Class({
 		
 		toolbar.inject(zform.getParent('.zform-wrapper'), 'before');
 		postbar.inject(zform.getParent('.zform-wrapper'), 'after');
+
+		//Initialise la sauvegarde automatique du formulaire.
+		this._lastBackup = zform.value;
+		this.autoBackup();
+	},
+
+	backup: function() {
+		var textarea = document.id(this._textareaId);
+		var content = textarea.value;
+		var xhr = new Request({
+			method: 'post', 
+			url: '/informations/ajax-save-zform.html', 
+			onSuccess: function(text, xml){
+				this._lastBackup = content;
+				textarea.highlight('#b3ffb3');
+			}
+		});
+		xhr.send('texte=' + encodeURIComponent(content) + '&url=' + encodeURIComponent(document.location.pathname));
+	},
+
+	autoBackup: function() {
+		var shortTime = 10000;
+		var longTime = 30000;
+		var content = document.id(this._textareaId).value;
+		var that = this;
+
+		if (content == '') {
+	        setTimeout(function() { that.autoBackup(); }, shortTime);
+	    } else {
+			if (content != this._lastBackup) {
+				this.backup();
+			}
+			setTimeout(function() { that.autoBackup(); }, longTime);
+		}
 	}
 });

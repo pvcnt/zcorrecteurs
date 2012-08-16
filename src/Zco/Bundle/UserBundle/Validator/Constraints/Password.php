@@ -24,12 +24,17 @@ namespace Zco\Bundle\UserBundle\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * @Annotation
+ * Contrainte vérifiant la validité d'un mot de passe.
+ *
+ * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
 class Password extends Constraint
 {
 	public $message = 'Ce mot de passe n\'est pas valide.';
 	
+	/**
+	 * {@inheritdoc}
+	 */
 	public function validatedBy()
 	{
 		return 'zco_user_password';

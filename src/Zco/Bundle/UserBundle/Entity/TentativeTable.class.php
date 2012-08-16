@@ -56,4 +56,12 @@ class TentativeTable extends Doctrine_Table
 			->leftJoin('u.Groupe g')
 			->where('t.blocage = 1');
 	}
+
+	public function purge()
+	{
+		return $this->createQuery()
+			->delete()
+			->where('blocage = 0')
+			->execute();
+	}
 }

@@ -21,6 +21,8 @@
 
 namespace Zco\Bundle\TwitterBundle\EventListener;
 
+use Zco\Bundle\CoreBundle\CoreEvents;
+use Zco\Bundle\CoreBundle\Event\CronEvent;
 use Zco\Bundle\AdminBundle\AdminEvents;
 use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -40,7 +42,8 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 	{
 		return array(
 			'zco_core.filter_menu.footer2' => 'onFilterFooter2',
-			AdminEvents::MENU => 'onFilterAdmin',
+			AdminEvents::MENU              => 'onFilterAdmin',
+			CoreEvents::DAILY_CRON         => 'onDailyCron',
 		);
 	}
 	
@@ -90,5 +93,16 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 			'credentials' => 'twitter_comptes', 
 			'uri' => $this->container->get('router')->generate('zco_twitter_accounts'),
 		));
+	}
+
+	/**
+	 * Actions à exécuter chaque jour.
+	 *
+	 * @param CronEvent $event
+	 */
+	public function onDailyCron(CronEvent $event)
+	{
+		//Récupération des dernières mentions Twitter.
+		\Doctrine_Core::getTable('TwitterMention')->retrieveByAccount();
 	}
 }

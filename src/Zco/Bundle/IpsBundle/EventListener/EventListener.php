@@ -21,6 +21,8 @@
 
 namespace Zco\Bundle\IpsBundle\EventListener;
 
+use Zco\Bundle\CoreBundle\CoreEvents;
+use Zco\Bundle\CoreBundle\Event\CronEvent;
 use Zco\Bundle\AdminBundle\AdminEvents;
 use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -29,6 +31,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\DependencyInjection\ContainerAware;
 
+/**
+ * Observateur principal pour le module d'adresses IP.
+ */
 class EventListener extends ContainerAware implements EventSubscriberInterface
 {
 	/**
@@ -37,8 +42,9 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 	static public function getSubscribedEvents()
 	{
 		return array(
-			KernelEvents::REQUEST => 'onKernelRequest',
-			AdminEvents::MENU => 'onFilterAdmin',
+			KernelEvents::REQUEST  => 'onKernelRequest',
+			AdminEvents::MENU      => 'onFilterAdmin',
+			CoreEvents::DAILY_CRON => 'onDailyCron',
 		);
 	}
 	
@@ -49,7 +55,7 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 	 * Si tel est le cas, termine l'application en affichant une page 
 	 * de bannissement.
 	 *
-	 * @param Event $event
+	 * @param GetResponseEvent $event
 	 */
 	public function onKernelRequest(GetResponseEvent $event)
 	{
@@ -99,6 +105,11 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 		}
 	}
 	
+	/**
+	 * Ajoute des liens dans le panneau d'administration.
+	 *
+	 * @param FilterMenuEvent $event
+	 */
 	public function onFilterAdmin(FilterMenuEvent $event)
 	{
 		$tab = $event
@@ -117,5 +128,30 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 		$tab->addChild('Afficher les doublons d\'adresses IP', array(
 			'uri' => '/ips/doublons.html',
 		))->secure('ips_analyser');
+	}
+
+	/**
+	 * Actions à exécuter chaque jour.
+	 *
+	 * @param CronEvent $event
+	 */
+	public function onDailyCron(CronEvent $event)
+	{
+		$dbh = \Doctrine_Manager::connection()->getDbh();
+
+		//Mise à jour des bannissements d'adresses IP.
+		$stmt = $dbh->prepare("UPDATE zcov2_ips_bannies
+		SET ip_duree_restante = ip_duree_restante - 1
+		WHERE ip_fini = 0 AND ip_duree_restante > 0 AND (ip_date + INTERVAL (ip_duree - ip_duree_restante) DAY < NOW())");
+		$stmt->execute();
+		$stmt->closeCursor();
+
+		$stmt = $dbh->prepare("UPDATE zcov2_ips_bannies
+		SET ip_fini = 1
+		WHERE ip_duree > 0 AND ip_duree_restante = 0");
+		$stmt->execute();
+		$stmt->closeCursor();
+
+		$this->container->get('zco_core.cache')->delete('ips_bannies');
 	}
 }

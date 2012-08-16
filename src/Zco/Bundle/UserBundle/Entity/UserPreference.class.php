@@ -26,8 +26,71 @@
  */
 class UserPreference extends BaseUserPreference
 {
+	protected static $preferences = array(
+		'display_admin_bar',
+		'beta_tests',
+		'time_difference',
+		'email_on_mp',
+	);
+
 	public function setUserId($userId)
 	{
 		$this->user_id = $userId;
+	}
+
+	public function getUserId()
+	{
+		return $this->user_id;
+	}
+
+	public function setDisplayAdminBar($display)
+	{
+		$this->display_admin_bar = (boolean) $display;
+	}
+
+	public function getDisplayAdminBar()
+	{
+		return $this->display_admin_bar;
+	}
+
+	public function setBetaTests($beta)
+	{
+		$this->beta_tests = (boolean) $beta;
+	}
+
+	public function getBetaTests()
+	{
+		return $this->beta_tests;
+	}
+
+	public function setEmailOnMp($email)
+	{
+		$this->email_on_mp = (boolean) $email;
+	}
+
+	public function getEmailOnMp()
+	{
+		return $this->email_on_mp;
+	}
+
+	public function setTimeDifference($timeDifference)
+	{
+		$this->time_difference = $timeDifference;
+	}
+
+	public function getTimeDifference()
+	{
+		return $this->time_difference;
+	}
+
+	/**
+	 * Stocke les préférences en session.
+	 */
+	public function apply()
+	{
+		foreach (self::$preferences as $pref)
+	    {
+		    $_SESSION['prefs'][$pref] = $this->$pref;
+	    }
 	}
 }

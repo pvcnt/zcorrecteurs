@@ -44,6 +44,11 @@ class Online extends BaseOnline
 	{
 		return $this->User;
 	}
+
+	public function getUserId()
+	{
+		return $this->user_id;
+	}
 	
 	public function getCategory()
 	{

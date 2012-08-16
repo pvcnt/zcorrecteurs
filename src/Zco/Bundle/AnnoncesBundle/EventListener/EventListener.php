@@ -21,13 +21,21 @@
 
 namespace Zco\Bundle\AnnoncesBundle\EventListener;
 
+use Zco\Bundle\CoreBundle\CoreEvents;
+use Zco\Bundle\CoreBundle\Event\CronEvent;
 use Zco\Bundle\AdminBundle\AdminEvents;
 use Zco\Component\Templating\TemplatingEvents;
 use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
 use Zco\Component\Templating\Event\FilterResourcesEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\DependencyInjection\ContainerAware;
 
-class EventListener implements EventSubscriberInterface
+/**
+ * Observateur principal pour le module d'annonces.
+ *
+ * @author vincent1870 <vincent@zcorrecteurs.fr>
+ */
+class EventListener extends ContainerAware implements EventSubscriberInterface
 {
 	/**
 	 * {@inheritdoc}
@@ -35,13 +43,16 @@ class EventListener implements EventSubscriberInterface
 	static public function getSubscribedEvents()
 	{
 		return array(
-		    AdminEvents::MENU => 'onFilterAdmin',
+		    AdminEvents::MENU                  => 'onFilterAdmin',
 			TemplatingEvents::FILTER_RESOURCES => 'onTemplatingFilterResources',
+			CoreEvents::HOURLY_CRON            => 'onHourlyCron',
 		);
 	}
 	
 	/**
 	 * Ajoute le code javascript nécessaire au chargement asynchrone des bannières.
+	 *
+	 * @param FilterResourcesEvent $event
 	 */
 	public function onTemplatingFilterResources(FilterResourcesEvent $event)
 	{
@@ -66,6 +77,11 @@ class EventListener implements EventSubscriberInterface
 	    $event->initBehavior('annonces-inject-banner', $config);
 	}
 	
+	/**
+	 * Ajoute des liens sur le panneau d'administration.
+	 *
+	 * @param FilterMenuEvent $event
+	 */
 	public function onFilterAdmin(FilterMenuEvent $event)
 	{
 	    $event
@@ -76,5 +92,36 @@ class EventListener implements EventSubscriberInterface
 	            'uri' => '/annonces/',
 	        ))
 	        ->secure(array('or', 'annonces_ajouter', 'annonces_modifier', 'annonces_supprimer', 'annonces_publier'));
+	}
+
+	/**
+	 * Met à jour les statistiques horaires des annonces.
+	 *
+	 * @param CronEvent $event
+	 */
+	public function onHourlyCron(CronEvent $event)
+	{
+		$cache = $this->container->get('zco_core.cache');
+	    $pks = \Doctrine_Query::create()
+        	->select('id')
+        	->from('Annonce')
+        	->execute(array(), \Doctrine_Core::HYDRATE_ARRAY);
+
+        foreach ($pks as $annonce)
+        {
+        	$nbv = $cache->get('annonce_nbv-'.$annonce['id'], 0);
+        	$event->getOutput()->writeln('Annonce n°'.$annonce['id'].' : '.$nbv.' affichage(s)');
+
+        	if ($nbv > 0)
+        	{
+        		\Doctrine_Query::create()
+        			->update('Annonce')
+        			->set('nb_affichages', 'nb_affichages + ?', $nbv)
+        			->where('id = ?', $annonce['id'])
+        			->execute();
+        	}
+        	
+        	$cache->delete('annonce_nbv-'.$annonce['id']);
+        }
 	}
 }

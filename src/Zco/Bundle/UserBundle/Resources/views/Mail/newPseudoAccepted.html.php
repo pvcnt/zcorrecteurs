@@ -14,7 +14,7 @@
 
 <ul>
 	<li><a href="<?php echo $view['router']->generate('zco_about_contact', array(), true) ?>">Contacter les administrateurs</a></li>
-	<li><a href="<?php echo URL_SITE ?>/options/">Mes options</a></li>
+	<li><a href="<?php echo $view['router']->generate('zco_options_index', array(), true) ?>">Mes options</a></li>
 </ul>
 
 <p>Cordialement,<br />

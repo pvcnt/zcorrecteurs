@@ -1,7 +1,7 @@
 /**
  * @provides vitesse-behavior-zco-files-aviary
  * @requires mootools
- *           @ZcoCoreBundle/Resources/public/js/libs/zMessage.js
+ *           @ZcoCoreBundle/Resources/public/js/vendor/zMessage.js
  */
 Behavior.create('zco-files-aviary', function(config)
 {

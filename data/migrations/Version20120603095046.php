@@ -6,6 +6,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Changement sur le schéma de la table des recrutements non reflété dans 
  * le schéma de base.
+ *
+ * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
 class Version20120603095046 extends AbstractMigration
 {

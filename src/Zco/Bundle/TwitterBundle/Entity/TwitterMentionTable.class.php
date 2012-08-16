@@ -76,6 +76,11 @@ class TwitterMentionTable extends Doctrine_Table
 			
 			return false;
 		}
+
+		if (!$info)
+		{
+			return false;
+		}
 		
 		foreach ($info as $inf)
 		{

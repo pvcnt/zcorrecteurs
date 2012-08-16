@@ -2,7 +2,7 @@
  * @provides vitesse-behavior-zco-files-edit
  * @requires vitesse-behavior
  *           mootools
- *           @ZcoCoreBundle/Resources/public/js/libs/zMessage.js
+ *           @ZcoCoreBundle/Resources/public/js/vendor/zMessage.js
  */
  
 /**

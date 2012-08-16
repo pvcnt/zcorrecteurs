@@ -16,3 +16,9 @@ services:
         arguments: [@zco_user.user]
         tags:
             - { name: validator.constraint_validator, alias: zco_user_email }
+
+    zco_user.validator.user_email:
+        class: Zco\Bundle\UserBundle\Validator\Constraints\UserPasswordValidator
+        arguments: [@zco_user.user]
+        tags:
+            - { name: validator.constraint_validator, alias: zco_user_userpassword }
