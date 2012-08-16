@@ -16,7 +16,7 @@
 				<?php endif ?>
 			</h1>
 
-			<?php echo $view->render('ZcoUserBundle:Profile:_profile.html.php', compact('user')) ?>
+			<?php echo $view->render('ZcoUserBundle:Profile:_profile.html.php', compact('user', 'lastGroupChange')) ?>
 		</div> <!-- /.span10 -->
 	</div> <!-- /.row-fluid -->
 </div>

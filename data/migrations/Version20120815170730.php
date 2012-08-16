@@ -5,7 +5,10 @@ use Zco\Bundle\Doctrine1Bundle\Migrations\Exception\IrreversibleMigrationExcepti
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Classe de migration auto-générée. Modifiez-la selon vos besoins !
+ * Effectue le ménage au sein de champs et de droits n'étant maintenant 
+ * plus utilisés.
+ *
+ * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
 class Version20120815170730 extends AbstractMigration
 {

@@ -63,7 +63,7 @@
 		<span style="font-weight: bold; color: <?php echo htmlspecialchars($user->getGroup()->getCssClass()) ?>;">
 			<?php echo htmlspecialchars($user->getGroup()) ?>
 		</span>
-		<span class="gris">» depuis <?php echo dateformat(isset($lastGroupChange) ? $lastGroupChange : $user->getRegistrationDate(), MINUSCULE, DATE) ?><?php if ($user->hasTitle()): ?> et « </span>
+		<span class="gris">» depuis <?php echo dateformat($lastGroupChange, MINUSCULE, DATE) ?><?php if ($user->hasTitle()): ?> et « </span>
 		<strong>Responsable du développement</strong>
 		<span class="gris"> »<?php endif ?>.</span>
 	</li>

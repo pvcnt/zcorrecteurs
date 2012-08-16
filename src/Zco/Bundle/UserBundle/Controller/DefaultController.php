@@ -219,7 +219,18 @@ class DefaultController extends Controller
 			$vars['ListerGroupes'] = \ListerChangementGroupeMembre($user->getId());
 			if ($user->isTeam() && count($vars['ListerGroupes']))
 			{
-				$vars['lastGroupChange'] = $vars['ListerGroupes'][count($vars['ListerGroupes']) - 1]['chg_date'];
+				for ($i = count($vars['ListerGroupes']) - 1; $i >= 0; --$i)
+				{
+					if (!$vars['ListerGroupes'][$i]['nouveau_groupe_secondaire'])
+					{
+						$vars['lastGroupChange'] = $vars['ListerGroupes'][$i]['chg_date'];
+						break;
+					}
+				}
+			}
+			if ($user->isTeam() && empty($vars['lastGroupChange']))
+			{
+				$vars['lastGroupChange'] = $user->getRegistrationDate();
 			}
         }
         if (verifier('ips_analyser'))

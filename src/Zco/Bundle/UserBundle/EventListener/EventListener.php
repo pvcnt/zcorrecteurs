@@ -215,9 +215,11 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 		//Supprime les comptes non-validés de plus d'un jour.
 		\Doctrine_Core::getTable('Utilisateur')->purge();
 
+		//Mise à jour des sanctions. Pour cette action on ne DOIT jamais avoir 
+		//la possibilité de l'exécuter plus d'une fois par jour, sans quoi les 
+		//sanctions dureront moins de temps que prévu.
 		if ($event->ensureDaily())
 		{
-			//Mise à jour des sanctions.
 			\Doctrine_Core::getTable('UserPunishment')->purge();
 		}
 
