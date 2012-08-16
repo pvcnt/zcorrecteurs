@@ -1,7 +1,7 @@
 /**
   * @requires jquery-no-conflict
   *           bootstrap-js
-  *           @ZcoCoreBundle/Resources/public/js/libs/zMessage.js
+  *           @ZcoCoreBundle/Resources/public/js/vendor/zMessage.js
   */
 jQuery(function() {
 	var win = jQuery(window);

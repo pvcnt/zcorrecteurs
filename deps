@@ -89,10 +89,6 @@
     git=http://github.com/FriendsOfSymfony/FOSTwitterBundle.git
     target=/bundles/FOS/TwitterBundle
 
-[MopaBootstrapBundle]
-    git=http://github.com/phiamo/MopaBootstrapBundle.git
-    target=/bundles/Mopa/Bundle/BootstrapBundle
-
 [knp-components]
     git=http://github.com/KnpLabs/knp-components.git
 

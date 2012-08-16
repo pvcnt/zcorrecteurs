@@ -4,7 +4,7 @@
  *
  * @author   vincent1870 <vincent@zcorrecteurs.fr>
  * @requires mootools
- *           @ZcoCoreBundle/Resources/public/js/libs/zMessage.js
+ *           @ZcoCoreBundle/Resources/public/js/vendor/zMessage.js
  */
 var EditInPlace = new Class({
 	Implements: [Options],

@@ -12,7 +12,7 @@ provides: Form.MultipleFileInput
 */
 
 /**
- * @requires @CoreBundle/Resources/public/js/libs/Twipsy.js
+ * @requires @CoreBundle/Resources/public/js/vendor/Twipsy.js
  */
 
 

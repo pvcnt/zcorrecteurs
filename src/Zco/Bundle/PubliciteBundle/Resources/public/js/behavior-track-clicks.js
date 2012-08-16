@@ -2,7 +2,7 @@
  * @provides vitesse-behavior-ads-track-clicks
  * @requires mootools
  *           vitesse-behavior
- *           @ZcoCoreBundle/Resources/public/js/libs/zMessage.js
+ *           @ZcoCoreBundle/Resources/public/js/vendor/zMessage.js
  */
 
 /**

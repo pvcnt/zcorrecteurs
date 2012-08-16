@@ -3,8 +3,8 @@
  *
  * @provides vitesse-behavior-autocomplete
  * @requires vitesse-behavior
- *           @ZcoCoreBundle/Resources/public/js/libs/Autocompleter.Request.js
- *           @ZcoCoreBundle/Resources/public/css/libs/autocomplete.css
+ *           @ZcoCoreBundle/Resources/public/js/vendor/Autocompleter.Request.js
+ *           @ZcoCoreBundle/Resources/public/css/autocomplete.css
  */
 Behavior.create('autocomplete', function(config, statics)
 {
