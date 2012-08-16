@@ -44,11 +44,13 @@
 		<?php if (count($online) > 0): ?>
 			<?php foreach ($online as $user): ?>
 			<tr>
-				<td class="center">
+				<td class="avatar">
 					<?php if ($user->isAuthenticated() && $user->getUser()->hasAvatar()): ?>
-					<img src="<?php echo htmlspecialchars($user->getUser()->getAvatar()) ?>" 
-						alt="Avatar de <?php echo htmlspecialchars($user->getUser()->getUsername()) ?>" />
-					<?php endif ?>
+					<div class="avatar">
+						<img src="<?php echo htmlspecialchars($user->getUser()->getAvatar()) ?>" 
+							alt="Avatar de <?php echo htmlspecialchars($user->getUser()->getUsername()) ?>" />
+						<?php endif ?>
+					</div>
 				</td>
 				<td class="center">
 					<?php if ($user->isAuthenticated() && $user->getUser()->getId()): ?>
