@@ -581,7 +581,15 @@ function dateformat($dateHeure, $casse = MAJUSCULE, $format = DATETIME)
 	// Dates relatives
 	$difference = time() - $dateHeure;
 	$aujourdhui = mktime(0, 0, 0) - $decalage;
-	$jours = (int) date('d', $dateHeure) - (int) date('d', $aujourdhui);
+
+	//La différence en nombre de jours est fort imprécise (pas de prise en 
+	//compte des années bissextiles et des mois à 31 jours) mais suffit pour 
+	//ce dont on a besoin : savoir si on est à 0, 1, 2 ou 3 jours de décalage.
+	$jours = abs(
+		((int) date('d', $dateHeure) - (int) date('d', $aujourdhui)) 
+		+ ((int) date('m', $dateHeure) - (int) date('m', $aujourdhui)) * 30
+		+ ((int) date('Y', $dateHeure) - (int) date('Y', $aujourdhui)) * 365
+	);
 
 	if (0 === $jours) // Même jour
 	{
