@@ -317,7 +317,7 @@ table.table-avatar td.avatar {
 table.table-avatar td.avatar img {
 	height: 40px;
 	width: 40px;
-	margin-left: 15px;
+	text-align: center;
 }
 
 table.table-avatar td {
@@ -333,7 +333,7 @@ table.table-small {
  * Coins arrondis pour les avatars.
  */
 .avatar, .avatar img {
-  border-radius: 5px;
+    border-radius: 5px;
 }
 
 /**
