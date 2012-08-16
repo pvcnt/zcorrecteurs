@@ -71,7 +71,7 @@
 	<?php if (verifier('voir_groupes_secondaires') && ($c = count($user->SecondaryGroups))): ?>
 	<li>
 		<i class="icon-info-sign"></i>
-		<span class="gris">Également membre des </span>
+		<span class="gris">Également membre de </span>
 		<?php foreach ($user->getSecondaryGroups() as $i => $group): ?>
 			« <span style="font-weight: bold; color: <?php echo htmlspecialchars($group->getGroup()->getCssClass()) ?>;">
 				<?php echo htmlspecialchars($group->getGroup()) ?>

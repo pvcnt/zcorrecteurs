@@ -221,7 +221,7 @@ class DefaultController extends Controller
 			{
 				for ($i = count($vars['ListerGroupes']) - 1; $i >= 0; --$i)
 				{
-					if (!$vars['ListerGroupes'][$i]['nouveau_groupe_secondaire'])
+					if (!$vars['ListerGroupes'][$i]['ancien_groupe_secondaire'] && !$vars['ListerGroupes'][$i]['nouveau_groupe_secondaire'])
 					{
 						$vars['lastGroupChange'] = $vars['ListerGroupes'][$i]['chg_date'];
 						break;

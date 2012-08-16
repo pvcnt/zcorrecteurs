@@ -1,4 +1,4 @@
-<div class="zform">
+<div class="zform" id="<?php echo $id ?>_zform">
 	<div class="zform-wrapper">
 		<textarea <?php echo $view['form']->renderBlock('attributes') ?>><?php echo $view->escape($value) ?></textarea>
 	</div>

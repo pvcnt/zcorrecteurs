@@ -41,7 +41,7 @@ p.good {
  * Lorsque la barre de navigation se fixe en haut de page, on a besoin de 
  * conserver un espace avec le corps de la page.
  */
-body > .container-fluid, body > .container {
+body > .main-container, body > .container {
 	margin-top: 18px;
 }
 

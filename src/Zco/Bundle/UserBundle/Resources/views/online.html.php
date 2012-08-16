@@ -46,7 +46,7 @@
 			<tr>
 				<td class="center">
 					<?php if ($user->isAuthenticated() && $user->getUser()->hasAvatar()): ?>
-					<img src="/uploads/avatars/<?php echo htmlspecialchars($user->getUser()->getAvatar()) ?>" 
+					<img src="<?php echo htmlspecialchars($user->getUser()->getAvatar()) ?>" 
 						alt="Avatar de <?php echo htmlspecialchars($user->getUser()->getUsername()) ?>" />
 					<?php endif ?>
 				</td>
