@@ -45,10 +45,12 @@
 			<?php foreach ($online as $user): ?>
 			<tr>
 				<td class="avatar">
-					<?php if ($user->isAuthenticated() && $user->getUser()->hasAvatar()): ?>
+					<?php if ($user->isAuthenticated()): ?>
 					<div class="avatar">
-						<img src="<?php echo htmlspecialchars($user->getUser()->getAvatar()) ?>" 
-							alt="Avatar de <?php echo htmlspecialchars($user->getUser()->getUsername()) ?>" />
+						<a href="<?php echo $view['router']->generate('zco_user_profile', array('id' => $user->getUser()->getId(), 'slug' => rewrite($user->getUser()->getUsername()))) ?>">
+							<img src="<?php echo htmlspecialchars($user->getUser()->getAvatar()) ?>" 
+								alt="Avatar de <?php echo htmlspecialchars($user->getUser()->getUsername()) ?>" />
+						</a>
 						<?php endif ?>
 					</div>
 				</td>
