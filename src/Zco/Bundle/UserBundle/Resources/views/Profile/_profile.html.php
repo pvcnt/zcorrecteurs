@@ -3,7 +3,7 @@
 		<?php $c = 0; if ($user->hasBirthDate()): ?>
 			<i class="icon-gift"></i>
 			<span class="gris">Âgé de</span>
-			<strong rel="tooltip" title="<?php echo $view['humanize']->dateformat($user->getBirthDate(), MINUSCULE, DATE) ?>"><?php echo $user->getAge() ?> ans</strong>
+			<strong><?php echo $user->getAge() ?> ans</strong>
 		<?php ++$c; endif ?>
 		<?php if ($user->isCountryDisplayed() && $user->hasLocalisation()): ?>
 			<?php if ($c > 0): ?>|<?php endif ?>
