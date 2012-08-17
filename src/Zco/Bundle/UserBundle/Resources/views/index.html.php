@@ -33,28 +33,28 @@
 		<?php foreach ($users as $user): ?>
 		<tr>
 			<td class="avatar">
-				<?php if ($user->hasAvatar()): ?>
-				<img src="<?php echo htmlspecialchars($user->getAvatar()) ?>" 
-					alt="Avatar de <?php echo htmlspecialchars($user->getUsername()) ?>" />
-				<?php endif ?>
+				<a href="<?php echo $view['router']->generate('zco_user_profile', array('id' => $user->getId(), 'slug' => rewrite($user->getUsername()))) ?>">
+					<img src="<?php echo htmlspecialchars($user->getAvatar()) ?>" 
+						 alt="Avatar de <?php echo htmlspecialchars($user->getUsername()) ?>" />
+				</a>
 			</td>
 			<td>
 				<a href="<?php echo $view['router']->generate('zco_user_profile', array('id' => $user->getId(), 'slug' => rewrite($user->getUsername()))) ?>" 
-					style="color: <?php echo $user['Groupe']['class'] ?>;">
+					style="color: <?php echo $user->getGroup()->getCssClass() ?>;">
 					<?php echo htmlspecialchars($user->getUsername()) ?>
 				</a>
 			</td>
-			<td><?php echo htmlspecialchars($user['Groupe']['nom']) ?></td>
+			<td class="center"><?php echo htmlspecialchars($user->getGroup()) ?></td>
 			<?php if (verifier('voir_nb_messages')): ?>
 				<td class="center">
 					<?php echo $user->getNbMessages() ?>
 				</td>
 			<?php endif ?>
 			<td class="center">
-				<?php echo dateformat($user->getRegistrationDate()) ?>
+				<?php echo $view['humanize']->dateformat($user->getRegistrationDate()) ?>
 			</td>
 			<td class="center">
-				<?php echo dateformat($user->getLastActionDate()) ?>
+				<?php echo $view['humanize']->dateformat($user->getLastActionDate()) ?>
 			</td>
 		</tr>
 		<?php endforeach ?>
