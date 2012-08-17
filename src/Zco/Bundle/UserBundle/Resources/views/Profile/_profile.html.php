@@ -3,7 +3,9 @@
 		<?php $c = 0; if ($user->hasBirthDate()): ?>
 			<i class="icon-gift"></i>
 			<span class="gris">Âgé de</span>
-			<strong><?php echo $user->getAge() ?> ans</strong>
+			<strong class="popover-link" data-title="<?php echo $user->getAge() ?> ans" data-content="<?php echo htmlspecialchars($user->getUsername()) ?> est né <?php echo $view['humanize']->dateformat($user->getBirthdate(), DATE, MINUSCULE) ?>.">
+				<?php echo $user->getAge() ?> ans
+			</strong>
 		<?php ++$c; endif ?>
 		<?php if ($user->isCountryDisplayed() && $user->hasLocalisation()): ?>
 			<?php if ($c > 0): ?>|<?php endif ?>
@@ -75,3 +77,4 @@
 	</li>
 	<?php endif ?>
 </ul>
+<?php $view['javelin']->initBehavior('popover', array('selector' => '.popover-link')) ?>
