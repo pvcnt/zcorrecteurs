@@ -9,6 +9,10 @@
 			<?php echo $view->get('messages')->userGroup($user) ?>
 		</div>
 		<div class="span10">
+			<div style="float: right; width: 210px; margin-right: 10px;">
+				<?php echo $view->render('ZcoUserBundle:Profile:_actions.html.php', compact('user', 'own', 'canSendEmail', 'canSendMp', 'canAdmin')) ?>
+			</div>
+
 			<h1 style="margin-top: 0;">
 				Profil d<?php echo $art.htmlspecialchars($user->getUsername()) ?>
 				<?php if ($user->hasCitation()): ?>
@@ -21,150 +25,12 @@
 	</div> <!-- /.row-fluid -->
 </div>
 
-<div class="row-fluid" style="margin-top: 20px;">
-	<div class="span9" style="padding-right: 10px; border-right: 1px solid #EEE;">
-		<div class="pill-content">
-			<div class="pill-pane active" id="profile-profile">
-				<?php echo $view->render('ZcoUserBundle:Profile:_content.html.php', compact('user')) ?>
-			</div>
-			<?php if ($canSeeInfos): ?>
-			<div class="pill-pane" id="profile-infos">
-				<?php echo $view->render('ZcoUserBundle:Profile:_infos.html.php', compact('user', 'newPseudo', 'warnings', 'punishments', 'ListerGroupes', 'ListerIPs')) ?>
-			</div>
-			<?php endif ?>
-		</div> <!-- /.pill-content -->
-	</div> <!-- /.span9 -->
+<div style="margin-top: 20px;">
+	<?php echo $view->render('ZcoUserBundle:Profile:_content.html.php', compact('user')) ?>
+</div>
 
-	<div class="span3">
-		<?php if ($canSeeInfos) :?>
-		<ul class="nav nav-pills nav-stacked" style="margin-bottom: 15px;">
-		    <li class="active"><a href="#profile-profile" data-toggle="pill">Profil</a></li>
-		    <?php if ($canSeeInfos): ?>
-		  	<li><a href="#profile-infos" data-toggle="pill">Informations</a></li>
-		  	<?php endif ?>
-		</ul>
-		<?php endif ?>
-
-		<?php if ($own): ?>
-        <div style="margin-top: 5px;">
-			<a class="btn btn-success" 
-			   href="<?php echo $view['router']->generate('zco_options_index') ?>" 
-			   style="display: inline-block; width: 80%;"
-			>
-				<i class="icon-cog icon-white"></i> 
-				Modifier mes options
-			</a>
-		</div>
-		<?php else: ?>
-		<div>
-			<a class="btn btn-success<?php if (!$canSendEmail): ?> disabled<?php endif ?>" 
-				style="display: inline-block; width: 80%;"
-			    <?php if ($canSendEmail): ?>
-			    href="mailto:<?php echo $view['humanize']->email($user->getEmail()) ?>"
-				<?php else: ?>
-				href="#" onclick="return false;"
-				<?php endif ?>
-			>
-				<i class="icon-envelope icon-white"></i> 
-				Envoyer un courriel
-			</a>
-		</div>
-		<div style="margin-top: 5px;">
-			<a class="btn btn-primary<?php if (!$canSendMp): ?> disabled<?php endif ?>" 
-				style="display: inline-block; width: 80%;"
-			    <?php if ($canSendMp): ?>
-			    href="/mp/nouveau-<?php echo $user->getId(); ?>.html"
-				<?php else: ?>
-				href="#" onclick="return false;"
-				<?php endif ?>
-			>
-				<i class="icon-pencil icon-white"></i> 
-				Envoyer un message privé
-			</a>
-		</div>
-		<?php endif ?>
-		<div style="margin-top: 5px;"><div class="btn-group">
-            <a class="btn dropdown-toggle" style="display: inline-block; width: 80%;" data-toggle="dropdown" href="#">
-            	<i class="icon-comment"></i>
-            	<?php echo $own ? 'Mon' : 'Son' ?> activité sur le site
-            	<span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu">
-            	<li>
-            		<a href="/forum/detail-messages-<?php echo $user->getId(); ?>.html">
-            			Détail de <?php echo $own ? 'mon' : 'son' ?> activité sur le forum
-            		</a>
-            	</li>
-	            <li>
-	            	<a href="/forum/messages-<?php echo $user->getId() ?>-<?php echo rewrite($user->getUsername()) ?>.html">
-	            		<?php echo $own ? 'Mes' : 'Ses' ?> messages sur le forum
-	            	</a>
-	            </li>
-	            <li>
-	            	<a href="/forum/sujets-participe-<?php echo $user->getId(); ?>.html">
-	            		Les sujets auxquels <?php echo $own ? 'j\'ai' : 'il a' ?> participé
-	            	</a>
-	            </li>
-	            <li class="divider"></li>
-	            <li>
-	            	<a href="/blog/billets-rediges-<?php echo $user->getId(); ?>.html">
-	            		<?php echo $own ? 'Mes' : 'Ses' ?> billets sur le blog
-	            	</a>
-	            </li>
-	            <?php if (verifier('recrutements_voir_candidatures')): ?>
-	            	<li>
-	            		<a href="/recrutement/candidatures-membre-<?php echo $user->getId(); ?>.html">
-	            			<?php echo $own ? 'Mes' : 'Ses' ?> candidatures aux recrutements
-	            		</a>
-	            	</li>
-	            <?php endif ?>
-	            <?php if (verifier('stats_zcorrecteurs')): ?>
-		            <li>
-		            	<a href="/statistiques/zcorrecteur-<?php echo $user->getId(); ?>.html">
-		            		<?php echo $own ? 'Mes' : 'Ses' ?> statistiques de zCorrection
-		            	</a>
-		            </li>
-	        	<?php endif ?>
-	        	<?php if (verifier('quiz_stats') || $own): ?>
-	            	<li>
-	            		<a href="/quiz/mes-statistiques-<?php echo $user->getId(); ?>.html">
-	            			<?php echo $own ? 'Mes' : 'Ses' ?> statistiques de quiz
-	            		</a>
-	            	</li>
-	        	<?php endif ?>
-            </ul>
-        </div></div>
-        <?php if ($canAdmin): ?>
-        <div style="margin-top: 5px;"><div class="btn-group">
-            <a class="btn dropdown-toggle" style="display: inline-block; width: 80%;" data-toggle="dropdown" href="#">
-            	<i class="icon-wrench"></i>
-            	Administrer le compte
-            	<span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu">
-				<?php if (verifier('groupes_changer_membre')): ?>
-				<li>
-					<a href="/groupes/changer-membre-groupe-<?php echo $user->getId() ?>.html">
-						Changer de groupe
-					</a>
-				</li>
-				<?php endif ?>
-				<?php if (verifier('options_editer_profils')): ?>
-				<li>
-					<a href="<?php echo $view['router']->generate('zco_options_profile', array('id' => $user->getId())) ?>">
-						Modifier ses paramètres
-					</a>
-				</li>
-				<?php endif ?>
-				<?php if (verifier('membres_editer_titre')): ?>
-			    <li>
-			    	<a href="<?php echo $view['router']->generate('zco_user_editTitle', array('id' => $user->getId())) ?>">
-			    		Modifier son titre
-			    	</a>
-			    </li>
-				<?php endif ?>
-            </ul>
-        </div></div>
-    	<?php endif ?>
-	</div> <!-- /.span3 -->
-</div> <!-- /.row-fluid -->
+<?php if ($canSeeInfos): ?>
+	<div style="margin-top: 20px;">
+		<?php echo $view->render('ZcoUserBundle:Profile:_infos.html.php', compact('user', 'newPseudo', 'warnings', 'punishments', 'ListerGroupes', 'ListerIPs')) ?>
+	</div>
+<?php endif ?>
