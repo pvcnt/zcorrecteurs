@@ -40,10 +40,10 @@
 <h2>Un site en constante évolution</h2>
 
 <p class="good">
-	Après un bon mois sans aucune interface pour travailler, un premier site fût 
+	Après un bon mois sans aucune interface pour travailler, un premier site fut 
 	mis en ligne permettant aux auteurs de soumettre leurs documents. Puis après 
 	un nouveau design réalisé par Moejul, le projet de se doter d’un site plus 
-	riche fût lancé.</p>
+	riche fut lancé.</p>
 
 <p class="good">
 	C’est dworkin, un des premiers zCorrecteurs, qui avec ptipilou et Ziame a 
@@ -68,7 +68,7 @@
 </p>
 
 <p class="good">
-	En parallèle, nos activités de correction se poursuivant toujours aujourd’hui,
+	En parallèle, nos activités de correction se poursuivent toujours aujourd’hui,
 	même si nous corrigeons maintenant pour d’autres sites, mais aussi pour des 
 	particuliers ou des associations. Cela nous permet de toucher toujours plus 
 	de personnes et d’exercer la démarche de <em><strong>pédagogie</strong></em> 
