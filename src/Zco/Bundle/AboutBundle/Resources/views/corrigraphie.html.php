@@ -5,7 +5,7 @@
 <div class="row">
 	<div class="span8">
 		<p style="text-align: justify;">
-			Début 2011, soit quatre ans après la création du site, fût prise la décision de fonder 
+			Début 2011, soit quatre ans après la création du site, fut prise la décision de fonder 
 			une association. Cette association, dénommée <a href="http://www.corrigraphie.org">Corrigraphie</a>, 
 			a depuis pour objectif de donner une existence légale au site, de favoriser 
 			l’implication de ses membres et de réfléchir à des façons de développer le 
