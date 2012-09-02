@@ -14,7 +14,7 @@ var Editor = new Class({
 	{
 		this._textareaId = id;
 		this.setOptions(options);
-		actions = this.actions;
+		var actions = this.actions;
 		
 		var _insertCallback = function(zform, action)
 		{
@@ -118,7 +118,7 @@ var Editor = new Class({
 				{
 					continue;
 				}
-			
+				
 				var conf = options[group][tool];
 				if (conf.type == 'button')
 				{
@@ -198,7 +198,7 @@ var Editor = new Class({
 					{						
 						conf.block[symbol]['link_class'] = conf.block[symbol]['link_class'] != undefined ? conf.block[symbol]['link_class'] : '';
 						conf.block[symbol]['wrapper_class'] = conf.block[symbol]['wrapper_class'] != undefined ? conf.block[symbol]['wrapper_class'] : 'zform-block-button';
-						var button = _createButton(conf.block[symbol], group, tool);
+						var button = _createButton(conf.block[symbol], group, tool, symbol);
 						block.grab(button);
 						
 						i++;
