@@ -116,6 +116,20 @@
 	    	</a>
 	    </li>
 		<?php endif ?>
+        <?php if (verifier('membres_avertir')): ?>
+        <li>
+            <a href="<?php echo $view['router']->generate('zco_user_admin_warn', array('id' => $user->getId())) ?>">
+                Ajouter un avertissement
+            </a>
+        </li>
+        <?php endif ?>
+        <?php if (verifier('sanctionner')): ?>
+        <li>
+            <a href="<?php echo $view['router']->generate('zco_user_admin_punish', array('id' => $user->getId())) ?>">
+                Sanctionner
+            </a>
+        </li>
+        <?php endif ?>
     </ul>
 </div></div>
 <?php endif ?>
