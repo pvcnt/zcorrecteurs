@@ -10,7 +10,7 @@
 		<?php if ($user->isCountryDisplayed() && $user->hasLocalisation()): ?>
 			<?php if ($c > 0): ?>|<?php endif ?>
 			<i class="icon-plane"></i> 
-			<span class="gris">Vit en</span>
+			<span class="gris">Vit non loin de</span>
 			<strong><?php echo htmlspecialchars($user->getLocalisation()) ?></strong>
 		<?php ++$c; endif ?>
 		<?php if ($user->hasJob()): ?>
@@ -63,7 +63,7 @@
 		<i class="icon-ok"></i>
 		<span class="gris">Membre des «&nbsp;</span><span style="font-weight: bold; color: <?php echo htmlspecialchars($user->getGroup()->getCssClass()) ?>;"><?php echo htmlspecialchars($user->getGroup()) ?></span><span class="gris">&nbsp;» 
 		depuis <?php echo dateformat($lastGroupChange, MINUSCULE, DATE) ?><?php if ($user->hasTitle()): ?> et « </span>
-		<strong>Responsable du développement</strong>
+		<strong><?php echo htmlspecialchars($user->getTitle()) ?></strong>
 		<span class="gris"> »<?php endif ?>.</span>
 	</li>
 	<?php endif ?>

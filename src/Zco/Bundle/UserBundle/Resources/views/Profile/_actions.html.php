@@ -20,6 +20,9 @@
 	>
 		<i class="icon-envelope icon-white"></i> 
 		Envoyer un courriel
+        <?php if (verifier('rechercher_mail')): ?><br />
+            <span style="font-size: 0.9em;"><?php echo htmlspecialchars($user->getEmail()) ?></span>
+        <?php endif ?>
 	</a>
 </div>
 <div style="margin-top: 5px;">
