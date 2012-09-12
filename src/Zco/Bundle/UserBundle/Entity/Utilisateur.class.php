@@ -501,31 +501,31 @@ class Utilisateur extends BaseUtilisateur
 		$stmt = $dbh->prepare("
 		DELETE FROM zcov2_forum_lunonlu
 		WHERE lunonlu_utilisateur_id = :id");
-		$stmt->bindParam(':id', $this->id);
+		$stmt->bindValue(':id', $this->getId());
 		$stmt->execute();
 
 		$stmt = $dbh->prepare("
 		DELETE FROM zcov2_utilisateurs_preferences
 		WHERE preference_id_utilisateur = :id");
-		$stmt->bindParam(':id', $this->id);
+		$stmt->bindValue(':id', $this->getId());
 		$stmt->execute();
 
 		$stmt = $dbh->prepare("
 		DELETE FROM zcov2_utilisateurs_ips
 		WHERE ip_id_utilisateur = :id");
-		$stmt->bindParam(':id', $this->id);
+		$stmt->bindValue(':id', $this->getId());
 		$stmt->execute();
 
 		$stmt = $dbh->prepare("
 		DELETE FROM zcov2_sanctions
 		WHERE sanction_id_utilisateur = :id");
-		$stmt->bindParam(':id', $this->id);
+		$stmt->bindValue(':id', $this->getId());
 		$stmt->execute();
 
 		$stmt = $dbh->prepare("
 		DELETE FROM zcov2_changements_pseudos
 		WHERE changement_id_utilisateur = :id");
-		$stmt->bindParam(':id', $this->id);
+		$stmt->bindValue(':id', $this->getId());
 		$stmt->execute();
 
 		//Mises à jour
@@ -533,112 +533,104 @@ class Utilisateur extends BaseUtilisateur
 		UPDATE zcov2_blog_auteurs
 		SET auteur_id_utilisateur = NULL
 		WHERE auteur_id_utilisateur = :id");
-		$stmt->bindParam(':id', $this->id);
+		$stmt->bindValue(':id', $this->getId());
 		$stmt->execute();
 
 		$stmt = $dbh->prepare("
 		UPDATE zcov2_blog_commentaires
 		SET commentaire_id_utilisateur = NULL
 		WHERE commentaire_id_utilisateur = :id");
-		$stmt->bindParam(':id', $this->id);
+		$stmt->bindValue(':id', $this->getId());
 		$stmt->execute();
 
 		$stmt = $dbh->prepare("
 		UPDATE zcov2_blog_validation
 		SET valid_id_utilisateur = NULL
 		WHERE valid_id_utilisateur = :id");
-		$stmt->bindParam(':id', $this->id);
+		$stmt->bindValue(':id', $this->getId());
 		$stmt->execute();
 
 		$stmt = $dbh->prepare("
 		UPDATE zcov2_blog_versions
 		SET version_id_utilisateur = NULL
 		WHERE version_id_utilisateur = :id");
-		$stmt->bindParam(':id', $this->id);
+		$stmt->bindValue(':id', $this->getId());
 		$stmt->execute();
 
 		$stmt = $dbh->prepare("
 		UPDATE zcov2_push_corrections
 		SET correction_id_correcteur = NULL
 		WHERE correction_id_correcteur = :id");
-		$stmt->bindParam(':id', $this->id);
+		$stmt->bindValue(':id', $this->getId());
 		$stmt->execute();
 
 		$stmt = $dbh->prepare("
 		UPDATE zcov2_changements_pseudos
 		SET changement_id_admin = NULL
 		WHERE changement_id_admin = :id");
-		$stmt->bindParam(':id', $this->id);
+		$stmt->bindValue(':id', $this->getId());
 		$stmt->execute();
 
 		$stmt = $dbh->prepare("
 		UPDATE zcov2_forum_sondages_votes
 		SET vote_membre_id = NULL
 		WHERE vote_membre_id = :id");
-		$stmt->bindParam(':id', $this->id);
+		$stmt->bindValue(':id', $this->getId());
 		$stmt->execute();
 
 		$stmt = $dbh->prepare("
 		UPDATE zcov2_forum_sujets
 		SET sujet_auteur = NULL
 		WHERE sujet_auteur = :id");
-		$stmt->bindParam(':id', $this->id);
+		$stmt->bindValue(':id', $this->getId());
 		$stmt->execute();
 
 		$stmt = $dbh->prepare("
 		UPDATE zcov2_forum_messages
 		SET message_edite_auteur = NULL
 		WHERE message_edite_auteur = :id");
-		$stmt->bindParam(':id', $this->id);
+		$stmt->bindValue(':id', $this->getId());
 		$stmt->execute();
 
 		$stmt = $dbh->prepare("
 		UPDATE zcov2_forum_messages
 		SET message_auteur = NULL
 		WHERE message_auteur = :id");
-		$stmt->bindParam(':id', $this->id);
+		$stmt->bindValue(':id', $this->getId());
 		$stmt->execute();
 
-		$stmt = $dbh->prepare("
-		UPDATE zcov2_livredor
-		SET livredor_id_utilisateur = NULL
-		WHERE livredor_id_utilisateur = :id");
-		$stmt->bindParam(':id', $this->id);
-		$stmt->execute();
+		\Doctrine_Query::create()
+			->delete('Livredor')
+			->where('utilisateur_id = ?', $this->getId())
+			->execute();
 
-		$stmt = $dbh->prepare("
-		UPDATE zcov2_quiz
-		SET quiz_id_utilisateur = NULL
-		WHERE quiz_id_utilisateur = :id");
-		$stmt->bindParam(':id', $this->id);
-		$stmt->execute();
+		\Doctrine_Query::create()
+			->delete('Quiz')
+			->where('utilisateur_id = ?', $this->getId())
+			->execute();
 
-		$stmt = $dbh->prepare("
-		UPDATE zcov2_quiz_questions
-		SET question_id_utilisateur = NULL
-		WHERE question_id_utilisateur = :id");
-		$stmt->bindParam(':id', $this->id);
-		$stmt->execute();
+		\Doctrine_Query::create()
+			->delete('QuizQuestion')
+			->where('utilisateur_id = ?', $this->getId())
+			->execute();
 
-		$stmt = $dbh->prepare("
-		UPDATE zcov2_quiz_scores
-		SET score_id_utilisateur = NULL
-		WHERE score_id_utilisateur = :id");
-		$stmt->bindParam(':id', $this->id);
-		$stmt->execute();
+		\Doctrine_Query::create()
+			->delete('QuizScore')
+			->where('utilisateur_id = ?', $this->getId())
+			->execute();
 
 		$stmt = $dbh->prepare("
 		UPDATE zcov2_recrutements
 		SET recrutement_id_utilisateur = NULL
 		WHERE recrutement_id_utilisateur = :id");
-		$stmt->bindParam(':id', $this->id);
+		$stmt->bindValue(':id', $this->getId());
 		$stmt->execute();
 
 		$stmt = $dbh->prepare("
 		UPDATE zcov2_recrutements_candidatures
 		SET candidature_id_utilisateur = NULL
 		WHERE candidature_id_utilisateur = :id");
-		$stmt->bindParam(':id', $this->id);
+		$stmt->bindValue(':id', $this->getId());
 		$stmt->execute();
 	}
 	

@@ -24,6 +24,7 @@ namespace Zco\Bundle\OptionsBundle\Form\Handler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Imagine\Image\Box;
+use Imagine\Image\ImagineInterface;
 
 /**
  * Gère la soumission du formulaire de changement d'avatar.
@@ -38,15 +39,17 @@ class EditAvatarHandler
 	const WRONG_FORMAT = 4;
 
 	protected $request;
+	protected $imagine;
 	
 	/**
 	 * Constructeur.
 	 *
 	 * @param Request $this->request
 	 */
-	public function __construct(Request $request)
+	public function __construct(Request $request, ImagineInterface $imagine)
 	{
 		$this->request = $request;
+		$this->imagine = $imagine;
 	}
 	
 	/**
@@ -119,7 +122,8 @@ class EditAvatarHandler
 			$size = getimagesize($path[0].'/'.$path[1]);
 			if ($size[0] > 100 || $size[1] > 100)
 			{
-				$this->get('imagine')
+				$this
+					->imagine
 					->open($path[0].'/'.$path[1])
 					->thumbnail(new Box(100, 100))
 					->save($path[0].'/'.$path[1]);
