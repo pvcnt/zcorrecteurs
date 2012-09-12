@@ -61,7 +61,7 @@ class DefaultController extends Controller
 	{
 		$user    = $this->getEditableUser($id);
 		$own     = $user->getId() == $_SESSION['id'];
-		$handler = new EditAvatarHandler($request);
+		$handler = new EditAvatarHandler($request, $this->get('imagine'));
 
 		if (($retval = $handler->process($user)) !== false)
 		{
