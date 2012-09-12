@@ -417,7 +417,7 @@ class Utilisateur extends BaseUtilisateur
 	
 	public function hasLocalisation()
 	{
-		return !empty($this->localisation);
+		return !empty($this->localisation) && $this->localisation !== 'Inconnu';
 	}
 	
 	public function getLocalisation()

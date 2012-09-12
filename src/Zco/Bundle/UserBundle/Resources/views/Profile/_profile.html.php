@@ -10,7 +10,7 @@
 		<?php if ($user->isCountryDisplayed() && $user->hasLocalisation()): ?>
 			<?php if ($c > 0): ?>|<?php endif ?>
 			<i class="icon-plane"></i> 
-			<span class="gris">Vit en</span>
+			<span class="gris">Vit non loin de</span>
 			<strong><?php echo htmlspecialchars($user->getLocalisation()) ?></strong>
 		<?php ++$c; endif ?>
 		<?php if ($user->hasJob()): ?>
