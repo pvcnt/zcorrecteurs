@@ -130,6 +130,13 @@
             </a>
         </li>
         <?php endif ?>
+        <?php if (verifier('suppr_comptes')): ?>
+        <li>
+            <a href="<?php echo $view['router']->generate('zco_user_admin_deleteAccount', array('id' => $user->getId())) ?>">
+                Supprimer le compte
+            </a>
+        </li>
+        <?php endif ?>
     </ul>
 </div></div>
 <?php endif ?>
