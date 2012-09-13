@@ -13,7 +13,7 @@
  */
 h1 {
 	margin: 18px 0;
-    padding-bottom: 5px;
+  padding-bottom: 5px;
 	border-bottom: 1px solid #EEE;
 	line-height: 1;
 	margin-bottom: 15px !important;
@@ -159,7 +159,7 @@ div.content {
  .breadcrumb {
   line-height: 14px;
  }
-.breadcrumb li {
+.breadcrumb li, .breadcrumb span {
   font-size: 12px;
   line-height: 14px;
 }
