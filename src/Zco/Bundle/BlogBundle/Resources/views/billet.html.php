@@ -1,5 +1,14 @@
 <?php $view->extend('::layouts/default.html.php') ?>
 
+<?php $view['slots']->start('meta') ?>
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="zcorrecteurs" />
+<meta name="twitter:url" content="<?php echo URL_SITE ?>/blog/billet-<?php echo $InfosBillet['blog_id'] ?>-<?php echo rewrite($InfosBillet['version_titre']) ?>.html" />
+<meta name="twitter:description" content="<?php echo htmlspecialchars(strip_tags($InfosBillet['version_intro'])) ?>" />
+<meta name="twitter:title" content="<?php echo htmlspecialchars($InfosBillet['version_titre']) ?>" />
+<meta name="twitter:image" content="<?php echo URL_SITE ?>/<?php echo htmlspecialchars($InfosBillet['blog_image']); ?>" />
+<?php $view['slots']->stop() ?>
+
 <h1><?php echo htmlspecialchars($InfosBillet['version_titre']); ?></h1>
 
 <?php if(!empty($InfosBillet['version_sous_titre'])){ ?>

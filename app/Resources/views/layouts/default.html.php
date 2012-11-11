@@ -7,6 +7,7 @@
 		<meta http-equiv="content-language" content="fr" />
 		<meta name="description" content="<?php echo Page::$description; ?>" />
 		<meta name="robots" content="<?php echo Page::$robots; ?>" />
+		<?php $view['slots']->output('meta') ?>
 
 		<title><?php echo str_replace(array(' '), ' ', Page::$titre); ?></title>
 		

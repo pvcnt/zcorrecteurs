@@ -1,5 +1,16 @@
 <?php $view->extend('::layouts/default.html.php') ?>
 
+<?php $view['slots']->start('meta') ?>
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="zcorrecteurs" />
+<meta name="twitter:url" content="<?php echo URL_SITE ?>/dictees/dictee-<?php echo $Dictee->id ?>-<?php echo rewrite($Dictee->titre) ?>.html" />
+<meta name="twitter:description" content="<?php echo htmlspecialchars(strip_tags($Dictee->description)) ?>" />
+<meta name="twitter:title" content="<?php echo htmlspecialchars($Dictee->titre) ?>" />
+<?php if ($Dictee->icone): ?>
+	<meta name="twitter:image" content="<?php echo URL_SITE ?>/<?php echo htmlspecialchars($Dictee->icone) ?>" />
+<?php endif ?>
+<?php $view['slots']->stop() ?>
+
 <h1><?php echo htmlspecialchars($Dictee->titre) ?></h1>
 <?php echo $view->render('ZcoDicteesBundle::_dictee.html.php', compact('Dictee', 'DicteeEtats', 'DicteeDifficultes')) ?>
 

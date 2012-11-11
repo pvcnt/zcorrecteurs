@@ -56,8 +56,25 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
     		$event->setContent(str_replace(
 				'<p class="arianne">', 
 				'<p class="arianne"><span style="float: right;">' .
-    				'<a href="/evolution/">' .
-    				'<img src="/pix.gif" class="fff bug" alt="" /> Signaler une anomalie'.
+    				'<img src="/pix.gif" class="fff bug" alt="" /> '.
+    				'<a href="/evolution/">Signaler une anomalie' .
+					(verifier('tracker_etre_assigne') ? 
+						' ('.$this->container->get('zco_admin.manager')->get('demandes').
+						' - '.$this->container->get('zco_admin.manager')->get('taches').')'
+						: ''
+					).
+					'</a>'.
+				'</span>',
+				$event->getContent()
+			));
+    	}
+    	elseif (verifier('tracker_voir') && $event->getTemplate() !== 'legacy')
+    	{
+    		$event->setContent(str_replace(
+				'<ul class="breadcrumb">', 
+				'<ul class="breadcrumb"><span style="float: right;">' .
+    				'<img src="/pix.gif" class="fff bug" alt="" /> '.
+    				'<a href="/evolution/">Signaler une anomalie' .
 					(verifier('tracker_etre_assigne') ? 
 						' ('.$this->container->get('zco_admin.manager')->get('demandes').
 						' - '.$this->container->get('zco_admin.manager')->get('taches').')'
