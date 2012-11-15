@@ -438,24 +438,19 @@ function EditerBillet($id, $params)
 	if ($tweeter_billet)
 	{
 		$billet = InfosBillet($id);
-		$url = URL_SITE.'/blog/billet-'
-		      .$billet[0]['blog_id'].'-'
-		      .rewrite($billet[0]['version_titre'])
-		      .'.html';
-
-		$url = \Container::getService('zco_twitter.bitly')->shorten($url);
+		$url = URL_SITE.'/blog/billet-'.$billet[0]['blog_id'].'-'.rewrite($billet[0]['version_titre']).'.html';
 
 		$pre = 'Nouveau billet : ';
-		$post = ' − '.$url;
+		$post = ' − ';
 		$milieu = $billet[0]['version_titre'];
 
-		$restant = 140 - mb_strlen($pre.$post);
+		$restant = 140 - (mb_strlen($pre.$post) + 20);
 		if (mb_strlen($milieu) > $restant)
 		{
 			$milieu = mb_substr($milieu, 0, $restant - 1).'…';
 		}
 
-		$texte = $pre.$milieu.$post;
+		$texte = $pre.$milieu.$post.$url;
 		\Doctrine_Core::getTable('TwitterTweet')->add($texte, $_SESSION['id']);
 	}
 
