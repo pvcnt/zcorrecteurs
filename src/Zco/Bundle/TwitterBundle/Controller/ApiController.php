@@ -32,21 +32,4 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
  */
 class ApiController extends Controller
 {
-	/**
-	 * Raccourcit une URL via le service bit.ly.
-	 *
-	 * @param Request $request
-	 */
-	public function bitlyAction(Request $request)
-	{
-		if (!$request->request->has('url'))
-		{
-			return new Response(json_encode(array('status' => 'ERROR')));
-		}
-		
-		return new Response(json_encode(array(
-			'status' => 'OK', 
-			'url' => $this->get('zco_twitter.bitly')->shorten($request->request->get('url')),
-		)));
-	}
 }

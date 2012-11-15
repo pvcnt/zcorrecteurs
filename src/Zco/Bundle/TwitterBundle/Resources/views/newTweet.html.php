@@ -83,8 +83,4 @@
 		'chars_id' => 'tweet_chars',
 		'button_id' => 'tweet_submit',
 	)) ?>
-	<?php $view['javelin']->initBehavior('twitter-bitly', array(
-		'textarea_id' => 'tweet_texte',
-		'button_id' => 'tweet_submit',
-	)) ?>
 </form>

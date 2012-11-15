@@ -105,3 +105,6 @@
 
 [geocoder]
     git=https://github.com/willdurand/Geocoder.git
+
+[twitter-text-js]
+    git=https://github.com/twitter/twitter-text-js

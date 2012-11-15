@@ -18,5 +18,3 @@ parameters:
     aviary_api_secret:  ''
     twitter_api_key: ''
     twitter_api_secret: ''
-    bitly_login: ''
-    bitly_api_key: ''

@@ -30,12 +30,36 @@ class Twitter extends OAuth
 {
 	private $apiEndpoint;
 	
+	/**
+	 * Constructeur.
+	 *
+	 * @param string $apiEndpoint Point d'entrée dans l'API Twitter
+	 * @param string $oauthEndpoint Point d'entrée pour l'authentification
+	 * @param array $consumerKey Clés d'authentification
+	 */
 	public function __construct($apiEndpoint, $oauthEndpoint, array $consumerKey)
 	{
 		$this->apiEndpoint = rtrim($apiEndpoint, '/');
 		parent::__construct($oauthEndpoint, $consumerKey);
 	}
+
+	/**
+	 * Retourne la configuration de l'API.
+	 *
+	 * @return array
+	 */
+	public function getConfiguration()
+	{
+		return $this->send('POST', $this->apiEndpoint.'/help/configuration.json');
+	}
 	
+	/**
+	 * Ajoute un nouveau tweet.
+	 *
+	 * @param  string $status Texte de statut
+	 * @param  integer|null $rid ID du tweet auquel on répond
+	 * @return array
+	 */
 	public function addTweet($status, $rid = null)
 	{
 		$params = compact('status');
@@ -51,6 +75,12 @@ class Twitter extends OAuth
 		);
 	}
 
+	/**
+	 * Supprime un tweet.
+	 *
+	 * @param  integer $id ID du tweet à supprimer
+	 * @return array
+	 */
 	public function deleteTweet($id)
 	{
 		return $this->send(
@@ -60,6 +90,12 @@ class Twitter extends OAuth
 		);
 	}
 
+	/**
+	 * Retourne les mentions adressées à l'utilisateur.
+	 *
+	 * @param  integer $lastID ID de la dernière mention récupérée
+	 * @return array
+	 */
 	public function getMentions($lastID = 0)
 	{
 		$lastID = $lastID
@@ -73,4 +109,3 @@ class Twitter extends OAuth
 		);
 	}
 }
-
