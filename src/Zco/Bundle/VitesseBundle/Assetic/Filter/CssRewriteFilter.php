@@ -37,13 +37,14 @@ class CssRewriteFilter extends BaseCssFilter
 		{
 			return;
 		}
-	  
-		$root = preg_replace('@'.DIRECTORY_SEPARATOR.'Resources'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'[^'.DIRECTORY_SEPARATOR.']+$@', '', $root);
-		$parts = explode('/', $root);
+	  	
+	  	$directorySeparator = preg_quote(DIRECTORY_SEPARATOR);
+		$root = preg_replace('@'.$directorySeparator.'Resources'.$directorySeparator.'public'.$directorySeparator.'[^'.$directorySeparator.']+$@', '', $root);
+		
+		$parts = explode(DIRECTORY_SEPARATOR, $root);
 		$len = count($parts);
 		$bundle = preg_replace('@Bundle$@', '', $parts[$len - 1]);
 		$bundle = strtolower(($parts[$len - 2] === 'Bundle' ? $parts[$len - 3] : $parts[$len - 2]).$bundle);
-		
 		$content = $this->filterReferences($asset->getContent(), function($matches) use ($bundle)
 		{
 			if (false !== strpos($matches['url'], '://') || 0 === strpos($matches['url'], '//'))
