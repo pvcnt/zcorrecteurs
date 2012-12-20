@@ -387,8 +387,8 @@ function ListerCategories($verif_droits = false)
 			$stmt = $dbh->prepare("SELECT cat_id, cat_nom, cat_description, " .
 					"cat_gauche, cat_droite, cat_niveau, cat_url, cat_reglement, " .
 					"cat_redirection, cat_map, cat_map_type, cat_nb_elements, " .
-					"cat_last_element, cat_image, cat_keywords, cat_disponible_ciblage, cat_ciblage_actions " .
-					"FROM zcov2_categories " .
+					"cat_last_element, cat_image, cat_keywords, cat_disponible_ciblage, cat_ciblage_actions, " .
+					" cat_archive FROM zcov2_categories " .
 					"ORDER BY cat_gauche ASC");
 
 			$stmt->execute();

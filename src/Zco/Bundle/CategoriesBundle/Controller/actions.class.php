@@ -116,6 +116,14 @@ class CategoriesActions extends Controller
 			$ListerParents = ListerParents($InfosCategorie);
 			if(empty($ListerParents))
 				$ListerParents[0]['cat_id'] = 0;
+				
+			// Récupération des informations du forum et vérification si c'est bien un forum
+			$InfoForum = InfosCategorie(GetIDCategorie('forum'));
+			$forum = false;
+			
+			if ($InfosCategorie['cat_droite'] <= $InfoForum['cat_droite'] && $InfosCategorie['cat_gauche'] >= $InfoForum['cat_gauche'] ) {
+				$forum = true;
+			}
 		}
 		else
 			return redirect(6, 'index.html', MSG_ERROR);
@@ -123,6 +131,7 @@ class CategoriesActions extends Controller
 		return render_to_response(array(
 			'InfosCategorie' => $InfosCategorie,
 			'ListerParents' => $ListerParents,
+			'isForum' => $forum
 		));
 	}
 
