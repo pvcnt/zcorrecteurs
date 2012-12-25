@@ -55,8 +55,11 @@ function ListerCategoriesForum($InfosCategorie = array(), $LimiterSousCat = fals
 	array_unshift($groupes, $_SESSION['groupe']);
 	$groupes = implode(',', $groupes);
 
+	//Archives
+	$archives = !empty($_GET['archives']) ? 1 : 0;
+
 	$stmt = $dbh->prepare("SELECT cat_id, cat_nom, cat_gauche, cat_droite, cat_description, cat_last_element, cat_url, " .
-			"cat_niveau, cat_redirection, message_date, UNIX_TIMESTAMP(message_date) AS message_timestamp, message_auteur, utilisateur_id, " .
+			"cat_niveau, cat_redirection, cat_archive, message_date, UNIX_TIMESTAMP(message_date) AS message_timestamp, message_auteur, utilisateur_id, " .
 			"IFNULL(utilisateur_pseudo, 'Anonyme') AS utilisateur_pseudo, " .
 			"sujet_titre, message_id, message_sujet_id, ".$add." " .
 			"lunonlu_utilisateur_id, lunonlu_sujet_id, lunonlu_message_id, lunonlu_participe, lunonlu_favori, groupe_class " .
@@ -68,11 +71,13 @@ function ListerCategoriesForum($InfosCategorie = array(), $LimiterSousCat = fals
 			"LEFT JOIN zcov2_groupes_droits ON gd_id_categorie = cat_id AND gd_id_groupe IN ($groupes) " .
 			"LEFT JOIN zcov2_droits ON gd_id_droit = droit_id " .
 			"LEFT JOIN zcov2_groupes ON utilisateur_id_groupe = groupe_id " .
-			"WHERE cat_niveau > 1 ".$add3." AND droit_nom = :droit AND gd_valeur = 1 ". $add2 .
+			"WHERE cat_niveau > 1 ".$add3." AND droit_nom = :droit AND gd_valeur = 1 AND cat_archive = :archives ". $add2 .
 			"GROUP BY cat_id ".
 			"ORDER BY cat_gauche");
 	$stmt->bindParam(':user_id', $_SESSION['id']);
 	$stmt->bindParam(':droit', $droit);
+	$stmt->bindParam(':archives', $archives);
+	
 	if(!empty($InfosCategorie))
 	{
 		$stmt->bindParam(':gauche', $InfosCategorie['cat_gauche']);
