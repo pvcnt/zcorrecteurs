@@ -27,6 +27,15 @@
 			<img src="/pix.gif" class="fff feed" alt="" />
 			<a href="/forum/messages-flux.html">S'abonner au flux du forum</a>
 		</li>
+		<?php if((verifier('voir_archives'))) : ?>
+		<li>
+			<?php if(!empty($_GET['archives'])) : ?>
+				<a href="index.html">Sortir</a> des archives.
+			<?php else : ?>
+			<a href="?archives=1">Voir les forums archivés</a>
+			<?php endif; ?>
+		</li>
+		<?php endif; ?>
 	</ul>
 </div>
 

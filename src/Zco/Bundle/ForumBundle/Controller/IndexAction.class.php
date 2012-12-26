@@ -86,6 +86,10 @@ class IndexAction extends ForumActions
 		{
 			fil_ariane('Liste des sujets en favoris');
 		}
+		elseif(!empty($_GET['archives']))
+		{
+			fil_ariane('Accueil des archives');
+		}
 		else
 		{
 			fil_ariane('Accueil des forums');

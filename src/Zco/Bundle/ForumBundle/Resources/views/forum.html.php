@@ -35,6 +35,15 @@
     		<a href="/forum/messages-flux-<?php echo $_GET['id'] ?>.html">au flux du forum «&nbsp;<?php echo htmlspecialchars($InfosForum['cat_nom']) ?>&nbsp;»</a>, 
     		<a href="/forum/messages-flux-<?php echo $Parent['cat_id'] ?>.html">au flux de la catégorie «&nbsp;<?php echo htmlspecialchars($Parent['cat_nom']) ?>&nbsp;»</a>
     	</li>
+    	<?php if(verifier('voir_archives')) : ?>
+		<li>
+			<?php if(!empty($_GET['archives'])) : ?>
+				<a href="<?php echo FormateURLCategorie($InfosForum['cat_id']); ?>">Sortir</a> des archives.
+			<?php else : ?>
+			<a href="?archives=1">Voir les forums archivés</a>
+			<?php endif; ?>
+		</li>
+		<?php endif; ?>
 	</ul>
 </div>
 

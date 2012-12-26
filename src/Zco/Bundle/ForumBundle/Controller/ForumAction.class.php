@@ -345,7 +345,17 @@ class ForumAction extends ForumActions
 			\Doctrine_Core::getTable('Online')->updateUserPosition($_SESSION['id'], 'ZcoForumBundle:forum', $_GET['id']);
 
 			// Inclusion de la vue
-			fil_ariane($_GET['id'], 'Liste des sujets'.(!empty($_GET['trash']) ? ' dans la corbeille' : ''));
+			$msgFil = '';
+			if ( !empty($_GET['trash']) && empty($_GET['archives']) ) {
+				$msgFil = 'Liste des sujets dans la corbeille';
+			}
+			else if ( empty($_GET['trash']) && !empty($_GET['archives']) ) {
+				$msgFil = 'Liste des fora archivés';
+			}
+			else {
+				$msgFil = 'Liste des sujets';
+			}
+			fil_ariane($_GET['id'], $msgFil);
 			$this->get('zco_vitesse.resource_manager')->addFeed(
 			    '/forum/messages-flux-'.$_GET['id'].'.html', 
 			    array('title' => 'Derniers messages de cette catégorie')
