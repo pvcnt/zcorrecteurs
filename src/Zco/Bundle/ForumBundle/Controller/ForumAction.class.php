@@ -304,6 +304,7 @@ class ForumAction extends ForumActions
 			{
 				$ListerUneCategorie = ListerCategoriesForum($InfosForum);
 				$LuForum = array();
+				$nbIndex = 0;
 				foreach ($ListerUneCategorie as $cat)
 				{
 					// Si le forum est vide, l'image lu/non-lu sera une ampoule blanche.
@@ -326,6 +327,19 @@ class ForumAction extends ForumActions
 							'derniere_lecture_globale' => $derniere_lecture,
 						));
 					}
+					
+					if (!empty($_GET['archives']))
+					{
+						// Forum parent
+						$tempParent = ListerParents($cat);
+						if (count($tempParent) > 2)
+						{
+							$tempParent = array_pop($tempParent);
+							$ListerUneCategorie[$nbIndex]['parent'] = $tempParent;
+						}
+					}
+					
+					$nbIndex++;
 				}
 			}
 			else
@@ -350,7 +364,7 @@ class ForumAction extends ForumActions
 				$msgFil = 'Liste des sujets dans la corbeille';
 			}
 			else if ( empty($_GET['trash']) && !empty($_GET['archives']) ) {
-				$msgFil = 'Liste des fora archivés';
+				$msgFil = 'Liste des forums archivés';
 			}
 			else {
 				$msgFil = 'Liste des sujets';

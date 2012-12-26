@@ -60,6 +60,7 @@ class CategorieAction extends ForumActions
 		{
 			$derniere_lecture = DerniereLecture($_SESSION['id']);
 			$Lu = array();
+			$nbIndex = 0;
 			foreach ($ListerUneCategorie as $cat)
 			{
 				//Si le forum est vide, l'image lu/non-lu sera une ampoule blanche.
@@ -82,6 +83,19 @@ class CategorieAction extends ForumActions
 						'derniere_lecture_globale' => $derniere_lecture,
 					));
 				}
+				
+				if (!empty($_GET['archives']))
+				{
+					// Forum parent
+					$parent = ListerParents($cat);
+					if (count($parent) > 2)
+					{
+						$parent = array_pop($parent);
+						$ListerUneCategorie[$nbIndex]['parent'] = $parent;
+					}
+				}
+				
+				$nbIndex++;
 			}
 		}
 
@@ -90,8 +104,12 @@ class CategorieAction extends ForumActions
 		header('Cache-control: no-cache');
 
 		//Inclusion de la vue
-		if(!empty($_GET['trash']))
+		if(!empty($_GET['trash'])) {
 			fil_ariane($_GET['id'], 'Liste des forums de la corbeille');
+		}
+		else if (!empty($_GET['archives'])){
+			fil_ariane($_GET['id'], 'Liste des forums archivés');
+		}
 		else
 			fil_ariane($_GET['id'], 'Liste des forums');
 		

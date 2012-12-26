@@ -17,6 +17,15 @@
     		    S'abonner au flux de la catégorie «&nbsp;<?php echo htmlspecialchars($InfosCategorie['cat_nom']) ?>&nbsp;»
     		</a>
     	</li>
+    	<?php if(verifier('voir_archives')) : ?>
+		<li>
+			<?php if(!empty($_GET['archives'])) : ?>
+				<a href="?archives=0">Sortir</a> des archives.
+			<?php else : ?>
+			<a href="?archives=1">Voir les forums archivés</a>
+			<?php endif; ?>
+		</li>
+		<?php endif; ?>
 	</ul>
 </div>
 
@@ -40,6 +49,7 @@
 	</tfoot>
 
 	<tbody>
+		<?php if ( empty($_GET['archives']) ) : ?>
 		<tr class="grosse_cat<?php if(!empty($_GET['trash'])) echo '_trash'; ?>">
 			<td colspan="<?php echo $colspan; ?>" class="nom_forum">
 				<a href="<?php echo FormateURLCategorie($InfosCategorie['cat_id']); if(!empty($_GET['trash'])) echo '?trash=1'; ?>" rel="nofollow">
@@ -47,15 +57,27 @@
 				</a>
 			</td>
 		</tr>
-
-		<?php foreach($ListerUneCategorie as $clef => $valeur){ ?>
-			<?php echo $view->render('ZcoForumBundle::_forum.html.php', array('i' => $clef, 'forum' => $valeur, 'Lu' => $Lu))?>
-		<?php } ?>
+		<?php
+		endif;
+		foreach($ListerUneCategorie as $clef => $valeur)
+		{
+			$viewVars = array('i' => $clef, 'forum' => $valeur, 'Lu' => $Lu);
+			if ( !empty($_GET['archives']) ) {
+				$viewVars['Parent'] = $valeur['parent'];
+			}
+			
+			echo $view->render('ZcoForumBundle::_forum.html.php', $viewVars);
+		}
+		?>
 	</tbody>
 </table>
 
-<?php if(empty($_GET['trash'])) { ?>
+<?php if(empty($_GET['trash']) && empty($_GET['archives'])) { ?>
 	<p class="centre"><strong>Retour à la <a href="index.html">liste des catégories</a></strong></p>
-<?php } else { ?>
+<?php }
+else if (!empty($_GET['archives']) && empty($_GET['trash']) ){ ?>
+	<p class="centre"><strong>Retour à la <a href="index.html?archives=1">liste des catégories archivées</a></strong></p>
+<?php }
+else { ?>
 	<p class="centre"><strong>Retour à la <a href="index.html?trash=1">liste des catégories de la corbeille</a></strong></p>
 <?php } ?>

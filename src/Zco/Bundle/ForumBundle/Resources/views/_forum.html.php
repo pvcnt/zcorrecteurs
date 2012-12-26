@@ -1,3 +1,15 @@
+<?php if ( isset($Parent) && !empty($_GET['archives'])) : ?>
+<tr class="grosse_cat_trash" id="c<?php echo $Parent['cat_id']; ?>">
+	<td colspan="3" class="nom_forum">
+		<h2>
+			<a href="<?php echo FormateURLCategorie($Parent['cat_id']); if (!empty($_GET['archives'])) echo '?archives=1'; ?>" rel="nofollow">
+				<?php echo htmlspecialchars($Parent['cat_nom']) ?>
+			</a>
+		</h2>
+	</td>
+</tr>
+<?php endif; ?>
+
 <tr class="<?php echo empty($_GET['trash']) ? 'sous_cat' : 'sous_cat_trash trash' ?>">
 
 	<?php if (empty($_GET['trash'])){ ?>

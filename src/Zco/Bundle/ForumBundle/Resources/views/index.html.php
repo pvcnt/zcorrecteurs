@@ -88,9 +88,16 @@
 						</h2>
 					</td>
 				</tr>
-			<?php } else{ ?>
-				<?php echo $view->render('ZcoForumBundle::_forum.html.php', array('i' => $clef, 'forum' => $valeur, 'Lu' => $Lu))?>
-			<?php }
+			<?php
+			}
+			else
+			{
+				$viewVars = array('i' => $clef, 'forum' => $valeur, 'Lu' => $Lu);
+				if ( !empty($_GET['archives']) ) {
+					$viewVars['Parent'] = $valeur['parent'];
+				}
+				echo $view->render('ZcoForumBundle::_forum.html.php', $viewVars);
+			}
 		}
 	}
 	else
