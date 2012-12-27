@@ -45,6 +45,11 @@ class CategorieAction extends ForumActions
 		{
 			return redirect(65, '/forum/', MSG_ERROR);
 		}
+		
+		// Si la catégorie est archiver on redirige l'utilisateur
+		if( $InfosCategorie['cat_archive'] == 1 && !verifier('voir_archives')) {
+			return redirect(357, '/forum/', MSG_ERROR);
+		}
 
 		zCorrecteurs::VerifierFormatageUrl($InfosCategorie['cat_nom'], true);
 		

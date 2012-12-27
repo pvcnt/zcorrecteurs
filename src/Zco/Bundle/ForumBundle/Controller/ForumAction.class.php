@@ -57,6 +57,11 @@ class ForumAction extends ForumActions
 		{
 			return new Symfony\Component\HttpFoundation\RedirectResponse($InfosForum['cat_redirection'], 301);
 		}
+		
+		// Si le forum est archiver on redirige l'utilisateur
+		if( $InfosForum['cat_archive'] == 1 && !verifier('voir_archives')) {
+			return redirect(357, '/forum/', MSG_ERROR);
+		}
 
 		// Si on veut effectuer une action multiple
 		if(isset($_POST['action']) AND in_array($_POST['action'], array('annonce', 'plus_annonce', 'resolu', 'nonresolu', 'favori', 'nonfavori', 'fermer', 'ouvrir', 'deplacer', 'corbeille', 'restaurer', 'supprimer', 'lu', 'nonlu')) AND !empty($_POST['sujet']))

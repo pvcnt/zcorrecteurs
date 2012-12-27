@@ -54,6 +54,10 @@ class NouveauAction extends ForumActions
 			{
 				throw new AccessDeniedHttpException;
 			}
+			if ( $InfosForum['cat_archive'] == 1 )
+			{
+				return redirect(357, '/forum/', MSG_ERROR);
+			}
 		}
 
 		zCorrecteurs::VerifierFormatageUrl($InfosForum['cat_nom'], true);

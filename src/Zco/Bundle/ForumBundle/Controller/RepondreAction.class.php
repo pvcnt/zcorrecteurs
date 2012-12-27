@@ -50,6 +50,12 @@ class RepondreAction extends ForumActions
 			{
 				throw new AccessDeniedHttpException;
 			}
+			
+			// Si le forum est archivé
+			if ( $InfosForum['cat_archive'] == 1 ) 
+			{
+				return redirect(357, '/forum/', MSG_ERROR);
+			}
 		}
 		
 		//Mise à jour de la position sur le site.
