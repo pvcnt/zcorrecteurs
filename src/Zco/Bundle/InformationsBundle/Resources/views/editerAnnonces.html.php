@@ -207,17 +207,19 @@
 		<p>Un billet est pris au hasard toutes les <?php echo TEMPS_BILLET_HASARD; ?> minutes, dans une sélection de catégories.</p>
 
 		<p class="gras centre"><a href="editer-annonces.html?supprimer_cache">Forcer la régénération du billet au hasard</a></p>
-
 		<form action="" method="post" class="centre">
 			<label for="categories" class="nofloat">Catégories sélectionnées :</label><br />
 			<select name="categories[]" id="categories" multiple="multiple" style="min-width: 250px;">
 				<?php
-				foreach($categories as $categorie)
+				if ( is_array($categories_actuelles) )
 				{
-					if(in_array($categorie['cat_id'], $categories_actuelles))
-						echo '<option selected="selected" value="' . $categorie['cat_id'] . '">' . $categorie['cat_nom'] . '</option>';
-					else
-						echo '<option value="' . $categorie['cat_id'] . '">' . $categorie['cat_nom'] . '</option>';
+					foreach($categories as $categorie)
+					{
+						if(in_array($categorie['cat_id'], $categories_actuelles))
+							echo '<option selected="selected" value="' . $categorie['cat_id'] . '">' . $categorie['cat_nom'] . '</option>';
+						else
+							echo '<option value="' . $categorie['cat_id'] . '">' . $categorie['cat_nom'] . '</option>';
+					}
 				}
 				?>
 			</select><br />
