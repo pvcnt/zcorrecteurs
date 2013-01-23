@@ -38,6 +38,9 @@
 			<option value="twitter"<?php echo ($bloc_accueil == 'twitter') ? ' selected="selected"' : ''; ?>>
 				Afficher les derniers tweets
 			</option>
+			<option value="dictee"<?php echo ($bloc_accueil == 'dictee') ? ' selected="selected"' : ''; ?>>
+				Afficher la dictée
+			</option>
 		</select>
 		<input type="submit" value="Envoyer" />
 	</fieldset>
@@ -49,7 +52,8 @@
 	<a href="#bloc_quiz">Modifier le quiz mis en valeur</a> |
 	<a href="#bloc_billet">Modifier le billet mis en valeur</a> |
 	<a href="#bloc_billet_hasard">Modifier les paramètres du billet au hasard</a> |
-	<a href="#bloc_twitter">Modifier les paramètres des tweets</a>
+	<a href="#bloc_twitter">Modifier les paramètres des tweets</a> |
+	<a href="#bloc_dictee">Modifier les paramètres de la dictée</a>
 </p>
 
 <div id="bloc_annonce">
@@ -240,6 +244,22 @@
 			echo ' value="'.(int)$nb.'"' ?>/>
 			<br/>
 
+			<input type="submit" value="Envoyer" />
+		</fieldset>
+	</form>
+</div>
+
+<div id="bloc_dictee">
+	<form action="" method="post">
+		<fieldset>
+			<legend>Modifier les paramètres de la dictée</legend>
+			<select id="dictees" style="min-width: 250px;">
+			<?php foreach ($listDictees as $dictee)
+			{
+				echo '<option value="'.$dictee->id.'">'.$dictee->titre.'</option>';
+			} ?>
+			</select>
+			<br/>
 			<input type="submit" value="Envoyer" />
 		</fieldset>
 	</form>
