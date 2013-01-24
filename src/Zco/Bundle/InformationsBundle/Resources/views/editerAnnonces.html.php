@@ -253,7 +253,7 @@
 	<form action="" method="post">
 		<fieldset>
 			<legend>Modifier les paramètres de la dictée</legend>
-			<select id="dictees" style="min-width: 250px;">
+			<select id="dictees" name="dictee" style="min-width: 250px;">
 			<?php foreach ($listDictees as $dictee)
 			{
 				echo '<option value="'.$dictee->id.'">'.$dictee->titre.'</option>';

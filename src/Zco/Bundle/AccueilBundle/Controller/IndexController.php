@@ -60,6 +60,7 @@ class IndexController extends Controller
 		$vars['BilletHasard'] = null;
 		$vars['BilletAuteurs'] = null;
 		$vars['Tweets'] = null;
+		$vars['Dictee'] = null;
 
 		if($vars['quel_bloc'] == 'sondage')
 		{
@@ -134,6 +135,11 @@ class IndexController extends Controller
 				$cache->set('accueil_derniersTweets', $tweets, 0);
 			}
 			$vars['Tweets'] = $tweets ? $tweets : array();
+		 }
+		 else if ($vars['quel_bloc'] == 'dictee')
+		 {
+		 	$dictee = $registry->get('dictee_en_avant');
+		 	$vars['Dictee'] = ($dictee) ? ($dictee) : (array());
 		 }
 
 		// Blog

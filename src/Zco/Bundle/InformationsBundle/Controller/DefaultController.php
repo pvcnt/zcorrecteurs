@@ -311,6 +311,20 @@ class DefaultController extends Controller
 		
 		// Dictée
 		include(BASEPATH.'/src/Zco/Bundle/DicteesBundle/modeles/dictees.php');
+		if(isset($_POST['dictee']))
+		{
+			$dictee = Dictee($_POST['dictee']);
+			$dictee = array(
+				'id' => $dictee->id,
+				'titre' => $dictee->titre,
+				'difficulte' => $dictee->difficulte,
+				'auteur' => $dictee->auteur_id,
+				'description' => $dictee->description,
+				'source' => $dictee->source
+			);
+			$registry->set('dictee_en_avant', $dictee);
+			return redirect(1);
+		}
 		$paginator = ListerDictees(1);
 		$listDictees = $paginator->createView(1);
 
