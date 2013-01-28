@@ -174,6 +174,7 @@ class IndexController extends Controller
 		$resourceManager->requireResource('@ZcoSondagesBundle/Resources/public/css/sondage.css');
 		$resourceManager->requireResource('@ZcoCoreBundle/Resources/public/css/zcode.css');
 		$resourceManager->requireResource('@ZcoDicteesBundle/Resources/public/css/dictees.css');
+		$resourceManager->requireResource('@ZcoLivredorBundle/Resources/public/css/livredor.css');
 		
 		return render_to_response($vars);
 	}

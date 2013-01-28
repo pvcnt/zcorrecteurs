@@ -87,11 +87,11 @@
 		?>
 	</div>
 <?php } elseif ($quel_bloc == 'dictee' ) { ?>
-	<h2>Dictée à la une</h2>
-	<div>
-		<?php
-			echo $view->render('ZcoDicteesBundle::_dictee_en_avant.html.php', compact('Dictee'));
-		?>
+	<h2 class="mod_dictees">Dictée à la une</h2>
+	<div class="accueil_dictee">
+	<?php
+		echo $view->render('ZcoDicteesBundle::_dictee_en_avant.html.php', compact('Dictee'));
+	?>
 	</div>
 	<?php } else { ?>
 	<h2 class="mod_communaute">Annonces</h2>
