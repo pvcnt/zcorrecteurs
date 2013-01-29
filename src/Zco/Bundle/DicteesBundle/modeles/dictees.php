@@ -328,6 +328,22 @@ function ListerDictees($page, $tri = null)
 }
 
 /**
+ * Liste toutes les dictées sans pagination.
+ *
+ * @return array	Les dictées
+*/
+function getAllDictees()
+{
+	$query = Doctrine_Query::create()
+	->select('d.*, u.id, u.pseudo')
+	->from('Dictee d')
+	->leftJoin('d.Utilisateur u')
+	->where('d.etat = ?', DICTEE_VALIDEE);
+	
+	return $query->fetchArray();
+}
+
+/**
  * Liste les dictées proposées
  *
  * @return Doctrine_Collection	Les dictées

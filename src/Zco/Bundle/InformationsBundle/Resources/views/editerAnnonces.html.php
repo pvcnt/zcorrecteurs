@@ -254,10 +254,11 @@
 		<fieldset>
 			<legend>Modifier les paramètres de la dictée</legend>
 			<select id="dictees" name="dictee" style="min-width: 250px;">
-			<?php foreach ($listDictees as $dictee)
-			{
-				echo '<option value="'.$dictee->id.'">'.$dictee->titre.'</option>';
-			} ?>
+			<?php foreach ($listDictees as $dictee) : ?>
+				<option value="<?php echo $dictee['id']; ?>" <?php if ( $selectDictee && $dictee['id'] == $selectDictee ) echo 'selected'; ?>>
+					<?php echo $dictee['titre']; ?>
+				</option>
+			<?php endforeach; ?>
 			</select>
 			<br/>
 			<input type="submit" value="Envoyer" />
