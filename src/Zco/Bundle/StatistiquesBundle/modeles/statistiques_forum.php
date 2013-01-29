@@ -148,7 +148,7 @@ function RecupererStatistiquesForum()
 	$stmt = $dbh->prepare("SELECT DISTINCT cat_nom, sujet_id, sujet_titre,
 		sujet_dernier_message
 		FROM zcov2_forum_sujets
-		LEFT JOIN zcov2_categories ON sujet_forum_id = cat_id
+		LEFT JOIN zcov2_categories ON sujet_forum_id = cat_id AND cat_archive = 0
 		LEFT JOIN zcov2_droits ON droit_nom = 'voir_sujets'
 		LEFT JOIN zcov2_groupes_droits ON gd_id_droit = droit_id AND gd_id_groupe = :id_grp AND gd_id_categorie = cat_id
 		WHERE sujet_corbeille = 0 AND sujet_coup_coeur = 1 AND gd_valeur = 1
