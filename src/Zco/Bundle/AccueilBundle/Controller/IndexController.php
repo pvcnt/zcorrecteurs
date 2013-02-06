@@ -136,7 +136,7 @@ class IndexController extends Controller
 			}
 			$vars['Tweets'] = $tweets ? $tweets : array();
 		 }
-		 else if ($vars['quel_bloc'] == 'dictee')
+		 elseif ($vars['quel_bloc'] == 'dictee')
 		 {
 		 	$dictee = $registry->get('dictee_en_avant');
 		 	$vars['Dictee'] = ($dictee) ? ($dictee) : (array());

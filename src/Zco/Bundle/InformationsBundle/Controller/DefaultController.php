@@ -319,7 +319,7 @@ class DefaultController extends Controller
 		}
 		
 		$selectDictee = $registry->get('dictee_en_avant');
-		$selectDictee = $selectDictee->id;
+		$selectDictee = ( $selectDictee ) ? $selectDictee->id : null;
 		$listDictees = getAllDictees();
 
 		//Inclusion de la vue
