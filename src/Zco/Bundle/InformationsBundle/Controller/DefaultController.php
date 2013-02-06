@@ -308,6 +308,19 @@ class DefaultController extends Controller
 			$registry->set('accueil_tweets', $nb);
 			return redirect(1);
 		}
+		
+		// Dictée
+		include(BASEPATH.'/src/Zco/Bundle/DicteesBundle/modeles/dictees.php');
+		if(isset($_POST['dictee']))
+		{
+			$dictee = Dictee($_POST['dictee']);
+			$registry->set('dictee_en_avant', $dictee);
+			return redirect(1);
+		}
+		
+		$selectDictee = $registry->get('dictee_en_avant');
+		$selectDictee = $selectDictee->id;
+		$listDictees = getAllDictees();
 
 		//Inclusion de la vue
 		fil_ariane('Modifier les annonces');
@@ -325,7 +338,9 @@ class DefaultController extends Controller
 			'choix_billet',
 			'categories',
 			'categories_actuelles',
-			'accueil_tweets'
+			'accueil_tweets',
+			'selectDictee',
+			'listDictees'
 		));
 	}
 	

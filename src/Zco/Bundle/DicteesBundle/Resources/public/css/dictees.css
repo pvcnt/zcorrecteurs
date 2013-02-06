@@ -34,3 +34,7 @@ div.dictee-description {
 	color: red;
 	text-decoration: line-through;
 }
+
+.accueil_dictee {
+	min-height: 100px
+}

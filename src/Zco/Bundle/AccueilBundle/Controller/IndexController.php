@@ -60,6 +60,7 @@ class IndexController extends Controller
 		$vars['BilletHasard'] = null;
 		$vars['BilletAuteurs'] = null;
 		$vars['Tweets'] = null;
+		$vars['Dictee'] = null;
 
 		if($vars['quel_bloc'] == 'sondage')
 		{
@@ -135,6 +136,11 @@ class IndexController extends Controller
 			}
 			$vars['Tweets'] = $tweets ? $tweets : array();
 		 }
+		 else if ($vars['quel_bloc'] == 'dictee')
+		 {
+		 	$dictee = $registry->get('dictee_en_avant');
+		 	$vars['Dictee'] = ($dictee) ? ($dictee) : (array());
+		 }
 
 		// Blog
 		list($vars['ListerBillets'], $vars['BilletsAuteurs']) = ListerBillets(array(
@@ -168,6 +174,7 @@ class IndexController extends Controller
 		$resourceManager->requireResource('@ZcoSondagesBundle/Resources/public/css/sondage.css');
 		$resourceManager->requireResource('@ZcoCoreBundle/Resources/public/css/zcode.css');
 		$resourceManager->requireResource('@ZcoDicteesBundle/Resources/public/css/dictees.css');
+		$resourceManager->requireResource('@ZcoLivredorBundle/Resources/public/css/livredor.css');
 		
 		return render_to_response($vars);
 	}
