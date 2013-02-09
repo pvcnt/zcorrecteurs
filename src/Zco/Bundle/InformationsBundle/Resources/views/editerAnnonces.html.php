@@ -250,20 +250,38 @@
 </div>
 
 <div id="bloc_dictee">
-	<form action="" method="post">
-		<fieldset>
-			<legend>Modifier les paramètres de la dictée</legend>
-			<select id="dictees" name="dictee" style="min-width: 250px;">
-			<?php foreach ($listDictees as $dictee) : ?>
-				<option value="<?php echo $dictee['id']; ?>" <?php if ( $selectDictee && $dictee['id'] == $selectDictee ) echo 'selected'; ?>>
-					<?php echo $dictee['titre']; ?>
-				</option>
+	<fieldset>
+		<legend>Choix de la dictée à mettre en avant :</legend>
+		<?php if ( !is_null($selectDictee) ) : ?>
+			<p>
+				La dictée actuellement mise en valeur est :<br/>
+				<strong>
+					<a href="/dictees/dictee-<?php echo $selectDictee->id; ?>-<?php echo rewrite($selectDictee->titre); ?>.html">
+						<?php echo $selectDictee->titre; ?>
+					</a>
+				</strong>
+			</p><br/>
+		<?php endif; ?>
+		
+		<form action="" method="post">
+			<label for="dictee" style="width: 250px;">Entrez un fragment du nom de la dictée&nbsp;:</label>
+			<input type="text" name="dictee" value="<?php if(!empty($_POST['dictee'])) echo htmlspecialchars($_POST['dictee']); ?>" />
+			<input type="submit" value="Choisir" />
+		</form>
+		
+		<?php if ( sizeof($listDictees) > 1 ) : ?>
+		<p>Plusieurs dictées correspondent au titre indiqué, cliquez sur le bon :</p>
+		<ul>
+			<?php foreach($listDictees as $dictee) : ?>
+			<li>
+				<a href="?dictee=<?php echo $dictee['id']; ?>">
+					<?php echo htmlspecialchars($dictee['titre']); ?>
+				</a>
+			</li>
 			<?php endforeach; ?>
-			</select>
-			<br/>
-			<input type="submit" value="Envoyer" />
-		</fieldset>
-	</form>
+		</ul>
+		<?php endif; ?>
+	</fieldset>
 </div>
 
 <?php $view['javelin']->initBehavior('informations-toggle-blocks', array('current_block' => $bloc_accueil)) ?>

@@ -311,16 +311,31 @@ class DefaultController extends Controller
 		
 		// Dictée
 		include(BASEPATH.'/src/Zco/Bundle/DicteesBundle/modeles/dictees.php');
+		
+		$listDictees = array();
 		if(isset($_POST['dictee']))
 		{
-			$dictee = Dictee($_POST['dictee']);
+			$listDictees = searchDictees($_POST['dictee']);
+			if ( sizeof($listDictees) == 1 )
+			{
+				$dictee = Dictee($listDictees[0]['id']);
+				$registry->set('dictee_en_avant', $dictee);
+				return redirect(1);
+			}
+		}
+		
+		if(!empty($_GET['dictee']) && is_numeric($_GET['dictee']))
+		{
+			settype($_GET['dictee'],'int');
+			$dictee = Dictee($_GET['dictee']);
 			$registry->set('dictee_en_avant', $dictee);
 			return redirect(1);
 		}
 		
 		$selectDictee = $registry->get('dictee_en_avant');
-		$selectDictee = ( $selectDictee ) ? $selectDictee->id : null;
-		$listDictees = getAllDictees();
+		if ( !$selectDictee ) {
+			$selectDictee = null;
+		}
 
 		//Inclusion de la vue
 		fil_ariane('Modifier les annonces');

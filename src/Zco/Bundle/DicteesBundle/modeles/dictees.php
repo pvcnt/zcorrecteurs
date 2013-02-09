@@ -327,18 +327,20 @@ function ListerDictees($page, $tri = null)
 	return new Paginator($query, 30);
 }
 
+
+
 /**
- * Liste toutes les dictées sans pagination.
+ * Cherche les dictées en fonction d'un titre donné.
  *
- * @return array	Les dictées
+ * @param  string	$name
+ * @return array	Les dictées trouvées
 */
-function getAllDictees()
+function searchDictees($name)
 {
 	$query = Doctrine_Query::create()
-	->select('d.*, u.id, u.pseudo')
+	->select('d.*')
 	->from('Dictee d')
-	->leftJoin('d.Utilisateur u')
-	->where('d.etat = ?', DICTEE_VALIDEE);
+	->where('d.titre LIKE ?', '%'.$name.'%');
 	
 	return $query->fetchArray();
 }
