@@ -202,10 +202,6 @@ class DefaultController extends Controller
 			{
 				return redirect('Vous ne pouvez pas poster de tweet vide.', $url, MSG_ERROR);
 			}
-			if (mb_strlen($tweet) > 140)
-			{
-				return redirect('Le tweet est trop long (140 caractères maximum).', $url, MSG_ERROR);
-			}
 			
 			$url = $this->generateUrl('zco_twitter_newTweet', array('id' => ($mention ? $mention['id'] : null)));
 			if (verifier('twitter_procuration') 
