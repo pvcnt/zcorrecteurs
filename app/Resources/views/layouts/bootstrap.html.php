@@ -1,10 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+<!DOCTYPE html>
+<html>
 	<head>
-		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<meta http-equiv="Content-Language" content="fr" />
-		<meta name="language" content="fr" />
-		<meta http-equiv="content-language" content="fr" />
 		<meta name="description" content="<?php echo Page::$description; ?>" />
 		<meta name="robots" content="<?php echo Page::$robots; ?>" />
 
@@ -44,7 +42,7 @@
 			<?php echo $view['ui']->headerRight('bootstrap') ?>
 		</div> <!-- /header -->
 
-		<div class="navbar">
+		<div class="navbar navbar-inverse">
 			<div class="navbar-inner">
 				<div class="container">
 					<?php echo $view['ui']->speedbarre('bootstrap') ?>

@@ -1,6 +1,6 @@
 <ul class="nav nav-tabs">
 	<li<?php if (!isset($currentTab) || $currentTab === 'campaigns') echo ' class="active"' ?>>
-		<a href="gestion.html?etat[]=en_cours&etat[]=pause&etat[]=termine<?php if (verifier('publicite_voir')) echo '&all=1' ?>">
+		<a href="index.html?etat[]=en_cours&etat[]=pause&etat[]=termine<?php if (verifier('publicite_voir')) echo '&all=1' ?>">
 			Campagnes
 		</a>
 	</li>

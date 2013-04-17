@@ -86,17 +86,18 @@
 </div>
 
 <div style="float: right; width: 25%;">
-	<div class="box">
-		<h3>Prévisualisation</h3>
-		<span class="tpetit gris">Le rendu final peut quelque peu différer.</span><br />
-		<span class="gris">
-			<?php if (verifier('publicite_editer') || ($publicite->Campagne['utilisateur_id'] == $_SESSION['id'] && verifier('publicite_editer_siens'))){ ?>
-			<a href="modifier-apparence-<?php echo $publicite['id'] ?>.html">Modifier l'apparence</a>
-			<?php } else{ ?><br />
-			Vous pouvez contactez un administrateur pour modifier l'apparence de votre publicité.
-			<?php } ?>
-		</span>
-	</div>
+    <div style="margin-bottom: 10px;">
+        <strong>Prévisualisation de la publicité.</strong> 
+        <span class="gris">Le rendu final peut quelque peu différer.</span>
+        
+    	<div class="gris">
+    		<?php if (verifier('publicite_editer') || ($publicite->Campagne['utilisateur_id'] == $_SESSION['id'] && verifier('publicite_editer_siens'))){ ?>
+    		<a href="modifier-apparence-<?php echo $publicite['id'] ?>.html">Modifier l'apparence</a>
+    		<?php } else{ ?><br />
+    		Vous pouvez contactez un administrateur pour modifier l'apparence de votre publicité.
+    		<?php } ?>
+    	</div>
+    </div>
 
 	<?php if ($publicite['emplacement'] == 'menu'){ ?>
 	<div class="sidebar" style="margin: auto;">
