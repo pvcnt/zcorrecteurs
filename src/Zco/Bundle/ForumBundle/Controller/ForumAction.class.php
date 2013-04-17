@@ -57,6 +57,11 @@ class ForumAction extends ForumActions
 		{
 			return new Symfony\Component\HttpFoundation\RedirectResponse($InfosForum['cat_redirection'], 301);
 		}
+		
+		// Si le forum est archiver on redirige l'utilisateur
+		if( $InfosForum['cat_archive'] == 1 && !verifier('voir_archives')) {
+			return redirect(357, '/forum/', MSG_ERROR);
+		}
 
 		// Si on veut effectuer une action multiple
 		if(isset($_POST['action']) AND in_array($_POST['action'], array('annonce', 'plus_annonce', 'resolu', 'nonresolu', 'favori', 'nonfavori', 'fermer', 'ouvrir', 'deplacer', 'corbeille', 'restaurer', 'supprimer', 'lu', 'nonlu')) AND !empty($_POST['sujet']))
@@ -304,6 +309,7 @@ class ForumAction extends ForumActions
 			{
 				$ListerUneCategorie = ListerCategoriesForum($InfosForum);
 				$LuForum = array();
+				$nbIndex = 0;
 				foreach ($ListerUneCategorie as $cat)
 				{
 					// Si le forum est vide, l'image lu/non-lu sera une ampoule blanche.
@@ -326,6 +332,19 @@ class ForumAction extends ForumActions
 							'derniere_lecture_globale' => $derniere_lecture,
 						));
 					}
+					
+					if (!empty($_GET['archives']))
+					{
+						// Forum parent
+						$tempParent = ListerParents($cat);
+						if (count($tempParent) > 2)
+						{
+							$tempParent = array_pop($tempParent);
+							$ListerUneCategorie[$nbIndex]['parent'] = $tempParent;
+						}
+					}
+					
+					$nbIndex++;
 				}
 			}
 			else
@@ -345,7 +364,17 @@ class ForumAction extends ForumActions
 			\Doctrine_Core::getTable('Online')->updateUserPosition($_SESSION['id'], 'ZcoForumBundle:forum', $_GET['id']);
 
 			// Inclusion de la vue
-			fil_ariane($_GET['id'], 'Liste des sujets'.(!empty($_GET['trash']) ? ' dans la corbeille' : ''));
+			$msgFil = '';
+			if ( !empty($_GET['trash']) && empty($_GET['archives']) ) {
+				$msgFil = 'Liste des sujets dans la corbeille';
+			}
+			else if ( empty($_GET['trash']) && !empty($_GET['archives']) ) {
+				$msgFil = 'Liste des forums archivés';
+			}
+			else {
+				$msgFil = 'Liste des sujets';
+			}
+			fil_ariane($_GET['id'], $msgFil);
 			$this->get('zco_vitesse.resource_manager')->addFeed(
 			    '/forum/messages-flux-'.$_GET['id'].'.html', 
 			    array('title' => 'Derniers messages de cette catégorie')

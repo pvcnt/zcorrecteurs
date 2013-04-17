@@ -135,6 +135,7 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 	public function onFilterSitemap(FilterSitemapEvent $event)
 	{
 		include_once(__DIR__.'/../modeles/forums.php');
+		include_once(__DIR__.'/../modeles/sujets.php');
 		
 		$event->addLink(URL_SITE.'/forum/', array(
 			'changefreq' => 'daily',
@@ -142,10 +143,13 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 		));
 		foreach (ListerSujetsId(array(34,45,42,43,44,46,47,91,92,93,94,178)) as $topic)
 		{
-			$event->addLink(URL_SITE.'/forum/sujet-'.$topic['sujet_id'].'-'.rewrite($topic['sujet_titre']).'.html', array(
-				'changefreq' => 'weekly',
-				'priority'	 => '0.5',
-			));
+			if ( !sujetIsArchive($topic['sujet_id']) )
+			{
+				$event->addLink(URL_SITE.'/forum/sujet-'.$topic['sujet_id'].'-'.rewrite($topic['sujet_titre']).'.html', array(
+					'changefreq' => 'weekly',
+					'priority'	 => '0.5',
+				));
+			}
 		}
 	}
 }

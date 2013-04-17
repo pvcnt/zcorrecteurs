@@ -32,7 +32,11 @@
 				Aucune
 			</option>
 			<?php echo GetListeCategories($ListerParents[count($ListerParents)-1]['cat_id']); ?>
-		</select>
+		</select><br/>
+		<?php if ($isForum) : ?>
+			<label for="archiver">Archiver le forum : </label>
+			<input type="checkbox" name="archiver" id="archiver" <?php if($InfosCategorie['cat_archive'] == 1) echo 'checked'; ?> />
+		<?php endif; ?>
 	</fieldset>
 
 	<fieldset>

@@ -22,6 +22,7 @@ Categorie:
     cat_redirection:     { type: string(255), name: cat_redirection as redirection }
     cat_disponible_ciblage: { type: boolean, name: cat_disponible_ciblage as disponible_ciblage }
     cat_ciblage_actions: { type: boolean, name: cat_ciblage_actions as ciblage_actions }
+    cat_archive:         { type: boolean }
   relations:
     Fiches:              { class: Fiche, local: cat_id, foreign: fiche_id, refClass: FicheCategorie }
     GroupeDroit:         { class: GroupeDroit, local: id, foreign: gd_id_categorie }

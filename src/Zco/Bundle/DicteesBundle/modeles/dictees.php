@@ -327,6 +327,24 @@ function ListerDictees($page, $tri = null)
 	return new Paginator($query, 30);
 }
 
+
+
+/**
+ * Cherche les dictées en fonction d'un titre donné.
+ *
+ * @param  string	$name
+ * @return array	Les dictées trouvées
+*/
+function searchDictees($name)
+{
+	$query = Doctrine_Query::create()
+	->select('d.*')
+	->from('Dictee d')
+	->where('d.titre LIKE ?', '%'.$name.'%');
+	
+	return $query->fetchArray();
+}
+
 /**
  * Liste les dictées proposées
  *

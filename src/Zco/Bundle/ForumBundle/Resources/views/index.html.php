@@ -27,6 +27,15 @@
 			<img src="/pix.gif" class="fff feed" alt="" />
 			<a href="/forum/messages-flux.html">S'abonner au flux du forum</a>
 		</li>
+		<?php if((verifier('voir_archives'))) : ?>
+		<li>
+			<?php if(!empty($_GET['archives'])) : ?>
+				<a href="index.html">Sortir</a> des archives.
+			<?php else : ?>
+			<a href="?archives=1">Voir les forums archivés</a>
+			<?php endif; ?>
+		</li>
+		<?php endif; ?>
 	</ul>
 </div>
 
@@ -79,9 +88,16 @@
 						</h2>
 					</td>
 				</tr>
-			<?php } else{ ?>
-				<?php echo $view->render('ZcoForumBundle::_forum.html.php', array('i' => $clef, 'forum' => $valeur, 'Lu' => $Lu))?>
-			<?php }
+			<?php
+			}
+			else
+			{
+				$viewVars = array('i' => $clef, 'forum' => $valeur, 'Lu' => $Lu);
+				if ( !empty($_GET['archives']) ) {
+					$viewVars['Parent'] = $valeur['parent'];
+				}
+				echo $view->render('ZcoForumBundle::_forum.html.php', $viewVars);
+			}
 		}
 	}
 	else

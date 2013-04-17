@@ -35,6 +35,15 @@
     		<a href="/forum/messages-flux-<?php echo $_GET['id'] ?>.html">au flux du forum «&nbsp;<?php echo htmlspecialchars($InfosForum['cat_nom']) ?>&nbsp;»</a>, 
     		<a href="/forum/messages-flux-<?php echo $Parent['cat_id'] ?>.html">au flux de la catégorie «&nbsp;<?php echo htmlspecialchars($Parent['cat_nom']) ?>&nbsp;»</a>
     	</li>
+    	<?php if(verifier('voir_archives')) : ?>
+		<li>
+			<?php if(!empty($_GET['archives'])) : ?>
+				<a href="<?php echo FormateURLCategorie($InfosForum['cat_id']); ?>">Sortir</a> des archives.
+			<?php else : ?>
+			<a href="?archives=1">Voir les forums archivés</a>
+			<?php endif; ?>
+		</li>
+		<?php endif; ?>
 	</ul>
 </div>
 
@@ -59,9 +68,17 @@
 	</tfoot>
 
 	<tbody>
-		<?php foreach($ListerUneCategorie as $clef => $valeur){ ?>
-			<?php echo $view->render('ZcoForumBundle::_forum.html.php', array('i' => $clef, 'forum' => $valeur, 'Lu' => $LuForum))?>
-		<?php } ?>
+		<?php 
+		foreach($ListerUneCategorie as $clef => $valeur)
+		{
+			$viewVars = array('i' => $clef, 'forum' => $valeur, 'Lu' => $LuForum);
+			if ( !empty($_GET['archives']) ) {
+				$viewVars['Parent'] = $valeur['parent'];
+			}
+			
+			echo $view->render('ZcoForumBundle::_forum.html.php', $viewVars);
+		}
+		?>
 	</tbody>
 </table><br />
 <?php } ?>
@@ -384,6 +401,16 @@ Retour
 <?php
 }
 
+if(!empty($_GET['archives'])) : ?>
+
+<?php if(sizeof($ListerUneCategorie) == 0) : ?>
+	<center>Aucun forum archivé.</center><br/>
+<?php endif; ?>	
+<p class="centre"><strong>Retour <a href="index.html?archives=1">à l'accueil des archives</a></strong><br />
+OU<br />
+<strong>Retour <a href="<?php echo FormateURLCategorie($InfosForum['cat_id']); ?>">au forum "<?php echo htmlspecialchars($InfosForum['cat_nom']); ?>"</a> ou <a href="/forum/">à la liste des forums</a></strong></p>
+	
+<?php endif;
 echo $SautRapide;
 
 if(verifier('creer_sujets', $_GET['id']))

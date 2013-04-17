@@ -59,7 +59,8 @@
 					'reponses' => $reponses,
 					'sondage'  => $sondage,
 					'a_vote'   => $a_vote,
-					'Tweets'   => $Tweets
+					'Tweets'   => $Tweets,
+					'Dictee' => $Dictee
 			)) ?>
 
 		<?php if(verifier('gerer_breve_accueil')){ ?>

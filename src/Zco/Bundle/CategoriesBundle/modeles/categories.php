@@ -303,6 +303,9 @@ function EditerCategorie($id)
 		$stmt->closeCursor();
 	}
 
+	//Archivage ou non dans le cas d'un forum
+	isset($_POST['archiver']) ? ArchiverForum($id) : DesarchiverForum($id);
+
 	//On supprime les caches de catégorie
 	Container::getService('zco_core.cache')->Delete('saut_rapide_*');
 	Container::getService('zco_core.cache')->Delete('categories');
@@ -387,8 +390,8 @@ function ListerCategories($verif_droits = false)
 			$stmt = $dbh->prepare("SELECT cat_id, cat_nom, cat_description, " .
 					"cat_gauche, cat_droite, cat_niveau, cat_url, cat_reglement, " .
 					"cat_redirection, cat_map, cat_map_type, cat_nb_elements, " .
-					"cat_last_element, cat_image, cat_keywords, cat_disponible_ciblage, cat_ciblage_actions " .
-					"FROM zcov2_categories " .
+					"cat_last_element, cat_image, cat_keywords, cat_disponible_ciblage, cat_ciblage_actions, " .
+					" cat_archive FROM zcov2_categories " .
 					"ORDER BY cat_gauche ASC");
 
 			$stmt->execute();
@@ -729,4 +732,40 @@ function FormateURLCategorie($id)
 	else
 		return $infos['cat_redirection'];
 }
+
+/**
+ * Met en archive un forum
+ * @param	integer 	$id		L'id de la catégorie.
+ * @return 	void
+ */
+function ArchiverForum($id)
+{
+	$dbh = Doctrine_Manager::connection()->getDbh();
+	
+	$req = $dbh->prepare("UPDATE zcov2_categories SET cat_archive = :archive WHERE cat_id = :id ");
+	$req->bindParam(':id', $id);
+	$req->bindValue(':archive', 1);
+	$req->execute();
+	$req->closeCursor();
+		
+	Container::getService('zco_core.cache')->Delete('categories');
+}
+
+/**
+ * Enlève un forum des archives
+ * @param 	integer 	$id		L'id de la catégorie.
+ * @return 	void
+ */
+ function DesarchiverForum($id)
+ {
+ 	$dbh = Doctrine_Manager::connection()->getDbh();
+	
+	$req = $dbh->prepare("UPDATE zcov2_categories SET cat_archive = :archive WHERE cat_id = :id");
+	$req->bindParam(':id', $id);
+	$req->bindValue(':archive', 0);
+	$req->execute();
+	$req->closeCursor();
+
+	Container::getService('zco_core.cache')->Delete('categories');
+ }
 

@@ -44,6 +44,11 @@ class SujetAction extends ForumActions
 		if ($InfosSujet instanceof Response)
 			return $InfosSujet;
 		zCorrecteurs::VerifierFormatageUrl($InfosSujet['sujet_titre'], true, true, 1);
+		
+		// Si le forum est archivé
+		if( $InfosForum['cat_archive'] == 1 && !verifier('voir_archives')) {
+			return redirect(357, '/forum/', MSG_ERROR);
+		}
 
 		// Détermination de la page courante
 		$_GET['p'] = ($_GET['p'] != '' && is_numeric($_GET['p'])) ? $_GET['p'] : 1;

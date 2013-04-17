@@ -38,6 +38,9 @@
 			<option value="twitter"<?php echo ($bloc_accueil == 'twitter') ? ' selected="selected"' : ''; ?>>
 				Afficher les derniers tweets
 			</option>
+			<option value="dictee"<?php echo ($bloc_accueil == 'dictee') ? ' selected="selected"' : ''; ?>>
+				Afficher la dictée
+			</option>
 		</select>
 		<input type="submit" value="Envoyer" />
 	</fieldset>
@@ -49,7 +52,8 @@
 	<a href="#bloc_quiz">Modifier le quiz mis en valeur</a> |
 	<a href="#bloc_billet">Modifier le billet mis en valeur</a> |
 	<a href="#bloc_billet_hasard">Modifier les paramètres du billet au hasard</a> |
-	<a href="#bloc_twitter">Modifier les paramètres des tweets</a>
+	<a href="#bloc_twitter">Modifier les paramètres des tweets</a> |
+	<a href="#bloc_dictee">Modifier les paramètres de la dictée</a>
 </p>
 
 <div id="bloc_annonce">
@@ -207,17 +211,19 @@
 		<p>Un billet est pris au hasard toutes les <?php echo TEMPS_BILLET_HASARD; ?> minutes, dans une sélection de catégories.</p>
 
 		<p class="gras centre"><a href="editer-annonces.html?supprimer_cache">Forcer la régénération du billet au hasard</a></p>
-
 		<form action="" method="post" class="centre">
 			<label for="categories" class="nofloat">Catégories sélectionnées :</label><br />
 			<select name="categories[]" id="categories" multiple="multiple" style="min-width: 250px;">
 				<?php
-				foreach($categories as $categorie)
+				if ( is_array($categories_actuelles) )
 				{
-					if(in_array($categorie['cat_id'], $categories_actuelles))
-						echo '<option selected="selected" value="' . $categorie['cat_id'] . '">' . $categorie['cat_nom'] . '</option>';
-					else
-						echo '<option value="' . $categorie['cat_id'] . '">' . $categorie['cat_nom'] . '</option>';
+					foreach($categories as $categorie)
+					{
+						if(in_array($categorie['cat_id'], $categories_actuelles))
+							echo '<option selected="selected" value="' . $categorie['cat_id'] . '">' . $categorie['cat_nom'] . '</option>';
+						else
+							echo '<option value="' . $categorie['cat_id'] . '">' . $categorie['cat_nom'] . '</option>';
+					}
 				}
 				?>
 			</select><br />
@@ -241,6 +247,41 @@
 			<input type="submit" value="Envoyer" />
 		</fieldset>
 	</form>
+</div>
+
+<div id="bloc_dictee">
+	<fieldset>
+		<legend>Choix de la dictée à mettre en avant :</legend>
+		<?php if ( !is_null($selectDictee) ) : ?>
+			<p>
+				La dictée actuellement mise en valeur est :<br/>
+				<strong>
+					<a href="/dictees/dictee-<?php echo $selectDictee->id; ?>-<?php echo rewrite($selectDictee->titre); ?>.html">
+						<?php echo $selectDictee->titre; ?>
+					</a>
+				</strong>
+			</p><br/>
+		<?php endif; ?>
+		
+		<form action="" method="post">
+			<label for="dictee" style="width: 250px;">Entrez un fragment du nom de la dictée&nbsp;:</label>
+			<input type="text" name="dictee" value="<?php if(!empty($_POST['dictee'])) echo htmlspecialchars($_POST['dictee']); ?>" />
+			<input type="submit" value="Choisir" />
+		</form>
+		
+		<?php if ( sizeof($listDictees) > 1 ) : ?>
+		<p>Plusieurs dictées correspondent au titre indiqué, cliquez sur le bon :</p>
+		<ul>
+			<?php foreach($listDictees as $dictee) : ?>
+			<li>
+				<a href="?dictee=<?php echo $dictee['id']; ?>">
+					<?php echo htmlspecialchars($dictee['titre']); ?>
+				</a>
+			</li>
+			<?php endforeach; ?>
+		</ul>
+		<?php endif; ?>
+	</fieldset>
 </div>
 
 <?php $view['javelin']->initBehavior('informations-toggle-blocks', array('current_block' => $bloc_accueil)) ?>

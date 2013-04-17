@@ -52,6 +52,7 @@ class IndexAction extends ForumActions
 		$Lu = array();
 		if ($ListerCategories)
 		{
+			$nbIndex = 0;
 			foreach ($ListerCategories as $cat)
 			{
 				//Si le forum est vide, l'image lu/non-lu sera une ampoule blanche.
@@ -74,6 +75,19 @@ class IndexAction extends ForumActions
 						'derniere_lecture_globale' => $derniere_lecture,
 					));
 				}
+				
+				if (!empty($_GET['archives']))
+				{
+					// Forum parent
+					$parent = ListerParents($cat);
+					if (count($parent) > 2)
+					{
+						$parent = array_pop($parent);
+						$ListerCategories[$nbIndex]['parent'] = $parent;
+					}
+				}
+				
+				$nbIndex++;
 			}
 		}
 
@@ -85,6 +99,10 @@ class IndexAction extends ForumActions
 		elseif (!empty($_GET['favori']))
 		{
 			fil_ariane('Liste des sujets en favoris');
+		}
+		elseif(!empty($_GET['archives']))
+		{
+			fil_ariane('Accueil des archives');
 		}
 		else
 		{

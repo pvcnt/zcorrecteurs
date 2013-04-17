@@ -445,3 +445,17 @@ function ChangerFavori($sujet_id, $etat)
 	}
 }
 
+/**
+ * Vérifie si un sujet est dans un forum archivé ou non.
+ *
+ * @param 		$id		ID du sujet.
+ * @return		bool	
+ */
+function sujetIsArchive($id)
+{
+	$InfosSujet = InfosSujet($id);
+	$InfosForum = InfosCategorie($InfosSujet['sujet_forum_id']);
+	
+	return ( $InfosForum['cat_archive'] == 1 ) ? (true) : (false);
+}
+
