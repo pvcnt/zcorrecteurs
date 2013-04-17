@@ -672,11 +672,7 @@ function GetIDCategorie($module = null, $plus_precis = false)
 
 	if (!$module)
 	{
-		$uri = ltrim($_SERVER['REQUEST_URI'], '/');
-		$pos = strpos($uri, '?');
-		$uri = $pos !== false ? substr($uri, 0, $pos) : $uri;
-		$pos = strpos($uri, '/');
-		$module = $pos !== false ? trim(substr($uri, 0, $pos)) : $uri;
+        $module = Container::getService('request')->attributes->get('_module');
 		if (empty($module))
 		{
 		    return 1;

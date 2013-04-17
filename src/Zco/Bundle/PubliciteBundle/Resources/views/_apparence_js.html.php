@@ -50,7 +50,7 @@ function update_pub()
 			'Partenaires : '+pub+
 			'</p></div>';
 	}
-	else if (emplacement == 'autre')
+	else
 	{
 		pub = '<p class="italique centre">Aucun aperçu de disponible pour ce positionnement. Nous contacter en cas de besoin spécifique.</p>';
 	}
@@ -70,7 +70,7 @@ function get_pub_html()
 	{
 		pub = '<a href="'+$('url_cible').value+'" title="'+$('contenu').value+'">'+$('titre').value+'</a>';
 	}
-	else if (emplacement == 'autre')
+	else
 	{
 		pub = '';
 	}

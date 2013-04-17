@@ -66,18 +66,18 @@
 			<td rowspan="5">
 				<ul>
 					<?php if ($publicite['emplacement'] != 'autre'){ ?>
-					<?php $i = 0; if (!empty($publicite['age_min'])){ $i++; ?>
-					<li>âgé de <?php echo $publicite['age_min'] ?> ans au minimum.</li>
-					<?php } if (!empty($publicite['age_max'])){ $i++; ?>
-					<li>âgé de <?php echo $publicite['age_max'] ?> ans au maximum.</li>
-					<?php } if (count($publicite->Categories) > 0){ $i++; ?>
-					<li>visitant les sections <?php foreach ($publicite->Categories as $i => $cat) echo $cat->Categorie['nom'].($i < count($publicite->Categories)-1 ? ', ' : '.') ?></li>
-					<?php } if (count($publicite->Pays) > 0){ $i++; ?>
+					<?php $c = 0; if (!empty($publicite['age_min'])){ $c++; ?>
+					<li>âgé de <?php echo $publicite['age_min'] ?> ans au minimum</li>
+					<?php } if (!empty($publicite['age_max'])){ $c++; ?>
+					<li>âgé de <?php echo $publicite['age_max'] ?> ans au maximum</li>
+					<?php } if (count($publicite->Categories) > 0){ $c++; ?>
+					<li>visitant <?php foreach ($publicite->Categories as $i => $cat) echo $cat->Categorie['nom'].($i < count($publicite->Categories)-1 ? ', ' : '') ?></li>
+					<?php } if (count($publicite->Pays) > 0){ $c++; ?>
 					<li>provenant de <?php foreach ($publicite->Pays as $i => $pays) echo $pays['nom'].($i < count($publicite->Pays)-1 ? ', ' : '.') ?></li>
 					<?php } ?>
-					<?php if ($i == 0) echo '<li>aucun critère de ciblage défini.</li>' ?>
-					<?php } else{ ?>
-					<li>impossible de définir un ciblage pour cet emplacement.</li>
+					<?php if ($c == 0) echo '<li>aucun critère de ciblage défini</li>' ?>
+					<?php } else { ?>
+					<li>impossible de définir un ciblage pour cet emplacement</li>
 					<?php } ?>
 				</ul>
 			</td>
