@@ -25,87 +25,79 @@ namespace Zco\Bundle\TwitterBundle\Service;
  * Interactions avec l'API de Twitter.
  *
  * @author mwsaz <mwsaz@zcorrecteurs.fr>
-*/
+ */
 class Twitter extends OAuth
 {
-	private $apiEndpoint;
-	
-	/**
-	 * Constructeur.
-	 *
-	 * @param string $apiEndpoint Point d'entrée dans l'API Twitter
-	 * @param string $oauthEndpoint Point d'entrée pour l'authentification
-	 * @param array $consumerKey Clés d'authentification
-	 */
-	public function __construct($apiEndpoint, $oauthEndpoint, array $consumerKey)
-	{
-		$this->apiEndpoint = rtrim($apiEndpoint, '/');
-		parent::__construct($oauthEndpoint, $consumerKey);
-	}
+    private $apiEndpoint;
 
-	/**
-	 * Retourne la configuration de l'API.
-	 *
-	 * @return array
-	 */
-	public function getConfiguration()
-	{
-		return $this->send('POST', $this->apiEndpoint.'/help/configuration.json');
-	}
-	
-	/**
-	 * Ajoute un nouveau tweet.
-	 *
-	 * @param  string $status Texte de statut
-	 * @param  integer|null $rid ID du tweet auquel on répond
-	 * @return array
-	 */
-	public function addTweet($status, $rid = null)
-	{
-		$params = compact('status');
-		if ($rid !== null)
-		{
-			$params['in_reply_to_status_id'] = $rid;
-		}
+    /**
+     * Constructeur.
+     *
+     * @param string $apiEndpoint Point d'entrée dans l'API Twitter
+     * @param string $oauthEndpoint Point d'entrée pour l'authentification
+     * @param array $consumerKey Clés d'authentification
+     */
+    public function __construct($apiEndpoint, $oauthEndpoint, array $consumerKey)
+    {
+        $this->apiEndpoint = rtrim($apiEndpoint, '/');
+        parent::__construct($oauthEndpoint, $consumerKey);
+    }
 
-		return $this->send(
-			'POST',
-			$this->apiEndpoint.'/statuses/update.json',
-			$params
-		);
-	}
+    /**
+     * Retourne la configuration de l'API.
+     *
+     * @return array
+     */
+    public function getConfiguration()
+    {
+        return $this->send('POST', $this->apiEndpoint . '/help/configuration.json');
+    }
 
-	/**
-	 * Supprime un tweet.
-	 *
-	 * @param  integer $id ID du tweet à supprimer
-	 * @return array
-	 */
-	public function deleteTweet($id)
-	{
-		return $this->send(
-			'POST',
-			$this->apiEndpoint.'/statuses/destroy.json',
-			compact('id')
-		);
-	}
+    /**
+     * Ajoute un nouveau tweet.
+     *
+     * @param  string $status Texte de statut
+     * @param  integer|null $rid ID du tweet auquel on répond
+     * @return array
+     */
+    public function addTweet($status, $rid = null)
+    {
+        $params = compact('status');
+        if ($rid !== null) {
+            $params['in_reply_to_status_id'] = $rid;
+        }
 
-	/**
-	 * Retourne les mentions adressées à l'utilisateur.
-	 *
-	 * @param  integer $lastID ID de la dernière mention récupérée
-	 * @return array
-	 */
-	public function getMentions($lastID = 0)
-	{
-		$lastID = $lastID
-			? array('since_id' => $lastID)
-			: array();
+        return $this->send(
+                'POST', $this->apiEndpoint . '/statuses/update.json', $params
+        );
+    }
 
-		return $this->send(
-			'GET',
-			$this->apiEndpoint.'/statuses/mentions.json',
-			$lastID
-		);
-	}
+    /**
+     * Supprime un tweet.
+     *
+     * @param  integer $id ID du tweet à supprimer
+     * @return array
+     */
+    public function deleteTweet($id)
+    {
+        return $this->send(
+                'POST', $this->apiEndpoint . '/statuses/destroy.json', compact('id')
+        );
+    }
+
+    /**
+     * Retourne les mentions adressées à l'utilisateur.
+     *
+     * @param  integer $lastID ID de la dernière mention récupérée
+     * @return array
+     */
+    public function getMentions($lastID = 0)
+    {
+        $lastID = $lastID ? array('since_id' => $lastID) : array();
+
+        return $this->send(
+                'GET', $this->apiEndpoint . '/statuses/mentions.json', $lastID
+        );
+    }
+
 }

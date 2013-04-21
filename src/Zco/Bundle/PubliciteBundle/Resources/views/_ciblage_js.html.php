@@ -34,8 +34,6 @@ window.addEvent('domready', function(){
 	<?php } if (!isset($cibler_age_max) || !$cibler_age_max){ ?>
 	$('age_max').setStyle('background-color', '#efefef');
 	$('age_max').set('readonly', true);
-	<?php } if (!isset($cibler_categories) || !$cibler_categories){ ?>
-	$('row_cibler_categories').toggle('out');
 	<?php } if (!isset($cibler_pays) || !$cibler_pays){ ?>
 	$('row_cibler_pays').toggle('out');
 	<?php } if (!isset($cibler_age) || !$cibler_age){ ?>

@@ -31,5 +31,8 @@
  */
 class Pays extends BasePays
 {
-
+    public function getId()
+    {
+        return $this->id;
+    }
 }

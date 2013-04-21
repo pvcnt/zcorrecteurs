@@ -31,28 +31,33 @@
  */
 class PubliciteCampagne extends BasePubliciteCampagne
 {
-	public static $etats = array(
-		'en_cours' => '<span class="vertf">Active</span>',
-		'pause'    => '<span class="orange">En pause</span>',
-		'termine'  => '<span class="gris">Terminée</span>',
-		'supprime' => '<span class="rouge">Supprimée</span>',
-	);
+    const RUNNING   = 'en_cours';
+    const PAUSED    = 'pause';
+    const COMPLETED = 'termine';
+    const DELETED   = 'supprime';
 
-	public function getTauxClics()
-	{
-		return $this['nb_affichages'] > 0 ? 100 * $this['nb_clics'] / $this['nb_affichages'] : 0;
-	}
+    public static $etats = array(
+        self::RUNNING   => '<span class="vertf">Active</span>',
+        self::PAUSED    => '<span class="orange">En pause</span>',
+        self::COMPLETED => '<span class="gris">Terminée</span>',
+        self::DELETED   => '<span class="rouge">Supprimée</span>',
+    );
 
-	public function getBudgetDepense()
-	{
-		$ret = 0;
-		foreach ($this->Publicites as $pub)
-			$ret += $pub->getBudgetDepense();
-		return $ret;
-	}
+    public function getTauxClics()
+    {
+        return $this['nb_affichages'] > 0 ? 100 * $this['nb_clics'] / $this['nb_affichages'] : 0;
+    }
 
-	public function getEtatFormat()
-	{
-		return self::$etats[$this['etat']];
-	}
+    public function getBudgetDepense()
+    {
+        $ret = 0;
+        foreach ($this->Publicites as $pub)
+            $ret += $pub->getBudgetDepense();
+        return $ret;
+    }
+
+    public function getEtatFormat()
+    {
+        return self::$etats[$this['etat']];
+    }
 }

@@ -22,6 +22,9 @@ zco_options:
     resource: "@ZcoOptionsBundle/Resources/config/routing.yml"
     prefix:   /options
 
+zco_publicite:
+    resource: "@ZcoPubliciteBundle/Resources/config/routing/index.yml"
+
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
 

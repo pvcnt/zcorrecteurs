@@ -29,19 +29,10 @@ Publicite:
     age_max:         { type: integer(4), notnull: false }
     aff_age_inconnu: { type: boolean, default: '1' }
     aff_pays_inconnu: { type: boolean, default: '1' }
+    aff_accueil:     { type: boolean, default: '0' }
   relations:
     Campagne:        { class: PubliciteCampagne, local: campagne_id, foreign: id, foreignAlias: Publicites }
-    Categories:      { class: PubliciteCategorie, local: id, foreign: publicite_id, type: many }
     Pays:            { class: Pays, refClass: PublicitePays, local: publicite_id, foreign: pays_id, type: many }
-
-PubliciteCategorie:
-  tableName: zcov2_publicites_categories
-  columns:
-    publicite_id:    { type: integer(11), primary: true }
-    categorie_id:    { type: integer(11), primary: true }
-    actions:         { type: string(500), notnull: false }
-  relations:
-    Categorie:       { local: categorie_id, foreign: cat_id }
 
 PublicitePays:
   tableName: zcov2_publicites_pays

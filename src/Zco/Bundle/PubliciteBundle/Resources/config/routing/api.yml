@@ -1,0 +1,39 @@
+zco_ads_api_editCampaignName:
+    pattern:   /campagne/{id}/nom
+    defaults:  { _controller: ZcoPubliciteBundle:Api:editCampaignName }
+    options:   { expose: true }
+    requirements:
+      id: \d+
+      _method: post
+
+zco_ads_api_editCampaignStatus:
+    pattern:   /campagne/{id}/etat
+    defaults:  { _controller: ZcoPubliciteBundle:Api:editCampaignStatus }
+    options:   { expose: true }
+    requirements:
+      id: \d+
+      _method: post
+
+zco_ads_api_editCampaignDates:
+    pattern:   /campagne/{id}/dates
+    defaults:  { _controller: ZcoPubliciteBundle:Api:editCampaignDates }
+    options:   { expose: true }
+    requirements:
+      id: \d+
+      _method: post
+
+zco_ads_api_editAdStatus:
+    pattern:   /publicite/{id}/etat
+    defaults:  { _controller: ZcoPubliciteBundle:Api:editAdvertismentStatus }
+    options:   { expose: true }
+    requirements:
+      id: \d+
+      _method: post
+
+zco_ads_api_saveClick:
+    pattern:   /publicite/{id}/clic
+    defaults:  { _controller: ZcoPubliciteBundle:Api:saveClick }
+    options:   { expose: true }
+    requirements:
+      id: \d+
+      _method: post

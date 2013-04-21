@@ -107,7 +107,6 @@ class Publicite extends BasePublicite
 	public function mettreEnCache()
 	{
 		$this->refreshRelated('Pays');
-		$this->refreshRelated('Categories');
 		$array = $this->toArray();
 
 		//Suppression des données de la campagne.
@@ -119,14 +118,6 @@ class Publicite extends BasePublicite
 		foreach ($pays as $p)
 		{
 			$array['Pays'][] = $p['id'];
-		}
-
-		//Mise en forme du tableau des sections.
-		$categories = $array['Categories'];
-		$array['Categories'] = array();
-		foreach ($categories as $cat)
-		{
-			$array['Categories'][$cat['categorie_id']] = !empty($cat['actions']) ? (array)explode(',', $cat['actions']) : array();
 		}
 
 		Container::getService('zco_core.cache')->set('pub_details-'.$this['id'], $array, 0);

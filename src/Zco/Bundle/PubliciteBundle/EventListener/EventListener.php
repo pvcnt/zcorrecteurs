@@ -30,6 +30,7 @@ use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
 use Knp\Menu\ItemInterface;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use PubliciteCampagne;
 
 /**
  * Observateur principal pour le module de publicités.
@@ -122,15 +123,15 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 		    ->getChild('Publicité');
 		
 		$tab->addChild('Ajouter une publicité', array(
-			'uri' => '/publicite/ajouter.html',
+                    'uri' => $this->generateUrl('zco_ads_new'),
 		))->secure('publicite_changer_etat');
 		
 		$tab->addChild('Voir les campagnes actives', array(
-			'uri' => '/publicite/index.html?all=1&etat[]=en_cours&etat[]=pause',
+                    'uri' => $this->generateUrl('zco_ads_index', array('etat' => array(PubliciteCampagne::RUNNING, PubliciteCampagne::PAUSED, PubliciteCampagne::COMPLETED))),
 		))->secure('publicite_voir');
 		
 		$tab->addChild('Voir les campagnes inactives', array(
-			'uri' => '/publicite/index.html?all=1&etat[]=termine&etat[]=supprime',
+                    'uri' => $this->generateUrl('zco_ads_index', array('etat' => array(PubliciteCampagne::DELETED, PubliciteCampagne::COMPLETED))),
 		))->secure('publicite_voir');
 	}
 

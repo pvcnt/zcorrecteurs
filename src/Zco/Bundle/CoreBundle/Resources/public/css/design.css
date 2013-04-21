@@ -478,6 +478,45 @@ table.table-small {
 	font-size: 10px;
 }
 
+/**
+ * Des modules prenant toute la page, pour organiser l'information.
+ * Sépare l'espace en boites, regroupées dans un tableau.
+ *
+ * .UI_boxes : tableau regroupant les boites.
+ * .UI_boxes.home : modifie légèrement le style pour la page d'accueil.
+ */
+table.zco-boxes
+{
+	width: 100%;
+	margin: 0 auto;
+	border-spacing: 7px;
+    border-collapse: separate;
+}
+
+table.zco-boxes td
+{
+	width: 50%;
+	vertical-align: top;
+	border: 1px solid #d6d6d6;
+	background-color: #efefef;
+	border-radius: 9px;
+	-moz-border-radius: 9px;
+	-webkit-border-radius: 9px;
+
+	padding: 5px;
+	margin: 0;
+}
+
+table.zco-boxes h2
+{
+	text-align: right;
+	border-bottom: 2px #25c7f6 solid;
+	font-size: 15px !important;
+    line-height: 25px !important;
+	margin: 0 5px 5px;
+	color: #333;
+}
+
 
 
 

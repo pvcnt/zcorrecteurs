@@ -43,7 +43,6 @@ class PubliciteTable extends Doctrine_Table
 					'p.url_cible, p.age_min, p.age_max, p.aff_pays_inconnu, p.aff_age_inconnu, '.
 					'pp.id, pp.nom, pp.code, pc.categorie_id, pc.publicite_id, pc.actions')
 				->leftJoin('p.Campagne c')
-				->leftJoin('p.Categories pc')
 				->leftJoin('p.Pays pp')
 				->where('p.actif = 1')
 				->andWhere('p.approuve = ?', 'approuve')
@@ -114,26 +113,11 @@ class PubliciteTable extends Doctrine_Table
 			}
 
 			//Ciblage par catégorie.
-			if (count($pub['Categories']) > 0)
+                        $request = Container::getService('request');
+			if ($pub['aff_accueil'] && $request->attributes->get('_module') != 'accueil')
 			{
-			    $action = Container::getService('request')->attributes->get('_action');
-			    if ($action)
-			    {
-				    $id_cat = GetIdCategorieCourante();
-    				if (isset($pub['Categories'][$id_cat]))
-    				{
-    					if (!empty($pub['Categories'][$id_cat]) && !in_array($action, $pub['Categories'][$id_cat]))
-    					{
-    						unset($publicites[$i]);
-    						break;
-    					}
-    				}
-    				else
-    				{
-    					unset($publicites[$i]);
-    					break;
-    				}
-				}
+				unset($publicites[$i]);
+				break;
 			}
 
 			//Mise à jour des vues si nécessaire.
@@ -188,8 +172,6 @@ class PubliciteTable extends Doctrine_Table
 	{
 		return $this->createQuery('p')
 			->select('p.*, c.*, pc.*, cat.cat_id, cat.cat_nom, pp.*')
-			->leftJoin('p.Categories pc')
-			->leftJoin('pc.Categorie cat')
 			->leftJoin('p.Pays pp')
 			->leftJoin('p.Campagne c')
 			->where('p.id = ?', $id)
