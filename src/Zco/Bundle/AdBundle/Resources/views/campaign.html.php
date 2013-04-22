@@ -1,6 +1,6 @@
 <?php $view->extend('::layouts/bootstrap.html.php') ?>
 
-<?php echo $view->render('ZcoPubliciteBundle::_onglets.html.php', array('currentTab' => 'campaigns')) ?>
+<?php echo $view->render('ZcoAdBundle::_onglets.html.php', array('currentTab' => 'campaigns')) ?>
 
 <h1 id="h2_nom"><?php echo htmlspecialchars($campagne['nom']) ?></h1>
 
@@ -13,11 +13,11 @@
                 <a href="#" onclick="editer_nom(false); return false;"><img src="/img/editer.png" alt="Modifier" /></a>
 
                 <?php if (verifier('publicite_supprimer')) { ?>
-                    <a href="<?php echo $view['router']->generate('zco_ads_delete', array('id' => $campagne['id'])) ?>" title="Supprimer définitivement la campagne">
+                    <a href="<?php echo $view['router']->generate('zco_ad_delete', array('id' => $campagne['id'])) ?>" title="Supprimer définitivement la campagne">
                         <img src="/img/supprimer.png" alt="Supprimer" />
                     </a>
                 <?php } if (verifier('publicite_editer_createur') || ($campagne['utilisateur_id'] == $_SESSION['id'] && verifier('publicite_editer_createur_siens'))) { ?>
-                    <a href="<?php echo $view['router']->generate('zco_ads_owner', array('id' => $campagne['id'])) ?>" title="Changer le propriétaire de la campagne">
+                    <a href="<?php echo $view['router']->generate('zco_ad_owner', array('id' => $campagne['id'])) ?>" title="Changer le propriétaire de la campagne">
                         <img src="/img/membres/changer_groupe.png" alt="Changer le propriétaire" />
                     </a>
                 <?php } ?>
@@ -110,7 +110,7 @@
             <?php foreach ($publicites as $publicite) { ?>
                 <tr>
                     <td>
-                        <a href="<?php echo $view['router']->generate('zco_ads_advertisment', array('id' => $publicite['id'])) ?>">
+                        <a href="<?php echo $view['router']->generate('zco_ad_advertisment', array('id' => $publicite['id'])) ?>">
                             <?php echo htmlspecialchars($publicite['titre']) ?>
                         </a>
                     </td>
@@ -139,7 +139,7 @@
         {
             $('btn_nom').setStyle('display', 'none');
             xhr = new Request({
-                url: Routing.generate('zco_ads_api_editCampaignName', {id: <?php echo $campagne['id'] ?>}), 
+                url: Routing.generate('zco_ad_api_editCampaignName', {id: <?php echo $campagne['id'] ?>}), 
                 method: 'post', 
                 onSuccess: function(text){
                     $('lbl_nom').set('html', text);
@@ -166,7 +166,7 @@
         {
             $('btn_etat').setStyle('display', 'none');
             xhr = new Request({
-                url: Routing.generate('zco_ads_api_editCampaignStatus', {id: <?php echo $campagne['id'] ?>}), 
+                url: Routing.generate('zco_ad_api_editCampaignStatus', {id: <?php echo $campagne['id'] ?>}), 
                 method: 'post', 
                 onSuccess: function(text){
                     $('lbl_etat').set('html', text);
@@ -189,7 +189,7 @@
         {
             $('btn_dates').setStyle('display', 'none');
             xhr = new Request({
-                url: Routing.generate('zco_ads_api_editCampaignDates', {id: <?php echo $campagne['id'] ?>}), 
+                url: Routing.generate('zco_ad_api_editCampaignDates', {id: <?php echo $campagne['id'] ?>}), 
                 method: 'post', 
                 onSuccess: function(text){
                     $('lbl_dates').set('html', text);

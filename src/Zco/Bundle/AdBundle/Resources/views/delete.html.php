@@ -1,6 +1,6 @@
 <?php $view->extend('::layouts/bootstrap.html.php') ?>
 
-<?php echo $view->render('ZcoPubliciteBundle::_onglets.html.php') ?>
+<?php echo $view->render('ZcoAdBundle::_onglets.html.php') ?>
 <h1>Supprimer définitivement une campagne</h1>
 
 <form method="post" action="">
@@ -15,7 +15,7 @@
 
     <div class="form-actions">
         <input type="submit" class="btn btn-primary" value="Oui" />
-        <a href="<?php echo $view['router']->generate('zco_ads_campaign', array('id' => $campagne['id'])) ?>" class="btn">Non</a>
+        <a href="<?php echo $view['router']->generate('zco_ad_campaign', array('id' => $campagne['id'])) ?>" class="btn">Non</a>
     </div>
 </form>
 

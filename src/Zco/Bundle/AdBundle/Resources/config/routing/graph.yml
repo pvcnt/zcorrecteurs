@@ -1,0 +1,9 @@
+zco_ad_graph_campaigns:
+    pattern:   /graphique
+    defaults:  { _controller: ZcoAdBundle:Graph:campaigns }
+
+zco_ad_graph_advertisment:
+    pattern:   /publicite/{id}/graphique
+    defaults:  { _controller: ZcoAdBundle:Graph:advertisment }
+    requirements:
+        id: \d+

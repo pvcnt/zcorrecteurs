@@ -1,6 +1,6 @@
 <?php $view->extend('::layouts/bootstrap.html.php') ?>
 
-<?php echo $view->render('ZcoPubliciteBundle::_onglets.html.php', array('currentTab' => 'new')) ?>
+<?php echo $view->render('ZcoAdBundle::_onglets.html.php', array('currentTab' => 'new')) ?>
 
 <div class="row-fluid">
     <div class="span8">
@@ -165,7 +165,7 @@
 </div> <!-- /.row-fluid -->
 
 
-<?php echo $view->render('ZcoPubliciteBundle::_apparence_js.html.php') ?>
-<?php echo $view->render('ZcoPubliciteBundle::_ciblage_js.html.php') ?>
+<?php echo $view->render('ZcoAdBundle::_apparence_js.html.php') ?>
+<?php echo $view->render('ZcoAdBundle::_ciblage_js.html.php') ?>
 
 <?php $view['vitesse']->requireResource('@ZcoCoreBundle/Resources/public/css/zcode.css') ?>

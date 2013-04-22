@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\PubliciteBundle\Controller;
+namespace Zco\Bundle\AdBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -71,7 +71,7 @@ class DefaultController extends Controller
 
         fil_ariane('Publicité');
 
-        return render_to_response('ZcoPubliciteBundle::index.html.php', array(
+        return render_to_response('ZcoAdBundle::index.html.php', array(
                 'all'          => $all,
                 'statuses'     => $statuses,
                 'campagnes'    => $campaigns,
@@ -131,26 +131,26 @@ class DefaultController extends Controller
                 $publicite['actif'] ? 
                     'La publicité a bien été ajoutée.' : 
                     'Votre offre de partenariat a bien été proposée. Elle va être examinée par les administrateurs. Merci de votre confiance !',
-                $this->generateUrl('zco_ads_campaign', array('id' => $campagne['id']))
+                $this->generateUrl('zco_ad_campaign', array('id' => $campagne['id']))
             );
         }
 
         if (false !== $campagne) {
             Page::$titre = 'Nouvelle publicité - '.$campagne['nom'];
             fil_ariane(array(
-                'Publicité'                                   => $this->generateUrl('zco_ads_index'),
-                htmlspecialchars($publicite->Campagne['nom']) => $this->generateUrl('zco_ads_campaign', array('id' => $publicite['campagne_id'])),
+                'Publicité'                                   => $this->generateUrl('zco_ad_index'),
+                htmlspecialchars($publicite->Campagne['nom']) => $this->generateUrl('zco_ad_campaign', array('id' => $publicite['campagne_id'])),
                 'Nouvelle publicité',
             ));
         } else {
             Page::$titre = 'Nouvelle publicité';
             fil_ariane(array(
-                'Publicité' => $this->generateUrl('zco_ads_index'),
+                'Publicité' => $this->generateUrl('zco_ad_index'),
                 'Nouvelle publicité',
             ));
         }
 
-        return render_to_response('ZcoPubliciteBundle::new.html.php', array(
+        return render_to_response('ZcoAdBundle::new.html.php', array(
                 'campagne'       => $campagne,
                 'nb_membres_age' => Doctrine_Core::getTable('Utilisateur')->compterMembresAge(),
                 'pays'           => Doctrine_Core::getTable('Pays')->findAll(),
@@ -174,12 +174,12 @@ class DefaultController extends Controller
         //Inclusion de la vue
         Page::$titre = htmlspecialchars($publicite['titre'] . ' - ' . $publicite->Campagne['nom']);
         fil_ariane(array(
-            'Publicité'                                   => $this->generateUrl('zco_ads_index'),
-            htmlspecialchars($publicite->Campagne['nom']) => $this->generateUrl('zco_ads_campaign', array('id' => $publicite['campagne_id'])),
+            'Publicité'                                   => $this->generateUrl('zco_ad_index'),
+            htmlspecialchars($publicite->Campagne['nom']) => $this->generateUrl('zco_ad_campaign', array('id' => $publicite['campagne_id'])),
             htmlspecialchars($publicite['titre']),
         ));
 
-        return render_to_response('ZcoPubliciteBundle::advertisment.html.php', array(
+        return render_to_response('ZcoAdBundle::advertisment.html.php', array(
                 'annee'     => $annee,
                 'mois'      => $mois,
                 'jour'      => $jour,
@@ -203,11 +203,11 @@ class DefaultController extends Controller
         
         Page::$titre = htmlspecialchars($campagne['nom']);
         fil_ariane(array(
-            'Publicité' => $this->generateUrl('zco_ads_index'),
+            'Publicité' => $this->generateUrl('zco_ad_index'),
             htmlspecialchars($campagne['nom']),
         ));
 
-        return render_to_response('ZcoPubliciteBundle::campaign.html.php', array(
+        return render_to_response('ZcoAdBundle::campaign.html.php', array(
             'campagne'   => $campagne,
             'publicites' => Doctrine_Core::getTable('Publicite')->findByCampagneId($campagne['id']),
         ));
@@ -235,20 +235,20 @@ class DefaultController extends Controller
             
             return redirect(
                 'L\'apparence a bien été modifiée. Elle prend effet immédiatement.', 
-                $this->generateUrl('zco_ads_advertisment', array('id' => $publicite['id']))
+                $this->generateUrl('zco_ad_advertisment', array('id' => $publicite['id']))
             );
         }
 
         //Inclusion de la vue
         Page::$titre = htmlspecialchars($publicite['titre'] . ' - ' . $publicite->Campagne['nom']);
         fil_ariane(array(
-            'Publicité'                                   => $this->generateUrl('zco_ads_index'),
-            htmlspecialchars($publicite->Campagne['nom']) => $this->generateUrl('zco_ads_campaign', array('id'                                  => $publicite['campagne_id'])),
-            htmlspecialchars($publicite['titre'])         => $this->generateUrl('zco_ads_advertisment', array('id' => $publicite['id'])),
+            'Publicité'                                   => $this->generateUrl('zco_ad_index'),
+            htmlspecialchars($publicite->Campagne['nom']) => $this->generateUrl('zco_ad_campaign', array('id'                                  => $publicite['campagne_id'])),
+            htmlspecialchars($publicite['titre'])         => $this->generateUrl('zco_ad_advertisment', array('id' => $publicite['id'])),
             'Apparence',
         ));
 
-        return render_to_response('ZcoPubliciteBundle::editAppearance.html.php', array(
+        return render_to_response('ZcoAdBundle::editAppearance.html.php', array(
             'publicite' => $publicite,
         ));
     }
@@ -266,7 +266,7 @@ class DefaultController extends Controller
             if (false === $utilisateur) {
                 return redirect(
                     'L\'utilisateur indiqué n\'existe pas.', 
-                    $this->generateUrl('zco_ads_owner', array('id' => $campagne['id'])), 
+                    $this->generateUrl('zco_ad_owner', array('id' => $campagne['id'])), 
                     MSG_ERROR
                 );
             }
@@ -276,18 +276,18 @@ class DefaultController extends Controller
             
             return redirect(
                 'Le propriétaire de la campagne a bien été modifié.', 
-                $this->generateUrl('zco_ads_campaign', array('id' => $campagne['id']))
+                $this->generateUrl('zco_ad_campaign', array('id' => $campagne['id']))
             );
         }
 
         Page::$titre = htmlspecialchars($campagne['nom']);
         fil_ariane(array(
-            'Publicité'                        => $this->generateUrl('zco_ads_index'),
-            htmlspecialchars($campagne['nom']) => $this->generateUrl('zco_ads_campaign', array('id' => $campagne['id'])),
+            'Publicité'                        => $this->generateUrl('zco_ad_index'),
+            htmlspecialchars($campagne['nom']) => $this->generateUrl('zco_ad_campaign', array('id' => $campagne['id'])),
             'Propriétaire',
         ));
 
-        return render_to_response('ZcoPubliciteBundle::editOwner.html.php', array(
+        return render_to_response('ZcoAdBundle::editOwner.html.php', array(
             'campagne' => $campagne,
         ));
     }
@@ -305,20 +305,20 @@ class DefaultController extends Controller
             
             return redirect(
                 'Le ciblage a bien été modifié. Il prend effet immédiatement.', 
-                $this->generateUrl('zco_ads_advertisment', array('id' => $publicite['id']))
+                $this->generateUrl('zco_ad_advertisment', array('id' => $publicite['id']))
             );
         }
 
         //Inclusion de la vue
         Page::$titre = htmlspecialchars($publicite['titre'] . ' - ' . $publicite->Campagne['nom']);
         fil_ariane(array(
-            'Publicité'                                   => $this->generateUrl('zco_ads_index'),
-            htmlspecialchars($publicite->Campagne['nom']) => $this->generateUrl('zco_ads_campaign', array('id'                                  => $publicite['campagne_id'])),
-            htmlspecialchars($publicite['titre']) => $this->generateUrl('zco_ads_advertisment', array('id' => $publicite['id'])),
+            'Publicité'                                   => $this->generateUrl('zco_ad_index'),
+            htmlspecialchars($publicite->Campagne['nom']) => $this->generateUrl('zco_ad_campaign', array('id'                                  => $publicite['campagne_id'])),
+            htmlspecialchars($publicite['titre']) => $this->generateUrl('zco_ad_advertisment', array('id' => $publicite['id'])),
             'Ciblage',
         ));
 
-        return render_to_response('ZcoPubliciteBundle::editTargeting.html.php', array(
+        return render_to_response('ZcoAdBundle::editTargeting.html.php', array(
                 'publicite'         => $publicite,
                 'categories'        => Doctrine_Core::getTable('Categorie')->getCategoriesCiblables(),
                 'pays'              => Doctrine_Core::getTable('Pays')->findAll(),
@@ -341,18 +341,18 @@ class DefaultController extends Controller
 
             return redirect(
                 'La campagne a bien été supprimée.', 
-                $this->generateUrl('zco_ads_index')
+                $this->generateUrl('zco_ad_index')
             );
         }
 
         Page::$titre = htmlspecialchars($campaign['nom']);
         fil_ariane(array(
-            'Publicité'                        => $this->generateUrl('zco_ads_index'),
-            htmlspecialchars($campaign['nom']) => $this->generateUrl('zco_ads_campaign', array('id' => $campaign['id'])),
+            'Publicité'                        => $this->generateUrl('zco_ad_index'),
+            htmlspecialchars($campaign['nom']) => $this->generateUrl('zco_ad_campaign', array('id' => $campaign['id'])),
             'Supprimer définitivement',
         ));
         
-        return render_to_response('ZcoPubliciteBundle::delete.html.php', array('campagne' => $campaign));
+        return render_to_response('ZcoAdBundle::delete.html.php', array('campagne' => $campaign));
     }
 
     public function resetClicksAction($id, $date, $token)
@@ -366,7 +366,7 @@ class DefaultController extends Controller
 
         return redirect(
             'Les clics ont bien été remis à zéro.', 
-            $this->generateUrl('zco_ads_advertisment', array('id' => $id))
+            $this->generateUrl('zco_ad_advertisment', array('id' => $id))
         );
     }
 
@@ -381,7 +381,7 @@ class DefaultController extends Controller
 
         return redirect(
             'Les affichages ont bien été remis à zéro.', 
-            $this->generateUrl('zco_ads_advertisment', array('id' => $id))
+            $this->generateUrl('zco_ad_advertisment', array('id' => $id))
         );
     }
 

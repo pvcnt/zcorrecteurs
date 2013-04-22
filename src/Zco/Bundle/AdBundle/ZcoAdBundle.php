@@ -19,10 +19,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\PubliciteBundle;
+namespace Zco\Bundle\AdBundle;
 
 use Zco\Component\HttpKernel\Bundle\AbstractBundle;
 
-class ZcoPubliciteBundle extends AbstractBundle
+class ZcoAdBundle extends AbstractBundle
 {
 }

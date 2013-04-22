@@ -1,11 +1,11 @@
 <?php $view->extend('::layouts/bootstrap.html.php') ?>
 
-<?php echo $view->render('ZcoPubliciteBundle::_onglets.html.php') ?>
+<?php echo $view->render('ZcoAdBundle::_onglets.html.php') ?>
 <h1>Modifier l'apparence : <?php echo htmlspecialchars($publicite['titre']) ?></h1>
 
 <div class="row-fluid">
     <div class="span8">
-        <form method="post" action="<?php echo $view['router']->generate('zco_ads_appearance', array('id' => $publicite['id'])) ?>" class="form-horizontal">
+        <form method="post" action="<?php echo $view['router']->generate('zco_ad_appearance', array('id' => $publicite['id'])) ?>" class="form-horizontal">
             <div class="control-group">
                 <label for="url_cible" class="control-label">Adresse de redirection</label>
                 <div class="controls">
@@ -38,7 +38,7 @@
             
             <div class="form-actions">
                 <input type="submit" class="btn btn-primary" value="Sauvegarder" accesskey="s" />
-                <a href="<?php echo $view['router']->generate('zco_ads_advertisment', array('id' => $publicite['id'])) ?>" class="btn">Annuler</a>
+                <a href="<?php echo $view['router']->generate('zco_ad_advertisment', array('id' => $publicite['id'])) ?>" class="btn">Annuler</a>
             </div>
         </form>
     </div> <!-- /.span8 -->
@@ -48,7 +48,7 @@
             <span class="gris">Le rendu final peut quelque peu différer.</span>
         </div>
         <div id="preview_pub">
-            <?php echo $view->render('ZcoPubliciteBundle::_preview.html.php', array('advertisment' => $publicite)) ?>
+            <?php echo $view->render('ZcoAdBundle::_preview.html.php', array('advertisment' => $publicite)) ?>
         </div>
     </div> <!-- /.span4 -->
 </div> <!-- /.row-fluid -->

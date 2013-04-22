@@ -1,6 +1,6 @@
 <?php $view->extend('::layouts/bootstrap.html.php') ?>
 
-<?php echo $view->render('ZcoPubliciteBundle::_onglets.html.php', array('currentTab' => 'campaigns')) ?>
+<?php echo $view->render('ZcoAdBundle::_onglets.html.php', array('currentTab' => 'campaigns')) ?>
 
 <?php if (count($campagnes) > 0) { ?>
     <table class="table table-striped">
@@ -30,7 +30,7 @@
             <?php foreach ($campagnes as $campagne) { ?>
                 <tr>
                     <td>
-                        <a href="<?php echo $view['router']->generate('zco_ads_campaign', array('id' => $campagne['id'])) ?>">
+                        <a href="<?php echo $view['router']->generate('zco_ad_campaign', array('id' => $campagne['id'])) ?>">
                             <?php echo htmlspecialchars($campagne['nom']) ?>
                         </a>
                     </td>
@@ -58,7 +58,7 @@
             <div class="control-group">
                 <label for="type" class="control-label">Choisissez un graphique</label>
                 <div class="controls">
-                    <select name="type" id="type" onchange="$('img_stats').src = '<?php echo $view['router']->generate('zco_ads_graph_campaigns') ?>?'+$('form_type').toQueryString();">
+                    <select name="type" id="type" onchange="$('img_stats').src = '<?php echo $view['router']->generate('zco_ad_graph_campaigns') ?>?'+$('form_type').toQueryString();">
                         <optgroup label="Données volumétriques sur les 15 derniers jours">
                             <option value="clic">Nombre de clics</option>
                             <option value="affichage">Nombre d'impressions</option>
@@ -72,7 +72,7 @@
                 <label for="campagnes" class="control-label">Campagnes à afficher</label>
                 <div class="controls">
                     <?php foreach ($campagnes as $i => $campagne) { ?>
-                        <input type="checkbox" name="ids[]" onchange="$('img_stats').src = '<?php echo $view['router']->generate('zco_ads_graph_campaigns') ?>?'+$('form_type').toQueryString();" value="<?php echo $campagne['id'] ?>" id="campagne_<?php echo $campagne['id'] ?>" checked="checked" />
+                        <input type="checkbox" name="ids[]" onchange="$('img_stats').src = '<?php echo $view['router']->generate('zco_ad_graph_campaigns') ?>?'+$('form_type').toQueryString();" value="<?php echo $campagne['id'] ?>" id="campagne_<?php echo $campagne['id'] ?>" checked="checked" />
                         <label for="campagne_<?php echo $campagne['id'] ?>" class="nofloat <?php echo $couleurs[$i % count($couleurs)] ?>" style="margin-right: 10px;">
                             <?php echo htmlspecialchars($campagne['nom']) ?>
                         </label>
@@ -84,7 +84,7 @@
 
         <div class="center">
             <img id="img_stats" 
-                 src="<?php echo $view['router']->generate('zco_ads_graph_campaigns', array_merge($queryParameters, array('type' => 'clic'))) ?>" 
+                 src="<?php echo $view['router']->generate('zco_ad_graph_campaigns', array_merge($queryParameters, array('type' => 'clic'))) ?>" 
                  alt="Graphique de statistiques" 
              />
         </div>
@@ -96,11 +96,11 @@
 <p class="box bold center" style="margin-top: 20px;">
     <?php if (verifier('publicite_voir')) { ?>
         <?php if ($all) { ?>
-            <a href="<?php echo $view['router']->generate('zco_ads_index') ?>">
+            <a href="<?php echo $view['router']->generate('zco_ad_index') ?>">
                 Afficher uniquement mes campagnes
             </a>
         <?php } else { ?>
-            <a href="<?php echo $view['router']->generate('zco_ads_index', array('all' => 1)) ?>">
+            <a href="<?php echo $view['router']->generate('zco_ad_index', array('all' => 1)) ?>">
                 Afficher toutes les campagnes du site
             </a>
         <?php } ?><br />

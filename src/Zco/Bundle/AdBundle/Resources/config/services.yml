@@ -1,6 +1,6 @@
 services:
     zco_publicite.event_listener:
-        class: Zco\Bundle\PubliciteBundle\EventListener\EventListener
+        class: Zco\Bundle\AdBundle\EventListener\EventListener
         calls:
             - [setContainer, [@service_container]]
         tags:

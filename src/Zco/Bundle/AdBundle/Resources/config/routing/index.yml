@@ -1,0 +1,11 @@
+zco_ad_default:
+    resource: "@ZcoAdBundle/Resources/config/routing/default.yml"
+    prefix:   /publicite
+
+zco_ad_graph:
+    resource: "@ZcoAdBundle/Resources/config/routing/graph.yml"
+    prefix:   /publicite
+
+zco_ad_api:
+    resource: "@ZcoAdBundle/Resources/config/routing/api.yml"
+    prefix:   /_api/publicite

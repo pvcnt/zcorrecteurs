@@ -1,6 +1,6 @@
 <?php $view->extend('::layouts/bootstrap.html.php') ?>
 
-<?php echo $view->render('ZcoPubliciteBundle::_onglets.html.php', array('campagne_id'      => $publicite['campagne_id'])) ?>
+<?php echo $view->render('ZcoAdBundle::_onglets.html.php', array('campagne_id'      => $publicite['campagne_id'])) ?>
 <?php $convertisseurMois = array('janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre') ?>
 
 <h1><?php echo htmlspecialchars($publicite['titre']) ?></h1>
@@ -25,7 +25,7 @@
                 <?php echo htmlspecialchars($publicite['titre']) ?>
                 <?php if (verifier('publicite_editer') || ($publicite->Campagne['utilisateur_id'] == $_SESSION['id'] && verifier('publicite_editer_siens'))) { ?>
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <a href="<?php echo $view['router']->generate('zco_ads_appearance', array('id' => $publicite['id'])) ?>" title="Modifier le nom de la publicité">
+                    <a href="<?php echo $view['router']->generate('zco_ad_appearance', array('id' => $publicite['id'])) ?>" title="Modifier le nom de la publicité">
                         <img src="/img/editer.png" alt="Modifier" />
                     </a>
                 <?php } ?>
@@ -61,7 +61,7 @@
             <td class="droite gris">
                 Ciblage des visiteurs
                 <?php if ('autre' !== $publicite['emplacement'] && (verifier('publicite_editer_ciblage') || ($publicite->Campagne['utilisateur_id'] == $_SESSION['id'] && verifier('publicite_editer_ciblage_siens')))) { ?><br />
-                    <a href="<?php echo $view['router']->generate('zco_ads_targeting', array('id' => $publicite['id'])) ?>">
+                    <a href="<?php echo $view['router']->generate('zco_ad_targeting', array('id' => $publicite['id'])) ?>">
                         <img src="/img/editer.png" alt="Modifier le ciblage" />
                     </a>
                 <?php } ?>
@@ -101,7 +101,7 @@
 
         <div class="gris">
             <?php if (verifier('publicite_editer') || ($publicite->Campagne['utilisateur_id'] == $_SESSION['id'] && verifier('publicite_editer_siens'))) { ?>
-                <a href="<?php echo $view['router']->generate('zco_ads_appearance', array('id' => $publicite['id'])) ?>">
+                <a href="<?php echo $view['router']->generate('zco_ad_appearance', array('id' => $publicite['id'])) ?>">
                     Modifier l'apparence
                 </a>
             <?php } else { ?><br />
@@ -111,7 +111,7 @@
         </div>
     </div>
 
-    <?php echo $view->render('ZcoPubliciteBundle::_preview.html.php', array('advertisment' => $publicite)) ?>
+    <?php echo $view->render('ZcoAdBundle::_preview.html.php', array('advertisment' => $publicite)) ?>
 </div>
 
 <table class="table table-striped" style="width: 73%; margin-left: 0;">
@@ -221,7 +221,7 @@
         </div>
 
         <img id="img_stats" 
-             src="<?php echo $view['router']->generate('zco_ads_graph_advertisment', array('id' => $publicite['id'], 'type' => 'clic', 'week' => $week)) ?>" 
+             src="<?php echo $view['router']->generate('zco_ad_graph_advertisment', array('id' => $publicite['id'], 'type' => 'clic', 'week' => $week)) ?>" 
              alt="Graphique de statistiques" 
         />
     </div>
@@ -240,7 +240,7 @@
         {
             $('btn_etat').setStyle('display', 'none');
             xhr = new Request({
-                url: Routing.generate('zco_ads_api_editAdStatus', {id: <?php echo $publicite['id'] ?>}), 
+                url: Routing.generate('zco_ad_api_editAdStatus', {id: <?php echo $publicite['id'] ?>}), 
                 method: 'post', 
                 onSuccess: function(text, xml){
                     $('lbl_etat').set('html', text);

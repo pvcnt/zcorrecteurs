@@ -1,6 +1,6 @@
 <?php $view->extend('::layouts/bootstrap.html.php') ?>
 
-<?php echo $view->render('ZcoPubliciteBundle::_onglets.html.php') ?>
+<?php echo $view->render('ZcoAdBundle::_onglets.html.php') ?>
 <h1>Changer le créateur de la campagne : <?php echo htmlspecialchars($campagne['nom']) ?></h1>
 
 <p>
@@ -28,7 +28,7 @@
     
     <div class="form-actions">
         <input type="submit" class="btn btn-primary" value="Changer le propriétaire" />
-        <a href="<?php echo $view['router']->generate('zco_ads_campaign', array('id' => $campagne['id'])) ?>" class="btn">Annuler</a>
+        <a href="<?php echo $view['router']->generate('zco_ad_campaign', array('id' => $campagne['id'])) ?>" class="btn">Annuler</a>
     </div>
 
     <?php

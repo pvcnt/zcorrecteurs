@@ -1,6 +1,6 @@
 <?php $view->extend('::layouts/bootstrap.html.php') ?>
 
-<?php echo $view->render('ZcoPubliciteBundle::_onglets.html.php') ?>
+<?php echo $view->render('ZcoAdBundle::_onglets.html.php') ?>
 <h1>Ciblage : <?php echo htmlspecialchars($publicite['titre']) ?></h1>
 
 <form method="post" action="">
@@ -47,12 +47,12 @@
 
     <div class="form-actions">
         <input type="submit" name="send" class="btn btn-primary" value="Sauvegarder les nouveaux critères" accesskey="s" />
-        <a href="<?php echo $view['router']->generate('zco_ads_advertisment', array('id' => $publicite['id'])) ?>" class="btn">Annuler</a>
+        <a href="<?php echo $view['router']->generate('zco_ad_advertisment', array('id' => $publicite['id'])) ?>" class="btn">Annuler</a>
     </div>
 </form>
 
 <?php
-echo $view->render('ZcoPubliciteBundle::_ciblage_js.html.php', array(
+echo $view->render('ZcoAdBundle::_ciblage_js.html.php', array(
     'cibler_pays'    => $cibler_pays,
     'cibler_age'     => $cibler_age,
     'cibler_age_min' => $cibler_age_min,

@@ -69,7 +69,7 @@ class AppKernel extends Kernel
 			new Zco\Bundle\LivredorBundle\ZcoLivredorBundle(),
 			new Zco\Bundle\MpBundle\ZcoMpBundle(),
 			new Zco\Bundle\OptionsBundle\ZcoOptionsBundle(),
-			new Zco\Bundle\PubliciteBundle\ZcoPubliciteBundle(),
+			new Zco\Bundle\AdBundle\ZcoAdBundle(),
 			new Zco\Bundle\QuizBundle\ZcoQuizBundle(),
 			new Zco\Bundle\RechercheBundle\ZcoRechercheBundle(),
 			new Zco\Bundle\RecrutementBundle\ZcoRecrutementBundle(),
