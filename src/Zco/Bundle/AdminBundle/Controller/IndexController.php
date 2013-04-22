@@ -21,48 +21,50 @@
 
 namespace Zco\Bundle\AdminBundle\Controller;
 
+use Page;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Tests\Component\HttpKernel\Controller;
 use Zco\Bundle\AdminBundle\AdminEvents;
 use Zco\Bundle\AdminBundle\Menu\Renderer\AdminRenderer;
 use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
 use Zco\Bundle\CoreBundle\Menu\MenuFactory;
-use Zco\Bundle\CoreBundle\Menu\MenuItem;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 /**
  * Contrôleur gérant l'accueil de l'administration pour les membres de l'équipe.
  * Gère la division de l'espace en onglets, avec dans chaque onglet des blocs, en
  * fonction des droits des utilisateurs.
  *
- * @author Zopieux, DJ Fox, vincent1870, mwsaz
+ * @author Zopieux
+ * @author DJ Fox <djfox@zcorrecteurs.fr>
+ * @author vincent1870 <vincent@zcorrecteurs.fr>
+ * @author mwsaz <mwsaz.fr>
  */
 class IndexController extends Controller
 {
-	public function defaultAction()
-	{
-		if (!verifier('admin'))
-		{
-			throw new AccessDeniedHttpException();
-		}
-		
-		$this->get('zco_admin.manager')->refresh();
-		
-		\Page::$titre = 'Accueil de l\'administration';
-		fil_ariane('Administration');
-		
-		$factory = new MenuFactory();
-		$menu = $factory->createItem('Administration');
-		$menu->addChild('Contenu');
-		$menu->addChild('zCorrection');
-		$menu->addChild('Communauté');
-		$menu->addChild('Gestion technique');
-		$menu->addChild('Informations');
-		$menu->addChild('Gestion financière');
-		
-		$event = new FilterMenuEvent($this->get('request'), $menu);
-		$this->get('event_dispatcher')->dispatch(AdminEvents::MENU, $event);
-		$renderer = new AdminRenderer();
-		
-		return render_to_response(array('admin' => $renderer->render($menu)));
-	}
+    public function defaultAction()
+    {
+        if (!verifier('admin')) {
+            throw new AccessDeniedHttpException();
+        }
+
+        $this->get('zco_admin.manager')->refresh();
+
+        Page::$titre = 'Accueil de l\'administration';
+        fil_ariane('Administration');
+
+        $factory = new MenuFactory();
+        $menu    = $factory->createItem('Administration');
+        $menu->addChild('Contenu');
+        $menu->addChild('zCorrection');
+        $menu->addChild('Communauté');
+        $menu->addChild('Gestion technique');
+        $menu->addChild('Informations');
+        $menu->addChild('Gestion financière');
+
+        $event    = new FilterMenuEvent($this->get('request'), $menu);
+        $this->get('event_dispatcher')->dispatch(AdminEvents::MENU, $event);
+        $renderer = new AdminRenderer();
+
+        return render_to_response(array('admin' => $renderer->render($menu)));
+    }
 }

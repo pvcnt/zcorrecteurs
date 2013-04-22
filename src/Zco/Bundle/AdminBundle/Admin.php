@@ -32,140 +32,130 @@ use Zco\Bundle\CoreBundle\Cache\CacheInterface;
  */
 class Admin
 {
-	private $taches = array();
-	private $time = 3600;
-	private $cache;
+    private $taches = array();
+    private $time = 3600;
+    private $cache;
 
-	/**
-	 * Constructeur.
-	 */
-	public function __construct(CacheInterface $cache)
-	{
-		$this->cache = $cache;
-		include_once(__DIR__.'/modeles/taches_admin.php');
-	}
+    /**
+     * Constructeur.
+     */
+    public function __construct(CacheInterface $cache)
+    {
+        $this->cache = $cache;
+        include_once(__DIR__ . '/modeles/taches_admin.php');
+    }
 
-	/**
-	 * Enregistre une certaine tâche.
-	 *
-	 * @param string $name Le nom de la tâche
-	 * @param array $credentials Les droits nécessaires pour la voir
-	 * @param array $options Des options...
-	 */
-	public function register($name, $credentials, array $options = array())
-	{
-		$count = isset($options['count']) ? $options['count'] : true;
-		$this->taches[$name] = array(
-			'credentials' => (array) $credentials,
-			'value' => null,
-			'count' => $count,
-			'fresh' => false,
-		);
-	}
+    /**
+     * Enregistre une certaine tâche.
+     *
+     * @param string $name Le nom de la tâche
+     * @param array $credentials Les droits nécessaires pour la voir
+     * @param array $options Des options...
+     */
+    public function register($name, $credentials, array $options = array())
+    {
+        $count               = isset($options['count']) ? $options['count'] : true;
+        $this->taches[$name] = array(
+            'credentials' => (array) $credentials,
+            'value'       => null,
+            'count'       => $count,
+            'fresh'       => false,
+        );
+    }
 
-	/**
-	 * Récupère le nombre de tâches en attente d'un certain type.
-	 * 
-	 * @param  string $name Le nom de la tâche.
-	 * @param  boolean $forceRefresh Doit-on forcer le rafraichissement ?
-	 * @return integer
-	 */
-	public function get($name, $forceRefresh = false)
-	{
-		if (!isset($this->taches[$name]))
-		{
-			return 0;
-		}
-		
-		//Si le cache a déjà été rafraichi, ça suffit !
-		if ($this->taches[$name]['fresh'] && $forceRefresh)
-		{
-			$forceRefresh = false;
-		}
+    /**
+     * Récupère le nombre de tâches en attente d'un certain type.
+     * 
+     * @param  string $name Le nom de la tâche.
+     * @param  boolean $forceRefresh Doit-on forcer le rafraichissement ?
+     * @return integer
+     */
+    public function get($name, $forceRefresh = false)
+    {
+        if (!isset($this->taches[$name])) {
+            return 0;
+        }
 
-		//Si la donnée est déjà calculée, on la renvoie.
-		if (!is_null($this->taches[$name]['value']) && !$forceRefresh)
-		{
-			return $this->taches[$name]['value'];
-		}
+        //Si le cache a déjà été rafraichi, ça suffit !
+        if ($this->taches[$name]['fresh'] && $forceRefresh) {
+            $forceRefresh = false;
+        }
 
-		//Si on peut la récupérer du cache.
-		if (($value = $this->cache->get('zco_admin:task_'.$name)) !== false && !$forceRefresh)
-		{
-			$value = (int) $value;
-			$this->taches[$name]['value'] = $value;
-			
-			return $value;
-		}
-		
-		//Sinon on doit mettre à jour le compteur.
-		if (function_exists($func = 'CompterTaches'.ucfirst($name)))
-		{
-			$value = (int) call_user_func($func);
-			$this->write($name, $value);
-			
-			return $value;
-		}
-		
-		trigger_error('La fonction de comptage CompterTaches'.ucfirst($name).' n\'existe pas', E_USER_NOTICE);
-		$this->write($name, 0);
-			
-		return 0;
-	}
+        //Si la donnée est déjà calculée, on la renvoie.
+        if (!is_null($this->taches[$name]['value']) && !$forceRefresh) {
+            return $this->taches[$name]['value'];
+        }
 
-	/**
-	 * Déclenche le rafraichissement de toutes les tâches.
-	 */
-	public function refresh()
-	{
-		foreach ($this->taches as $key => $value)
-		{
-			$this->get($key, true);
-		}
-	}
+        //Si on peut la récupérer du cache.
+        if (($value = $this->cache->get('zco_admin:task_' . $name)) !== false && !$forceRefresh) {
+            $value                        = (int) $value;
+            $this->taches[$name]['value'] = $value;
 
-	/**
-	 * Retourne le nombre de tâches en attente pour le visiteur.
-	 *
-	 * @return integer
-	 */
-	public function count()
-	{
-		$count = 0;
-		foreach ($this->taches as $key => $value)
-		{
-			if ($value['count'])
-			{
-				$current = true;
-				foreach ($value['credentials'] as $d)
-				{
-					if (!verifier($d))
-					{
-						$current = false;
-						break;
-					}
-				}
-				
-				if ($current)
-				{
-					$count += $this->get($key);
-				}
-			}
-		}
-		
-		return $count;
-	}
+            return $value;
+        }
 
-	/**
-	 * Affecte une valeur à un compteur.
-	 *
-	 * @param integer $name Le nom du cache
-	 * @param integer $value La valeur à affecter
-	 */
-	public function write($name, $value)
-	{
-		$this->taches[$name]['value'] = (int) $value;
-		$this->taches[$name]['fresh'] = true;
-		$this->cache->set('zco_admin:task_'.$name, $value, $this->time);
-	}
+        //Sinon on doit mettre à jour le compteur.
+        if (function_exists($func = 'CompterTaches' . ucfirst($name))) {
+            $value = (int) call_user_func($func);
+            $this->write($name, $value);
+
+            return $value;
+        }
+
+        trigger_error('La fonction de comptage CompterTaches' . ucfirst($name) . ' n\'existe pas', E_USER_NOTICE);
+        $this->write($name, 0);
+
+        return 0;
+    }
+
+    /**
+     * Déclenche le rafraichissement de toutes les tâches.
+     */
+    public function refresh()
+    {
+        foreach (array_keys($this->taches) as $key) {
+            $this->get($key, true);
+        }
+    }
+
+    /**
+     * Retourne le nombre de tâches en attente pour le visiteur.
+     *
+     * @return integer
+     */
+    public function count()
+    {
+        $count = 0;
+        foreach ($this->taches as $key => $value) {
+            if ($value['count']) {
+                $current = true;
+                foreach ($value['credentials'] as $d) {
+                    if (!verifier($d)) {
+                        $current = false;
+                        break;
+                    }
+                }
+
+                if ($current) {
+                    $count += $this->get($key);
+                }
+            }
+        }
+
+        return $count;
+    }
+
+    /**
+     * Affecte une valeur à un compteur.
+     *
+     * @param integer $name Le nom du cache
+     * @param integer $value La valeur à affecter
+     */
+    public function write($name, $value)
+    {
+        $this->taches[$name]['value'] = (int) $value;
+        $this->taches[$name]['fresh'] = true;
+        $this->cache->set('zco_admin:task_' . $name, $value, $this->time);
+    }
+
 }
