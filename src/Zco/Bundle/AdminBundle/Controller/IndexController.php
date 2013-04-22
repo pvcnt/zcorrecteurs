@@ -22,8 +22,8 @@
 namespace Zco\Bundle\AdminBundle\Controller;
 
 use Page;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Symfony\Tests\Component\HttpKernel\Controller;
 use Zco\Bundle\AdminBundle\AdminEvents;
 use Zco\Bundle\AdminBundle\Menu\Renderer\AdminRenderer;
 use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
