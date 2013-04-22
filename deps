@@ -89,12 +89,10 @@
     git=http://github.com/FriendsOfSymfony/FOSTwitterBundle.git
     target=/bundles/FOS/TwitterBundle
 
-[knp-components]
-    git=http://github.com/KnpLabs/knp-components.git
-
 [KnpPaginatorBundle]
     git=http://github.com/KnpLabs/KnpPaginatorBundle.git
     target=bundles/Knp/Bundle/PaginatorBundle
+    version=v2.3.2
 
 [resque]
     git=http://github.com/chrisboulton/php-resque.git

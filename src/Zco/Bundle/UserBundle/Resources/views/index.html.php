@@ -14,7 +14,7 @@
 	<a href="#filtres">Filtrer les utilisateurs</a>
 </p>
 
-<?php echo $users->render() ?>
+<?php echo $view['knp_pagination']->render($users) ?>
 
 <?php if (count($users) > 0): ?>
 <table class="table table-avatar">
@@ -62,7 +62,7 @@
 </table>
 <?php endif ?>
 
-<?php echo $users->render() ?>
+<?php echo $view['knp_pagination']->render($users) ?>
 
 <form method="get" action="<?php echo $view['router']->generate('zco_user_index') ?>" class="form-horizontal">
 	<fieldset>

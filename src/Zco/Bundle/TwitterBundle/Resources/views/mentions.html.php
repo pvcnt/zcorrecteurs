@@ -9,7 +9,7 @@
     attention sur un <em>tweet</em>.
 </p>
 
-<?php echo $mentions->render() ?>
+<?php echo $view['knp_pagination']->render($mentions) ?>
 
 <?php foreach ($mentions as $mention): ?>
 <div class="box message" id="t<?php echo $mention['id']; ?>">
@@ -49,5 +49,5 @@
 <?php endforeach ?>
 
 <?php if(count($mentions) > 7): ?>
-	<?php echo $mentions->render() ?>
+	<?php echo $view['knp_pagination']->render($mentions) ?>
 <?php endif ?>

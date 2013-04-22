@@ -31,38 +31,36 @@ use Knp\Component\Pager\Event\ItemsEvent;
  */
 class PaginationListener implements EventSubscriberInterface
 {
-	/**
-	 * {@inheritdoc}
-	 */
-	public static function getSubscribedEvents()
-	{
-		return array(
-			'knp_pager.items' => array('items', 128 /* cas le plus fréquent, priorité élevée */)
-		);
-	}
-	
-	/**
-	 * Récupère les éléments pour la pagination depuis une requête Doctrine.
-	 *
-	 * @param ItemsEvent $event
-	 */
-	public function items(ItemsEvent $event)
-	{
-		if ($event->target instanceof \Doctrine_Query)
-		{
-			$countQuery = clone $event->target;
-			$event->count = (int) $countQuery->count();
-			
-			$sliceQuery = clone $event->target;
-	        $sliceQuery->offset($event->getOffset());
 
-	        if ($event->getLimit())
-	        {
-	            $sliceQuery->limit($event->getLimit());
-	        }
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedEvents()
+    {
+        return array(
+            'knp_pager.items' => array('items', 128 /* cas le plus fréquent, priorité élevée */)
+        );
+    }
 
-			$event->items = $sliceQuery->execute()->getData();
-			$event->stopPropagation();
-		}
-	}
+    /**
+     * Récupère les éléments pour la pagination depuis une requête Doctrine.
+     *
+     * @param ItemsEvent $event
+     */
+    public function items(ItemsEvent $event)
+    {
+        if ($event->target instanceof \Doctrine_Query) {
+            $countQuery   = clone $event->target;
+            $event->count = (int) $countQuery->count();
+
+            $sliceQuery = clone $event->target;
+            $sliceQuery->offset($event->getOffset());
+            if ($event->getLimit()) {
+                $sliceQuery->limit($event->getLimit());
+            }
+            
+            $event->items = $sliceQuery->execute()->getData();
+            $event->stopPropagation();
+        }
+    }
 }
