@@ -116,24 +116,23 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
      */
     public function onFilterAdmin(FilterMenuEvent $event)
     {
+        $router = $this->container->get('router');
         $tab = $event
             ->getRoot()
             ->getChild('Gestion financière')
             ->getChild('Publicité');
 
         $tab->addChild('Ajouter une publicité', array(
-            'uri' => $this->generateUrl('zco_ad_new'),
+            'uri' => $router->generate('zco_ad_new'),
         ))->secure('publicite_changer_etat');
 
         $tab->addChild('Voir les campagnes actives', array(
-            'uri' => $this->generateUrl('zco_ad_index', array('etat' => array(PubliciteCampagne::RUNNING, PubliciteCampagne::PAUSED, PubliciteCampagne::COMPLETED))),
+            'uri' => $router->generate('zco_ad_index', array('etat' => array(PubliciteCampagne::RUNNING, PubliciteCampagne::PAUSED, PubliciteCampagne::COMPLETED))),
         ))->secure('publicite_voir');
 
         $tab->addChild('Voir les campagnes inactives', array(
-            'uri' => $this->generateUrl('zco_ad_index', array('etat' => array(PubliciteCampagne::DELETED, PubliciteCampagne::COMPLETED))),
+            'uri' => $router->generate('zco_ad_index', array('etat' => array(PubliciteCampagne::DELETED, PubliciteCampagne::COMPLETED))),
         ))->secure('publicite_voir');
-        
-        var_dump('ds');
     }
 
     /**

@@ -28,14 +28,15 @@ namespace Zco\Bundle\AdminBundle;
  */
 final class AdminEvents
 {
-	/**
-	 * Événement déclenché lors de la construction de l'accueil de 
-	 * l'administration. Chaque bundle peut ainsi y introduire ses propres 
-	 * liens vers ses pages d'administration.
-	 *
-	 * Propage un événement de type Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent.
-	 *
-	 * @var string
-	 */
+    /**
+     * Événement déclenché lors de la construction de l'accueil de 
+     * l'administration. Chaque bundle peut ainsi y introduire ses propres 
+     * liens vers ses pages d'administration.
+     *
+     * Propage un événement de type Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent.
+     *
+     * @var string
+     */
     const MENU = 'zco_admin.menu';
+
 }

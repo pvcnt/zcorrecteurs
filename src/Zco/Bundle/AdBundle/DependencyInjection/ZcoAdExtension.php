@@ -31,7 +31,7 @@ use Symfony\Component\Config\FileLocator;
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class ZcoPubliciteExtension extends Extension
+class ZcoAdExtension extends Extension
 {
     /**
      * Responds to the app.config configuration parameter.
@@ -41,7 +41,7 @@ class ZcoPubliciteExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-		$loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-		$loader->load('services.yml');
-	}
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader->load('services.yml');
+    }
 }
