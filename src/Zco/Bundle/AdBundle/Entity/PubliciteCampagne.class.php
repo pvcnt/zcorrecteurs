@@ -48,14 +48,6 @@ class PubliciteCampagne extends BasePubliciteCampagne
         return $this['nb_affichages'] > 0 ? 100 * $this['nb_clics'] / $this['nb_affichages'] : 0;
     }
 
-    public function getBudgetDepense()
-    {
-        $ret = 0;
-        foreach ($this->Publicites as $pub)
-            $ret += $pub->getBudgetDepense();
-        return $ret;
-    }
-
     public function getEtatFormat()
     {
         return self::$etats[$this['etat']];

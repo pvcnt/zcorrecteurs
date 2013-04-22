@@ -157,10 +157,13 @@
                 <td><?php echo dateformat($date, DATE) ?></td>
                 <td class="center">
                     <?php if (strtotime($date) > time()) echo '-'; else { ?>
-                        <?php echo!is_null($stat) ? $view['humanize']->numberformat($stat['nb_affichages'], 0) : '0' ?>
+                        <?php echo $stat ? $view['humanize']->numberformat($stat->getDisplayCount(), 0) : '0' ?>
 
                         <?php if ($stat['nb_affichages'] > 0 && verifier('publicite_raz_affichages')) { ?>
-                            <a href="raz-affichages-<?php echo $publicite['id'] ?>.html?date=<?php echo $date ?>&token=<?php echo $_SESSION['token'] ?>" title="Remettre les impressions à zéro pour cette journée" onclick="if (confirm('Voulez-vous vraiment réinitialiser le nombre d\'impressions pour cette journée ?')) document.location = this.href; else return false;">
+                            <a href="<?php echo $view['router']->generate('zco_ad_resetDisplays', array('id' => $publicite['id'], 'date' => $date, 'token' => $_SESSION['token'])) ?>" 
+                               title="Remettre les impressions à zéro pour cette journée" 
+                               onclick="if (confirm('Voulez-vous vraiment réinitialiser le nombre d\'impressions pour cette journée ?')) document.location = this.href; else return false;"
+                            >
                                 <img src="/img/supprimer.png" alt="Remettre les impressions à zéro" />
                             </a>
                         <?php } ?>
@@ -168,22 +171,27 @@
                 </td>
                 <td class="center">
                     <?php if (strtotime($date) > time()) echo '-'; else { ?>
-                        <?php echo!is_null($stat) ? $view['humanize']->numberformat($stat['nb_clics'], 0) : '0' ?>
+                        <?php echo $stat ? $view['humanize']->numberformat($stat->getClickCount(), 0) : '0' ?>
 
                         <?php if ($stat['nb_clics'] > 0 && verifier('publicite_raz_clics')) { ?>
-                            <a href="raz-clics-<?php echo $publicite['id'] ?>.html?date=<?php echo $date ?>&token=<?php echo $_SESSION['token'] ?>" title="Remettre les clics à zéro pour cette journée" onclick="if (confirm('Voulez-vous vraiment réinitialiser le nombre de clics pour cette journée ?')) document.location = this.href; else return false;">
+                            <a href="<?php echo $view['router']->generate('zco_ad_resetClicks', array('id' => $publicite['id'], 'date' => $date, 'token' => $_SESSION['token'])) ?>" 
+                               title="Remettre les clics à zéro pour cette journée" 
+                               onclick="if (confirm('Voulez-vous vraiment réinitialiser le nombre de clics pour cette journée ?')) document.location = this.href; else return false;"
+                            >
                                 <img src="/img/supprimer.png" alt="Remettre les clics à zéro" />
                             </a>
                         <?php } ?>
                     <?php } ?>
                 </td>
                 <td class="center">
-    <?php if (strtotime($date) > time()) echo '-'; else { ?>
-        <?php echo!is_null($stat) ? $view['humanize']->numberformat($stat->getTauxClics()) : $view['humanize']->numberformat(0) ?> %
-    <?php } ?>
+                    <?php if (strtotime($date) > time()): ?>
+                        -
+                    <?php else : ?>
+                        <?php echo $view['humanize']->numberformat($stat ? $stat->getTauxClics() : 0) ?> %
+                    <?php endif ?>
                 </td>
             </tr>
-<?php } ?>
+        <?php } ?>
     </tbody>
 </table>
 
@@ -194,7 +202,8 @@
         <div class="control-goup">
             <label for="type" class="control-label">Choisissez un graphique</label>
             <div class="controls">
-                <select name="type" id="type" onchange="$('img_stats').src = 'graphique-publicite.html?id=<?php echo $publicite['id'] ?>&week=<?php echo $week ?>&type='+this.value; if (this.value == 'pays' || this.value == 'categorie' || this.value == 'age') $('rmq_periode').slide('in'); else $('rmq_periode').slide('out');">
+                <select name="type" id="type" 
+                        onchange="$('img_stats').src = Routing.generate('zco_ad_graph_advertisment', {'id': <?php echo $publicite['id'] ?>, 'week': '<?php echo $week ?>', 'type': this.value}); if (this.value == 'pays' || this.value == 'categorie' || this.value == 'age') $('rmq_periode').slide('in'); else $('rmq_periode').slide('out');">
                     <optgroup label="Données volumétriques sur la période">
                         <option value="clic">Nombre de clics</option>
                         <option value="affichage">Nombre d'impressions</option>

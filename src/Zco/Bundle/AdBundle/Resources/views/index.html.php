@@ -58,7 +58,7 @@
             <div class="control-group">
                 <label for="type" class="control-label">Choisissez un graphique</label>
                 <div class="controls">
-                    <select name="type" id="type" onchange="$('img_stats').src = '<?php echo $view['router']->generate('zco_ad_graph_campaigns') ?>?'+$('form_type').toQueryString();">
+                    <select name="type" id="type" onchange="$('img_stats').src = Routing.generate('zco_ad_graph_campaigns', $('form_type').toQueryString().parseQueryString());">
                         <optgroup label="Données volumétriques sur les 15 derniers jours">
                             <option value="clic">Nombre de clics</option>
                             <option value="affichage">Nombre d'impressions</option>

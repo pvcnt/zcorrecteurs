@@ -29,167 +29,170 @@
  */
 class Publicite extends BasePublicite
 {
-	/**
-	 * Définit la date de la publicité lors de l'ajout.
-	 * @see vendor/doctrine/Doctrine/Doctrine_Record#preInsert($event)
-	 */
-	public function preInsert($event)
-	{
-		$this['date'] = new Doctrine_Expression('NOW()');
-	}
 
-	/**
-	 * Met en cache la publicité lors d'une modification.
-	 * @see vendor/doctrine/Doctrine/Doctrine_Record#postSave($event)
-	 */
-	public function postSave($event)
-	{
-		//$this->mettreEnCache();
-	}
+    /**
+     * Définit la date de la publicité lors de l'ajout.
+     * @see vendor/doctrine/Doctrine/Doctrine_Record#preInsert($event)
+     */
+    public function preInsert($event)
+    {
+        $this['date'] = new Doctrine_Expression('NOW()');
+    }
 
-	/**
-	 * Supprime le cache de la publicité lors d'une suppression.
-	 * @see vendor/doctrine/Doctrine/Doctrine_Record#preDelete($event)
-	 */
-	public function preDelete($event)
-	{
-		Container::getService('zco_core.cache')->delete('pub-details-'.$this['id']);
-	}
+    /**
+     * Met en cache la publicité lors d'une modification.
+     * @see vendor/doctrine/Doctrine/Doctrine_Record#postSave($event)
+     */
+    public function postSave($event)
+    {
+        //$this->mettreEnCache();
+    }
+    
+    public function getDisplayCount()
+    {
+        return $this['nb_affichages'];
+    }
+    
+    public function getClickCount()
+    {
+        return $this['nb_clics'];
+    }
 
-	/**
-	 * Retourne le CTR (taux de clics sur la pub, en pourcentage).
-	 * @return float
-	 */
-	public function getTauxClics()
-	{
-		return $this['nb_affichages'] > 0 ? 100 * $this['nb_clics'] / $this['nb_affichages'] : 0;
-	}
+    /**
+     * Supprime le cache de la publicité lors d'une suppression.
+     * @see vendor/doctrine/Doctrine/Doctrine_Record#preDelete($event)
+     */
+    public function preDelete($event)
+    {
+        Container::getService('zco_core.cache')->delete('pub-details-' . $this['id']);
+    }
 
-	/**
-	 * Retourne l'état de la publicité, en fonction du statut de
-	 * l'approbation par l'équipe et de son statut actif.
-	 *
-	 * @return string
-	 */
-	public function getEtatFormat()
-	{
-		if ($this['approuve'] == 'attente')
-		{
-			return '<span class="orange">En cours de validation</span>';
-		}
-		elseif ($this['approuve'] == 'refuse')
-		{
-			return '<span class="rouge">Refusée à la publication</span>';
-		}
-		else
-		{
-			return $this['actif'] ? '<span class="vertf">Active</span>' : '<span class="orange">En pause</span>';
-		}
-	}
+    /**
+     * Retourne le CTR (taux de clics sur la pub, en pourcentage).
+     * @return float
+     */
+    public function getTauxClics()
+    {
+        return $this['nb_affichages'] > 0 ? 100 * $this['nb_clics'] / $this['nb_affichages'] : 0;
+    }
 
-	/**
-	 * Définit si la publicité est éligible pour un affichage, de façon
-	 * générale (ne prend pas en compte le ciblage).
-	 *
-	 * @return boolean
-	 */
-	public function estAffichable()
-	{
-		return $this['approuve'] == 'approuve' && $this['actif'];
-	}
+    /**
+     * Retourne l'état de la publicité, en fonction du statut de
+     * l'approbation par l'équipe et de son statut actif.
+     *
+     * @return string
+     */
+    public function getEtatFormat()
+    {
+        if ($this['approuve'] == 'attente') {
+            return '<span class="orange">En cours de validation</span>';
+        } elseif ($this['approuve'] == 'refuse') {
+            return '<span class="rouge">Refusée à la publication</span>';
+        } else {
+            return $this['actif'] ? '<span class="vertf">Active</span>' : '<span class="orange">En pause</span>';
+        }
+    }
 
-	/**
-	 * Transforme une publicité en un tableau bien exploité
-	 * et la met en cache.
-	 *
-	 * @return array			Les données mises en cache.
-	 */
-	public function mettreEnCache()
-	{
-		$this->refreshRelated('Pays');
-		$array = $this->toArray();
+    /**
+     * Définit si la publicité est éligible pour un affichage, de façon
+     * générale (ne prend pas en compte le ciblage).
+     *
+     * @return boolean
+     */
+    public function estAffichable()
+    {
+        return $this['approuve'] == 'approuve' && $this['actif'];
+    }
 
-		//Suppression des données de la campagne.
-		unset($array['Campagne']);
+    /**
+     * Transforme une publicité en un tableau bien exploité
+     * et la met en cache.
+     *
+     * @return array			Les données mises en cache.
+     */
+    public function mettreEnCache()
+    {
+        $this->refreshRelated('Pays');
+        $array = $this->toArray();
 
-		//Mise en forme du tableau des pays.
-		$pays = $array['Pays'];
-		$array['Pays'] = array();
-		foreach ($pays as $p)
-		{
-			$array['Pays'][] = $p['id'];
-		}
+        //Suppression des données de la campagne.
+        unset($array['Campagne']);
 
-		Container::getService('zco_core.cache')->set('pub_details-'.$this['id'], $array, 0);
+        //Mise en forme du tableau des pays.
+        $pays          = $array['Pays'];
+        $array['Pays'] = array();
+        foreach ($pays as $p) {
+            $array['Pays'][] = $p['id'];
+        }
 
-		return $array;
-	}
+        Container::getService('zco_core.cache')->set('pub_details-' . $this['id'], $array, 0);
 
-	/**
-	 * Remet à zéro les impressions pour une date donnée.
-	 * @param string $date			Date au format YYYY-MM-DD.
-	 */
-	public function razAffichages($date)
-	{
-		$nbv = Doctrine_Query::create()
-			->select('nb_affichages')
-			->from('PubliciteStat')
-			->where('publicite_id = ?', $this['id'])
-			->andWhere('date = ?', $date)
-			->execute(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
+        return $array;
+    }
 
-		if ($nbv > 0)
-		{
-			Doctrine_Query::create()
-				->update('PubliciteStat')
-				->set('nb_affichages', 0)
-				->where('publicite_id = ?', $this['id'])
-				->andWhere('date = ?', $date)
-				->execute();
+    /**
+     * Remet à zéro les impressions pour une date donnée.
+     * @param string $date			Date au format YYYY-MM-DD.
+     */
+    public function razAffichages($date)
+    {
+        $nbv = Doctrine_Query::create()
+            ->select('nb_affichages')
+            ->from('PubliciteStat')
+            ->where('publicite_id = ?', $this['id'])
+            ->andWhere('date = ?', $date)
+            ->execute(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
 
-			$this['nb_affichages'] = $this['nb_affichages'] - $nbv;
-			$this->save();
+        if ($nbv > 0) {
+            Doctrine_Query::create()
+                ->update('PubliciteStat')
+                ->set('nb_affichages', 0)
+                ->where('publicite_id = ?', $this['id'])
+                ->andWhere('date = ?', $date)
+                ->execute();
 
-			$campagne = $this->Campagne;
-			$campagne['nb_affichages'] = $campagne['nb_affichages'] - $nbv;
-			$campagne->save();
-		}
-	}
+            $this['nb_affichages'] = $this['nb_affichages'] - $nbv;
+            $this->save();
 
-	/**
-	 * Remet à zéro les clics pour une date donnée.
-	 * @param string $date			Date au format YYYY-MM-DD.
-	 */
-	public function razClics($date)
-	{
-		$nbv = Doctrine_Query::create()
-			->select('nb_clics')
-			->from('PubliciteStat')
-			->where('publicite_id = ?', $this['id'])
-			->andWhere('date = ?', $date)
-			->execute(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
+            $campagne                  = $this->Campagne;
+            $campagne['nb_affichages'] = $campagne['nb_affichages'] - $nbv;
+            $campagne->save();
+        }
+    }
 
-		if ($nbv > 0)
-		{
-			Doctrine_Query::create()
-				->update('PubliciteStat')
-				->set('nb_clics', 0)
-				->where('publicite_id = ?', $this['id'])
-				->andWhere('date = ?', $date)
-				->execute();
+    /**
+     * Remet à zéro les clics pour une date donnée.
+     * @param string $date			Date au format YYYY-MM-DD.
+     */
+    public function razClics($date)
+    {
+        $nbv = Doctrine_Query::create()
+            ->select('nb_clics')
+            ->from('PubliciteStat')
+            ->where('publicite_id = ?', $this['id'])
+            ->andWhere('date = ?', $date)
+            ->execute(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
 
-			$this['nb_clics'] = $this['nb_clics'] - $nbv;
-			$this->save();
+        if ($nbv > 0) {
+            Doctrine_Query::create()
+                ->update('PubliciteStat')
+                ->set('nb_clics', 0)
+                ->where('publicite_id = ?', $this['id'])
+                ->andWhere('date = ?', $date)
+                ->execute();
 
-			$campagne = $this->Campagne;
-			$campagne['nb_clics'] = $campagne['nb_clics'] - $nbv;
-			$campagne->save();
+            $this['nb_clics'] = $this['nb_clics'] - $nbv;
+            $this->save();
 
-			Doctrine_Query::create()
-				->delete('PubliciteClic')
-				->where('publicite_id = ?', $this['id'])
-				->andWhere('DATE(date) = ?', $date)
-				->execute();
-		}
-	}
+            $campagne             = $this->Campagne;
+            $campagne['nb_clics'] = $campagne['nb_clics'] - $nbv;
+            $campagne->save();
+
+            Doctrine_Query::create()
+                ->delete('PubliciteClic')
+                ->where('publicite_id = ?', $this['id'])
+                ->andWhere('DATE(date) = ?', $date)
+                ->execute();
+        }
+    }
 }

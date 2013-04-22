@@ -31,13 +31,19 @@
  */
 class PubliciteStat extends BasePubliciteStat
 {
-	public function getTauxClics()
-	{
-		return $this['nb_affichages'] > 0 ? 100*$this['nb_clics']/$this['nb_affichages'] : 0;
-	}
-
-	public function getBudgetDepense()
-	{
-		return $this->Publicite['paiement'] == 'cpc' ? 0.5*$this['nb_clics'] : 3*ceil($this['nb_affichages']/1000);
-	}
+    public function getDisplayCount()
+    {
+        return $this['nb_affichages'];
+    }
+    
+    public function getClickCount()
+    {
+        return $this['nb_clics'];
+    }
+    
+    public function getTauxClics()
+    {
+        $displayCount = $this->getDisplayCount();
+        return $displayCount > 0 ? 100 * $this->getClickCount() / $displayCount : 0;
+    }
 }
