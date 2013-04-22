@@ -69,6 +69,7 @@ class DefaultController extends Controller
             $queryParameters['all'] = 1;
         }
 
+        Page::$titre = 'Publicité';
         fil_ariane('Publicité');
 
         return render_to_response('ZcoAdBundle::index.html.php', array(

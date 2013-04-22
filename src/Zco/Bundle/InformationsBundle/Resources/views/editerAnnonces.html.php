@@ -32,14 +32,15 @@
 			<option value="billet"<?php echo ($bloc_accueil == 'billet') ? ' selected="selected"' : ''; ?>>
 				Mettre en avant un billet
 			</option>
+                        <option value="dictee"<?php echo ($bloc_accueil == 'dictee') ? ' selected="selected"' : ''; ?>>
+				Mettre en avant une dictée
+			</option>
+
 			<option value="billet_hasard"<?php echo ($bloc_accueil == 'billet_hasard') ? ' selected="selected"' : ''; ?>>
 				Afficher un billet au hasard
 			</option>
 			<option value="twitter"<?php echo ($bloc_accueil == 'twitter') ? ' selected="selected"' : ''; ?>>
 				Afficher les derniers tweets
-			</option>
-			<option value="dictee"<?php echo ($bloc_accueil == 'dictee') ? ' selected="selected"' : ''; ?>>
-				Afficher la dictée
 			</option>
 		</select>
 		<input type="submit" value="Envoyer" />
