@@ -46,75 +46,66 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
  */
 class CronCommand extends ContainerAwareCommand
 {
-	/**
-	 * {@inheritdoc}
-	 */
-	protected function configure()
-	{
-		$this
-			->setName('zco:cron')
-			->setDescription('Runs periodic commands')
-			->addOption('hourly', null, InputOption::VALUE_NONE, 'Run the hourly cron')
-			->addOption('daily', null, InputOption::VALUE_NONE, 'Run the daily cron')
-			->addOption('force', null, InputOption::VALUE_NONE, 'Force the run');
-	}
+    /**
+     * {@inheritdoc}
+     */
+    protected function configure()
+    {
+        $this
+            ->setName('zco:cron')
+            ->setDescription('Runs periodic commands')
+            ->addOption('hourly', null, InputOption::VALUE_NONE, 'Run the hourly cron')
+            ->addOption('daily', null, InputOption::VALUE_NONE, 'Run the daily cron')
+            ->addOption('force', null, InputOption::VALUE_NONE, 'Force the run');
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	protected function execute(InputInterface $input, OutputInterface $output)
-	{
-		if (!$input->getOption('daily') && !$input->getOption('hourly'))
-		{
-			throw new \InvalidArgumentException('You must run the cron in hourly or daily mode.');
-		}
+    /**
+     * {@inheritdoc}
+     */
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        if (!$input->getOption('daily') && !$input->getOption('hourly')) {
+            throw new \InvalidArgumentException('You must run the cron in hourly or daily mode.');
+        }
 
-		ignore_user_abort(true);
-  		set_time_limit(0);
+        ignore_user_abort(true);
+        set_time_limit(0);
 
-		$dispatcher = $this->getContainer()->get('event_dispatcher');
-		$registry   = $this->getContainer()->get('zco_core.registry');
+        $dispatcher = $this->getContainer()->get('event_dispatcher');
+        $registry   = $this->getContainer()->get('zco_core.registry');
 
-		//Si on souhaite lancer le cron horaire.
-		if ($input->getOption('hourly'))
-		{
-			$lastRun = $registry->get('zco_core.hourly_cron.last_run');
-			$event = new CronEvent($output, $lastRun);
-			if ($input->getOption('force') || $event->ensureHourly())
-			{
-				$startTime = microtime(true);
-				$dispatcher->dispatch(CoreEvents::HOURLY_CRON, $event);
-				$registry->set('zco_core.hourly_cron.last_run', date('Y-m-d H:i:s'));
-				$output->writeln(
-					'Hourly cron terminated <info>successfully</info> in '
-					.ceil((microtime(true) - $startTime) * 1000).' ms'
-				);
-			}
-			else
-			{
-				$output->writeln(sprintf('<error>Hourly cron already launched less than an hour ago (%s)</error>', $lastRun));
-			}
-		}
-		
-		//Si on souhaite lancer le cron quotidien.
-		if ($input->getOption('daily'))
-		{
-			$lastRun = $registry->get('zco_core.daily_cron.last_run');
-			$event = new CronEvent($output, $lastRun);
-			if ($input->getOption('force') || $event->ensureDaily())
-			{
-				$startTime = microtime(true);
-				$dispatcher->dispatch(CoreEvents::DAILY_CRON, new CronEvent($output, $lastRun));
-				$registry->set('zco_core.daily_cron.last_run', date('Y-m-d H:i:s'));
-				$output->writeln(
-					'Daily cron terminated <info>successfully</info> in '
-					.ceil((microtime(true) - $startTime) * 1000).' ms'
-				);
-			}
-			else
-			{
-				$output->writeln(sprintf('<error>Daily cron already launched less than an day ago (%s)</error>', $lastRun));
-			}
-		}
-	}
+        //Si on souhaite lancer le cron horaire.
+        if ($input->getOption('hourly')) {
+            $lastRun = $registry->get('zco_core.hourly_cron.last_run');
+            $event   = new CronEvent($output, $lastRun);
+            if ($input->getOption('force') || $event->ensureHourly()) {
+                $startTime = microtime(true);
+                $dispatcher->dispatch(CoreEvents::HOURLY_CRON, $event);
+                $registry->set('zco_core.hourly_cron.last_run', date('Y-m-d H:i:s'));
+                $output->writeln(
+                    'Hourly cron terminated <info>successfully</info> in '
+                    . ceil((microtime(true) - $startTime) * 1000) . ' ms'
+                );
+            } else {
+                $output->writeln(sprintf('<error>Hourly cron already launched less than an hour ago (%s)</error>', $lastRun));
+            }
+        }
+
+        //Si on souhaite lancer le cron quotidien.
+        if ($input->getOption('daily')) {
+            $lastRun = $registry->get('zco_core.daily_cron.last_run');
+            $event   = new CronEvent($output, $lastRun);
+            if ($input->getOption('force') || $event->ensureDaily()) {
+                $startTime = microtime(true);
+                $dispatcher->dispatch(CoreEvents::DAILY_CRON, new CronEvent($output, $lastRun));
+                $registry->set('zco_core.daily_cron.last_run', date('Y-m-d H:i:s'));
+                $output->writeln(
+                    'Daily cron terminated <info>successfully</info> in '
+                    . ceil((microtime(true) - $startTime) * 1000) . ' ms'
+                );
+            } else {
+                $output->writeln(sprintf('<error>Daily cron already launched less than an day ago (%s)</error>', $lastRun));
+            }
+        }
+    }
 }

@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\TechniqueBundle\Command;
+namespace Zco\Bundle\CoreBundle\Command;
 
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -33,39 +33,37 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
  */
 class CacheFlushCommand extends ContainerAwareCommand
 {
-	/**
+
+    /**
      * {@inheritdoc}
      */
     protected function configure()
     {
         $this
-			->setName('cache:flush')
-			->setDescription('Flushes temporary cached files (application level)')
-			->setDefinition(array(
-            	new InputArgument('files', InputArgument::OPTIONAL|InputArgument::IS_ARRAY, 'The files to delete (all if none specified)'),
-        	));
-	}
+            ->setName('cache:flush')
+            ->setDescription('Flushes temporary cached files (application level)')
+            ->setDefinition(array(
+                new InputArgument('files', InputArgument::OPTIONAL | InputArgument::IS_ARRAY, 'The files to delete (all if none specified)'),
+            ));
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	protected function execute(InputInterface $input, OutputInterface $output)
-	{
-		$cache = $this->getContainer()->get('zco_core.cache');
-		$args = $input->getArgument('files');
-		if (empty($args))
-		{
-			$cache->flush();
-		}
-		else
-		{
-			foreach ($args as $arg)
-			{
-				$cache->delete($arg);
-				$output->writeln('Cache "'.$arg.'" flushed');
-			}
-		}
-		
-		return 0;
-	}
+    /**
+     * {@inheritdoc}
+     */
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $cache = $this->getContainer()->get('zco_core.cache');
+        $args  = $input->getArgument('files');
+        if (empty($args)) {
+            $cache->flush();
+        } else {
+            foreach ($args as $arg) {
+                $cache->delete($arg);
+                $output->writeln('Cache "' . $arg . '" flushed');
+            }
+        }
+
+        return 0;
+    }
+
 }

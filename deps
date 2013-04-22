@@ -104,5 +104,9 @@
 [geocoder]
     git=https://github.com/willdurand/Geocoder.git
 
+[knp-components]
+    git=https://github.com/KnpLabs/knp-components.git
+    target=/knp-components
+
 [twitter-text-js]
     git=https://github.com/twitter/twitter-text-js
