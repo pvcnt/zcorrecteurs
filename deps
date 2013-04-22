@@ -92,7 +92,7 @@
 [KnpPaginatorBundle]
     git=http://github.com/KnpLabs/KnpPaginatorBundle.git
     target=bundles/Knp/Bundle/PaginatorBundle
-    version=v2.3.2
+    version=6d93d89a3c913155d9d1778db4232db0e4d6f3e3
 
 [resque]
     git=http://github.com/chrisboulton/php-resque.git

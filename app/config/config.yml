@@ -44,7 +44,7 @@ knp_gaufrette:
 
 knp_paginator:
     template:
-        pagination: ZcoCoreBundle:Pagination:sliding.html.twig
+        pagination: ZcoCoreBundle:Pagination:sliding.html.php
 
 bazinga_geocoder:
     providers:
