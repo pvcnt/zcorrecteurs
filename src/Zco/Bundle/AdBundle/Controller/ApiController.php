@@ -43,7 +43,6 @@ class ApiController extends Controller
      */
     public function editCampaignNameAction(Request $request, $id)
     {
-        var_dump('coucou');
         $campagne = Doctrine_Core::getTable('PubliciteCampagne')->find($id);
         if (!verifier('publicite_voir') && $campagne['utilisateur_id'] != $_SESSION['id']) {
             return new Response('ERREUR');
@@ -95,7 +94,7 @@ class ApiController extends Controller
         $campagne->save();
         $this->get('zco_core.cache')->delete('pub-*');
 
-        return new Response(dateformat($campagne['date_debut']) . ' - ' . dateformat($campagne['date_fin']));
+        return new Response(dateformat($campagne['date_debut'], DATE) . ' - ' . dateformat($campagne['date_fin'], DATE));
     }
 
     /**
@@ -115,6 +114,7 @@ class ApiController extends Controller
         $publicite['actif'] = ($request->request->get('etat') === 'oui');
         $publicite->save();
         $this->get('zco_core.cache')->delete('pub-' . $publicite['emplacement']);
+        
         return new Response($publicite->getEtatFormat());
     }
 

@@ -40,7 +40,7 @@
                     <a href="#" onclick="editer_etat(false); return false;" title="Activer / désactiver l'affichage de la publicité">
                         <img src="/img/editer.png" alt="Modifier" />
                     </a>
-                    <div id="edt_etat" style="position: absolute; z-index: 1.5; display: none; width: 300px;" class="UI_box">
+                    <div id="edt_etat" style="position: absolute; z-index: 1.5; display: none; width: 300px;" class="box">
                         <select id="etat">
                             <option value="oui"<?php if ($publicite['actif']) echo ' selected="selected"' ?>>
                                 Active
@@ -50,8 +50,8 @@
                             </option>
                         </select>
                         <span id="btn_etat">
-                            <input type="submit" name="send" onclick="editer_etat(true); return false;" value="Sauvegarder" />
-                            <input type="submit" name="cancel" value="Annuler" onclick="$('edt_etat').setStyle('display', 'none');" />
+                            <input type="submit" class="btn btn-primary" name="send" onclick="editer_etat(true); return false;" value="Sauvegarder" />
+                            <input type="submit" class="btn" name="cancel" value="Annuler" onclick="$('edt_etat').setStyle('display', 'none');" />
                         </span>
                     </div>
                 <?php } ?>
