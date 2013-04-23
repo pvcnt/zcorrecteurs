@@ -23,11 +23,14 @@
  * Exception levée lors d'une erreur de communication avec le serveur REST 
  * embarqué dans Drupal.
  */
-class DrupalException extends Exception { }
+class DrupalException extends Exception
+{
+    
+}
 
 function CompterTicketsSupportDrupal(array $cond = array())
 {
-	return count(ListerTicketsSupportDrupal($cond));
+    return count(ListerTicketsSupportDrupal($cond));
 }
 
 /**
@@ -39,150 +42,127 @@ function CompterTicketsSupportDrupal(array $cond = array())
  */
 function ListerTicketsSupportDrupal(array $cond = array())
 {
-	/** 
-	 * Etape préliminaire : les tickets ne sont retournés que si les 
-	 * identifiants du compte Drupal sont renseignés.
-	 */
-	$drupal_username = (Container::hasParameter('zco_zcorrection.drupal_username')) ? Container::getParameter('zco_zcorrection.drupal_username') : null;
-	$drupal_password = (Container::hasParameter('zco_zcorrection.drupal_password')) ? Container::getParameter('zco_zcorrection.drupal_password') : null;
-	if (empty($drupal_username) || empty($drupal_password))
-	{
-		return array();
-	}
-	
-	$cookies = array();
-	
-	/**
-	 * Récupération des tickets de support correspondant à des textes 
-	 * en attente de correction.
-	 */
-	if (($nids = Container::getService('zco_core.cache')->get('zcorrection-node_nids')) === false)
-	{
-		//Connexion au compte utilisateur Drupal.
-		$user = EnvoyerRequeteDrupal('user/login', array(), array(
-		  'username' => $drupal_username,
-		  'password' => $drupal_password,
-		), 'post');
-		$cookies = array($user['session_name'] => $user['sessid']);
-		
-		$nids = array();
-		//pagesize = 10000, sinon on n'a que 20 tickets de listés.
-		//TODO : changer ça, c'est très moche…
-		$nodes = EnvoyerRequeteDrupal('node', $cookies, array('pagesize' => '10000'));
-		foreach ($nodes as $node)
-		{
-			if ($node['type'] === 'support_ticket')
-			{
-				$nids[] = $node['nid'];
-			}
-		}
-		
-		Container::getService('zco_core.cache')->set('zcorrection-node_nids', $nids, 0);
-	}
-	
-	$retour = array();
-	foreach ($nids as $nid)
-	{
-		if ($node = ConstruireTicketSupportDrupal($nid, $cookies, $cond))
-		{
-			$retour[] = $node;
-		}
-	}
-	
-	return $retour;
+    /**
+     * Etape préliminaire : les tickets ne sont retournés que si les 
+     * identifiants du compte Drupal sont renseignés.
+     */
+    $drupal_username = (Container::hasParameter('zco_zcorrection.drupal_username')) ? Container::getParameter('zco_zcorrection.drupal_username') : null;
+    $drupal_password = (Container::hasParameter('zco_zcorrection.drupal_password')) ? Container::getParameter('zco_zcorrection.drupal_password') : null;
+    if (empty($drupal_username) || empty($drupal_password)) {
+        return array();
+    }
+
+    $cookies = array();
+
+    /**
+     * Récupération des tickets de support correspondant à des textes 
+     * en attente de correction.
+     */
+    if (($nids = Container::getService('zco_core.cache')->get('zcorrection-node_nids')) === false) {
+        //Connexion au compte utilisateur Drupal.
+        $user = EnvoyerRequeteDrupal('user/login', array(), array(
+            'username' => $drupal_username,
+            'password' => $drupal_password,
+            ), 'post');
+        $cookies   = array($user['session_name'] => $user['sessid']);
+
+        $nids = array();
+        //pagesize = 10000, sinon on n'a que 20 tickets de listés.
+        //TODO : changer ça, c'est très moche…
+        $nodes = EnvoyerRequeteDrupal('node', $cookies, array('pagesize' => '10000'));
+        foreach ($nodes as $node) {
+            if ($node['type'] === 'support_ticket') {
+                $nids[] = $node['nid'];
+            }
+        }
+
+        Container::getService('zco_core.cache')->set('zcorrection-node_nids', $nids, 0);
+    }
+
+    $retour = array();
+    foreach ($nids as $nid) {
+        if ($node = ConstruireTicketSupportDrupal($nid, $cookies, $cond)) {
+            $retour[] = $node;
+        }
+    }
+
+    return $retour;
 }
 
 function ConstruireTicketSupportDrupal($nid, array &$cookies, array $cond = array())
 {
-	if (($node = Container::getService('zco_core.cache')->get('zcorrection-node_'.$nid)) === false)
-	{
-		$cache = true;
-		try
-		{
-			//Si on ne s'était pas encore connecté au compte Drupal, c'est le moment 
-			//ou jamais de le faire.
-			if (empty($cookies))
-			{
-				$user = EnvoyerRequeteDrupal('user/login', array(), array(
-				  'username' => Container::getParameter('zco_zcorrection.drupal_username'),
-				  'password' => Container::getParameter('zco_zcorrection.drupal_password'),
-				), 'post');
-				$cookies = array($user['session_name'] => $user['sessid']);
-			}
-			
-			$node = EnvoyerRequeteDrupal('node/'.$nid, $cookies);
-		}
-		catch (DrupalException $e)
-		{
-			//On traite le cas particulier d'une 404 (ticket supprimé). On 
-			//supprime alors le cache des ids des noeuds pour le régénérer 
-			//et ignore silencieusement l'erreur.
-			if ($e->getCode() === 404)
-			{
-				return false;
-			}
-			
-			//Pour toute autre exception on la relance.
-			throw $e;
-		}
-	}
-	else
-	{
-		$cache = false;
-	}
-	
-	//Correspondance entre les états de textes et les états de tickets.
-	$etats = array(
-		ENVOYE                => 1,
-		CORRECTION            => 2,
-		RECORRECTION_DEMANDEE => 3,
-		TERMINE_CORRIGE       => 4,
-		RECORRECTION          => 5,
-	);
-	
-	if (!isset($cond['etat']))
-	{
-		$cond['etat'] = array();
-	}
-	elseif (!is_array($cond['etat']))
-	{
-		$cond['etat'] = array($cond['etat']);
-	}
-	
-	//Liste des clients autorisés.
-	$clients = array(1 => 'PSB', 6 => 'Autres', 8 => 'Gwaeron', 9 => 'Animasphère');
-	
-	if (isset($clients[$node['client']]))
-	{
-		if ($cache)
-		{
-			$node['state'] = array_search($node['state'], $etats);
-		}
-		
-		if (empty($cond['etat']) || in_array($node['state'], $cond['etat']))
-		{
-			if ($cache)
-			{
-				$node['partenaire'] = $clients[$node['client']];
-				$node['type'] = 'drupal';
-				$node['user'] = EnvoyerRequeteDrupal('user/'.$node['uid'], $cookies);
-				$node = FormaterCommentaireTicketSupportDrupal($node);
-				if ($node['assigned'])
-				{
-					$node['assigned'] = EnvoyerRequeteDrupal('user/'.$node['assigned'], $cookies);
-				}
-			
-				Container::getService('zco_core.cache')->set('zcorrection-node_'.$nid, $node, 0);
-			}
-			
-			if (empty($cond['assigne']) || (!empty($node['assigned']) && $node['assigned']['name'] == $cond['assigne']))
-			{
-				return $node;
-			}
-		}
-	}
-	
-	return false;
+    if (($node = Container::getService('zco_core.cache')->get('zcorrection-node_' . $nid)) === false) {
+        $cache = true;
+        try {
+            //Si on ne s'était pas encore connecté au compte Drupal, c'est le moment 
+            //ou jamais de le faire.
+            if (empty($cookies)) {
+                $user = EnvoyerRequeteDrupal('user/login', array(), array(
+                    'username' => Container::getParameter('zco_zcorrection.drupal_username'),
+                    'password' => Container::getParameter('zco_zcorrection.drupal_password'),
+                    ), 'post');
+                $cookies   = array($user['session_name'] => $user['sessid']);
+            }
+
+            $node = EnvoyerRequeteDrupal('node/' . $nid, $cookies);
+        } catch (DrupalException $e) {
+            //On traite le cas particulier d'une 404 (ticket supprimé). On 
+            //supprime alors le cache des ids des noeuds pour le régénérer 
+            //et ignore silencieusement l'erreur.
+            if ($e->getCode() === 404) {
+                return false;
+            }
+
+            //Pour toute autre exception on la relance.
+            throw $e;
+        }
+    } else {
+        $cache = false;
+    }
+
+    //Correspondance entre les états de textes et les états de tickets.
+    $etats = array(
+        ENVOYE                => 1,
+        CORRECTION            => 2,
+        RECORRECTION_DEMANDEE => 3,
+        TERMINE_CORRIGE       => 4,
+        RECORRECTION          => 5,
+    );
+
+    if (!isset($cond['etat'])) {
+        $cond['etat'] = array();
+    } elseif (!is_array($cond['etat'])) {
+        $cond['etat'] = array($cond['etat']);
+    }
+
+    //Liste des clients autorisés.
+    $clients = array(1 => 'PSB', 6 => 'Autres', 8 => 'Gwaeron', 9 => 'Animasphère');
+
+    if (isset($clients[$node['client']])) {
+        if ($cache) {
+            $node['state'] = array_search($node['state'], $etats);
+        }
+
+        if (empty($cond['etat']) || in_array($node['state'], $cond['etat'])) {
+            if ($cache) {
+                $node['partenaire'] = $clients[$node['client']];
+                $node['type']       = 'drupal';
+                $node['user']       = EnvoyerRequeteDrupal('user/' . $node['uid'], $cookies);
+                $node               = FormaterCommentaireTicketSupportDrupal($node);
+                if ($node['assigned']) {
+                    $node['assigned'] = EnvoyerRequeteDrupal('user/' . $node['assigned'], $cookies);
+                }
+
+                Container::getService('zco_core.cache')->set('zcorrection-node_' . $nid, $node, 0);
+            }
+
+            if (empty($cond['assigne']) || (!empty($node['assigned']) && $node['assigned']['name'] == $cond['assigne'])) {
+                return $node;
+            }
+        }
+    }
+
+    return false;
 }
 
 /**
@@ -198,53 +178,43 @@ function ConstruireTicketSupportDrupal($nid, array &$cookies, array $cond = arra
  */
 function EnvoyerRequeteDrupal($service, $cookies = array(), $data = array(), $method = 'get')
 {
-	if (!empty($data))
-	{
-		$data = ($method === 'get' ? '?' : '').http_build_query($data);
-	}
-	else
-	{
-		$data = '';
-	}
-	
-	$url = 'http://tickets.corrigraphie.org/zcorrecteurs/'.$service.'.json';
-	$method = strtolower($method);
-	if ($method === 'post')
-	{
-		$curl = curl_init($url);
-		curl_setopt($curl, CURLOPT_POST, true);
-		curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-		curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-			'Content-type: multipart/form-data',
-			'Accept: multipart/form-data',
-		));
-	}
-	else
-	{
-		$url.= $data;
-		$curl = curl_init($url);
-	}
-	
-	curl_setopt($curl, CURLOPT_HEADER, false);
-	curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($curl, CURLOPT_FAILONERROR, true);
-	
-	if (!empty($cookies))
-	{
-		curl_setopt($curl, CURLOPT_COOKIE, http_build_query($cookies));
-	}
-	
-	$response = curl_exec($curl);
-	$code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+    if (!empty($data)) {
+        $data = ($method === 'get' ? '?' : '') . http_build_query($data);
+    } else {
+        $data = '';
+    }
 
-	if ($code == 200)
-	{
-		return json_decode($response, true);
-	}
-	else
-	{
-		throw new DrupalException(curl_error($curl), $code);
-	}
+    $url    = 'http://tickets.corrigraphie.org/zcorrecteurs/' . $service . '.json';
+    $method = strtolower($method);
+    if ($method === 'post') {
+        $curl = curl_init($url);
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+            'Content-type: multipart/form-data',
+            'Accept: multipart/form-data',
+        ));
+    } else {
+        $url.= $data;
+        $curl = curl_init($url);
+    }
+
+    curl_setopt($curl, CURLOPT_HEADER, false);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($curl, CURLOPT_FAILONERROR, true);
+
+    if (!empty($cookies)) {
+        curl_setopt($curl, CURLOPT_COOKIE, http_build_query($cookies));
+    }
+
+    $response = curl_exec($curl);
+    $code     = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+    if ($code == 200) {
+        return json_decode($response, true);
+    } else {
+        throw new DrupalException(curl_error($curl), $code);
+    }
 }
 
 /**
@@ -255,21 +225,19 @@ function EnvoyerRequeteDrupal($service, $cookies = array(), $data = array(), $me
  */
 function FormaterCommentaireTicketSupportDrupal(array $node)
 {
-	$texte = strip_tags($node['body']['und'][0]['safe_value']);
-	
-	//Supprime les signatures de mails.
-	if (strpos($texte, '--') !== false)
-	{
-		$texte = substr($texte, 0, strrpos($texte, '--'));
-	}
-	
-	//Coupe le texte au-delà de 500 caractères
-	if (strlen($texte) > 500)
-	{
-		$texte = substr($texte, 0, strpos($texte, ' ', 500)).'…';
-	}
-	
-	$node['body']['und'][0]['safe_value'] = nl2br($texte);
-	
-	return $node;
+    $texte = strip_tags($node['body']['und'][0]['safe_value']);
+
+    //Supprime les signatures de mails.
+    if (strpos($texte, '--') !== false) {
+        $texte = substr($texte, 0, strrpos($texte, '--'));
+    }
+
+    //Coupe le texte au-delà de 500 caractères
+    if (strlen($texte) > 500) {
+        $texte = substr($texte, 0, strpos($texte, ' ', 500)) . '…';
+    }
+
+    $node['body']['und'][0]['safe_value'] = nl2br($texte);
+
+    return $node;
 }

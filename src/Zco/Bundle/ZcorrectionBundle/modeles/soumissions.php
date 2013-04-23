@@ -391,7 +391,6 @@ function CompterSoumissions() {
 	}
 	catch (DrupalException $e)
 	{
-		$_SESSION['erreur'][] = $e->getMessage();
 	}
 	
 	return $retour;

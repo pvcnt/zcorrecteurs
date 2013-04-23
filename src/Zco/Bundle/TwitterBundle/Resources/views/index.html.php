@@ -18,6 +18,14 @@
     <p><em>Il n'y a actuellement aucun tweet.</em></p>
 <?php else: ?>
     <?php echo $view['knp_pagination']->render($tweets) ?>
+    
+    <div class="center">
+        <form method="post" action="/recherche/">
+            <input type="hidden" name="section" value="twitter" />
+            <input type="text" class="input-xxlarge" name="recherche" placeholder="Rechercher parmi tous les tweets publiés…" />
+            <input type="submit" class="btn" value="Rechercher" />
+        </form>
+    </div>
 
     <?php foreach ($tweets as $tweet): ?>
         <?php echo $view->render('ZcoTwitterBundle::tweet.html.php', compact('tweet')) ?>
