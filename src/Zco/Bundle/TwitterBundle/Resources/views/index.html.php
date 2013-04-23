@@ -20,10 +20,10 @@
     <?php echo $view['knp_pagination']->render($tweets) ?>
     
     <div class="center">
-        <form method="post" action="/recherche/">
+        <form method="get" action="/recherche/">
             <input type="hidden" name="section" value="twitter" />
             <input type="text" class="input-xxlarge" name="recherche" placeholder="Rechercher parmi tous les tweets publiés…" />
-            <input type="submit" class="btn" value="Rechercher" />
+            <noscript><input type="submit" class="btn" value="Rechercher" /></noscript>
         </form>
     </div>
 
