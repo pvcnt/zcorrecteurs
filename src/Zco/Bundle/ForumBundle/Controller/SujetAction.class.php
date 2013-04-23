@@ -142,6 +142,7 @@ class SujetAction extends ForumActions
 		$ListerMessages = ListerMessages($_GET['id'], $debut, $nombreDeMessagesAafficher);
 		$ListerVisiteurs = ListerVisiteursSujet($_GET['id']);
 		$SautRapide = RecupererSautRapide($InfosSujet['sujet_forum_id']);
+                $PremierMessage = ListerMessages($_GET['id'], 0, 1);
 
 		//--- Gestion des lus / non-lus ---
 		$InfosLuNonlu = array(
@@ -274,6 +275,7 @@ class SujetAction extends ForumActions
 			'DejaVote' => $DejaVote,
 			'nombre_total_votes' => $nombre_total_votes,
 			'NombreDePages' => $NombreDePages,
+			'PremierMessage' => $PremierMessage[0],
 		));
 	}
 }
