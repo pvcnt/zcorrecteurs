@@ -9,7 +9,7 @@
 <?php if ($PremierMessage['auteur_avatar']): ?>
     <meta name="twitter:image" content="<?php echo URL_SITE ?>/uploads/avatars/<?php echo htmlspecialchars($PremierMessage['auteur_avatar']); ?>" />
 <?php endif ?>
-+<?php $view['slots']->stop() ?>
+<?php $view['slots']->stop() ?>
 
 <h1 id="titre">
 	<?php echo htmlspecialchars($InfosSujet['sujet_titre']); ?>
