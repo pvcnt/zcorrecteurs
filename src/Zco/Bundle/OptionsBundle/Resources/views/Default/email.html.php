@@ -26,6 +26,6 @@
 	<?php echo $view['form']->widget($form) ?>
 	
 	<div class="form-actions">
-		<input type="submit" class="btn btn-primary" value="Modifier le mot de passe" />
+		<input type="submit" class="btn btn-primary" value="Modifier l’adresse courriel" />
 	</div>
 </form>
