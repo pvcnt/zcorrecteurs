@@ -6,7 +6,7 @@
 
 <p class="intro-text">
 	zCorrecteurs.fr est un projet unique et ambitieux s’appuyant sur une équipe
-	toute aussi unique. Tous ces bénévoles effectuent chaque jour un travail 
+	tout aussi unique. Tous ces bénévoles effectuent chaque jour un travail
 	indispensable, en corrigeant vos documents, faisant évoluer le site ou encore 
 	en enrichissant le contenu du site.
 	<?php if (verifier('voir_adresse')): ?><br />

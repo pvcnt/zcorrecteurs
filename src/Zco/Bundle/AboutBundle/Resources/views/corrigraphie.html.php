@@ -31,7 +31,7 @@
 		<p style="margin-top: 15px;"><em>Pour en savoir plus :</em></p>
 		<ul>
 			<li><a href="http://www.corrigraphie.org">Le site officiel de l’association</a></li>
-			<li><a href="http://www.corrigraphie.org/les-statuts">Les statuts de l’association</a></li>
+			<li><a href="http://www.corrigraphie.org/association/statuts">Les statuts de l’association</a></li>
 		</ul>
 	</div>
 </div>
