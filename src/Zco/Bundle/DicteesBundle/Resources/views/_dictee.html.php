@@ -1,4 +1,4 @@
-<div style="float: right">
+<div style="float: right; margin-left: 10px;">
 <dl class="dictee-outils">
 
     <?php if ($Dictee->icone): ?>
