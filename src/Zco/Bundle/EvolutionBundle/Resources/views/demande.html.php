@@ -75,8 +75,8 @@
 <div class="UI_column_text">
 	<p>
 		<?php echo $view['messages']->parse($InfosTicket['ticket_description'], array(
-		    'core.anchor_prefix' => $InfosTicket['id'],
-		    'files.entity_id' => $InfosTicket['id'],
+		    'core.anchor_prefix' => $InfosTicket['ticket_id'],
+		    'files.entity_id' => $InfosTicket['ticket_id'],
 		    'files.entity_class' => 'TracketTicket',
 		)) ?>
 	</p>
