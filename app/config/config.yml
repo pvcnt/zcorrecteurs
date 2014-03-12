@@ -32,9 +32,6 @@ zco_vitesse:
             type: js
             inputs: 'http://feather.aviary.com/js/feather.js'
 
-swiftmailer:
-    transport:  zco_core.swiftmailer.mandrill_transport
-
 knp_gaufrette:
     adapters:
         uploads:
