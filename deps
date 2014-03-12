@@ -73,6 +73,7 @@
 [AvalancheImagineBundle]
     git=http://github.com/avalanche123/AvalancheImagineBundle.git
     target=bundles/Avalanche/Bundle/ImagineBundle
+    version=symfony-2.0-66-g4ab9387
 
 [gaufrette]
     git=http://github.com/KnpLabs/Gaufrette.git
