@@ -9,7 +9,7 @@ parameters:
     ### Autre configuration
     secret: dDj85§fd+dedS9-sE4
     cache_default_lifetime: 600
-    
+
     ### Accès aux outils tiers
     gmaps_api_key:  ''
     analytics_account: ''
@@ -18,3 +18,14 @@ parameters:
     aviary_api_secret:  ''
     twitter_api_key: ''
     twitter_api_secret: ''
+
+swiftmailer:
+    transport:  zco_core.swiftmailer.mandrill_transport
+    #transport: smtp
+    #username:
+    #password:
+    #host: localhost
+    #port: 587
+    #encryption: tls
+    #auth_mode: plain
+
