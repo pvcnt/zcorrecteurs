@@ -82,6 +82,12 @@ class TwitterMentionTable extends Doctrine_Table
 			return false;
 		}
 		
+		if (isset($info->errors)) {
+			trigger_error('Impossible de récupérer les mentions', E_USER_WARNING);
+			
+			return false;
+		}
+		
 		foreach ($info as $inf)
 		{
 			$mention = new TwitterMention();

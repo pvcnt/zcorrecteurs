@@ -59,6 +59,9 @@ class PDOAdapter extends PDO
 		
 		// http://wezfurlong.org/blog/2006/apr/using-pdo-mysql/
 		$this->setAttribute(PDO::ATTR_EMULATE_PREPARES, true);
+		
+		// Compabibility with MySQL >= 5.0.2
+		$this->exec('SET sql_mode = \'\'');
 	}
 	
 	/**
