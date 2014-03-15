@@ -81,7 +81,7 @@ class Twitter extends OAuth
     public function deleteTweet($id)
     {
         return $this->send(
-                'POST', $this->apiEndpoint . '/statuses/destroy.json', compact('id')
+                'POST', $this->apiEndpoint . '/statuses/destroy/' . $id . '.json', array()
         );
     }
 
@@ -96,7 +96,7 @@ class Twitter extends OAuth
         $lastID = $lastID ? array('since_id' => $lastID) : array();
 
         return $this->send(
-                'GET', $this->apiEndpoint . '/statuses/mentions.json', $lastID
+                'GET', $this->apiEndpoint . '/statuses/mentions_timeline.json', $lastID
         );
     }
 

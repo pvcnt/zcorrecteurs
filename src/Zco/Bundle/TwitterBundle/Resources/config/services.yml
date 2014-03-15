@@ -8,4 +8,4 @@ services:
     
     zco_twitter.twitter:
         class: Zco\Bundle\TwitterBundle\Service\Twitter
-        arguments: ['http://api.twitter.com/1/', 'http://api.twitter.com/oauth/', ['%twitter_api_key%', '%twitter_api_secret%']]
+        arguments: ['http://api.twitter.com/1.1/', 'http://api.twitter.com/oauth/', ['%twitter_api_key%', '%twitter_api_secret%']]
