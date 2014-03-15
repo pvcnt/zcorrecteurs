@@ -61,12 +61,7 @@
 					</a>
 				</li>
 				<li class="dictee-description">
-					<?php echo $view['messages']->parse($DicteeHasard->description, array(
-					    'core.anchor_prefix' => $DicteeHasard['id'],
-					    'files.entity_id' => $DicteeHasard['id'],
-					    'files.entity_class' => 'Dictee',
-						'files.part' => 1,
-					)) ?>
+					<?php echo extrait(strip_tags($DicteeHasard->description), 200) ?>
 				</li>
 			<?php endif ?>
 		</ul>

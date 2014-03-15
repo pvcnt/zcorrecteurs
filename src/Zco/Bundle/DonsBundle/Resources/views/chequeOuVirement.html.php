@@ -37,17 +37,8 @@
 
     <h2 style="margin-top: 15px;">Don par virement</h2>
     <p style="text-align: justify;">
-        Vous pouvez également faire un don par virement en utilisant les coordonnées 
-        bancaires suivantes :
-    </p>
-
-    <ul>
-        <li><strong>Bénéficiaire :</strong> Association Corrigraphie</li>
-        <li><strong>Banque :</strong> Crédit Agricole (Centre Loire)</li>
-        <li><strong>RIB :</strong> 14806 18000 70082088828 26</li>
-        <li><strong>IBAN :</strong> FR76 1480 6180 0070 0820 8882 826</li>
-        <li><strong>BIC :</strong> AGRIFRPP848</li>
-    </ul>
+        Vous pouvez également faire un don par virement en <a href="<?php echo $view['router']->generate('zco_about_contact', array('objet' => 'Don')) ?>">prenant contact avec nous</a> pour nous demander nos coordonnées bancaires.
+	</p>
 
 	<p style="text-align: justify;">
 		Si vous souhaitez recevoir un reçu afin de bénéficier d’<a href="deduction-fiscale.html">une déduction fiscale</a>, 
