@@ -7,6 +7,11 @@
  *           @ZcoCoreBundle/Resources/public/css/famfamfam.css
  */
 
+html {
+    position: relative;
+    min-height: 100%;
+}
+
 /**
  * Remise en forme des titres pour les rendre plus fins que ceux par défaut 
  * de Bootstrap.
@@ -28,6 +33,7 @@ h2 {
 }
 
 body {
+    margin: 0 0 140px;
     font-size: 13px !important;
     line-height: 18px !important;
 }
@@ -390,14 +396,17 @@ table.table-small {
  * Pied de page.
  */
 #footer, .footer {
-	clear: both;
-	background: #09bef2 url('../img/footer-bg.png') top left repeat-x;
+    position: absolute;
+    left: 0;
+    bottom: 0;
 	height: 140px;
-	overflow: hidden;
+    width: 100%;
+    clear: both;
+    background: #09bef2 url('../img/footer-bg.png') top left repeat-x;
 }
 
 #footer .left, #footer .right {
-	height: 100%;
+	height: 50px;
 }
 
 #footer .left {
