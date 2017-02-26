@@ -21,23 +21,24 @@
 
 namespace Zco\Bundle\ForumBundle\EventListener;
 
-use Zco\Bundle\InformationsBundle\Event\FilterSitemapEvent;
-use Zco\Bundle\InformationsBundle\InformationsEvents;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zco\Bundle\AdminBundle\AdminEvents;
 use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
-use Zco\Component\Templating\TemplatingEvents;
+use Zco\Bundle\InformationsBundle\Event\FilterSitemapEvent;
+use Zco\Bundle\InformationsBundle\InformationsEvents;
 use Zco\Component\Templating\Event\FilterResourcesEvent;
-use Knp\Menu\ItemInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\DependencyInjection\ContainerAware;
+use Zco\Component\Templating\TemplatingEvents;
 
 /**
  * Observateur principal pour le module du forum.
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class EventListener extends ContainerAware implements EventSubscriberInterface
+class EventListener implements EventSubscriberInterface
 {
+    use ContainerAwareTrait;
+
 	/**
 	 * {@inheritdoc}
 	 */

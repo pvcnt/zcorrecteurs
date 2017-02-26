@@ -21,16 +21,17 @@
 
 namespace Zco\Bundle\MpBundle\EventListener;
 
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 use Zco\Bundle\AdminBundle\AdminEvents;
 use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\DependencyInjection\ContainerAware;
-
-class EventListener extends ContainerAware implements EventSubscriberInterface
+class EventListener implements EventSubscriberInterface
 {
+    use ContainerAwareTrait;
+
     static public function getSubscribedEvents()
     {
         return array(

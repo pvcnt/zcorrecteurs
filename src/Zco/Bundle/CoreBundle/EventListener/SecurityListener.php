@@ -21,12 +21,12 @@
 
 namespace Zco\Bundle\CoreBundle\EventListener;
 
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
  * Effectue les vérifications liées à la sécurité de chaque action. Les 
@@ -35,8 +35,10 @@ use Symfony\Component\DependencyInjection\ContainerAware;
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class SecurityListener extends ContainerAware implements EventSubscriberInterface
+class SecurityListener implements EventSubscriberInterface
 {
+    use ContainerAwareTrait;
+
     /**
      * {@inheritdoc}
      */

@@ -21,12 +21,11 @@
 
 namespace Zco\Bundle\CoreBundle\EventListener;
 
-use Zco\Component\HttpKernel\Bundle\AbstractBundle;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\DependencyInjection\ContainerAware;
+use Zco\Component\HttpKernel\Bundle\AbstractBundle;
 
 /**
  * Effectue le routage d'une requête entrante de façon à rester compatible 
@@ -38,8 +37,10 @@ use Symfony\Component\DependencyInjection\ContainerAware;
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class RouterListener extends ContainerAware implements EventSubscriberInterface
+class RouterListener implements EventSubscriberInterface
 {
+    use ContainerAwareTrait;
+
     /**
      * {@inheritdoc}
      */

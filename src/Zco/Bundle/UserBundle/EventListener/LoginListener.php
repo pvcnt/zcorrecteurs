@@ -21,15 +21,14 @@
 
 namespace Zco\Bundle\UserBundle\EventListener;
 
-use Zco\Bundle\UserBundle\UserEvents;
-use Zco\Bundle\UserBundle\Event\LoginEvent;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Zco\Bundle\UserBundle\Event\EnvLoginEvent;
 use Zco\Bundle\UserBundle\Event\FilterLoginEvent;
 use Zco\Bundle\UserBundle\Event\FormLoginEvent;
-use Zco\Bundle\UserBundle\Event\EnvLoginEvent;
-use Zco\Bundle\UserBundle\Event\CheckPasswordEvent;
+use Zco\Bundle\UserBundle\Event\LoginEvent;
 use Zco\Bundle\UserBundle\User\User;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\DependencyInjection\ContainerAware;
+use Zco\Bundle\UserBundle\UserEvents;
 
 /**
  * Observateur lié intégrations les actions de connexion et déconnexion au 
@@ -37,8 +36,10 @@ use Symfony\Component\DependencyInjection\ContainerAware;
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class LoginListener extends ContainerAware implements EventSubscriberInterface
+class LoginListener implements EventSubscriberInterface
 {
+    use ContainerAwareTrait;
+
 	/**
 	 * {@inheritdoc}
 	 */
@@ -161,7 +162,7 @@ class LoginListener extends ContainerAware implements EventSubscriberInterface
 	 * Génère une clé qui sera stockée dans les cookies du visiteur afin de 
 	 * se souvenir de lui lors de sa prochaine visite et prouver son identité.
 	 *
-	 * @param  Utilisateur $user
+	 * @param  \Utilisateur $user
 	 * @return string
 	 */
 	private function generateRememberKey(\Utilisateur $user)

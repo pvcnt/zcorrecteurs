@@ -21,10 +21,10 @@
 
 namespace Zco\Bundle\BlogBundle\EventListener;
 
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zco\Bundle\AdminBundle\AdminEvents;
 use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\DependencyInjection\ContainerAware;
 
 /**
  * Observateur modifiant l'interface proposée à l'utilisateur pour y intégrer 
@@ -32,8 +32,10 @@ use Symfony\Component\DependencyInjection\ContainerAware;
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class UiListener extends ContainerAware implements EventSubscriberInterface
+class UiListener implements EventSubscriberInterface
 {
+    use ContainerAwareTrait;
+
 	/**
 	 * {@inheritdoc}
 	 */

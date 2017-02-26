@@ -21,17 +21,19 @@
 
 namespace Zco\Bundle\AdminBundle\EventListener;
 
-use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\DependencyInjection\ContainerAware;
+use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
 
 /**
  * Subscriber principal du module d'administration.
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class EventListener extends ContainerAware implements EventSubscriberInterface
-{	
+class EventListener implements EventSubscriberInterface
+{
+    use ContainerAwareTrait;
+
 	/**
 	 * {@inheritdoc}
 	 */

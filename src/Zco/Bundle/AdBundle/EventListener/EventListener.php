@@ -21,24 +21,25 @@
 
 namespace Zco\Bundle\AdBundle\EventListener;
 
+use Knp\Menu\ItemInterface;
+use PubliciteCampagne;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Zco\Bundle\AdminBundle\AdminEvents;
 use Zco\Bundle\CoreBundle\CoreEvents;
 use Zco\Bundle\CoreBundle\Event\CronEvent;
-use Zco\Component\Templating\TemplatingEvents;
-use Zco\Component\Templating\Event\FilterResourcesEvent;
-use Zco\Bundle\AdminBundle\AdminEvents;
 use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
-use Knp\Menu\ItemInterface;
-use Symfony\Component\DependencyInjection\ContainerAware;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use PubliciteCampagne;
+use Zco\Component\Templating\Event\FilterResourcesEvent;
+use Zco\Component\Templating\TemplatingEvents;
 
 /**
  * Observateur principal pour le module de publicités.
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class EventListener extends ContainerAware implements EventSubscriberInterface
+class EventListener implements EventSubscriberInterface
 {
+    use ContainerAwareTrait;
 
     /**
      * {@inheritdoc}

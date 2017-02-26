@@ -21,20 +21,21 @@
 
 namespace Zco\Bundle\UserBundle\EventListener;
 
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zco\Bundle\AdminBundle\AdminEvents;
 use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
 use Zco\Bundle\UserBundle\Form\Type\FormLoginType;
-use Knp\Menu\ItemInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\DependencyInjection\ContainerAware;
 
 /**
  * Observateur chargé des modifications à l'interface du site.
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class UiListener extends ContainerAware implements EventSubscriberInterface
+class UiListener implements EventSubscriberInterface
 {
+    use ContainerAwareTrait;
+
 	/**
 	 * {@inheritdoc}
 	 */

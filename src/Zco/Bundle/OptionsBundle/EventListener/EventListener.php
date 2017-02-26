@@ -21,20 +21,22 @@
 
 namespace Zco\Bundle\OptionsBundle\EventListener;
 
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Zco\Bundle\AdminBundle\AdminEvents;
 use Zco\Bundle\CoreBundle\CoreEvents;
 use Zco\Bundle\CoreBundle\Event\CronEvent;
-use Zco\Bundle\AdminBundle\AdminEvents;
 use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
-use Symfony\Component\DependencyInjection\ContainerAware;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Observateur principal pour le module d'options.
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class EventListener extends ContainerAware implements EventSubscriberInterface
+class EventListener implements EventSubscriberInterface
 {
+    use ContainerAwareTrait;
+
 	/**
 	 * {@inheritdoc}
 	 */

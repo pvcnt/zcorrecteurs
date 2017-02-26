@@ -21,18 +21,19 @@
 
 namespace Zco\Bundle\DicteesBundle\EventListener;
 
-use Zco\Bundle\InformationsBundle\Event\FilterSitemapEvent;
-use Zco\Bundle\InformationsBundle\InformationsEvents;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zco\Bundle\AdminBundle\AdminEvents;
 use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
-use Zco\Component\Templating\TemplatingEvents;
+use Zco\Bundle\InformationsBundle\Event\FilterSitemapEvent;
+use Zco\Bundle\InformationsBundle\InformationsEvents;
 use Zco\Component\Templating\Event\FilterVariablesEvent;
-use Knp\Menu\ItemInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\DependencyInjection\ContainerAware;
+use Zco\Component\Templating\TemplatingEvents;
 
-class EventListener extends ContainerAware implements EventSubscriberInterface
+class EventListener implements EventSubscriberInterface
 {
+    use ContainerAwareTrait;
+
 	static public function getSubscribedEvents()
 	{
 		return array(

@@ -21,25 +21,26 @@
 
 namespace Zco\Bundle\CoreBundle\EventListener;
 
-use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
-use Zco\Component\Templating\TemplatingEvents;
-use Zco\Component\Templating\Event\FilterVariablesEvent;
-use Zco\Component\Templating\Event\FilterResourcesEvent;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\DependencyInjection\ContainerAware;
+use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
+use Zco\Component\Templating\Event\FilterResourcesEvent;
+use Zco\Component\Templating\Event\FilterVariablesEvent;
+use Zco\Component\Templating\TemplatingEvents;
 
 /**
  * Subscriber principal du module central du site.
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class EventListener extends ContainerAware implements EventSubscriberInterface
+class EventListener implements EventSubscriberInterface
 {
+    use ContainerAwareTrait;
+
 	private $maintenance = false;
 	
 	/**
