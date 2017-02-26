@@ -55,7 +55,7 @@ abstract class AbstractValidator extends ConstraintValidator
 	 * @param  Constraint $constraint La contrainte validée
 	 * @return boolean Valeur validée ?
 	 */
-	protected function validate($value, $method, Constraint $constraint)
+	protected function doValidate($value, $method, Constraint $constraint)
 	{
 		//Les méthodes renvoie vrai lorsque la validation réussit et une 
 		//exception de type ValueException lorsqu'elle échoue.
@@ -68,13 +68,13 @@ abstract class AbstractValidator extends ConstraintValidator
 			
 			//Cas où la validation pourrait renvoyer false sans exception, 
 			//on utilise le message par défaut.
-			$this->setMessage($constraint->message);
+			$this->context->addViolation($constraint->message);
 		}
 		catch (ValueException $e)
 		{
 			//Si on a une exception, celle-ci transporte généralement le 
 			//message détaillant l'erreur en question.
-			$this->setMessage($e->getMessage() ?: $constraint->message);
+			$this->context->addViolation($e->getMessage() ?: $constraint->message);
 		}
 		
 		return false;

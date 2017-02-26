@@ -25,7 +25,7 @@ use Symfony\Component\Validator\Constraint;
 
 class PasswordValidator extends AbstractValidator
 {
-	public function isValid($value, Constraint $constraint)
+	public function validate($value, Constraint $constraint)
 	{
 		//Hack pour parer au cas où deux mots de passe différents ont été saisis.
 		//Le mot de passe est alors nul et on n'a pas à continuer la validation, 
@@ -35,6 +35,6 @@ class PasswordValidator extends AbstractValidator
 			return true;
 		}
 		
-		return $this->validate($value, 'validatePassword', $constraint);
+		return $this->doValidate($value, 'validatePassword', $constraint);
 	}
 }

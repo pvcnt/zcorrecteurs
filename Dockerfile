@@ -57,7 +57,7 @@ VOLUME /var/cache/symfony
 
 # Add a custom entrypoint.
 COPY build/entrypoint.sh /
-RUN chmod +x /entrypoint.sh && chmod +x /usr/local/bin/apache2-foreground
+RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
 CMD ["apache2-foreground"]

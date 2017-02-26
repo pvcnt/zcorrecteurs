@@ -25,8 +25,8 @@ use Symfony\Component\Validator\Constraint;
 
 class EmailValidator extends AbstractValidator
 {
-	public function isValid($value, Constraint $constraint)
+	public function validate($value, Constraint $constraint)
 	{
-		return $this->validate($value, 'validateEmail', $constraint);
+		return $this->doValidate($value, 'validateEmail', $constraint);
 	}
 }
