@@ -65,7 +65,10 @@ EXPOSE 80
 ENV ENVIRONMENT prod
 ENV DEBUG false
 
-# Add source code volume.
-VOLUME /opt/app
-COPY . /opt/app
+# First download PHP dependencies.
 WORKDIR /opt/app
+COPY composer.json composer.lock /opt/app
+RUN gosu www-data composer install --no-dev --no-progress --no-scripts --optimize-autoloader
+
+# Then add source code.
+COPY . /opt/app
