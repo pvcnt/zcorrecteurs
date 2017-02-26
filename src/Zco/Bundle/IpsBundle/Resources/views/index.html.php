@@ -52,13 +52,11 @@
 					<?php if(!$valeur['ip_fini']): ?>
 						<a href="?fin=<?php echo $valeur['ip_id']; ?>"
 						   title="Mettre fin à ce ban">
-						   <img src="/img/zcorrection/refuser.png"
-						        alt="Mettre fin" /></a>
+						   <img src="/img/refuser.png" alt="Mettre fin" /></a>
 					<?php else: ?>
 						<a href="?supprimer=<?php echo $valeur['ip_id']; ?>"
 						   title="Supprimer">
-						   <img src="/img/supprimer.png"
-						        alt="Supprimer" /></a>
+						   <img src="/img/supprimer.png" alt="Supprimer" /></a>
 					<?php endif; ?>
 				<?php else: ?>
 					-

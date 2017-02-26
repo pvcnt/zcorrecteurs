@@ -56,9 +56,6 @@ foreach($ListerEquipe as &$m)
 					<th>Pseudo</th>
 					<th>Citation</th>
 					<th>Dernière action</th>
-					<?php if(verifier('stats_zcorrecteur') || verifier('stats_zcorrecteurs')){ ?>
-					<th>Statistiques</th>
-					<?php } ?>
 				</tr>
 			</thead>
 			<tfoot>
@@ -67,9 +64,6 @@ foreach($ListerEquipe as &$m)
 					<th>Pseudo</th>
 					<th>Citation</th>
 					<th>Dernière action</th>
-					<?php if(verifier('stats_zcorrecteur') || verifier('stats_zcorrecteurs')){ ?>
-					<th>Statistiques</th>
-					<?php } ?>
 				</tr>
 			</tfoot>
 			<tbody>
@@ -88,9 +82,6 @@ foreach($ListerEquipe as &$m)
 		<?php if($m['utilisateur_titre']){ ?><br /><div class="title"><span class="ttpetit"><?php echo htmlspecialchars($m['utilisateur_titre']); ?></span></div><?php } ?></td>
 		<td><?php echo htmlspecialchars($m['utilisateur_citation']); ?></td>
 		<td><?php echo dateformat($m['derniere_action']); ?></td>
-		<?php if(verifier('stats_zcorrecteurs') || (verifier('stats_zcorrecteur') && $m['utilisateur_id'] == $_SESSION['id'])){ ?>
-		<td><a href="/statistiques/zcorrecteur-<?php echo $m['utilisateur_id']; ?>.html">Voir</a></td>
-		<?php } elseif(verifier('stats_zcorrecteur')) echo '<td>-</td>' ?>
 	</tr>
 <?php } ?>
 </tbody></table>

@@ -74,13 +74,6 @@
         		</a>
         	</li>
         <?php endif ?>
-        <?php if (verifier('stats_zcorrecteurs')): ?>
-            <li>
-            	<a href="/statistiques/zcorrecteur-<?php echo $user->getId(); ?>.html">
-            		<?php echo $own ? 'Mes' : 'Ses' ?> statistiques de zCorrection
-            	</a>
-            </li>
-    	<?php endif ?>
     	<?php if (verifier('quiz_stats') || $own): ?>
         	<li>
         		<a href="/quiz/mes-statistiques-<?php echo $user->getId(); ?>.html">

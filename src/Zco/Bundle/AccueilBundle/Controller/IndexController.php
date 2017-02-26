@@ -149,10 +149,6 @@ class IndexController extends Controller
 			'futur' => false,
 		), -1);
 
-		// zCorrection
-		$vars['StatistiquesZcorrection'] = RecupStatistiques();
-		$vars['NombreTutosAttente']      = $this->get('zco_admin.manager')->get('zcorrection');
-
 		// Dictées
 		$vars['DicteesAccueil']       = array_slice(DicteesAccueil(), 0, 2);
 		$vars['DicteeHasard']         = DicteeHasard();
@@ -174,7 +170,6 @@ class IndexController extends Controller
 		$resourceManager->requireResource('@ZcoSondagesBundle/Resources/public/css/sondage.css');
 		$resourceManager->requireResource('@ZcoCoreBundle/Resources/public/css/zcode.css');
 		$resourceManager->requireResource('@ZcoDicteesBundle/Resources/public/css/dictees.css');
-		$resourceManager->requireResource('@ZcoLivredorBundle/Resources/public/css/livredor.css');
 		
 		return render_to_response($vars);
 	}

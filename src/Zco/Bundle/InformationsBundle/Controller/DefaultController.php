@@ -91,11 +91,6 @@ class DefaultController extends Controller
 	
 	public function ajaxParseZcodeAction(Request $request)
 	{
-		if ($request->get('_module') === 'zcorrection')
-		{
-			return new Response($this->get('zco_parser.parser')->with('sdz')->parse($_POST['texte']));
-		}
-
 		return new Response($this->get('zco_parser.parser')->parse($_POST['texte']));
 
 	}

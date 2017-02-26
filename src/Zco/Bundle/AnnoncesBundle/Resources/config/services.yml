@@ -1,7 +1,0 @@
-services:
-    zco_annonces.event_listener:
-        class: Zco\Bundle\AnnoncesBundle\EventListener\EventListener
-        calls:
-            - [setContainer, [@service_container]]
-        tags:
-            - { name: kernel.event_subscriber }

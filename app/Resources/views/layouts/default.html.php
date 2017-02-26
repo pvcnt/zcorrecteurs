@@ -146,7 +146,10 @@
 
                         <?php echo $view['ui']->footer(1); ?>
                         <?php echo $view['ui']->footer(2); ?>
-                        <?php echo $view['ui']->footer(3, array('childrenAttributes' => array('class'   => 'links bloc_partenaires'), 'preHtml' => 'Partenaires : ')); ?>
+                        <p class="links bloc_partenaires">
+                            Partenaires :
+                            <a href="http://www.convivialiteenflandre.org/" id="pub-11" title="Convivialité en Flandre" rel="Le patrimoine artistique de la Flandre belge et française.">Convivialité en Flandre</a>
+                        </p>
                     </div>
                 </div>
             <?php endif ?>

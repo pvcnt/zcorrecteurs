@@ -16,7 +16,6 @@
 groups:
     general: Configuration générale
     membres: Configuration des membres
-    zco: Configuration de la zCorrection
     quiz: Configuration du quiz
     nogroup: Sans groupe
     demandes: Gestion des demandes
@@ -73,8 +72,3 @@ constants:
         group: infos
         type: integer
         value: 30
-    ADMIN_TUTOS:
-        desc: Administrateur responsable des retards sur les tutoriels
-        group: zco
-        type: integer
-        value: 16
