@@ -9,7 +9,9 @@
 			Politique de confidentialité
 		</a>
 	</li>
-	<li<?php if ($currentTab === 'rules') echo ' class="active"' ?>>
-		<a href="">Règlement</a>
+    <li<?php if ($currentTab === 'rules') echo ' class="active"' ?>>
+        <a href="<?php echo $view['router']->path('zco_legal_rules') ?>">
+            Règlement
+        </a>
 	</li>
 </ul>

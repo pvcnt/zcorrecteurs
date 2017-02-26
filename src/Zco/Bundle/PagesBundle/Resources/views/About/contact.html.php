@@ -13,21 +13,6 @@
 	<fieldset>
 		<legend>Demande de contact</legend>
 		<?php echo $view['form']->row($form['raison']) ?>
-		<div id="zco_apropos_contact_avertissement_partenariat" class="alert alert-block">
-			<p class="good">Vous vous apprêtez à nous contacter pour un partenariat.
-			S’il s’agit d'un échange de lien, ne proposez votre site
-			<span class="gras rouge">que</span> si celui-ci a un <span class="italique">
-			Page Rank</span> égal ou supérieur à 4. En effet, les partenariats 
-			au niveau des liens ont été mis en place avec deux objectifs. Soit 
-			apporter quelques fonds au site (vente de lien), soit aider pour le 
-			référencement. Donc si votre site n’a pas de <span class="italique">Page Rank</span> 
-			ou a un <span class="italique">Page Rank</span> très faible, nous 
-			serons contraints de le refuser.</p>
-
-			<p class="good">Nous espérons que vous comprendrez les raisons qui nous poussent à
-			effectuer une telle sélection.</p>
-		</div>
-
 		<?php echo $view['form']->row($form['sujet']) ?>
 		<?php echo $view['form']->row($form['nom']) ?>
 
@@ -50,23 +35,3 @@
 		</div>
 	</fieldset>
 </form>
-
-<script type="text/javascript">
-	<?php if (!isset($_GET['objet']) || $_GET['objet'] !== 'Partenariat'): ?>
-	window.addEvent('domready', function()
-	{
-		$('zco_apropos_contact_avertissement_partenariat').slide('hide');
-	});
-	<?php endif; ?>
-	$('zco_apropos_contact_raison').addEvent('change', function()
-	{
-		if ($('zco_apropos_contact_raison').get('value') == 'Partenariat')
-		{
-			$('zco_apropos_contact_avertissement_partenariat').slide('in');
-		}
-		else
-		{
-			$('zco_apropos_contact_avertissement_partenariat').slide('out');
-		}
-	});
-</script>
