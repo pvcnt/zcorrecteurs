@@ -12,6 +12,7 @@ RUN set -x \
     libjpeg62-turbo-dev \
     libmcrypt-dev \
     libpng12-dev \
+    zlib1g-dev \
   && rm -rf /var/lib/apt/lists/*
 
 # Install gosu binary (needs wget and ca-certificates).
@@ -33,11 +34,8 @@ RUN wget -O composer-setup.php https://getcomposer.org/installer \
   && rm composer-setup.php \
   && mkdir -p /var/cache/composer
 
-# Remove wget and ca-certificates which are no longer needed.
-RUN apt-get purge -y --auto-remove ca-certificates wget
-
-# Install PHP extensions: iconv, mcrypt, gd, pdo, pdo_mysql
-RUN docker-php-ext-install -j$(nproc) iconv mcrypt pdo pdo_mysql \
+# Install PHP extensions: iconv, mcrypt, gd, pdo, pdo_mysql, zip
+RUN docker-php-ext-install -j$(nproc) iconv mcrypt pdo pdo_mysql zip \
   && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
   && docker-php-ext-install -j$(nproc) gd
 
@@ -50,7 +48,12 @@ RUN service apache2 stop \
 
 # Create logs and cache directories.
 # These directories are outside of the source code root to avoid polutting the associated volume.
-RUN mkdir -p /var/log/symfony && mkdir -p /var/cache/symfony && mkdir -p /var/cache/composer
+RUN mkdir -p /var/log/symfony \
+  && mkdir -p /var/cache/symfony \
+  && mkdir -p /var/cache/composer \
+  && chown -R www-data:www-data /var/log/symfony \
+  && chown -R www-data:www-data /var/cache/symfony \
+  && chown -R www-data:www-data /var/cache/composer
 ENV COMPOSER_CACHE_DIR /var/cache/composer
 VOLUME /var/log/symfony
 VOLUME /var/cache/symfony
@@ -66,9 +69,10 @@ ENV ENVIRONMENT prod
 ENV DEBUG false
 
 # First download PHP dependencies.
+RUN mkdir -p /opt/app && chown www-data:www-data /opt/app
 WORKDIR /opt/app
 COPY composer.json composer.lock /opt/app/
-RUN gosu www-data composer install --no-dev --no-progress --no-scripts --optimize-autoloader
+RUN gosu www-data composer install --no-dev --no-progress --no-scripts --no-autoloader
 
 # Then add source code.
 COPY . /opt/app
