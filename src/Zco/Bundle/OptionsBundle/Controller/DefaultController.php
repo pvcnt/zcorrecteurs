@@ -244,7 +244,7 @@ class DefaultController extends Controller
 
 		if ('POST' === $request->getMethod())
 		{
-			$form->bindRequest($request);
+			$form->submit($request);
 			if ($form->isValid())
 			{
 				$user->save();
@@ -312,7 +312,7 @@ class DefaultController extends Controller
 			}
 			
 			//Sinon on souhaite en (re)définir une.
-			$form->bindRequest($request);
+			$form->submit($request);
 			if ($form->isValid())
 			{
 				$user->save();
@@ -376,7 +376,7 @@ class DefaultController extends Controller
 
 		if ('POST' === $request->getMethod())
 		{
-			$form->bindRequest($request);
+			$form->submit($request);
 			if ($form->isValid())
 			{
 				$preferences->save();

@@ -6,13 +6,13 @@
 /vendor/
 /bin/
 !/bin/sphinx
-lib/geoip/GeoLiteCity.dat
 
 /app/cache/*
 /app/logs/*
 /web/compiled/*
 /data/store/*
 /data/index/*
+/data/GeoLiteCity.dat
 
 # IDE configuration files.
 .project

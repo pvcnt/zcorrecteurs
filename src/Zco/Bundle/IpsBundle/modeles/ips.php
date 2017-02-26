@@ -199,9 +199,6 @@ function AnalyserIP($ip)
 
 function Geolocaliser($ip)
 {
-	//Inclusion de la librairie
-	include_once(BASEPATH.'/vendor/geoip/geoipcity.php');
-
 	$ip = long2ip($ip);
 	$match = explode('.', $ip);
 
@@ -211,9 +208,10 @@ function Geolocaliser($ip)
 		return array(false, '-', null);
 	}
 
-	//Lancement de la procédure de localisation
-	$info = array();
-	$gi = geoip_open(BASEPATH.'/vendor/geoip/GeoLiteCity.dat', GEOIP_STANDARD);
+	if (!is_file(BASEPATH.'/data/GeoLiteCity.dat')) {
+	    return null;
+    }
+	$gi = geoip_open(BASEPATH.'/data/GeoLiteCity.dat', GEOIP_STANDARD);
 	$location = geoip_record_by_addr($gi, $ip);
 	geoip_close($gi);
 

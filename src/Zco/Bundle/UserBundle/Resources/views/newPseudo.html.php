@@ -24,7 +24,7 @@
 </form>
 
 <?php $view['javelin']->initBehavior('validate-value', array(
-	'id'       => $form['newUsername']->get('id'),
+	'id'       => $form['newUsername']->vars['id'],
 	'postVar'  => 'pseudo',
 	'callback' => $view['router']->generate('zco_user_api_validateUsername'),
 )) ?>

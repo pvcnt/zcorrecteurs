@@ -136,7 +136,7 @@ class DefaultController extends Controller
 		
 		if ($request->getMethod() == 'POST')
 		{
-			$form->bindRequest($request);
+			$form->submit($request);
 			if ($form->isValid())
 			{
 				$contact->pseudo = verifier('connecte') ? $_SESSION['pseudo'] : null;

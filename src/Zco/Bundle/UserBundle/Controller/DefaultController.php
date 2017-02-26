@@ -347,7 +347,7 @@ class DefaultController extends Controller
 		//Si l'utilisateur veut s'inscrire
 		if ($request->getMethod() === 'POST')
 		{
-			$form->bindRequest($request);
+			$form->submit($request);
 			if ($form->isValid())
 			{
 				if ($newUsername->isAutoValidated())

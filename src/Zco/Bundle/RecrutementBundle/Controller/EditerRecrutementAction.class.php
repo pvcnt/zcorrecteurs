@@ -48,7 +48,7 @@ class EditerRecrutementAction extends Controller
 
 		if ($request->getMethod() == 'POST')
 		{
-		    $form->bindRequest($request);
+		    $form->submit($request);
 		    if ($form->isValid())
 			{
 				$recrutement->save();

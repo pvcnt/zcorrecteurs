@@ -1,5 +1,5 @@
 <?php if ($widget == 'single_text'): ?>
-    <?php echo $view['form']->renderBlock('field_widget'); ?>
+    <?php echo $view['form']->block($form, 'form_widget_simple'); ?>
 	<?php $view['javelin']->initBehavior('datepicker', array(
 	        'id' => $id,
 	        'options' => array(
@@ -14,7 +14,7 @@
 		)
 	) ?>
 <?php else: ?>
-    <div <?php echo $view['form']->renderBlock('container_attributes') ?>>
+    <div <?php echo $view['form']->block($form, 'container_attributes') ?>>
         <?php echo $view['form']->widget($form['date']).' '.$view['form']->widget($form['time']) ?>
     </div>
 <?php endif ?>

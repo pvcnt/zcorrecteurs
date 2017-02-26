@@ -10,6 +10,7 @@ framework:
     translator:      { fallback: fr }
     session:
         storage_id: session.storage.php_bridge
+        handler_id: session.handler.native_file
     templating:
         engines:       ['php', 'twig']
         form:

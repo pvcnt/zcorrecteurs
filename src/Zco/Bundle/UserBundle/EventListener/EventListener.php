@@ -72,7 +72,9 @@ class EventListener implements EventSubscriberInterface
 		{
 			return;
 		}
-		
+
+		session_start();
+
 		//Définit certaines variables importantes de session si ce n'est pas 
 		//encore le cas.
 		if (empty($_SESSION['token']))
