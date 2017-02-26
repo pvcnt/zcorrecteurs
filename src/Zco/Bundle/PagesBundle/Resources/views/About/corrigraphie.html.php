@@ -70,6 +70,6 @@
 
 	<div class="span5 well">
 		<h2>Faire un don</h2>
-		<?php echo $this->render('ZcoDonsBundle::_formulaireDon.html.php', array('chequeOuVirement' => false)) ?>
+		<?php echo $this->render('ZcoPagesBundle:Donate:_form.html.php', array('chequeOuVirement' => false)) ?>
 	</div>
 </div>
