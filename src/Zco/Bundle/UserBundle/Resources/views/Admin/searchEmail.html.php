@@ -8,7 +8,7 @@
 </p>
 
 <fieldset>
-	<form method="get" action="<?php echo $view['router']->generate('zco_user_admin_searchEmail') ?>" class="form-horizontal">
+	<form method="get" action="<?php echo $view['router']->path('zco_user_admin_searchEmail') ?>" class="form-horizontal">
 		<input type="text" name="email" id="email" value="<?php echo htmlspecialchars($email) ?>" placeholder="*@gmail.com" />
 		<input type="submit" class="btn btn-primary" value="Envoyer" />
 	</form>
@@ -43,7 +43,7 @@
 		<?php foreach ($users as $user): ?>
 		<tr>
 			<td>
-				<a href="<?php echo $view['router']->generate('zco_user_profile', array('id' => $user->getId(), 'slug' => rewrite($user->getUsername()))) ?>">
+				<a href="<?php echo $view['router']->path('zco_user_profile', array('id' => $user->getId(), 'slug' => rewrite($user->getUsername()))) ?>">
 					<?php echo htmlspecialchars($user->getUsername()) ?>
 				</a>
 			</td>

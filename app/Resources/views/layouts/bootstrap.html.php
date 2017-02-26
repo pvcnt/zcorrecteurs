@@ -97,7 +97,7 @@
         <?php foreach ($view['vitesse']->javascripts() as $assetUrl): ?>
             <script type="text/javascript" src="<?php echo $assetUrl ?>"></script>
         <?php endforeach ?>	
-        <script type="text/javascript" src="<?php echo $view['router']->generate('fos_js_routing_js', array('callback' => 'fos.Router.setData')) ?>"></script>	
+        <script type="text/javascript" src="<?php echo $view['router']->path('fos_js_routing_js', array('callback' => 'fos.Router.setData')) ?>"></script>
         <?php echo $view['javelin']->renderHTMLFooter() ?>
     </body>
 </html>

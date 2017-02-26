@@ -15,7 +15,7 @@
 
 	<div class="form-actions">
 		<input type="submit" class="btn btn-primary" name="confirm" value="Oui" />
-		<a class="btn" href="<?php echo $view['router']->generate('zco_twitter_accounts') ?>">Non</a>
+		<a class="btn" href="<?php echo $view['router']->path('zco_twitter_accounts') ?>">Non</a>
 		<input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>"/>
 	</div>
 </form>

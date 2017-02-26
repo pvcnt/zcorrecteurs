@@ -27,7 +27,7 @@
 
 /**
  * Récupère une liste de billets du blog.
- * @param arary $params			Une liste de paramètres de filtrage.
+ * @param array $params			Une liste de paramètres de filtrage.
  * @param integer $page			Une page (limite la liste des résultats à cette page).
  * @return array
  */

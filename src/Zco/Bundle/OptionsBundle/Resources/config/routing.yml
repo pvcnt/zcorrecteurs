@@ -1,33 +1,33 @@
 zco_options_index:
-    pattern:   /
+    pattern:   /options
     defaults:  { _controller: ZcoOptionsBundle:Default:profile, id: ~ }
 
 zco_options_profile:
-    pattern:   /profil/{id}
+    pattern:   /options/profil/{id}
     defaults:  { _controller: ZcoOptionsBundle:Default:profile, id: ~ }
 
 zco_options_password:
-    pattern:   /mot-de-passe/{id}
+    pattern:   /options/mot-de-passe/{id}
     defaults:  { _controller: ZcoOptionsBundle:Default:password, id: ~ }
 
 zco_options_email:
-    pattern:   /courriel/{id}
+    pattern:   /options/courriel/{id}
     defaults:  { _controller: ZcoOptionsBundle:Default:email, id: ~, hash: ~ }
     requirements:
         id: \d+
 
 zco_options_validateEmail:
-    pattern:   /courriel/{hash}
+    pattern:   /options/courriel/{hash}
     defaults:  { _controller: ZcoOptionsBundle:Default:email, id: ~ }
 
 zco_options_avatar:
-    pattern:   /avatar/{id}
+    pattern:   /options/avatar/{id}
     defaults:  { _controller: ZcoOptionsBundle:Default:avatar, id: ~ }
 
 zco_options_absence:
-    pattern:   /absence/{id}
+    pattern:   /options/absence/{id}
     defaults:  { _controller: ZcoOptionsBundle:Default:absence, id: ~ }
 
 zco_options_preferences:
-    pattern:   /preferences/{id}
+    pattern:   /options/preferences/{id}
     defaults:  { _controller: ZcoOptionsBundle:Default:preferences, id: ~ }

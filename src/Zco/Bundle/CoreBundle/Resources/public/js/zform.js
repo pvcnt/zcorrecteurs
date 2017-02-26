@@ -214,7 +214,7 @@ function full_preview(id_textarea, id_prev_final)
 	var button = $('lancer_apercu_' + id_textarea);
 	button.disabled = true;
 
-	xhr = new Request({method: 'post', url: '/informations/ajax-parse-zcode.html', onSuccess: function(text, xml){
+	xhr = new Request({method: 'post', url: Routing.generate('zco_parser_api_parse'), onSuccess: function(text, xml){
 		$(id_prev_final).set('html', text);
 	}});
 	xhr.send('texte='+encodeURIComponent($(id_textarea).value));

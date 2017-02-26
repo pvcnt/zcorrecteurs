@@ -239,7 +239,7 @@ if($autoriser_ecrire AND ($NombreParticipants > 1 OR $MPTotal < verifier('mp_quo
 			} if(verifier('membres_avertir'))
 			{
 			?>
-			<br /><a href="<?php echo $view['router']->generate('zco_user_admin_warn', array('id' => htmlspecialchars($valeur['mp_message_auteur_id']))) ?>">
+			<br /><a href="<?php echo $view['router']->path('zco_user_admin_warn', array('id' => htmlspecialchars($valeur['mp_message_auteur_id']))) ?>">
 				Avertir : <?php echo $valeur['utilisateur_pourcentage']; ?> %
 			</a>
 			<?php
@@ -252,7 +252,7 @@ if($autoriser_ecrire AND ($NombreParticipants > 1 OR $MPTotal < verifier('mp_quo
 			if(verifier('sanctionner'))
 			{
 			?>
-			<br /><a href="<?php echo $view['router']->generate('zco_user_admin_punish', array('id' => htmlspecialchars($valeur['mp_message_auteur_id']))) ?>">
+			<br /><a href="<?php echo $view['router']->path('zco_user_admin_punish', array('id' => htmlspecialchars($valeur['mp_message_auteur_id']))) ?>">
 				Sanctionner (<?php echo $valeur['utilisateur_nb_sanctions']; ?>)
 			</a>
 			<?php

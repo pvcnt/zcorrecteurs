@@ -9,7 +9,7 @@
 	Merci de votre compréhension.
 </p>
 
-<form method="post" action="<?php echo $view['router']->generate('zco_user_newPseudo') ?>" class="form-horizontal">
+<form method="post" action="<?php echo $view['router']->path('zco_user_newPseudo') ?>" class="form-horizontal">
 	<?php echo $view['form']->errors($form) ?>
 	<?php echo $view['form']->row($form['newUsername']) ?>
 	<?php echo $view['form']->row($form['reason']) ?>
@@ -26,5 +26,5 @@
 <?php $view['javelin']->initBehavior('validate-value', array(
 	'id'       => $form['newUsername']->vars['id'],
 	'postVar'  => 'pseudo',
-	'callback' => $view['router']->generate('zco_user_api_validateUsername'),
+	'callback' => $view['router']->path('zco_user_api_validateUsername'),
 )) ?>

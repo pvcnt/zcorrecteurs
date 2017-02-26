@@ -74,7 +74,7 @@
 				<input type="text" name="image" id="image" value="<?php echo htmlspecialchars($InfosBillet['blog_image']); ?>" />
 				<br />
 
-				<a href="<?php echo $view['router']->generate('zco_file_index', array('input' => 'image', 'xhr' => 1)) ?>" id="blog-files-link">
+				<a href="<?php echo $view['router']->path('zco_file_index', array('input' => 'image', 'xhr' => 1)) ?>" id="blog-files-link">
 					<img src="/img/popup.png" alt="Ouvre une nouvelle fenêtre" />
 					Envoi d'images
 				</a>
@@ -197,7 +197,7 @@
 				
 				<?php $view['javelin']->initBehavior('autocomplete', array(
 				    'id' => 'pseudo', 
-				    'callback' => $view['router']->generate('zco_user_api_searchUsername'),
+				    'callback' => $view['router']->path('zco_user_api_searchUsername'),
 				)) ?>
 
 				<select name="statut" id="statut">

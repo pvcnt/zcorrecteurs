@@ -23,8 +23,8 @@ namespace Zco\Bundle\BlogBundle\EventListener;
 
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Zco\Bundle\InformationsBundle\Event\FilterSitemapEvent;
-use Zco\Bundle\InformationsBundle\InformationsEvents;
+use Zco\Bundle\PagesBundle\Event\FilterSitemapEvent;
+use Zco\Bundle\PagesBundle\PagesEvents;
 use Zco\Component\Templating\Event\FilterResourcesEvent;
 use Zco\Component\Templating\Event\FilterVariablesEvent;
 use Zco\Component\Templating\TemplatingEvents;
@@ -46,7 +46,7 @@ class EventListener implements EventSubscriberInterface
 		return array(
 			TemplatingEvents::FILTER_RESOURCES => 'onTemplatingFilterResources',
 			TemplatingEvents::FILTER_VARIABLES => 'onTemplatingFilterVariables',
-			InformationsEvents::SITEMAP => 'onFilterSitemap',
+			PagesEvents::SITEMAP => 'onFilterSitemap',
 		);
 	}
 	

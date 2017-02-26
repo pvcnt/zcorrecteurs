@@ -2,5 +2,4 @@ zco_twitter_api_bitly:
     pattern:   /bitly
     defaults:  { _controller: ZcoTwitterBundle:Api:bitly, _format: json }
     options:   { expose: true }
-    requirements:
-        _method: post
+    methods:   [POST]

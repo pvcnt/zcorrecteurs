@@ -12,7 +12,7 @@
 <?php if (!count($accounts)): ?>
 <p><em>Il n'y a actuellement aucun compte.</em>
 <?php else: ?>
-<form action="<?php echo $view['router']->generate('zco_twitter_accounts') ?>" method="post">
+<form action="<?php echo $view['router']->path('zco_twitter_accounts') ?>" method="post">
 <table class="table">
 	<thead>
 		<tr>
@@ -44,7 +44,7 @@
 			<td class="center"><?php echo $account['tweets'] ?></td>
 			<td><?php echo dateformat($account->DernierTweet['creation']) ?></td>
 			<td class="center">
-				<a href="<?php echo $view['router']->generate('zco_twitter_deleteAccount', array('id' => $account['id'])) ?>">
+				<a href="<?php echo $view['router']->path('zco_twitter_deleteAccount', array('id' => $account['id'])) ?>">
 					<img src="/pix.gif"    alt="Supprimer"
 					     class="fff cross" title="Supprimer"/>
 				</a>
@@ -60,7 +60,7 @@
 	</tbody>
 </table>
 <p style="text-align: right; width: 98%; margin: auto;margin-top: 5px">
-	<a href="<?php echo $view['router']->generate('zco_twitter_addAccount') ?>" class="btn btn-primary">Ajouter un compte</a>
+	<a href="<?php echo $view['router']->path('zco_twitter_addAccount') ?>" class="btn btn-primary">Ajouter un compte</a>
 	<input type="submit" class="btn" value="Modifier le compte par défaut"/>
 </p>
 </form>

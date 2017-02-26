@@ -9,11 +9,6 @@
 	et n'hésitez pas à joindre une capture d'écran si cela peut aider à la compréhension du problème.
 </p>
 
-<p><a href="/aide/page-9-suggestions-et-dysfonctionnements.html">
-    <img src="/img/misc/aide.png" alt="" />
-    Plus d'informations sur les suggestions et dysfonctionnements.
-</a></p>
-
 <form method="post" action="">
 	<fieldset>
 		<legend>Description rapide de la demande</legend>

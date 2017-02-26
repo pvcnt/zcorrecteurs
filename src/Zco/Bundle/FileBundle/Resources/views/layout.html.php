@@ -49,12 +49,12 @@
     		        <div class="well sidebar-nav">
     		            <ul class="nav nav-list">
     		                <li<?php if ($currentPage === 'index') echo ' class="active"' ?>>
-    		                    <a href="<?php echo $view['router']->generate('zco_file_index', compact('textarea', 'input')) ?>">
+    		                    <a href="<?php echo $view['router']->path('zco_file_index', compact('textarea', 'input')) ?>">
     		                        Envoyer des fichiers
     		                    </a>
     		                </li>
     		                <?php /*<li<?php if ($currentPage === 'commons') echo ' class="active"' ?>>
-    		                    <a href="<?php echo $view['router']->generate('zco_file_commons', compact('textarea', 'input')) ?>">
+    		                    <a href="<?php echo $view['router']->path('zco_file_commons', compact('textarea', 'input')) ?>">
     		                        Rechercher sur Commons
     		                    </a>
     		                </li>*/ ?>
@@ -63,7 +63,7 @@
     		                <?php foreach ($smartFolders as $folder): ?>
     		                    <?php if (!$folder['hidden'] || ($currentFolder && $currentFolder['id'] == $folder['id'])): ?>
     		                    <li<?php if ($currentFolder && $currentFolder['id'] == $folder['id']) echo ' class="active"' ?>>
-    		                        <a href="<?php echo $view['router']->generate('zco_file_folder', array('id' => $folder['id'], 'entities' => $currentContentFolder ? $currentContentFolder['id'] : '', 'textarea' => $textarea, 'input' => $input)) ?>">
+    		                        <a href="<?php echo $view['router']->path('zco_file_folder', array('id' => $folder['id'], 'entities' => $currentContentFolder ? $currentContentFolder['id'] : '', 'textarea' => $textarea, 'input' => $input)) ?>">
     		                            <i class="icon-<?php echo $folder['icon'] ?>"></i>
     		                            <?php echo htmlspecialchars($folder['name']) ?>
     		                        </a>
@@ -78,13 +78,13 @@
 									<?php if ($currentContentFolder && $currentContentFolder['id'] == $folder['id']): ?>
 									<a style="float: right;" 
 									   title="Retirer le filtre" 
-									   href="<?php echo $view['router']->generate('zco_file_folder', array(
+									   href="<?php echo $view['router']->path('zco_file_folder', array(
 											'id' => $currentFolder ? $currentFolder['id'] : FileTable::FOLDER_ALL, 
 											'textarea' => $textarea, 
 											'input' => $input,
 										)) ?>"><i class="icon-remove"></i></a>
 									<?php endif ?>
-    		                        <a href="<?php echo $view['router']->generate('zco_file_folder', array(
+    		                        <a href="<?php echo $view['router']->path('zco_file_folder', array(
 										'id' => $currentFolder ? $currentFolder['id'] : FileTable::FOLDER_ALL, 
 										'entities' => $folder['id'], 
 										'textarea' => $textarea, 
@@ -158,7 +158,7 @@
 		    <script type="text/javascript" src="<?php echo $assetUrl ?>"></script>
 		<?php endforeach ?>
 		<script type="text/javascript" src="/bundles/fosjsrouting/js/router.js"></script>
-        <script type="text/javascript" src="<?php echo $view['router']->generate('fos_js_routing_js', array('callback' => 'fos.Router.setData')) ?>"></script>
+        <script type="text/javascript" src="<?php echo $view['router']->path('fos_js_routing_js', array('callback' => 'fos.Router.setData')) ?>"></script>
 		
 		<?php echo $view['javelin']->renderHTMLFooter() ?>
 	</body>

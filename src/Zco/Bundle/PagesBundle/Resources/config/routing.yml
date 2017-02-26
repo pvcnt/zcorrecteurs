@@ -1,0 +1,69 @@
+zco_home:
+  pattern:   /
+  defaults:  { _controller: ZcoPagesBundle:Home:index }
+
+zco_home_config:
+  pattern:   /admin/accueil
+  defaults:  { _controller: ZcoPagesBundle:Home:config }
+
+zco_about_index:
+  pattern:   /apropos
+  defaults:  { _controller: ZcoPagesBundle:About:index }
+
+zco_about_banners:
+  pattern:   /apropos/bannieres
+  defaults:  { _controller: ZcoPagesBundle:About:banners }
+
+zco_about_team:
+  pattern:   /apropos/equipe
+  defaults:  { _controller: ZcoPagesBundle:About:team }
+
+zco_about_corrigraphie:
+  pattern:   /apropos/association-corrigraphie
+  defaults:  { _controller: ZcoPagesBundle:About:corrigraphie }
+
+zco_about_opensource:
+  pattern:   /apropos/logiciel-libre
+  defaults:  { _controller: ZcoPagesBundle:About:openSource }
+
+zco_about_contact:
+  pattern:   /apropos/contact
+  defaults:  { _controller: ZcoPagesBundle:About:contact }
+
+zco_donate_index:
+  pattern:  /dons
+  defaults:  { _controller: ZcoPagesBundle:Donate:index }
+
+zco_donate_otherWays:
+  pattern:  /dons/cheque-ou-virement
+  defaults:  { _controller: ZcoPagesBundle:Donate:otherWays }
+
+zco_donate_fiscalDeduction:
+  pattern:  /dons/deduction-fiscale
+  defaults:  { _controller: ZcoPagesBundle:Donate:fiscalDeduction }
+
+zco_donate_thanks:
+  pattern:  /dons/merci
+  defaults:  { _controller: ZcoPagesBundle:Donate:thanks }
+
+zco_legal_mentions:
+  pattern:   /legal/mentions
+  defaults:  { _controller: ZcoPagesBundle:Legal:mentions }
+
+zco_legal_privacy:
+  pattern:   /legal/confidentialite
+  defaults:  { _controller: ZcoPagesBundle:Legal:privacy }
+
+zco_legal_rules:
+  pattern:   /legal/reglement
+  defaults:  { _controller: ZcoPagesBundle:Legal:rules }
+
+zco_error:
+  pattern:   /_erreur/{code}
+  requirements:
+    code: \d+
+  defaults:  { _controller: ZcoPagesBundle:Error:index }
+
+zco_sitemap:
+  pattern:   /sitemap.xml
+  defaults:  { _controller: ZcoPagesBundle:Sitemap:index }

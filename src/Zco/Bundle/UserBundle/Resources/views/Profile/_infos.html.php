@@ -30,7 +30,7 @@
 							<td>
 								<?php if ($query->getStatus() != CH_PSEUDO_ATTENTE): ?>
 								<?php if ($query->getAdmin()): ?>
-									<a href="<?php echo $view['router']->generate('zco_user_profile', array('id' => $query->getAdminId(), 'slug' => rewrite($query->getAdmin()->getUsername()))) ?>">
+									<a href="<?php echo $view['router']->path('zco_user_profile', array('id' => $query->getAdminId(), 'slug' => rewrite($query->getAdmin()->getUsername()))) ?>">
 										<?php echo htmlspecialchars($query->getAdmin()->getUsername()) ?>
 									</a>
 								<?php else: ?>
@@ -85,7 +85,7 @@
 						<tr>
 							<td>
 								<?php if ($warning->getAdmin()): ?>
-								<a href="<?php echo $view['router']->generate('zco_user_profile', array('id' => $warning->getAdminId(), 'slug' => rewrite($warning->getAdmin()->getUsername()))) ?>">
+								<a href="<?php echo $view['router']->path('zco_user_profile', array('id' => $warning->getAdminId(), 'slug' => rewrite($warning->getAdmin()->getUsername()))) ?>">
 									<?php echo htmlspecialchars($warning->getAdmin()->getUsername()) ?>
 								</a>
 								<?php else: ?>
@@ -147,7 +147,7 @@
 						<tr>
 							<td>
 								<?php if ($punishment->getAdmin()): ?>
-								<a href="<?php echo $view['router']->generate('zco_user_profile', array('id' => $punishment->getAdminId(), 'slug' => rewrite($punishment->getAdmin()->getUsername()))) ?>">
+								<a href="<?php echo $view['router']->path('zco_user_profile', array('id' => $punishment->getAdminId(), 'slug' => rewrite($punishment->getAdmin()->getUsername()))) ?>">
 									<?php echo htmlspecialchars($punishment->getAdmin()->getUsername()) ?>
 								</a>
 								<?php else: ?>
@@ -180,7 +180,7 @@
 							<?php if (verifier('sanctionner')): ?>
 							<td class="center">
 								<?php if (!$punishment->isFinished()): ?>
-									<a href="<?php echo $view['router']->generate('zco_user_admin_cancelPunishment', array('id' => $punishment->getId())) ?>" title="Arrêter la sanction">
+									<a href="<?php echo $view['router']->path('zco_user_admin_cancelPunishment', array('id' => $punishment->getId())) ?>" title="Arrêter la sanction">
 										<img src="/img/misc/delete.png" alt="Arrêter" />
 									</a>
 								<?php else: ?>

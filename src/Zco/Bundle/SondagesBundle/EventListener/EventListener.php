@@ -21,8 +21,8 @@
 
 namespace Zco\Bundle\SondagesBundle\EventListener;
 
-use Zco\Bundle\InformationsBundle\Event\FilterSitemapEvent;
-use Zco\Bundle\InformationsBundle\InformationsEvents;
+use Zco\Bundle\PagesBundle\Event\FilterSitemapEvent;
+use Zco\Bundle\PagesBundle\PagesEvents;
 use Zco\Bundle\AdminBundle\AdminEvents;
 use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -41,7 +41,7 @@ class EventListener implements EventSubscriberInterface
 	{
 		return array(
 			AdminEvents::MENU => 'onFilterAdmin',
-			InformationsEvents::SITEMAP => 'onFilterSitemap',
+			PagesEvents::SITEMAP => 'onFilterSitemap',
 		);
 	}
 

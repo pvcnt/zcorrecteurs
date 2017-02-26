@@ -16,12 +16,12 @@
 
 <p class="bold center">
 	<?php if (!$showAnonymousUsers): ?>
-	<a href="<?php echo $view['router']->generate('zco_user_online_all') ?>">
+	<a href="<?php echo $view['router']->path('zco_user_online_all') ?>">
 		Montrer tous les connectés, y compris les visiteurs 
 		(<?php echo $anonymousUsers ?> de plus)
 	</a>
 	<?php else: ?>
-	<a href="<?php echo $view['router']->generate('zco_user_online') ?>">
+	<a href="<?php echo $view['router']->path('zco_user_online') ?>">
 		Ne montrer que les membres
 	</a>
 	<?php endif; ?>
@@ -47,7 +47,7 @@
 				<td class="avatar">
 					<?php if ($user->isAuthenticated()): ?>
 					<div class="avatar">
-						<a href="<?php echo $view['router']->generate('zco_user_profile', array('id' => $user->getUser()->getId(), 'slug' => rewrite($user->getUser()->getUsername()))) ?>">
+						<a href="<?php echo $view['router']->path('zco_user_profile', array('id' => $user->getUser()->getId(), 'slug' => rewrite($user->getUser()->getUsername()))) ?>">
 							<img src="<?php echo htmlspecialchars($user->getUser()->getAvatar()) ?>" 
 								alt="Avatar de <?php echo htmlspecialchars($user->getUser()->getUsername()) ?>" />
 						</a>
@@ -56,7 +56,7 @@
 				</td>
 				<td class="center">
 					<?php if ($user->isAuthenticated() && $user->getUser()->getId()): ?>
-					<a href="<?php echo $view['router']->generate('zco_user_profile', array('id' => $user->getUser()->getId(), 'slug' => rewrite($user->getUser()->getUsername()))) ?>" 
+					<a href="<?php echo $view['router']->path('zco_user_profile', array('id' => $user->getUser()->getId(), 'slug' => rewrite($user->getUser()->getUsername()))) ?>"
 						style="color: <?php echo htmlspecialchars($user->getUser()->Groupe['class']) ?>;" 
 						title="Groupe : <?php echo htmlspecialchars($user->getUser()->Groupe['nom']) ?>">
 						<?php echo htmlspecialchars($user->getUser()->getUsername()) ?>

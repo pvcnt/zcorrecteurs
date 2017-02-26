@@ -1,7 +1,7 @@
 <?php if ($own): ?>
 <div style="margin-top: 5px;">
 	<a class="btn btn-success" 
-	   href="<?php echo $view['router']->generate('zco_options_index') ?>" 
+	   href="<?php echo $view['router']->path('zco_options_index') ?>"
 	   style="display: inline-block; width: 196px;"
 	>
 		<i class="icon-cog icon-white"></i> 
@@ -100,35 +100,35 @@
 		<?php endif ?>
 		<?php if (verifier('options_editer_profils')): ?>
 		<li>
-			<a href="<?php echo $view['router']->generate('zco_options_profile', array('id' => $user->getId())) ?>">
+			<a href="<?php echo $view['router']->path('zco_options_profile', array('id' => $user->getId())) ?>">
 				Modifier ses paramètres
 			</a>
 		</li>
 		<?php endif ?>
 		<?php if (verifier('membres_editer_titre')): ?>
 	    <li>
-	    	<a href="<?php echo $view['router']->generate('zco_user_editTitle', array('id' => $user->getId())) ?>">
+	    	<a href="<?php echo $view['router']->path('zco_user_editTitle', array('id' => $user->getId())) ?>">
 	    		Modifier son titre
 	    	</a>
 	    </li>
 		<?php endif ?>
         <?php if (verifier('membres_avertir')): ?>
         <li>
-            <a href="<?php echo $view['router']->generate('zco_user_admin_warn', array('id' => $user->getId())) ?>">
+            <a href="<?php echo $view['router']->path('zco_user_admin_warn', array('id' => $user->getId())) ?>">
                 Ajouter un avertissement
             </a>
         </li>
         <?php endif ?>
         <?php if (verifier('sanctionner')): ?>
         <li>
-            <a href="<?php echo $view['router']->generate('zco_user_admin_punish', array('id' => $user->getId())) ?>">
+            <a href="<?php echo $view['router']->path('zco_user_admin_punish', array('id' => $user->getId())) ?>">
                 Sanctionner
             </a>
         </li>
         <?php endif ?>
         <?php if (verifier('suppr_comptes')): ?>
         <li>
-            <a href="<?php echo $view['router']->generate('zco_user_admin_deleteAccount', array('id' => $user->getId())) ?>">
+            <a href="<?php echo $view['router']->path('zco_user_admin_deleteAccount', array('id' => $user->getId())) ?>">
                 Supprimer le compte
             </a>
         </li>

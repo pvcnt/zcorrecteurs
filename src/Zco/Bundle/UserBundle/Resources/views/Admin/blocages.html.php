@@ -18,7 +18,7 @@
             <?php foreach ($blocages as $blocage): ?>
                 <tr>
                     <td>
-                        <a href="<?php echo $view['router']->generate('zco_user_profile', array('id'   => $blocage->Utilisateur->getId(), 'slug' => rewrite($blocage->Utilisateur->getUsername()))) ?>" style="color: <?php echo htmlspecialchars($blocage->Utilisateur->getGroup()->getCssClass()) ?>">
+                        <a href="<?php echo $view['router']->path('zco_user_profile', array('id'   => $blocage->Utilisateur->getId(), 'slug' => rewrite($blocage->Utilisateur->getUsername()))) ?>" style="color: <?php echo htmlspecialchars($blocage->Utilisateur->getGroup()->getCssClass()) ?>">
                             <?php echo htmlspecialchars($t->Utilisateur->getUsername()) ?>
                         </a>
                     </td>

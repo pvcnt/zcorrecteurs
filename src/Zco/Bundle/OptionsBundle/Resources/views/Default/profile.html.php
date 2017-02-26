@@ -13,14 +13,14 @@
 
 <div class="alert alert-info">
 	<strong>Note :</strong> pour changer votre pseudonyme sur ce site, vous devez
-	<a href="<?php echo $view['router']->generate('zco_user_newPseudo') ?>">procéder à une demande de changement de pseudo</a>.
+	<a href="<?php echo $view['router']->path('zco_user_newPseudo') ?>">procéder à une demande de changement de pseudo</a>.
 </div>
 <?php else: ?>
 <h1>Modifier le profil de <?php echo htmlspecialchars($user->getUsername()) ?></h1>
 
 <div class="alert alert-error">
 	Vous êtes en train de modifier le profil de 
-	<a href="<?php echo $view['router']->generate('zco_user_profile', array('id' => $user->getId(), 'slug' => rewrite($user->getUsername()))) ?>"><?php echo htmlspecialchars($user->getUsername()) ?></a>.
+	<a href="<?php echo $view['router']->path('zco_user_profile', array('id' => $user->getId(), 'slug' => rewrite($user->getUsername()))) ?>"><?php echo htmlspecialchars($user->getUsername()) ?></a>.
 	Assurez-vous de ne pas renseigner d'information personnelle contre le gré du membre.
 </div>
 <?php endif ?>

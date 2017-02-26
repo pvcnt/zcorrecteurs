@@ -23,10 +23,10 @@
 FileETag none
 
 # Pages d'erreurs
-ErrorDocument 401 /informations/erreur.html?erreur=403
-ErrorDocument 403 /informations/erreur.html?erreur=403
-ErrorDocument 404 /informations/erreur.html?erreur=404
-ErrorDocument 500 /informations/erreur.html?erreur=500
+ErrorDocument 401 /_erreur/403
+ErrorDocument 403 /_erreur/403
+ErrorDocument 404 /_erreur/404
+ErrorDocument 500 /_erreur/500
 
 # Démarrage de l'URL Rewriting
 RewriteEngine on
@@ -50,8 +50,6 @@ RewriteRule ^equipe\.html /apropos/equipe [R=301,L]
 RewriteRule ^membres\.html /membres/ [R=301,L]
 RewriteRule ^uploads/?$ /fichiers/ [R=301,L]
 RewriteRule ^membres/connectes.html$ /membres/connectes [R=301,L]
-RewriteRule ^engagements\.html$ /aide/page-17-nos-engagements.html [R=301,L]
-RewriteRule ^historique\.html$ /aide/page-14-historique-rapide.html [R=301,L]
 RewriteRule ^profil-([0-9]+)\.html$ /membres/$1/inconnu [L,R=301]
 RewriteRule ^membres/profil-([0-9]+)\.html$ /membres/$1/inconnu [L,R=301]
 RewriteRule ^membres/profil-([0-9]+)-([a-zA-Z0-9-]+)\.html$ /membres/$1/$2 [L,R=301]
@@ -60,7 +58,6 @@ RewriteRule ^css/img/zcode/smilies/([a-z_]+\.png)$ /bundles/zcocore/img/zcode/sm
 
 RewriteRule ^(blog|informations)/fil-rss(?:-([0-9]+))?\.html$ /$1/flux-$2.html [L,R=301]
 RewriteRule ^forum/messages-rss(?:-([0-9]+))?\.html$ /forum/message-flux-$2.html [L,R=301]
-RewriteRule ^informations/flux\.html$ /informations/flux.xml [L,R=301]
 RewriteRule ^favicon\.ico$ favicon.png [L,R=301]
 RewriteRule ^publicite/signature\.html$ ext/signature.php [L,R=301]
 RewriteRule ^ext/signature\.png$ ext/signature.php [L]
@@ -71,14 +68,8 @@ RewriteRule ^zeditor.html$ http://www.siteduzero.com/tutoriel-3-61374-guide-d-ut
 
 # Règles spécifiques
 RewriteRule ^index\.html$ / [R=301,L]
-RewriteRule ^accueil/index\.html$ / [L,R=301]
-
-# Canonisation des adresses
-RewriteRule ^([a-zA-Z]+)$ /$1/ [R=301,L]
-RewriteRule ^(.*)-\.html$ $1.html [L,R=301]
 
 # Règles de routage principales
-RewriteRule ^$ index.php?page=accueil [QSA,L]
 RewriteRule ^([a-zA-Z]+)/(index\.html)?$ index.php?page=$1&index=$2 [QSA,L]
 RewriteRule ^([a-zA-Z-]+)/([a-zA-Z-]+)(?:-([0-9]+))?(?:-([0-9]+))?(?:-p([0-9]+))?(?:-([a-zA-Z0-9-]*))?\.html$ index.php?page=$1&act=$2&id=$3&id2=$4&p=$5&titre=$6 [QSA,L]
 

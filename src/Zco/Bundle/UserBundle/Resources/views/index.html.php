@@ -33,13 +33,13 @@
 		<?php foreach ($users as $user): ?>
 		<tr>
 			<td class="avatar">
-				<a href="<?php echo $view['router']->generate('zco_user_profile', array('id' => $user->getId(), 'slug' => rewrite($user->getUsername()))) ?>">
+				<a href="<?php echo $view['router']->path('zco_user_profile', array('id' => $user->getId(), 'slug' => rewrite($user->getUsername()))) ?>">
 					<img src="<?php echo htmlspecialchars($user->getAvatar()) ?>" 
 						 alt="Avatar de <?php echo htmlspecialchars($user->getUsername()) ?>" />
 				</a>
 			</td>
 			<td>
-				<a href="<?php echo $view['router']->generate('zco_user_profile', array('id' => $user->getId(), 'slug' => rewrite($user->getUsername()))) ?>" 
+				<a href="<?php echo $view['router']->path('zco_user_profile', array('id' => $user->getId(), 'slug' => rewrite($user->getUsername()))) ?>"
 					style="color: <?php echo $user->getGroup()->getCssClass() ?>;">
 					<?php echo htmlspecialchars($user->getUsername()) ?>
 				</a>
@@ -64,7 +64,7 @@
 
 <?php echo $view['knp_pagination']->render($users) ?>
 
-<form method="get" action="<?php echo $view['router']->generate('zco_user_index') ?>" class="form-horizontal">
+<form method="get" action="<?php echo $view['router']->path('zco_user_index') ?>" class="form-horizontal">
 	<fieldset>
 		<legend id="filtres">Filtres</legend>
 		<div class="control-group">
@@ -91,7 +91,7 @@
 					value="<?php echo htmlspecialchars($pseudo) ?>" />
 				<?php $view['javelin']->initBehavior('autocomplete', array(
 				    'id' => 'pseudo', 
-				    'callback' => $view['router']->generate('zco_user_api_searchUsername'),
+				    'callback' => $view['router']->path('zco_user_api_searchUsername'),
 				)) ?>
 			</div>
 		</div>
@@ -157,7 +157,7 @@
 
 		<div class="form-actions">
 			<input type="submit" class="btn btn-primary" value="Envoyer" />
-			<a href="<?php echo $view['router']->generate('zco_user_index') ?>" class="btn">
+			<a href="<?php echo $view['router']->path('zco_user_index') ?>" class="btn">
 				Effacer les filtres
 			</a>
 		</div>

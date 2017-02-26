@@ -40,7 +40,7 @@
 					</a>
 				</div>
 				<div id="file-accordion-image-thumb" class="accordion-body collapse">
-					<form id="file-form" class="accordion-inner" method="post" action="<?php echo $view['router']->generate('zco_file_api_edit', array('id' => $file['id'])) ?>">
+					<form id="file-form" class="accordion-inner" method="post" action="<?php echo $view['router']->path('zco_file_api_edit', array('id' => $file['id'])) ?>">
 						<label for="nom">Nom</label>
 						<input type="text" value="<?php echo htmlspecialchars($file['name']) ?>" />
 						

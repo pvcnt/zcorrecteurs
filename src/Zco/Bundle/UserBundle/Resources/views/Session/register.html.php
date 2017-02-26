@@ -12,14 +12,10 @@
 	de vous réinscrire.</p>
 <p>
 	En cas de problème quelconque, vous pouvez 
-	<a href="<?php echo $view['router']->generate('zco_about_contact', array('objet' => 'Inscription')) ?>">nous joindre</a>.
-	<a href="/aide/page-1-inscription.html">
-		<img src="/img/misc/aide.png" alt="" />
-		Plus d’informations sur l’inscription.
-	</a>
+	<a href="<?php echo $view['router']->path('zco_about_contact', array('objet' => 'Inscription')) ?>">nous joindre</a>.
 </p>
 
-<form method="post" action="<?php echo $view['router']->generate('zco_user_session_register') ?>" class="form-horizontal" <?php echo $view['form']->enctype($form) ?>>
+<form method="post" action="<?php echo $view['router']->path('zco_user_session_register') ?>" class="form-horizontal" <?php echo $view['form']->enctype($form) ?>>
 	<div class="row-fluid">
 		<div class="span6">
 			<fieldset>
@@ -49,7 +45,7 @@
 	<p class="good">
 		Vous disposez d’un droit d’accès, de modification, de rectification et 
 		de suppression sur vos données conformément à la loi.
-		<a href="/aide/page-19-mentions-legales.html">En savoir plus.</a>
+		<a href="<?php echo $view['router']->url('zco_legal_mentions') ?>">En savoir plus.</a>
 	</p>
 	
 	<div class="form-actions">
@@ -61,5 +57,5 @@
 	'id'        => $form['username']->vars['id'],
 	'result_id' => 'username-available',
 	'postVar'   => 'pseudo',
-	'callback'  => $view['router']->generate('zco_user_api_validateUsername'),
+	'callback'  => $view['router']->path('zco_user_api_validateUsername'),
 )) ?>

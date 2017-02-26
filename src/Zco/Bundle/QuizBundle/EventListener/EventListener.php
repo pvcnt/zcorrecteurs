@@ -27,8 +27,8 @@ use Zco\Bundle\AdminBundle\AdminEvents;
 use Zco\Bundle\CoreBundle\CoreEvents;
 use Zco\Bundle\CoreBundle\Event\CronEvent;
 use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
-use Zco\Bundle\InformationsBundle\Event\FilterSitemapEvent;
-use Zco\Bundle\InformationsBundle\InformationsEvents;
+use Zco\Bundle\PagesBundle\Event\FilterSitemapEvent;
+use Zco\Bundle\PagesBundle\PagesEvents;
 
 /**
  * Observateur principal pour le module de quiz.
@@ -47,7 +47,7 @@ class EventListener implements EventSubscriberInterface
 		return array(
 			'zco_core.filter_menu.speedbarre' => 'onFilterSpeedbarre',
 			AdminEvents::MENU                 => 'onFilterAdmin',
-			InformationsEvents::SITEMAP       => 'onFilterSitemap',
+			PagesEvents::SITEMAP       => 'onFilterSitemap',
 			CoreEvents::DAILY_CRON            => 'onDailyCron',
 		);
 	}

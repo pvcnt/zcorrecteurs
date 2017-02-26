@@ -20,7 +20,7 @@
 		
 		<?php $view['javelin']->initBehavior('autocomplete', array(
 		    'id' => 'pseudo', 
-		    'callback' => $view['router']->generate('zco_user_api_searchUsername'),
+		    'callback' => $view['router']->path('zco_user_api_searchUsername'),
 		)) ?>
 		
 		<br />

@@ -25,8 +25,8 @@ use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zco\Bundle\AdminBundle\AdminEvents;
 use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
-use Zco\Bundle\InformationsBundle\Event\FilterSitemapEvent;
-use Zco\Bundle\InformationsBundle\InformationsEvents;
+use Zco\Bundle\PagesBundle\Event\FilterSitemapEvent;
+use Zco\Bundle\PagesBundle\PagesEvents;
 
 /**
  * Observateur principal pour le module de recrutement.
@@ -45,7 +45,7 @@ class EventListener implements EventSubscriberInterface
 		return array(
 			'zco_core.filter_menu.left_menu' => 'onFilterLeftMenu',
 			AdminEvents::MENU => 'onFilterAdmin',
-			InformationsEvents::SITEMAP => 'onFilterSitemap',
+			PagesEvents::SITEMAP => 'onFilterSitemap',
 		);
 	}
 	

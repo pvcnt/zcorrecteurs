@@ -18,7 +18,7 @@
 		<?php foreach ($users as $user): ?>
 		<tr>
 			<td>
-				<a href="<?php echo $view['router']->generate('zco_user_profile', array('id' => $user->getId(), 'slug' => rewrite($user->getUsername()))) ?>">
+				<a href="<?php echo $view['router']->path('zco_user_profile', array('id' => $user->getId(), 'slug' => rewrite($user->getUsername()))) ?>">
 					<?php echo htmlspecialchars($user->getUsername()) ?>
 				</a>
 			</td>
@@ -26,7 +26,7 @@
 				<?php echo dateformat($user->getRegistrationDate()) ?>
 			</td>
 			<td class="center">
-				<a href="<?php echo $view['router']->generate('zco_user_admin_validateAccount', array('id' => $user->getId())) ?>">
+				<a href="<?php echo $view['router']->path('zco_user_admin_validateAccount', array('id' => $user->getId())) ?>">
 					<img src="/pix.gif" class="fff tick" alt="Valider" />
 				</a>
 			</td>

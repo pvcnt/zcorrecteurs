@@ -1,0 +1,5 @@
+zco_parser_api_parse:
+  pattern:   /api/parse
+  options:   { expose: true }
+  defaults:  { _controller: ZcoParserBundle:Default:parse }
+  methods:   [POST]

@@ -33,7 +33,7 @@ class IndexAction extends DicteesActions
 		Page::$titre = 'Accueil des dictées';
 		fil_ariane(Page::$titre);
 		$this->get('zco_vitesse.resource_manager')->requireResources(array(
-		    '@ZcoAccueilBundle/Resources/public/css/home.css',
+		    '@ZcoPagesBundle/Resources/public/css/home.css',
 		    '@ZcoDicteesBundle/Resources/public/css/dictees.css',
 		));
 

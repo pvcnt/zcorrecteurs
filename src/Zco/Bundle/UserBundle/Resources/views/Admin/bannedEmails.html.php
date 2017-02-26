@@ -8,7 +8,7 @@
 </p>
 
 <p class="bold center">
-	<a href="<?php echo $view['router']->generate('zco_user_admin_newBannedEmail') ?>">
+	<a href="<?php echo $view['router']->path('zco_user_admin_newBannedEmail') ?>">
 		Bannir une nouvelle plage d'adresses
 	</a>
 </p>
@@ -34,13 +34,13 @@
 		<tr>
 			<td><?php echo htmlspecialchars($email->getEmail()) ?></td>
 			<td>
-				<a href="<?php echo $view['router']->generate('zco_user_profile', array('id' => $email->getUser()->getId(), 'slug' => rewrite($email->getUser()->getUsername()))) ?>">
+				<a href="<?php echo $view['router']->path('zco_user_profile', array('id' => $email->getUser()->getId(), 'slug' => rewrite($email->getUser()->getUsername()))) ?>">
 					<?php echo $email->getUser()->getUsername() ?>
 				</a>
 			</td>
 			<td><?php echo $view['messages']->parse($email->getReason()) ?></td>
 			<td class="center">
-				<a href="<?php echo $view['router']->generate('zco_user_admin_deleteBannedEmail', array('id' => $email->getId())) ?>">
+				<a href="<?php echo $view['router']->path('zco_user_admin_deleteBannedEmail', array('id' => $email->getId())) ?>">
 					<img src="/img/supprimer.png" alt="Débannir" title="Débannir cette plage d'adresses mail" />
 				</a>
 			</td>

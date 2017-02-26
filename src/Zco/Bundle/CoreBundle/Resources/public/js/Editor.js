@@ -248,7 +248,7 @@ var Editor = new Class({
 			e.preventDefault();
 			var xhr = new Request({
 				method: 'post',
-				url: '/informations/ajax-parse-zcode.html',
+				url: Routing.generate('zco_parser_api_parse'),
 				onSuccess: function(text)
 				{
 					previewArea.removeClass('zform-invisible');
@@ -277,7 +277,7 @@ var Editor = new Class({
 		var content = textarea.value;
 		var xhr = new Request({
 			method: 'post', 
-			url: '/informations/ajax-save-zform.html', 
+			url: Routing.generate('zco_user_api_saveZform'),
 			onSuccess: function(text, xml){
 				this._lastBackup = content;
 				textarea.highlight('#b3ffb3');

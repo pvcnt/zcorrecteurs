@@ -33,64 +33,71 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
  */
 class ApiController extends Controller
 {
-	/**
-	 * Recherche un nom d'utilisateur commençant par une chaîne de caractères 
-	 * donnée.
-	 *
-	 * @param  Request $request
-	 * @return Response
-	 */
-	public function searchUsernameAction(Request $request)
-	{
-		if (!$request->request->has('pseudo'))
-		{
-			return new Response('ERREUR');
-		}
-		
-		$users = \Doctrine_Core::getTable('Utilisateur')->query(array(
-			'pseudo'        => $request->request->get('pseudo'),
-			'#pseudo_like' => \UtilisateurTable::LIKE_BEGIN,
-		), \Doctrine_Core::HYDRATE_ARRAY);
-		$retval = array();
-		
-		foreach ($users as $user)
-		{
-			$retval[] = htmlspecialchars($user['pseudo']);
-		}
+    /**
+     * Recherche un nom d'utilisateur commençant par une chaîne de caractères
+     * donnée.
+     *
+     * @param  Request $request
+     * @return Response
+     */
+    public function searchUsernameAction(Request $request)
+    {
+        if (!$request->request->has('pseudo')) {
+            return new Response('ERREUR');
+        }
 
-		$response = new Response;
-		$response->headers->set('Content-type', 'application/json');
-		$response->setContent(json_encode($retval));
-		
-		return $response;
-	}
+        $users = \Doctrine_Core::getTable('Utilisateur')->query(array(
+            'pseudo' => $request->request->get('pseudo'),
+            '#pseudo_like' => \UtilisateurTable::LIKE_BEGIN,
+        ), \Doctrine_Core::HYDRATE_ARRAY);
+        $retval = array();
 
-	/**
-	 * Vérifie la validité d'un nom d'utilisateur donné.
-	 *
-	 * @param  Request $request
-	 * @return Response
-	 */
-	public function validateUsernameAction(Request $request)
-	{
-		if (!$request->request->has('pseudo'))
-		{
-			$retval = array('status' => 'ERROR');
-		}
-		else
-		{
-			try
-			{
-				$this->get('zco_user.user')->validateUserName($request->request->get('pseudo'));
-				$retval = array('result' => 'OK', 'message' => 'Le pseudo demandé est disponible.');
-			}
-			catch (ValueException $e)
-			{
-				$retval = array('result' => 'ERROR', 'message' => ($e->getMessage() ?: 'Le pseudo demandé est invalide.'));
-			}
-			$retval['status'] = 'OK';
-		}
-		
-		return new Response(json_encode($retval));
-	}
+        foreach ($users as $user) {
+            $retval[] = htmlspecialchars($user['pseudo']);
+        }
+
+        $response = new Response;
+        $response->headers->set('Content-type', 'application/json');
+        $response->setContent(json_encode($retval));
+
+        return $response;
+    }
+
+    /**
+     * Vérifie la validité d'un nom d'utilisateur donné.
+     *
+     * @param  Request $request
+     * @return Response
+     */
+    public function validateUsernameAction(Request $request)
+    {
+        if (!$request->request->has('pseudo')) {
+            $retval = array('status' => 'ERROR');
+        } else {
+            try {
+                $this->get('zco_user.user')->validateUserName($request->request->get('pseudo'));
+                $retval = array('result' => 'OK', 'message' => 'Le pseudo demandé est disponible.');
+            } catch (ValueException $e) {
+                $retval = array('result' => 'ERROR', 'message' => ($e->getMessage() ?: 'Le pseudo demandé est invalide.'));
+            }
+            $retval['status'] = 'OK';
+        }
+
+        return new Response(json_encode($retval));
+    }
+
+    public function saveZformAction(Request $request)
+    {
+        if (!verifier('connecte')) {
+            return new Response('ERROR');
+        }
+
+        $backup = new \ZformBackup();
+        $backup->setUrl($request->request->get('url'));
+        $backup->setUserId($_SESSION['id']);
+        $backup->setContent($request->request->get('texte'));
+        $backup->save();
+
+        return new Response('OK');
+    }
 }

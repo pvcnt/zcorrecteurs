@@ -2,17 +2,17 @@ zco_file_api_save:
     pattern:   /sauvegarder/{id}
     defaults:  { _controller: ZcoFileBundle:Api:save, _format: json }
     options:   { expose: true }
+    methods:   [POST]
     requirements:
         id: \d+
-        _method: post
 
 zco_file_api_edit:
     pattern:   /modifier/{id}
     defaults:  { _controller: ZcoFileBundle:Api:edit, _format: json }
     options:   { expose: true }
+    methods:   [POST]
     requirements:
         id: \d+
-        _method: post
 
 zco_file_api_delete:
     pattern:   /supprimer/{id}
@@ -25,16 +25,15 @@ zco_file_api_search:
     pattern:   /recherche/{folder}/{entities}
     defaults:  { _controller: ZcoFileBundle:Api:search, _format: json, entities: '' }
     options:   { expose: true }
+    methods:   [POST]
     requirements:
-        _method: post
         folder: \d+
 
 zco_file_api_search_commons:
     pattern:   /recherche/commons
     defaults:  { _controller: ZcoFileBundle:Api:searchCommons, _format: json }
     options:   { expose: true }
-    requirements:
-        _method: post
+    methods:   [POST]
 
 zco_file_api_usage:
     pattern:   /usage

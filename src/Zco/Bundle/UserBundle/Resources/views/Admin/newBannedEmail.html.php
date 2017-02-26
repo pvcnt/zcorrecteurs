@@ -10,7 +10,7 @@
 	<em>zcorrecteurs.fr</em>, <em>zcorrecteurs.net</em>, <em>zcorrecteurs.org</em>, etc.
 </p>
 
-<form method="post" action="<?php echo $view['router']->generate('zco_user_admin_newBannedEmail') ?>" class="form-horizontal">
+<form method="post" action="<?php echo $view['router']->path('zco_user_admin_newBannedEmail') ?>" class="form-horizontal">
 	<?php echo $view['form']->errors($form) ?>
 	<?php echo $view['form']->row($form['email']) ?>
 	<?php echo $view['form']->row($form['reason']) ?>

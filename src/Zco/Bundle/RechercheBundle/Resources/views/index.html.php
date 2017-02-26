@@ -8,11 +8,6 @@
 	parmi les sujets du forum, les billets publiés sur notre blog ou les <em>tweets</em>.
 </p>
 
-<p><a href="/aide/page-8-recherche.html">
-    <img src="/img/misc/aide.png" alt="" />
-    Plus d'informations sur la recherche.
-</a></p>
-
 <form method="get" action="index.html">
 	<fieldset style="width: 45%; float: right;">
 		<legend class="vertf">Champs facultatifs</legend>
@@ -36,7 +31,7 @@
 			
     		<?php $view['javelin']->initBehavior('autocomplete', array(
     		    'id' => 'auteur', 
-    		    'callback' => $view['router']->generate('zco_user_api_searchUsername'),
+    		    'callback' => $view['router']->path('zco_user_api_searchUsername'),
     		    'options' => array('postVar' => 'pseudo'),
     		)) ?>
 		</div>

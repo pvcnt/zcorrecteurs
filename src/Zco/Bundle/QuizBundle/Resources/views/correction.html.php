@@ -16,8 +16,8 @@
 <div class="rmq information">
 	Vous n'êtes pas connecté, vous ne pourrez donc pas retrouver l'historique
 	de vos scores. Pour cela, vous pouvez 
-	<a href="<?php echo $view['router']->generate('zco_user_session_login') ?>">vous connecter</a>
-	ou <a href="<?php echo $view['router']->generate('zco_user_session_register') ?>">vous inscrire</a>.
+	<a href="<?php echo $view['router']->path('zco_user_session_login') ?>">vous connecter</a>
+	ou <a href="<?php echo $view['router']->path('zco_user_session_register') ?>">vous inscrire</a>.
 </div>
 <?php } ?>
 

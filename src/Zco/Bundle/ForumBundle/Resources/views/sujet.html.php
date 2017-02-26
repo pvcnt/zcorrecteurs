@@ -350,7 +350,7 @@ if($InfosSujet['sujet_sondage'] > 0)
 				{
 					echo htmlspecialchars($valeur['utilisateur_titre']).'<br />';
 				} if(verifier('membres_avertir')){ ?>
-				<br /><a href="<?php echo $view['router']->generate('zco_user_admin_warn', array('id' => htmlspecialchars($valeur['message_auteur']))) ?>">
+				<br /><a href="<?php echo $view['router']->path('zco_user_admin_warn', array('id' => htmlspecialchars($valeur['message_auteur']))) ?>">
 					Avertir
 				</a> :
 				<a href="/membres/profil-<?php echo $valeur['message_auteur']; ?>-<?php echo rewrite($valeur['auteur_message_pseudo']); ?>.html#avertos"><?php echo $valeur['utilisateur_pourcentage']; ?> %</a>
@@ -358,7 +358,7 @@ if($InfosSujet['sujet_sondage'] > 0)
 				<br /><a href="/membres/profil-<?php echo $valeur['message_auteur']; ?>-<?php echo rewrite($valeur['auteur_message_pseudo']); ?>.html#avertos">Averto(s) : <?php echo $valeur['utilisateur_pourcentage']; ?> %</a>
 
 				<?php } if(verifier('sanctionner')){ ?>
-				<br /><a href="<?php echo $view['router']->generate('zco_user_admin_punish', array('id' => htmlspecialchars($valeur['message_auteur']))) ?>">
+				<br /><a href="<?php echo $view['router']->path('zco_user_admin_punish', array('id' => htmlspecialchars($valeur['message_auteur']))) ?>">
 					Sanctionner
 				</a>
 				(<a href="/membres/profil-<?php echo $valeur['message_auteur']; ?>-<?php echo rewrite($valeur['auteur_message_pseudo']); ?>.html#sanctions"><?php echo $valeur['utilisateur_nb_sanctions']; ?></a>)

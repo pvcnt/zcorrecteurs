@@ -22,8 +22,8 @@
 namespace Zco\Bundle\RechercheBundle\EventListener;
 
 use Zco\Component\Templating\Event\FilterContentEvent;
-use Zco\Bundle\InformationsBundle\Event\FilterSitemapEvent;
-use Zco\Bundle\InformationsBundle\InformationsEvents;
+use Zco\Bundle\PagesBundle\Event\FilterSitemapEvent;
+use Zco\Bundle\PagesBundle\PagesEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class EventListener implements EventSubscriberInterface
@@ -32,7 +32,7 @@ class EventListener implements EventSubscriberInterface
 	{
 		return array(
 			'zco_core.filter_block.speedbarre' => 'onFilterSpeedbarre',
-			InformationsEvents::SITEMAP        => 'onFilterSitemap',
+			PagesEvents::SITEMAP        => 'onFilterSitemap',
 		);
 	}
 	

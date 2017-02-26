@@ -2,7 +2,7 @@
 
 <p>
 	Nous vous informons qu'un administrateur
-	(<a href="<?php echo $view['router']->generate('zco_user_profile', array('id' => $adminId, 'slug' => rewrite($adminPseudo)), true) ?>"><?php echo htmlspecialchars($adminPseudo) ?></a>)
+	(<a href="<?php echo $view['router']->url('zco_user_profile', array('id' => $adminId, 'slug' => rewrite($adminPseudo))) ?>"><?php echo htmlspecialchars($adminPseudo) ?></a>)
 	vous a sanctionné sur le site des zCorrecteurs.
 </p>
 

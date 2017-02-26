@@ -299,8 +299,3 @@ else
 }
 ?>
 </p>
-
-<p><a href="/aide/page-6-messages-prives.html">
-    <img src="/img/misc/aide.png" alt="" />
-    Plus d'informations sur la messagerie privée.
-</a></p>

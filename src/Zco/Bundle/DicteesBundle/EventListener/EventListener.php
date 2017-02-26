@@ -25,8 +25,8 @@ use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zco\Bundle\AdminBundle\AdminEvents;
 use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
-use Zco\Bundle\InformationsBundle\Event\FilterSitemapEvent;
-use Zco\Bundle\InformationsBundle\InformationsEvents;
+use Zco\Bundle\PagesBundle\Event\FilterSitemapEvent;
+use Zco\Bundle\PagesBundle\PagesEvents;
 use Zco\Component\Templating\Event\FilterVariablesEvent;
 use Zco\Component\Templating\TemplatingEvents;
 
@@ -42,7 +42,7 @@ class EventListener implements EventSubscriberInterface
 			'zco_core.filter_menu.left_menu' => 'onFilterLeftMenu',
 			TemplatingEvents::FILTER_VARIABLES => 'onTemplatingFilterVariables',
 			AdminEvents::MENU => 'onFilterAdmin',
-			InformationsEvents::SITEMAP => 'onFilterSitemap',
+			PagesEvents::SITEMAP => 'onFilterSitemap',
 		);
 	}
 		

@@ -6,6 +6,7 @@
 /vendor/
 /bin/
 !/bin/sphinx
+!/bin/phplint.sh
 
 /app/cache/*
 /app/logs/*

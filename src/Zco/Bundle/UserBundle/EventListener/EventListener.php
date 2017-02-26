@@ -29,8 +29,8 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Zco\Bundle\CoreBundle\CoreEvents;
 use Zco\Bundle\CoreBundle\Event\CronEvent;
-use Zco\Bundle\InformationsBundle\Event\FilterSitemapEvent;
-use Zco\Bundle\InformationsBundle\InformationsEvents;
+use Zco\Bundle\PagesBundle\Event\FilterSitemapEvent;
+use Zco\Bundle\PagesBundle\PagesEvents;
 use Zco\Bundle\UserBundle\Event\CheckValueEvent;
 use Zco\Bundle\UserBundle\Exception\LoginException;
 use Zco\Bundle\UserBundle\UserEvents;
@@ -53,7 +53,7 @@ class EventListener implements EventSubscriberInterface
 			KernelEvents::REQUEST    	=> array('onKernelRequest', 127),
 			KernelEvents::CONTROLLER 	=> 'onKernelController',
 			UserEvents::VALIDATE_EMAIL  => 'onValidateEmail',
-			InformationsEvents::SITEMAP => 'onFilterSitemap',
+			PagesEvents::SITEMAP => 'onFilterSitemap',
 			CoreEvents::DAILY_CRON      => 'onDailyCron',
 			CoreEvents::HOURLY_CRON     => 'onHourlyCron',
 		);

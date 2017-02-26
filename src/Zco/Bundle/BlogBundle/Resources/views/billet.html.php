@@ -177,7 +177,7 @@
 
 				<?php if(verifier('sanctionner')){ ?>
 				<br />
-				<a href="<?php echo $view['router']->generate('zco_user_admin_punish', array('id' => htmlspecialchars($valeur['id_auteur']))) ?>">
+				<a href="<?php echo $view['router']->path('zco_user_admin_punish', array('id' => htmlspecialchars($valeur['id_auteur']))) ?>">
 					Sanctionner
 				</a>
 				(<a href="/membres/profil-<?php echo $valeur['id_auteur']; ?>-<?php echo rewrite($valeur['pseudo_auteur']); ?>.html#sanctions"><?php echo $valeur['nb_sanctions_auteur']; ?></a>)
@@ -190,7 +190,7 @@
 
 				<?php if(verifier('membres_avertir')){ ?>
 				<br />
-				<a href="<?php echo $view['router']->generate('zco_user_admin_warn', array('id' => htmlspecialchars($valeur['id_auteur']))) ?>">
+				<a href="<?php echo $view['router']->path('zco_user_admin_warn', array('id' => htmlspecialchars($valeur['id_auteur']))) ?>">
 					Avertir
 				</a> :
 				<a href="/membres/profil-<?php echo $valeur['id_auteur']; ?>-<?php echo rewrite($valeur['pseudo_auteur']); ?>.html#avertos">

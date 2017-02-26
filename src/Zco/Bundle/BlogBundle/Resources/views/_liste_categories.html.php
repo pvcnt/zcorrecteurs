@@ -23,7 +23,7 @@
         <span style="margin-left: 40px;">
             Nous suivre : 
             <a href="/blog/flux.html"><img src="/pix.gif" class="fff feed" alt="" /> flux RSS du blog</a><?php if (isset($categorieId)){ ?>, <a href="/blog/flux-<?php echo $categorieId ?>.html">de cette catégorie</a><?php } ?> | 
-            <a href="<?php echo $view['router']->generate('zco_twitter_index') ?>"><img src="/bundles/zcotwitter/img/bouton.png" alt="" /> Twitter</a> |
+            <a href="<?php echo $view['router']->path('zco_twitter_index') ?>"><img src="/bundles/zcotwitter/img/bouton.png" alt="" /> Twitter</a> |
             <a href="http://www.facebook.com/pages/zCorrecteurs/292782574071649"><img src="/img/facebook.png" alt="" /> Facebook</a>
         </span>
     </form>

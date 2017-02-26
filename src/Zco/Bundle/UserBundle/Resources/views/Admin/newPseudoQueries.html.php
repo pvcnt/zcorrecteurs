@@ -18,7 +18,7 @@
 		<?php foreach ($queries as $query): ?>
 		<tr>
 			<td>
-				<a href="<?php echo $view['router']->generate('zco_user_profile', array('id' => $query->getUserId(), 'slug' => rewrite($query->getUser()->getUsername()))) ?>">
+				<a href="<?php echo $view['router']->path('zco_user_profile', array('id' => $query->getUserId(), 'slug' => rewrite($query->getUser()->getUsername()))) ?>">
 					<?php echo htmlspecialchars($query->getUser()->getUsername()) ?>
 				</a>
 			</td>
@@ -26,7 +26,7 @@
 			<td class="center"><?php echo dateformat($query->getDate()) ?></td>
 			<td><?php echo $view['messages']->parse($query->getReason()) ?></td>
 			<td class="center">
-				<a href="<?php echo $view['router']->generate('zco_user_admin_newPseudoAnswer', array('id' => $query->getId())) ?>">
+				<a href="<?php echo $view['router']->path('zco_user_admin_newPseudoAnswer', array('id' => $query->getId())) ?>">
 					<img src="/bundles/zcoblog/img/valider.png" alt="Valider" /> / 
 					<img src="/img/supprimer.png" alt="Refuser" />
 				</a>

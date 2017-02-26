@@ -99,7 +99,7 @@ if($ListerAlertes)
 			<?php if(verifier('membres_avertir'))
 			{
 			?>
-			<br /><a href="<?php echo $view['router']->generate('zco_user_admin_warn', array('id' => htmlspecialchars($valeur['utilisateur_id']))) ?>">
+			<br /><a href="<?php echo $view['router']->path('zco_user_admin_warn', array('id' => htmlspecialchars($valeur['utilisateur_id']))) ?>">
 				Avertir : <?php echo $valeur['utilisateur_pourcentage']; ?> %
 			</a>
 			<?php
@@ -112,7 +112,7 @@ if($ListerAlertes)
 			if(verifier('sanctionner'))
 			{
 			?>
-			<br /><a href="<?php echo $view['router']->generate('zco_user_admin_punish', array('id' => htmlspecialchars($valeur['utilisateur_id']))) ?>">
+			<br /><a href="<?php echo $view['router']->path('zco_user_admin_punish', array('id' => htmlspecialchars($valeur['utilisateur_id']))) ?>">
 				Sanctionner (<?php echo $valeur['utilisateur_nb_sanctions']; ?>)
 			</a>
 			<?php

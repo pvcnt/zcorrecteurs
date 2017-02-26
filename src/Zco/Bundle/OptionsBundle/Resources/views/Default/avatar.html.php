@@ -15,7 +15,7 @@
 
 <div class="alert alert-error">
 	Vous êtes en train de modifier l’avatar de 
-	<a href="<?php echo $view['router']->generate('zco_user_profile', array('id' => $user->getId(), 'slug' => rewrite($user->getUsername()))) ?>"><?php echo htmlspecialchars($user->getUsername()) ?></a>.
+	<a href="<?php echo $view['router']->path('zco_user_profile', array('id' => $user->getId(), 'slug' => rewrite($user->getUsername()))) ?>"><?php echo htmlspecialchars($user->getUsername()) ?></a>.
 </div>
 <?php endif ?>
 

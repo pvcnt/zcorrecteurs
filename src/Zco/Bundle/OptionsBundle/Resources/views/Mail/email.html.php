@@ -7,8 +7,8 @@
 	place de l'ancienne (<?php echo htmlspecialchars($oldEmail) ?>).</p>
 
 <p>
-	<a href="<?php echo $view['router']->generate('zco_options_validateEmail', array('hash' => $hash), true) ?>">
-		<?php echo $view['router']->generate('zco_options_validateEmail', array('hash' => $hash), true) ?>
+	<a href="<?php echo $view['router']->url('zco_options_validateEmail', array('hash' => $hash)) ?>">
+		<?php echo $view['router']->url('zco_options_validateEmail', array('hash' => $hash)) ?>
 	</a>
 </p>
 

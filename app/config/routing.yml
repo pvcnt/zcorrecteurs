@@ -1,10 +1,11 @@
-zco_about:
-    resource: "@ZcoAboutBundle/Resources/config/routing.yml"
-    prefix:   /apropos
+zco_pages:
+    resource: "@ZcoPagesBundle/Resources/config/routing.yml"
+
+zco_parser:
+    resource: "@ZcoParserBundle/Resources/config/routing.yml"
 
 zco_admin:
     resource: "@ZcoAdminBundle/Resources/config/routing.yml"
-    prefix:   /admin
 
 zco_file:
     resource: "@ZcoFileBundle/Resources/config/routing/index.yml"
@@ -15,12 +16,8 @@ zco_twitter:
 zco_user:
     resource: "@ZcoUserBundle/Resources/config/routing/index.yml"
 
-zco_info:
-    resource: "@ZcoInformationsBundle/Resources/config/routing/index.yml"
-
 zco_options:
     resource: "@ZcoOptionsBundle/Resources/config/routing.yml"
-    prefix:   /options
 
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"

@@ -7,11 +7,11 @@
 <?php if ($user): ?>
 <p>
 	Vous vous apprêtez à sanctionner le membre suivant : 
-	<strong><a href="<?php echo $view['router']->generate('zco_user_profile', array('id' => $user->getId(), 'slug' => rewrite($user->getUsername()))) ?>"><?php echo htmlspecialchars($user->getUsername()) ?></a></strong>.
+	<strong><a href="<?php echo $view['router']->path('zco_user_profile', array('id' => $user->getId(), 'slug' => rewrite($user->getUsername()))) ?>"><?php echo htmlspecialchars($user->getUsername()) ?></a></strong>.
 </p>
 <?php endif ?>
 
-<form method="post" action="<?php echo $view['router']->generate('zco_user_admin_punish', array('id' => $user ? $user->getId() : null)) ?>" class="form-horizontal">
+<form method="post" action="<?php echo $view['router']->path('zco_user_admin_punish', array('id' => $user ? $user->getId() : null)) ?>" class="form-horizontal">
 	<?php echo $view['form']->errors($form) ?>
 	<?php if (isset($form['User'])): ?>
 		<?php echo $view['form']->row($form['User']) ?>

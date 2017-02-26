@@ -2,7 +2,7 @@
 
 <h1>Modifier le titre</h1>
 
-<form action="<?php echo $view['router']->generate('zco_user_editTitle', array('id' => $user->getId())) ?>" method="post" class="form-horizontal">
+<form action="<?php echo $view['router']->path('zco_user_editTitle', array('id' => $user->getId())) ?>" method="post" class="form-horizontal">
 	<div class="control-group">
 		<label for="user-title" class="control-label">Nouveau titre</label>
 		<div class="controls">

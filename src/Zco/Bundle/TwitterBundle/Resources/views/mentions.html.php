@@ -40,7 +40,7 @@
 
 		<?php echo dateformat($mention['creation'], MINUSCULE) ?>
 
-		- <a href="<?php echo $view['router']->generate('zco_twitter_newTweet', array('id' => $mention['id'])) ?>">Répondre</a>
+		- <a href="<?php echo $view['router']->path('zco_twitter_newTweet', array('id' => $mention['id'])) ?>">Répondre</a>
 	</p>
 	<hr />
 	<img src="<?php echo $mention['avatar'] ?>" alt="Avatar" class="avatar" />
