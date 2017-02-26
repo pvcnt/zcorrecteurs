@@ -35,7 +35,7 @@
 
     <body>
         <div id="acces_rapide">
-            <a href="#page">Aller au menu</a> - 
+            <a href="#page">Aller au menu</a> -
             <a href="#content">Aller au contenu</a>
         </div>
 
@@ -135,23 +135,7 @@
                     <?php if (empty($xhr)): ?>
                     </div>
                 </div>
-                <div id="footer">
-                    <div class="left">
-                        <span>Site fièrement édité par</span>
-                        <a href="http://www.corrigraphie.org" title="Ce site est hébergé et édité par l’association Corrigraphie.">Corrigraphie</a>
-                    </div>
-
-                    <div class="center">
-                        <p><a href="#" title="Remonter en haut de page" id="toplink">Haut de page</a></p>
-
-                        <?php echo $view['ui']->footer(1); ?>
-                        <?php echo $view['ui']->footer(2); ?>
-                        <p class="links bloc_partenaires">
-                            Partenaires :
-                            <a href="http://www.convivialiteenflandre.org/" id="pub-11" title="Convivialité en Flandre" rel="Le patrimoine artistique de la Flandre belge et française.">Convivialité en Flandre</a>
-                        </p>
-                    </div>
-                </div>
+                <?php echo $view->render('::layouts/_footer.html.php') ?>
             <?php endif ?>
 
             <?php foreach ($view['vitesse']->javascripts() as $assetUrl): ?>

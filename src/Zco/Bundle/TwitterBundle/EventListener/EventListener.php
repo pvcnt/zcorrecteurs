@@ -43,28 +43,11 @@ class EventListener implements EventSubscriberInterface
 	static public function getSubscribedEvents()
 	{
 		return array(
-			'zco_core.filter_menu.footer2' => 'onFilterFooter2',
 			AdminEvents::MENU              => 'onFilterAdmin',
 			CoreEvents::DAILY_CRON         => 'onDailyCron',
 		);
 	}
-	
-	/**
-	 * Ajoute un lien vers Twitter dans le pied de page.
-	 *
-	 * @param FilterMenuEvent $event
-	 */
-	public function onFilterFooter2(FilterMenuEvent $event)
-	{
-		$event->getRoot()->addChild('Twitter', array(
-			'uri'    => $this->container->get('router')->generate('zco_twitter_index'),
-			'weight' => 50,
-			'linkAttributes' => array(
-				'title' => 'Derniers tweets',
-			),
-		));
-	}
-	
+
 	/**
 	 * Ajoute les liens vers les pages d'administration.
 	 *

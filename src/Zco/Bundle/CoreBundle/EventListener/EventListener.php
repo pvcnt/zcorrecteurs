@@ -50,7 +50,6 @@ class EventListener implements EventSubscriberInterface
 	{
 		return array(
 			'zco_core.filter_menu.left_menu' => array('onFilterLeftMenu', -1),
-			'zco_core.filter_menu.footer2' => 'onFilterFooter2',
 			TemplatingEvents::FILTER_RESOURCES => 'onTemplatingFilterResources',
 			TemplatingEvents::FILTER_VARIABLES => 'onTemplatingFilterVariables',
 			KernelEvents::REQUEST => 'onKernelRequest',
@@ -120,20 +119,6 @@ class EventListener implements EventSubscriberInterface
 				'domain' => $this->container->getParameter('analytics_domain'),
 			));
 		}
-	}
-	
-	/**
-	 * Ajoute dans la seconde ligne du pied de page un lien vers la page 
-	 * Facebook du site.
-	 *
-	 * @param FilterMenuEvent $event
-	 */
-	public function onFilterFooter2(FilterMenuEvent $event)
-	{
-		$event->getRoot()->addChild('Facebook', array(
-			'uri'	=> 'http://www.facebook.com/pages/zCorrecteurs/292782574071649',
-			'weight' => 60,
-		));
 	}
 	
 	/**

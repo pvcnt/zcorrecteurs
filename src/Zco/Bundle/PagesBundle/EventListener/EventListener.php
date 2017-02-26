@@ -45,7 +45,6 @@ class EventListener implements EventSubscriberInterface
     {
         return array(
             'zco_core.filter_menu.speedbarre' => 'onFilterSpeedbarre',
-            'zco_core.filter_menu.footer1' => 'onFilterFooter1',
             'zco_core.filter_menu.left_menu' => 'onFilterLeftMenu',
             PagesEvents::SITEMAP => 'onFilterSitemap',
             AdminEvents::MENU => 'onFilterAdmin',
@@ -58,33 +57,6 @@ class EventListener implements EventSubscriberInterface
             ->getRoot()
             ->addChild('Accueil', array('uri' => '/', 'weight' => 0))
             ->setCurrent($event->getRequest()->attributes->get('_module') === 'accueil');
-    }
-
-    public function onFilterFooter1(FilterMenuEvent $event)
-    {
-        $router = $this->container->get('router');
-        $event->getRoot()->addChild('À propos', array(
-            'uri' => $router->generate('zco_about_index'),
-            'weight' => 10,
-            'linkAttributes' => array(
-                'title' => 'Pour en savoir plus sur le site et son organisation.'
-            ),
-        ));
-        $event->getRoot()->addChild('Contact', array(
-            'uri' => $router->generate('zco_about_contact'),
-            'weight' => 20,
-            'linkAttributes' => array(
-                'title' => 'Si vous avez besoin de contacter les administrateurs de ce site.'
-            ),
-        ));
-        $event->getRoot()->addChild('Code source', array(
-            'uri' => $router->generate('zco_about_opensource'),
-            'weight' => 25,
-        ));
-        $event->getRoot()->addChild('Mentions légales', array(
-            'uri' => $router->generate('zco_legal_mentions'),
-            'weight' => 30,
-        ));
     }
 
     public function onFilterAdmin(FilterMenuEvent $event)

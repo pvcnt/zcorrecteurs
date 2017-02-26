@@ -45,7 +45,6 @@ class UiListener implements EventSubscriberInterface
 			'zco_core.filter_menu.speedbarre' => 'onFilterSpeedbarre',
 			'zco_core.filter_menu.speedbarre_right' => 'onFilterSpeedbarreRight',
 			'zco_core.filter_menu.left_menu' => 'onFilterLeftMenu',
-			'zco_core.filter_menu.footer2' => 'onFilterFooter2',
 			AdminEvents::MENU => 'onFilterAdmin',
 		);
 	}
@@ -114,19 +113,6 @@ class UiListener implements EventSubscriberInterface
 				'rel'   => 'Proposez votre billet pour qu\'il apparaisse sur la page d\'accueil du site.', 
 				'title' => 'Mes billets',
 			),
-		));
-	}
-	
-	/**
-	 * Ajoute un lien vers le flux RSS du blog dans le pied de page.
-	 *
-	 * @param FilterMenuEvent $event
-	 */
-	public function onFilterFooter2(FilterMenuEvent $event)
-	{
-		$event->getRoot()->addChild('Flux RSS', array(
-			'uri'	=> '/blog/flux.html',
-			'weight' => 40,
 		));
 	}
 	
