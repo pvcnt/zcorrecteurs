@@ -144,39 +144,3 @@ function CompterTachesAlertesMP()
 	$stmt->execute();
 	return $stmt->fetchColumn();
 }
-
-function CompterTachesDemandes()
-{
-	include_once(BASEPATH.'/src/Zco/Bundle/EvolutionBundle/modeles/tickets.php');
-	$tickets = CompterTicketsEtat(true, 'bug');
-	return $tickets['open'];
-}
-
-function CompterTachesDemandesTodo()
-{
-	$dbh = Doctrine_Manager::connection()->getDbh();
-
-	$stmt = $dbh->prepare("SELECT COUNT(*) " .
-			"FROM zcov2_tracker_tickets " .
-			"LEFT JOIN zcov2_tracker_tickets_versions ON ticket_id_version_courante = version_id " .
-			"WHERE version_id_admin = :id AND version_etat NOT IN(4,5,7,8,9)");
-	$stmt->bindParam(':id', $_SESSION['id']);
-	$stmt->execute();
-	return $stmt->fetchColumn();
-}
-
-function CompterTachesTaches()
-{
-	include_once(BASEPATH.'/src/Zco/Bundle/EvolutionBundle/modeles/tickets.php');
-	$tickets = CompterTicketsEtat(true, 'tache');
-	return $tickets['open'];
-}
-
-function CompterTachesDons()
-{
-	return Doctrine_Query::create()
-		->select('COUNT(*)')
-		->from('Don')
-		->where('paiement_valide = ?', false)
-		->execute(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
-}

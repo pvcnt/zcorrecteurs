@@ -23,6 +23,7 @@ namespace Zco\Bundle\AdminBundle\Controller;
 
 use Page;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Zco\Bundle\AdminBundle\AdminEvents;
 use Zco\Bundle\AdminBundle\Menu\Renderer\AdminRenderer;
@@ -39,9 +40,9 @@ use Zco\Bundle\CoreBundle\Menu\MenuFactory;
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  * @author mwsaz <mwsaz.fr>
  */
-class IndexController extends Controller
+class DefaultController extends Controller
 {
-    public function defaultAction()
+    public function indexAction(Request $request)
     {
         if (!verifier('admin')) {
             throw new AccessDeniedHttpException();
@@ -53,17 +54,16 @@ class IndexController extends Controller
         fil_ariane('Administration');
 
         $factory = new MenuFactory();
-        $menu    = $factory->createItem('Administration');
+        $menu = $factory->createItem('Administration');
         $menu->addChild('Contenu');
         $menu->addChild('Communauté');
         $menu->addChild('Gestion technique');
         $menu->addChild('Informations');
-        $menu->addChild('Gestion financière');
 
-        $event    = new FilterMenuEvent($this->get('request'), $menu);
+        $event = new FilterMenuEvent($request, $menu);
         $this->get('event_dispatcher')->dispatch(AdminEvents::MENU, $event);
         $renderer = new AdminRenderer();
 
-        return render_to_response(array('admin' => $renderer->render($menu)));
+        return render_to_response('ZcoAdminBundle::index.html.php', array('admin' => $renderer->render($menu)));
     }
 }
