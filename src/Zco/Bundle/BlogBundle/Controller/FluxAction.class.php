@@ -91,20 +91,22 @@ class FluxAction extends Feed
 		}
 
 		// Récupération des auteurs des billets
-		$stmt = $dbh->prepare('SELECT blog_id, utilisateur_id, utilisateur_pseudo, '
-			.'CASE WHEN utilisateur_afficher_mail = 1 THEN utilisateur_email '
-			.'ELSE :contact END AS utilisateur_email '
-			.'FROM zcov2_blog_auteurs '
-			.'LEFT JOIN zcov2_utilisateurs ON auteur_id_utilisateur = utilisateur_id '
-			.'LEFT JOIN zcov2_blog ON auteur_id_billet = blog_id '
-			.'WHERE auteur_statut > 1 AND blog_id IN ('.implode(',', $ids).')');
-		$stmt->bindParam(':contact', $this->itemAuthorEmail);
-		$stmt->execute();
-		$auteurs = $stmt->fetchAll();
+        if (count($ids) > 0) {
+            $stmt = $dbh->prepare('SELECT blog_id, utilisateur_id, utilisateur_pseudo, '
+                . 'CASE WHEN utilisateur_afficher_mail = 1 THEN utilisateur_email '
+                . 'ELSE :contact END AS utilisateur_email '
+                . 'FROM zcov2_blog_auteurs '
+                . 'LEFT JOIN zcov2_utilisateurs ON auteur_id_utilisateur = utilisateur_id '
+                . 'LEFT JOIN zcov2_blog ON auteur_id_billet = blog_id '
+                . 'WHERE auteur_statut > 1 AND blog_id IN (' . implode(',', $ids) . ')');
+            $stmt->bindParam(':contact', $this->itemAuthorEmail);
+            $stmt->execute();
+            $auteurs = $stmt->fetchAll();
 
-		// Ajout des auteurs à chaque billet
-		foreach($auteurs as &$auteur)
-			$billets[$auteur['blog_id']]['auteurs'][] = &$auteur;
+            // Ajout des auteurs à chaque billet
+            foreach ($auteurs as &$auteur)
+                $billets[$auteur['blog_id']]['auteurs'][] = &$auteur;
+        }
 
 		return $billets;
 	}
