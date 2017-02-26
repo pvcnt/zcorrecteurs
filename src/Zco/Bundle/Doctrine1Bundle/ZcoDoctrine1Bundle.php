@@ -21,9 +21,8 @@
 
 namespace Zco\Bundle\Doctrine1Bundle;
 
-use Zco\Bundle\Doctrine1Bundle\Adapter\PDOAdapter;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Symfony\Component\HttpFoundation\Response;
+use Zco\Bundle\Doctrine1Bundle\EventListener\LegacyListener;
 
 /**
  * Bundle assurant une intégration basique de Doctrine1 dans Symfony2.
@@ -37,21 +36,16 @@ class ZcoDoctrine1Bundle extends Bundle
      */
     public function boot()
     {
-        try {
-            $dbh = $this->container->get('zco_doctrine1.adapter.pdo');
-            $conn = \Doctrine_Manager::connection($dbh, 'doctrine');
-            $conn->setOption('dsn', 'mysql:dbname=' . $this->container->getParameter('database.base') . ';host=' . $this->container->getParameter('database.host'));
-            $conn->setOption('username', $this->container->getParameter('database.username'));
-            $conn->setOption('password', $this->container->getParameter('database.password'));
-        } catch (\Exception $e) {
-            if ($this->container->getParameter('kernel.debug')) {
-                throw $e;
-            }
+        $conn = \Doctrine_Manager::connection(
+            'mysql://' . $this->container->getParameter('database.username') . ':' . $this->container->getParameter('database.password')
+            . '@' . $this->container->getParameter('database.host') . '/' . $this->container->getParameter('database.base'));
+        $conn->addListener(new LegacyListener());
+        $conn->addListener($this->container->get('zco_doctrine1.audit_listener'));
+        $conn->setOption('username', $this->container->getParameter('database.username'));
+        $conn->setOption('password', $this->container->getParameter('database.password'));
 
-            header('HTTP/1.1 503 Temporarily unavailable');
-            readfile(__DIR__ . '/Resources/views/sqlDown.html');
-            exit();
-        }
+        $manager = \Doctrine_Manager::getInstance();
+        $manager->setAttribute(\Doctrine_Core::ATTR_TBLNAME_FORMAT, 'zcov2_%s');
 
         //Configure le chargement des modèles.
         //TODO: mettre ça en cache lors de la génération des modèles.
@@ -82,9 +76,5 @@ class ZcoDoctrine1Bundle extends Bundle
 
             return false;
         });
-
-        //Configure Doctrine.
-        $manager = \Doctrine_Manager::getInstance();
-        $manager->setAttribute(\Doctrine_Core::ATTR_TBLNAME_FORMAT, 'zcov2_%s');
     }
 }

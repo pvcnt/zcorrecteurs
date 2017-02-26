@@ -9,15 +9,12 @@ services:
         tags:
             - { name: kernel.cache_warmer }
     
-    zco_doctrine1.adapter.pdo:
-        class:     Zco\Bundle\Doctrine1Bundle\Adapter\PDOAdapter
-        arguments: ['mysql:dbname=%database.base%;host=%database.host%', '%database.username%', '%database.password%']
-        calls:
-            - [setDebug, [%kernel.debug%]]
-            - [exec, ['SET NAMES utf8']]
-    
+    zco_doctrine1.audit_listener:
+        class: Zco\Bundle\Doctrine1Bundle\EventListener\QueryAuditListener
+
     zco_doctrine1.data_collector:
         class: Zco\Bundle\Doctrine1Bundle\DataCollector\DoctrineDataCollector
+        arguments: ['@zco_doctrine1.audit_listener']
         tags:
             - { name: data_collector, template: "ZcoDoctrine1Bundle::collector", id: doctrine1 }
     

@@ -21,91 +21,99 @@
 
 namespace Zco\Bundle\Doctrine1Bundle\DataCollector;
 
-use Zco\Bundle\Doctrine1Bundle\Adapter\PDOAdapter;
-use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\DataCollector\DataCollector;
+use Zco\Bundle\Doctrine1Bundle\EventListener\QueryAuditListener;
 
 /**
- * Collecteur de données pour Doctrine1 et la classe d'abstraction \Db.
+ * Collecteur de données pour Doctrine1.
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
 class DoctrineDataCollector extends DataCollector
 {
-	/**
-	 * {@inheritdoc}
-	 */
-	public function collect(Request $request, Response $response, \Exception $exception = null)
-	{
-		$dbh     = \Doctrine_Manager::connection()->getDbh();
-		$queries = $dbh->getQueries();
-				
-		$manager     = \Doctrine_Manager::getInstance();
-		$connections = array();
-		foreach ($manager->getConnections() as $conn)
-		{
-			$connections[$conn->getName()] = $conn->getDriverName();
-		}
-		
-		$this->data = array(
-			'connexion_time' => $dbh->getConnexionTime(),
-			'queries'        => $queries,
-			'connections'    => $connections,
-		);
-	}
-	
-	/**
-	 * Retourne le nombre total de requête.
-	 *
-	 * @return integer
-	 */
-	public function getQueryCount()
-	{
-		return count($this->data['queries']);
-	}
+    private $auditListener;
+
+    /**
+     * Constructor.
+     *
+     * @param QueryAuditListener $auditListener Query audit listener.
+     */
+    public function __construct(QueryAuditListener $auditListener)
+    {
+        $this->auditListener = $auditListener;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function collect(Request $request, Response $response, \Exception $exception = null)
+    {
+        $queries = $this->auditListener->getQueries();
+
+        $manager = \Doctrine_Manager::getInstance();
+        $connections = array();
+        foreach ($manager->getConnections() as $conn) {
+            $connections[$conn->getName()] = $conn->getDriverName();
+        }
+
+        $this->data = array(
+            'queries' => $queries,
+            'connections' => $connections,
+        );
+    }
+
+    /**
+     * Retourne le nombre total de requêtes.
+     *
+     * @return integer
+     */
+    public function getQueryCount()
+    {
+        return count($this->data['queries']);
+    }
 
     /**
      * Retourne les méta-données sur les requêtes.
      *
      * @return array
      */
-	public function getQueries()
-	{
-		return $this->data['queries'];
-	}
-    
+    public function getQueries()
+    {
+        return $this->data['queries'];
+    }
+
     /**
      * Retourne le temps total d'exécution des requêtes.
      *
      * @return float
      */
-	public function getTime()
-	{
-		$time = $this->data['connexion_time'];
-		foreach ($this->data['queries'] as $query)
-		{
-			$time += $query['time'];
-		}
+    public function getTime()
+    {
+        $time = 0;
+        foreach ($this->data['queries'] as $query) {
+            $time += $query['time'];
+        }
 
-		return $time;
-	}
-	
-	/**
-	 * Retourne les connexions actives.
-	 *
-	 * @return array
-	 */
-	public function getConnections()
-	{
-		return $this->data['connections'];
-	}
+        return $time;
+    }
+
+    /**
+     * Retourne les connexions actives.
+     *
+     * @return array
+     */
+    public function getConnections()
+    {
+        return $this->data['connections'];
+    }
 
     /**
      * {@inheritdoc}
      */
-	public function getName()
-	{
-		return 'doctrine1';
-	}
+    public function getName()
+    {
+        return 'doctrine1';
+    }
 }

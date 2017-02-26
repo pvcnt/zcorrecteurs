@@ -31,7 +31,6 @@ use Knp\Component\Pager\Event\ItemsEvent;
  */
 class PaginationListener implements EventSubscriberInterface
 {
-
     /**
      * {@inheritdoc}
      */

@@ -19,14 +19,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * Modèle gérant le comptage des tâches d'administration.
- *
- * @package	zCorrecteurs.fr
- * @author vincent1870 <vincent@zcorrecteurs.fr>
- * @see		libs/admin.class.php
- */
-
 function CompterTachesRecrutement()
 {
 	$dbh = Doctrine_Manager::connection()->getDbh();
@@ -153,12 +145,6 @@ function CompterTachesAlertesMP()
 	return $stmt->fetchColumn();
 }
 
-function CompterTachesZcorrection()
-{
-	include_once(BASEPATH.'/src/Zco/Bundle/ZcorrectionBundle/modeles/soumissions.php');
-	return CompterSoumissions();
-}
-
 function CompterTachesDemandes()
 {
 	include_once(BASEPATH.'/src/Zco/Bundle/EvolutionBundle/modeles/tickets.php');
@@ -186,29 +172,11 @@ function CompterTachesTaches()
 	return $tickets['open'];
 }
 
-function CompterTachesFactures()
-{
-	return Doctrine_Query::create()
-		->select('COUNT(*)')
-		->from('Facture')
-		->where('payee = ?', false)
-		->execute(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
-}
-
 function CompterTachesDons()
 {
 	return Doctrine_Query::create()
 		->select('COUNT(*)')
 		->from('Don')
 		->where('paiement_valide = ?', false)
-		->execute(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
-}
-
-function CompterTachesPublicite()
-{
-	return Doctrine_Query::create()
-		->select('COUNT(*)')
-		->from('Publicite')
-		->where('approuve = ?', 'attente')
 		->execute(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
 }
