@@ -2,8 +2,8 @@
 
 namespace Zco\Bundle\UserBundle\Form\EventListener;
 
-use Symfony\Component\Form\Event\FilterDataEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Geocoder\GeocoderInterface;
 
@@ -31,15 +31,15 @@ class CalculateCoordinatesSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(FormEvents::BIND_CLIENT_DATA => 'onBindClientData');
+        return array(FormEvents::PRE_SUBMIT => 'onBindClientData');
     }
 
     /**
      * Remplit les coordonnées de l'utilisateur en fonction de son adresse.
      *
-     * @param FilterDataEvent $event
+     * @param FormEvent $event
      */
-    public function onBindClientData(FilterDataEvent $event)
+    public function onBindClientData(FormEvent $event)
     {
         $data = $event->getData();
         $user = $event->getForm()->getData();

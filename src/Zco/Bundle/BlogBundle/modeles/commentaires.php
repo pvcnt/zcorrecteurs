@@ -246,7 +246,7 @@ function MarquerCommentairesLus2(&$billets)
 {
 	$dbh = Doctrine_Manager::connection()->getDbh();
 
-	$stmt = $dbh->prepare('REPLACE INTO '.Container::getParameter('database.prefix').'blog_lunonlu '
+	$stmt = $dbh->prepare('REPLACE INTO zcov2_blog_lunonlu '
 		.'(lunonlu_id_utilisateur, lunonlu_id_billet, lunonlu_id_commentaire) '
 		.'VALUES(:id, :billet, :commentaire)');
 	$stmt->bindParam(':id', $_SESSION['id']);
@@ -407,36 +407,36 @@ function ListerCommentairesNonValides($page = 1)
 			.'ELSE \'Hors ligne\' '
 		.'END AS statut_connecte_label '
 
-		.'FROM '.Container::getParameter('database.prefix').'blog_commentaires '
+		.'FROM zcov2_blog_commentaires '
 
-		.'LEFT JOIN '.Container::getParameter('database.prefix').'utilisateurs Ma '
+		.'LEFT JOIN zcov2_utilisateurs Ma '
 		.'ON Ma.utilisateur_id = commentaire_id_utilisateur '
 
-		.'LEFT JOIN '.Container::getParameter('database.prefix').'groupes '
+		.'LEFT JOIN zcov2_groupes '
 		.'ON Ma.utilisateur_id_groupe = groupe_id '
 
-		.'LEFT JOIN '.Container::getParameter('database.prefix').'utilisateurs Mb '
+		.'LEFT JOIN zcov2_utilisateurs Mb '
 		.'ON Mb.utilisateur_id = commentaire_id_edite '
 
-		.'INNER JOIN '.Container::getParameter('database.prefix').'blog '
+		.'INNER JOIN zcov2_blog '
 		.'ON blog_id = commentaire_id_billet '
 
-		.'INNER JOIN '.Container::getParameter('database.prefix').'blog_versions '
+		.'INNER JOIN zcov2_blog_versions '
 		.'ON version_id = blog_id_version_courante '
 
 		.'LEFT JOIN ( '
 			.'SELECT lunonlu_id_billet AS billet, '
 			.'MAX(commentaire_id) AS dernier_commentaire, '
 			.'MAX(lunonlu_id_commentaire) AS dernier_lu '
-			.'FROM '.Container::getParameter('database.prefix').'blog_lunonlu '
+			.'FROM zcov2_blog_lunonlu '
 
-			.'INNER JOIN '.Container::getParameter('database.prefix').'blog '
+			.'INNER JOIN zcov2_blog '
 			.'ON blog_id = lunonlu_id_billet '
 
-			.'LEFT JOIN '.Container::getParameter('database.prefix').'utilisateurs '
+			.'LEFT JOIN zcov2_utilisateurs '
 			.'ON lunonlu_id_utilisateur = utilisateur_id '
 
-			.'INNER JOIN '.Container::getParameter('database.prefix').'blog_commentaires '
+			.'INNER JOIN zcov2_blog_commentaires '
 			.'ON commentaire_id_billet = lunonlu_id_billet '
 
 			.'WHERE blog_etat = '.BLOG_VALIDE.' '

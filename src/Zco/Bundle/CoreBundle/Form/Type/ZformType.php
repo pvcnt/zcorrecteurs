@@ -32,7 +32,7 @@ use Symfony\Component\Form\FormBuilder;
  */
 class ZformType extends AbstractType
 {
-	public function getParent(array $options)
+	public function getParent()
 	{
 		return 'textarea';
 	}

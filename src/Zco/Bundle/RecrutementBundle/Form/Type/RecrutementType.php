@@ -18,14 +18,16 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 namespace Zco\Bundle\RecrutementBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RecrutementType extends AbstractType
 {
-	public function buildForm(FormBuilder $builder, array $options)
+	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 		$builder->add('nom', null, array('label' => 'Intitulé', 'attr' => array('size' => 40)));
 		$builder->add('date', null, array(
@@ -60,15 +62,10 @@ class RecrutementType extends AbstractType
 		));
 	}
 
-	public function getName()
-	{
-		return 'recrutement';
-	}
-
-	public function getDefaultOptions(array $options)
-	{
-		return array(
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
 			'data_class' => '\Recrutement',
-		);
+		]);
 	}
 }

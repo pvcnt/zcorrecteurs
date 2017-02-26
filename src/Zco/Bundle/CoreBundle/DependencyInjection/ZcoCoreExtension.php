@@ -41,18 +41,13 @@ class ZcoCoreExtension extends Extension
 	 */
 	public function load(array $configs, ContainerBuilder $container)
 	{
-		$config = $this->processConfiguration(new Configuration(), $configs);
-		$container->setParameter('zco_core.mandrill.api_key', $config['mandrill']['api_key']);
-		$container->setParameter('zco_core.mandrill.track_opens', $config['mandrill']['track_opens']);
-		$container->setParameter('zco_core.mandrill.track_clicks', $config['mandrill']['track_clicks']);
-		$container->setParameter('zco_core.mandrill.tags', $config['mandrill']['tags']);
-		
 		$loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 		$loader->load('services.yml');
 		$loader->load('listeners.yml');
 		$loader->load('cache.yml');
 		$loader->load('templating_helpers.yml');
-		
+
+        $config = $this->processConfiguration(new Configuration(), $configs);
 		$container->setAlias('zco_core.cache', 'zco_core.cache.'.$config['cache']['default']);
 	}
 }

@@ -133,20 +133,4 @@
 	</div>
 </div>
 
-<?php /*if ($file->isImage()): ?>
-	<script type="text/javascript" src="http://feather.aviary.com/js/feather.js"></script>
-	<?php $view['javelin']->initBehavior('zco-files-aviary', array(
-		'file_id' => $file['id'], 
-		'link_id' => 'file-edit-link',
-		'base_url' => $_SERVER['HTTP_HOST'],
-		'apiKey'   => $apiKey,
-		'options'  => array(
-			'image' => 'file-image',
-			'signature' => $signature,
-			'timestamp' => $timestamp,
-			'hiresUrl'  => $file->getWebPath(),
-		),
-	)) ?>
-<?php endif*/ ?>
-
 <?php $view['vitesse']->requireResource('bootstrap-js') ?>

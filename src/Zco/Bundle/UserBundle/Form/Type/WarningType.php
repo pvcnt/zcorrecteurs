@@ -18,11 +18,13 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 namespace Zco\Bundle\UserBundle\Form\Type;
 
-use Zco\Bundle\UserBundle\Form\EventListener\AddUserFieldSubscriber;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zco\Bundle\UserBundle\Form\EventListener\AddUserFieldSubscriber;
 
 /**
  * Formulaire de modification du niveau d'avertissement d'un membre.
@@ -34,7 +36,7 @@ class WarningType extends AbstractType
 	/**
 	 * {@inheritdoc}
 	 */
-	public function buildForm(FormBuilder $builder, array $options)
+	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 		$builder->add('link', null, array(
 			'label' => 'Lien du litige', 
@@ -56,21 +58,10 @@ class WarningType extends AbstractType
 		$builder->addEventSubscriber($subscriber);
 	}
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getName()
-	{
-		return 'zco_user_warning';
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getDefaultOptions(array $options)
-	{
-		return array(
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
 			'data_class' => 'UserWarning',
-		);
+		]);
 	}
 }

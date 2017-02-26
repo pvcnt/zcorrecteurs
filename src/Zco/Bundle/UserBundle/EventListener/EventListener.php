@@ -311,7 +311,7 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 		}
 		
 		//On met à jour la table des sessions.
-		$stmt = $dbh->prepare('UPDATE '.$this->container->getParameter('database.prefix').'connectes '
+		$stmt = $dbh->prepare('UPDATE zcov2_connectes '
 			.'SET connecte_ip = :ip, connecte_derniere_action = NOW(), '
 			.'connecte_id_categorie = :cat, connecte_user_agent = :agent, '
 			.'connecte_nom_action = \'\' '
@@ -326,7 +326,7 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 		{
 			$stmt->closeCursor();
 			
-			$stmt = $dbh->prepare('INSERT INTO '.$this->container->getParameter('database.prefix').'connectes(connecte_ip, '
+			$stmt = $dbh->prepare('INSERT INTO zcov2_connectes(connecte_ip, '
 				.'connecte_id_utilisateur, connecte_debut, connecte_derniere_action, '
 				.'connecte_id_categorie, connecte_user_agent) '
 				.'VALUES(:ip, :u, NOW(), NOW(), :cat, :agent)');

@@ -43,7 +43,6 @@ class Configuration implements ConfigurationInterface
                 ->booleanNode('debug')->defaultValue('%kernel.debug%')->end()
                 ->booleanNode('combine_assets')->defaultNull()->end()
                 ->arrayNode('assets')
-                    ->addDefaultsIfNotSet()
                     ->useAttributeAsKey('name')
                     ->prototype('array')
                         ->beforeNormalization()

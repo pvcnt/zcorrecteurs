@@ -32,18 +32,15 @@ use Zco\Bundle\CoreBundle\Cache\CacheInterface;
 class Registry
 {
 	private $cache;
-	private $prefix;
 	
 	/**
 	 * Constructeur.
 	 *
 	 * @param CacheInterface $cache
-	 * @param string $prefix Le préfix des tables en base de données
 	 */
-	public function __construct(CacheInterface $cache, $prefix)
+	public function __construct(CacheInterface $cache)
 	{
 		$this->cache = $cache;
-	    $this->prefix = $prefix;
 	}
 
 	/**
@@ -55,7 +52,7 @@ class Registry
 	public function set($key, $value)
 	{
 		$dbh   = \Doctrine_Manager::connection()->getDbh();
-		$query = $dbh->prepare('REPLACE INTO '.$this->prefix.'registry VALUES(:key, :value)');
+		$query = $dbh->prepare('REPLACE INTO zcov2_registry VALUES(:key, :value)');
 		$query->bindParam(':key', $key);
 		$query->bindValue(':value', serialize($value));
 		$query->execute();
@@ -79,7 +76,7 @@ class Registry
 		}
 		
 		$dbh   = \Doctrine_Manager::connection()->getDbh();
-		$query = $dbh->prepare('SELECT registry_value FROM '.$this->prefix.'registry WHERE registry_key = :key');
+		$query = $dbh->prepare('SELECT registry_value FROM zcov2_registry WHERE registry_key = :key');
 		$query->bindParam(':key', $key);
 		$query->execute();
 		$value = $query->fetchColumn();
@@ -102,7 +99,7 @@ class Registry
 	public function delete($key)
 	{
 		$dbh   = \Doctrine_Manager::connection()->getDbh();
-		$query = $dbh->prepare('DELETE FROM '.$this->prefix.'registry WHERE registry_key = :key');
+		$query = $dbh->prepare('DELETE FROM zcov2_registry WHERE registry_key = :key');
 		$query->bindParam(':key', $key);
 		$query->execute();
 		

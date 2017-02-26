@@ -21,63 +21,45 @@
 
 namespace Zco\Bundle\Doctrine1Bundle\Form\Type;
 
-use Zco\Bundle\Doctrine1Bundle\Form\ChoiceList\EntityChoiceList;
-use Zco\Bundle\Doctrine1Bundle\Form\EventListener\MergeCollectionListener;
-use Zco\Bundle\Doctrine1Bundle\Form\DataTransformer\EntitiesToArrayTransformer;
-use Zco\Bundle\Doctrine1Bundle\Form\DataTransformer\EntityToIdTransformer;
-use Symfony\Bridge\Doctrine\Form\ChoiceList\EntityLoaderInterface;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zco\Bundle\Doctrine1Bundle\Form\ChoiceList\EntityChoiceList;
+use Zco\Bundle\Doctrine1Bundle\Form\DataTransformer\EntityToIdTransformer;
 
 class EntityType extends AbstractType
 {
-	public function buildForm(FormBuilder $builder, array $options)
-	{
-		if ($options['multiple'])
-		{
-			$builder
-				->addEventSubscriber(new MergeCollectionListener())
-				->prependClientTransformer(new EntitiesToArrayTransformer($options['choice_list']))
-			;
-		}
-		else
-		{
-			$builder->prependClientTransformer(new EntityToIdTransformer($options['choice_list']));
-		}
-	}
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->addViewTransformer(new EntityToIdTransformer($options['choice_list']), true);
+    }
 
-	public function getDefaultOptions(array $options)
-	{
-		$defaultOptions = array(
-			'class'			=> null,
-			'property'		=> null,
-			'query'	     	=> null,
-			'choices'	   	=> null,
-			'autocomplete' 	=> false,
-		);
-		
-		$options = array_replace($defaultOptions, $options);
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'class' => null,
+            'property' => null,
+            'query' => null,
+            'choices' => null,
+        ]);
+        $resolver->setDefault('choice_list', function (Options $options) {
+            return new EntityChoiceList(
+                $options['class'],
+                $options['property'],
+                $options['query'],
+                $options['choices']
+            );
+        });
+    }
 
-		if (!isset($options['choice_list']))
-		{
-			$defaultOptions['choice_list'] = new EntityChoiceList(
-				$options['class'],
-				$options['property'],
-				$options['query'],
-				$options['choices']
-			);
-		}
+    public function getName()
+    {
+        return 'entity';
+    }
 
-		return $defaultOptions;
-	}
-	
-	public function getName()
-	{
-		return 'entity';
-	}
-	
-	public function getParent(array $options)
-	{
-		return $options['autocomplete'] ? 'text' : 'choice';
-	}
+    public function getParent()
+    {
+        return 'choice';
+    }
 }

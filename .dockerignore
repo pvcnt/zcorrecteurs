@@ -1,0 +1,5 @@
+app/cache/*
+app/logs/*
+web/bundles/*
+web/compiled/*
+data/index/*

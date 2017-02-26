@@ -1,40 +1,28 @@
-# .gitignore de Symfony
-app/phpunit.xml
-web/bundles/
-app/bootstrap.php.cache
-app/cache/*
-app/logs/*
-build/
+/app/phpunit.xml
+/web/bundles/
+/web/uploads/
+/app/bootstrap.php.cache
+/app/config/constants.yml
 /vendor/
-app/config/config_dev.yml
-app/config/config_prod.yml
+/bin/
+!/bin/sphinx
+lib/geoip/GeoLiteCity.dat
 
-# Fichiers de configuration
-app/config/constants.yml
-app/config/parameters.yml
+/app/cache/*
+/app/logs/*
+/web/compiled/*
+/data/store/*
+/data/index/*
 
-# Fichiers temporaires
-web/compiled/*
-data/store/*
-data/index/*
-web/ext/pack_design.tar.bz2
-
-# Toutes les images uploadées
-web/uploads/*
-web/tutos/*
-vendors/geoip/GeoLiteCity.dat
-web/google*.html
-web/LL_*.xml
-
-# Fichiers de configuration des IDE
+# IDE configuration files.
 .project
 nbproject/
 .settings/*
 .buildpath
-.project
 .directory
 *.tmproj
+.idea/*
 
-# Fichiers spécifiques aux OS
+# OS specific files.
 .DS_Store
 Thumbs.db

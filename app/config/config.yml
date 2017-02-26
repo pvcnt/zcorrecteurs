@@ -2,15 +2,14 @@ imports:
     - { resource: parameters.yml }
 
 framework:
+    default_locale:  fr
     secret:          %secret%
-    charset:         UTF-8
     router:          { resource: "%kernel.root_dir%/config/routing.yml" }
     form:            true
     csrf_protection: true
     translator:      { fallback: fr }
     session:
-        auto_start:     true
-        default_locale: fr
+        storage_id: session.storage.php_bridge
     templating:
         engines:       ['php', 'twig']
         form:
@@ -18,19 +17,14 @@ framework:
                 - 'ZcoCoreBundle:Form'
 
 zco_vitesse:
+    combine_assets: true
     assets:
-        -
-            name: google-jsapi
-            type: js
-            inputs: 'https://www.google.com/jsapi'
-        -
-            name: google-maps
-            type: js
-            inputs: 'http://maps.google.com/maps?file=api&amp;v=2&amp;key=%gmaps_api_key%' }
-        -
-            name: aviary-feather
-            type: js
-            inputs: 'http://feather.aviary.com/js/feather.js'
+        - name: google-jsapi
+          type: js
+          inputs: 'https://www.google.com/jsapi'
+        - name: google-maps
+          type: js
+          inputs: 'http://maps.google.com/maps?file=api&amp;v=2&amp;key=%gmaps_api_key%'
 
 knp_gaufrette:
     adapters:

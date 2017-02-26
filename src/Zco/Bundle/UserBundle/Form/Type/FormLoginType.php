@@ -18,10 +18,11 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 namespace Zco\Bundle\UserBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
 
 /**
  * Formulaire de connexion à un compte utilisateur.
@@ -33,7 +34,7 @@ class FormLoginType extends AbstractType
 	/**
 	 * {@inheritdoc}
 	 */
-	public function buildForm(FormBuilder $builder, array $options)
+	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 		$builder->add('pseudo', 'text', array(
 			'label' => 'Pseudonyme',
@@ -45,13 +46,5 @@ class FormLoginType extends AbstractType
 			'label'    => 'Se souvenir de moi', 
 			'required' => false,
 		));
-	}
-	
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getName()
-	{
-		return 'zco_user_formLogin';
 	}
 }

@@ -27,8 +27,6 @@ namespace Zco\Bundle\RechercheBundle\Search;
  * @author mwsaz <mwsaz@zcorrecteurs.fr>
  */
 
-include_once(BASEPATH.'/vendor/Sphinx/sphinxapi.php');
-
 class Sphinx extends Search
 {
 	private $client;

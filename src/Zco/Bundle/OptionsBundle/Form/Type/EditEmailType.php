@@ -22,7 +22,9 @@
 namespace Zco\Bundle\OptionsBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zco\Bundle\OptionsBundle\Form\Model\EditEmail;
 
 /**
  * Formulaire de modification du mot de passe d'un utilisateur.
@@ -31,36 +33,25 @@ use Symfony\Component\Form\FormBuilder;
  */
 class EditEmailType extends AbstractType
 {
-	/**
-	 * {@inheritdoc}
-	 */
-	public function buildForm(FormBuilder $builder, array $options)
-	{
-		$builder->add('current', 'password', array(
-			'label' => 'Votre mot de passe', 
-		));
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->add('current', 'password', array(
+            'label' => 'Votre mot de passe',
+        ));
 
-		$builder->add('new', null, array(
-			'label' => 'Nouvelle adresse courriel', 
-		));
-	}
+        $builder->add('new', null, array(
+            'label' => 'Nouvelle adresse courriel',
+        ));
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getName()
-	{
-		return 'zco_options_editEmail';
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getDefaultOptions(array $options)
-	{
-		return array(
-			'data_class' => 'Zco\Bundle\OptionsBundle\Form\Model\EditEmail',
-			'own'        => true,
-		);
-	}
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' => EditEmail::class,
+            'own' => true,
+        ]);
+    }
 }

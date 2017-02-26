@@ -18,11 +18,13 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 namespace Zco\Bundle\UserBundle\Form\Type;
 
-use Zco\Bundle\UserBundle\Form\EventListener\AddUserFieldSubscriber;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zco\Bundle\UserBundle\Form\EventListener\AddUserFieldSubscriber;
 
 /**
  * Formulaire de dépôt d'une sanction sur un utilisateur.
@@ -34,7 +36,7 @@ class PunishmentType extends AbstractType
 	/**
 	 * {@inheritdoc}
 	 */
-	public function buildForm(FormBuilder $builder, array $options)
+	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 		$builder->add('Group', null, array(
 			'label' => 'Sanction',
@@ -58,21 +60,10 @@ class PunishmentType extends AbstractType
 		$builder->addEventSubscriber($subscriber);
 	}
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getName()
-	{
-		return 'zco_user_punishment';
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getDefaultOptions(array $options)
-	{
-		return array(
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
 			'data_class' => 'UserPunishment',
-		);
+		]);
 	}
 }

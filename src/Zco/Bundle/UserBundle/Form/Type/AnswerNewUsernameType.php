@@ -18,10 +18,12 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 namespace Zco\Bundle\UserBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Formulaire de réponse à une demande d'un nouveau nom d'utilisateur.
@@ -33,7 +35,7 @@ class AnswerNewUsernameType extends AbstractType
 	/**
 	 * {@inheritdoc}
 	 */
-	public function buildForm(FormBuilder $builder, array $options)
+	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 		$builder->add('status', 'choice', array(
 			'label' => 'Réponse',
@@ -51,19 +53,11 @@ class AnswerNewUsernameType extends AbstractType
 	/**
 	 * {@inheritdoc}
 	 */
-	public function getName()
+    public function configureOptions(OptionsResolver $resolver)
 	{
-		return 'zco_user_answerNewUsername';
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getDefaultOptions(array $options)
-	{
-		return array(
+		$resolver->setDefaults([
 			'data_class'        => 'UserNewUsername',
-			'validation_groups' => array('answer'),
-		);
+			'validation_groups' => ['answer'],
+		]);
 	}
 }

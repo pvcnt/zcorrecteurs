@@ -6,7 +6,6 @@
 #  - database.username
 #  - database.password
 #  - database.base
-#  - database.prefix
 
 
 
@@ -774,12 +773,12 @@ source forum_messages : zcorrecteurs
 		sujet_id, sujet_forum_id AS categorie_id, \
 		CASE sujet_sondage WHEN 0 THEN 0 WHEN NULL THEN 0 ELSE 1 END AS sujet_sondage, \
 		sujet_annonce, sujet_ferme, sujet_resolu, sujet_corbeille, sujet_coup_coeur \
-		FROM %database.prefix%forum_messages \
-		JOIN %database.prefix%forum_sujets ON sujet_id = message_sujet_id \
+		FROM zcov2_forum_messages \
+		JOIN zcov2_forum_sujets ON sujet_id = message_sujet_id \
 		WHERE sujet_corbeille = 0 \
 		AND message_id BETWEEN $start AND $end
 
-	sql_query_range      = SELECT 1, MAX(message_id) FROM %database.prefix%forum_messages
+	sql_query_range      = SELECT 1, MAX(message_id) FROM zcov2_forum_messages
 
 	sql_attr_uint        = utilisateur_id
 	sql_attr_uint        = sujet_id
@@ -795,7 +794,7 @@ source forum_messages : zcorrecteurs
 
 
 	# sql_query_killlist   = \
-	# 	SELECT message_id FROM %database.prefix%forum_messages \
+	# 	SELECT message_id FROM zcov2_forum_messages \
 	# 	WHERE UNIX_TIMESTAMP(message_edite_date) >= @last_reindex
 }
 
@@ -817,12 +816,12 @@ source blog_billets : zcorrecteurs
 		version_titre, version_sous_titre, version_intro, version_texte, \
 		UNIX_TIMESTAMP(blog_date) AS blog_date, \
 		blog_id_categorie AS categorie_id \
-		FROM %database.prefix%blog \
-		JOIN %database.prefix%blog_versions ON blog_id_version_courante = version_id \
+		FROM zcov2_blog \
+		JOIN zcov2_blog_versions ON blog_id_version_courante = version_id \
 		WHERE blog_etat = 4 AND \
 		blog_id BETWEEN $start AND $end
 
-	sql_query_range      = SELECT 1, MAX(blog_id) FROM %database.prefix%blog
+	sql_query_range      = SELECT 1, MAX(blog_id) FROM zcov2_blog
 
 	sql_attr_uint        = categorie_id
 	sql_attr_timestamp   = blog_date
@@ -843,10 +842,10 @@ source twitter_tweets : zcorrecteurs
 {
 	sql_query            = \
 		SELECT id, UNIX_TIMESTAMP(creation) AS creation, texte, utilisateur_id, compte_id AS categorie_id \
-		FROM %database.prefix%twitter_tweets \
+		FROM zcov2_twitter_tweets \
 		WHERE id BETWEEN $start AND $end
 
-	sql_query_range      = SELECT 1, MAX(id) FROM %database.prefix%twitter_tweets
+	sql_query_range      = SELECT 1, MAX(id) FROM zcov2_twitter_tweets
 
 	sql_attr_uint        = utilisateur_id
 	sql_attr_uint        = categorie_id

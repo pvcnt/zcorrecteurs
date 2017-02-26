@@ -204,14 +204,14 @@ function InfosCommentaire($id)
 		.'commentaire_texte, commentaire_date, u1.utilisateur_pseudo AS utilisateur_pseudo, '
 		.'u1.utilisateur_id AS utilisateur_id, recrutement_nom, recrutement_id, '
 		.'candidature_id, u1.utilisateur_pseudo AS utilisateur_pseudo, u2.utilisateur_pseudo AS postulant_pseudo '
-		.'FROM '.Container::getParameter('database.prefix').'recrutements_commentaires '
-		.'LEFT JOIN '.Container::getParameter('database.prefix').'utilisateurs u1 '
+		.'FROM zcov2_recrutements_commentaires '
+		.'LEFT JOIN zcov2_utilisateurs u1 '
 			.'ON u1.utilisateur_id = commentaire_utilisateur_id '
-		.'LEFT JOIN '.Container::getParameter('database.prefix').'recrutements_candidatures '
+		.'LEFT JOIN zcov2_recrutements_candidatures '
 			.'ON candidature_id = commentaire_candidature_id '
-                .'LEFT JOIN '.Container::getParameter('database.prefix').'utilisateurs u2 '
+                .'LEFT JOIN zcov2_utilisateurs u2 '
                         .'ON u2.utilisateur_id = candidature_id_utilisateur '		
-		.'LEFT JOIN '.Container::getParameter('database.prefix').'recrutements '
+		.'LEFT JOIN zcov2_recrutements '
 			.'ON recrutement_id = candidature_id_recrutement '
 		.'WHERE commentaire_id = :id');
 	$stmt->bindParam(':id', $id);
@@ -225,8 +225,7 @@ function SupprimerCommentaireShoutbox($id)
 {
 	$db = Doctrine_Manager::connection()->getDbh();
 
-	$stmt = $db->prepare("
-	DELETE FROM zcov2_recrutements_commentaires WHERE commentaire_id = :id");
+	$stmt = $db->prepare("DELETE FROM zcov2_recrutements_commentaires WHERE commentaire_id = :id");
 	$stmt->bindParam(':id', $id);
 	$stmt->execute();
 }
@@ -234,7 +233,7 @@ function SupprimerCommentaireShoutbox($id)
 function EditerCommentaireShoutbox($id, $texte)
 {
 	$db = Doctrine_Manager::connection()->getDbh();
-	$stmt = $db->prepare('UPDATE '.Container::getParameter('database.prefix').'recrutements_commentaires '
+	$stmt = $db->prepare('UPDATE zcov2_recrutements_commentaires '
 		.'SET commentaire_texte = :texte '
 		.'WHERE commentaire_id = :id');
 	$stmt->bindParam('id', $id);

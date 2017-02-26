@@ -2,7 +2,7 @@
 
 namespace Zco\Bundle\UserBundle\Form\EventListener;
 
-use Symfony\Component\Form\Event\DataEvent;
+use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvents;
@@ -23,7 +23,7 @@ class AddUserFieldSubscriber implements EventSubscriberInterface
 		);
 	}
 
-	public function preSetData(DataEvent $event)
+	public function preSetData(FormEvent $event)
 	{
 		$data = $event->getData();
 		$form = $event->getForm();

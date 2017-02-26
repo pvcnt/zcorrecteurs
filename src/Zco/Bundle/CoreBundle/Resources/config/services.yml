@@ -4,13 +4,12 @@ parameters:
 services:
     zco_core.registry:
         class:     Zco\Bundle\CoreBundle\Registry
-        arguments: [@zco_core.cache, %database.prefix%]
+        arguments: [@zco_core.cache]
 
     zco_core.form.type.zform:
         class: Zco\Bundle\CoreBundle\Form\Type\ZformType
         tags:
             - { name: form.type, alias: zform }
-    
-    zco_core.swiftmailer.mandrill_transport:
-        class: Zco\Bundle\CoreBundle\Swiftmailer\MandrillTransport
-        arguments: [@swiftmailer.transport.eventdispatcher, %zco_core.mandrill.api_key%, %zco_core.mandrill.track_clicks%, %zco_core.mandrill.track_opens%, %zco_core.mandrill.tags%]
+
+    imagine:
+        class: Imagine\Gd\Imagine

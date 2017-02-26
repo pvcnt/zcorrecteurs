@@ -21,9 +21,9 @@
 
 namespace Zco\Bundle\OptionsBundle\Form\Type;
 
-use Zco\Bundle\UserBundle\Form\EventListener\CalculateCoordinatesSubscriber;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Formulaire permettant de modifier le profil d'un utilisateur.
@@ -32,46 +32,35 @@ use Symfony\Component\Form\FormBuilder;
  */
 class EditAbsenceType extends AbstractType
 {
-	/**
-	 * {@inheritdoc}
-	 */
-	public function buildForm(FormBuilder $builder, array $options)
-	{
-		$builder->add('absence_start_date', 'date', array(
-			'label' => 'Absent à partir du',
-			'input' => 'string', 
-			'widget' => 'single_text',
-			'format' => 'Y-MM-dd',
-		));
-		$builder->add('absence_end_date', null, array(
-			'label' => 'Absent jusqu\'au', 
-			'required' => false,
-			'input' => 'string', 
-			'widget' => 'single_text',
-			'format' => 'Y-MM-dd',
-		));
-		$builder->add('absence_reason', 'zform', array(
-			'label' => 'Raison de mon absence', 
-			'required' => false,
-		));
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->add('absence_start_date', 'date', array(
+            'label' => 'Absent à partir du',
+            'input' => 'string',
+            'widget' => 'single_text',
+            'format' => 'Y-MM-dd',
+        ));
+        $builder->add('absence_end_date', null, array(
+            'label' => 'Absent jusqu\'au',
+            'required' => false,
+            'input' => 'string',
+            'widget' => 'single_text',
+            'format' => 'Y-MM-dd',
+        ));
+        $builder->add('absence_reason', 'zform', array(
+            'label' => 'Raison de mon absence',
+            'required' => false,
+        ));
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getName()
-	{
-		return 'zco_options_editAbsence';
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getDefaultOptions(array $options)
-	{
-		return array(
-			'data_class'        => 'Utilisateur',
-			'validation_groups' => array('absence'),
-		);
-	}
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' => 'Utilisateur',
+            'validation_groups' => array('absence'),
+        ]);
+    }
 }

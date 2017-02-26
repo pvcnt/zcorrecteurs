@@ -307,7 +307,7 @@ class UtilisateurTable extends Doctrine_Table
 				.'WHEN NULL THEN 0 '
 				.'ELSE DATEDIFF(NOW(), utilisateur_date_naissance) DIV 365 '
 			.'END AS age '
-			.'FROM '.Container::getParameter('database.prefix').'utilisateurs '
+			.'FROM zcov2_utilisateurs '
 			.'WHERE utilisateur_date_naissance IS NOT NULL '
 			.'AND utilisateur_date_naissance <> \'0000-00-00\''
 			.($groupe !== null ? 'AND utilisateur_id_groupe = :g ' : '')

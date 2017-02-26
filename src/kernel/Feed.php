@@ -131,7 +131,7 @@ abstract class Feed extends Controller
 	protected function saveLogs()
 	{
 		$dbh = Doctrine_Manager::connection()->getDbh();
-		$stmt = $dbh->prepare("INSERT INTO ".Container::getParameter('database.prefix')."zingle_logs_flux
+		$stmt = $dbh->prepare("INSERT INTO zcov2_zingle_logs_flux
 			(log_date, log_ip, log_id, log_user_agent, log_nb_views)
 			VALUES(NOW(), :ip, :id, :user_agent, 1)
 			ON DUPLICATE KEY UPDATE log_nb_views = log_nb_views+1");

@@ -176,7 +176,7 @@ function RecupererStatistiquesForum()
 		{
 			$stmt = $dbh->prepare('SELECT lunonlu_sujet_id, '
 				.'lunonlu_message_id, lunonlu_participe '
-				.'FROM '.Container::getParameter('database.prefix').'forum_lunonlu '
+				.'FROM zcov2_forum_lunonlu '
 				.'WHERE lunonlu_utilisateur_id = :id_user '
 					.' AND lunonlu_sujet_id IN('
 					.implode(', ', $sids)

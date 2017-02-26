@@ -37,65 +37,59 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 
 class EntityToIdTransformer implements DataTransformerInterface
 {
-	private $choiceList;
+    private $choiceList;
 
-	public function __construct(EntityChoiceList $choiceList)
-	{
-		$this->choiceList = $choiceList;
-	}
+    public function __construct(EntityChoiceList $choiceList)
+    {
+        $this->choiceList = $choiceList;
+    }
 
-	/**
-	 * Transforms entities into choice keys.
-	 *
-	 * @param  \Doctrine_Record $entity A single entity or NULL
-	 * @return mixed An array of choice keys, a single key or NULL
-	 */
-	public function transform($entity)
-	{
-		if (null === $entity || '' === $entity)
-		{
-			return '';
-		}
+    /**
+     * Transforms entities into choice keys.
+     *
+     * @param  \Doctrine_Record $entity A single entity or NULL
+     * @return mixed An array of choice keys, a single key or NULL
+     */
+    public function transform($entity)
+    {
+        if (null === $entity || '' === $entity) {
+            return '';
+        }
 
-		if (!$entity instanceof \Doctrine_Record)
-		{
-			throw new UnexpectedTypeException($entity, '\Doctrine_Record');
-		}
+        if (!$entity instanceof \Doctrine_Record) {
+            throw new UnexpectedTypeException($entity, '\Doctrine_Record');
+        }
 
-		if (count($this->choiceList->getIdentifier()) > 1)
-		{
-			// load all choices
-			$availableEntities = $this->choiceList->getEntities();
+        if (count($this->choiceList->getIdentifier()) > 1) {
+            // load all choices
+            $availableEntities = $this->choiceList->getEntities();
 
-			return array_search($entity, $availableEntities);
-		}
-		
-		return current($this->choiceList->getIdentifierValues($entity));
-	}
+            return array_search($entity, $availableEntities);
+        }
 
-	/**
-	 * Transforms choice keys into entities.
-	 *
-	 * @param  mixed $key   An array of keys, a single key or NULL
-	 * @return \Doctrine_Record  A single entity or NULL
-	 */
-	public function reverseTransform($key)
-	{
-		if ('' === $key || null === $key)
-		{
-			return null;
-		}
+        return current($this->choiceList->getIdentifierValues($entity));
+    }
 
-		if (count($this->choiceList->getIdentifier()) > 1 && !is_numeric($key))
-		{
-			throw new UnexpectedTypeException($key, 'numeric');
-		}
+    /**
+     * Transforms choice keys into entities.
+     *
+     * @param  mixed $key An array of keys, a single key or NULL
+     * @return \Doctrine_Record  A single entity or NULL
+     */
+    public function reverseTransform($key)
+    {
+        if ('' === $key || null === $key) {
+            return null;
+        }
 
-		if (!($entities = $this->choiceList->getEntitiesByKeys(array($key))))
-		{
-			throw new TransformationFailedException(sprintf('The entity with key "%s" could not be found', $key));
-		}
+        if (count($this->choiceList->getIdentifier()) > 1 && !is_numeric($key)) {
+            throw new UnexpectedTypeException($key, 'numeric');
+        }
 
-		return $entities[0];
-	}
+        if (!($entities = $this->choiceList->getEntitiesByKeys(array($key)))) {
+            throw new TransformationFailedException(sprintf('The entity with key "%s" could not be found', $key));
+        }
+
+        return $entities[0];
+    }
 }

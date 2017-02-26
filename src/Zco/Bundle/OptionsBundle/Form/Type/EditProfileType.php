@@ -21,10 +21,11 @@
 
 namespace Zco\Bundle\OptionsBundle\Form\Type;
 
-use Zco\Bundle\UserBundle\Form\EventListener\CalculateCoordinatesSubscriber;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilder;
 use Geocoder\GeocoderInterface;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zco\Bundle\UserBundle\Form\EventListener\CalculateCoordinatesSubscriber;
 
 /**
  * Formulaire permettant de modifier le profil d'un utilisateur.
@@ -33,102 +34,91 @@ use Geocoder\GeocoderInterface;
  */
 class EditProfileType extends AbstractType
 {
-	protected $geocoder;
+    protected $geocoder;
 
-	/**
-	 * Constructeur.
-	 *
-	 * @param GeocoderInterface $geocoder
-	 */
-	public function __construct(GeocoderInterface $geocoder)
-	{
-		$this->geocoder = $geocoder;
-	}
+    /**
+     * Constructeur.
+     *
+     * @param GeocoderInterface $geocoder
+     */
+    public function __construct(GeocoderInterface $geocoder)
+    {
+        $this->geocoder = $geocoder;
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function buildForm(FormBuilder $builder, array $options)
-	{
-		$builder->addEventSubscriber(new CalculateCoordinatesSubscriber($this->geocoder));
-		$builder->add('twitter', null, array(
-			'label' => 'Compte Twitter',
-			'required' => false,
-		));
-		$builder->add('email_displayed', null, array(
-			'label' => 'Autoriser les autres utilisateurs à m\'envoyer un courriel', 
-			'required' => false,
-		));
-		$builder->add('display_signature', null, array(
-			'label' => 'Afficher ma signature en-dessous de ma présentation personnelle', 
-			'required' => false,
-		));
-		$builder->add('country_displayed', null, array(
-			'label' => 'Afficher le pays dans lequel je me trouve', 
-			'required' => false,
-		));
-		$builder->add('address', null, array(
-			'label' => 'Adresse ou ville', 
-			'required' => false,
-		));
-		$builder->add('job', null, array(
-			'label' => 'Profession ou études', 
-			'required' => false,
-		));
-		$builder->add('hobbies', null, array(
-			'label' => 'Passions, loisirs', 
-			'required' => false,
-		));
-		$builder->add('birth_date', null, array(
-			'label' => 'Date de naissance', 
-			'required' => false,
-			'input' => 'string', 
-			'widget' => 'single_text',
-			'format' => 'Y-MM-dd',
-		));
-		$builder->add('website', 'url', array(
-			'label' => 'Site web', 
-			'required' => false,
-		));
-		$builder->add('sexe', 'choice', array(
-			'label' => 'Sexe', 
-			'required' => true,
-			'choices' => array(
-				0 => 'Non spécifié',
-				SEXE_MASCULIN => 'Masculin',
-				SEXE_FEMININ => 'Féminin',
-			),
-		));
-		$builder->add('citation', null, array(
-			'label' => 'Citation', 
-			'required' => false,
-		));
-		$builder->add('signature', 'zform', array(
-			'label' => 'Signature', 
-			'required' => false,
-		));
-		$builder->add('biography', 'zform', array(
-			'label' => 'Présentation personnelle', 
-			'required' => false,
-		));
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->addEventSubscriber(new CalculateCoordinatesSubscriber($this->geocoder));
+        $builder->add('twitter', null, array(
+            'label' => 'Compte Twitter',
+            'required' => false,
+        ));
+        $builder->add('email_displayed', null, array(
+            'label' => 'Autoriser les autres utilisateurs à m\'envoyer un courriel',
+            'required' => false,
+        ));
+        $builder->add('display_signature', null, array(
+            'label' => 'Afficher ma signature en-dessous de ma présentation personnelle',
+            'required' => false,
+        ));
+        $builder->add('country_displayed', null, array(
+            'label' => 'Afficher le pays dans lequel je me trouve',
+            'required' => false,
+        ));
+        $builder->add('address', null, array(
+            'label' => 'Adresse ou ville',
+            'required' => false,
+        ));
+        $builder->add('job', null, array(
+            'label' => 'Profession ou études',
+            'required' => false,
+        ));
+        $builder->add('hobbies', null, array(
+            'label' => 'Passions, loisirs',
+            'required' => false,
+        ));
+        $builder->add('birth_date', null, array(
+            'label' => 'Date de naissance',
+            'required' => false,
+            'input' => 'string',
+            'widget' => 'single_text',
+            'format' => 'Y-MM-dd',
+        ));
+        $builder->add('website', 'url', array(
+            'label' => 'Site web',
+            'required' => false,
+        ));
+        $builder->add('sexe', 'choice', array(
+            'label' => 'Sexe',
+            'required' => true,
+            'choices' => array(
+                0 => 'Non spécifié',
+                SEXE_MASCULIN => 'Masculin',
+                SEXE_FEMININ => 'Féminin',
+            ),
+        ));
+        $builder->add('citation', null, array(
+            'label' => 'Citation',
+            'required' => false,
+        ));
+        $builder->add('signature', 'zform', array(
+            'label' => 'Signature',
+            'required' => false,
+        ));
+        $builder->add('biography', 'zform', array(
+            'label' => 'Présentation personnelle',
+            'required' => false,
+        ));
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getName()
-	{
-		return 'zco_options_editProfile';
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getDefaultOptions(array $options)
-	{
-		return array(
-			'data_class'        => 'Utilisateur',
-			'validation_groups' => array('Default'),
-		);
-	}
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' => 'Utilisateur',
+            'validation_groups' => array('Default'),
+        ]);
+    }
 }

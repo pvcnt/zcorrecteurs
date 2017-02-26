@@ -19,8 +19,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Zco\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Zco\Component\HttpKernel\Kernel;
 
 class AppKernel extends Kernel
 {
@@ -37,7 +38,6 @@ class AppKernel extends Kernel
             new Symfony\Bundle\TwigBundle\TwigBundle(),
             new Zco\Bundle\Doctrine1Bundle\ZcoDoctrine1Bundle(),
             new Zco\Bundle\VitesseBundle\ZcoVitesseBundle(),
-            new Avalanche\Bundle\ImagineBundle\AvalancheImagineBundle(),
             new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
@@ -80,12 +80,12 @@ class AppKernel extends Kernel
             new Zco\Bundle\TwitterBundle\ZcoTwitterBundle(),
             new Zco\Bundle\ZcorrectionBundle\ZcoZcorrectionBundle(),
             new Zco\Bundle\FileBundle\ZcoFileBundle(),
-            new Zco\Bundle\SentryBundle\ZcoSentryBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
+            $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
-            $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
+            $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
         }
 
         return $bundles;
@@ -96,33 +96,42 @@ class AppKernel extends Kernel
      */
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
-        $loader->load(__DIR__ . '/config/config_' . $this->getEnvironment() . '.dist.yml');
+        $loader->load(__DIR__ . '/config/config_' . $this->getEnvironment() . '.yml');
 
-        if (is_file(__DIR__ . '/config/config_' . $this->getEnvironment() . '.yml')) {
-            $loader->load(__DIR__ . '/config/config_' . $this->getEnvironment() . '.yml');
-        }
+        //Environment variables should overwrite default parameters.
+        //See: https://github.com/symfony/symfony/issues/7555#issuecomment-15856713
+        //TODO: remove this when we migrate to Symfony 3.2
+        $envParameters = $this->getEnvParameters();
+        $loader->load(function(ContainerBuilder $container) use($envParameters) {
+            $container->getParameterBag()->add($envParameters);
+        });
     }
 
     /**
-     * Gère le passage automatique vers le site de tests si celui-ci est 
-     * ouvert et que l'utilisateur en a émis le souhait. Rien d'automatisé 
-     * n'est en place, il faut (dé)commenter cette section de code.
+     * {@inheritdoc}
      */
-    /* public function onKernelRequest(GetResponseEvent $event)
-      {
-      if (isset($_COOKIE['beta_tests']) && $_COOKIE['beta_tests'] === 'participer' && substr($_SERVER['SERVER_NAME'], 0, strpos($_SERVER['SERVER_NAME'], '.')) !== 'test')
-      {
-      if ($this->getEnvironment() === 'prod')
-      {
-      $url = 'test'.substr($_SERVER['SERVER_NAME'], strpos($_SERVER['SERVER_NAME'], '.'));
-      }
-      else
-      {
-      $url = 'test.'.$_SERVER['SERVER_NAME'];
-      }
+    public function getCacheDir()
+    {
+        return '/var/cache/symfony/' . $this->environment;
+    }
 
-      $event->setProcessed(true);
-      $event->setReturnValue(new Symfony\Component\HttpFoundation\RedirectResponse('//'.$url.$_SERVER['REQUEST_URI']));
-      }
-      } */
+    /**
+     * {@inheritdoc}
+     */
+    public function getLogDir()
+    {
+        return '/var/log/symfony';
+    }
+
+    protected function getEnvParameters()
+    {
+        $parameters = array();
+        foreach (array_merge($_ENV, $_SERVER) as $key => $value) {
+            if (0 === strpos($key, 'SYMFONY__')) {
+                $parameters[strtolower(str_replace('__', '.', substr($key, 9)))] = $value;
+            }
+        }
+
+        return $parameters;
+    }
 }

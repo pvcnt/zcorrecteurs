@@ -106,9 +106,6 @@ class DefaultController extends Controller
 			$ip = $_GET['ip'];
 			$match = explode('.', $ip);
 
-			//Inclusion de la librairie
-			include_once(BASEPATH.'/vendor/geoip/geoipcity.php');
-
 			//Si l'adresse est spécifique (type localhost)
 			if ($match[0] == '127' or $match[0] == '10' or ($match[0] == '172' and $match[1] >= '16' and $match[1] <= '31') or ($match[0] == '192' and $match[1] == '168'))
 			{

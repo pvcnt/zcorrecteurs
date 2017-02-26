@@ -32,70 +32,59 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ZcoDoctrine1Bundle extends Bundle
 {
-	/**
-	 * {@inheritdoc}
-	 */
-	public function boot()
-	{
-		try
-		{
-			$dbh  = $this->container->get('zco_doctrine1.adapter.pdo');
-			$conn = \Doctrine_Manager::connection($dbh, 'doctrine');
-			$conn->setOption('dsn', $dbh->getDsn());
-			$conn->setOption('username', $dbh->getUsername());
-			$conn->setOption('password', $dbh->getPassword());
-		}
-		catch (\Exception $e)
-		{
-			if ($this->container->getParameter('kernel.debug'))
-			{
-				throw $e;
-			}
-			
-			header('HTTP/1.1 503 Temporarily unavailable');
-			readfile(__DIR__.'/Resources/views/sqlDown.html');
-			exit();
-		}
+    /**
+     * {@inheritdoc}
+     */
+    public function boot()
+    {
+        try {
+            $dbh = $this->container->get('zco_doctrine1.adapter.pdo');
+            $conn = \Doctrine_Manager::connection($dbh, 'doctrine');
+            $conn->setOption('dsn', 'mysql:dbname=' . $this->container->getParameter('database.base') . ';host=' . $this->container->getParameter('database.host'));
+            $conn->setOption('username', $this->container->getParameter('database.username'));
+            $conn->setOption('password', $this->container->getParameter('database.password'));
+        } catch (\Exception $e) {
+            if ($this->container->getParameter('kernel.debug')) {
+                throw $e;
+            }
 
-		//Configure le chargement des modèles.
-		//TODO: mettre ça en cache lors de la génération des modèles.
-		$directories = array();
-		foreach ($this->container->get('kernel')->getBundles() as $bundle)
-		{
-		    if (is_dir($bundle->getPath().'/Entity'))
-		    {
-		        $directories[] = $bundle->getPath().'/Entity';
-		    }
-		}
-		
-		//Les modèles générés sont cherchés en cache, les autres sont cherchés 
-		//directement dans les bundles.
-		$dir = $this->container->getParameter('kernel.cache_dir').'/zco_doctrine1/generated';
-		spl_autoload_register(function($className) use($directories, $dir)
-		{
-		    if (strpos($className, 'Base') === 0)
-		    {
-		        if (is_file($file = $dir.'/'.$className.'.class.php'))
-		        {
-		            include($file);
-		            return true;
-		        }
-		    }
-		    
-		    foreach ($directories as $dir)
-		    {
-		        if (is_file($file = $dir.'/'.$className.'.class.php'))
-		        {
-		            include($file);
-		            return true;
-		        }
-		    }
-		    
-		    return false;
-		});
-		
-		//Configure Doctrine.
-		$manager = \Doctrine_Manager::getInstance();
-		$manager->setAttribute(\Doctrine_Core::ATTR_TBLNAME_FORMAT, $this->container->getParameter('database.prefix').'%s');
-	}
+            header('HTTP/1.1 503 Temporarily unavailable');
+            readfile(__DIR__ . '/Resources/views/sqlDown.html');
+            exit();
+        }
+
+        //Configure le chargement des modèles.
+        //TODO: mettre ça en cache lors de la génération des modèles.
+        $directories = array();
+        foreach ($this->container->get('kernel')->getBundles() as $bundle) {
+            if (is_dir($bundle->getPath() . '/Entity')) {
+                $directories[] = $bundle->getPath() . '/Entity';
+            }
+        }
+
+        //Les modèles générés sont cherchés en cache, les autres sont cherchés
+        //directement dans les bundles.
+        $dir = $this->container->getParameter('kernel.cache_dir') . '/zco_doctrine1/generated';
+        spl_autoload_register(function ($className) use ($directories, $dir) {
+            if (strpos($className, 'Base') === 0) {
+                if (is_file($file = $dir . '/' . $className . '.class.php')) {
+                    include($file);
+                    return true;
+                }
+            }
+
+            foreach ($directories as $dir) {
+                if (is_file($file = $dir . '/' . $className . '.class.php')) {
+                    include($file);
+                    return true;
+                }
+            }
+
+            return false;
+        });
+
+        //Configure Doctrine.
+        $manager = \Doctrine_Manager::getInstance();
+        $manager->setAttribute(\Doctrine_Core::ATTR_TBLNAME_FORMAT, 'zcov2_%s');
+    }
 }

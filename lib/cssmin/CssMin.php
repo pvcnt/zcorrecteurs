@@ -25,7 +25,7 @@
  * @copyright Copyright 2010 Wikimedia Foundation
  * @license http://www.apache.org/licenses/LICENSE-2.0
  */
-class CSSMin {
+class CssMin {
 
 	/* Constants */
 

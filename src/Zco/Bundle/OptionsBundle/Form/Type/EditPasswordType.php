@@ -22,7 +22,9 @@
 namespace Zco\Bundle\OptionsBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zco\Bundle\OptionsBundle\Form\Model\EditPassword;
 
 /**
  * Formulaire de modification du mot de passe d'un utilisateur.
@@ -31,37 +33,26 @@ use Symfony\Component\Form\FormBuilder;
  */
 class EditPasswordType extends AbstractType
 {
-	/**
-	 * {@inheritdoc}
-	 */
-	public function buildForm(FormBuilder $builder, array $options)
-	{
-		$builder->add('current', 'password', array(
-			'label' => 'Votre mot de passe', 
-		));
-		$builder->add('new', 'repeated', array(
-			'type'  => 'password',
-			'first_name' => 'Nouveau mot de passe',
-			'second_name' => 'Confirmez le mot de passe',
-			'invalid_message' => 'Saisissez deux fois le même mot de passe.',
-		));
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->add('current', 'password', array(
+            'label' => 'Votre mot de passe',
+        ));
+        $builder->add('new', 'repeated', array(
+            'type' => 'password',
+            'first_name' => 'Nouveau mot de passe',
+            'second_name' => 'Confirmez le mot de passe',
+            'invalid_message' => 'Saisissez deux fois le même mot de passe.',
+        ));
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getName()
-	{
-		return 'zco_options_editPassword';
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getDefaultOptions(array $options)
-	{
-		return array(
-			'data_class' => 'Zco\Bundle\OptionsBundle\Form\Model\EditPassword',
-		);
-	}
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' => EditPassword::class,
+        ]);
+    }
 }

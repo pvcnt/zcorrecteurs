@@ -19,70 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-if (!class_exists('Symfony\Component\ClassLoader\UniversalClassLoader', false)) {
-    include(__DIR__ . '/../vendor/symfony/src/Symfony/Component/ClassLoader/UniversalClassLoader.php');
-}
+use Doctrine\Common\Annotations\AnnotationRegistry;
+use Composer\Autoload\ClassLoader;
 
-use Symfony\Component\ClassLoader\UniversalClassLoader;
+/**
+ * @var $loader ClassLoader
+ */
+$loader = require __DIR__ . '/../vendor/autoload.php';
 
-$loader = new UniversalClassLoader();
-$loader->registerNamespaces(array(
-    'Symfony' => array(__DIR__ . '/../vendor/symfony/src', __DIR__ . '/../vendor/bundles'),
-    'Sensio'           => __DIR__ . '/../vendor/bundles',
-    'Doctrine\\Bundle' => __DIR__ . '/../vendor/bundles',
-    'Doctrine\\Common' => __DIR__ . '/../vendor/doctrine-common/lib',
-    'Doctrine\\DBAL'   => __DIR__ . '/../vendor/doctrine-dbal/lib',
-    'Doctrine'         => __DIR__ . '/../vendor/doctrine/lib',
-    'Monolog'          => __DIR__ . '/../vendor/monolog/src',
-    'Assetic'          => __DIR__ . '/../vendor/assetic/src',
-    'Metadata'         => __DIR__ . '/../vendor/metadata/src',
-    'JMS'              => __DIR__ . '/../vendor/bundles',
-    'Zco'              => __DIR__ . '/../src',
-    'Knp'              => __DIR__ . '/../vendor/KnpMenu/src',
-    'Knp\Bundle'       => __DIR__ . '/../vendor/bundles',
-    'Knp\Component'    => __DIR__ . '/../vendor/knp-components/src',
-    'Gaufrette'        => __DIR__ . '/../vendor/gaufrette/src',
-    'Imagine'          => __DIR__ . '/../vendor/imagine/lib',
-    'Avalanche'        => __DIR__ . '/../vendor/bundles',
-    'FOS'              => __DIR__ . '/../vendor/bundles',
-    'Mopa'             => __DIR__ . '/../vendor/bundles',
-    'Bazinga'          => __DIR__ . '/../vendor/bundles',
-    'Geocoder'         => __DIR__ . '/../vendor/geocoder/src',
-));
+AnnotationRegistry::registerLoader(array($loader, 'loadClass'));
 
-$loader->registerPrefixes(array(
-    'Twig_Extensions_'   => __DIR__ . '/../vendor/twig-extensions/lib',
-    'Twig_'              => __DIR__ . '/../vendor/twig/lib',
-    'Doctrine_'          => __DIR__ . '/../vendor/doctrine1',
-    'Resque'             => __DIR__ . '/../vendor/resque/lib',
-    'sfYaml'             => __DIR__ . '/../vendor/doctrine1/vendor/sfYaml',
-    'CssMin'             => __DIR__ . '/../vendor/cssmin',
-    'JavascriptMinifier' => __DIR__ . '/../vendor/jsmin',
-));
-
-$prefixFallbacks = array(__DIR__ . '/../src/kernel');
-
-// intl
-if (!function_exists('intl_get_error_code')) {
-    require_once __DIR__ . '/../vendor/symfony/src/Symfony/Component/Locale/Resources/stubs/functions.php';
-    $prefixFallbacks[] = __DIR__ . '/../vendor/symfony/src/Symfony/Component/Locale/Resources/stubs';
-}
-
-$loader->registerPrefixFallbacks($prefixFallbacks);
-
-$loader->registerNamespaceFallbacks(array(
-    __DIR__ . '/../src',
-));
-$loader->register();
-
-// Include useful files
-include(__DIR__ . '/../src/kernel/Zingle.php');
-include(__DIR__ . '/lib/functions.php');
-include(__DIR__ . '/../src/Zco/Component/Util/utils.php');
-include(__DIR__ . '/config/constants.php');
-include(__DIR__ . '/lib/zCorrecteurs.php');
-
-// Swiftmailer needs a special autoloader to allow
-// the lazy loading of the init file (which is expensive)
-require_once __DIR__ . '/../vendor/swiftmailer/lib/classes/Swift.php';
-Swift::registerAutoload(__DIR__ . '/../vendor/swiftmailer/lib/swift_init.php');
+return $loader;

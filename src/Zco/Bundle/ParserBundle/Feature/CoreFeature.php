@@ -516,8 +516,6 @@ class CoreFeature implements EventSubscriberInterface
 	 */
 	private static function colorerCode_c($code, $langage, $premiereLigne, $minicode)
 	{
-		include_once(BASEPATH.'/vendor/xmlrpc/xmlrpc.inc');
-
 		$client = new \xmlrpc_client('/', 'localhost', 21287);
 		$client->return_type = 'phpvals';
 		$client->request_charset_encoding = 'UTF-8';
@@ -539,8 +537,7 @@ class CoreFeature implements EventSubscriberInterface
 	 */
 	public static function nomCode($langage)
 	{
-		return isset(self::$langages[$langage]) ?
-			self::$langages[$langage][1] : 'Autre';
+		return isset(self::$langages[$langage]) ? self::$langages[$langage][1] : 'Autre';
 	}
 
 	/**
@@ -551,8 +548,7 @@ class CoreFeature implements EventSubscriberInterface
 	 */
 	public static function typeCode($langage)
 	{
-		return isset(self::$langages[$langage]) ?
-			' '.$langage : '';
+		return isset(self::$langages[$langage]) ? ' '.$langage : '';
 	}
 	
 	/**
@@ -566,8 +562,8 @@ class CoreFeature implements EventSubscriberInterface
 		$dbh = \Doctrine_Manager::connection()->getDbh();
 
 		$stmt = $dbh->prepare('SELECT message_sujet_id, utilisateur_pseudo '
-			.'FROM '.\Container::getParameter('database.prefix').'forum_messages '
-			.'LEFT JOIN '.\Container::getParameter('database.prefix').'utilisateurs '
+			.'FROM zcov2_forum_messages '
+			.'LEFT JOIN zcov2_utilisateurs '
 			.'ON message_auteur = utilisateur_id '
 			.'WHERE message_id = :message');
 

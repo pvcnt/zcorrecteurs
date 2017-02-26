@@ -13,7 +13,7 @@
  * License: choose any of Apache, MIT, GPL, LGPL
  */
 
-class JavaScriptMinifier {
+class JavascriptMinifier {
 
 	/* Class constants */
 	/* Parsing states.
