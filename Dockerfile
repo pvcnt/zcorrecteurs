@@ -67,7 +67,7 @@ ENV DEBUG false
 
 # First download PHP dependencies.
 WORKDIR /opt/app
-COPY composer.json composer.lock /opt/app
+COPY composer.json composer.lock /opt/app/
 RUN gosu www-data composer install --no-dev --no-progress --no-scripts --optimize-autoloader
 
 # Then add source code.
