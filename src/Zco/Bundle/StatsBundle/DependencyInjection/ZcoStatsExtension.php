@@ -19,10 +19,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\StatistiquesBundle;
+namespace Zco\Bundle\StatsBundle\DependencyInjection;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-class ZcoStatistiquesBundle extends Bundle
+/**
+ * ZcoStatistiquesExtension.
+ *
+ * @author vincent1870 <vincent@zcorrecteurs.fr>
+ */
+class ZcoStatsExtension extends Extension
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function load(array $configs, ContainerBuilder $container)
+    {
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader->load('services.yml');
+    }
 }

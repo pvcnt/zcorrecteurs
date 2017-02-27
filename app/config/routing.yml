@@ -14,7 +14,7 @@ zco_parser:
     resource: "@ZcoParserBundle/Resources/config/routing.yml"
 
 zco_stats:
-    resource: "@ZcoStatistiquesBundle/Resources/config/routing.yml"
+    resource: "@ZcoStatsBundle/Resources/config/routing.yml"
 
 zco_twitter:
     resource: "@ZcoTwitterBundle/Resources/config/routing/index.yml"

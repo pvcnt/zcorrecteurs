@@ -18,8 +18,8 @@ Voir les inscriptions :
         <a href="<?php echo $view['router']->path('zco_stats_registration', ['type' => '1' . $type, 'annee' => $annee, 'mois' => $moisDepartDeUn, 'jour' => $jourDepartDeUn + 1]) ?>">&raquo;</a>
     </p>
 <?php } elseif ($classementPere === 'Mois') { ?>
-    <a href="<?php echo $view['router']->path('zco_stats_registration', ['type' => 11, 'annee' => $annee, 'mois' => $moisDepartDeUn]) ?>">par jour</a>
-    <a href="<?php echo $view['router']->path('zco_stats_registration', ['type' => 12, 'annee' => $annee, 'mois' => $moisDepartDeUn]) ?>">par jour de la semaine</a>
+    <a href="<?php echo $view['router']->path('zco_stats_registration', ['type' => 11, 'annee' => $annee, 'mois' => $moisDepartDeUn]) ?>">par jour</a> -
+    <a href="<?php echo $view['router']->path('zco_stats_registration', ['type' => 12, 'annee' => $annee, 'mois' => $moisDepartDeUn]) ?>">par jour de la semaine</a> -
     <a href="<?php echo $view['router']->path('zco_stats_registration', ['type' => 13, 'annee' => $annee, 'mois' => $moisDepartDeUn]) ?>">par heure</a>
     <p class="center">
         <a href="<?php echo $view['router']->path('zco_stats_registration', ['type' => '1' . $type, 'annee' => $annee, 'mois' => $moisDepartDeUn - 1]) ?>">&laquo;</a>
@@ -27,7 +27,7 @@ Voir les inscriptions :
         <a href="<?php echo $view['router']->path('zco_stats_registration', ['type' => '1' . $type, 'annee' => $annee, 'mois' => $moisDepartDeUn + 1]) ?>">&raquo;</a>
     </p>
 <?php } else { ?>
-    <a href="<?php echo $view['router']->path('zco_stats_registration', ['type' => 12, 'annee' => $annee]) ?>">par jour de la semaine</a>
+    <a href="<?php echo $view['router']->path('zco_stats_registration', ['type' => 12, 'annee' => $annee]) ?>">par jour de la semaine</a> -
     <a href="<?php echo $view['router']->path('zco_stats_registration', ['type' => 13, 'annee' => $annee]) ?>">par heure</a>
     <p class="center">
         <a href="<?php echo $view['router']->path('zco_stats_registration', ['type' => '1' . $type, 'annee' => $annee - 1]) ?>">&laquo;</a>

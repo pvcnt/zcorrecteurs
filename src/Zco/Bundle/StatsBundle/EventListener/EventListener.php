@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\StatistiquesBundle\EventListener;
+namespace Zco\Bundle\StatsBundle\EventListener;
 
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -28,7 +28,7 @@ use Zco\Bundle\AdminBundle\AdminEvents;
 use Zco\Bundle\CoreBundle\CoreEvents;
 use Zco\Bundle\CoreBundle\Event\CronEvent;
 use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
-use Zco\Bundle\StatistiquesBundle\Service\AlexaStatsService;
+use Zco\Bundle\StatsBundle\Service\AlexaStatsService;
 
 /**
  * Observateur principal pour le module de statistiques.

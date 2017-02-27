@@ -18,7 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\StatistiquesBundle\Service;
+namespace Zco\Bundle\StatsBundle\Service;
 
 /**
  * Stats Alexa

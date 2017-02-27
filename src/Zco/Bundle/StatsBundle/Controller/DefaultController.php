@@ -18,18 +18,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\StatistiquesBundle\Controller;
+namespace Zco\Bundle\StatsBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Zco\Bundle\StatistiquesBundle\Service\AgesChartService;
-use Zco\Bundle\StatistiquesBundle\Service\AlexaChartService;
-use Zco\Bundle\StatistiquesBundle\Service\AlexaStatsService;
-use Zco\Bundle\StatistiquesBundle\Service\LocationChartService;
-use Zco\Bundle\StatistiquesBundle\Service\RegistrationChartService;
-use Zco\Bundle\StatistiquesBundle\Service\UserStatsService;
+use Zco\Bundle\StatsBundle\Service\AgesChartService;
+use Zco\Bundle\StatsBundle\Service\AlexaChartService;
+use Zco\Bundle\StatsBundle\Service\AlexaStatsService;
+use Zco\Bundle\StatsBundle\Service\LocationChartService;
+use Zco\Bundle\StatsBundle\Service\RegistrationChartService;
+use Zco\Bundle\StatsBundle\Service\UserStatsService;
 
 class DefaultController extends Controller
 {
@@ -46,7 +46,7 @@ class DefaultController extends Controller
         $year = $this->getYearOrCurrent();
         $month = $this->getMonth();
 
-        return render_to_response('ZcoStatistiquesBundle::alexa.html.php', array(
+        return render_to_response('ZcoStatsBundle::alexa.html.php', array(
             'Rangs' => $statsService->find($year, $month),
             'Mois' => $month,
             'Annee' => $year,
@@ -133,7 +133,7 @@ class DefaultController extends Controller
         $moyenne['moyenne_ppd'] = round($somme['somme_ppd'] / $nombreEntrees, 1);
         $moyenne['moyenne_ppt'] = round($somme['somme_ppt'] / $nombreEntrees, 1);
 
-        return render_to_response('ZcoStatistiquesBundle::registration.html.php', get_defined_vars());
+        return render_to_response('ZcoStatsBundle::registration.html.php', get_defined_vars());
     }
 
     public function registrationChartAction()
@@ -178,7 +178,7 @@ class DefaultController extends Controller
         $statsService = $this->get('zco_stats.user_stats');
         list($Stats, $NbUtilisateurs) = $statsService->getLocationStats();
 
-        return render_to_response('ZcoStatistiquesBundle::location.html.php', array(
+        return render_to_response('ZcoStatsBundle::location.html.php', array(
             'Stats' => $Stats,
             'NbUtilisateurs' => $NbUtilisateurs
         ));
@@ -228,7 +228,7 @@ class DefaultController extends Controller
         \Page::$titre = 'Répartition des membres selon l\'âge';
         fil_ariane(['Administration' => $this->generateUrl('zco_admin_index'), 'Statistiques d\'âge des membres']);
 
-        return render_to_response('ZcoStatistiquesBundle::ages.html.php', [
+        return render_to_response('ZcoStatsBundle::ages.html.php', [
             'afficherGroupe' => $afficherGroupe,
             'listeGroupes' => $listeGroupes,
             'repartitionAges' => $repartitionAges,
