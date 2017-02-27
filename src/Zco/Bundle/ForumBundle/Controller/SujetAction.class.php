@@ -57,23 +57,6 @@ class SujetAction extends ForumActions
 			Page::$titre .= ' - Page '.$_GET['p'];
 		}
 
-		//-- Si on veut poster un message automatique ---
-		if(!empty($_POST['message']) AND is_numeric($_POST['message']) AND verifier('poster_reponse_auto', $InfosSujet['sujet_forum_id']))
-		{
-			$message = Doctrine_Core::getTable('ForumMessageAuto')->find($_POST['message']);
-			if ($message !== false)
-			{
-				$_POST['texte'] = $message['texte'];
-				$ferme = $message['ferme'] ? 1 : $InfosSujet['sujet_ferme'];
-				$resolu = $message['resolu'] ? 1 : $InfosSujet['sujet_resolu'];
-				$nouveau_message_id = EnregistrerNouveauMessage($_GET['id'], $InfosSujet['sujet_forum_id'],
-					$InfosSujet['sujet_annonce'], $ferme, $resolu,
-					$InfosSujet['sujet_corbeille'], $InfosSujet['sujet_auteur']);
-				
-				return redirect(66, 'sujet-'.$_GET['id'].'-'.$nouveau_message_id.'-'.rewrite($InfosSujet['sujet_titre']).'.html');
-			}
-		}
-
 		//--- Si on veut ajouter un sondage au sujet ---
 		elseif(verifier('ajouter_sondages', $InfosSujet['sujet_forum_id']) &&
 			!empty($_POST['ajouter_sondage']) &&
@@ -229,9 +212,7 @@ class SujetAction extends ForumActions
 			OR verifier('epingler_sujets', $InfosSujet['sujet_forum_id'])
 			OR verifier('fermer_sujets', $InfosSujet['sujet_forum_id'])
 			OR verifier('editer_sujets', $InfosSujet['sujet_forum_id'])
-			OR verifier('poster_reponse_auto', $InfosSujet['sujet_forum_id'])
 			OR verifier('mettre_sujets_coup_coeur')
-			OR verifier('code')
 			OR
 			(
 				verifier('fermer_sondage', $InfosSujet['sujet_forum_id']) AND !empty($InfosSujet['sujet_sondage'])

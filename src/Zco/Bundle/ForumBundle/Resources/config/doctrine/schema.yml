@@ -33,13 +33,3 @@ ForumMessage:
     Utilisateur:             { local: message_auteur, foreign: utilisateur_id }
     Editeur:                 { class: Utilisateur, local: message_edite_auteur, foreign: utilisateur_id }
     Sujet:                   { class: ForumSujet, local: sujet_id, foreign: sujet_id }
-
-ForumMessageAuto:
-  tableName: zcov2_forum_messages_autos
-  columns:
-    id:                 { type: integer(1), primary: true, autoincrement: true }
-    nom:                { type: string(255) }
-    tag:                { type: string(255) }
-    texte:              { type: string() }
-    ferme:              { type: boolean }
-    resolu:             { type: boolean }
