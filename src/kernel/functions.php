@@ -786,3 +786,110 @@ function sizeformat($size)
     if (($size /= 1024) < 1024) return round($size, 2) . ' Zo';
     return round($size, 2) . ' Yo';
 }
+
+/**
+ * Génère un fil d'Ariane.
+ *
+ * @param integer $id L'id de la catégorie de base.
+ * @param array $enfants Les éléments additionnels à ajouter.
+ */
+function fil_ariane($id = null, $enfants = array())
+{
+    $appendTitle = !($id === null && empty($enfants));
+
+    //Détection de l'id de catégorie de base si besoin
+    if (!is_numeric($id) && $id !== null) {
+        $enfants = $id;
+    }
+    if (is_null($id) || !is_numeric($id)) {
+        $id = GetIDCategorieCourante();
+    }
+
+    $ListerParents = ListerParents($id, true);
+    if (empty($ListerParents)) {
+        $ListerParents = ListerParents(GetIDCategorie('informations'), false);
+    }
+
+    $items = array();
+    $url = '';
+
+    //Ajout automatique des parents
+    foreach ($ListerParents as $i => $p) {
+        if (!empty($p['cat_url']) && ($appendTitle || $i < count($ListerParents) - 1)) {
+            if (!preg_match('`\.`', $url))
+                $url .= FormateURLCategorie($p['cat_id']);
+            else
+                $url = FormateURLCategorie($p['cat_id']);
+            $items[] = '<a href="' . $url . '">' . htmlspecialchars($p['cat_nom']) . '</a>';
+        } else {
+            $items[] = htmlspecialchars($p['cat_nom']);
+        }
+    }
+
+    //Ajout des enfants à la main
+    if (!is_array($enfants)) {
+        $enfants = array($enfants);
+    }
+    foreach ($enfants as $cle => $valeur) {
+        if (!empty($cle)) {
+            $items[] = '<a href="' . $valeur . '">' . $cle . '</a>';
+        } else {
+            $items[] = $valeur;
+        }
+    }
+
+    Page::$fil_ariane = $items;
+}
+
+function extrait($texte, $taille = 50)
+{
+    $extrait = wordwrap($texte, $taille);
+    $extrait = explode("\n", $extrait);
+    if ($extrait[0] != $texte)
+        $extrait[0] .= '…';
+    return $extrait[0];
+}
+
+/**
+ * Réalise un diff entre deux chaines de caractères.
+ *
+ * @param string $old L'ancienne chaine de caractères.
+ * @param string $new La nouvelle chaine de caractères.
+ * @param bool $new Renvoyer le diff brut ?
+ * @return string
+ */
+function diff($old, $new, $raw = false)
+{
+    include_once(BASEPATH . '/lib/diff/diff.php');
+    include_once(BASEPATH . '/lib/diff/htmlformatter.php');
+
+    $old = explode("\n", $raw ? $old : strip_tags($old));
+    $new = explode("\n", $raw ? $new : strip_tags($new));
+
+    $diff = new Diff($old, $new);
+    if ($raw)
+        $formatter = new UnifiedDiffFormatter();
+    else    $formatter = new HTMLDiffFormatter();
+
+    return $formatter->format($diff);
+}
+
+/**
+ * Affiche un message de confirmation
+ *
+ * @param string $message Le message à afficher
+ */
+function afficher_message($message)
+{
+    echo '<p class="UI_infobox">' . $message . '</p>';
+}
+
+/**
+ * Affiche un message d'erreur
+ *
+ * @param string $message Le message à afficher
+ */
+function afficher_erreur($message)
+{
+    echo '<p class="UI_errorbox">' . $message . '</p>';
+}

@@ -21,10 +21,23 @@
 
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Zco\Component\HttpKernel\Kernel;
+use Zco\Component\HttpKernel\Bundle\AbstractBundle;
+use Symfony\Component\HttpKernel\Kernel;
 
 class AppKernel extends Kernel
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct($environment, $debug = false)
+    {
+        parent::__construct($environment, $debug);
+
+        date_default_timezone_set('Europe/Paris');
+        setlocale(LC_ALL, 'fr_FR.UTF-8');
+        mb_internal_encoding('UTF-8');
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -42,12 +55,12 @@ class AppKernel extends Kernel
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new Bazinga\Bundle\GeocoderBundle\BazingaGeocoderBundle(),
-            
+
             //Bundles nécessaires pour que les modules fonctionnent.
             new Zco\Bundle\CoreBundle\ZcoCoreBundle(),
             new Zco\Bundle\ParserBundle\ZcoParserBundle(),
             new Zco\Bundle\UserBundle\ZcoUserBundle(),
-            
+
             //Modules du site.
             new Zco\Bundle\AdminBundle\ZcoAdminBundle(),
             new Zco\Bundle\PagesBundle\ZcoPagesBundle(),
@@ -92,7 +105,7 @@ class AppKernel extends Kernel
         //See: https://github.com/symfony/symfony/issues/7555#issuecomment-15856713
         //TODO: remove this when we migrate to Symfony 3.2
         $envParameters = $this->getEnvParameters();
-        $loader->load(function(ContainerBuilder $container) use($envParameters) {
+        $loader->load(function (ContainerBuilder $container) use ($envParameters) {
             $container->getParameterBag()->add($envParameters);
         });
     }
@@ -123,5 +136,30 @@ class AppKernel extends Kernel
         }
 
         return $parameters;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function boot()
+    {
+        parent::boot();
+
+        \Config::load('constants');
+        foreach ($this->bundles as $name => $bundle) {
+            if ($bundle instanceof AbstractBundle) {
+                $bundle->preload();
+            }
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function initializeContainer()
+    {
+        parent::initializeContainer();
+        //Injecte le DIC dans le singleton \Container pour assurer la compatibilité descendante.
+        \Container::setInstance($this->container);
     }
 }

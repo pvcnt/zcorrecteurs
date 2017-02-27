@@ -21,10 +21,8 @@
       "lib/Sphinx"
     ],
     "files": [
-      "src/kernel/Zingle.php",
-      "app/config/constants.php",
-      "app/lib/functions.php",
-      "app/lib/zCorrecteurs.php"
+      "src/kernel/functions.php",
+      "app/config/constants.php"
     ]
   },
   "require": {

@@ -6,7 +6,7 @@
 /vendor/
 /bin/
 !/bin/sphinx
-!/bin/phplint.sh
+!/bin/coala
 
 /app/cache/*
 /app/logs/*
