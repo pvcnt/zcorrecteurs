@@ -21,13 +21,11 @@
 
 namespace Zco\Bundle\FileBundle\Controller;
 
-use Zco\Bundle\FileBundle\Mediawiki\API;
-use Zco\Bundle\FileBundle\Mediawiki\Request as MWRequest;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Contrôleur par défaut gérant les actions accessibles depuis l'interface.
@@ -37,6 +35,7 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 class DefaultController extends Controller
 {
 	private $smartFolders;
+	private $contentFolders;
 	
 	/**
 	 * Constructeur.
@@ -52,6 +51,7 @@ class DefaultController extends Controller
 	 * l'utilisateur souhaite envoyer vers le module.
 	 *
 	 * @param Request $request
+     * @return Response
 	 */
 	public function indexAction(Request $request)
 	{
@@ -95,6 +95,7 @@ class DefaultController extends Controller
 	 * attendus sous la clé "file".
 	 *
 	 * @param Request $request
+     * @return Response
 	 */
 	public function uploadAction(Request $request)
 	{
@@ -147,31 +148,7 @@ class DefaultController extends Controller
 				'textarea' => $vars['textarea'],
 			))
 		);
-		
-		return new Response(json_encode($response));
-	}
-	
-	/**
-	 * Affichage d'une page permettant de rechercher rapidement des images 
-	 * sur Wikimédia Commons.
-	 *
-	 * @param Request $request
-	 */
-	public function commonsAction(Request $request)
-	{
-		if (!verifier('connecte'))
-		{
-			throw new AccessDeniedHttpException();
-		}
-		
-		\Page::$titre = 'Rechercher des fichiers sur Wikimédia Commons';
-		
-		return render_to_response(
-			'ZcoFileBundle::commons.html.php', $this->getVariables($request, array(
-				'currentPage' => 'commons',
-			))
-		);
-	}
+    }
 	
 	/**
 	 * Affichage des fichiers contenus dans un dossier.
@@ -179,6 +156,7 @@ class DefaultController extends Controller
 	 * @param Request $request
 	 * @param integer $id
 	 * @param string $entities
+     * @return Response
 	 */
 	public function folderAction(Request $request, $id, $entities)
 	{
@@ -225,6 +203,7 @@ class DefaultController extends Controller
 	 * 
 	 * @param Request $request
      * @param integer $id
+     * @return Response
 	 */
 	public function fileAction(Request $request, $id)
 	{

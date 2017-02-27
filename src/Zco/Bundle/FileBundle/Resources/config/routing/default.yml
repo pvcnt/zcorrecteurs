@@ -20,15 +20,3 @@ zco_file_file:
     options:   { expose: true }
     requirements:
         id: \d+
-
-zco_file_commons:
-    pattern:   /commons
-    defaults:  { _controller: ZcoFileBundle:Default:commons }
-    requirements:
-        id: \d+
-                
-zco_file_commons_file:
-    pattern:   /commons/{id}
-    defaults:  { _controller: ZcoFileBundle:Default:commonsFile }
-    requirements:
-        id: \d+

@@ -21,13 +21,10 @@
 
 namespace Zco\Bundle\FileBundle\Controller;
 
-use Zco\Bundle\FileBundle\Mediawiki\Request as MWRequest;
-use Zco\Bundle\FileBundle\Exception\UploadRejectedException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Contrôleur gérant toutes les actions liées à l'API du bundle. Ces actions 
@@ -67,59 +64,6 @@ class ApiController extends Controller
 				'thumbnail_path' => htmlspecialchars($file->getImageWebPath()),
 				'path'		     => htmlspecialchars($file->getWebPath()),
 			);
-		}
-		
-		return new Response(json_encode($response));
-	}
-	
-	/**
-	 * Effectue une recherche sur Wikimédia Commons pour trouver une liste de 
-	 * fichiers correspondant à une chaîne de recherche donnée.
-	 *
-	 * @return Response Réponse JSON contenant la liste des fichiers retrouvés
-	 *				  (les données sont formatées et prêtes à l'affichage)
-	 */
-	public function searchCommonsAction()
-	{
-		if (!verifier('connecte'))
-		{
-			throw new AccessDeniedHttpException();
-		}
-		
-		$search   = isset($_POST['search']) ? trim($_POST['search']) : '';
-		$response = array();
-		
-		if (!empty($search))
-		{
-			$request = new MWRequest\Query();
-			$request->useGenerator('allimages', array(
-				'limit' => 10,
-				'from' => $search,
-			));
-			$request->useProperty('categories', array(
-				'clshow' => 'hidden',
-			));
-			$request->useProperty('imageinfo', array(
-				'prop' => array('size', 'mime', 'timestamp', 'url'),
-				'urlwidth' => 150,
-				'urlheight' => 80,
-			));
-			
-			$ret = $this->get('zco_file.mediawiki_api.wikimedia_commons')
-				->request($request);
-			$files = $ret['query']['pages'];
-			
-			foreach ($files as $i => $file)
-			{
-				$response[] = array(
-					'id'			 => (int) $file['pageid'],
-					'name'		   => substr($file['title'], strpos($file['title'], ':') + 1),
-					'size'		   => sizeformat($file['imageinfo'][0]['size']),
-					'date'		   => dateformat($file['imageinfo'][0]['timestamp']),
-					'thumbnail_path' => !empty($file['imageinfo'][0]['thumberror']) ? '/bundles/fichiers/img/placeholder.png' : htmlspecialchars($file['imageinfo'][0]['thumburl']),
-					'path'		   => htmlspecialchars($file['imageinfo'][0]['descriptionurl']),
-				);
-			}
 		}
 		
 		return new Response(json_encode($response));

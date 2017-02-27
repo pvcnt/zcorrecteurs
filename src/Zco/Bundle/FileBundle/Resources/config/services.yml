@@ -3,10 +3,6 @@ services:
         class: Zco\Bundle\FileBundle\Util\FileUploader
         arguments: [@gaufrette.uploads_filesystem, @imagine, @event_dispatcher]
 
-    zco_file.mediawiki_api.wikimedia_commons:
-        class: Zco\Bundle\FileBundle\Mediawiki\API
-        arguments: ['http://commons.wikimedia.org/w/api.php']
-
     zco_file.parser_feature.files:
         class: Zco\Bundle\FileBundle\Parser\Feature\FilesFeature
         arguments: [@gaufrette.uploads_filesystem, @imagine]

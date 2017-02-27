@@ -29,12 +29,6 @@ zco_file_api_search:
     requirements:
         folder: \d+
 
-zco_file_api_search_commons:
-    pattern:   /recherche/commons
-    defaults:  { _controller: ZcoFileBundle:Api:searchCommons, _format: json }
-    options:   { expose: true }
-    methods:   [POST]
-
 zco_file_api_usage:
     pattern:   /usage
     defaults:  { _controller: ZcoFileBundle:Api:usage, _format: json }

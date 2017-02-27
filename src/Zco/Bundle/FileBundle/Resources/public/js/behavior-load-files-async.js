@@ -23,13 +23,12 @@ Behavior.create('zco-files-load-files-async', function(config, statics)
 		config.contentFolder ? {"entities": config.contentFolder} : {}, 
 		config.urlExtraData
 	));
-	var isCommons = (config.folder == 'commons');
 	var button = document.id('delete_button');
 	var timer;
 		
 	var noData = new Element('p')
-		.set('html', 'Aucun fichier correspondant n’a été trouvé.<br />' 
-		+ (!isCommons ? '<a href="' + Routing.generate('zco_file_index') + '">Je veux en envoyer maintenant !</a>' : ''));
+		.set('html', 'Aucun fichier correspondant n’a été trouvé.<br />'
+		+ '<a href="' + Routing.generate('zco_file_index') + '">Je veux en envoyer maintenant !</a>');
 	
 	input.addEvent('keyup', function()
 	{
@@ -315,14 +314,7 @@ Behavior.create('zco-files-load-files-async', function(config, statics)
 	}
 	
 	//Récupération des données en fin de script.
-	if (!isCommons)
-	{
-		loadFiles('');
-		document.id('thumbnails').setStyle('display', '');
-	}
-	else
-	{
-		noData.inject(area, 'before');
-	}
+	loadFiles('');
+	document.id('thumbnails').setStyle('display', '');
 	spinner.setStyle('display', 'none');
 });

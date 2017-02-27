@@ -53,12 +53,6 @@
     		                        Envoyer des fichiers
     		                    </a>
     		                </li>
-    		                <?php /*<li<?php if ($currentPage === 'commons') echo ' class="active"' ?>>
-    		                    <a href="<?php echo $view['router']->path('zco_file_commons', compact('textarea', 'input')) ?>">
-    		                        Rechercher sur Commons
-    		                    </a>
-    		                </li>*/ ?>
-    		                
     		                <li class="nav-header">Dossiers intelligents</li>
     		                <?php foreach ($smartFolders as $folder): ?>
     		                    <?php if (!$folder['hidden'] || ($currentFolder && $currentFolder['id'] == $folder['id'])): ?>

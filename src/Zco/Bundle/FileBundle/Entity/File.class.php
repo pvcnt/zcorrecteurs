@@ -28,7 +28,7 @@ class File extends BaseFile
 {
     const TYPE_MANUAL = 0;
     const TYPE_AUTO = 1;
-    const TYPE_COMMONS = 2;
+    //const TYPE_COMMONS = 2;
     const TYPE_IMPORTED = 3;
     
     private static $filesPerFolder = 1000;
