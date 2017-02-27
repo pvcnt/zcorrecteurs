@@ -6,11 +6,7 @@
  * Creative Commons, 559 Nathan Abbott Way, Stanford, California 94305, USA.
  *
  */
- 
-require_once dirname(__FILE__)."/../Graph.class.php";
- 
- 
- 
+
 /**
  * Draw labels
  *
@@ -192,7 +188,7 @@ class awLabel implements awPositionable {
 	/**
 	 * Set one or several labels
 	 *
-	 * @param array $labels Array of string or a string
+	 * @param string|array $labels Array of string or a string
 	 */
 	public function set($labels) {
 	
@@ -219,7 +215,7 @@ class awLabel implements awPositionable {
 	 * @param string $function
 	 */
 	public function setCallbackFunction($function) {
-		$this->function = is_null($function) ? $function : (string)$function;
+		$this->function = $function;
 	}
 	
 	/**
@@ -237,11 +233,9 @@ class awLabel implements awPositionable {
 	 * @param string $format New format (printf style: %.2f for example)
 	 */
 	public function setFormat($format) {
-		$function = 'label'.time().'_'.(microtime() * 1000000);
-		eval('function '.$function.'($value) {
-			return sprintf("'.addcslashes($format, '"').'", $value);
-		}');
-		$this->setCallbackFunction($function);
+		$this->setCallbackFunction(function($value) use ($format) {
+            return sprintf($format, $value);
+        });
 	}
 	
 	/**
@@ -583,6 +577,3 @@ class awLabel implements awPositionable {
 	}
 
 }
-
-registerClass('Label');
-?>

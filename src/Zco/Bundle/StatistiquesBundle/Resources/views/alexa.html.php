@@ -1,4 +1,4 @@
-<?php $view->extend('::layouts/default.html.php') ?>
+<?php $view->extend('::layouts/bootstrap.html.php') ?>
 
 <h1>Classement Alexa</h1>
 
@@ -8,52 +8,57 @@ $i18nMois = array(1 => 'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
 $i18nJours = array('Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche');
 ?>
 
-<form method="get">
-	<fieldset>
-		<legend>Sélectionner une date</legend>
-		<label for="input_annee">Année</label>
-		<input type="text" name="annee" id="input_annee" value="<?php echo $Annee ?>"/>
-		<br/>
-
-		<label for="input_mois">Mois</label>
-		<select name="mois" id="input_mois">
-			<option value="">&nbsp;- Toute l'année -&nbsp;</option>
-			<?php foreach($i18nMois as $i => $m): ?>
-			<option value="<?php echo $i ?>"<?php
-			if($i == $Mois) echo ' selected="selected"' ?>><?php echo $m ?></option>
-			<?php endforeach ?>
-		</select>
-		<br/>
-
-		<input type="submit" value="Atteindre"/>
-	</fieldset>
+<form method="get" action="<?php echo $view['router']->path('zco_stats_alexa') ?>" class="form-horizontal">
+    <div class="control-group">
+        <label for="input_annee" class="control-label">Année</label>
+        <div class="controls">
+            <input type="text" name="annee" id="input_annee" value="<?php echo $Annee ?>"/>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="input_mois" class="control-label">Mois</label>
+        <div class="controls">
+            <select name="mois" id="input_mois">
+                <option value="">&nbsp;- Toute l'année -&nbsp;</option>
+                <?php foreach($i18nMois as $i => $m): ?>
+                    <option value="<?php echo $i ?>"<?php
+                    if($i == $Mois) echo ' selected="selected"' ?>><?php echo $m ?></option>
+                <?php endforeach ?>
+            </select>
+        </div>
+    </div>
+    <div class="form-actions">
+        <input type="submit" value="Afficher" class="btn"/>
+    </div>
 </form>
 
-<p style="text-align: center">
-	<img src="alexa-1.html?annee=<?php echo $Annee ?>&amp;mois=<?php echo $Mois
-	?>" alt="Évolution du classement du site"/>
+<p class="center">
+	<img src="<?php echo $view['router']->path('zco_stats_alexaChart', ['annee' => $Annee, 'mois' => $Mois]) ?>"
+         alt="Évolution du classement du site"/>
 </p>
 
 <?php
 $maxF = $maxG = 0;
-$minF = $minG = $Rangs[0]['rang_global'];
-
+$minF = $minG = $Rangs ? $Rangs[0]['rang_global'] : 0;
 foreach ($Rangs as $r)
 {
-	if ($r['rang_france'] > $maxF)
-		$maxF = $r['rang_france'];
-	if ($r['rang_global'] > $maxG)
-		$maxG = $r['rang_global'];
-
-	if ($r['rang_france'] < $minF)
-		$minF = $r['rang_france'];
-	if ($r['rang_global'] < $minG)
-		$minG = $r['rang_global'];
+	if ($r['rang_france'] > $maxF) {
+        $maxF = $r['rang_france'];
+    }
+    if ($r['rang_global'] > $maxG) {
+        $maxG = $r['rang_global'];
+    }
+	if ($r['rang_france'] < $minF) {
+        $minF = $r['rang_france'];
+    }
+    if ($r['rang_global'] < $minG) {
+        $minG = $r['rang_global'];
+    }
 }
 ?>
 
 <?php if ($Mois === null): ?>
-<table class="UI_items">
+<table class="table table-striped">
 	<caption>Statistiques pour l'année <?php echo $Annee ?></caption>
 	<thead>
 		<tr>
@@ -65,7 +70,7 @@ foreach ($Rangs as $r)
 	<tbody>
 		<?php foreach ($Rangs as $r): ?>
 		<tr>
-			<td><a href="?annee=<?php echo $Annee ?>&amp;mois=<?php echo $r['mois'] ?>">
+			<td><a href="<?php echo $view['router']->path('zco_stats_alexa', ['annee' => $Annee, 'mois' => $r['mois']]) ?>">
 				<?php echo $i18nMois[$r['mois']] ?></a></td>
 			<td<?php if ($r['rang_france'] === $minF) echo ' style="font-weight:bold;color:blue"';
 				elseif ($r['rang_france'] === $maxF) echo ' style="font-weight:bold;color:red"';
@@ -84,7 +89,7 @@ $d = mktime(0, 0, 0, $Mois, 1, $Annee);
 $d = date('N', $d) - 1;
 ?>
 
-<table class="UI_items">
+<table class="table table-striped">
 	<caption>Statistiques pour <?php echo $i18nMois[$Mois] ?> <?php echo $Annee ?></caption>
 	<thead>
 		<tr>

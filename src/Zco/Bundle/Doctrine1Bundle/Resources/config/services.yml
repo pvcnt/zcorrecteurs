@@ -1,16 +1,29 @@
 services:
     zco_doctrine1.models_builder:
         class: Zco\Bundle\Doctrine1Bundle\Builder\ModelsBuilder
-        arguments: [@kernel]
+        arguments: ['@kernel']
     
     zco_doctrine1.models_cache_warmer:
         class: Zco\Bundle\Doctrine1Bundle\CacheWarmer\ModelsCacheWarmer
-        arguments: [@zco_doctrine1.models_builder]
+        arguments: ['@zco_doctrine1.models_builder']
         tags:
             - { name: kernel.cache_warmer }
-    
+
+    zco_doctrine1.connection:
+        class: Doctrine_Connection
+        factory: [Doctrine_Manager, connection]
+        arguments: ['mysql://%database.username%:%database.password%@%database.host%/%database.base%']
+        calls:
+          - [addListener, ['@zco_doctrine1.audit_listener']]
+          - [addListener, ['@zco_doctrine1.legacy_listener']]
+          - [setOption, [username, '%database.username%']]
+          - [setOption, [password, '%database.password%']]
+
     zco_doctrine1.audit_listener:
         class: Zco\Bundle\Doctrine1Bundle\EventListener\QueryAuditListener
+
+    zco_doctrine1.legacy_listener:
+            class: Zco\Bundle\Doctrine1Bundle\EventListener\LegacyListener
 
     zco_doctrine1.data_collector:
         class: Zco\Bundle\Doctrine1Bundle\DataCollector\DoctrineDataCollector

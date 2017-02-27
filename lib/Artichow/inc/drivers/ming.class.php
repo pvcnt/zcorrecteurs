@@ -7,8 +7,6 @@
  *
  */
  
-require_once dirname(__FILE__)."/../Driver.class.php";
-
 /**
  * Draw your objects
  *
@@ -762,13 +760,9 @@ class awMingDriver extends awDriver {
 
 }
 
-registerClass('MingDriver');
-
 /*
  * Check for ming presence
  */
 if(function_exists('ming_useswfversion') === FALSE) {
 	awImage::drawErrorFile('missing-ming');
 }
-
-?>

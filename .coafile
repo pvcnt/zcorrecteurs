@@ -1,6 +1,6 @@
 [Php]
 bears = PHPLintBear
-files = app/**.php,src/**.php,web/*.php
+files = app/**.php,src/**.php,web/*.php,lib/**.php
 
 [Javascript]
 bears = ESLintBear

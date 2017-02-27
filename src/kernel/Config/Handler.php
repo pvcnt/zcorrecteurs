@@ -81,15 +81,15 @@ abstract class Config_Handler
 			$file_module = $bundle->getPath().'/Resources/config/'.$file.'.yml';
 			$file_root = APP_PATH.'/config/'.$file.'.yml';
 
-			$config_root = is_file($file_root) ? Yaml::parse($file_root) : array();
-			$config_module = is_file($file_module) ? Yaml::parse($file_module) : array();
+			$config_root = is_file($file_root) ? Yaml::parse(file_get_contents($file_root)) : array();
+			$config_module = is_file($file_module) ? Yaml::parse(file_get_contents($file_module)) : array();
 			$config = Util::arrayDeepMerge($config_root, $config_module);
 			return $config;
 		}
 		else
 		{
 			$file = APP_PATH.'/config/'.$file.'.yml';
-			return is_file($file) ? Yaml::parse($file) : array();
+			return is_file($file) ? Yaml::parse(file_get_contents($file)) : array();
 		}
 	}
 

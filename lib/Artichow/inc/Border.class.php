@@ -7,8 +7,6 @@
  *
  */
  
-require_once dirname(__FILE__)."/../Graph.class.php";
- 
 /**
  * Draw border
  *
@@ -19,7 +17,7 @@ class awBorder {
 	/**
 	 * Border color
 	 *
-	 * @var Color
+	 * @var awColor
 	 */
 	protected $color;
 
@@ -133,25 +131,18 @@ class awBorder {
 	 * @param int $height Ellipse height
 	 */
 	public function ellipse(awDriver $driver, awPoint $center, $width, $height) {
-	
 		// Border is hidden
 		if($this->hide) {
 			return;
 		}
-		
 		switch($this->style) {
-		
 			case awLine::SOLID :
 				$driver->ellipse($this->color, $center, $width, $height);
 				break;
-			
 			default :
 				awImage::drawError("Class Border: Dashed and dotted borders and not yet implemented on ellipses.");
 				break;
-		
 		}
-		
-		
 	}
 	
 	/**
@@ -161,19 +152,17 @@ class awBorder {
 	 * @param awPolygon $polygon A Polygon object
 	 */
 	public function polygon(awDriver $driver, awPolygon $polygon) {
-		
 		// Border is hidden
 		if($this->hide) {
 			return;
 		}
-		
 		$polygon->setStyle($this->style);
 		$driver->polygon($this->color, $polygon);
 		
 		// In case of Line::SOLID, Driver::polygon() uses imagepolygon()
 		// which automatically closes the shape. In any other case,
 		// we have to do it manually here.
-		if($this->style !== Line::SOLID) {
+		if($this->style !== awLine::SOLID) {
 			$this->closePolygon($driver, $polygon);
 		}
 	}
@@ -191,8 +180,4 @@ class awBorder {
 		$line = new awLine($first, $last, $this->style, $polygon->getThickness());
 		$driver->line($this->color, $line);
 	}
-	
 }
-
-registerClass('Border');
-?>

@@ -7,8 +7,6 @@
  *
  */
  
-require_once dirname(__FILE__)."/../Graph.class.php";
-
 abstract class awShape {
 	
 	/**
@@ -118,8 +116,6 @@ abstract class awShape {
 	
 }
 
-registerClass('Shape', TRUE);
-
 /**
  * Describe a point
  *
@@ -218,9 +214,6 @@ class awPoint extends awShape {
 	}
 
 }
-
-registerClass('Point');
- 
 
 /**
  * Describe a line
@@ -644,8 +637,6 @@ class awLine extends awShape {
 	
 }
 
-registerClass('Line');
-
 /**
  * A vector is a type of line
  * The sense of the vector goes from $p1 to $p2.
@@ -686,9 +677,6 @@ class awVector extends awLine {
 	}
 
 }
-
-registerClass('Vector');
- 
 
 /**
  * Describe a polygon
@@ -827,6 +815,3 @@ class awPolygon extends awShape {
 	}
 
 }
-
-registerClass('Polygon');
-?>

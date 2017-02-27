@@ -23,10 +23,12 @@ namespace Zco\Bundle\StatistiquesBundle\EventListener;
 
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Zco\Bundle\AdminBundle\AdminEvents;
 use Zco\Bundle\CoreBundle\CoreEvents;
 use Zco\Bundle\CoreBundle\Event\CronEvent;
 use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
+use Zco\Bundle\StatistiquesBundle\Service\AlexaStatsService;
 
 /**
  * Observateur principal pour le module de statistiques.
@@ -35,71 +37,72 @@ use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
  */
 class EventListener implements EventSubscriberInterface
 {
-    use ContainerAwareTrait;
+    private $urlGenerator;
+    private $alexaStats;
 
-	/**
-	 * {@inheritdoc}
-	 */
-	static public function getSubscribedEvents()
-	{
-		return array(
-			AdminEvents::MENU      => 'onFilterAdmin',
-			CoreEvents::DAILY_CRON => 'onDailyCron',
-		);
-	}
-	
-	/**
-	 * Ajoute des liens sur le panneau d'administration.
-	 *
-	 * @param FilterMenuEvent $event
-	 */
-	public function onFilterAdmin(FilterMenuEvent $event)
-	{
-	    $tab = $event
-	        ->getRoot()
-	        ->getChild('Informations')
-	        ->getChild('Statistiques générales');
-	        
-		$tab->addChild('Statistiques générales (GA)', array(
-			'credentials' => 'voir_stats_generales', 
-			'uri' => 'https://www.google.com/analytics/reporting/dashboard?id=6978501&scid=1725896',
-		));
-		
-		$tab->addChild('Statistiques Alexa (classement du site)', array(
-			'credentials' => 'voir_stats_generales', 
-			'uri' => '/statistiques/alexa.html',
-		));
-	
-		$tab->addChild('Statistiques d\'inscription', array(
-			'credentials' => 'stats_inscription', 
-			'uri' => '/statistiques/inscription.html',
-		));
-	
-		$tab->addChild('Statistiques de géolocalisation', array(
-			'credentials' => 'stats_geolocalisation', 
-			'uri' => '/statistiques/geolocalisation.html',
-		));
-	
-		$tab->addChild('Âge des membres', array(
-			'credentials' => 'voir_stats_ages', 
-			'uri' => '/statistiques/graphique-ages.html',
-		));
-	
-		$tab->addChild('Statistiques de consultation du flux du blog', array(
-			'credentials' => 'stats_blog_flux', 
-			'uri' => '/statistiques/blog-flux.html',
-		));
-	}
+    /**
+     * Constructor.
+     *
+     * @param UrlGeneratorInterface $urlGenerator
+     * @param AlexaStatsService $alexaStats
+     */
+    public function __construct(UrlGeneratorInterface $urlGenerator, AlexaStatsService $alexaStats)
+    {
+        $this->urlGenerator = $urlGenerator;
+        $this->alexaStats = $alexaStats;
+    }
 
-	/**
-	 * Actions à exécuter chaque jour.
-	 *
-	 * @param CronEvent $event
-	 */
-	public function onDailyCron(CronEvent $event)
-	{
-		//Statistiques Alexa.
-		include(__DIR__.'/../modeles/alexa.php');
-		SaveAlexaRanks();
-	}
+    /**
+     * {@inheritdoc}
+     */
+    static public function getSubscribedEvents()
+    {
+        return array(
+            AdminEvents::MENU => 'onFilterAdmin',
+            CoreEvents::DAILY_CRON => 'onDailyCron',
+        );
+    }
+
+    /**
+     * Ajoute des liens sur le panneau d'administration.
+     *
+     * @param FilterMenuEvent $event
+     */
+    public function onFilterAdmin(FilterMenuEvent $event)
+    {
+        $tab = $event
+            ->getRoot()
+            ->getChild('Informations')
+            ->getChild('Statistiques générales');
+
+        $tab->addChild('Statistiques générales (GA)', array(
+            'credentials' => 'voir_stats_generales',
+            'uri' => 'https://www.google.com/analytics/reporting/dashboard?id=6978501&scid=1725896',
+        ));
+
+        $tab->addChild('Statistiques Alexa (classement du site)', array(
+            'credentials' => 'voir_stats_generales',
+            'uri' => $this->urlGenerator->generate('zco_stats_alexa'),
+        ));
+
+        $tab->addChild('Statistiques d\'inscription', array(
+            'credentials' => 'stats_inscription',
+            'uri' => $this->urlGenerator->generate('zco_stats_registration'),
+        ));
+
+        $tab->addChild('Statistiques de géolocalisation', array(
+            'credentials' => 'stats_geolocalisation',
+            'uri' => $this->urlGenerator->generate('zco_stats_location'),
+        ));
+
+        $tab->addChild('Âge des membres', array(
+            'credentials' => 'voir_stats_ages',
+            'uri' => $this->urlGenerator->generate('zco_stats_ages'),
+        ));
+    }
+
+    public function onDailyCron(CronEvent $event)
+    {
+        $this->alexaStats->fetchAndSave();
+    }
 }

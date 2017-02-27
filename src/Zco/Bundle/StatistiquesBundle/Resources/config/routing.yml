@@ -1,0 +1,31 @@
+zco_stats_alexa:
+    pattern:   /admin/stats/alexa
+    defaults:  { _controller: ZcoStatistiquesBundle:Default:alexa }
+
+zco_stats_alexaChart:
+    pattern:   /admin/stats/alexa.png
+    defaults:  { _controller: ZcoStatistiquesBundle:Default:alexaChart }
+
+zco_stats_location:
+    pattern:   /admin/stats/geolocalisation
+    defaults:  { _controller: ZcoStatistiquesBundle:Default:location }
+
+zco_stats_locationChart:
+    pattern:   /admin/stats/geolocalisation.png
+    defaults:  { _controller: ZcoStatistiquesBundle:Default:locationChart }
+
+zco_stats_ages:
+    pattern:   /admin/stats/ages
+    defaults:  { _controller: ZcoStatistiquesBundle:Default:ages }
+
+zco_stats_agesChart:
+    pattern:   /admin/stats/ages.png
+    defaults:  { _controller: ZcoStatistiquesBundle:Default:agesChart }
+
+zco_stats_registration:
+    pattern:   /admin/stats/inscription
+    defaults:  { _controller: ZcoStatistiquesBundle:Default:registration }
+
+zco_stats_registrationChart:
+    pattern:   /admin/stats/inscription.png
+    defaults:  { _controller: ZcoStatistiquesBundle:Default:registrationChart }

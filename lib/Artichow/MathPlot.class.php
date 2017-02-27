@@ -7,8 +7,6 @@
  *
  */
 
-require_once dirname(__FILE__)."/Component.class.php";
-
 /**
  * A mathematic function
  *
@@ -19,14 +17,14 @@ class awMathFunction implements awLegendable {
 	/**
 	 * Function line
 	 *
-	 * @var Line
+	 * @var awLine
 	 */
 	public $line;
 	
 	/**
 	 * Marks for your plot
 	 *
-	 * @var Mark
+	 * @var awMark
 	 */
 	public $mark;
 	
@@ -54,7 +52,7 @@ class awMathFunction implements awLegendable {
 	/**
 	 * Line color
 	 *
-	 * @var Color
+	 * @var awColor
 	 */
 	protected $color;
 	
@@ -74,13 +72,12 @@ class awMathFunction implements awLegendable {
 		$this->line = new awLine;
 		$this->mark = new awMark;
 		$this->color = new awBlack;
-	
 	}
 	
 	/**
 	 * Change line color
 	 *
-	 * @param awColor $color A new awcolor
+	 * @param awColor $color A new color
 	 */
 	public function setColor(awColor $color) {
 		$this->color = $color;
@@ -89,7 +86,7 @@ class awMathFunction implements awLegendable {
 	/**
 	 * Get line color
 	 *
-	 * @return Color
+	 * @return awColor
 	 */
 	public function getColor() {
 		return $this->color;
@@ -98,7 +95,7 @@ class awMathFunction implements awLegendable {
 	/**
 	 * Get the background color or gradient of an element of the component
 	 *
-	 * @return Color, Gradient
+	 * @return awColor|Gradient
 	 */
 	public function getLegendBackground() {
 	}
@@ -141,8 +138,6 @@ class awMathFunction implements awLegendable {
 
 }
 
-registerClass('MathFunction');
- 
 /**
  * For mathematics functions
  *
@@ -160,28 +155,28 @@ class awMathPlot extends awComponent {
 	/**
 	 * Grid properties
 	 *
-	 * @var Grid
+	 * @var awGrid
 	 */
 	public $grid;
 	
 	/**
 	 * X axis
 	 *
-	 * @var Axis
+	 * @var awAxis
 	 */
 	public $xAxis;
 	
 	/**
 	 * Y axis
 	 *
-	 * @var Axis
+	 * @var awAxis
 	 */
 	public $yAxis;
 	
 	/**
 	 * Extremum
 	 *
-	 * @var Side
+	 * @var awSide
 	 */
 	private $extremum = NULL;
 	
@@ -434,6 +429,3 @@ class awMathPlot extends awComponent {
 	}
 
 }
-
-registerClass('MathPlot');
-?>

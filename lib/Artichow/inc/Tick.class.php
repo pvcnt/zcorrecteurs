@@ -7,9 +7,6 @@
  *
  */
  
-require_once dirname(__FILE__)."/../Graph.class.php";
- 
-
 /**
  * Handle ticks
  *
@@ -339,6 +336,3 @@ class awTick {
 	}
 
 }
-
-registerClass('Tick');
-?>

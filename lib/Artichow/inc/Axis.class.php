@@ -7,8 +7,6 @@
  *
  */
 
-require_once dirname(__FILE__)."/../Graph.class.php";
-
 /**
  * Handle axis
  *
@@ -307,11 +305,9 @@ class awAxis {
 	 */
 	public function setLabelPrecision($precision) {
 		$this->auto(FALSE);
-		$function = 'axis'.time().'_'.(microtime() * 1000000);
-		eval('function '.$function.'($value) {
-			return sprintf("%.'.(int)$precision.'f", $value);
-		}');
-		$this->label->setCallbackFunction($function);
+		$this->label->setCallbackFunction(function($value) use ($precision) {
+            return sprintf("%.'.(int)$precision.'f", $value);
+        });
 	}
 
 	/**
@@ -322,12 +318,9 @@ class awAxis {
 	public function setLabelText($texts) {
 		if(is_array($texts)) {
 			$this->auto(FALSE);
-			$function = 'axis'.time().'_'.(microtime() * 1000000);
-			eval('function '.$function.'($value) {
-				$texts = '.var_export($texts, TRUE).';
-				return isset($texts[$value]) ? $texts[$value] : \'?\';
-			}');
-			$this->label->setCallbackFunction($function);
+			$this->label->setCallbackFunction(function($value) use ($texts) {
+                return isset($texts[$value]) ? $texts[$value] : '?';
+            });
 		}
 	}
 
@@ -337,17 +330,13 @@ class awAxis {
 	 * @param awAxis $xAxis X axis
 	 * @param awAxis $yAxis Y axis
 	 * @param awPoint $p Position of the point
-	 * @return Point Position on the axis
+	 * @return awPoint Position on the axis
 	 */
 	public static function toPosition(awAxis $xAxis, awAxis $yAxis, awPoint $p) {
-
 		$p1 = $xAxis->getPointFromValue($p->x);
 		$p2 = $yAxis->getPointFromValue($p->y);
 
-		return new awPoint(
-			round($p1->x),
-			round($p2->y)
-		);
+		return new awPoint(round($p1->x), round($p2->y));
 
 	}
 
@@ -523,7 +512,7 @@ class awAxis {
 	 * Get a point on the axis from a value
 	 *
 	 * @param float $value
-	 * @return Point
+	 * @return awPoint
 	 */
 	protected function getPointFromValue($value) {
 
@@ -754,8 +743,6 @@ class awAxis {
 
 }
 
-registerClass('Axis');
-
 function toProportionalValue($position, $min, $max) {
 	return $min + ($max - $min) * $position;
 }
@@ -766,4 +753,3 @@ function toProportionalPosition($value, $min, $max) {
 	}
 	return ($value - $min) / ($max - $min);
 }
-?>

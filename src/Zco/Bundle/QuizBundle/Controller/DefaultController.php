@@ -517,9 +517,6 @@ class DefaultController extends Controller
 	 */
 	public function graphiqueStatsAction()
 	{
-		include_once(BASEPATH.'/vendor/Artichow/BarPlot.class.php');
-		include_once(BASEPATH.'/vendor/Artichow/Graph.class.php');
-
 		if (!isset($_SESSION['graphe_quiz']) || !isset($_SESSION['graphe_quiz_type']))
 		{
 		    throw new AccessDeniedHttpException();
@@ -544,37 +541,37 @@ class DefaultController extends Controller
 		}
 		
 		// On crée le graphique
-		$graph = new \Graph(800, 450);
+		$graph = new \awGraph(800, 450);
 
 		//On fait la mise en page
-		$hautGraph = new \Color(62, 207, 248, 0);
-		$basGraph = new \Color(85, 214, 251, 0);
-		$couleurCourbeHaut = new \Color(100, 100, 255, 0);
-		$couleurCourbeBas = new \Color(150, 150, 255, 0);
-		$graph->setBackgroundGradient(new \LinearGradient($hautGraph, $basGraph, 0));
+		$hautGraph = new \awColor(62, 207, 248, 0);
+		$basGraph = new \awColor(85, 214, 251, 0);
+		$couleurCourbeHaut = new \awColor(100, 100, 255, 0);
+		$couleurCourbeBas = new \awColor(150, 150, 255, 0);
+		$graph->setBackgroundGradient(new \awLinearGradient($hautGraph, $basGraph, 0));
 
 		//Légende
-		$groupe = new \PlotGroup();
+		$groupe = new \awPlotGroup();
 		$groupe->setPadding(50, 20, 20, 40);
-		$groupe->axis->left->title->setFont(new \Tuffy(10));
+		$groupe->axis->left->title->setFont(new \awTuffy(10));
 		$groupe->axis->left->title->setPadding(0, 20, 0, 0);
 		$groupe->axis->left->title->set($nomOrdonnee);
 
-		$groupe->axis->bottom->title->setFont(new \Tuffy(10));
+		$groupe->axis->bottom->title->setFont(new \awTuffy(10));
 		$groupe->axis->bottom->title->set('Notes');
 
 		//On trace la courbe avec les données et on la configure
-		$plot = new \BarPlot($data);
-		$plot->setBarGradient(new \LinearGradient($couleurCourbeHaut, $couleurCourbeBas, 0));
-		$plot->setXAxis(\Plot::BOTTOM);
-		$plot->setYAxis(\Plot::LEFT);
+		$plot = new \awBarPlot($data);
+		$plot->setBarGradient(new \awLinearGradient($couleurCourbeHaut, $couleurCourbeBas, 0));
+		$plot->setXAxis(\awPlot::BOTTOM);
+		$plot->setYAxis(\awPlot::LEFT);
 
 		//Enfin, on mixe le tout
 		$groupe->add($plot);
 		$graph->add($groupe);
 
 		// On affiche le graphique à l'écran
-		$r = new Response($graph->draw(\Graph::DRAW_RETURN));
+		$r = new Response($graph->draw(\awGraph::DRAW_RETURN));
 		$r->headers->set('Content-type', 'image/png');
 
 		return $r;
@@ -797,19 +794,16 @@ class DefaultController extends Controller
 			unset($annee, $mois);
 		}
 
-		include(BASEPATH.'/vendor/Artichow/Graph.class.php');
-		include(BASEPATH.'/vendor/Artichow/LinePlot.class.php');
-
-		$graph = new \Graph(700, 400);
+		$graph = new \awGraph(700, 400);
 		$graph->setAntiAliasing(true);
-		$hautGraph = new \Color(62, 207, 248, 0);
-		$basGraph = new \Color(85, 214, 251, 0);
-		$graph->setBackgroundGradient(new \LinearGradient($hautGraph, $basGraph, 0));
+		$hautGraph = new \awColor(62, 207, 248, 0);
+		$basGraph = new \awColor(85, 214, 251, 0);
+		$graph->setBackgroundGradient(new \awLinearGradient($hautGraph, $basGraph, 0));
 
 		// Légende
-		$groupe = new \PlotGroup();
+		$groupe = new \awPlotGroup();
 		$groupe->setPadding(50, 20, 20, 40);
-		$groupe->axis->left->title->setFont(new \Tuffy(10));
+		$groupe->axis->left->title->setFont(new \awTuffy(10));
 		$groupe->axis->left->title->setPadding(0, 20, 0, 0);
 		$groupe->axis->left->title->set(isset($quiz) ? 'Validations du quiz '.htmlspecialchars($quiz['nom']) : 'Validations des quiz');
 
@@ -818,7 +812,7 @@ class DefaultController extends Controller
 			$groupe->axis->bottom->setLabelInterval(6);
 		}
 
-		$groupe->axis->bottom->title->setFont(new \Tuffy(10));
+		$groupe->axis->bottom->title->setFont(new \awTuffy(10));
 		if (isset($legende))
 		{
 			$groupe->axis->bottom->title->set($legende);
@@ -828,24 +822,24 @@ class DefaultController extends Controller
 			$groupe->axis->bottom->setLabelText($labels);
 		}
 
-		$plot = new \LinePlot(array_values($donnees['validations_totales']));
+		$plot = new \awLinePlot(array_values($donnees['validations_totales']));
 		$plot->setColor(new \Blue());
-		$plot->setXAxis(\Plot::BOTTOM);
-		$plot->setYAxis(\Plot::LEFT);
+		$plot->setXAxis(\awPlot::BOTTOM);
+		$plot->setYAxis(\awPlot::LEFT);
 		$groupe->add($plot);
 		$groupe->legend->add($plot, 'Validations totales');
 
-		$plot = new \LinePlot(array_values($donnees['validations_visiteurs']));
+		$plot = new \awLinePlot(array_values($donnees['validations_visiteurs']));
 		$plot->setColor(new \Red());
-		$plot->setXAxis(\Plot::BOTTOM);
-		$plot->setYAxis(\Plot::LEFT);
+		$plot->setXAxis(\awPlot::BOTTOM);
+		$plot->setYAxis(\awPlot::LEFT);
 		$groupe->add($plot);
 		$groupe->legend->add($plot, 'Validations par des visiteurs');
 
 		$graph->add($groupe);
 
 		// On affiche le graphique à l'écran
-		$r = new Response($graph->draw(\Graph::DRAW_RETURN));
+		$r = new Response($graph->draw(\awGraph::DRAW_RETURN));
 		$r->headers->set('Content-type', 'image/png');
 
 		return $r;
@@ -879,35 +873,32 @@ class DefaultController extends Controller
 			\Doctrine_Core::getTable('QuizScore')->getGraphiqueQuizNotes($quiz['id']) :
 			\Doctrine_Core::getTable('QuizScore')->getGraphiqueNotes();
 
-		include(BASEPATH.'/vendor/Artichow/Graph.class.php');
-		include(BASEPATH.'/vendor/Artichow/BarPlot.class.php');
+		$graph = new \awGraph(700, 400);
+		$hautGraph = new \awColor(62, 207, 248, 0);
+		$basGraph = new \awColor(85, 214, 251, 0);
+		$couleurCourbeHaut = new \awColor(100, 100, 255, 0);
+		$couleurCourbeBas = new \awColor(150, 150, 255, 0);
+		$graph->setBackgroundGradient(new \awLinearGradient($hautGraph, $basGraph, 0));
 
-		$graph = new \Graph(700, 400);
-		$hautGraph = new \Color(62, 207, 248, 0);
-		$basGraph = new \Color(85, 214, 251, 0);
-		$couleurCourbeHaut = new \Color(100, 100, 255, 0);
-		$couleurCourbeBas = new \Color(150, 150, 255, 0);
-		$graph->setBackgroundGradient(new \LinearGradient($hautGraph, $basGraph, 0));
-
-		$groupe = new \PlotGroup();
+		$groupe = new \awPlotGroup();
 		$groupe->setPadding(50, 20, 20, 40);
-		$groupe->axis->left->title->setFont(new \Tuffy(10));
+		$groupe->axis->left->title->setFont(new \awTuffy(10));
 		$groupe->axis->left->title->setPadding(0, 20, 0, 0);
 		$groupe->axis->left->title->set('Répartition des notes');
 
-		$groupe->axis->bottom->title->setFont(new \Tuffy(10));
+		$groupe->axis->bottom->title->setFont(new \awTuffy(10));
 		$groupe->axis->bottom->title->set('Notes obtenues'.(isset($quiz) ? ' sur le quiz '.htmlspecialchars($quiz['nom']) : ''));
 
-		$plot = new \BarPlot($donnees);
-		$plot->setBarGradient(new \LinearGradient($couleurCourbeHaut, $couleurCourbeBas, 0));
-		$plot->setXAxis(\Plot::BOTTOM);
-		$plot->setYAxis(\Plot::LEFT);
+		$plot = new \awBarPlot($donnees);
+		$plot->setBarGradient(new \awLinearGradient($couleurCourbeHaut, $couleurCourbeBas, 0));
+		$plot->setXAxis(\awPlot::BOTTOM);
+		$plot->setYAxis(\awPlot::LEFT);
 		$groupe->add($plot);
 
 		$graph->add($groupe);
 
 		// On affiche le graphique à l'écran
-		$r = new Response($graph->draw(\Graph::DRAW_RETURN));
+		$r = new Response($graph->draw(\awGraph::DRAW_RETURN));
 		$r->headers->set('Content-type', 'image/png');
 
 		return $r;

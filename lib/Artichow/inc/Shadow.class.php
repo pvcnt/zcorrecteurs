@@ -7,9 +7,6 @@
  *
  */
  
-require_once dirname(__FILE__)."/../Graph.class.php";
- 
-
 /**
  * Draw shadows
  *
@@ -401,6 +398,3 @@ class awShadow {
 	}
 
 }
-
-registerClass('Shadow');
-?>

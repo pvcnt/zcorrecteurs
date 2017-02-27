@@ -7,10 +7,6 @@
  *
  */
 
- 
-require_once dirname(__FILE__)."/../Graph.class.php";
-
-
 /**
  * Create your gradients
  *
@@ -21,14 +17,14 @@ abstract class awGradient {
 	/**
 	 * From color
 	 *
-	 * @var Color
+	 * @var awColor
 	 */
 	public $from;
 
 	/**
 	 * To color
 	 *
-	 * @var Color
+	 * @var awColor
 	 */
 	public $to;
 	
@@ -46,8 +42,6 @@ abstract class awGradient {
 	}
 
 }
-
-registerClass('Gradient', TRUE);
 
 
 /**
@@ -82,8 +76,6 @@ class awLinearGradient extends awGradient {
 	}
 
 }
-
-registerClass('LinearGradient');
 
 
 /**
@@ -120,8 +112,6 @@ class awBilinearGradient extends awLinearGradient {
 
 }
 
-registerClass('BilinearGradient');
-
 /**
  * Create a radial gradient
  *
@@ -130,6 +120,3 @@ registerClass('BilinearGradient');
 class awRadialGradient extends awGradient {
 
 }
-
-registerClass('RadialGradient');
-?>

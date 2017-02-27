@@ -7,8 +7,6 @@
  *
  */
 
-require_once dirname(__FILE__)."/Plot.class.php";
-
 /**
  * BarPlot
  *
@@ -19,7 +17,7 @@ class awBarPlot extends awPlot implements awLegendable {
 	/**
 	 * Labels on your bar plot
 	 *
-	 * @var Label
+	 * @var awLabel
 	 */
 	public $label;
 	
@@ -54,21 +52,21 @@ class awBarPlot extends awPlot implements awLegendable {
 	/**
 	 * Bars shadow
 	 *
-	 * @var Shadow
+	 * @var awShadow
 	 */
 	public $barShadow;
 	
 	/**
 	 * Bars border
 	 *
-	 * @var Border
+	 * @var awBorder
 	 */
 	public $barBorder;
 	
 	/**
 	 * Bars padding
 	 *
-	 * @var Side
+	 * @var awSide
 	 */
 	protected $barPadding;
 	
@@ -82,7 +80,7 @@ class awBarPlot extends awPlot implements awLegendable {
 	/**
 	 * Bars background
 	 *
-	 * @var Color, Gradient
+	 * @var awColor|awGradient
 	 */
 	protected $barBackground;
 	 	
@@ -132,7 +130,7 @@ class awBarPlot extends awPlot implements awLegendable {
 	 * Change bars size
 	 * This method is not compatible with awBarPlot::setBarPadding()
 	 *
-	 * @param int $width Bars size (between 0 and 1)
+	 * @param int $size Bars size (between 0 and 1)
 	 */
 	public function setBarSize($size) {
 		$padding = (1 - $size) / 2;
@@ -195,7 +193,7 @@ class awBarPlot extends awPlot implements awLegendable {
 	/**
 	 * Get the color of line
 	 *
-	 * @return Color
+	 * @return awColor
 	 */
 	public function getLegendLineColor() {
 	}
@@ -203,7 +201,7 @@ class awBarPlot extends awPlot implements awLegendable {
 	/**
 	 * Get the background color or gradient of an element of the component
 	 *
-	 * @return Color, Gradient
+	 * @return awColor|awGradient
 	 */
 	public function getLegendBackground() {
 		return $this->barBackground;
@@ -212,7 +210,7 @@ class awBarPlot extends awPlot implements awLegendable {
 	/**
 	 * Get a mark object
 	 *
-	 * @return Mark
+	 * @return awMark
 	 */
 	public function getLegendMark() {
 	}
@@ -359,6 +357,3 @@ class awBarPlot extends awPlot implements awLegendable {
 	}
 
 }
-
-registerClass('BarPlot');
-?>

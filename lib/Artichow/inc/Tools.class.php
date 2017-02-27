@@ -7,8 +7,6 @@
  *
  */
  
-require_once dirname(__FILE__)."/../Graph.class.php";
-
 /**
  * Objects capable of being positioned
  *
@@ -67,8 +65,6 @@ interface awPositionable {
 	public function setAlign($h = NULL, $v = NULL);
 	
 }
-
-registerInterface('Positionable');
 
 /**
  * Manage left, right, top and bottom sides
@@ -170,6 +166,3 @@ class awSide {
 	}
 
 }
-
-registerClass('Side');
-?>

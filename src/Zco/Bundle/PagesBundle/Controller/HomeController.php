@@ -40,8 +40,7 @@ class HomeController extends Controller
 
         // Inclusion des modèles.
         include_once(BASEPATH . '/src/Zco/Bundle/BlogBundle/modeles/blog.php');
-        include_once(BASEPATH . '/src/Zco/Bundle/StatistiquesBundle/modeles/statistiques.php');
-        include_once(BASEPATH . '/src/Zco/Bundle/StatistiquesBundle/modeles/statistiques_forum.php');
+        include_once(BASEPATH . '/src/Zco/Bundle/ForumBundle/modeles/statistiques_accueil.php');
         include_once(BASEPATH . '/src/Zco/Bundle/RecrutementBundle/modeles/recrutements.php');
         include_once(BASEPATH . '/src/Zco/Bundle/DicteesBundle/modeles/statistiques-accueil.php');
 

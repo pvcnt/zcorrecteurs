@@ -7,9 +7,6 @@
  *
  */
 
-require_once dirname(__FILE__)."/Component.class.php";
- 
- 
 /**
  * Pie
  *
@@ -617,8 +614,6 @@ class awPie extends awComponent {
 
 }
 
-registerClass('Pie');
-
 /**
  * Pie
  *
@@ -629,7 +624,7 @@ class awPiePart implements awLegendable {
 	/**
 	 * Pie part color
 	 *
-	 * @var Color
+	 * @var awColor
 	 */
 	protected $color;
 
@@ -647,7 +642,7 @@ class awPiePart implements awLegendable {
 	/**
 	 * Get the background color or gradient of an element of the component
 	 *
-	 * @return Color, Gradient
+	 * @return awColor|awGradient
 	 */
 	public function getLegendBackground() {
 		return $this->color;
@@ -687,9 +682,6 @@ class awPiePart implements awLegendable {
 
 }
 
-registerClass('PiePart');
-
 function callbackPerCent($value) {
 	return $value.'%';
 }
-?>

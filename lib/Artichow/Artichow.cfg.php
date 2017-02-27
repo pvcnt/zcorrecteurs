@@ -10,7 +10,6 @@
 /*
  * Path to Artichow
  */
-
 define('ARTICHOW', dirname(__FILE__));
 
 
@@ -18,29 +17,23 @@ define('ARTICHOW', dirname(__FILE__));
  * Path to TrueType fonts
  * DO NOT USE FONT PATH WITH SPACE CHARACTER (" ") WITH GD <= 2.0.18
  */
-if(!defined('ARTICHOW_FONT')) {
-	
-	define('ARTICHOW_FONT', ARTICHOW.DIRECTORY_SEPARATOR.'font');
-	
-	}
+if (!defined('ARTICHOW_FONT')) {
+    define('ARTICHOW_FONT', ARTICHOW . DIRECTORY_SEPARATOR . 'font');
+}
 
 /*
  * Patterns directory
  */
-if(!defined('ARTICHOW_PATTERN')) {
-	
-	define('ARTICHOW_PATTERN', ARTICHOW.DIRECTORY_SEPARATOR.'patterns');
-	
-	}
+if (!defined('ARTICHOW_PATTERN')) {
+    define('ARTICHOW_PATTERN', ARTICHOW . DIRECTORY_SEPARATOR . 'patterns');
+}
 
 /*
  * Images directory
  */
-if(!defined('ARTICHOW_IMAGE')) {
-	
-	define('ARTICHOW_IMAGE', ARTICHOW.DIRECTORY_SEPARATOR.'images');
-	
-	}
+if (!defined('ARTICHOW_IMAGE')) {
+    define('ARTICHOW_IMAGE', ARTICHOW . DIRECTORY_SEPARATOR . 'images');
+}
 
 /*
  * Enable/disable cache support
@@ -50,20 +43,12 @@ define('ARTICHOW_CACHE', TRUE);
 /*
  * Cache directory
  */
-if(!defined('ARTICHOW_CACHE_DIRECTORY')) {
-	
-	define('ARTICHOW_CACHE_DIRECTORY', ARTICHOW.DIRECTORY_SEPARATOR.'cache');
-	
-	}
+if (!defined('ARTICHOW_CACHE_DIRECTORY')) {
+    define('ARTICHOW_CACHE_DIRECTORY', ARTICHOW . DIRECTORY_SEPARATOR . 'cache');
+}
 
 /*
- * Prefix for class names
- * No prefix by default
- */
-define('ARTICHOW_PREFIX', '');
-
-/*
- * Trigger errors when use of a deprecated feature
+ * Trigger errors when use of a deprecated feature.
  */
 define('ARTICHOW_DEPRECATED', TRUE);
 
@@ -76,10 +61,8 @@ define('ARTICHOW_DRIVER', 'gd');
  * Fonts to use
  */
 $fonts = array(
-	'Tuffy',
-	'TuffyBold',
-	'TuffyBoldItalic',
-	'TuffyItalic'
+    'Tuffy',
+    'TuffyBold',
+    'TuffyBoldItalic',
+    'TuffyItalic'
 );
-
-?>

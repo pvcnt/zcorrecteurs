@@ -7,8 +7,6 @@
  *
  */
  
-require_once dirname(__FILE__)."/../Graph.class.php";
-
 /**
  * To handle text
  *
@@ -228,6 +226,3 @@ class awText {
 	}
 
 }
-
-registerClass('Text');
-?>

@@ -7,8 +7,6 @@
  *
  */
  
-require_once dirname(__FILE__)."/../Graph.class.php";
- 
 /**
  * Grid
  *
@@ -286,6 +284,3 @@ class awGrid {
 	}
 
 }
-
-registerClass('Grid');
-?>

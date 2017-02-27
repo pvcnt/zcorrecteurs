@@ -7,8 +7,6 @@
  *
  */
 
-require_once ARTICHOW."/LinePlot.class.php";
-
 class LightLinePattern extends Pattern {
 
 	public function create() {

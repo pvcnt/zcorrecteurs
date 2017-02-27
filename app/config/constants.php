@@ -3,52 +3,9 @@
  * Constantes du site, qui ne sont pas modifiées dynamiquement.
  */
 
-//Compte automatique
-define('ID_COMPTE_AUTO',           2);
-define('PSEUDO_COMPTE_AUTO',       'zGardien');
-
 //Questions de sondages
 define('QUESTION_SIMPLE',          1);
 define('QUESTION_MULTIPLE',        2);
-
-// Types de tutos
-define('MINI_TUTO',                1);
-define('MINITUTO',                 1);
-define('MINI     ',                1);
-define('BIG_TUTO',                 2);
-define('BIGTUTO',                  2);
-define('BIG',                      2);
-define('TUTO_PRIORITAIRE',         3);
-define('PRIORITAIRE',              3);
-
-//États des corrections de tutos et de textes
-define('ENVOYE',                   1);
-define('REFUSE',                   2);
-define('CORRECTION',               3);
-define('CORRECTION_COMMENCEE',     4);
-define('CORRECTION_ABANDONNEE',    5);
-define('CORRECTION_RETIREE',       17);
-define('RECORRECTION_DEMANDEE',    6);
-define('RECORRECTION',             7);
-define('RECORRECTION_COMMENCEE',   8);
-define('RECORRECTION_ABANDONNEE',  9);
-define('TERMINE_CORRIGE',          10);
-define('TERMINE_RECORRIGE',        11);
-
-//États des soumissions de textes
-define('ATTENTE_CORRECTEUR',       12);
-define('ATTENTE_RECORRECTEUR',     13);
-define('RELECTURE',                14);
-define('REVIEW',                   15);
-define('REVIEW_REFUSE',            17);
-define('TERMINE',                  16);
-
-//États des fins de correction de textes
-define('FIN_CORR_AUTO',            1);
-define('FIN_CORR_VALID',           2);
-define('FIN_CORR_REVIEW',          3);
-define('FIN_CORR_RECORRECTION',    4);
-define('FIN_CORR_RELECTURE',       5);
 
 //État des billets du blog
 define('BLOG_BROUILLON',           1);
@@ -100,43 +57,14 @@ define('MP_STATUT_NORMAL',         0); //Juste un participant au MP.
 define('MP_STATUT_MASTER',         1); //Maître de conversation. Il peut ajouter des participants ou en retirer.
 define('MP_STATUT_OWNER',          2); //Créateur du MP, il peut aussi bien ajouter des participants que des maîtres de conversation.
 
-//États des projets
-define('PROJET_ENVOYE',            1);
-define('PROJET_ACCEPTE',           2);
-define('PROJET_REFUSE',            3);
-define('PROJET_MAJ',               4);
-
 //Versionnage
 define('VERSION_CURRENT',          1); //Permet de récupérer la version courante
 define('VERSION_BROUILLON',        2); //Permet de récupérer la version en brouillon
 define('VERSION_ID',               3); //Permet de récupérer une version par son id
 
-//Langages
-define('TEXTE',                    1);
-define('ZCODE',                    2);
-define('BBCODE',                   3);
-define('MDOWN',                    4);
-define('HTML',                     5);
-
 //Types de MAP
 define('MAP_FIRST',                1);
 define('MAP_ALL',                  2);
-
-//Ressources
-define('RESSOURCES_FICHES_HORSLIGNE', 0);
-define('RESSOURCES_FICHES_ENLIGNE',   1);
-
-//Encarts publicitaires
-define('PUB_ENTETE',               1);
-define('PUB_MENU',                 2);
-define('PUB_FOOTER',               3);
-
-//Types de paiements
-define('PAIEMENT_PAYPAL',          1);
-
-//Types de logos
-define('LOGO_BOUTON',              1);
-define('LOGO_BANNIERE',            2);
 
 // États des dictées
 define('DICTEE_BROUILLON',         1);
@@ -152,3 +80,10 @@ define('ALL',                      100);
 //Sexe
 define('SEXE_MASCULIN', 1);
 define('SEXE_FEMININ', 2);
+
+// Configuration.
+const NOMBRE_MINUTES_CONNECTE = 2;
+const TEMPS_BILLET_HASARD = 30; // minutes
+const URL_SITE = 'http://www.zcorrecteurs.fr';
+const ID_COMPTE_AUTO = 2;
+const PSEUDO_COMPTE_AUTO = 'zGardien';

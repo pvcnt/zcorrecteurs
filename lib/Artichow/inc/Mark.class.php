@@ -7,9 +7,6 @@
  *
  */
  
-require_once dirname(__FILE__)."/../Graph.class.php";
-
- 
 /**
  * Draw marks
  *
@@ -485,6 +482,3 @@ class awMark {
 	}
 
 }
-
-registerClass('Mark');
-?>

@@ -7,8 +7,6 @@
  *
  */
 
-require_once ARTICHOW."/BarPlot.class.php";
-
 class BarDepthPattern extends Pattern {
 
 	protected function getPlot($y, $depth) {

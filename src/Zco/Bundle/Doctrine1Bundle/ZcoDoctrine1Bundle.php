@@ -22,7 +22,6 @@
 namespace Zco\Bundle\Doctrine1Bundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Zco\Bundle\Doctrine1Bundle\EventListener\LegacyListener;
 
 /**
  * Bundle assurant une intégration basique de Doctrine1 dans Symfony2.
@@ -36,14 +35,8 @@ class ZcoDoctrine1Bundle extends Bundle
      */
     public function boot()
     {
-        $conn = \Doctrine_Manager::connection(
-            'mysql://' . $this->container->getParameter('database.username') . ':' . $this->container->getParameter('database.password')
-            . '@' . $this->container->getParameter('database.host') . '/' . $this->container->getParameter('database.base'));
-        $conn->addListener(new LegacyListener());
-        $conn->addListener($this->container->get('zco_doctrine1.audit_listener'));
-        $conn->setOption('username', $this->container->getParameter('database.username'));
-        $conn->setOption('password', $this->container->getParameter('database.password'));
-
+        // Force connection initialization.
+        $this->container->get('zco_doctrine1.connection');
         $manager = \Doctrine_Manager::getInstance();
         $manager->setAttribute(\Doctrine_Core::ATTR_TBLNAME_FORMAT, 'zcov2_%s');
 
@@ -56,8 +49,7 @@ class ZcoDoctrine1Bundle extends Bundle
             }
         }
 
-        //Les modèles générés sont cherchés en cache, les autres sont cherchés
-        //directement dans les bundles.
+        //Les modèles générés sont cherchés en cache, les autres sont cherchés directement dans les bundles.
         $dir = $this->container->getParameter('kernel.cache_dir') . '/zco_doctrine1/generated';
         spl_autoload_register(function ($className) use ($directories, $dir) {
             if (strpos($className, 'Base') === 0) {
@@ -66,7 +58,6 @@ class ZcoDoctrine1Bundle extends Bundle
                     return true;
                 }
             }
-
             foreach ($directories as $dir) {
                 if (is_file($file = $dir . '/' . $className . '.class.php')) {
                     include($file);

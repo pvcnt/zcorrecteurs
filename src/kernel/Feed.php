@@ -32,7 +32,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 abstract class Feed extends Controller
 {
 	protected $object;
-	protected $logs = true;
 	protected $idDescription = 'ID du flux';
 
 	/**
@@ -77,9 +76,6 @@ abstract class Feed extends Controller
 	 */
 	public function renderFeed()
 	{
-		if($this->logs == true)
-			$this->saveLogs();
-
 		$cache_file = 'xml/'.strtolower(get_class($this)).
 			(!empty($_GET['id']) ? '_'.$_GET['id'] : '').
 			(!empty($_GET['id2']) ? '_'.$_GET['id2'] : '').'.xml';
@@ -123,23 +119,6 @@ abstract class Feed extends Controller
 		}
 
 		return $content;
-	}
-
-	/**
-	 * Enregistre le log de visualisation du flux.
-	 */
-	protected function saveLogs()
-	{
-		$dbh = Doctrine_Manager::connection()->getDbh();
-		$stmt = $dbh->prepare("INSERT INTO zcov2_zingle_logs_flux
-			(log_date, log_ip, log_id, log_user_agent, log_nb_views)
-			VALUES(NOW(), :ip, :id, :user_agent, 1)
-			ON DUPLICATE KEY UPDATE log_nb_views = log_nb_views+1");
-		$stmt->bindValue(':ip', ip2long($this->get('request')->getClientIp(true)));
-		$stmt->bindValue(':id', !empty($_GET['id']) ? $_GET['id'] : null);
-		$stmt->bindValue(':user_agent',	isset($_SERVER['HTTP_USER_AGENT'])
-			? $_SERVER['HTTP_USER_AGENT'] : '');
-		$stmt->execute();
 	}
 
 	/**

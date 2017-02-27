@@ -7,8 +7,6 @@
  *
  */
 
-require_once dirname(__FILE__)."/Image.class.php";
-
 /**
  * AntiSpam
  * String printed on the images are case insensitive.
@@ -219,6 +217,3 @@ class awAntiSpam extends awImage {
 	}
 
 }
-
-registerClass('AntiSpam');
-?>

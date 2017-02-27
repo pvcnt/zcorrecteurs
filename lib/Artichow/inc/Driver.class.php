@@ -6,8 +6,6 @@
  * Creative Commons, 559 Nathan Abbott Way, Stanford, California 94305, USA.
  *
  */
- 
-require_once dirname(__FILE__)."/../Graph.class.php";
 
 /**
  * Draw your objects
@@ -74,8 +72,8 @@ abstract class awDriver {
 	 */
 	protected $driverString;
 
-	private $w;
-	private $h;
+	protected $w;
+    protected $h;
 	
 	public function __construct() {
 		$this->phpFontDriver = new awPHPFontDriver();
@@ -215,7 +213,6 @@ abstract class awDriver {
 	 *
 	 * @param awColor $color Line color
 	 * @param awLine $line
-	 * @param int $thickness Line tickness
 	 */
 	abstract public function line(awColor $color, awLine $line);
 	
@@ -268,7 +265,6 @@ abstract class awDriver {
 	 *
 	 * @param awColor $color Rectangle color
 	 * @param awLine $line Rectangle diagonale
-	 * @param awPoint $p2
 	 */
 	abstract public function rectangle(awColor $color, awLine $line);
 	
@@ -284,7 +280,7 @@ abstract class awDriver {
 	 * Draw a polygon
 	 *
 	 * @param awColor $color Polygon color
-	 * @param Polygon A polygon
+	 * @param awPolygon A polygon
 	 */
 	abstract public function polygon(awColor $color, awPolygon $polygon);
 	
@@ -292,7 +288,7 @@ abstract class awDriver {
 	 * Draw a polygon with a background
 	 *
 	 * @param mixed $background Background (can be a color or a gradient)
-	 * @param Polygon A polygon
+	 * @param awPolygon A polygon
 	 */
 	abstract public function filledPolygon($background, awPolygon $polygon);
 
@@ -340,12 +336,7 @@ abstract class awDriver {
 	 * @return bool
 	 */
 	abstract protected function isCompatibleWithFont(awFont $font);
-	
-//	abstract private function drawImage(awImage $image, $return = FALSE, $header = TRUE);
-	
 }
-
-registerClass('Driver', TRUE);
 
 /**
  * Abstract class for font drivers.
@@ -387,8 +378,6 @@ abstract class awFontDriver {
 	abstract public function getTextHeight(awText $text, awDriver $driver);
 	
 }
-
-registerClass('FontDriver', TRUE);
 
 /**
  * Class to handle calculations on PHPFont objects
@@ -560,8 +549,6 @@ class awPHPFontDriver extends awFontDriver {
 	}
 }
 
-registerClass('PHPFontDriver');
-
 /**
  * Class to handle calculations on FileFont objects
  * 
@@ -716,10 +703,3 @@ class awFileFontDriver extends awFontDriver {
 	}
 	
 }
-
-registerClass('FileFontDriver');
-
-// Include ARTICHOW_DRIVER by default to preserve backward compatibility.
-require_once dirname(__FILE__).'/drivers/'.ARTICHOW_DRIVER.'.class.php';
-
-?>

@@ -7,8 +7,6 @@
  *
  */
 
-require_once dirname(__FILE__)."/Graph.class.php";
-
 /**
  * All patterns must derivate from this class
  *
@@ -27,7 +25,7 @@ abstract class awPattern {
 	 * Load a pattern
 	 *
 	 * @param string $pattern Pattern name
-	 * @return Component
+	 * @return awComponent
 	 */
 	public static function get($pattern) {
 	
@@ -92,6 +90,3 @@ abstract class awPattern {
 	}
 
 }
-
-registerClass('Pattern', TRUE);
-?>
