@@ -1,0 +1,7 @@
+[Php]
+bears = PHPLintBear
+files = app/**.php,src/**.php,web/*.php
+
+[Javascript]
+bears = ESLintBear
+files = src/**.js
