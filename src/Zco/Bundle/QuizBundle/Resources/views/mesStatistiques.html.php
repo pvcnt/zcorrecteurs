@@ -1,4 +1,4 @@
-<?php $view->extend('::layouts/default.html.php') ?>
+<?php $view->extend('::layouts/bootstrap.html.php') ?>
 
 <h1>
 	Statistiques d'utilisation du quiz

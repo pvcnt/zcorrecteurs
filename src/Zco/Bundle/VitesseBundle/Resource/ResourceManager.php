@@ -45,6 +45,7 @@ class ResourceManager implements ResourceManagerInterface
 	private $combine;
 	private $debug;
 	private $logger;
+	private $writer;
 	
 	private $feeds = array();
 	private $symbols = array();
@@ -226,9 +227,9 @@ class ResourceManager implements ResourceManagerInterface
 				}
 				catch (\InvalidArgumentException $e)
 				{
+                    $name = $this->map->getAssetName($symbol);
 					if ($this->debug)
 					{
-						$name = array_search($symbol, $this->aliases);
 						throw new \InvalidArgumentException(
 							str_replace($symbol, $name, $e->getMessage()),
 							$e->getCode(),
@@ -237,9 +238,7 @@ class ResourceManager implements ResourceManagerInterface
 					}
 					if ($this->logger)
 					{
-						$this->logger->warn(sprintf(
-							'Cannot find resource "%s".', $name
-						));
+						$this->logger->warning(sprintf('Cannot find resource "%s".', $name));
 					}
 					continue;
 				}

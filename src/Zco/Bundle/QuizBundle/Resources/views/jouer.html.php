@@ -1,4 +1,4 @@
-<?php $view->extend('::layouts/default.html.php') ?>
+<?php $view->extend('::layouts/bootstrap.html.php') ?>
 
 <span style="float: right;">
 	<?php if (verifier('quiz_stats_generales')){ ?>

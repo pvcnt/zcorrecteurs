@@ -1,4 +1,4 @@
-<?php $view->extend('::layouts/default.html.php') ?>
+<?php $view->extend('::layouts/bootstrap.html.php') ?>
 
 <h1>Quiz sur la langue française et la culture générale</h1>
 
@@ -12,7 +12,7 @@
 	pour suivre votre progression !
 </p>
 
-<div class="rmq information">
+<div class="alert alert-info">
 	À noter que si vous souhaitez proposer vos propres questions afin d'enrichir
 	ces quiz, vous pouvez nous les soumettre dans
 	<a href="/forum/sujet-871-quiz-proposez-vos-questions.html">ce sujet</a>
@@ -20,11 +20,11 @@
 </div>
 
 <?php if (verifier('connecte')){ ?>
-<p class="gras centre"><a href="mes-statistiques.html">Accéder à mes statistiques personnelles</a></p>
+<p class="bold center"><a href="mes-statistiques.html">Accéder à mes statistiques personnelles</a></p>
 <?php } ?>
 
 <?php if ($bloc_accueil == 'quiz' && !is_null($QuizSemaine)){ ?>
-<div class="UI_box" style="width: 50%;">
+<div class="well" style="width: 50%;">
 	<?php if (!empty($QuizSemaine['image'])){ ?>
 	<a href="/quiz/quiz-<?php echo $QuizSemaine['id']; ?>-<?php echo rewrite($QuizSemaine['nom']); ?>.html">
 		<img class="flot_droite" src="<?php echo htmlspecialchars($QuizSemaine['image']); ?>" alt="" />
@@ -61,7 +61,7 @@ if (count($ListerQuiz) > 0):
 			?>
 <h2 id="c<?php echo $quiz->Categorie['id'] ?>"><?php echo htmlspecialchars($quiz->Categorie['nom']) ?></h2>
 
-<table class="UI_items">
+<table class="table table-striped">
 	<thead>
 		<tr>
 			<th style="width: 55%;">Nom</th>

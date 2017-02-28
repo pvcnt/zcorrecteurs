@@ -21,6 +21,7 @@
 
 namespace Zco\Bundle\VitesseBundle\DependencyInjection;
 
+use Symfony\Component\Finder\SplFileInfo;
 use Zco\Bundle\VitesseBundle\Annotation\DocblockParser;
 use Zco\Bundle\VitesseBundle\Graph\ResourceGraph;
 
@@ -98,7 +99,7 @@ class ZcoVitesseExtension extends Extension
             $resourceGraph[$name] = array();
             $aliases[$provides] = $name;
         }
-		
+
 		foreach ($container->getParameter('kernel.bundles') as $bundle => $className)
 		{
 		    $rc = new \ReflectionClass($className);
@@ -110,20 +111,16 @@ class ZcoVitesseExtension extends Extension
             
 		    $finder = Finder::create()
                 ->files()
-                ->name('*.js')
-                ->name('*.css')
+                ->name('/\.js$/')
+                ->name('/\.css$/')
                 ->followLinks()
                 ->in($publicDir);
-            
+
             $i = 0;
             foreach ($finder as $file)
             {
-                if (!preg_match('/\.(css|js)$/', $file->getFilename(), $matches))
-                {
-                    continue;
-                }
-                
-                $type = $matches[1];
+                /** @var SplFileInfo $file */
+                $type = $file->getExtension();
                 $defaultProvides = str_replace(DIRECTORY_SEPARATOR, '/', sprintf('@%s/Resources/public%s', 
                     $bundle, 
                     preg_replace('@^'.preg_quote($publicDir, '@').'@', '', $file->getPathname())
