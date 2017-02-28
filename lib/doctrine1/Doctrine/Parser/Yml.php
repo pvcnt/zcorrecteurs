@@ -18,6 +18,7 @@
  * and is licensed under the LGPL. For more information, see
  * <http://www.phpdoctrine.org>.
  */
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Doctrine_Parser_Yml
@@ -47,7 +48,7 @@ class Doctrine_Parser_Yml extends Doctrine_Parser
     {
 
         try {
-          $data = sfYaml::dump($array, 6);
+          $data = Yaml::dump($array, 6);
 
           return $this->doDump($data, $path);
 
@@ -77,7 +78,7 @@ class Doctrine_Parser_Yml extends Doctrine_Parser
            */
           $contents = $this->doLoad($path);
 
-          $array = sfYaml::load($contents);
+          $array = Yaml::parse($contents);
 
           return $array;
 

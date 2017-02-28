@@ -8,7 +8,6 @@
       "Zco\\": "src",
       "": "src/kernel",
       "Doctrine_": "lib/doctrine1",
-      "sfYaml": "lib/doctrine1/vendor/sfYaml",
       "CssMin": "lib/cssmin",
       "JavascriptMinifier": "lib/jsmin"
     },
