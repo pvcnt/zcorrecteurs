@@ -16,8 +16,7 @@
       "app/AppCache.php",
       "lib/Artichow",
       "lib/xmlrpc",
-      "lib/geoip",
-      "lib/Sphinx"
+      "lib/geoip"
     ],
     "files": [
       "src/kernel/functions.php",
@@ -41,8 +40,6 @@
     "friendsofsymfony/jsrouting-bundle": "^1.6.0",
     "willdurand/geocoder-bundle": "2.0.0",
     "rkmax/sphinx-client": "^1.0.1",
-    "league/tactician-bundle": "~0.4",
-    "beberlei/metrics": "^2.4.0",
     "jimdo/prometheus_client_php": "^0.8"
   },
   "require-dev": {
