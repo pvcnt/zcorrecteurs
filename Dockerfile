@@ -13,6 +13,8 @@ RUN set -x \
     libmcrypt-dev \
     libpng12-dev \
     zlib1g-dev \
+    libxml2-dev \
+    libxslt1-dev \
   && rm -rf /var/lib/apt/lists/*
 
 # Install gosu binary (needs wget and ca-certificates).
@@ -34,8 +36,8 @@ RUN wget -O composer-setup.php https://getcomposer.org/installer \
   && rm composer-setup.php \
   && mkdir -p /var/cache/composer
 
-# Install PHP extensions: iconv, mcrypt, gd, pdo, pdo_mysql, zip
-RUN docker-php-ext-install -j$(nproc) iconv mcrypt pdo pdo_mysql zip opcache \
+# Install PHP extensions
+RUN docker-php-ext-install -j$(nproc) iconv mcrypt pdo pdo_mysql zip opcache xml xsl \
   && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
   && docker-php-ext-install -j$(nproc) gd \
   && pecl install apcu-5.1.5 \

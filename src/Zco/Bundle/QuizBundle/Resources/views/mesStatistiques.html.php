@@ -25,22 +25,22 @@
 <br /><br />
 
 <h2>30 dernières notes</h2>
-<table class="UI_items">
+<table class="table table-striped">
 	<thead>
-		<tr class="header_message">
-			<th style="width: 40%;">Quiz</th>
-			<th style="width: 20%;">Difficulté</th>
-			<th style="width: 20%;">Date</th>
-			<th style="width: 20%;">Note</th>
+		<tr>
+			<th>Quiz</th>
+			<th>Difficulté</th>
+			<th>Date</th>
+			<th>Note</th>
 		</tr>
 	</thead>
 	<tbody>
 		<?php foreach ($Statistiques['notes'] as $score){ ?>
 		<tr>
 			<td><a href="/quiz/quiz-<?php echo $score->Quiz['id']; ?>.html"><?php echo htmlspecialchars($score->Quiz['nom']); ?></a></td>
-			<td class="centre"><?php echo htmlspecialchars($score->Quiz['difficulte']); ?></td>
+			<td class="center"><?php echo htmlspecialchars($score->Quiz['difficulte']); ?></td>
 			<td><?php echo dateformat($score['date']); ?></td>
-			<td class="centre"><?php echo $score['note']; ?>/20</td>
+			<td class="center"><?php echo $score['note']; ?>/20</td>
 		</tr>
 		<?php } ?>
 	</tbody>

@@ -111,8 +111,7 @@ class DefaultController extends Controller
 		}
 		
 		$quiz = \Doctrine_Core::getTable('Quiz')->find($_GET['id']);
-		if($quiz === false || !verifier('quiz_voir', $quiz['categorie_id'])
-		|| !$quiz->visible)
+		if($quiz === false || !$quiz->visible)
 			return redirect(10, 'index.html', MSG_ERROR);
 
 		\zCorrecteurs::VerifierFormatageUrl($quiz['nom'], true);

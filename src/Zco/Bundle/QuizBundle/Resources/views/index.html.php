@@ -79,7 +79,6 @@ if (count($ListerQuiz) > 0):
 				<a href="quiz-<?php echo $quiz['id']; ?>-<?php echo rewrite($quiz['nom']); ?>.html">
 					<?php echo htmlspecialchars($quiz['nom']); ?>
 				</a>
-
 				<?php if (!empty($quiz['description'])): ?><br />
 				<em><?php echo htmlspecialchars($quiz['description']) ?></em>
 				<?php endif; ?>
@@ -89,7 +88,7 @@ if (count($ListerQuiz) > 0):
 				<span style="float: right; margin-right: 5px;"><?php echo $quiz['difficulte'] ?></span>
 				<?php echo $quiz->afficherEtoiles() ?>
 			</td>
-			<td class="centre">
+			<td class="center">
 				<?php echo $quiz['nb_questions'] ?>
 				<?php if ($quiz['aleatoire'] >= 2): ?>
 					<em>(<?php echo $quiz['aleatoire'] ?> aléatoires)</em>

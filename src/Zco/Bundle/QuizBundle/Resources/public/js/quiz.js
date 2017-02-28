@@ -13,7 +13,8 @@ $('form_jouer').addEvent('submit', function(e){
 		if (text == 'ERREUR')
 		{
 			$('quiz_notice').set('html', 'Ce quiz n\'a pas été trouvé ! Vous pouvez signaler cette anomalie.');
-			$('quiz_notice').slide();
+            $('quiz_notice').setStyle('display', 'block');
+			$('quiz_notice').slide('in');
 		}
 
 		//Sinon on décode et on affiche les réponses.
@@ -42,6 +43,7 @@ $('form_jouer').addEvent('submit', function(e){
 		/*$$('.explication').each(function(elem, i){
 			elem.slide('hide');
 		});*/
+        $('quiz_note').setStyle('display', 'block');
 		$('quiz_note').set('html', data.note);
 		$('quiz_note').slide('in');
 
@@ -61,8 +63,8 @@ window.addEvent('domready', function(){
 	$$('.correction').each(function(elem, i){
 		elem.slide('hide');
 	});
-	$('quiz_notice').slide('hide');
-	$('quiz_notice').setStyle('display', 'block');
-	$('quiz_note').slide('hide');
-	$('quiz_note').setStyle('display', 'block');
+	//$('quiz_notice').slide('hide');
+	//$('quiz_notice').setStyle('display', 'block');
+	//$('quiz_note').slide('hide');
+	//$('quiz_note').setStyle('display', 'block');
 });

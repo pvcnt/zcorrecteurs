@@ -1,5 +1,3 @@
-all:
-    credentials:  [quiz_voir]
 mes_statistiques:
     login_required: true
 statistiques:
@@ -7,11 +5,11 @@ statistiques:
 statistiques_popularite:
     credentials:  [quiz_stats_generales]
 gestion:
-    credentials:  [[quiz_ajouter, quiz_editer, quiz_editer_siens, quiz_supprimer, quiz_supprimer_siens, quiz_ajouter_questions, quiz_ajouter_questions_siens, quiz_editer_ses_questions, quiz_editer_questions, quiz_supprimer_questions, quiz_supprimer_ses_questions]]
+    credentials:  [quiz_ajouter]
 ajouter_quiz:
     credentials:  [quiz_ajouter]
 valider_quiz:
     credentials:  [quiz_ajouter]
 deplacer_question:
-    credentials:  [quiz_supprimer_questions, quiz_ajouter_questions]
+    credentials:  [quiz_ajouter]
 

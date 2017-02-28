@@ -1,4 +1,4 @@
-<?php if ($quel_bloc == 'quiz' && verifier('quiz_voir')){ ?>
+<?php if ($quel_bloc == 'quiz'){ ?>
 	<h2 class="mod_communaute">Quiz du moment</h2>
 	<?php if(!empty($QuizSemaine['image'])){ ?>
 	<a href="/quiz/quiz-<?php echo $QuizSemaine['id']; ?>-<?php echo rewrite($QuizSemaine['nom']); ?>.html">

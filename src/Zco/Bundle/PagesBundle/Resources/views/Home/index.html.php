@@ -73,16 +73,12 @@
 	<tr>
 	<td>
 		<h2 class="mod_quiz">Quiz</h2>
-		<?php if(verifier('quiz_voir')){ ?>
 		<?php echo $view->render('ZcoQuizBundle::_bloc_accueil.html.php',
 			array(
 				'ListerQuizFrequentes' => $ListerQuizFrequentes,
 				'ListerQuizNouveaux' => $ListerQuizNouveaux,
 				'QuizHasard' => $QuizHasard
 			)) ?>
-		<?php } else{ ?>
-		<p>Vous ne pouvez pas accéder aux quiz.</p>
-		<?php } ?>
 	</td>
 
 	</tr>
