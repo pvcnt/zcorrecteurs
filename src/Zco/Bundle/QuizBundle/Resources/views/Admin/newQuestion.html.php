@@ -12,18 +12,16 @@
             </div>
         </div>
 	</fieldset>
-
 	<fieldset>
 		<legend>Réponses</legend>
         <?php for ($i = 1; $i <= 4; $i++): ?>
         <div class="control-group">
-            <label for="rep<?php echo $i ?>" class="control-label">Réponse <?php echo $i ?> *</label>
+            <label for="rep<?php echo $i ?>" class="control-label">Réponse <?php echo $i ?></label>
             <div class="controls">
                 <input type="text" name="rep<?php echo $i ?>" id="rep<?php echo $i ?>" class="input-xxlarge" />
             </div>
         </div>
         <?php endfor ?>
-
         <div class="control-group">
 		    <label for="rep_juste" class="control-label">Réponse juste : </label>
             <div class="controls">
@@ -36,7 +34,6 @@
             </div>
         </div>
 	</fieldset>
-
 	<fieldset>
 		<legend>Explication</legend>
         <div class="control-group">
@@ -49,5 +46,6 @@
 
 	<div class="form-actions">
 		<input type="submit" class="btn btn-primary" value="Envoyer" />
+		<a class="btn" href="<?php echo $view['router']->path('zco_quiz_editQuiz', ['id' => $quiz['id']]) ?>">Annuler</a>
 	</div>
 </form>

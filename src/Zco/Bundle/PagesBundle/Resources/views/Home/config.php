@@ -130,7 +130,7 @@
 		<?php if (!empty($infos_quiz) && !empty($infos_quiz['nom'])){ ?>
 		<p>
 			Le quiz actuellement mis en valeur est
-			<strong><a href="/quiz/quiz-<?php echo $infos_quiz['id']; ?>.html">
+			<strong><a href="<?php echo $view['router']->path('zco_quiz_show', ['id' => $infos_quiz['id'], 'slug' => rewrite($infos_quiz['nom'])]) ?>">
 				<?php echo htmlspecialchars($infos_quiz['nom']); ?>
 			</a></strong> dans la catégorie « <?php echo htmlspecialchars($infos_quiz['Categorie']['nom']); ?> ».
 		</p>

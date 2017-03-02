@@ -32,14 +32,14 @@
 		?>
 		</select>
 		<input type="submit" value="Consulter les statistiques" />
-		<a href="statistiques-popularite.html" class="gras" style="margin-left: 30px;">Voir les statistiques de popularité</a>
+		<a href="statistiques-popularite.html" class="bold" style="margin-left: 30px;">Voir les statistiques de popularité</a>
 	</fieldset>
 </form><br />
 
 
-<div class="centre">
+<div class="center">
 	<?php if (isset($_GET['notes']) && $_GET['notes']){ ?>
-	<p class="gras centre"><a href="?notes=0">Voir les statistiques d'utilisation</a></p>
+	<p class="bold center"><a href="?notes=0">Voir les statistiques d'utilisation</a></p>
 
 	<p>
 		Le graphique de répartition des notes ne tient pas compte de la période
@@ -53,7 +53,7 @@
 		src="graphique-notes.html<?php if (isset($quiz)){ ?>?quiz=<?php echo $quiz['id'] ?><?php } ?>"
 	/>
 	<?php } elseif (!isset($jour)){ ?>
-	<p class="gras centre"><a href="?notes=1">Voir le graphique de répartition des notes</a></p><br />
+	<p class="bold center"><a href="?notes=1">Voir le graphique de répartition des notes</a></p><br />
 	<img
 		alt="Graphique de statistiques"
 		src="graphique-statistiques.html<?php if (isset($quiz)){ ?>?quiz=<?php echo $quiz['id'] ?><?php } ?>"
@@ -79,10 +79,10 @@
 <table class="UI_items">
 	<thead>
 		<tr>
-			<td colspan="5" class="centre">
+			<td colspan="5" class="center">
 				<form method="get" action="">
 					<?php if (isset($jour)){ ?>
-					<a class="gras" href="?annee=<?php echo $annee ?>&mois=<?php echo $mois ?><?php if (isset($quiz)){ ?>&id=<?php echo $quiz['id'] ?><?php } ?>">
+					<a class="bold" href="?annee=<?php echo $annee ?>&mois=<?php echo $mois ?><?php if (isset($quiz)){ ?>&id=<?php echo $quiz['id'] ?><?php } ?>">
 						Retour aux statistiques de <?php echo lcfirst($listeMois[$mois-1]) ?> <?php echo $annee ?>
 					</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					
@@ -129,11 +129,11 @@
 
 	<tfoot>
 		<tr>
-			<td class="gras centre">Totaux <?php if (!isset($jour)) echo 'sur le mois' ?> :</td>
-			<td class="gras centre"><?php echo $view['humanize']->numberformat($donnees['totaux']['validations_membres'], 0) ?></td>
-			<td class="gras centre"><?php echo $view['humanize']->numberformat($donnees['totaux']['validations_visiteurs'], 0) ?></td>
-			<td class="gras centre"><?php echo $view['humanize']->numberformat($donnees['totaux']['validations_totales'], 0) ?></td>
-			<td class="gras centre">
+			<td class="bold center">Totaux <?php if (!isset($jour)) echo 'sur le mois' ?> :</td>
+			<td class="bold center"><?php echo $view['humanize']->numberformat($donnees['totaux']['validations_membres'], 0) ?></td>
+			<td class="bold center"><?php echo $view['humanize']->numberformat($donnees['totaux']['validations_visiteurs'], 0) ?></td>
+			<td class="bold center"><?php echo $view['humanize']->numberformat($donnees['totaux']['validations_totales'], 0) ?></td>
+			<td class="bold center">
 				<?php if ($donnees['totaux']['validations_totales'] > 0){ ?>
 				<?php echo $view['humanize']->numberformat($donnees['totaux']['note_moyenne']) ?>/20
 				<?php } else echo '-' ?>
@@ -142,11 +142,11 @@
 
 		<?php if (!isset($jour)){ ?>
 		<tr>
-			<td style="background-color: #e0e0e0;" class="gras centre">Totaux globaux :</td>
-			<td style="background-color: #e0e0e0;" class="gras centre"><?php echo $view['humanize']->numberformat($validationsMembres, 0) ?></td>
-			<td style="background-color: #e0e0e0;" class="gras centre"><?php echo $view['humanize']->numberformat($validationsVisiteurs, 0) ?></td>
-			<td style="background-color: #e0e0e0;" class="gras centre"><?php echo $view['humanize']->numberformat($validationsTotales, 0) ?></td>
-			<td style="background-color: #e0e0e0;" class="gras centre">
+			<td style="background-color: #e0e0e0;" class="bold center">Totaux globaux :</td>
+			<td style="background-color: #e0e0e0;" class="bold center"><?php echo $view['humanize']->numberformat($validationsMembres, 0) ?></td>
+			<td style="background-color: #e0e0e0;" class="bold center"><?php echo $view['humanize']->numberformat($validationsVisiteurs, 0) ?></td>
+			<td style="background-color: #e0e0e0;" class="bold center"><?php echo $view['humanize']->numberformat($validationsTotales, 0) ?></td>
+			<td style="background-color: #e0e0e0;" class="bold center">
 				<?php if ($validationsTotales > 0){ ?>
 				<?php echo $view['humanize']->numberformat($noteMoyenne) ?>/20
 				<?php } else echo '-' ?>
@@ -158,17 +158,17 @@
 	<tbody>
 		<?php $i = 0; foreach ($donnees['lignes'] as $cle => $ligne){ ?>
 		<tr class="<?php echo $i % 2 ? 'odd' : 'even' ?>">
-			<td class="centre">
+			<td class="center">
 				<?php if (!isset($jour)){ ?>
 					<a href="?annee=<?php echo $annee ?>&mois=<?php echo $mois ?>&jour=<?php echo $cle ?><?php if (isset($quiz)){ ?>&id=<?php echo $quiz['id'] ?><?php } ?>">
 						<?php echo $cle ?>
 					</a>
 				<?php } else echo $cle ?>
 			</td>
-			<td class="centre"><?php echo $view['humanize']->numberformat($ligne['validations_membres'], 0) ?></td>
-			<td class="centre"><?php echo $view['humanize']->numberformat($ligne['validations_visiteurs'], 0) ?></td>
-			<td class="centre"><?php echo $view['humanize']->numberformat($ligne['validations_totales'], 0) ?></td>
-			<td class="centre">
+			<td class="center"><?php echo $view['humanize']->numberformat($ligne['validations_membres'], 0) ?></td>
+			<td class="center"><?php echo $view['humanize']->numberformat($ligne['validations_visiteurs'], 0) ?></td>
+			<td class="center"><?php echo $view['humanize']->numberformat($ligne['validations_totales'], 0) ?></td>
+			<td class="center">
 				<?php if ($ligne['validations_totales'] > 0){ ?>
 				<?php echo $view['humanize']->numberformat($ligne['note_moyenne']) ?>/20
 				<?php } else echo '-' ?>

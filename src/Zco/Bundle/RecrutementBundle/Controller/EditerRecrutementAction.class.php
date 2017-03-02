@@ -68,7 +68,7 @@ class EditerRecrutementAction extends Controller
 		return render_to_response(array(
 			'form'        => $form->createView(),
 			'recrutement' => $recrutement,
-			'quiz'        => Doctrine_Core::getTable('Quiz')->findAll(),
+			'quiz'        => $this->get('zco_quiz.manager.quiz')->lister(true),
 		));
 	}
 }

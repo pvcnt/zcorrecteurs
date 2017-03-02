@@ -29,104 +29,43 @@
  */
 class Quiz extends BaseQuiz
 {
-	/**
-	 * (non-PHPdoc)
-	 * @see vendor/doctrine/Doctrine/Doctrine_Record#preInsert($event)
-	 */
-	public function preInsert($event)
-	{
-		$this['utilisateur_id'] = $_SESSION['id'];
-		$this['date'] = date('Y-m-d H:i:s');
-	}
-	
-	public function __toString()
-	{
-		return $this['nom'];
-	}
+    const LEVELS = ['Facile', 'Moyen', 'Difficile'];
 
-	/**
-	 * Retourne le code HTML pour afficher la difficulté sous
-	 * forme d'étoiles.
-	 *
-	 * @return string
-	 */
-	public function AfficherEtoiles()
-	{
-		$conv = array('Facile' => 1, 'Moyen' => 2, 'Difficile' => 3);
+    public function __toString()
+    {
+        return $this['nom'];
+    }
 
-		$ret = '';
-		for ($i = 1 ; $i <= $conv[$this['difficulte']] ; $i++)
-		{
-			$ret .= '<img src="/bundles/zcoquiz/img/etoile.png" alt="'.$this['difficulte'].'" title="'.$this['difficulte'].'" />';
-		}
-		return $ret;
-	}
+    public function getNumericLevel()
+    {
+        return array_flip(self::LEVELS)[$this['difficulte']];
+    }
 
-	/**
-	 * Calcule le score à un quiz.
-	 * @param Doctrine_Collection $questions		Les questions.
-	 * @param boolean $score						Sauvegarder le score ?
-	 * @return integer								La note obtenue.
-	 */
-	public function Soumettre($questions = null, $score = true)
-	{
-		if (is_null($questions))
-		{
-			$questions = $this->Questions(false);
-		}
+    /**
+     * Calcule le score à un quiz.
+     * @param Doctrine_Collection $questions Les questions.
+     * @return integer                                La note obtenue.
+     */
+    public function Soumettre(\Doctrine_Collection $questions)
+    {
+        //Calcul du score.
+        $score = 0;
+        foreach ($questions as $question) {
+            if (isset($_POST['rep' . $question['id']])) {
+                if ($_POST['rep' . $question['id']] != 0 && $_POST['rep' . $question['id']] == $question['reponse_juste']) {
+                    $score++;
+                }
+            }
+        }
+        $note = (int)round($score / count($questions) * 20);
 
-		//Calcul du score.
-		$score = 0;
-		foreach ($questions as $question)
-		{
-			if (isset($_POST['rep'.$question['id']]))
-			{
-				if ($_POST['rep'.$question['id']] != 0 && $_POST['rep'.$question['id']] == $question['reponse_juste'])
-				{
-					$score ++;
-				}
-			}
-		}
-		$note = (int)round($score / count($questions) * 20);
+        $score = new QuizScore;
+        $score['utilisateur_id'] = $_SESSION['id'] > 0 ? $_SESSION['id'] : null;
+        $score['date'] = date('Y-m-d H:i:s');
+        $score['quiz_id'] = $this['id'];
+        $score['note'] = $note;
+        $score->save();
 
-		if ($score == true)
-		{
-			$score = new QuizScore;
-			$score['utilisateur_id'] = $_SESSION['id'] > 0 ? $_SESSION['id'] : null;
-			$score['quiz_id']        = $this['id'];
-			$score['note']           = $note;
-			$score->save();
-		}
-
-		return $note;
-	}
-
-	/**
-	 * Récupère les questions liées au quiz.
-	 *
-	 * @param null|integer|array $aleatoire	Si null, comportement par défaut
-	 * du quiz. Sinon, réécrit par-dessus ce comportement. Si c'est un array, les
-	 * questions sont prises uniquements dans la liste des id donnés.
-	 * @return Doctrine_Collection
-	 */
-	public function Questions($aleatoire = null)
-	{
-		$query = Doctrine_Query::create()
-			->select('id, date, question, explication, reponse1, reponse2, '.
-				'reponse3, reponse4, reponse_juste')
-			->from('QuizQuestion')
-			->where('quiz_id = ?', $this['id']);
-
-                if (is_array($aleatoire))
-		{
-                        $query->andWhereIn('id', $aleatoire);
-		}
-		else if (($aleatoire >= 2) || (is_null($aleatoire) && $this['aleatoire'] >= 2))
-		{
-			$query->orderBy('RAND()');
-			$query->limit(is_null($aleatoire) ? $this['aleatoire'] : $aleatoire);
-		}
-
-		return $query->execute();
-	}
+        return $note;
+    }
 }

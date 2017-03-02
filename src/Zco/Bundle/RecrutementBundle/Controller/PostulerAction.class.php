@@ -87,7 +87,7 @@ class PostulerAction extends Controller
 			   isset($_POST['rep']) && is_array($_POST['rep']) &&
 			   $InfosCandidature['candidature_quiz_score'] === NULL)
 			{
-				$quiz = Doctrine_Core::getTable('Quiz')->find($InfosRecrutement['recrutement_id_quiz']);
+				$quiz = $this->get('zco_quiz.manager.quiz')->get($InfosRecrutement['recrutement_id_quiz']);
 				$questions = $quiz->Questions($_POST['rep']);
 				$note = $quiz->Soumettre($questions, false);
 

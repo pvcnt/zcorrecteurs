@@ -134,9 +134,10 @@ class HomeController extends Controller
         $vars['DicteesLesPlusJouees'] = array_slice(DicteesLesPlusJouees(), 0, 2);
 
         // Quiz
-        $vars['ListerQuizFrequentes'] = \Doctrine_Core::getTable('Quiz')->listerParFrequentation();
-        $vars['ListerQuizNouveaux'] = \Doctrine_Core::getTable('Quiz')->listerRecents();
-        $vars['QuizHasard'] = \Doctrine_Core::getTable('Quiz')->hasard();
+        $quizRepository = $this->get('zco_quiz.manager.quiz');
+        $vars['ListerQuizFrequentes'] = $quizRepository->listerParFrequentation();
+        $vars['ListerQuizNouveaux'] = $quizRepository->listerRecents();
+        $vars['QuizHasard'] = $quizRepository->hasard();
 
         // Forum
         $vars['StatistiquesForum'] = RecupererStatistiquesForum();
@@ -232,9 +233,10 @@ class HomeController extends Controller
         $infos_quiz = $registry->get('accueil_quiz');
         if (empty($infos_quiz)) $infos_quiz = array();
         $image_quiz = array_key_exists('image', $infos_quiz) ? $infos_quiz['image'] : '';
+        $quizRepository = $this->get('zco_quiz.manager.quiz');
 
         if (!empty($_POST['quiz'])) {
-            $choix_quiz = \Doctrine_Core::getTable('Quiz')->findByNom($_POST['quiz']);
+            $choix_quiz = $quizRepository->findByNom($_POST['quiz']);
             if (count($choix_quiz) == 1) {
                 $quiz = array(
                     'id' => $choix_quiz[0]['id'],
@@ -251,7 +253,7 @@ class HomeController extends Controller
             }
         }
         if (!empty($_GET['quiz']) && is_numeric($_GET['quiz'])) {
-            $choix_quiz = \Doctrine_Core::getTable('Quiz')->find($_GET['quiz']);
+            $choix_quiz = $quizRepository->get($_GET['quiz']);
             if ($choix_quiz !== false) {
                 $quiz = array(
                     'id' => $choix_quiz['id'],

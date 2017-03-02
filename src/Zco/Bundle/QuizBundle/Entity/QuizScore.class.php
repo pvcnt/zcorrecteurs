@@ -29,12 +29,4 @@
  */
 class QuizScore extends BaseQuizScore
 {
-	/**
-	 * (non-PHPdoc)
-	 * @see vendor/doctrine/Doctrine/Doctrine_Record#preInsert($event)
-	 */
-	public function preInsert($event)
-	{
-		$this['date'] = date('Y-m-d H:i:s');
-	}
 }

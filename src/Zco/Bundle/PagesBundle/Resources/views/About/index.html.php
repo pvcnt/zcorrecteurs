@@ -62,7 +62,7 @@
 	loin et de proposer en plus des ressources en rapport avec notre belle langue.
 	C’est ainsi que nous pouvons aujourd’hui vous proposer un contenu riche et 
 	varié : des <a href="/blog/">articles</a> sur des points précis de langue, 
-	des <a href="/quiz/">quiz</a> et <a href="/dictees/">dictées</a> pour tester 
+	des <a href="<?php echo $view['router']->path('zco_quiz_index') ?>">quiz</a> et <a href="/dictees/">dictées</a> pour tester
 	et améliorer vos connaissances ainsi qu’un <a href="/forum/">forum</a> 
 	où il y aura toujours une bonne âme pour répondre à vos questions.
 </p>

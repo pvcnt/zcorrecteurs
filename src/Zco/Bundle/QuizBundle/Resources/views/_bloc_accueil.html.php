@@ -1,34 +1,36 @@
-<p class="centre italique"><a href="/quiz/">Accéder aux quiz</a></p>
-<?php
-if($ListerQuizFrequentes || $ListerQuizNouveaux || $QuizHasard)
-{
-	echo '<ul>';
-	if($ListerQuizFrequentes)
-	{
-		echo '<li>Quiz les plus fréquentés<ul class="lightning">';
-		foreach($ListerQuizFrequentes as $quiz)
-		{
-			echo '<li><a href="/quiz/quiz-'.$quiz['id'].'-'.rewrite($quiz['nom']).'.html" title="'.htmlspecialchars($quiz['description']).'">'.htmlspecialchars($quiz['nom']).'</a> ('.$quiz['nb_questions'].')</li>';
-		}
-		echo '</ul></li>';
-	}
-	if($ListerQuizNouveaux)
-	{
-		echo '<li>Derniers ajouts de questions<ul class="add">';
-		foreach($ListerQuizNouveaux as $quiz)
-		{
-			echo '<li><a href="/quiz/quiz-'.$quiz['id'].'-'.rewrite($quiz['nom']).'.html" title="'.htmlspecialchars($quiz['description']).'">'.htmlspecialchars($quiz['nom']).'</a> ('.$quiz['nb_questions'].')</li>';
-		}
-		echo '</ul></li>';
-	}
-	if($QuizHasard)
-	{
-		echo '<li>Un quiz au hasard<ul class="wand">';
-		echo '<li><a href="/quiz/quiz-'.$QuizHasard['id'].'-'.rewrite($QuizHasard['nom']).'.html" title="'.htmlspecialchars($QuizHasard['description']).'">'.htmlspecialchars($QuizHasard['nom']).'</a> ('.$QuizHasard['nb_questions'].')</li>';
-		echo '</ul></li>';
-	}
-	echo '</ul>';
-}
-else
-	echo '<p>Aucun quiz n\'a été trouvé.</p>';
-?>
+<p class="centre italique"><a href="<?php echo $view['router']->path('zco_quiz_index') ?>">Accéder aux quiz</a></p>
+
+<?php if($ListerQuizFrequentes || $ListerQuizNouveaux || $QuizHasard): ?>
+	<ul>
+	<?php if($ListerQuizFrequentes): ?>
+		<li>Quiz les plus fréquentés<ul class="lightning">
+		<?php foreach($ListerQuizFrequentes as $quiz): ?>
+			<li><a href="<?php echo $view['router']->path('zco_quiz_show', ['id' => $quiz['id'], 'slug' => rewrite($quiz['nom'])]) ?>"
+                   title="<?php echo htmlspecialchars($quiz['description']) ?>">
+                    <?php echo htmlspecialchars($quiz['nom']) ?>
+            </a></li>
+		<?php endforeach; ?>
+		</ul></li>
+	<?php endif ?>
+	<?php if($ListerQuizNouveaux): ?>
+		<li>Derniers ajouts de questions<ul class="add">
+		<?php foreach($ListerQuizNouveaux as $quiz): ?>
+			<li><a href="<?php echo $view['router']->path('zco_quiz_show', ['id' => $quiz['id'], 'slug' => rewrite($quiz['nom'])]) ?>"
+                   title="<?php echo htmlspecialchars($quiz['description']) ?>">
+                    <?php echo htmlspecialchars($quiz['nom']) ?>
+            </a></li>
+		<?php endforeach ?>
+		</ul></li>
+    <?php endif ?>
+	<?php if($QuizHasard): ?>
+		<li>Un quiz au hasard<ul class="wand">
+		<li><a href="<?php echo $view['router']->path('zco_quiz_show', ['id' => $QuizHasard['id'], 'slug' => rewrite($QuizHasard['nom'])]) ?>"
+               title="<?php echo htmlspecialchars($QuizHasard['description']) ?>">
+                <?php echo htmlspecialchars($QuizHasard['nom']) ?>
+        </a></li>
+		</ul></li>
+	<?php endif ?>
+	</ul>
+<?php else: ?>
+	<p>Aucun quiz n'a été trouvé.</p>
+<?php endif ?>

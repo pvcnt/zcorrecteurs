@@ -5,66 +5,50 @@
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
 
-$('form_jouer').addEvent('submit', function(e){
-	e.stop();
+$('form_jouer').addEvent('submit', function (e) {
+    e.stop();
+    var xhr = new Request({
+        url: Routing.generate('zco_quiz_api_correction'), method: 'post', onSuccess: function (text, xml) {
+            //Sinon on décode et on affiche les réponses.
+            var data = JSON.decode(text);
+            for (var i in data.reponses) {
+                $('correction_' + i).set('html', data.reponses[i]);
 
-	xhr = new Request({url: '/quiz/ajax-jouer.html', method: 'post', onSuccess: function(text, xml){
-		//En cas d'erreur.
-		if (text == 'ERREUR')
-		{
-			$('quiz_notice').set('html', 'Ce quiz n\'a pas été trouvé ! Vous pouvez signaler cette anomalie.');
-            $('quiz_notice').setStyle('display', 'block');
-			$('quiz_notice').slide('in');
-		}
+                for (var r = 0; r <= 4; r++) {
+                    if (data.enfait[i] == r) {
+                        $('q' + i + 'r' + r).setStyles({'font-weight': 'bold', 'color': 'green'});
+                    }
+                    else if (data.achoisi[i] == r && data.achoisi[i] != data.enfait[i]) {
+                        $('q' + i + 'r' + r).setStyles({'font-weight': 'bold', 'color': 'red'});
+                    }
+                }
+            }
 
-		//Sinon on décode et on affiche les réponses.
-		data = JSON.decode(text);
-		for (i in data.reponses)
-		{
-			$('correction_'+i).set('html', data.reponses[i]);
+            //On affiche les corrections et cache les explications.
+            $$('.correction').each(function (elem, i) {
+                elem.slide('in');
+            });
+            $('quiz_note').setStyle('display', 'block');
+            $('quiz_note').set('html', data.note);
+            $('quiz_note').slide('in');
 
-			for(r=0; r<= 4; r++)
-			{
-				if(data.enfait[i] == r)
-				{
-					$('q'+i+'r'+r).setStyles({'font-weight': 'bold', 'color': 'green'});
-				}
-				else if(data.achoisi[i] == r && data.achoisi[i] != data.enfait[i])
-				{
-					$('q'+i+'r'+r).setStyles({'font-weight': 'bold', 'color': 'red'});
-				}
-			}
-		}
+            //On bloque le formulaire pour une éventuelle soumission future.
+            $('submit').setStyle('display', 'none');
+            $$('input[type=radio]').each(function (elem, i) {
+                elem.set('disabled', 'disabled');
+            });
 
-		//On affiche les corrections et cache les explications.
-		$$('.correction').each(function(elem, i){
-			elem.slide('in');
-		});
-		/*$$('.explication').each(function(elem, i){
-			elem.slide('hide');
-		});*/
-        $('quiz_note').setStyle('display', 'block');
-		$('quiz_note').set('html', data.note);
-		$('quiz_note').slide('in');
+            //On remonte en haut pour que l'utilisateur voie sa note.
+            new Fx.Scroll(window, {duration: 1000, transition: Fx.Transitions.Quart.easeOut}).toTop();
+        }
+    });
+    xhr.send($('form_jouer').toQueryString() + '&ajax=1');
 
-		//On bloque le formulaire pour une éventuelle soumission future.
-		$('submit').setStyle('display', 'none');
-		$$('input[type=radio]').each(function(elem, i){ elem.set('disabled', 'disabled'); });
-
-		//On remonte en haut pour que l'utilisateur voie sa note.
-		new Fx.Scroll(window, {duration:1000, transition: Fx.Transitions.Quart.easeOut}).toTop();
-	}});
-	xhr.send($('form_jouer').toQueryString()+'&ajax=1');
-
-	return false;
+    return false;
 });
 
-window.addEvent('domready', function(){
-	$$('.correction').each(function(elem, i){
-		elem.slide('hide');
-	});
-	//$('quiz_notice').slide('hide');
-	//$('quiz_notice').setStyle('display', 'block');
-	//$('quiz_note').slide('hide');
-	//$('quiz_note').setStyle('display', 'block');
+window.addEvent('domready', function () {
+    $$('.correction').each(function (elem, i) {
+        elem.slide('hide');
+    });
 });

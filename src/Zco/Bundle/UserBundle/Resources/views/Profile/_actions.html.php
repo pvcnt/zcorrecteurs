@@ -74,10 +74,10 @@
         		</a>
         	</li>
         <?php endif ?>
-    	<?php if (verifier('quiz_stats') || $own): ?>
+    	<?php if ($own): ?>
         	<li>
-        		<a href="/quiz/mes-statistiques-<?php echo $user->getId(); ?>.html">
-        			<?php echo $own ? 'Mes' : 'Ses' ?> statistiques de quiz
+        		<a href="<?php echo $view['router']->path('zco_quiz_myStats') ?>">
+        			Mes statistiques de quiz
         		</a>
         	</li>
     	<?php endif ?>

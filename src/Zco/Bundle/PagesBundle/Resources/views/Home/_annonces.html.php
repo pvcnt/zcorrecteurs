@@ -1,7 +1,7 @@
 <?php if ($quel_bloc == 'quiz'){ ?>
 	<h2 class="mod_communaute">Quiz du moment</h2>
 	<?php if(!empty($QuizSemaine['image'])){ ?>
-	<a href="/quiz/quiz-<?php echo $QuizSemaine['id']; ?>-<?php echo rewrite($QuizSemaine['nom']); ?>.html">
+	<a href="<?php echo $view['router']->path('zco_quiz_show', ['id' => $QuizSemaine['id'], 'slug' => rewrite($QuizSemaine['nom'])]) ?>">
 		<img class="flot_droite" src="<?php echo htmlspecialchars($QuizSemaine['image']); ?>" alt="" />
 	</a>
 	<?php } ?>
@@ -10,7 +10,7 @@
 	est actuellement mis en valeur par l'équipe du site :<br /><br />
 
 	<div>
-		<strong><a href="/quiz/quiz-<?php echo $QuizSemaine['id']; ?>-<?php echo rewrite($QuizSemaine['nom']); ?>.html">
+		<strong><a href="<?php echo $view['router']->path('zco_quiz_show', ['id' => $QuizSemaine['id'], 'slug' => rewrite($QuizSemaine['nom'])]) ?>">
 			<?php echo htmlspecialchars($QuizSemaine['nom']); ?>
 		</a></strong>
 		<?php if(!empty($QuizSemaine['description'])){ ?><br />
@@ -49,7 +49,7 @@
 	<h2 class="mod_communaute">Recrutements en cours</h2>
 	<ul>
 		<?php foreach($ListerRecrutements as $r){ ?>
-			<li><a href="recrutement/recrutement-<?php echo $r['recrutement_id']; ?>-<?php echo rewrite($r['recrutement_nom']); ?>.html">
+			<li><a href="/recrutement/recrutement-<?php echo $r['recrutement_id']; ?>-<?php echo rewrite($r['recrutement_nom']); ?>.html">
 				<?php echo htmlspecialchars($r['recrutement_nom']); ?></a>
 				(<span style="color: <?php echo $r['groupe_class']; ?>"><?php echo htmlspecialchars($r['groupe_nom']); ?></span>)
 			</li>

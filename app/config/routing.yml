@@ -13,6 +13,9 @@ zco_pages:
 zco_parser:
     resource: "@ZcoParserBundle/Resources/config/routing.yml"
 
+zco_quiz:
+    resource: "@ZcoQuizBundle/Resources/config/routing.yml"
+
 zco_stats:
     resource: "@ZcoStatsBundle/Resources/config/routing.yml"
 

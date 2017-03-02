@@ -23,3 +23,7 @@ services:
     zco_user.user:
         class:     Zco\Bundle\UserBundle\User\User
         arguments: [@event_dispatcher]
+
+    zco_user.manager.user:
+        class: Zco\Bundle\UserBundle\Entity\UserManager
+        arguments: ['@zco_doctrine1.connection']

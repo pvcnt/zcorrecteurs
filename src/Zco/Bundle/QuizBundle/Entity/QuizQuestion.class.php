@@ -29,18 +29,4 @@
  */
 class QuizQuestion extends BaseQuizQuestion
 {
-	/**
-	 * (non-PHPdoc)
-	 * @see vendor/doctrine/Doctrine/Doctrine_Record#preInsert($event)
-	 */
-	public function preInsert($event)
-	{
-		$this['utilisateur_id'] = $_SESSION['id'];
-		$this['date'] = date('Y-m-d H:i:s');
-	}
-
-	public function postInsert($event)
-	{
-		Container::getService('zco_core.cache')->Delete('quiz_liste_nouveaux');
-	}
 }

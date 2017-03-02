@@ -53,6 +53,8 @@ RewriteRule ^membres/connectes.html$ /membres/connectes [R=301,L]
 RewriteRule ^profil-([0-9]+)\.html$ /membres/$1/inconnu [L,R=301]
 RewriteRule ^membres/profil-([0-9]+)\.html$ /membres/$1/inconnu [L,R=301]
 RewriteRule ^membres/profil-([0-9]+)-([a-zA-Z0-9-]+)\.html$ /membres/$1/$2 [L,R=301]
+RewriteRule ^quiz/quiz-([0-9]+)\.html$ /quiz/jouer/$1 [L,R=301]
+RewriteRule ^quiz/quiz-([0-9]+)-([a-zA-Z0-9-]+)\.html$ /quiz/jouer/$1/$2 [L,R=301]
 RewriteRule ^images/(zcorrecteur\.jpg|zcorrige\.png)$ ext/$1 [L]
 RewriteRule ^css/img/zcode/smilies/([a-z_]+\.png)$ /bundles/zcocore/img/zcode/smilies/$1 [L,R=301]
 
