@@ -1,29 +1,32 @@
 zco_admin:
-    resource: "@ZcoAdminBundle/Resources/config/routing.yml"
+  resource: "@ZcoAdminBundle/Resources/config/routing.yml"
 
 zco_file:
-    resource: "@ZcoFileBundle/Resources/config/routing/index.yml"
+  resource: "@ZcoFileBundle/Resources/config/routing/index.yml"
 
 zco_options:
-    resource: "@ZcoOptionsBundle/Resources/config/routing.yml"
+  resource: "@ZcoOptionsBundle/Resources/config/routing.yml"
 
 zco_pages:
-    resource: "@ZcoPagesBundle/Resources/config/routing.yml"
+  resource: "@ZcoPagesBundle/Resources/config/routing.yml"
 
 zco_parser:
-    resource: "@ZcoParserBundle/Resources/config/routing.yml"
+  resource: "@ZcoParserBundle/Resources/config/routing.yml"
 
 zco_quiz:
-    resource: "@ZcoQuizBundle/Resources/config/routing.yml"
+  resource: "@ZcoQuizBundle/Resources/config/routing.yml"
+
+zco_search:
+  resource: "@ZcoSearchBundle/Resources/config/routing.yml"
 
 zco_stats:
-    resource: "@ZcoStatsBundle/Resources/config/routing.yml"
+  resource: "@ZcoStatsBundle/Resources/config/routing.yml"
 
 zco_twitter:
-    resource: "@ZcoTwitterBundle/Resources/config/routing/index.yml"
+  resource: "@ZcoTwitterBundle/Resources/config/routing/index.yml"
 
 zco_user:
-    resource: "@ZcoUserBundle/Resources/config/routing/index.yml"
+  resource: "@ZcoUserBundle/Resources/config/routing/index.yml"
 
 fos_js_routing:
-    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+  resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"

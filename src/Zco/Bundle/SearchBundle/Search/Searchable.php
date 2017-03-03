@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\RechercheBundle\Model;
+namespace Zco\Bundle\SearchBundle\Search;
 
 /**
  * Classe de base pour les modèles utilisés par la recherche.
@@ -32,7 +32,7 @@ abstract class Searchable implements SearchableInterface
 	const CATEGORY_FIELD = 'categorie_id';
 	const USERID_FIELD = 'utilisateur_id';
 
-	protected $engine = 'Zco\Bundle\RechercheBundle\Search\Sphinx';
+	protected $engine = 'Zco\Bundle\SearchBundle\Search\Sphinx';
 	protected $index = null;
 	protected $resultsPerPage = 20;
 	protected $result = array();

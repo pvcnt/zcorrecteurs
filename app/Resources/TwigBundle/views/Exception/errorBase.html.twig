@@ -18,12 +18,12 @@
 		</p>
 
 		<div style="padding: 20px 0; margin-right: 10px; margin-left: 10px; text-align: center; font-weight: bold; width: 800px; margin: auto;">
-			<form method="get" action="/recherche/">
+			<form method="get" action="{{ path('zco_search_index') }}">
 				<input type="hidden" name="section" value="forum" />
 				<input type="text" style="background-color: white; border: 1px solid #CCC; border-radius: 3px; box-shadow: rgba(0, 0, 0, 0.0742188) 0px 1px 1px 0px inset; color: #555; font-size: 13px; height: 18px; line-height: 18px; width: 500px; padding: 4px;" placeholder="Rechercher sur le site…" />
 			</form>
 			<div style="margin-top: 10px;">
-				<a href="/" style="color: #166070; text-decoration: none;" onclick="history.back(); return false;">
+				<a href="{{ path('zco_home') }}" style="color: #166070; text-decoration: none;" onclick="history.back(); return false;">
 					&larr;
 				    <strong>Retour à la page précédente</strong>
 				</a>

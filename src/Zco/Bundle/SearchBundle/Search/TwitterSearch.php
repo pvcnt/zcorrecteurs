@@ -19,22 +19,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\RechercheBundle\Model;
+namespace Zco\Bundle\SearchBundle\Search;
 
 /**
- * Recherche sur le forum.
+ * Recherche sur les tweets.
  *
- * @author mwsaz <mwsaz@zcorrecteurs.fr>
+ * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class ForumSearch extends Searchable
+class TwitterSearch extends Searchable
 {
-	protected $index = 'forum_messages';
+	protected $index = 'twitter_tweets';
 
 	public function getResults($query, $checkCredentials = true)
 	{
-	    include_once(BASEPATH.'/src/Zco/Bundle/ForumBundle/modeles/messages.php');
-	    
-		return ListerMessagesId($this->idsArray(parent::getResults($query)));
+		return \Doctrine_Core::getTable('TwitterTweet')
+			->getByIds($this->idsArray(parent::getResults($query, false)));
 	}
 }
 

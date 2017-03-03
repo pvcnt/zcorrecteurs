@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\RechercheBundle\Search;
+namespace Zco\Bundle\SearchBundle\Search;
 
 /**
  * Interface pour les moteurs de recherche.

@@ -20,8 +20,7 @@
     <?php echo $view['knp_pagination']->render($tweets) ?>
     
     <div class="center">
-        <form method="get" action="/recherche/">
-            <input type="hidden" name="section" value="twitter" />
+        <form method="get" action="<?php echo $view['router']->path('zco_search_index', ['section' => 'twitter']) ?>">
             <input type="text" class="input-xxlarge" name="recherche" placeholder="Rechercher parmi tous les tweets publiés…" />
             <noscript><input type="submit" class="btn" value="Rechercher" /></noscript>
         </form>

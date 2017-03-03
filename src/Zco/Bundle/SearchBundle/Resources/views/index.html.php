@@ -22,7 +22,7 @@
 		</select><br />
 
 		<div id="options_auteur"
-		<?php if(!in_array($_flags['section'], array('twitter', 'forum'))) echo ' style="display: none;"';
+		<?php if(!in_array($section, array('twitter', 'forum'))) echo ' style="display: none;"';
 		?>>
 			<label for="auteur">Auteur :</label>
 			<input type="text" name="auteur" id="auteur" value="<?php
@@ -37,7 +37,7 @@
 		</div>
 
 		<div id="options_forum"
-		<?php if($_flags['section'] != 'forum') echo ' style="display: none;"';
+		<?php if($section != 'forum') echo ' style="display: none;"';
 		?>>
 			<input type="checkbox" id="resolu" name="resolu"<?php
 			if(isset($_flags['resolu']) && $_flags['resolu']) echo ' checked="checked"'; ?> />
@@ -48,10 +48,10 @@
 			<label for="ferme" class="nofloat">Ne retourner que les sujets fermés</label>
 		</div>
 
-		<div id="options_blog"<?php if($_flags['section'] != 'blog') echo ' style="display: none;"'; ?>>
+		<div id="options_blog"<?php if($section != 'blog') echo ' style="display: none;"'; ?>>
 		</div>
 
-		<div id="options_twitter"<?php if($_flags['section'] != 'twitter') echo ' style="display: none;"'; ?>>
+		<div id="options_twitter"<?php if($section != 'twitter') echo ' style="display: none;"'; ?>>
 		</div>
 	</fieldset>
 
@@ -79,24 +79,24 @@
 		<label for="section">Sections du site où effectuer la recherche :</label>
 		<select name="section" id="section" onchange="switch_cat(this.value);">
 			<option value="forum"<?php
-			if($_flags['section'] == 'forum') echo ' selected="selected"';
+			if($section == 'forum') echo ' selected="selected"';
 			?>>
 				Dans les sujets du forum
 			</option>
 			<option value="blog"<?php
-			if($_flags['section'] == 'blog') echo ' selected="selected"';
+			if($section == 'blog') echo ' selected="selected"';
 			?>>
 				Dans les billets du blog
 			</option>
 			<option value="twitter"<?php
-			if($_flags['section'] == 'twitter') echo ' selected="selected"';
+			if($section == 'twitter') echo ' selected="selected"';
 			?>>
 				Dans les tweets
 			</option>
 		</select><br />
 
 		<select name="categories[]" id="cats_forum" multiple="multiple"<?php
-		if($_flags['section'] != 'forum') echo ' style="display: none;"';
+		if($section != 'forum') echo ' style="display: none;"';
 		?>>
 			<?php foreach($CatsForum as $cat){ ?>
 			<option value="<?php echo $cat['cat_id']; ?>"<?php
@@ -109,7 +109,7 @@
 		</select>
 
 		<select name="categories[]" id="cats_blog" multiple="multiple"<?php
-		if($_flags['section'] != 'blog') echo ' style="display: none;"'; ?>>
+		if($section != 'blog') echo ' style="display: none;"'; ?>>
 			<?php foreach($CatsBlog as $cat){ ?>
 			<option value="<?php echo $cat['cat_id']; ?>"<?php
 			if(isset($_GET['categories']) && in_array($cat['cat_id'], $_GET['categories']))
@@ -121,7 +121,7 @@
 		</select>
 
 		<select name="categories[]" id="cats_twitter" multiple="multiple" style="<?php
-		if($_flags['section'] != 'twitter') echo 'display: none;'; ?> width: 200px;">
+		if($section != 'twitter') echo 'display: none;'; ?> width: 200px;">
 			<?php foreach($CatsTwitter as $cat){ ?>
 			<option value="<?php echo $cat['id']; ?>"<?php
 			if(isset($_GET['categories']) && in_array($cat['id'], $_GET['categories']))
@@ -149,7 +149,7 @@
 		</p>
 
 		<?php
-			echo $view->render('ZcoRechercheBundle::_'.$_flags['section'].'.html.php',
+			echo $view->render('ZcoSearchBundle::_'.$section.'.html.php',
 				array('Resultats' => $Resultats,
 				      'Pages' => $pages
 			));

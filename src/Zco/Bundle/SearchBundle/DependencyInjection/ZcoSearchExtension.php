@@ -19,29 +19,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\RechercheBundle\DependencyInjection;
+namespace Zco\Bundle\SearchBundle\DependencyInjection;
 
+use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Symfony\Component\Config\FileLocator;
 
 /**
- * ZcoRechercheExtension.
+ * ZcoSearchExtension.
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class ZcoRechercheExtension extends Extension
+class ZcoSearchExtension extends Extension
 {
     /**
-     * Responds to the app.config configuration parameter.
-     *
-     * @param array            $configs
-     * @param ContainerBuilder $container
+     * {@inheritdoc}
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-		$loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-		$loader->load('services.yml');
-	}
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader->load('services.yml');
+    }
 }

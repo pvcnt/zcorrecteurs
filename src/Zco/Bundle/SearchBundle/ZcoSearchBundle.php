@@ -19,10 +19,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\RechercheBundle;
+namespace Zco\Bundle\SearchBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class ZcoRechercheBundle extends Bundle
+class ZcoSearchBundle extends Bundle
 {
 }

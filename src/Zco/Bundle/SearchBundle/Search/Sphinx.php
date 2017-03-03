@@ -19,7 +19,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\RechercheBundle\Search;
+namespace Zco\Bundle\SearchBundle\Search;
+
+use Sphinx\SphinxClient;
 
 /**
  * Driver Sphinx pour la recherche.
@@ -32,9 +34,14 @@ class Sphinx extends Search
 	private $client;
 	private $matchMode, $sortMode, $sortKey;
 
+    public function __construct($index)
+    {
+        $this->client = new SphinxClient();
+        parent::__construct($index);
+    }
+
 	protected function configure()
 	{
-		$this->client = new \SphinxClient();
 		$this->client->SetServer(BASEPATH.'/data/store/sphinx/run/searchd.sock', null);
 		$this->client->SetConnectTimeout(1);
 		$this->client->SetMaxQueryTime(5000); // 5 seconds

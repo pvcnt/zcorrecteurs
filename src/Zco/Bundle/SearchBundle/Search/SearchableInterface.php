@@ -19,29 +19,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\RechercheBundle\Model;
+namespace Zco\Bundle\SearchBundle\Search;
 
 /**
- * Recherche sur le blog.
+ * Interface pour les modèles de recherche.
  *
- * @author mwsaz <mwsaz@zcorrecteurs.fr>
+ * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class BlogSearch extends Searchable
+interface SearchableInterface
 {
-	protected $index = 'blog_billets';
+	function getSearcher();
 
-	public function getResults($query, $checkCredentials = true)
-	{
-	    include_once(BASEPATH.'/src/Zco/Bundle/BlogBundle/modeles/blog.php');
-	    
-		$ids = $this->idsArray(parent::getResults($query));
-		
-		if ($ids == array())
-		{
-			return array();
-		}
+	function setCategories($cats);
 
-		return ListerBillets(array('id' => $ids));
-	}
+	function setUser($pseudo);
+
+	function setPage($page, $results = null);
+
+	function getResults($query, $checkCredentials = true);
+
+	function countResults();
 }
 

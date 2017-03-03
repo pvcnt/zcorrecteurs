@@ -25,7 +25,7 @@
  * @author mwsaz@zcorrecteurs.fr
  */
 
-namespace Zco\Bundle\RechercheBundle\Command;
+namespace Zco\Bundle\SearchBundle\Command;
 
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

@@ -19,21 +19,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\RechercheBundle\Model;
+namespace Zco\Bundle\SearchBundle\Search;
 
 /**
- * Recherche sur les tweets.
+ * Recherche sur le blog.
  *
- * @author vincent1870 <vincent@zcorrecteurs.fr>
+ * @author mwsaz <mwsaz@zcorrecteurs.fr>
  */
-class TwitterSearch extends Searchable
+class BlogSearch extends Searchable
 {
-	protected $index = 'twitter_tweets';
+	protected $index = 'blog_billets';
 
 	public function getResults($query, $checkCredentials = true)
 	{
-		return \Doctrine_Core::getTable('TwitterTweet')
-			->getByIds($this->idsArray(parent::getResults($query, false)));
+	    include_once(BASEPATH . '/src/Zco/Bundle/BlogBundle/modeles/blog.php');
+	    
+		$ids = $this->idsArray(parent::getResults($query));
+		
+		if ($ids == array())
+		{
+			return array();
+		}
+
+		return ListerBillets(array('id' => $ids));
 	}
 }
 

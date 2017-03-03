@@ -1,0 +1,6 @@
+services:
+  zco_search.event_listener:
+    class: Zco\Bundle\SearchBundle\EventListener\EventListener
+    arguments: ['@router']
+    tags:
+      - { name: kernel.event_subscriber }
