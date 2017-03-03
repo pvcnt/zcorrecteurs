@@ -48,6 +48,6 @@
 
     <div class="form-actions">
         <input type="submit" class="btn btn-primary" value="Envoyer"/>
-        <a href="<?php echo $view['router']->path('zco_quiz_editQuiz', ['id' => $question['quiz_id']]) ?>">Annuler</a>
+        <a href="<?php echo $view['router']->path('zco_quiz_editQuiz', ['id' => $question['quiz_id']]) ?>" class="btn">Annuler</a>
     </div>
 </form>

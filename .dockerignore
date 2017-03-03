@@ -1,6 +1,5 @@
-app/cache/*
-app/logs/*
+/app/bootstrap.php.cache
 web/bundles/*
 web/compiled/*
-data/index/*
-vendor/*
+/data/index/*
+/vendor/*

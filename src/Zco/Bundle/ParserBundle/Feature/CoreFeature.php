@@ -21,6 +21,7 @@
 
 namespace Zco\Bundle\ParserBundle\Feature;
 
+use Highlight\Highlighter;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zco\Bundle\ParserBundle\ParserEvents;
 use Zco\Bundle\ParserBundle\Event\FilterContentEvent;
@@ -75,94 +76,57 @@ class CoreFeature implements EventSubscriberInterface
 		'actionscript' => array('actionscript', 'Actionscript'),
 		'apache' => array('apache', 'Apache'),
 		'bash' => array('bash', 'Bash'),
-		'bat' => array('bat', 'Batch'),
-		'bbcode' => array('bbcode', 'BBcode'),
-		'befunge' => array('befunge', 'Befunge'),
-		'boo' => array('boo', 'Boo'),
+		'bat' => array('dos', 'Batch'),
 		'brainfuck' => array('brainfuck', 'BrainFuck'),
-		'c' => array('c', 'C'),
-		'c#' => array('csharp', 'C#'),
+		'c' => array('cpp', 'C'),
+		'c#' => array('cs', 'C#'),
+        'csharp' => array('csharp', 'C#'),
 		'c++' => array('cpp', 'C++'),
-		'cfg' => array('cfg', 'cfg'),
-		'c++-objdumb' => array('c++-objdumb', 'C++ Objdump'),
-		'c-objdump' => array('c-objdump', 'C Objdump'),
-		'common-lisp' => array('common-lisp', 'Common Lisp'),
+        'cpp' => array('cpp', 'C++'),
 		'console' => array('console', 'Console'),
-		'control' => array('control', 'Debian control'),
-		'cpp' => array('cpp', 'C++'),
-		'cpp-objdump' => array('cpp-objdump', 'C++ Objdump'),
-		'csharp' => array('csharp', 'C#'),
 		'css' => array('css', 'CSS'),
 		'd' => array('d', 'D'),
 		'delphi' => array('delphi', 'Delphi'),
 		'diff' => array('diff', 'Diff'),
 		'django' => array('django', 'Django'),
-		'd-objdump' => array('d-objdump', 'D Objdump'),
-		'dylan' => array('dylan', 'Dylan'),
 		'erb' => array('erb', 'ERB'),
 		'erlang' => array('erlang', 'Erlang'),
-		'gas' => array('gas', 'Gas'),
-		'genshi' => array('genshi', 'Genshi'),
-		'genshitext' => array('genshitext', 'Genshi text'),
-		'groff' => array('groff', 'Groff'),
 		'haskell' => array('haskell', 'Haskell'),
-		'html' => array('html', 'HTML'),
+		'html' => array('xml', 'HTML'),
 		'ini' => array('ini', 'Ini'),
-		'io' => array('io', 'Io'),
-		'irc' => array('irc', 'IRC'),
 		'java' => array('java', 'Java'),
 		'javascript' => array('javascript', 'JavaScript'),
 		'js' => array('js', 'JavaScript'),
-		'kid' => array('kid', '<<<<>>>>'),
-		'latex' => array('latex', 'LaTeX'),
-		'lhs' => array('lhs', 'Literate Haskell'),
+		//'latex' => array('latex', 'LaTeX'),
 		'llvm' => array('llvm', 'LLVM'),
 		'lua' => array('lua', 'Lua'),
 		'make' => array('make', 'Make (extension)'),
 		'makefile' => array('makefile', 'Makefile'),
-		'mako' => array('mako', 'Mako'),
-		'minid' => array('minid', 'MiniD'),
-		'moocode' => array('moocode', 'MOOCode'),
-		'mupad' => array('mupad', 'MuPAD'),
-		'myghty' => array('myghty', 'Myghty'),
-		'mysql' => array('mysql', 'MySQL'),
-		'nasm' => array('nasm', 'Netwide Assembler'),
 		'obj-c' => array('objective-c', 'Objective-C'),
 		'objc' => array('objective-c', 'Objective-C'),
-		'objdump' => array('objdump', 'Objdump'),
 		'objective-c' => array('objective-c', 'Objective-C'),
 		'objectivec' => array('objective-c', 'Objective-C'),
 		'ocaml' => array('ocaml', 'OCaml'),
 		'pascal' => array('pascal', 'Pascal'),
 		'perl' => array('perl', 'Perl'),
-		'php' => array('html+php', 'PHP'),
+		'php' => array('php', 'PHP'),
 		'pl' => array('perl', 'Perl'),
 		'po' => array('po', 'PO'),
 		'pot' => array('pot', 'Gettext'),
 		'py' => array('python', 'Python'),
-		'pycon' => array('pycon', 'Python Console'),
-		'pytb' => array('pytb', 'Python TraceBack'),
 		'python' => array('python', 'Python'),
 		'rb' => array('ruby', 'Ruby'),
-		'rbcon' => array('rbcon', 'Ruby Console'),
-		'redcode' => array('redcode', 'Redcode'),
-		'rhtml' => array('rhtml', 'rHTML'),
 		'rst' => array('rst', 'ReStructured Text'),
 		'ruby' => array('ruby', 'Ruby'),
 		'scheme' => array('scheme', 'Scheme'),
 		'sh' => array('sh', 'Bash'),
-		'smarty' => array('smarty', 'Smarty'),
-		'sources.list' => array('sources.list', 'Sources.list'),
-		'sourceslist' => array('sources.list', 'Sources.list'),
 		'sql' => array('sql', 'SQL'),
 		'squid' => array('squid', 'SQUID'),
 		'tcl' => array('tcl', 'Tcl'),
 		'tex' => array('tex', 'TeX'),
 		'text' => array('text', 'Texte'),
-		'trac-wiki' => array('trac-wiki', 'MoinMoin / Trac Wiki'),
 		'vb.net' => array('vb.net', 'VB.NET'),
 		'vbnet' => array('vb.net', 'VB.NET'),
-		'vim' => array('vim', 'VimL script'),
 		'xml' => array('xml', 'XML'),
 		'zcode' => array('xml', 'zCode')
 	);
@@ -366,7 +330,7 @@ class CoreFeature implements EventSubscriberInterface
 	/**
 	 * Colore un code.
 	 *
-	 * @param DOMElement $code Code à colorer.
+	 * @param \DOMElement $code Code à colorer.
 	 * @return int ID du code coloré.
 	 */
 	public static function colorerCode($code)
@@ -406,32 +370,21 @@ class CoreFeature implements EventSubscriberInterface
 		$reponse = null;
 		if($colorer)
 		{
-			$reponse = self::colorerCode_c($texte, $langage,
-				$premiereLigne, $minicode);
-		}
+			$reponse = self::colorerCode_c($texte, $langage, $premiereLigne, $minicode) ?: htmlspecialchars($texte);
+            if(!$minicode) {
+                $out = '<table class="syntaxtable"><tbody><tr><td class="linenos"><pre>';
+                if ($langage != self::$langages['console'][0]) {
+                    for ($i = $premiereLigne; $i <= $derniereLigne; $i++)
+                        $out .= $i . "\n";
+                }
+                $out .= '</pre></td>'
+                    . '<td class="code"><div class="syntax"><pre>'
+                    . $reponse
+                    . '</pre></div></td></tr></tbody></table>';
+                $reponse = $out;
+            }
 
-		if($colorer && $reponse !== false)
-		{
-			self::$codesParses[] = $reponse;
-		}
-		else // Erreur de coloration
-		{
-			if($minicode)
-				$out = htmlspecialchars($texte);
-			else
-			{
-				$out = '<table class="syntaxtable"><tbody><tr><td class="linenos"><pre>';
-				if($langage != self::$langages['console'][0])
-				{
-					for($i = $premiereLigne; $i <= $derniereLigne; $i++)
-						$out .= $i."\n";
-				}
-				$out .= '</pre></td>'
-				       .'<td class="code"><div class="syntax"><pre>'
-				       .htmlspecialchars($texte)
-				      .'</pre></div></td></tr></tbody></table>';
-			}
-			self::$codesParses[] = $out;
+            self::$codesParses[] = $reponse;
 		}
 
 		// Surlignage
@@ -516,7 +469,10 @@ class CoreFeature implements EventSubscriberInterface
 	 */
 	private static function colorerCode_c($code, $langage, $premiereLigne, $minicode)
 	{
-		$client = new \xmlrpc_client('/', 'localhost', 21287);
+        $hl = new Highlighter();
+
+        return $hl->highlight($langage, $code)->value;
+		/*$client = new \xmlrpc_client('/', 'localhost', 21287);
 		$client->return_type = 'phpvals';
 		$client->request_charset_encoding = 'UTF-8';
 			$requete = new \xmlrpcmsg('colorer_code', array(
@@ -526,7 +482,7 @@ class CoreFeature implements EventSubscriberInterface
 			new \xmlrpcval(($minicode ? 'True' : 'False'), 'string')
 		));
 		$reponse = $client->send($requete);
-		return $reponse->faultCode() == 0 ? $reponse->value() : false;
+		return $reponse->faultCode() == 0 ? $reponse->value() : false;*/
 	}
 
 	/**
