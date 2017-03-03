@@ -112,13 +112,6 @@
 	    	</a>
 	    </li>
 		<?php endif ?>
-        <?php if (verifier('membres_avertir')): ?>
-        <li>
-            <a href="<?php echo $view['router']->path('zco_user_admin_warn', array('id' => $user->getId())) ?>">
-                Ajouter un avertissement
-            </a>
-        </li>
-        <?php endif ?>
         <?php if (verifier('sanctionner')): ?>
         <li>
             <a href="<?php echo $view['router']->path('zco_user_admin_punish', array('id' => $user->getId())) ?>">

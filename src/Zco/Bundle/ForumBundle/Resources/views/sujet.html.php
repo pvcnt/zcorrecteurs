@@ -349,15 +349,7 @@ if($InfosSujet['sujet_sondage'] > 0)
 				if(!empty($valeur['utilisateur_titre']))
 				{
 					echo htmlspecialchars($valeur['utilisateur_titre']).'<br />';
-				} if(verifier('membres_avertir')){ ?>
-				<br /><a href="<?php echo $view['router']->path('zco_user_admin_warn', array('id' => htmlspecialchars($valeur['message_auteur']))) ?>">
-					Avertir
-				</a> :
-				<a href="/membres/profil-<?php echo $valeur['message_auteur']; ?>-<?php echo rewrite($valeur['auteur_message_pseudo']); ?>.html#avertos"><?php echo $valeur['utilisateur_pourcentage']; ?> %</a>
-				<?php } elseif(verifier('membres_voir_avertos') && $valeur['utilisateur_pourcentage'] > 0){ ?>
-				<br /><a href="/membres/profil-<?php echo $valeur['message_auteur']; ?>-<?php echo rewrite($valeur['auteur_message_pseudo']); ?>.html#avertos">Averto(s) : <?php echo $valeur['utilisateur_pourcentage']; ?> %</a>
-
-				<?php } if(verifier('sanctionner')){ ?>
+				} if(verifier('sanctionner')){ ?>
 				<br /><a href="<?php echo $view['router']->path('zco_user_admin_punish', array('id' => htmlspecialchars($valeur['message_auteur']))) ?>">
 					Sanctionner
 				</a>
@@ -366,7 +358,7 @@ if($InfosSujet['sujet_sondage'] > 0)
 				<br /><a href="/membres/profil-<?php echo $valeur['message_auteur']; ?>-<?php echo rewrite($valeur['auteur_message_pseudo']); ?>.html#sanctions">Sanction(s) : <?php echo $valeur['utilisateur_nb_sanctions']; ?></a>
 
 				<?php } if(verifier('ips_analyser') && !empty($valeur['message_ip'])){ ?>
-				<br /><br />IP : <a href="/ips/analyser.html?ip=<?php echo long2ip($valeur['message_ip']); ?>"><?php echo long2ip($valeur['message_ip']); ?></a>
+				<br /><br />IP : <a href="<?php echo $view['router']->path('zco_user_ips_analyze', ['ip' => long2ip($valeur['message_ip'])]) ?>"><?php echo long2ip($valeur['message_ip']); ?></a>
 				<?php } ?>
 			</td>
 			<td class="message<?php if($valeur['message_help']) echo ' bonne_reponse'; ?>">

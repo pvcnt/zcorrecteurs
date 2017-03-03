@@ -259,31 +259,6 @@ function ChercherAdresseMail($mail, $type = 'strict')
 }
 
 /**
- * Vérifie si une adresse mail est valide (si la forme est correcte et qu'elle n'est pas déjà utilisée).
- * @param string $mail						L'adresse à tester.
- * @return bool
- */
-function VerifierValiditeMail($mail)
-{
-	if (preg_match('`^[a-z0-9+._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$`', $mail))
-	{
-		$search = ChercherAdresseMail($mail);
-		if (empty($search))
-		{
-			return !Doctrine_Core::getTable('MailBanni')->VerifierBannissement($mail);
-		}
-		else
-		{
-			return false;
-		}
-	}
-	else
-	{
-		return false;
-	}
-}
-
-/**
  * Renvoie un id pour un visiteur (négatif).
  *
  * @return integer
@@ -363,34 +338,4 @@ function ListerUtilisateursGroupe($groupe)
 	$retour = $stmt->fetchAll();
 	$stmt->closeCursor();
 	return $retour;
-}
-
-/**
- * Liste tous les développeurs.
- *
- * @return array
- */
-function ListerDeveloppeurs()
-{
-	// On obtient de mauvaises performances en faisant une jointure sur le nom du droit
-	$groupes = array();
-	foreach(ListerGroupes() as $grp)
-	{
-		$droits = RecupererDroitsGroupe($grp['groupe_id']);
-		if(isset($droits['depot_commit']))
-			$groupes[] = $grp['groupe_id'];
-	}
-
-	$dbh = Doctrine_Manager::connection()->getDbh();
-	$stmt = $dbh->prepare('SELECT utilisateur_id, utilisateur_pseudo '
-		.'FROM zcov2_utilisateurs '
-		.'WHERE utilisateur_id_groupe IN('.implode(',', $groupes).')');
-	$stmt->execute();
-	$retour = $stmt->fetchAll();
-	$stmt->closeCursor();
-
-	$devs = array();
-	foreach($retour as &$dev)
-		$devs[$dev['utilisateur_pseudo']] = (int)$dev['utilisateur_id'];
-	return $devs;
 }

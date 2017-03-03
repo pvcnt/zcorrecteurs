@@ -68,15 +68,8 @@ avant dans le même billet ! Les commentaires sont affichés du plus ancien au p
 					(<a href="/membres/profil-<?php echo $valeur['id_auteur'] ?>-<?php echo rewrite($valeur['pseudo_auteur']) ?>.html#sanctions"><?php echo $valeur['nb_sanctions_auteur'] ?></a>)
 				<?php elseif(verifier('voir_sanctions') && $valeur['nb_sanctions_auteur'] > 0): ?>
 					<a href="/membres/profil-<?php echo $valeur['id_auteur'] ?>-<?php echo rewrite($valeur['pseudo_auteur']) ?>.html#sanctions">Sanction(s) : <?php echo $valeur['nb_sanctions_auteur'] ?></a>
-				<?php endif; if(verifier('membres_avertir')): ?>
-					<br />
-					<a href="<?php echo $view['router']->path('zco_user_admin_warn', array('id' => htmlspecialchars($valeur['id_auteur']))) ?>">
-						Avertir
-					</a> : <a href="/membres/profil-<?php echo $valeur['id_auteur'] ?>-<?php echo rewrite($valeur['pseudo_auteur']) ?>.html#avertos"><?php echo $valeur['pourcentage_auteur'] ?> %</a>
-				<?php elseif(verifier('membres_voir_avertos') && $valeur['pourcentage_auteur'] > 0): ?>
-					<br /><a href="/membres/profil-<?php echo $valeur['id_auteur'] ?>-<?php echo rewrite($valeur['pseudo_auteur']) ?>.html#avertos">Averto(s) : <?php echo $valeur['pourcentage_auteur'] ?> %</a>
 				<?php endif; if(verifier('ips_analyser')): ?>
-					<br /><br />IP : <a href="/ips/analyser.html?ip=<?php echo ($ip = long2ip($valeur['commentaire_ip'])) ?>"><?php echo $ip ?></a>
+					<br /><br />IP : <a href="<?php echo $view['router']->path('zco_user_ips_analyze', ['ip' => long2ip($valeur['commentaire_ip'])]) ?>"><?php echo long2ip($valeur['commentaire_ip']) ?></a>
 				<?php endif ?>
 			</td>
 

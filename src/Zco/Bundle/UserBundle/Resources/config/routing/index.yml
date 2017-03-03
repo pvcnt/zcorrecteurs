@@ -13,3 +13,6 @@ zco_user_session:
 zco_user_admin:
     resource: "@ZcoUserBundle/Resources/config/routing/admin.yml"
     prefix:   /membres
+
+zco_user_ips:
+    resource: "@ZcoUserBundle/Resources/config/routing/ips.yml"

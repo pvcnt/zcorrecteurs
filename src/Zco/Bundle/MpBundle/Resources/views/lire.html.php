@@ -236,18 +236,6 @@ if($autoriser_ecrire AND ($NombreParticipants > 1 OR $MPTotal < verifier('mp_quo
 			<?php if(!empty($valeur['utilisateur_titre']))
 			{
 				echo htmlspecialchars($valeur['utilisateur_titre']).'<br />';
-			} if(verifier('membres_avertir'))
-			{
-			?>
-			<br /><a href="<?php echo $view['router']->path('zco_user_admin_warn', array('id' => htmlspecialchars($valeur['mp_message_auteur_id']))) ?>">
-				Avertir : <?php echo $valeur['utilisateur_pourcentage']; ?> %
-			</a>
-			<?php
-			}
-			elseif(verifier('membres_voir_avertos') AND $valeur['utilisateur_pourcentage'] > 0){
-			?>
-			<br /><a href="/membres/profil-<?php echo $valeur['mp_message_auteur_id']; ?>-<?php echo rewrite($valeur['utilisateur_pseudo']); ?>.html#avertos">Averto(s) : <?php echo $valeur['utilisateur_pourcentage']; ?> %</a>
-			<?php
 			}
 			if(verifier('sanctionner'))
 			{
@@ -264,7 +252,7 @@ if($autoriser_ecrire AND ($NombreParticipants > 1 OR $MPTotal < verifier('mp_quo
 			}
 			if(verifier('ips_analyser') && !empty($valeur['mp_message_ip']))
 			{
-				echo '<br /><br />IP : <a href="/ips/analyser.html?ip='.long2ip($valeur['mp_message_ip']).'">'.long2ip($valeur['mp_message_ip']).'</a>';
+				echo '<br /><br />IP : <a href="'.$view['router']->path('zco_user_ips_analyze', ['ip' => long2ip($valeur['mp_message_ip'])]).'">'.long2ip($valeur['mp_message_ip']).'</a>';
 			}
 				?>
 			</td>

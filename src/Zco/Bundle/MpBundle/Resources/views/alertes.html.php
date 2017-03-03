@@ -96,20 +96,7 @@ if($ListerAlertes)
 				?>
 				<a href="/membres/profil-<?php echo $valeur['utilisateur_id']; ?>-<?php echo rewrite($valeur['utilisateur_pseudo']); ?>.html"><img src="/uploads/avatars/<?php echo $valeur['utilisateur_avatar']; ?>" alt="<?php echo htmlspecialchars($valeur['utilisateur_pseudo']); ?>" /></a><br />
 				<?php echo $view->get('messages')->afficherGroupe($valeur) ?><br/>
-			<?php if(verifier('membres_avertir'))
-			{
-			?>
-			<br /><a href="<?php echo $view['router']->path('zco_user_admin_warn', array('id' => htmlspecialchars($valeur['utilisateur_id']))) ?>">
-				Avertir : <?php echo $valeur['utilisateur_pourcentage']; ?> %
-			</a>
-			<?php
-			}
-			elseif(verifier('membres_voir_avertos') AND $valeur['utilisateur_pourcentage'] > 0){
-			?>
-			<br /><a href="/membres/profil-<?php echo $valeur['utilisateur_id']; ?>-<?php echo rewrite($valeur['utilisateur_pseudo']); ?>.html#avertos">Averto(s) : <?php echo $valeur['utilisateur_pourcentage']; ?> %</a>
-			<?php
-			}
-			if(verifier('sanctionner'))
+			<?php if(verifier('sanctionner'))
 			{
 			?>
 			<br /><a href="<?php echo $view['router']->path('zco_user_admin_punish', array('id' => htmlspecialchars($valeur['utilisateur_id']))) ?>">
@@ -124,7 +111,7 @@ if($ListerAlertes)
 			}
 			if(verifier('ips_analyser') && !empty($valeur['mp_alerte_ip']))
 			{
-				echo '<br /><br />IP : <a href="/ips/analyser.html?ip='.long2ip($valeur['mp_alerte_ip']).'">'.long2ip($valeur['mp_alerte_ip']).'</a>';
+				echo '<br /><br />IP : <a href="'.$view['router']->path('zco_user_ips_analyze', ['ip' => long2ip($valeur['mp_alerte_ip'])]).'">'.long2ip($valeur['mp_alerte_ip']).'</a>';
 			}
 				if($valeur['mp_alerte_resolu'])
 				{

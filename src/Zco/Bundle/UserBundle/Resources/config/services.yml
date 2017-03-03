@@ -27,3 +27,7 @@ services:
     zco_user.manager.user:
         class: Zco\Bundle\UserBundle\Entity\UserManager
         arguments: ['@zco_doctrine1.connection']
+
+    zco_user.manager.ip:
+        class: Zco\Bundle\UserBundle\Entity\IpManager
+        arguments: ['@zco_doctrine1.connection', '@zco_core.cache']

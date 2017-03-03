@@ -1,8 +1,8 @@
-<?php $view->extend('::layouts/default.html.php') ?>
+<?php $view->extend('::layouts/bootstrap.html.php') ?>
 
 <h1>Adresses IP utilisées sur plusieurs comptes</h1>
 
-<table class="UI_items">
+<table class="table table-striped">
 	<thead>
 		<tr>
 			<th>Adresse IP</th>
@@ -12,12 +12,12 @@
 	<tbody>
 		<?php foreach($doublons as $doublon){ ?>
 		<tr>
-			<td class="centre">
-				<a href="analyser.html?ip=<?php echo long2ip($doublon['ip_ip']); ?>">
+			<td class="center">
+				<a href="<?php echo $view['router']->path('zco_user_ips_analyze', ['ip' => long2ip($doublon['ip_ip'])]) ?>">
 					<?php echo long2ip($doublon['ip_ip']); ?>
 				</a>
 			</td>
-			<td class="centre"><?php echo $doublon['nombre']; ?></td>
+			<td class="center"><?php echo $doublon['nombre']; ?></td>
 		</tr>
 		<?php } ?>
 	</tbody>

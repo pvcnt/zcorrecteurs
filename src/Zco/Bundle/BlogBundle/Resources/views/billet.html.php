@@ -187,26 +187,10 @@
 					Sanction(s) : <?php echo $valeur['nb_sanctions_auteur']; ?>
 				</a>
 				<?php } ?>
-
-				<?php if(verifier('membres_avertir')){ ?>
-				<br />
-				<a href="<?php echo $view['router']->path('zco_user_admin_warn', array('id' => htmlspecialchars($valeur['id_auteur']))) ?>">
-					Avertir
-				</a> :
-				<a href="/membres/profil-<?php echo $valeur['id_auteur']; ?>-<?php echo rewrite($valeur['pseudo_auteur']); ?>.html#avertos">
-					<?php echo $valeur['pourcentage_auteur']; ?> %
-				</a>
-				<?php }	elseif(verifier('membres_voir_avertos') && $valeur['pourcentage_auteur'] > 0){ ?>
-				<br />
-				<a href="/membres/profil-<?php echo $valeur['message_auteur']; ?>-<?php echo rewrite($valeur['pseudo_auteur']); ?>.html#avertos">
-					Averto(s) : <?php echo $valeur['pourcentage_auteur']; ?> %
-				</a>
-				<?php } ?>
-
 				<?php if(verifier('ips_analyser')){ ?>
 				<br /><br />
 				IP :
-				<a href="/ips/analyser.html?ip=<?php echo long2ip($valeur['commentaire_ip']); ?>'">
+				<a href="<?php echo $view['router']->path('zco_user_ips_analyze', ['ip' => long2ip($valeur['commentaire_ip'])]) ?>">
 					<?php echo long2ip($valeur['commentaire_ip']); ?>
 				</a>
 				<?php } ?>

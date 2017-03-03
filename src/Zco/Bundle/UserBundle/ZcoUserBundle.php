@@ -34,10 +34,7 @@ class ZcoUserBundle extends AbstractBundle
 {
 	public function preload()
 	{
-		//Enregistrement du compteur de tâches admin.
 		$this->container->get('zco_admin.manager')->register('changementsPseudo', 'membres_valider_ch_pseudos');
-		
-		//Inclusion du modèle de base.
 		include_once(__DIR__.'/modeles/utilisateurs.php');
 	}
 }

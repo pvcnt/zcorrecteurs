@@ -34,15 +34,12 @@ use Symfony\Component\Config\FileLocator;
 class ZcoUserExtension extends Extension
 {
     /**
-     * Charge la configuration nécessaire au fonctionnement du ZcoUserBundle.
-     *
-     * @param array $configs
-     * @param ContainerBuilder $container
+     * {@inheritdoc}
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-		$loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-		$loader->load('services.yml');
-		$loader->load('validation.yml');
-	}
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader->load('services.yml');
+        $loader->load('validation.yml');
+    }
 }
