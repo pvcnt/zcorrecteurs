@@ -5,6 +5,7 @@ chown -R www-data:www-data /var/log/symfony
 chown -R www-data:www-data /var/cache/symfony
 chown -R www-data:www-data /var/cache/composer
 
+mkdir -p web/bundles && chown -R www-data:www-data web/bundles
 mkdir -p web/compiled && chown -R www-data:www-data web/compiled
 mkdir -p web/uploads && chown -R www-data:www-data web/uploads
 mkdir -p data/index && chown -R www-data:www-data data/index
