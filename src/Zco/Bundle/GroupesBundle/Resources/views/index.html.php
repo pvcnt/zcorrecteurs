@@ -45,7 +45,12 @@ function afficher_liste_groupes($view, $ListerGroupes, $get = '') {
 	<tbody>
 		<?php foreach($ListerGroupes as $g){ ?>
 		<tr>
-			<td><span style="color: <?php echo htmlspecialchars($g['groupe_class']); ?>;"><?php echo htmlspecialchars($g['groupe_nom']); ?></span></td>
+			<td>
+                <span style="color: <?php echo htmlspecialchars($g['groupe_class']); ?>;"><?php echo htmlspecialchars($g['groupe_nom']); ?></span>
+                <?php if ($g['groupe_code']): ?>
+                    (<?php echo htmlspecialchars($g['groupe_code']); ?>)
+                <?php endif ?>
+            </td>
 			<td class="centre">
 				<?php if(!empty($g['groupe_logo'])){ ?>
 				<img src="<?php echo htmlspecialchars($g['groupe_logo']); ?>" alt="" />

@@ -32,7 +32,7 @@ function ListerGroupes()
 	$dbh = Doctrine_Manager::connection()->getDbh();
 
 	$stmt = $dbh->prepare("
-	SELECT groupe_id, groupe_nom, groupe_logo, groupe_logo_feminin, groupe_class, groupe_sanction, groupe_team, groupe_secondaire, (SELECT COUNT(*) FROM zcov2_utilisateurs WHERE utilisateur_id_groupe = groupe_id) AS groupe_effectifs
+	SELECT groupe_id, groupe_code, groupe_nom, groupe_logo, groupe_logo_feminin, groupe_class, groupe_sanction, groupe_team, groupe_secondaire, (SELECT COUNT(*) FROM zcov2_utilisateurs WHERE utilisateur_id_groupe = groupe_id) AS groupe_effectifs
 	FROM zcov2_groupes
 	WHERE groupe_secondaire = 0
 	ORDER BY groupe_nom");
@@ -47,7 +47,7 @@ function ListerGroupesEquipe()
 	$dbh = Doctrine_Manager::connection()->getDbh();
 
 	$stmt = $dbh->prepare("
-	SELECT groupe_id, groupe_nom, groupe_logo, groupe_logo_feminin, groupe_class, groupe_sanction, groupe_team, groupe_secondaire, (SELECT COUNT(*) FROM zcov2_utilisateurs WHERE utilisateur_id_groupe = groupe_id) AS groupe_effectifs
+	SELECT groupe_id, groupe_code, groupe_nom, groupe_logo, groupe_logo_feminin, groupe_class, groupe_sanction, groupe_team, groupe_secondaire, (SELECT COUNT(*) FROM zcov2_utilisateurs WHERE utilisateur_id_groupe = groupe_id) AS groupe_effectifs
 	FROM zcov2_groupes
 	WHERE groupe_team = 1
 	ORDER BY groupe_nom");
