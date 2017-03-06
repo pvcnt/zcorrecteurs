@@ -1,15 +1,9 @@
 /app/phpunit.xml
 /web/bundles/
 /web/uploads/
-/app/bootstrap.php.cache
-/app/config/constants.yml
+/var/
+!/var/.gitkeep
 /vendor/
-/bin/
-!/bin/sphinx
-!/bin/coala
-
-/app/cache/*
-/app/logs/*
 /web/compiled/*
 /data/store/*
 /data/index/*

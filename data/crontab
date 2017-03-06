@@ -1,8 +1,8 @@
 # Crontab d'exemple, pensez à spécifier des chemins absolus vers les différents fichiers.
 # m h  dom mon dow   command
-0 0 * * * php app/console cron:quotidien >> app/logs/crons/quotidien.log 2>&1
-0 * * * * php app/console cron:sessions >> app/logs/crons/sessions.log 2>&1
-59 * * * * php app/console cron:publicites >> app/logs/crons/publicites.log 2>&1
-59 * * * * php app/console cron:annonces >> app/logs/crons/annonces.log 2>&1
-*/15 * * * * php app/console cron:tickets >> app/logs/crons/tickets.log 2>&1
+0 0 * * * php bin/console cron:quotidien >> app/logs/crons/quotidien.log 2>&1
+0 * * * * php bin/console cron:sessions >> app/logs/crons/sessions.log 2>&1
+59 * * * * php bin/console cron:publicites >> app/logs/crons/publicites.log 2>&1
+59 * * * * php bin/console cron:annonces >> app/logs/crons/annonces.log 2>&1
+*/15 * * * * php bin/console cron:tickets >> app/logs/crons/tickets.log 2>&1
 0 0 * * * bin/sphinx index >> app/logs/crons/sphinx.log 2>&1

@@ -58,9 +58,6 @@ RUN mkdir -p /var/log/symfony \
   && chown -R www-data:www-data /var/log/symfony \
   && chown -R www-data:www-data /var/cache/symfony \
   && chown -R www-data:www-data /var/cache/composer
-ENV COMPOSER_CACHE_DIR /var/cache/composer
-VOLUME /var/log/symfony
-VOLUME /var/cache/symfony
 
 # Add a custom entrypoint.
 COPY build/entrypoint.sh /
@@ -69,8 +66,12 @@ ENTRYPOINT ["/entrypoint.sh"]
 
 CMD ["apache2-foreground"]
 EXPOSE 80
-ENV ENVIRONMENT prod
-ENV DEBUG false
+
+ENV COMPOSER_CACHE_DIR /var/cache/composer
+ENV SYMFONY_LOG_DIR /var/log/symfony
+ENV SYMFONY_CACHE_DIR /var/cache/symfony
+ENV SYMFONY_ENVIRONMENT prod
+ENV SYMFONY_DEBUG false
 
 # First download PHP dependencies.
 RUN mkdir -p /opt/app && chown www-data:www-data /opt/app
@@ -78,5 +79,10 @@ WORKDIR /opt/app
 COPY composer.json composer.lock /opt/app/
 RUN gosu www-data composer install --no-dev --no-progress --no-scripts --no-autoloader
 
-# Then add source code.
+# Then add source code, build autoloader and initialize Symfony (including creating bootstrap.php.cache).
 COPY . /opt/app
+RUN chown -R www-data:www-data vendor \
+  && mkdir -p var \
+  && chown www-data:www-data var \
+  && gosu www-data composer dump-autoload --no-dev --optimize \
+  && gosu www-data composer run-script symfony-scripts

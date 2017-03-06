@@ -48,7 +48,7 @@ class UserValidateCommand extends ContainerAwareCommand
 			->setDescription('Validates an account')
 			->setHelp('The <info>user:validate</info> command validates an user account to make it able to log in:
 
-  <info>php app/console user:validate vincent</info>');
+  <info>php bin/console user:validate vincent</info>');
 	}
 
 	/**

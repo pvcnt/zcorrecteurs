@@ -69,7 +69,7 @@ if [ $1 = "index" ]; then
 fi
 
 if [ $1 = "reload" ]; then
-	../app/console sphinx:config
+	../bin/console sphinx:config
 	echo "Configuration reloaded"
 	exit 0
 fi

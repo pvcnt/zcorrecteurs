@@ -43,7 +43,7 @@ class AppKernel extends Kernel
     public function registerBundles()
     {
         $bundles = array(
-            //Bundles génériques.
+            // Vendor bundles.
             new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
             new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
             new Symfony\Bundle\MonologBundle\MonologBundle(),
@@ -55,12 +55,12 @@ class AppKernel extends Kernel
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new Bazinga\Bundle\GeocoderBundle\BazingaGeocoderBundle(),
 
-            //Bundles nécessaires pour que les modules fonctionnent.
+            // Infrastructure bundles.
             new Zco\Bundle\CoreBundle\ZcoCoreBundle(),
             new Zco\Bundle\ParserBundle\ZcoParserBundle(),
             new Zco\Bundle\UserBundle\ZcoUserBundle(),
 
-            //Modules du site.
+            // Module bundles.
             new Zco\Bundle\AdminBundle\ZcoAdminBundle(),
             new Zco\Bundle\PagesBundle\ZcoPagesBundle(),
             new Zco\Bundle\AuteursBundle\ZcoAuteursBundle(),
@@ -87,6 +87,10 @@ class AppKernel extends Kernel
             $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
+
+            if ('dev' === $this->getEnvironment()) {
+                $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
+            }
         }
 
         return $bundles;
@@ -113,7 +117,8 @@ class AppKernel extends Kernel
      */
     public function getCacheDir()
     {
-        return (rtrim(getenv('SYMFONY_CACHE_DIR'), '/') ?: '/var/cache/symfony') . '/' . $this->environment;
+        // We use Symfony 3 directory structure, and allow to overwrite this directory by environment variable.
+        return (getenv('SYMFONY_CACHE_DIR') ?: dirname(__DIR__) . '/var/cache') . '/' . $this->environment;
     }
 
     /**
@@ -121,7 +126,8 @@ class AppKernel extends Kernel
      */
     public function getLogDir()
     {
-        return getenv('SYMFONY_LOG_DIR') ?: '/var/log/symfony';
+        // We use Symfony 3 directory structure, and allow to overwrite this directory by environment variable.
+        return getenv('SYMFONY_LOG_DIR') ?: dirname(__DIR__) . '/var/logs';
     }
 
     protected function getEnvParameters()
@@ -150,6 +156,15 @@ class AppKernel extends Kernel
                 $bundle->preload();
             }
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRootDir()
+    {
+        // Default implementation does exactly this... but through reflection. This should be faster.
+        return __DIR__;
     }
 
     /**

@@ -48,7 +48,7 @@ class UserPromoteCommand extends ContainerAwareCommand
 			->setDescription('Promotes an user as administrator')
 			->setHelp('The <info>user:promote</info> command promotes an user as administrator:
 
-  <info>php app/console user:promote vincent</info>');
+  <info>php bin/console user:promote vincent</info>');
 	}
 
 	/**

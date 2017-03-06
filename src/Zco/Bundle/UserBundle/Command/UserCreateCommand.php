@@ -52,15 +52,15 @@ class UserCreateCommand extends ContainerAwareCommand
             ->setDescription('Creates a new user account')
             ->setHelp('The <info>user:create</info> command creates a user:
 
-  <info>php app/console user:create vincent vincent@zcorrecteurs.fr password</info>
+  <info>php bin/console user:create vincent vincent@zcorrecteurs.fr password</info>
 
 You can create an administrator via the admin flag:
 
-  <info>php app/console user:create admin admin@zcorrecteurs.fr password --admin</info>
+  <info>php bin/console user:create admin admin@zcorrecteurs.fr password --admin</info>
 
 You can create an invalid user (will not be able to log in):
 
-  <info>php app/console user:create admin admin@zcorrecteurs.fr password --invalid</info>');
+  <info>php bin/console user:create admin admin@zcorrecteurs.fr password --invalid</info>');
     }
 
     /**
