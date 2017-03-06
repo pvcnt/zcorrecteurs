@@ -113,7 +113,7 @@ class AppKernel extends Kernel
      */
     public function getCacheDir()
     {
-        return '/var/cache/symfony/' . $this->environment;
+        return (rtrim(getenv('SYMFONY_CACHE_DIR'), '/') ?: '/var/cache/symfony') . '/' . $this->environment;
     }
 
     /**
@@ -121,7 +121,7 @@ class AppKernel extends Kernel
      */
     public function getLogDir()
     {
-        return '/var/log/symfony';
+        return getenv('SYMFONY_LOG_DIR') ?: '/var/log/symfony';
     }
 
     protected function getEnvParameters()
