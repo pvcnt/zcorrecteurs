@@ -160,17 +160,15 @@ function SupprimerGroupeSecondaireUtilisateur($utilisateur_id, $groupe_id)
 
 function InfosGroupe($id)
 {
-	$dbh = Doctrine_Manager::connection()->getDbh();
+	$sql = "SELECT groupe_id, groupe_code, groupe_nom, groupe_logo, groupe_logo_feminin, groupe_class, groupe_sanction, groupe_team, groupe_secondaire, groupe_description, (SELECT COUNT(*) FROM zcov2_utilisateurs WHERE utilisateur_id_groupe = groupe_id) AS groupe_effectifs
+	FROM zcov2_groupes";
+	if (is_numeric($id)) {
+	    $sql .= ' WHERE groupe_id = ?';
+	} else {
+        $sql .= ' WHERE groupe_code = ?';
+    }
 
-	$stmt = $dbh->prepare("
-	SELECT groupe_id, groupe_nom, groupe_logo, groupe_logo_feminin, groupe_class, groupe_sanction, groupe_team, groupe_secondaire, groupe_description, (SELECT COUNT(*) FROM zcov2_utilisateurs WHERE utilisateur_id_groupe = groupe_id) AS groupe_effectifs
-	FROM zcov2_groupes
-	WHERE groupe_id = :id");
-	$stmt->bindParam(':id', $id);
-
-	$stmt->execute();
-
-	return $stmt->fetch(PDO::FETCH_ASSOC);
+    return Doctrine_Manager::connection()->fetchRow($sql, [$id]);
 }
 
 function AjouterGroupe()
@@ -249,14 +247,14 @@ function EditerGroupe($id)
 function SupprimerGroupe($id)
 {
 	$dbh = Doctrine_Manager::connection()->getDbh();
-	$groupe_defaut = GROUPE_DEFAUT;
+	$defaultGroup = InfosGroupe(\Groupe::DEFAULT);
 
 	$stmt = $dbh->prepare("DELETE FROM zcov2_groupes WHERE groupe_id=:id");
 	$stmt->bindParam(':id', $id);
 
 	$stmt2 = $dbh->prepare("UPDATE zcov2_utilisateurs SET utilisateur_id_groupe=:groupe WHERE utilisateur_id_groupe=:id");
 	$stmt2->bindParam(':id', $id);
-	$stmt2->bindParam(':groupe', $groupe_defaut);
+	$stmt2->bindParam(':groupe', $defaultGroup['groupe_id']);
 
 	$stmt->execute();
 	$stmt2->execute();

@@ -23,10 +23,6 @@
 			<a href="/forum/marquer-lu-1.html" onclick="return confirm('Tout marquer comme lu ?');">lus</a>,
 			<a href="/forum/marquer-lu-2.html" onclick="return confirm('Tout marquer comme non lu ?');">non lus</a>
 		</li>
-		<li>
-			<img src="/pix.gif" class="fff feed" alt="" />
-			<a href="/forum/messages-flux.html">S'abonner au flux du forum</a>
-		</li>
 		<?php if((verifier('voir_archives'))) : ?>
 		<li>
 			<?php if(!empty($_GET['archives'])) : ?>

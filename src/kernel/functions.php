@@ -268,7 +268,10 @@ function verifier($droit, $cat = 0, $groupe = null)
 
     //Si on n'a pas spécifié de groupe, c'est celui en session
     if (is_null($groupe)) {
-        $groupe = isset($_SESSION['groupe']) ? $_SESSION['groupe'] : GROUPE_VISITEURS;
+        if (!isset($_SESSION['groupe'])) {
+            return false;
+        }
+        $groupe = $_SESSION['groupe'];
         $groupes = isset($_SESSION['groupes_secondaires']) ? $_SESSION['groupes_secondaires'] : array();
         array_unshift($groupes, $groupe);
         $ret = false;

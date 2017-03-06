@@ -30,11 +30,10 @@
 		<select id="groupe" name="groupe">
 			<option value="0" selected="selected">Aucun</option>
 			<?php foreach ($ListerGroupes as $g){ ?>
-			<?php if ($g['groupe_id'] != GROUPE_VISITEURS){ ?>
 				<option value="<?php echo $g['groupe_id']; ?>" style="color: <?php echo $g['groupe_class']; ?>;">
 					<?php echo htmlspecialchars($g['groupe_nom']); ?>
 				</option>
-			<?php } } ?>
+			<?php } ?>
 		</select>
 
 		<div class="send">

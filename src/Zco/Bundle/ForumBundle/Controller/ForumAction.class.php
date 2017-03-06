@@ -375,10 +375,6 @@ class ForumAction extends ForumActions
 				$msgFil = 'Liste des sujets';
 			}
 			fil_ariane($_GET['id'], $msgFil);
-			$this->get('zco_vitesse.resource_manager')->addFeed(
-			    '/forum/messages-flux-'.$_GET['id'].'.html', 
-			    array('title' => 'Derniers messages de cette catégorie')
-			);
 			$this->get('zco_vitesse.resource_manager')->requireResources(array(
 			    '@ZcoCoreBundle/Resources/public/css/zcode.css',
 			    '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',

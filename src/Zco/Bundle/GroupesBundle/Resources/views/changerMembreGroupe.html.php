@@ -24,14 +24,11 @@
 		<select id="groupe" name="groupe">
 		<?php foreach($ListerGroupes as $g)
 		{
-			if($g['groupe_id'] != GROUPE_VISITEURS)
-			{
-				if($g['groupe_id'] == $InfosUtilisateur['utilisateur_id_groupe'])
-					$selected = ' selected="selected"';
-				else
-					$selected = '';
-				echo '<option value="'.$g['groupe_id'].'" style="color: '.$g['groupe_class'].';"'.$selected.'>'.htmlspecialchars($g['groupe_nom']).' ('.$g['groupe_effectifs'].')</option>';
-			}
+            if($g['groupe_id'] == $InfosUtilisateur['utilisateur_id_groupe'])
+                $selected = ' selected="selected"';
+            else
+                $selected = '';
+            echo '<option value="'.$g['groupe_id'].'" style="color: '.$g['groupe_class'].';"'.$selected.'>'.htmlspecialchars($g['groupe_nom']).' ('.$g['groupe_effectifs'].')</option>';
 		}
 		?>
 		</select>
@@ -52,14 +49,11 @@
 			<?php
 			foreach($ListerGroupesSecondaires as $g)
 			{
-				if($g['groupe_id'] != GROUPE_VISITEURS)
-				{
-					if(in_array($g['groupe_id'], $GroupesSecondaires))
-						$selected = ' selected="selected"';
-					else
-						$selected = '';
-					echo '<option value="'.$g['groupe_id'].'" style="color: '.$g['groupe_class'].';"'.$selected.'>'.htmlspecialchars($g['groupe_nom']).' ('.$g['groupe_effectifs'].')</option>';
-				}
+                if(in_array($g['groupe_id'], $GroupesSecondaires))
+                    $selected = ' selected="selected"';
+                else
+                    $selected = '';
+                echo '<option value="'.$g['groupe_id'].'" style="color: '.$g['groupe_class'].';"'.$selected.'>'.htmlspecialchars($g['groupe_nom']).' ('.$g['groupe_effectifs'].')</option>';
 			}
 			?>
 		</select>

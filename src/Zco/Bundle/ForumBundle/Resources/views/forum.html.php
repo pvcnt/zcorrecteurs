@@ -30,11 +30,6 @@
 			<?php } ?>
 		</li>
 		<?php } ?>
-		<li>
-    		<img src="/pix.gif" class="fff feed" alt="" /> S'abonner…
-    		<a href="/forum/messages-flux-<?php echo $_GET['id'] ?>.html">au flux du forum «&nbsp;<?php echo htmlspecialchars($InfosForum['cat_nom']) ?>&nbsp;»</a>, 
-    		<a href="/forum/messages-flux-<?php echo $Parent['cat_id'] ?>.html">au flux de la catégorie «&nbsp;<?php echo htmlspecialchars($Parent['cat_nom']) ?>&nbsp;»</a>
-    	</li>
     	<?php if(verifier('voir_archives')) : ?>
 		<li>
 			<?php if(!empty($_GET['archives'])) : ?>

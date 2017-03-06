@@ -62,16 +62,17 @@ class UserPromoteCommand extends ContainerAwareCommand
 			
 			return -1;
 		}
-		if ($user->getGroupId() == GROUPE_ADMINISTRATEURS)
+
+		$adminGroup = InfosGroupe(\Groupe::ADMIN);
+		if ($user->getGroupId() == $adminGroup['groupe_id'])
 		{
 			$output->writeln('<ERROR>The user is already an administrator.</ERROR>');
 			
 			return -1;
 		}
 		
-		$user->setGroupId(GROUPE_ADMINISTRATEURS);
+		$user->setGroupId($adminGroup['groupe_id']);
 		$user->save();
-		
 		$output->writeln(sprintf('The user "<info>%s</info>" has been promoted administrator.', $user->getUsername()));
 		
 		return 0;

@@ -401,7 +401,7 @@ class User
 		}
 		else
 		{
-			$_SESSION['groupe']              = GROUPE_VISITEURS;
+			$_SESSION['groupe']              = InfosGroupe(\Groupe::ANONYMOUS)['groupe_id'];
 			$_SESSION['groupes_secondaires'] = array();
 		}
 		

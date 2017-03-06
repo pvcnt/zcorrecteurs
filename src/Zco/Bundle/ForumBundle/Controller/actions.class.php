@@ -27,10 +27,6 @@ class ForumActions extends Controller
 	public function __construct()
 	{
 	    $resourceManager = \Container::getService('zco_vitesse.resource_manager');
-		$resourceManager->addFeed(
-		    '/forum/messages-flux.html', 
-		    array('title' => 'Derniers messages du forum')
-		);
 		$resourceManager->requireResource(
 		    '@ZcoForumBundle/Resources/public/css/forum.css'
 		);

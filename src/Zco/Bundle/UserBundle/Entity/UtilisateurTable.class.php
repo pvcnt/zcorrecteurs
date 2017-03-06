@@ -138,7 +138,7 @@ class UtilisateurTable extends Doctrine_Table
 			->from('Utilisateur u')
 			->leftJoin('u.Groupe g')
 			->where('g.team = ?', true)
-			->andWhere('g.id <> ?', GROUPE_ANCIENS)
+			->andWhere('g.code <> ?', \Groupe::SENIOR)
 			->orderBy('u.pseudo')
 			->execute();
 	}
@@ -150,7 +150,7 @@ class UtilisateurTable extends Doctrine_Table
 			->from('Utilisateur u')
 			->leftJoin('u.Groupe g')
 			->where('g.team = ?', true)
-			->andWhere('g.id <> ?', GROUPE_ANCIENS)
+            ->andWhere('g.code <> ?', \Groupe::SENIOR)
 			->andWhere('u.avatar <> ?', '')
 			->orderBy('RAND()')
 			->execute();
@@ -162,7 +162,7 @@ class UtilisateurTable extends Doctrine_Table
 			->select('u.pseudo, u.id, g.id, g.nom, g.class')
 			->from('Utilisateur u')
 			->leftJoin('u.Groupe g')
-			->where('g.id = ?', GROUPE_ANCIENS)
+            ->andWhere('g.code = ?', \Groupe::SENIOR)
 			->orderBy('u.pseudo')
 			->execute();
 	}
@@ -289,7 +289,7 @@ class UtilisateurTable extends Doctrine_Table
 		//Affectation de données par défaut indispensables avant enregistrement.
 		if ($user->getGroupId() === null)
 		{
-			$user->setGroupId(GROUPE_DEFAUT);
+			$user->setGroupId(InfosGroupe(\Groupe::DEFAULT)['groupe_id']);
 		}
 		if ($user->getRegistrationDate() === null)
 		{

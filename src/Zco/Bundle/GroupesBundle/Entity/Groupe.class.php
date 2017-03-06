@@ -31,6 +31,12 @@
  */
 class Groupe extends BaseGroupe
 {
+    const DEFAULT = 'default';
+    const ADMIN = 'admin';
+    const SENIOR = 'senior';
+    const DEVELOPER = 'developer';
+    const ANONYMOUS = 'anonymous';
+
 	public function __toString()
 	{
 		return $this->nom;

@@ -13,3 +13,4 @@ Groupe:
     groupe_sanction:       { type: boolean, name: groupe_sanction as sanction }
     groupe_team:           { type: boolean, name: groupe_team as team }
     groupe_secondaire:     { type: boolean, name: groupe_secondaire as secondary }
+    groupe_code:           { type: string(50), name: groupe_code as code }

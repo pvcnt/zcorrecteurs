@@ -113,7 +113,7 @@ class EventListener implements EventSubscriberInterface
         //Si le membre n'est toujours pas connecté on lui attribue de force
         //les attributs habituellement liés au compte.
         if (!isset($_SESSION['groupe']) || !isset($_SESSION['id'])) {
-            $_SESSION['groupe'] = GROUPE_VISITEURS;
+            $_SESSION['groupe'] = InfosGroupe(\Groupe::ANONYMOUS)['groupe_id'];
             $_SESSION['id'] = RecupererIdVisiteur();
             $_SESSION['refresh_droits'] = time();
         }

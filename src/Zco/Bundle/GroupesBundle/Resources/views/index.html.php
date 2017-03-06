@@ -47,12 +47,12 @@ function afficher_liste_groupes($view, $ListerGroupes, $get = '') {
 		<tr>
 			<td><span style="color: <?php echo htmlspecialchars($g['groupe_class']); ?>;"><?php echo htmlspecialchars($g['groupe_nom']); ?></span></td>
 			<td class="centre">
-				<?php if($g['groupe_id'] != GROUPE_VISITEURS && !empty($g['groupe_logo'])){ ?>
+				<?php if(!empty($g['groupe_logo'])){ ?>
 				<img src="<?php echo htmlspecialchars($g['groupe_logo']); ?>" alt="" />
 				<?php } else echo '-'; ?>
 			</td>
 			<td class="centre">
-				<?php if($g['groupe_id'] != GROUPE_VISITEURS){ ?>
+				<?php if($g['groupe_code'] != \Groupe::ANONYMOUS){ ?>
 				<?php echo $view['humanize']->numberformat($g['groupe_effectifs'], 0); ?>
 				<?php } else echo '-'; ?>
 			</td>
@@ -65,12 +65,12 @@ function afficher_liste_groupes($view, $ListerGroupes, $get = '') {
 			</td>
 			<?php } if(verifier('groupes_gerer')){ ?>
 			<td class="centre">
-				<?php if($g['groupe_id'] != GROUPE_VISITEURS){ ?>
+				<?php if($g['groupe_code'] != \Groupe::ANONYMOUS){ ?>
 				<a href="editer-<?php echo $g['groupe_id']; ?>.html" title="Éditer ce groupe"><img src="/img/editer.png" alt="Éditer" /></a>
 				<?php } else echo '-'; ?>
 			</td>
 			<td class="centre">
-				<?php if($g['groupe_id'] != GROUPE_VISITEURS){ ?>
+				<?php if($g['groupe_code'] != \Groupe::ANONYMOUS){ ?>
 				<a href="supprimer-<?php echo $g['groupe_id']; ?>.html" title="Supprimer ce groupe"><img src="/img/supprimer.png" alt="Supprimer" /></a>
 				<?php } else echo '-'; ?>
 			</td>

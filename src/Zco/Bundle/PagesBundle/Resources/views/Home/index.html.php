@@ -95,14 +95,6 @@
 	</td>
 
 	<td>
-		<?php if(verifier('voir_sujets')){ ?>
-		<span style="float: right; margin-left: 10px;">
-			<a href="/forum/messages-flux.html" title="S'abonner au flux du forum">
-				<img src="/pix.gif" class="fff feed" alt="Flux" />
-			</a>
-		</span>
-		<?php } ?>
-
 		<h2 class="mod_forum">Forum</h2>
 		<?php if(verifier('voir_sujets')){ ?>
 		<?php echo $view->render('ZcoForumBundle::_bloc_accueil.html.php',

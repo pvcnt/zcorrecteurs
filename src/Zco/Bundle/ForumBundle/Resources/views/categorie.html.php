@@ -11,12 +11,6 @@
 		<?php } elseif(verifier('corbeille_sujets', $_GET['id'])) {?>
 		<li><a href="?trash=1">Accéder à la corbeille</a></li>
 		<?php } ?>
-		<li>
-    		<img src="/pix.gif" class="fff feed" alt="" /> 
-    		<a href="/forum/messages-flux-<?php echo $_GET['id'] ?>.html">
-    		    S'abonner au flux de la catégorie «&nbsp;<?php echo htmlspecialchars($InfosCategorie['cat_nom']) ?>&nbsp;»
-    		</a>
-    	</li>
     	<?php if(verifier('voir_archives')) : ?>
 		<li>
 			<?php if(!empty($_GET['archives'])) : ?>

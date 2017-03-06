@@ -43,7 +43,7 @@ class GroupesActions extends Controller
 		zCorrecteurs::VerifierFormatageUrl();
 
 		fil_ariane('Gestion des groupes');
-		
+
 		return render_to_response(array(
 			'ListerGroupes'				=> ListerGroupes(),
 			'ListerGroupesSecondaires'	=> ListerGroupesSecondaires(),
@@ -67,8 +67,11 @@ class GroupesActions extends Controller
 		}
 
 		fil_ariane('Ajouter un groupe');
-		
-		return render_to_response(array('ListerGroupes' => ListerGroupes()));
+        $ListerGroupes = array_filter(ListerGroupes(), function($group) {
+            return $group['groupe_code'] != \Groupe::ANONYMOUS;
+        });
+
+		return render_to_response(array('ListerGroupes' => $ListerGroupes));
 	}
 
 	/**
@@ -94,7 +97,7 @@ class GroupesActions extends Controller
 
 			zCorrecteurs::VerifierFormatageUrl($InfosGroupe['groupe_nom'], true);
 			fil_ariane('Modifier un groupe');
-			
+
 			return render_to_response(array('InfosGroupe' => $InfosGroupe));
 		}
 		else
@@ -116,7 +119,7 @@ class GroupesActions extends Controller
 			{
 				SupprimerGroupe($_GET['id']);
 				$this->get('zco_core.cache')->set('dernier_refresh_droits', time(), 0);
-				
+
 				return redirect(8, 'index.html');
 			}
 			//Si on annule
@@ -174,7 +177,7 @@ class GroupesActions extends Controller
 
 		//Inclusion de la vue
 		fil_ariane('Vérifier les droits d\'un groupe');
-		
+
 		return render_to_response(array(
 			'InfosGroupe' => $InfosGroupe,
 			'ListerGroupes' => $ListerGroupes,
@@ -197,7 +200,7 @@ class GroupesActions extends Controller
 		{
 			$this->get('zco_core.cache')->set('dernier_refresh_droits', time(), 0);
 			$this->get('zco_core.cache')->delete('droits_groupe_*');
-			
+
 			return redirect(5, '/admin/');
 		}
 		//Si on annule
@@ -235,14 +238,16 @@ class GroupesActions extends Controller
 
 			if(!isset($_POST['groupe']))
 			{
-				$ListerGroupes = ListerGroupes();
+				$ListerGroupes = array_filter(ListerGroupes(), function($group) {
+				    return $group['groupe_code'] != \Groupe::ANONYMOUS;
+                });
 			}
-			elseif(!empty($_POST['groupe']) && is_numeric($_POST['groupe']) && $_POST['groupe'] != GROUPE_VISITEURS)
+			elseif(!empty($_POST['groupe']) && is_numeric($_POST['groupe']))
 			{
 				$_POST['id'] = $_GET['id'];
 				ChangerGroupeUtilisateur();
 				$this->get('zco_core.cache')->set('dernier_refresh_droits', time(), 0);
-				
+
 				return redirect(9, 'changer-membre-groupe-'.$_GET['id'].'.html');
 			}
 			else
@@ -283,7 +288,7 @@ class GroupesActions extends Controller
 
 		//Inclusion de la vue
 		fil_ariane('Changer un membre de groupe');
-		
+
 		return render_to_response(array(
 			'ListerGroupes' => $ListerGroupes,
 			'ListerGroupesSecondaires' => isset($ListerGroupesSecondaires) ? $ListerGroupesSecondaires : null,
@@ -414,7 +419,7 @@ class GroupesActions extends Controller
 		$this->get('zco_vitesse.resource_manager')->requireResource(
 		    '@ZcoCoreBundle/Resources/public/css/zcode.css'
 		);
-		
+
 		return render_to_response(array(
 			'InfosGroupe' => $InfosGroupe,
 			'ListerGroupes' => $ListerGroupes,
@@ -434,7 +439,7 @@ class GroupesActions extends Controller
 	{
 		zCorrecteurs::VerifierFormatageUrl();
 		fil_ariane('Gestion des droits');
-        
+
 		return render_to_response(array(
 			'ListerDroits' => ListerDroits(),
 			'ListerCategories' => ListerCategories(),
@@ -456,13 +461,13 @@ class GroupesActions extends Controller
 			AjouterDroit($_POST['nom'], $_POST['desc'], $_POST['texte'],
 			$_POST['cat'], isset($_POST['choix_cat']), !isset($_POST['choix_binaire']));
 			$this->get('zco_core.cache')->delete('droits_groupe_*');
-			
+
 			return redirect(10, 'gestion-droits.html');
 		}
 
 		//Inclusion de la vue
 		fil_ariane('Ajouter un droit');
-		
+
 		return render_to_response(array());
 	}
 
@@ -492,7 +497,7 @@ class GroupesActions extends Controller
 			}
 
 			fil_ariane(array('Gestion des droits' => 'gestion-droits.html', 'Modifier un droit'));
-			
+
 			return render_to_response(array(
 				'ListerCategories' => ListerCategories(),
 				'InfosDroit' => $InfosDroit,
@@ -522,7 +527,7 @@ class GroupesActions extends Controller
 			{
 				SupprimerDroit($_GET['id']);
 				$this->get('zco_core.cache')->delete('droits_groupe_*');
-				
+
 				return redirect(12, 'gestion-droits.html');
 			}
 			//Si on annule
@@ -533,7 +538,7 @@ class GroupesActions extends Controller
 
 			//Inclusion de la vue
 			fil_ariane(array('Gestion des droits' => 'gestion-droits.html', 'Supprimer un droit'));
-			
+
 			return render_to_response(array('InfosDroit' => $InfosDroit));
 
 		}
@@ -560,7 +565,7 @@ class GroupesActions extends Controller
 
 		//Inclusion de la vue
 		fil_ariane('Historique des changements de groupe');
-		
+
 		return render_to_response(array(
 			'NombreDeChangements' => $NombreDeChangements,
 			'TableauPage' => $TableauPage,

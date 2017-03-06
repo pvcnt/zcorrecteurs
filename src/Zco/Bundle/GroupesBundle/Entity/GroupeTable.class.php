@@ -37,7 +37,7 @@ class GroupeTable extends Doctrine_Table
 	{
 		return $this->createQuery('g')
 			->select('g.*')
-			->where('g.id <> ?', GROUPE_VISITEURS)
+			->where('g.code <> ?', \Groupe::ANONYMOUS)
 			->andWhere('g.secondary = ?', false);
 	}
 	
