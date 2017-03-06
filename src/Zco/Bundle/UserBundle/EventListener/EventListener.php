@@ -160,7 +160,7 @@ class EventListener implements EventSubscriberInterface
                 $Debut = $retour['ip_date'];
                 $_SESSION = array();
                 session_destroy();
-                $event->setResponse(new Response(render_to_string('ZcoIpsBundle::banni.html.php', compact('Debut', 'Duree', 'Raison'))));
+                $event->setResponse(new Response(render_to_string('ZcoUserBundle::banni.html.php', compact('Debut', 'Duree', 'Raison'))));
             }
         }
     }
