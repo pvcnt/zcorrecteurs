@@ -66,4 +66,8 @@ zco_error:
 
 zco_sitemap:
   pattern:   /sitemap.xml
-  defaults:  { _controller: ZcoPagesBundle:Sitemap:index }
+  defaults:  { _controller: ZcoPagesBundle:Default:sitemap }
+
+zco_robots:
+  pattern:   /robots.txt
+  defaults:  { _controller: ZcoPagesBundle:Default:robots }

@@ -23,17 +23,27 @@ namespace Zco\Bundle\PagesBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Zco\Bundle\PagesBundle\Event\FilterSitemapEvent;
 use Zco\Bundle\PagesBundle\PagesEvents;
 
 /**
- * Contrôleur gérant l'affichage du sitemap.
- *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class SitemapController extends Controller
+class DefaultController extends Controller
 {
-    public function indexAction()
+    public function robotsAction()
+    {
+        if ('prod' === $this->container->get('kernel.environment')) {
+            $content = 'Sitemap: ' . $this->generateUrl('zco_sitemap', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        } else {
+            $content = 'User-agent: *' . "\n" . 'Disallow: /';
+        }
+
+        return new Response($content, 200, ['Content-type' => 'text/plain']);
+    }
+
+    public function sitemapAction()
     {
         $cache = $this->container->get('zco_core.cache');
         if (($content = $cache->get('zco_pages.sitemap')) === false) {
