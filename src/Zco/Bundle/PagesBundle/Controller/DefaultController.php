@@ -34,7 +34,7 @@ class DefaultController extends Controller
 {
     public function robotsAction()
     {
-        if ('prod' === $this->container->get('kernel.environment')) {
+        if ('prod' === $this->container->getParameter('kernel.environment')) {
             $content = 'Sitemap: ' . $this->generateUrl('zco_sitemap', [], UrlGeneratorInterface::ABSOLUTE_URL);
         } else {
             $content = 'User-agent: *' . "\n" . 'Disallow: /';
@@ -45,7 +45,7 @@ class DefaultController extends Controller
 
     public function sitemapAction()
     {
-        $cache = $this->container->get('zco_core.cache');
+        $cache = $this->get('zco_core.cache');
         if (($content = $cache->get('zco_pages.sitemap')) === false) {
             $xml = new \DomDocument();
             $xml->formatOutput = true;
