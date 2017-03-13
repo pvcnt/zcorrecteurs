@@ -37,7 +37,6 @@ if ($debug) {
 }
 
 $kernel = new AppKernel($env, $debug);
-$kernel->loadClassCache();
 $request = Request::createFromGlobals();
 $response = $kernel->handle($request);
 $response->send();
