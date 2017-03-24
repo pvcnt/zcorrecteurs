@@ -4,3 +4,11 @@ services:
     arguments: ['@router']
     tags:
       - { name: kernel.event_subscriber }
+
+  zco_search.search_engine:
+    class: Zco\Bundle\SearchBundle\Search\Sphinx\SphinxSearchEngine
+    arguments: ['%sphinx_host%', '%sphinx_port%']
+
+  zco_search.search_service:
+      class: Zco\Bundle\SearchBundle\Search\SearchService
+      arguments: ['@zco_search.search_engine']

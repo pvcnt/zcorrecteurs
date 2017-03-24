@@ -5,8 +5,6 @@
 !/var/.gitkeep
 /vendor/
 /web/compiled/*
-/data/store/*
-/data/index/*
 /data/GeoLiteCity.dat
 
 # IDE configuration files.

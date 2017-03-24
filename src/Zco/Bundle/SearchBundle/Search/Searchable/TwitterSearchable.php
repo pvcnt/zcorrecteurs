@@ -19,29 +19,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\SearchBundle\Search;
+namespace Zco\Bundle\SearchBundle\Search\Searchable;
 
 /**
- * Interface pour les moteurs de recherche.
+ * Recherche sur les tweets.
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-interface SearchInterface
+class TwitterSearchable implements SearchableInterface
 {
-	const MATCH_ALL = 1;
-	const MATCH_ANY = 2;
-	const MATCH_BOOLEAN = 3;
-	const MATCH_PHRASE = 4;
+    public function getIndex()
+    {
+        return 'twitter_tweets';
+    }
 
-	const SORT_ASC = 1;
-	const SORT_DESC = 2;
-	const SORT_RELEVANCE = 3;
+    public function doesCheckCredentials()
+    {
+        return false;
+    }
 
-	function setFilter($key, $value);
-	function setRangedFilter($key, $min, $max);
-	function setLimits($results, $offset = 0);
+    public function transformResults(array $matches)
+    {
+        $ids = array_map(function ($m) {
+            return $m['id'];
+        }, $matches);
 
-	function setMatchMode($mode);
-	function orderBy($mode, $key = null);
-	function getResults($search);
+        return \Doctrine_Core::getTable('TwitterTweet')->getByIds($ids);
+    }
 }

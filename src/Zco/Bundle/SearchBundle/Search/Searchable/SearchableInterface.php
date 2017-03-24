@@ -19,21 +19,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\SearchBundle\Search;
+namespace Zco\Bundle\SearchBundle\Search\Searchable;
 
 /**
- * Recherche sur les tweets.
+ * Interface pour les modèles de recherche.
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class TwitterSearch extends Searchable
+interface SearchableInterface
 {
-	protected $index = 'twitter_tweets';
+    /**
+     * @return string
+     */
+    function getIndex();
 
-	public function getResults($query, $checkCredentials = true)
-	{
-		return \Doctrine_Core::getTable('TwitterTweet')
-			->getByIds($this->idsArray(parent::getResults($query, false)));
-	}
+    /**
+     * @return bool
+     */
+    function doesCheckCredentials();
+
+    /**
+     * @param array $results
+     * @return array
+     */
+    function transformResults(array $results);
 }
-

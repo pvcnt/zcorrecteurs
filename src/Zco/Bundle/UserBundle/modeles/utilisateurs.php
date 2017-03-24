@@ -307,16 +307,6 @@ function ListerUtilisateursDroit($droit)
 	return $stmt->fetchAll();
 }
 
-function getUtilisateurID($pseudo)
-{
-	$dbh = Doctrine_Manager::connection()->getDbh();
-	$stmt = $dbh->prepare('SELECT utilisateur_id '
-		.'FROM zcov2_utilisateurs '
-		.'WHERE utilisateur_pseudo = ?');
-	$stmt->execute(array($pseudo));
-	return $stmt->fetchColumn();
-}
-
 /**
  * Liste tous les utilisateurs d'un groupe donné.
  *

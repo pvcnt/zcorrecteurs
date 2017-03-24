@@ -19,22 +19,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\SearchBundle\Search;
+namespace Zco\Bundle\SearchBundle\Search\Searchable;
 
 /**
  * Recherche sur le forum.
  *
  * @author mwsaz <mwsaz@zcorrecteurs.fr>
  */
-class ForumSearch extends Searchable
+class ForumSearchable implements SearchableInterface
 {
-	protected $index = 'forum_messages';
+    public function getIndex()
+    {
+        return 'forum_messages';
+    }
 
-	public function getResults($query, $checkCredentials = true)
-	{
-	    include_once(BASEPATH . '/src/Zco/Bundle/ForumBundle/modeles/messages.php');
-	    
-		return ListerMessagesId($this->idsArray(parent::getResults($query)));
-	}
+    public function transformResults(array $matches)
+    {
+        include_once(__DIR__ . '/../../../ForumBundle/modeles/messages.php');
+        $ids = array_map(function ($m) {
+            return $m['id'];
+        }, $matches);
+
+        return ListerMessagesId($ids);
+    }
+
+    public function doesCheckCredentials()
+    {
+        return true;
+    }
 }
-

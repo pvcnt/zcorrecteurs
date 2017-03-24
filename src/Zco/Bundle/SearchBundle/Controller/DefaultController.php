@@ -23,7 +23,12 @@ namespace Zco\Bundle\SearchBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Zco\Bundle\SearchBundle\Search\SearchInterface;
+use Zco\Bundle\SearchBundle\Search\Searchable\BlogSearchable;
+use Zco\Bundle\SearchBundle\Search\Searchable\ForumSearchable;
+use Zco\Bundle\SearchBundle\Search\Searchable\TwitterSearchable;
+use Zco\Bundle\SearchBundle\Search\SearchableInterface;
+use Zco\Bundle\SearchBundle\Search\SearchQuery;
+use Zco\Bundle\SearchBundle\Search\SearchQueryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 /**
@@ -57,9 +62,14 @@ class DefaultController extends Controller
         $_flags = array();
 
         // Section du site concernée par la recherche
-        $sections = array('forum', 'blog', 'twitter');
-        $section = $section ?: current($sections);
-        if (!in_array($section, $sections)) {
+        $section = $section ?: 'forum';
+        if ('forum' === $section) {
+            $searchable = new ForumSearchable();
+        } elseif ('blog' === $section) {
+            $searchable = new BlogSearchable();
+        } elseif ('twitter' === $section) {
+            $searchable = new TwitterSearchable();
+        } else {
             return redirect(
                 'Votre catégorie de recherche est invalide.',
                 $this->generateUrl('zco_search_index'),
@@ -73,70 +83,67 @@ class DefaultController extends Controller
             ));
         }
 
+        $query = new SearchQuery();
         $_flags['recherche'] = $request->query->get('recherche');
-        $className = '\Zco\Bundle\SearchBundle\Search\\' . ucfirst($section) . 'Search';
-        $Search = new $className();
+        $query->setSearch($_flags['recherche']);
 
-        // Pagination
+        // Pagination.
         $_flags['nb_resultats'] = $resultats = (int)$request->query->get('nb_resultats', 20);
         $resultats = ($resultats <= 50 && $resultats >= 5) ? $resultats : 20;
         $page = max(1, $page);
-
-        $Search->setPage($page, $resultats);
         $_flags['nb_resultats'] = $resultats;
+        $query->setPage($page, $resultats);
 
-
-        // Mode de recherche
-        $modes = array(
-            'tous' => SearchInterface::MATCH_ALL,
-            'un' => SearchInterface::MATCH_ANY,
-            'phrase' => SearchInterface::MATCH_PHRASE
-        );
+        // Mode de recherche.
+        $modes = [
+            'tous' => SearchQuery::MATCH_ALL,
+            'un' => SearchQuery::MATCH_ANY,
+            'phrase' => SearchQuery::MATCH_PHRASE
+        ];
         $mode = $request->query->get('mode', current($modes));
         $mode = isset($modes[$mode]) ? $mode : current($modes);
-        $Search->getSearcher()->setMatchMode($mode);
         $_flags['mode'] = $mode;
+        $query->setMatchMode($mode);
 
-
-        // Critères de recherche généraux
-        $addSearchArg = function ($Search, $index, $attr) {
-            if (isset($_GET[$index]) && $_GET[$index] !== '') {
-                $func = 'set' . ucfirst($attr);
-                $Search->$func($_GET[$index]);
-                $_flags[$index] = $_GET[$index];
-            }
-        };
-        $addSearchArg($Search, 'categories', 'categories');
-
-        // Restriction de catégorie
+        // Restriction de catégorie.
         if ($request->query->has('categories')) {
-            $Search->setCategories($request->query->get('categories'));
-            $_flags['categories'] = $request->query->get('categories');
+            $categoryIds = $request->query->get('categories') ?: [];
+            $query->setCategories($categoryIds);
+            $_flags['categories'] = $categoryIds;
         }
 
-        // Critères de recherche spécifiques à une section
+        // Critères de recherche spécifiques à une section.
         if ($section == 'forum') {
             $flags = array('ferme', 'resolu', 'postit');
             foreach ($flags as $flg) {
                 if ($request->query->has($flg)) {
                     $_flags[$flg] = (bool)$request->query->get($flg);
-                    $Search->getSearcher()->setFilter('sujet_' . $flg, $_flags[$flg]);
+                    if ($_flags[$flg]) {
+                        $query->includeFlag('sujet_' . $flg);
+                    } else {
+                        $query->excludeFlag('sujet_' . $flg);
+                    }
                 }
             }
             $_flags['auteur'] = $request->query->get('auteur', '');
-            $addSearchArg($Search, 'auteur', 'user');
+            if ($_flags['auteur']) {
+                $query->setAuthor($_flags['auteur']);
+            }
         } elseif ($section == 'blog') {
             // …
         } elseif ($section == 'twitter') {
             $_flags['auteur'] = $request->query->get('auteur', '');
-            $addSearchArg($Search, 'auteur', 'user');
+            if ($_flags['auteur']) {
+                $query->setAuthor($_flags['auteur']);
+            }
         }
 
         // Récupération des résultats
         $pages = $Resultats = $CompterResultats = null;
         try {
-            $Resultats = $Search->getResults($_flags['recherche']);
-            $CompterResultats = $Search->countResults();
+            $res = $this->get('zco_search.search_service')->execute($query, $searchable);
+            $Resultats = $res->getResults();
+            $CompterResultats = $res->getTotalCount();
 
             //TODO: fix pagination here.
             $url = str_replace('91919191', '%s', $this->generateUrl('zco_search_index', array_merge(['section' => $section, 'page' => 91919191], $_flags)));

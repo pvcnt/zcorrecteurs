@@ -12,6 +12,9 @@ parameters:
     twitter_api_key: ''
     twitter_api_secret: ''
 
+    sphinx_host: localhost
+    sphinx_port: 5000
+
 swiftmailer:
     transport: smtp
     #username:
@@ -20,4 +23,3 @@ swiftmailer:
     #port: 587
     #encryption: tls
     #auth_mode: plain
-

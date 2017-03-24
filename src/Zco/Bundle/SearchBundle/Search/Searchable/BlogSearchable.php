@@ -19,25 +19,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\SearchBundle\Search;
+namespace Zco\Bundle\SearchBundle\Search\Searchable;
 
 /**
- * Interface pour les modèles de recherche.
+ * Recherche sur le blog.
  *
- * @author vincent1870 <vincent@zcorrecteurs.fr>
+ * @author mwsaz <mwsaz@zcorrecteurs.fr>
  */
-interface SearchableInterface
+class BlogSearchable implements SearchableInterface
 {
-	function getSearcher();
+    public function getIndex()
+    {
+        return 'blog_billets';
+    }
 
-	function setCategories($cats);
+    public function transformResults(array $matches)
+    {
+        include_once(__DIR__ . '/../../../BlogBundle/modeles/blog.php');
+        $ids = array_map(function ($m) {
+            return $m['id'];
+        }, $matches);
 
-	function setUser($pseudo);
+        return ListerBillets(array('id' => $ids));
+    }
 
-	function setPage($page, $results = null);
-
-	function getResults($query, $checkCredentials = true);
-
-	function countResults();
+    public function doesCheckCredentials()
+    {
+        return true;
+    }
 }
-

@@ -9,7 +9,6 @@ chown -R www-data:www-data var
 mkdir -p web/bundles && chown -R www-data:www-data web/bundles
 mkdir -p web/compiled && chown -R www-data:www-data web/compiled
 mkdir -p web/uploads && chown -R www-data:www-data web/uploads
-mkdir -p data/index && chown -R www-data:www-data data/index
 
 # Only in development environment, we run again `composer install`, because development dependencies where not
 # installed in the Dockerfile.
