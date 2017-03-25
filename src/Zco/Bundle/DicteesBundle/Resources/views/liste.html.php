@@ -30,7 +30,7 @@ function flecheOrdre($col, $tri)
 	<thead>
 		<tr>
 			<td colspan="8">
-				Page : <?php echo $view['ui']->render($pager) ?>
+				Page : <?php echo $pager->render() ?>
 			</td>
 		</tr>
 		<tr class="header_message">

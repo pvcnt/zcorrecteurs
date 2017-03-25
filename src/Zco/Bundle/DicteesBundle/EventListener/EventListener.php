@@ -37,9 +37,6 @@ class EventListener implements EventSubscriberInterface
 	static public function getSubscribedEvents()
 	{
 		return array(
-			'zco_core.filter_menu.speedbarre' => 'onFilterSpeedbarre',
-			'zco_core.filter_menu.speedbarre_right' => 'onFilterSpeedbarreRight',
-			'zco_core.filter_menu.left_menu' => 'onFilterLeftMenu',
 			TemplatingEvents::FILTER_VARIABLES => 'onTemplatingFilterVariables',
 			AdminEvents::MENU => 'onFilterAdmin',
 			PagesEvents::SITEMAP => 'onFilterSitemap',
@@ -81,45 +78,6 @@ class EventListener implements EventSubscriberInterface
 		$tab->addChild('Ajouter une dictée', array(
 			'uri' => '/dictees/ajouter.html',
 		))->secure('dictees_ajouter');
-	}
-	
-	public function onFilterLeftMenu(FilterMenuEvent $event)
-	{
-		if (!verifier('dictees_proposer') || $event->getTemplate() !== 'legacy')
-		{
-			return;
-		}
-		
-		$event->getRoot()->getChild('Mon compte')->addChild('Mes dictées', array(
-			'uri'	=> '/dictees/proposer.html',
-			'weight' => 30,
-			'linkAttributes' => array(
-				'rel'   => 'Proposez votre dictée.', 
-				'title' => 'Mes dictées',
-			),
-		));
-	}
-	
-	public function onFilterSpeedbarre(FilterMenuEvent $event)
-	{
-		$event
-			->getRoot()
-			->addChild('Dictées', array('uri'   => '/dictees/', 'weight' => 40))
-			->setCurrent(
-				$event->getRequest()->attributes->has('_module') && 
-				$event->getRequest()->attributes->get('_module') === 'dictees'
-			);
-	}
-	
-	public function onFilterSpeedbarreRight(FilterMenuEvent $event)
-	{
-		if ($event->getTemplate() === 'bootstrap' && verifier('connecte'))
-		{
-			$event->getRoot()->getChild('Mon compte')->addChild('Mes dictées', array(
-				'uri'	=> '/dictees/proposer.html',
-				'weight' => 40,
-			));
-		}
 	}
 	
 	/**

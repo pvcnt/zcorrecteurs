@@ -3,7 +3,7 @@
 <h1>Mes dictées</h1>
 
 <p class="gras centre">
-	<?php if(verifier('dictees_proposer')): ?>
+	<?php if(verifier('connecte')): ?>
 	<a href="ajouter.html">Ajouter une dictée</a> -
 	<?php endif; ?>
 	<a href="statistiques.html">Mes statistiques</a>
@@ -61,7 +61,7 @@
 				?>.html" title="Supprimer cette dictée">
 					<img title="Supprimer" alt="Supprimer" class="fff cross" src="/pix.gif"/>
 				</a>
-			<?php endif; if($Dictee->etat == DICTEE_BROUILLON && verifier('dictees_proposer')): ?>
+			<?php endif; if($Dictee->etat == DICTEE_BROUILLON): ?>
 				<a href="proposer-<?php echo $Dictee->id; ?>.html" title="Proposer cette dictée">
 					<img alt="Proposer" class="fff folder_go" src="/pix.gif"/>
 				</a>

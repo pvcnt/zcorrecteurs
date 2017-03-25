@@ -42,33 +42,16 @@
 		</div> <!-- /header -->
 		
 		<div class="navbar navbar-static">
-			<div class="navbar-inner">
-				<div class="container">
-					<?php echo $view['ui']->speedbarre('bootstrap') ?>
-					<?php echo $view['ui']->speedbarreRight('bootstrap') ?>
-		    	</div>
-			</div>
+            <?php echo $view->render('::layouts/_navbar.html.php', ['adminCount' => $adminCount, 'searchSection' => $searchSection]) ?>
 		</div> <!-- /navbar -->
 		
 		<div class="container">
-			<?php echo $view->render('::layouts/flashes.html.php', compact('maintenance')) ?>
+			<?php echo $view->render('::layouts/flashes.html.php') ?>
 
 			<?php $view['slots']->output('_content') ?>
 		</div> <!-- /container -->
 
-		<div id="footer">
-			<div class="left">
-			    <span>Site fièrement édité par</span>
-				<a href="http://www.corrigraphie.org" title="Ce site est hébergé et édité par l’association Corrigraphie.">Corrigraphie</a>
-			</div>
-			
-			<div class="center">
-				<p><a href="#" title="Remonter en haut de page" id="toplink">Haut de page</a></p>
-					
-				<?php echo $view['ui']->footer(1); ?>
-				<?php echo $view['ui']->footer(2); ?>
-			</div>
-		</div>
+        <?php echo $view->render('::layouts/_footer.html.php') ?>
 
 		<?php foreach ($view['vitesse']->javascripts() as $assetUrl): ?>
 		    <script type="text/javascript" src="<?php echo $assetUrl ?>"></script>

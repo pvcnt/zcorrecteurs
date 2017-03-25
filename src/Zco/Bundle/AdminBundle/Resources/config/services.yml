@@ -1,11 +1,4 @@
 services:
     zco_admin.manager:
         class: Zco\Bundle\AdminBundle\Admin
-        arguments: [@zco_core.cache]
-    
-    zco_admin.event_listener:
-        class: Zco\Bundle\AdminBundle\EventListener\EventListener
-        calls:
-            - [setContainer, [@service_container]]
-        tags:
-            - { name: kernel.event_subscriber }
+        arguments: ['@zco_core.cache']

@@ -42,9 +42,6 @@ class UiListener implements EventSubscriberInterface
 	static public function getSubscribedEvents()
 	{
 		return array(
-			'zco_core.filter_menu.speedbarre' => 'onFilterSpeedbarre',
-			'zco_core.filter_menu.speedbarre_right' => 'onFilterSpeedbarreRight',
-			'zco_core.filter_menu.left_menu' => 'onFilterLeftMenu',
 			AdminEvents::MENU => 'onFilterAdmin',
 		);
 	}
@@ -91,61 +88,5 @@ class UiListener implements EventSubscriberInterface
 		$tab->addChild('Voir tous les commentaires', array(
 			'uri' => '/blog/tous-les-commentaires.html',
 		))->secure('blog_voir_tous_les_commentaires');
-	}
-	
-	/**
-	 * Ajoute un lien vers la page des billets d'un utilisateur dans le menu de 
-	 * gauche (ancien design uniquement).
-	 *
-	 * @param FilterMenuEvent $event
-	 */
-	public function onFilterLeftMenu(FilterMenuEvent $event)
-	{
-		if (!verifier('blog_ajouter') || $event->getTemplate() !== 'legacy')
-		{
-			return;
-		}
-		
-		$event->getRoot()->getChild('Mon compte')->addChild('Mes billets', array(
-			'uri'	=> '/blog/mes-billets.html',
-			'weight' => 20,
-			'linkAttributes' => array(
-				'rel'   => 'Proposez votre billet pour qu\'il apparaisse sur la page d\'accueil du site.', 
-				'title' => 'Mes billets',
-			),
-		));
-	}
-	
-	/**
-	 * Ajoute un lien vers l'accueil du module de blog dans la barre de 
-	 * navigation rapide.
-	 *
-	 * @param FilterMenuEvent $event
-	 */
-	public function onFilterSpeedbarre(FilterMenuEvent $event)
-	{
-		$event
-			->getRoot()
-			->addChild('Blog', array('uri'   => '/blog/', 'weight' => 10))
-			->setCurrent($event->getRequest()->attributes->get('_module') === 'blog');
-		
-	}
-	
-	/**
-	 * Ajoute un lien vers la page des billets d'un utilisateur dans le menu 
-	 * déroulant « Mon compte » de la barre de navigation rapide (nouveau 
-	 * design uniquement).
-	 *
-	 * @param FilterMenuEvent $event
-	 */
-	public function onFilterSpeedbarreRight(FilterMenuEvent $event)
-	{
-		if ($event->getTemplate() === 'bootstrap' && verifier('connecte'))
-		{
-			$event->getRoot()->getChild('Mon compte')->addChild('Mes billets', array(
-				'uri'    => '/blog/mes-billets.html',
-				'weight' => 30,
-			));
-		}
 	}
 }

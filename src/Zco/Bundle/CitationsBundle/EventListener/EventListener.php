@@ -25,50 +25,49 @@ use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zco\Bundle\AdminBundle\AdminEvents;
 use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
-use Zco\Component\Templating\Event\FilterContentEvent;
+use Zco\Component\Templating\Event\FilterVariablesEvent;
+use Zco\Component\Templating\TemplatingEvents;
 
 class EventListener implements EventSubscriberInterface
 {
     use ContainerAwareTrait;
 
-	static public function getSubscribedEvents()
-	{
-		return array(
-			'zco_core.filter_block.header_right' => 'onFilterHeaderRight',
-			AdminEvents::MENU => 'onFilterAdmin',
-		);
-	}
-	
-	public function onFilterHeaderRight(FilterContentEvent $event)
-	{
-		$cache = $this->container->get('zco_core.cache');
-		if (($html = $cache->get('header_citations')) === false)
-		{
-			$citation = \Doctrine_Core::getTable('Citation')->CitationAleatoire();
-			$html = '';
-			if (count($citation) > 0)
-			{
-				$html = render_to_string('ZcoCitationsBundle::citation.html.php', compact('citation'));
-			}
-			$cache->set('header_citations', $html, 3600);
-		}
-		
-		$event->setContent($html);
-	}
-	
-	public function onFilterAdmin(FilterMenuEvent $event)
-	{
-	    $tab = $event
-	        ->getRoot()
-	        ->getChild('Contenu')
-	        ->getChild('Citations');
+    static public function getSubscribedEvents()
+    {
+        return array(
+            TemplatingEvents::FILTER_VARIABLES => 'onTemplatingFilterVariables',
+            AdminEvents::MENU => 'onFilterAdmin',
+        );
+    }
 
-		$tab->addChild('Ajouter une citation', array(
-			'uri' => '/citations/ajouter.html'
-		))->secure('citations_ajouter');
-		
-		$tab->addChild('Gérer les citations', array(
-			'uri' => '/citations/',
-		))->secure(array('or', 'citations_modifier', 'citations_supprimer', 'citations_autoriser'));
-	}
+    public function onTemplatingFilterVariables(FilterVariablesEvent $event)
+    {
+        $cache = $this->container->get('zco_core.cache');
+        if (($html = $cache->get('header_citations')) === false) {
+            $citation = \Doctrine_Core::getTable('Citation')->CitationAleatoire();
+            $html = '';
+            if ($citation) {
+                $html = render_to_string('ZcoCitationsBundle::citation.html.php', compact('citation'));
+            }
+            $cache->set('header_citations', $html, 3600);
+        }
+        $event->add('randomQuoteHtml', $html);
+
+    }
+
+    public function onFilterAdmin(FilterMenuEvent $event)
+    {
+        $tab = $event
+            ->getRoot()
+            ->getChild('Contenu')
+            ->getChild('Citations');
+
+        $tab->addChild('Ajouter une citation', array(
+            'uri' => '/citations/ajouter.html'
+        ))->secure('citations_ajouter');
+
+        $tab->addChild('Gérer les citations', array(
+            'uri' => '/citations/',
+        ))->secure(array('or', 'citations_modifier', 'citations_supprimer', 'citations_autoriser'));
+    }
 }

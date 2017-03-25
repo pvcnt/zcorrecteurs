@@ -202,7 +202,7 @@ class DefaultController extends Controller
         if (verifier('ips_analyser')) {
             $vars['ListerIPs'] = $this->get('zco_user.manager.ip')->ListerIPsMembre($user->getId());
         }
-        $vars['canSendMp'] = $_SESSION['id'] != $user->getId() && verifier('mp_voir') && $user->getId() != ID_COMPTE_AUTO
+        $vars['canSendMp'] = $_SESSION['id'] != $user->getId() && verifier('connecte') && $user->getId() != ID_COMPTE_AUTO
             && ($_SESSION['MPs'] < verifier('mp_quota') OR verifier('mp_quota') == -1);
         $vars['canSendEmail'] = verifier('rechercher_mail') || $user->isEmailDisplayed();
         $vars['canSeeInfos'] = verifier('membres_voir_ch_pseudos') || verifier('voir_sanctions')

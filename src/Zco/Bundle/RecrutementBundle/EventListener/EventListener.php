@@ -43,28 +43,9 @@ class EventListener implements EventSubscriberInterface
 	static public function getSubscribedEvents()
 	{
 		return array(
-			'zco_core.filter_menu.left_menu' => 'onFilterLeftMenu',
 			AdminEvents::MENU => 'onFilterAdmin',
 			PagesEvents::SITEMAP => 'onFilterSitemap',
 		);
-	}
-	
-	/**
-	 * Ajoute un lien vers le module de recrutement dans le menu de gauche.
-	 *
-	 * @param FilterMenuEvent $event
-	 */
-	public function onFilterLeftMenu(FilterMenuEvent $event)
-	{
-		$event->getRoot()->getChild('Communauté')->addChild('Nous rejoindre', array(
-			'uri'    => '/recrutement/',
-			'weight' => 0,
-			'linkAttributes' => array(
-				'style' => 'font-weight: bold;',
-				'rel'   => 'Vous souhaitez nous rejoindre ? Postulez sur notre module de recrutement.', 
-				'title' => 'Recrutement',
-			),
-		));
 	}
 	
 	/**

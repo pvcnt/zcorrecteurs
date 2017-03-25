@@ -9,4 +9,4 @@ propositions:
 repondre:
     credentials:  [dictees_publier]
 proposer:
-    credentials:  [dictees_proposer]
+    credentials:  [connecte]

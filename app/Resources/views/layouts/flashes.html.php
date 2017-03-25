@@ -1,9 +1,3 @@
-<?php if ($maintenance): ?>
-    <div class="alert alert-error">
-        Attention, le site est actuellement en maintenance !
-    </div>
-<?php endif ?>
-
 <?php if (!empty($_SESSION['erreur'])): ?>
 	<?php foreach ($_SESSION['erreur'] as $erreur): ?>
 	    <div class="alert alert-error"><?php echo $erreur ?></div>

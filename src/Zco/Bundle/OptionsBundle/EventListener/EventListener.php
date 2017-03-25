@@ -43,53 +43,9 @@ class EventListener implements EventSubscriberInterface
 	static public function getSubscribedEvents()
 	{
 		return array(
-			'zco_core.filter_menu.left_menu'        => 'onFilterLeftMenu',
-			'zco_core.filter_menu.speedbarre_right' => 'onFilterSpeedbarreRight',
 			AdminEvents::MENU                       => 'onFilterAdmin',
 			CoreEvents::DAILY_CRON                  => 'onDailyCron',
 		);
-	}
-	
-	/**
-	 * Ajoute le lien vers le réglage des paramètres utilisateur dans le menu 
-	 * de gauche sur l'ancien design.
-	 *
-	 * @param FilterMenuEvent $event
-	 */
-	public function onFilterLeftMenu(FilterMenuEvent $event)
-	{
-		if (!verifier('connecte') || $event->getTemplate() !== 'legacy')
-		{
-		    return;
-	    }
-	    
-		$event->getRoot()->getChild('Mon compte')->addChild('Mes options', array(
-			'uri'    => $this->container->get('router')->generate('zco_options_index'),
-			'weight' => 10,
-			'linkAttributes' => array(
-				'rel'   => 'Changer mon pseudo, mot de passe, avatar, profil, etc., ainsi que les options de navigation et tout ce qui concerne votre compte.', 
-				'title' => 'Mes options',
-			),
-		));
-	}
-	
-	/**
-	 * Ajoute le lien vers le réglage des paramètres utilisateur dans la barre 
-	 * de navigation sur le nouveau design.
-	 *
-	 * @param FilterMenuEvent $event
-	 */
-	public function onFilterSpeedbarreRight(FilterMenuEvent $event)
-	{
-		if (!verifier('connecte') || $event->getTemplate() !== 'bootstrap')
-		{
-		    return;
-	    }
-	    
-		$event->getRoot()->getChild('Mon compte')->addChild('Mes paramètres', array(
-			'uri'    => $this->container->get('router')->generate('zco_options_index'),
-			'weight' => 20,
-		));
 	}
 	
 	/**

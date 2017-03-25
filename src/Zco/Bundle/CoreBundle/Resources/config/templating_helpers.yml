@@ -15,12 +15,6 @@ services:
         tags:
             - { name: templating.helper, alias: widget }
     
-    zco_core.templating.helper.ui:
-        class: Zco\Bundle\CoreBundle\Templating\Helper\UiHelper
-        arguments: [@service_container]
-        tags:
-            - { name: templating.helper, alias: ui }
-
     zco_core.templating.helper.cache:
         class: Zco\Bundle\CoreBundle\Templating\Helper\CacheHelper
         arguments: [@zco_core.cache]

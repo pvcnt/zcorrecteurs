@@ -35,7 +35,6 @@ class EventListener implements EventSubscriberInterface
     static public function getSubscribedEvents()
     {
         return array(
-            'zco_core.filter_menu.speedbarre' => 'onFilterSpeedbarre',
             KernelEvents::REQUEST => array('onKernelRequest', 100),
 			AdminEvents::MENU => 'onFilterAdmin',
         );
@@ -70,29 +69,6 @@ class EventListener implements EventSubscriberInterface
 			include_once(__DIR__.'/../modeles/mp_cache.php');
 			$_SESSION['MPs'] = CompteMPTotal();
 		}
-	}
-	
-	/**
-	 * Ajoute le lien vers la messagerie privée dans la speedbarre.
-	 *
-	 * @param FilterMenuEvent $event
-	 */
-	public function onFilterSpeedbarre(FilterMenuEvent $event)
-	{
-		if (!verifier('mp_voir'))
-		{
-		    return;
-	    }
-	    
-		$event->getRoot()->addChild('Messagerie', array(
-			'uri'    => '/mp/',
-			'weight' => 50,
-			'label' => ($_SESSION['MPsnonLus'] > 0) ? 'Message'.pluriel($_SESSION['MPsnonLus']) : 'Messagerie',
-			'count' => ($_SESSION['MPsnonLus'] > 0) ? $_SESSION['MPsnonLus'] : null,
-			'linkAttributes' => array(
-				'title' => ($_SESSION['MPsnonLus'] > 0) ? 'Vous avez des nouveaux messages !' : null,
-			)
-		))->setCurrent($event->getRequest()->attributes->get('_module') === 'mp');
 	}
 	
 	public function onFilterAdmin(FilterMenuEvent $event)

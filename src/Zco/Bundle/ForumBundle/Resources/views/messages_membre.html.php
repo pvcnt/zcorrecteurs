@@ -5,7 +5,7 @@
 <table class="UI_items messages">
 	<thead>
 		<tr>
-			<td colspan="2">Page : <?php echo $view['ui']->render($pager) ?></td>
+			<td colspan="2">Page : <?php echo $pager->render() ?></td>
 		</tr>
 		<tr>
 			<th style="width: 13%;">Auteur</th>
@@ -15,7 +15,7 @@
 
 	<tfoot>
 		<tr>
-			<td colspan="2">Page : <?php echo $view['ui']->render($pager) ?></td>
+			<td colspan="2">Page : <?php echo $pager->render() ?></td>
 		</tr>
 	</tfoot>
 

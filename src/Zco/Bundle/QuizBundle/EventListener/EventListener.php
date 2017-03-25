@@ -64,24 +64,10 @@ class EventListener implements EventSubscriberInterface
     static public function getSubscribedEvents()
     {
         return array(
-            'zco_core.filter_menu.speedbarre' => 'onFilterSpeedbarre',
             AdminEvents::MENU => 'onFilterAdmin',
             PagesEvents::SITEMAP => 'onFilterSitemap',
             CoreEvents::DAILY_CRON => 'onDailyCron',
         );
-    }
-
-    /**
-     * Ajoute le lien vers le module dans la barre de navigation raide.
-     *
-     * @param FilterMenuEvent $event
-     */
-    public function onFilterSpeedbarre(FilterMenuEvent $event)
-    {
-        $event
-            ->getRoot()
-            ->addChild('Quiz', array('uri' => $this->urlGenerator->generate('zco_quiz_index'), 'weight' => 30))
-            ->setCurrent($event->getRequest()->attributes->get('_module') === 'quiz');
     }
 
     /**

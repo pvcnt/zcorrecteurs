@@ -44,19 +44,9 @@ class EventListener implements EventSubscriberInterface
     static public function getSubscribedEvents()
     {
         return array(
-            'zco_core.filter_menu.speedbarre' => 'onFilterSpeedbarre',
-            'zco_core.filter_menu.left_menu' => 'onFilterLeftMenu',
             PagesEvents::SITEMAP => 'onFilterSitemap',
             AdminEvents::MENU => 'onFilterAdmin',
         );
-    }
-
-    public function onFilterSpeedbarre(FilterMenuEvent $event)
-    {
-        $event
-            ->getRoot()
-            ->addChild('Accueil', array('uri' => '/', 'weight' => 0))
-            ->setCurrent($event->getRequest()->attributes->get('_module') === 'accueil');
     }
 
     public function onFilterAdmin(FilterMenuEvent $event)
@@ -71,28 +61,6 @@ class EventListener implements EventSubscriberInterface
         $tab->addChild('Modifier les annonces de la page d\'accueil', array(
             'uri' => $router->generate('zco_home_config'),
         ))->secure('gerer_breve_accueil');
-    }
-
-    public function onFilterLeftMenu(FilterMenuEvent $event)
-    {
-        /** @var UrlGeneratorInterface $router */
-        $router = $this->container->get('router');
-        $event->getRoot()->getChild('Communauté')->addChild('L\'équipe', array(
-            'uri' => $router->generate('zco_about_team'),
-            'weight' => 30,
-            'linkAttributes' => array(
-                'rel' => 'Une page spéciale pour présenter ceux qui dépensent tant d\'énergie pour corriger vos documents et faire vivre le site.',
-                'title' => 'L\'équipe',
-            ),
-        ));
-        $event->getRoot()->getChild('Communauté')->addChild('Faire un don', array(
-            'uri' => $router->generate('zco_donate_index'),
-            'weight' => 20,
-            'linkAttributes' => array(
-                'rel' => 'Vous souhaitez aider financièrement le site ? Faites un don !',
-                'title' => 'Faire un don',
-            )
-        ));
     }
 
     public function onFilterSitemap(FilterSitemapEvent $event)

@@ -45,7 +45,6 @@ class EventListener implements EventSubscriberInterface
 	static public function getSubscribedEvents()
 	{
 		return array(
-			'zco_core.filter_menu.speedbarre' => 'onFilterSpeedbarre',
 			TemplatingEvents::FILTER_RESOURCES => 'onTemplatingFilterResources',
 			AdminEvents::MENU => 'onFilterAdmin',
 			PagesEvents::SITEMAP => 'onFilterSitemap',
@@ -66,22 +65,6 @@ class EventListener implements EventSubscriberInterface
 		{
 			$event->requireResource('@ZcoForumBundle/Resources/public/css/forum.css');
 		}
-	}
-	
-	/**
-	 * Ajoute le lien vers le forum dans la barre de navigation rapide.
-	 *
-	 * @param FilterMenuEvent $event
-	 */
-	public function onFilterSpeedbarre(FilterMenuEvent $event)
-	{
-		$event
-			->getRoot()
-			->addChild('Forum', array('uri'   => '/forum/', 'weight' => 20))
-		 	->setCurrent(
-			    $event->getRequest()->attributes->has('_module') && 
-			    $event->getRequest()->attributes->get('_module') === 'forum'
-			);
 	}
 	
 	/**
