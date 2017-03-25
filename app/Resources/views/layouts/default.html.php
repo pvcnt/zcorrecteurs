@@ -82,48 +82,7 @@
                         foreach ($_SESSION['message'] as $message)
                             afficher_message($message);
                         $_SESSION['message'] = array();
-                    }
-
-                    /* Affichage de l'admin rapide éventuellement */
-                    if (empty($xhr) && verifier('admin') && preference('display_admin_bar') == 1) {
-                        ?>
-                        <div id="admin_rapide">
-                            <?php if (verifier('groupes_gerer')) { ?>
-                                <div class="admin_lien">
-                                    <a href="/groupes/">
-                                        <img src="/pix.gif" class="fff group" alt="" /> Groupes
-                                    </a>
-                                </div>
-                            <?php } if (verifier('blog_voir_billets_proposes')) {
-                                $billets = \Container::getService('zco_admin.manager')->get('blog'); ?>
-                                <div class="admin_lien">
-                                    <a href="/blog/propositions.html"<?php if ($billets > 0) echo ' title="' . $billets . ' billet' . pluriel($billets) . ' en attente"'; ?>>
-                                        <img src="/pix.gif" class="fff book" alt="" />
-                                        <?php if ($billets > 0) echo '<strong>'; ?>Blog
-                                        <?php if ($billets > 0) echo '(' . $billets . ')</strong>'; ?>
-                                    </a>
-                                </div>
-                            <?php } if (verifier('recrutements_voir_candidatures')) {
-                                $candidatures = \Container::getService('zco_admin.manager')->get('recrutement'); ?>
-                                <div class="admin_lien">
-                                    <a href="/recrutement/gestion.html"<?php if ($candidatures > 0) echo ' title="' . $candidatures . ' candidature' . pluriel($candidatures) . ' en attente"'; ?>>
-                                        <img src="/pix.gif" class="fff door_in" alt="" />
-                                        <?php if ($candidatures > 0) echo '<strong>'; ?>Recrutements
-                                        <?php if ($candidatures > 0) echo '(' . $candidatures . ')</strong>'; ?>
-                                    </a>
-                                </div>
-                            <?php } if (verifier('zcorriger') || verifier('voir_tutos_attente')) {
-                                $tutos = \Container::getService('zco_admin.manager')->get('zcorrection'); ?>
-                                <div class="admin_lien">
-                                    <a href="/zcorrection/"<?php if ($tutos > 0) echo ' title="' . $tutos . ' tutoriel' . pluriel($tutos) . ' en attente"'; ?>>
-                                        <img src="/pix.gif" class="fff pencil_green" alt="" />
-                                        <?php if ($tutos > 0) echo '<strong>'; ?>zCorrection
-                                        <?php if ($tutos > 0) echo '(' . $tutos . ')</strong>'; ?>
-                                    </a>
-                                </div>
-                        <?php } ?>
-                        </div>
-                    <?php } ?>
+                    } ?>
 
                     <?php if (empty($xhr)): ?>
                         <div id="postloading-area"></div>

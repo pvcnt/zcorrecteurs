@@ -37,16 +37,6 @@ class EditPreferencesType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        if (verifier('admin')) {
-            $builder->add('display_admin_bar', null, array(
-                'label' => 'Afficher la barre d\'administration rapide',
-                'required' => false,
-            ));
-        }
-        $builder->add('beta_tests', null, array(
-            'label' => 'Activer les nouveautés en avant-première',
-            'required' => false,
-        ));
         $builder->add('email_on_mp', null, array(
             'label' => 'M\'avertir par courriel quand je reçois un MP',
             'required' => false,
