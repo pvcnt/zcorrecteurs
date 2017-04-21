@@ -68,6 +68,10 @@ zco_sitemap:
   pattern:   /sitemap.xml
   defaults:  { _controller: ZcoPagesBundle:Default:sitemap }
 
+zco_health:
+  pattern:   /health
+  defaults:  { _controller: ZcoPagesBundle:Default:health }
+
 zco_robots:
   pattern:   /robots.txt
   defaults:  { _controller: ZcoPagesBundle:Default:robots }

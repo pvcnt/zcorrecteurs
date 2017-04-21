@@ -43,6 +43,11 @@ class DefaultController extends Controller
         return new Response($content, 200, ['Content-type' => 'text/plain']);
     }
 
+    public function healthAction()
+    {
+        return new Response('OK', 200, ['Content-type' => 'text/plain']);
+    }
+
     public function sitemapAction()
     {
         $cache = $this->get('zco_core.cache');
