@@ -4,8 +4,6 @@ set -e
 mkdir -p ${SYMFONY_LOG_DIR} && chown -R www-data:www-data ${SYMFONY_LOG_DIR}
 mkdir -p ${SYMFONY_CACHE_DIR} && chown -R www-data:www-data ${SYMFONY_CACHE_DIR}
 
-chown -R www-data:www-data var
-
 mkdir -p web/bundles && chown -R www-data:www-data web/bundles
 mkdir -p web/compiled && chown -R www-data:www-data web/compiled
 mkdir -p web/uploads && chown -R www-data:www-data web/uploads
