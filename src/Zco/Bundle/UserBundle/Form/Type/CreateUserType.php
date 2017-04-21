@@ -46,9 +46,8 @@ class CreateUserType extends AbstractType
 		));
 		$builder->add('rawPassword', 'repeated', array(
 			'type'  => 'password',
-			'label' => 'Mot de passe', 
-			'first_name' => 'Mot de passe',
-			'second_name' => 'Confirmez le mot de passe',
+			'first_options' => ['label' => 'Mot de passe'],
+			'second_options' => ['label' => 'Confirmez le mot de passe'],
 			'invalid_message' => 'Saisissez deux fois le même mot de passe.',
 		));
 	}
