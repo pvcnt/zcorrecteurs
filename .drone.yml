@@ -1,10 +1,12 @@
 pipeline:
   publish:
     image: plugins/docker
-    username: $$DOCKER_USERNAME
-    password: $$DOCKER_PASSWORD
+    username: "${DOCKER_USERNAME}"
+    password: "${DOCKER_PASSWORD}"
     repo: zcorrecteurs/monolith-www
-    tags: [latest, $$COMMIT]
+    tags: [latest, "${DRONE_COMMIT:0:8}"]
+    environment:
+      - DOCKER_LAUNCH_DEBUG=true
     when:
       branch: master
       event: push
