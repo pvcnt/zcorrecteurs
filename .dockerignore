@@ -1,6 +1,7 @@
 # Logs and cache files could have been written, e.g., by running bin/console locally.
 /var/cache/*
 /var/logs/*
+/app/bootstrap.php.cache
 
 # Ignore application-generated files.
 /web/bundles/*

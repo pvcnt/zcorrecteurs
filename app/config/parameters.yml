@@ -1,25 +1,19 @@
 parameters:
-    database.host:        localhost
-    database.base:        zco
-    database.username:    root
-    database.password:    ''
+  database.host:      localhost
+  database.base:      zcorrecteurs
+  database.username:  root
+  database.password:  ''
 
-    secret: dDj85§fd+dedS9-sE4
-    cache_default_lifetime: 600
-    gmaps_api_key:  ''
-    analytics_account: ''
-    analytics_domain: 'zcorrecteurs.fr'
-    twitter_api_key: ''
-    twitter_api_secret: ''
+  secret: dDj85§fd+dedS9-sE4
+  cache_default_lifetime: 600
+  gmaps_api_key:  ''
+  analytics_account: ''
+  analytics_domain: 'zcorrecteurs.fr'
+  twitter_api_key: ''
+  twitter_api_secret: ''
 
-    sphinx_host: localhost
-    sphinx_port: 5000
+  sphinx_host: localhost
+  sphinx_port: 5000
 
-swiftmailer:
-    transport: smtp
-    #username:
-    #password:
-    #host: localhost
-    #port: 587
-    #encryption: tls
-    #auth_mode: plain
+  mailgun_username: ''
+  mailgun_password: ''

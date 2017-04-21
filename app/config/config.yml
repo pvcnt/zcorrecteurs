@@ -1,44 +1,53 @@
 imports:
-    - { resource: parameters.yml }
+  - { resource: parameters.yml }
 
 framework:
-    default_locale:  fr
-    secret:          %secret%
-    router:          { resource: "%kernel.root_dir%/config/routing.yml" }
-    form:            true
-    csrf_protection: true
-    translator:      { fallback: fr }
-    session:
-        storage_id: session.storage.php_bridge
-        handler_id: session.handler.native_file
-    templating:
-        engines:       ['php', 'twig']
-        form:
-            resources: 
-                - 'ZcoCoreBundle:Form'
+  default_locale:  fr
+  secret:      %secret%
+  router:      { resource: "%kernel.root_dir%/config/routing.yml" }
+  form:        true
+  csrf_protection: true
+  translator:    { fallback: fr }
+  session:
+    storage_id: session.storage.php_bridge
+    handler_id: session.handler.native_file
+  templating:
+    engines:     ['php', 'twig']
+    form:
+      resources: 
+        - 'ZcoCoreBundle:Form'
+
+swiftmailer:
+  transport:  smtp
+  host:       smtp.mailgun.org
+  username:   '%mailgun_username'
+  password:   '%mailgun_password'
+  encryption: tls
+  port:       587
+  spool:      { type: memory }
 
 zco_vitesse:
-    combine_assets: true
-    assets:
-        - name: google-jsapi
-          type: js
-          inputs: 'https://www.google.com/jsapi'
-        - name: google-maps
-          type: js
-          inputs: 'http://maps.google.com/maps?file=api&amp;v=2&amp;key=%gmaps_api_key%'
+  combine_assets: true
+  assets:
+    - name: google-jsapi
+      type: js
+      inputs: 'https://www.google.com/jsapi'
+    - name: google-maps
+      type: js
+      inputs: 'http://maps.google.com/maps?file=api&amp;v=2&amp;key=%gmaps_api_key%'
 
 knp_gaufrette:
-    adapters:
-        uploads:
-            local:   { directory:  %kernel.root_dir%/../web/uploads, create: true }
-    filesystems:
-            uploads: { adapter: uploads }
+  adapters:
+    uploads:
+      local:   { directory:  %kernel.root_dir%/../web/uploads, create: true }
+  filesystems:
+      uploads: { adapter: uploads }
 
 knp_paginator:
-    template:
-        pagination: ZcoCoreBundle:Pagination:sliding.html.php
+  template:
+    pagination: ZcoCoreBundle:Pagination:sliding.html.php
 
 bazinga_geocoder:
-    providers:
-        google_maps:
-            locale:     fr_FR
+  providers:
+    google_maps:
+      locale:   fr_FR

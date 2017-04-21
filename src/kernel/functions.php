@@ -513,21 +513,18 @@ function preference($nom)
  * @param string $destinataire_nom Le nom du destinataire.
  * @param string $objet L'objet du message.
  * @param string $message_html Le message formaté en HTML.
- * @param string $expediteur_adresse L'adresse de l'expéditeur.
  * @param string $expediteur_nom Le nom de l'expéditeur.
  * @return bool
  */
-function send_mail(
-    $destinataire_adresse, $destinataire_nom, $objet, $message_html,
-    $expediteur_adresse = 'contact@zcorrecteurs.fr', $expediteur_nom = 'Contact des zCorrecteurs'
-)
+function send_mail($destinataire_adresse, $destinataire_nom, $objet, $message_html, $expediteur_nom = 'Contact des zCorrecteurs')
 {
     if (!empty($destinataire_adresse) AND !empty($message_html)) {
+        $fromAddress = \Container::getParameter('mailgun_username');
         $message = \Swift_Message::newInstance()
             ->setSubject($objet)
-            ->setFrom(array($expediteur_adresse => $expediteur_nom))
-            ->setSender($expediteur_adresse)
-            ->setReplyTo($expediteur_adresse)
+            ->setFrom(array($fromAddress => $expediteur_nom))
+            ->setSender($fromAddress)
+            ->setReplyTo($fromAddress)
             ->setTo(array($destinataire_adresse => $destinataire_nom))
             ->setBody($message_html, 'text/html');
 

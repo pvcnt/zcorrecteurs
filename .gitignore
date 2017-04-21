@@ -1,4 +1,5 @@
 /app/phpunit.xml
+/app/bootstrap.php.cache
 /web/bundles/
 /web/uploads/
 /var/
