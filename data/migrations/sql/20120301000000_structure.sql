@@ -9,7 +9,7 @@ CREATE TABLE `zcov2_aide` (
   `icone` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `ordre` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
 CREATE TABLE `zcov2_annonces` (
@@ -63,7 +63,7 @@ CREATE TABLE `zcov2_auteurs` (
   `description` text COLLATE utf8_unicode_ci,
   `utilisateur_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_avertissements` (
   `averto_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -75,7 +75,7 @@ CREATE TABLE `zcov2_avertissements` (
   `averto_raison` text COLLATE utf8_unicode_ci NOT NULL,
   `averto_raison_admin` text COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`averto_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_bannieres` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -107,7 +107,7 @@ CREATE TABLE `zcov2_blog` (
   PRIMARY KEY (`blog_id`),
   KEY `blog_id_version_courante` (`blog_id_version_courante`),
   KEY `zcov2_blog_ibfk_1` (`blog_id_categorie`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_blog_auteurs` (
   `auteur_id_utilisateur` int(11) NOT NULL,
@@ -116,7 +116,7 @@ CREATE TABLE `zcov2_blog_auteurs` (
   `auteur_date` datetime NOT NULL,
   PRIMARY KEY (`auteur_id_utilisateur`,`auteur_id_billet`),
   KEY `zcov2_blog_auteurs_ibfk_2` (`auteur_id_billet`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_blog_commentaires` (
   `commentaire_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -130,7 +130,7 @@ CREATE TABLE `zcov2_blog_commentaires` (
   PRIMARY KEY (`commentaire_id`),
   KEY `zcov2_blog_commentaires_ibfk_2` (`commentaire_id_billet`),
   KEY `zcov2_blog_commentaires_ibfk_1` (`commentaire_id_utilisateur`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_blog_flux_visites` (
   `visite_date` date NOT NULL,
@@ -139,7 +139,7 @@ CREATE TABLE `zcov2_blog_flux_visites` (
   `visite_user_agent` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `visite_nb_vues` int(11) NOT NULL,
   PRIMARY KEY (`visite_date`,`visite_ip`,`visite_id_categorie`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_blog_lunonlu` (
   `lunonlu_id_utilisateur` int(11) NOT NULL,
@@ -148,14 +148,14 @@ CREATE TABLE `zcov2_blog_lunonlu` (
   PRIMARY KEY (`lunonlu_id_utilisateur`,`lunonlu_id_billet`),
   KEY `zcov2_blog_lunonlu_ibfk_3` (`lunonlu_id_commentaire`),
   KEY `zcov2_blog_lunonlu_ibfk_2` (`lunonlu_id_billet`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_blog_tags` (
   `id_tag` int(11) NOT NULL,
   `id_blog` int(11) NOT NULL,
   PRIMARY KEY (`id_tag`,`id_blog`),
   KEY `id_blog` (`id_blog`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_blog_validation` (
   `valid_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -168,7 +168,7 @@ CREATE TABLE `zcov2_blog_validation` (
   `valid_decision` tinyint(4) NOT NULL,
   PRIMARY KEY (`valid_id`),
   KEY `valid_id_billet` (`valid_id_billet`,`valid_id_version`,`valid_id_utilisateur`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_blog_versions` (
   `version_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -184,7 +184,7 @@ CREATE TABLE `zcov2_blog_versions` (
   `version_commentaire` text COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`version_id`),
   KEY `version_id_billet` (`version_id_billet`,`version_id_utilisateur`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_categories` (
   `cat_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -206,7 +206,7 @@ CREATE TABLE `zcov2_categories` (
   `cat_disponible_ciblage` tinyint(1) NOT NULL DEFAULT '1',
   `cat_ciblage_actions` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`cat_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_changements_pseudos` (
   `changement_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -220,7 +220,7 @@ CREATE TABLE `zcov2_changements_pseudos` (
   `changement_reponse` text COLLATE utf8_unicode_ci NOT NULL,
   `changement_etat` int(11) NOT NULL,
   PRIMARY KEY (`changement_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_citations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -232,13 +232,13 @@ CREATE TABLE `zcov2_citations` (
   `date` datetime NOT NULL,
   `statut` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_citations_tags` (
   `citation_id` int(11) NOT NULL,
   `tag_id` int(11) NOT NULL,
   PRIMARY KEY (`citation_id`,`tag_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_connectes` (
   `connecte_ip` int(11) NOT NULL,
@@ -252,7 +252,7 @@ CREATE TABLE `zcov2_connectes` (
   `connecte_nom_action` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `connecte_user_agent` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`connecte_id_utilisateur`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_dictees` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -276,7 +276,7 @@ CREATE TABLE `zcov2_dictees` (
   `icone` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `dictee_etat` (`etat`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_dictees_participations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -287,7 +287,7 @@ CREATE TABLE `zcov2_dictees_participations` (
   `note` tinyint(2) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `participation_dictee` (`dictee_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_dictees_tags` (
   `dictee_id` int(11) NOT NULL,
@@ -301,7 +301,7 @@ CREATE TABLE `zcov2_dons` (
   `date` date DEFAULT NULL,
   `nom` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_droits` (
   `droit_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -312,7 +312,7 @@ CREATE TABLE `zcov2_droits` (
   `droit_choix_binaire` tinyint(1) NOT NULL,
   `droit_description_longue` text COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`droit_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_forum_alertes` (
   `id` mediumint(9) NOT NULL AUTO_INCREMENT,
@@ -324,7 +324,7 @@ CREATE TABLE `zcov2_forum_alertes` (
   `resolu` mediumint(9) NOT NULL DEFAULT '0',
   `ip` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_forum_lunonlu` (
   `lunonlu_utilisateur_id` int(10) unsigned NOT NULL,
@@ -333,7 +333,7 @@ CREATE TABLE `zcov2_forum_lunonlu` (
   `lunonlu_participe` tinyint(1) NOT NULL,
   `lunonlu_favori` tinyint(1) NOT NULL,
   PRIMARY KEY (`lunonlu_utilisateur_id`,`lunonlu_sujet_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_forum_messages` (
   `message_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -350,7 +350,7 @@ CREATE TABLE `zcov2_forum_messages` (
   KEY `message_sujet_id` (`message_sujet_id`),
   KEY `message_edite_date` (`message_edite_date`),
   FULLTEXT KEY `message_texte` (`message_texte`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_forum_messages_autos` (
   `id` tinyint(4) NOT NULL AUTO_INCREMENT,
@@ -360,20 +360,20 @@ CREATE TABLE `zcov2_forum_messages_autos` (
   `ferme` tinyint(1) unsigned NOT NULL,
   `resolu` tinyint(1) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_forum_ordre` (
   `utilisateur_id` int(11) NOT NULL,
   `ordre` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`utilisateur_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_forum_sondages` (
   `sondage_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `sondage_question` text COLLATE utf8_unicode_ci NOT NULL,
   `sondage_ferme` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`sondage_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_forum_sondages_choix` (
   `choix_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -381,7 +381,7 @@ CREATE TABLE `zcov2_forum_sondages_choix` (
   `choix_texte` text COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`choix_id`),
   KEY `choix_sondage_id` (`choix_sondage_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_forum_sondages_votes` (
   `vote_membre_id` int(11) unsigned NOT NULL,
@@ -390,7 +390,7 @@ CREATE TABLE `zcov2_forum_sondages_votes` (
   `vote_date` datetime NOT NULL,
   PRIMARY KEY (`vote_membre_id`,`vote_sondage_id`),
   KEY `vote_choix` (`vote_choix`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_forum_sujets` (
   `sujet_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -414,7 +414,7 @@ CREATE TABLE `zcov2_forum_sujets` (
   KEY `sujet_premier_message` (`sujet_premier_message`),
   KEY `sujet_auteur` (`sujet_auteur`),
   KEY `sujet_corbeille` (`sujet_corbeille`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_groupes` (
   `groupe_id` tinyint(3) NOT NULL AUTO_INCREMENT,
@@ -427,7 +427,7 @@ CREATE TABLE `zcov2_groupes` (
   `groupe_secondaire` tinyint(1) NOT NULL,
   `groupe_description` text COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`groupe_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_groupes_droits` (
   `gd_id_droit` int(11) NOT NULL,
@@ -435,14 +435,14 @@ CREATE TABLE `zcov2_groupes_droits` (
   `gd_id_categorie` int(11) NOT NULL,
   `gd_valeur` int(11) NOT NULL,
   PRIMARY KEY (`gd_id_droit`,`gd_id_groupe`,`gd_id_categorie`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_groupes_secondaires` (
   `groupe_id` int(10) unsigned NOT NULL,
   `utilisateur_id` int(10) unsigned NOT NULL,
   UNIQUE KEY `groupe_secondaire_groupe_id` (`groupe_id`,`utilisateur_id`),
   KEY `groupe_secondaire_utilisateur_id` (`utilisateur_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_historique_groupes` (
   `chg_id` int(8) unsigned NOT NULL AUTO_INCREMENT,
@@ -455,7 +455,7 @@ CREATE TABLE `zcov2_historique_groupes` (
   KEY `chg_utilisateur_id` (`chg_utilisateur_id`,`chg_responsable`),
   KEY `chg_nouveau_groupe` (`chg_nouveau_groupe`),
   KEY `chg_ancien_groupe` (`chg_ancien_groupe`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_ips_bannies` (
   `ip_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -468,7 +468,7 @@ CREATE TABLE `zcov2_ips_bannies` (
   `ip_raison_admin` text COLLATE utf8_unicode_ci NOT NULL,
   `ip_fini` tinyint(1) NOT NULL,
   PRIMARY KEY (`ip_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_licences` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -492,7 +492,7 @@ CREATE TABLE `zcov2_livredor` (
   `ip` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `livredor_auteur_inscrit` (`utilisateur_id`,`date`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_mails_bannis` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -501,7 +501,7 @@ CREATE TABLE `zcov2_mails_bannis` (
   `raison` text COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `mail` (`mail`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_messages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -516,7 +516,7 @@ CREATE TABLE `zcov2_messages` (
   `utile` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `source_id` (`source_id`,`parent_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_messages_compteurs` (
   `source_id` int(11) NOT NULL,
@@ -524,7 +524,7 @@ CREATE TABLE `zcov2_messages_compteurs` (
   `nombre` int(11) NOT NULL,
   `dernier_message_id` int(11) NOT NULL,
   PRIMARY KEY (`source_id`,`parent_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_messages_lectures` (
   `source_id` int(11) NOT NULL,
@@ -532,14 +532,14 @@ CREATE TABLE `zcov2_messages_lectures` (
   `message_id` int(11) NOT NULL,
   `utilisateur_id` int(11) NOT NULL,
   PRIMARY KEY (`source_id`,`parent_id`,`utilisateur_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_messages_sources` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nom` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `description` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_mp_alertes` (
   `mp_alerte_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -552,14 +552,14 @@ CREATE TABLE `zcov2_mp_alertes` (
   `mp_alerte_modo` int(10) unsigned NOT NULL,
   PRIMARY KEY (`mp_alerte_id`),
   KEY `mp_alerte_date` (`mp_alerte_date`,`mp_alerte_resolu`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_mp_dossiers` (
   `mp_dossier_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `mp_dossier_auteur_id` int(10) unsigned NOT NULL,
   `mp_dossier_titre` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`mp_dossier_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_mp_messages` (
   `mp_message_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -569,7 +569,7 @@ CREATE TABLE `zcov2_mp_messages` (
   `mp_message_texte` text COLLATE utf8_unicode_ci NOT NULL,
   `mp_message_ip` int(11) NOT NULL,
   PRIMARY KEY (`mp_message_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_mp_mp` (
   `mp_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -582,7 +582,7 @@ CREATE TABLE `zcov2_mp_mp` (
   `mp_ferme` tinyint(1) NOT NULL DEFAULT '0',
   `mp_crypte` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`mp_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_mp_participants` (
   `mp_participant_mp_id` int(10) unsigned NOT NULL,
@@ -591,7 +591,7 @@ CREATE TABLE `zcov2_mp_participants` (
   `mp_participant_statut` tinyint(1) NOT NULL DEFAULT '0',
   `mp_participant_dernier_message_lu` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`mp_participant_mp_id`,`mp_participant_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_newsletter_blog` (
   `newsletter_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -601,7 +601,7 @@ CREATE TABLE `zcov2_newsletter_blog` (
   `newsletter_categorie` tinyint(1) NOT NULL,
   PRIMARY KEY (`newsletter_id`),
   UNIQUE KEY `newsletter_email` (`newsletter_email`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_pays` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -644,14 +644,14 @@ CREATE TABLE `zcov2_publicites_campagnes` (
   `date_debut` datetime NOT NULL,
   `date_fin` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_publicites_categories` (
   `publicite_id` int(11) NOT NULL,
   `categorie_id` int(11) NOT NULL,
   `actions` varchar(500) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`publicite_id`,`categorie_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_publicites_clics` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -691,7 +691,7 @@ CREATE TABLE `zcov2_push_big_tutos` (
   `big_tuto_conclusion` text COLLATE utf8_unicode_ci NOT NULL,
   `big_tuto_id_sdz` int(10) unsigned NOT NULL,
   PRIMARY KEY (`big_tuto_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_push_big_tutos_parties` (
   `partie_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -702,7 +702,7 @@ CREATE TABLE `zcov2_push_big_tutos_parties` (
   `partie_id_sdz` int(10) unsigned NOT NULL,
   PRIMARY KEY (`partie_id`),
   KEY `mini_tutos_id` (`partie_id_big_tuto`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_push_correcteurs` (
   `correcteur_id_correction` int(10) unsigned NOT NULL,
@@ -710,7 +710,7 @@ CREATE TABLE `zcov2_push_correcteurs` (
   `correcteur_invisible` tinyint(1) NOT NULL,
   `correcteur_marque` varchar(255) CHARACTER SET latin1 NOT NULL,
   PRIMARY KEY (`correcteur_id_correction`,`correcteur_id_utilisateur`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_push_corrections` (
   `correction_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -725,7 +725,7 @@ CREATE TABLE `zcov2_push_corrections` (
   `correction_marque` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`correction_id`),
   KEY `id_tuto_corrige` (`correction_id_tuto_corrige`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_push_mini_tuto_sous_parties` (
   `sous_partie_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -735,7 +735,7 @@ CREATE TABLE `zcov2_push_mini_tuto_sous_parties` (
   `sous_partie_id_sdz` int(10) unsigned NOT NULL,
   PRIMARY KEY (`sous_partie_id`),
   KEY `sous_partie_id_mini_tuto` (`sous_partie_id_mini_tuto`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_push_mini_tutos` (
   `mini_tuto_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -749,7 +749,7 @@ CREATE TABLE `zcov2_push_mini_tutos` (
   `mini_tuto_id_sdz` int(10) unsigned NOT NULL,
   PRIMARY KEY (`mini_tuto_id`),
   KEY `id_partie` (`mini_tuto_id_partie`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_push_qcm_questions` (
   `question_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -760,7 +760,7 @@ CREATE TABLE `zcov2_push_qcm_questions` (
   `question_ordre_sdz` int(10) unsigned NOT NULL,
   PRIMARY KEY (`question_id`),
   KEY `id_mini_tuto` (`question_id_mini_tuto`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_push_qcm_reponses` (
   `reponse_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -770,7 +770,7 @@ CREATE TABLE `zcov2_push_qcm_reponses` (
   `reponse_id_sdz` int(10) unsigned NOT NULL,
   PRIMARY KEY (`reponse_id`),
   KEY `id_qcm_question` (`reponse_id_qcm_question`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_push_soumissions` (
   `soumission_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -799,7 +799,7 @@ CREATE TABLE `zcov2_push_soumissions` (
   KEY `id_tuto` (`soumission_id_tuto`),
   KEY `id_correction_1` (`soumission_id_correction_1`),
   KEY `id_correction_2` (`soumission_id_correction_2`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_push_soumissions_refus` (
   `refus_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -809,7 +809,7 @@ CREATE TABLE `zcov2_push_soumissions_refus` (
   `refus_raison` text COLLATE utf8_unicode_ci NOT NULL,
   `refus_raison_admin` text COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`refus_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_quiz` (
   `id` mediumint(9) NOT NULL AUTO_INCREMENT,
@@ -822,7 +822,7 @@ CREATE TABLE `zcov2_quiz` (
   `aleatoire` tinyint(1) NOT NULL,
   `visible` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_quiz_questions` (
   `id` mediumint(9) NOT NULL AUTO_INCREMENT,
@@ -837,7 +837,7 @@ CREATE TABLE `zcov2_quiz_questions` (
   `reponse_juste` tinyint(1) NOT NULL,
   `explication` text COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_quiz_scores` (
   `id` mediumint(9) NOT NULL AUTO_INCREMENT,
@@ -846,7 +846,7 @@ CREATE TABLE `zcov2_quiz_scores` (
   `note` smallint(6) NOT NULL,
   `date` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_recrutements` (
   `recrutement_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -866,14 +866,14 @@ CREATE TABLE `zcov2_recrutements` (
   `recrutement_lien` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `recrutement_test` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`recrutement_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_recrutements_avis` (
   `utilisateur_id` int(11) NOT NULL,
   `candidature_id` int(11) NOT NULL,
   `type` tinyint(1) NOT NULL,
   PRIMARY KEY (`utilisateur_id`,`candidature_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_recrutements_candidatures` (
   `candidature_id` mediumint(9) NOT NULL AUTO_INCREMENT,
@@ -904,7 +904,7 @@ CREATE TABLE `zcov2_recrutements_candidatures` (
   `candidature_correcteur_note` smallint(6) DEFAULT NULL,
   PRIMARY KEY (`candidature_id`),
   KEY `candidature_correcteur` (`candidature_correcteur`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_recrutements_commentaires` (
   `commentaire_id` mediumint(9) NOT NULL AUTO_INCREMENT,
@@ -914,7 +914,7 @@ CREATE TABLE `zcov2_recrutements_commentaires` (
   `commentaire_texte` text COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`commentaire_id`),
   KEY `commentaire_candidature_id` (`commentaire_candidature_id`,`commentaire_utilisateur_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_recrutements_lunonlu` (
   `lunonlu_utilisateur_id` int(11) unsigned NOT NULL,
@@ -922,7 +922,7 @@ CREATE TABLE `zcov2_recrutements_lunonlu` (
   `lunonlu_commentaire_id` int(11) unsigned NOT NULL,
   `lunonlu_participe` tinyint(1) NOT NULL,
   PRIMARY KEY (`lunonlu_utilisateur_id`,`lunonlu_candidature_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_recrutements_quiz_reponses` (
   `utilisateur_id` int(11) NOT NULL,
@@ -931,13 +931,13 @@ CREATE TABLE `zcov2_recrutements_quiz_reponses` (
   `reponse_id` int(11) DEFAULT NULL,
   `justification` text COLLATE utf8_unicode_ci,
   PRIMARY KEY (`utilisateur_id`,`recrutement_id`,`question_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_registry` (
   `registry_key` varchar(50) CHARACTER SET utf8 NOT NULL,
   `registry_value` text CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`registry_key`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_sanctions` (
   `sanction_id` mediumint(9) NOT NULL AUTO_INCREMENT,
@@ -953,7 +953,7 @@ CREATE TABLE `zcov2_sanctions` (
   `sanction_raison_admin` text COLLATE utf8_unicode_ci NOT NULL,
   `sanction_finie` tinyint(1) NOT NULL,
   PRIMARY KEY (`sanction_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_sauvegardes_zform` (
   `sauvegarde_id` mediumint(9) NOT NULL AUTO_INCREMENT,
@@ -962,7 +962,7 @@ CREATE TABLE `zcov2_sauvegardes_zform` (
   `sauvegarde_texte` text COLLATE utf8_unicode_ci NOT NULL,
   `sauvegarde_url` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`sauvegarde_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_sondages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1048,7 +1048,7 @@ CREATE TABLE `zcov2_tags` (
   `couleur` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `moderation` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_tentatives` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1057,7 +1057,7 @@ CREATE TABLE `zcov2_tentatives` (
   `blocage` tinyint(1) NOT NULL,
   `user` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_tracker_feedback` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -1085,7 +1085,7 @@ CREATE TABLE `zcov2_tracker_tickets` (
   `ticket_type` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
   `ticket_user_agent` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`ticket_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_tracker_tickets_flags` (
   `lunonlu_id_utilisateur` int(11) NOT NULL,
@@ -1094,7 +1094,7 @@ CREATE TABLE `zcov2_tracker_tickets_flags` (
   `lunonlu_suivi` tinyint(1) NOT NULL,
   `lunonlu_suivi_envoye` tinyint(1) NOT NULL,
   PRIMARY KEY (`lunonlu_id_utilisateur`,`lunonlu_id_ticket`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_tracker_tickets_versions` (
   `version_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1110,7 +1110,7 @@ CREATE TABLE `zcov2_tracker_tickets_versions` (
   `version_ip` int(11) NOT NULL,
   `version_etat` tinyint(4) NOT NULL,
   PRIMARY KEY (`version_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_twitter_comptes` (
   `id` bigint(20) unsigned NOT NULL,
@@ -1122,7 +1122,7 @@ CREATE TABLE `zcov2_twitter_comptes` (
   `dernier_tweet` bigint(20) unsigned DEFAULT NULL,
   `par_defaut` tinyint(1) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_twitter_mentions` (
   `id` bigint(20) NOT NULL DEFAULT '0',
@@ -1147,7 +1147,7 @@ CREATE TABLE `zcov2_twitter_tweets` (
   `programmation` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `twitter_id` (`twitter_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_utilisateurs` (
   `utilisateur_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -1201,7 +1201,7 @@ CREATE TABLE `zcov2_utilisateurs_ips` (
   `ip_localisation` tinyint(4) NOT NULL,
   `ip_proxy` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`ip_id_utilisateur`,`ip_ip`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_utilisateurs_preferences` (
   `preference_id_utilisateur` int(11) NOT NULL,
@@ -1214,7 +1214,7 @@ CREATE TABLE `zcov2_utilisateurs_preferences` (
   `preference_decalage` int(11) NOT NULL,
   `preference_beta_tests` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`preference_id_utilisateur`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_zingle_logs_flux` (
   `log_action` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
@@ -1225,4 +1225,4 @@ CREATE TABLE `zcov2_zingle_logs_flux` (
   `log_nb_views` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `log_user_agent` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`log_action`,`log_module`,`log_ip`,`log_date`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
