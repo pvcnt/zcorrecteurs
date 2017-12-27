@@ -348,8 +348,7 @@ CREATE TABLE `zcov2_forum_messages` (
   PRIMARY KEY (`message_id`),
   KEY `message_auteur` (`message_auteur`),
   KEY `message_sujet_id` (`message_sujet_id`),
-  KEY `message_edite_date` (`message_edite_date`),
-  FULLTEXT KEY `message_texte` (`message_texte`)
+  KEY `message_edite_date` (`message_edite_date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `zcov2_forum_messages_autos` (
