@@ -44,7 +44,11 @@ class AjouterParticipantAction extends Controller
 		{
 			$InfoMP = InfoMP();
 			if($InfoMP['mp_crypte'])
-				return redirect(294, 'index.html', MSG_ERROR);
+				return redirect(
+				    'Il n\'est pas possible d\'ajouter de participants à un MP crypté.',
+                    'index.html',
+                    MSG_ERROR
+                );
 			$autoriser_ecrire = true;
 			if(empty($InfoMP['mp_participant_mp_id']) && verifier('mp_espionner'))
 			{
@@ -66,12 +70,15 @@ class AjouterParticipantAction extends Controller
 					}
 					if($NombreParticipants >= verifier('mp_nb_participants_max'))
 					{
-						return redirect(268, 'lire-'.$_GET['id'].'.html', MSG_ERROR);
+						return redirect(
+						    'Vous ne pouvez pas ajouter de participant à ce MP : la limite a été atteinte ou dépassée.',
+                            'lire-'.$_GET['id'].'.html',
+                            MSG_ERROR
+                        );
 					}
 				}
 
-				if(	isset($InfoMP['mp_id']) &&
-					!empty($InfoMP['mp_id']) &&
+				if(	isset($InfoMP['mp_id']) && !empty($InfoMP['mp_id']) &&
 					($InfoMP['mp_participant_statut'] >= MP_STATUT_MASTER || verifier('mp_tous_droits_participants'))
 				)
 				{
@@ -88,20 +95,20 @@ class AjouterParticipantAction extends Controller
 					}
 					else
 					{
-						$return = AjouterParticipant();
-						if($return == 265)
-						{
-							return redirect(265, 'lire-'.$_GET['id'].'.html');
-						}
-						else
-						{
-							return redirect($return, 'lire-'.$_GET['id'].'.html', MSG_ERROR);
+						if (AjouterParticipant()) {
+							return redirect('Le participant a bien été ajouté.', 'lire-'.$_GET['id'].'.html');
+						} else {
+							return redirect(
+							    'Impossible d\'ajouter ce membre au MP.',
+                                'lire-'.$_GET['id'].'.html',
+                                MSG_ERROR
+                            );
 						}
 					}
 				}
 				else
 				{
-					return redirect(264, 'index.html', MSG_ERROR);
+                    throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 				}
 			}
 			else
@@ -111,7 +118,7 @@ class AjouterParticipantAction extends Controller
 		}
 		else
 		{
-			return redirect(263, 'index.html', MSG_ERROR);
+            throw new Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
 		}
 	}
 }

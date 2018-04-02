@@ -21,6 +21,7 @@
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Contrôleur gérant le désistement d'un candidat du recrutement.
@@ -38,16 +39,18 @@ class DesisterAction extends Controller
 		{
 			$InfosCandidature = InfosCandidature($_GET['id']);
 			if(empty($InfosCandidature))
-				return redirect(227, '/recrutement/', MSG_ERROR);
-			zCorrecteurs::VerifierFormatageUrl($InfosCandidature['candidature_pseudo'], true);
+				throw new NotFoundHttpException();
 
 			if($InfosCandidature['candidature_etat'] == CANDIDATURE_DESISTE)
-				return redirect(1, 'candidature-'.$_GET['id'].'.html', MSG_ERROR);
+                throw new AccessDeniedHttpException();
 
 			if(isset($_POST['submit']))
 			{
 				DesisterCandidature($_GET['id']);
-				return redirect(344, 'recrutement-'.$InfosCandidature['recrutement_id'].'.html');
+				return redirect(
+				    'Le désistement de cette candidature a bien été pris en compte.',
+                    'recrutement-'.$InfosCandidature['recrutement_id'].'.html'
+                );
 			}
 
 			fil_ariane(array(
@@ -57,6 +60,6 @@ class DesisterAction extends Controller
 			return render_to_response(array('InfosCandidature' => $InfosCandidature));
 		}
 		else
-			return redirect(226, '/recrutement/', MSG_ERROR);
+            throw new NotFoundHttpException();
 	}
 }

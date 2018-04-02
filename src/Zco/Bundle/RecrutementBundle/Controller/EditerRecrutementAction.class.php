@@ -51,7 +51,10 @@ class EditerRecrutementAction extends Controller
             $form->submit($request);
             if ($form->isValid()) {
                 $recrutement->save();
-                return redirect(2, 'recrutement-' . $recrutement['id'] . '-' . rewrite($recrutement['nom']) . '.html');
+                return redirect(
+                    'Le recrutement a bien été modifié.',
+                    'recrutement-' . $recrutement['id'] . '-' . rewrite($recrutement['nom']) . '.html'
+                );
             }
         }
 

@@ -21,6 +21,7 @@
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Contrôleur gérant le renommage d'un dossier de MP.
@@ -57,17 +58,17 @@ class RenommerDossierAction extends Controller
 				else
 				{
 					RenommerDossier(htmlspecialchars($_POST['dossier_nom']));
-					return redirect(259, 'index.html');
+					return redirect('Le dossier a bien été renommé.', 'index.html');
 				}
 			}
 			else
 			{
-				return redirect(257, 'index.html', MSG_ERROR);
+                throw new NotFoundHttpException();
 			}
 		}
 		else
 		{
-			return redirect(257, 'index.html', MSG_ERROR);
+			throw new NotFoundHttpException();
 		}
 	}
 }

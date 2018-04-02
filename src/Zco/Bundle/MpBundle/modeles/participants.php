@@ -95,7 +95,7 @@ function ListerParticipants($mp_id)
 
 function AjouterParticipant()
 {
-	$dbh = Doctrine_Manager::connection()->getDbh();
+	$dbh = \Doctrine_Manager::connection()->getDbh();
 
 	//On recherche l'id de l'user à partir du pseudo fourni et on vérifie qu'il n'a pas atteint son quota.
 	$stmt = $dbh->prepare("
@@ -112,11 +112,11 @@ function AjouterParticipant()
 	$result['groupe_mp_quota'] = verifier('mp_quota', 0, $result['utilisateur_id_groupe']);
 	if(empty($result['utilisateur_id']) OR $result['utilisateur_id'] == ID_COMPTE_AUTO)
 	{
-		return 266;
+		return false;
 	}
 	elseif($result['nb']+1 > $result['groupe_mp_quota'] AND $result['groupe_mp_quota'] != -1 AND !verifier('mp_tous_droits_participants'))
 	{
-		return 267;
+		return false;
 	}
 	else
 	{
@@ -127,7 +127,7 @@ function AjouterParticipant()
 		$stmt->execute(array($_GET['id'], $result['utilisateur_id']));
 
 		if ($stmt->fetchColumn() > 0)
-			return 266;
+			return false;
 
 		$stmt = $dbh->prepare("REPLACE INTO zcov2_mp_participants (mp_participant_mp_id, mp_participant_id, mp_participant_statut) VALUES (:mp_id, :user_id, :statut)");
 		$statut = isset($_POST['master']);
@@ -138,12 +138,9 @@ function AjouterParticipant()
 		if($stmt->execute())
 		{
 			Container::getService('zco_core.cache')->Set('MPnonLu'.$result['utilisateur_id'], true, strtotime('+1 hour'));
-			return 265;
+			return true;
 		}
-		else
-		{
-			return 266;
-		}
+		return false;
 	}
 }
 

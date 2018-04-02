@@ -20,7 +20,9 @@
  */
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Contrôleur gérant la suppression d'un MP.
@@ -29,48 +31,37 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
  */
 class SupprimerAction extends Controller
 {
-	public function execute()
-	{
+    public function execute()
+    {
         if (!verifier('connecte')) {
             throw new AccessDeniedHttpException();
         }
-		zCorrecteurs::VerifierFormatageUrl(null, true);
-		include(BASEPATH.'/src/Zco/Bundle/MpBundle/modeles/lire.php');
-		include(BASEPATH.'/src/Zco/Bundle/MpBundle/modeles/participants.php');
-		include(BASEPATH.'/src/Zco/Bundle/MpBundle/modeles/action_etendue_plusieurs_mp.php');
-		if(!empty($_GET['id']) AND is_numeric($_GET['id']))
-		{
-			$InfoMP = InfoMP();
+        zCorrecteurs::VerifierFormatageUrl(null, true);
+        include(BASEPATH . '/src/Zco/Bundle/MpBundle/modeles/lire.php');
+        include(BASEPATH . '/src/Zco/Bundle/MpBundle/modeles/participants.php');
+        include(BASEPATH . '/src/Zco/Bundle/MpBundle/modeles/action_etendue_plusieurs_mp.php');
+        if (!empty($_GET['id']) AND is_numeric($_GET['id'])) {
+            $InfoMP = InfoMP();
 
-			if(isset($InfoMP['mp_id']) AND !empty($InfoMP['mp_id']) AND !empty($InfoMP['mp_participant_mp_id']))
-			{
-				if(isset($_POST['confirmation']) AND $_POST['confirmation'] == 'Oui')
-				{
-					$ListerParticipants = ListerParticipants($_GET['id']);
-					SupprimerMP($_GET['id'], $InfoMP, $ListerParticipants);
-					unset($_SESSION['MPsnonLus']);
-					unset($_SESSION['MPs']);
-					return redirect(287, 'index.html');
-				}
-				elseif(isset($_POST['annuler']))
-				{
-					return new Symfony\Component\HttpFoundation\RedirectResponse('lire-'.$_GET['id'].'.html');
-				}
-				else
-				{
-					fil_ariane(array(htmlspecialchars($InfoMP['mp_titre']) => 'lire-'.$_GET['id'].'.html', 'Supprimer le message privé'));
-					Page::$titre = $InfoMP['mp_titre'].' - Suppression du MP - '.Page::$titre;
-					return render_to_response(array('InfoMP' => $InfoMP));
-				}
-			}
-			else
-			{
-				return redirect(262, 'index.html', MSG_ERROR);
-			}
-		}
-		else
-		{
-			return redirect(263, 'index.html', MSG_ERROR);
-		}
-	}
+            if (isset($InfoMP['mp_id']) AND !empty($InfoMP['mp_id']) AND !empty($InfoMP['mp_participant_mp_id'])) {
+                if (isset($_POST['confirmation']) AND $_POST['confirmation'] == 'Oui') {
+                    $ListerParticipants = ListerParticipants($_GET['id']);
+                    SupprimerMP($_GET['id'], $InfoMP, $ListerParticipants);
+                    unset($_SESSION['MPsnonLus']);
+                    unset($_SESSION['MPs']);
+                    return redirect('Le MP a bien été supprimé.', 'index.html');
+                } elseif (isset($_POST['annuler'])) {
+                    return new RedirectResponse('lire-' . $_GET['id'] . '.html');
+                } else {
+                    fil_ariane(array(htmlspecialchars($InfoMP['mp_titre']) => 'lire-' . $_GET['id'] . '.html', 'Supprimer le message privé'));
+                    Page::$titre = $InfoMP['mp_titre'] . ' - Suppression du MP - ' . Page::$titre;
+                    return render_to_response(array('InfoMP' => $InfoMP));
+                }
+            } else {
+                throw new NotFoundHttpException();
+            }
+        } else {
+            throw new NotFoundHttpException();
+        }
+    }
 }

@@ -21,6 +21,7 @@
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Contrôleur en charge de la prise en correction d'une copie, ou bien du retrait
@@ -39,29 +40,28 @@ class CorrigerAction extends Controller
 		{
 			$InfosCandidature = InfosCandidature($_GET['id']);
 			if(empty($InfosCandidature))
-				return redirect(227, '/recrutement/', MSG_ERROR);
-			zCorrecteurs::VerifierFormatageUrl($InfosCandidature['candidature_pseudo'], true);
+				throw new NotFoundHttpException();
 
 			if(!in_array($InfosCandidature['candidature_etat'], array(CANDIDATURE_ATTENTE_TEST, CANDIDATURE_TESTE)))
-				throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+				throw new AccessDeniedHttpException();
 
 			if(!is_null($InfosCandidature['candidature_correcteur']) && !isset($_GET['delete']))
-				return redirect(346, 'candidature-'.$_GET['id'].'.html', MSG_ERROR);
+				return redirect('Cette copie est déjà attribuée à un correcteur.', 'candidature-'.$_GET['id'].'.html', MSG_ERROR);
 
 			if(isset($_GET['delete']) && $InfosCandidature['candidature_correcteur']!=$_SESSION['id'] && !verifier('recrutements_desattribuer_copie'))
-				throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+				throw new AccessDeniedHttpException();
 
 			if(isset($_POST['submit']))
 			{
 				if(!isset($_GET['delete']))
 				{
 					DevenirCorrecteurCandidature($_GET['id']);
-					return redirect(345, 'recrutement-'.$InfosCandidature['recrutement_id'].'.html');
+					return redirect('Vous êtes à présent le correcteur de cette copie.', 'recrutement-'.$InfosCandidature['recrutement_id'].'.html');
 				}
 				else
 				{
 					SupprimerCorrecteurCandidature($_GET['id']);
-					return redirect(347, 'recrutement-'.$InfosCandidature['recrutement_id'].'.html');
+					return redirect('Le correcteur de cette copie a bien été supprimé.', 'recrutement-'.$InfosCandidature['recrutement_id'].'.html');
 				}
 			}
 
@@ -72,6 +72,6 @@ class CorrigerAction extends Controller
 			return render_to_response(array('InfosCandidature' => $InfosCandidature));
 		}
 		else
-			return redirect(226, '/recrutement/', MSG_ERROR);
+            throw new NotFoundHttpException();
 	}
 }

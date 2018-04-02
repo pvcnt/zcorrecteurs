@@ -42,7 +42,7 @@ class QuizAction extends Controller
                                 ($InfosRecrutement['recrutement_prive'] && !verifier('recrutements_voir_prives')) ||
                                 ($InfosRecrutement['recrutement_etat'] == RECRUTEMENT_CACHE && !verifier('recrutements_editer') && !verifier('recrutements_voir_candidatures') && !verifier('recrutements_repondre'))
                         )
-                                return redirect(229, '/recrutement/', MSG_ERROR);
+                                throw new NotFoundHttpException();
 
 			$InfosCandidature = InfosCandidature($_SESSION['id'], $_GET['id']);
 			$quiz = $this->get('zco_quiz.manager.quiz')->get($InfosRecrutement['recrutement_id_quiz']);
@@ -55,8 +55,6 @@ class QuizAction extends Controller
 				throw new NotFoundHttpException();
 			}
 
-			zCorrecteurs::VerifierFormatageUrl($InfosRecrutement['recrutement_nom'], true);
-
 			if (!$quiz)
 				throw new NotFoundHttpException('Le recrutement n\'a pas de quiz associé.');
 
@@ -67,6 +65,6 @@ class QuizAction extends Controller
 			
 			return render_to_response(compact('quiz', 'InfosCandidature', 'quiz', 'InfosCandidature', 'InfosRecrutement'));
 		}
-		return redirect(228, 'index.html', MSG_ERROR);
+        throw new NotFoundHttpException();
 	}
 }

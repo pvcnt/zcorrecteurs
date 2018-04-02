@@ -29,57 +29,43 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
  */
 class StatutNormalAction extends Controller
 {
-	public function execute()
-	{
+    public function execute()
+    {
         if (!verifier('connecte')) {
             throw new AccessDeniedHttpException();
         }
-		zCorrecteurs::VerifierFormatageUrl(null, true, true);
-		include(BASEPATH.'/src/Zco/Bundle/MpBundle/modeles/lire.php');
-		include(BASEPATH.'/src/Zco/Bundle/MpBundle/modeles/participants.php');
-		if(!empty($_GET['id']) AND is_numeric($_GET['id']) AND !empty($_GET['id2']) AND is_numeric($_GET['id2']))
-		{
-			$InfoMP = InfoMP();
+        zCorrecteurs::VerifierFormatageUrl(null, true, true);
+        include(BASEPATH . '/src/Zco/Bundle/MpBundle/modeles/lire.php');
+        include(BASEPATH . '/src/Zco/Bundle/MpBundle/modeles/participants.php');
+        if (!empty($_GET['id']) AND is_numeric($_GET['id']) AND !empty($_GET['id2']) AND is_numeric($_GET['id2'])) {
+            $InfoMP = InfoMP();
 
-			if(isset($InfoMP['mp_id']) AND !empty($InfoMP['mp_id']))
-			{
-				$autoriser_ecrire = true;
-				if(empty($InfoMP['mp_participant_mp_id']) AND verifier('mp_espionner'))
-				{
-					$autoriser_ecrire = false;
-				}
-				if($autoriser_ecrire)
-				{
-					//Vérification : le participant à "démastoriser" existe-t-il ?
-					$InfoParticipant = InfoParticipant();
-					if(empty($InfoParticipant['mp_participant_id']) OR $InfoParticipant['mp_participant_statut'] == MP_STATUT_SUPPRIME)
-					{
-						return redirect(270, 'lire-'.$_GET['id'].'.html', MSG_ERROR);
-					}
-					//Vérification : a-t-on le droit de rendre ce participant "plus maître de conversation" ?
-					if($InfoParticipant['mp_participant_statut'] == MP_STATUT_MASTER AND ($InfoMP['mp_participant_statut'] == MP_STATUT_OWNER OR verifier('mp_tous_droits_participants') OR ($InfoMP['mp_participant_statut'] == MP_STATUT_MASTER AND $_GET['id2'] == $_SESSION['id'])))
-					{
-						PlusMaitreConversation();
-						return redirect(273, 'lire-'.$_GET['id'].'.html');
-					}
-					else
-					{
-						return redirect(274, 'lire-'.$_GET['id'].'.html', MSG_ERROR);
-					}
-				}
-				else
-				{
-					throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-				}
-			}
-			else
-			{
-				return redirect(274, 'index.html', MSG_ERROR);
-			}
-		}
-		else
-		{
-			return redirect(263, 'index.html', MSG_ERROR);
-		}
-	}
+            if (isset($InfoMP['mp_id']) AND !empty($InfoMP['mp_id'])) {
+                $autoriser_ecrire = true;
+                if (empty($InfoMP['mp_participant_mp_id']) AND verifier('mp_espionner')) {
+                    $autoriser_ecrire = false;
+                }
+                if ($autoriser_ecrire) {
+                    //Vérification : le participant à "démastoriser" existe-t-il ?
+                    $InfoParticipant = InfoParticipant();
+                    if (empty($InfoParticipant['mp_participant_id']) OR $InfoParticipant['mp_participant_statut'] == MP_STATUT_SUPPRIME) {
+                        return redirect('Le participant n\'existe pas, il ne participe pas à ce MP ou il a été supprimé.', 'lire-' . $_GET['id'] . '.html', MSG_ERROR);
+                    }
+                    //Vérification : a-t-on le droit de rendre ce participant "plus maître de conversation" ?
+                    if ($InfoParticipant['mp_participant_statut'] == MP_STATUT_MASTER AND ($InfoMP['mp_participant_statut'] == MP_STATUT_OWNER OR verifier('mp_tous_droits_participants') OR ($InfoMP['mp_participant_statut'] == MP_STATUT_MASTER AND $_GET['id2'] == $_SESSION['id']))) {
+                        PlusMaitreConversation();
+                        return redirect('Le participant n\'est plus maître de conversation.', 'lire-' . $_GET['id'] . '.html');
+                    } else {
+                        throw new AccessDeniedHttpException();
+                    }
+                } else {
+                    throw new AccessDeniedHttpException();
+                }
+            } else {
+                throw new AccessDeniedHttpException();
+            }
+        } else {
+            throw new Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
+        }
+    }
 }

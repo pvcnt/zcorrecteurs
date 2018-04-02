@@ -21,6 +21,7 @@
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Contrôleur gérant la modification d'un message dans la shoutbox des
@@ -41,25 +42,25 @@ class EditerMessageAction extends Controller
 
 			$InfosCommentaire = InfosCommentaire($_GET['id']);
 			if(empty($InfosCommentaire))
-				return redirect(350, '/recrutement/', MSG_ERROR);
+                throw new NotFoundHttpException();
 
 			if(!($InfosCommentaire['recrutement_etat'] != RECRUTEMENT_FINI &&
 			     verifier('recrutements_voir_shoutbox')) &&
 			   !($InfosCommentaire['recrutement_etat'] == RECRUTEMENT_FINI &&
 			     verifier('recrutements_termines_voir_shoutbox')))
-				throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-
-
-			zCorrecteurs::VerifierFormatageUrl($InfosCommentaire['utilisateur_pseudo'], true);
+                throw new NotFoundHttpException();
 
 			if(isset($_POST['submit'], $_POST['texte']))
 			{
 				$_POST['texte'] = trim($_POST['texte']);
 				if(empty($_POST['texte']))
-					return redirect(17, 'editer-message-'.$_GET['id'].'.html', MSG_ERROR);
+					return redirect('Vous devez remplir tous les champs nécessaires !', 'editer-message-'.$_GET['id'].'.html', MSG_ERROR);
 
 				EditerCommentaireShoutbox($_GET['id'], $_POST['texte']);
-				return redirect(352, 'candidature-'.$InfosCommentaire['candidature_id'].'.html#shoutbox');
+				return redirect(
+				    'Le message a bien été modifié.',
+                    'candidature-'.$InfosCommentaire['candidature_id'].'.html#shoutbox'
+                );
 			}
 
 			fil_ariane(array(
@@ -73,6 +74,6 @@ class EditerMessageAction extends Controller
 			));
 		}
 		else
-			return redirect(349, '/recrutement/', MSG_ERROR);
+			throw new NotFoundHttpException();
 	}
 }

@@ -21,6 +21,7 @@
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Contrôleur gérant l'ajout d'une nouvelle alerte concernant un MP.
@@ -64,15 +65,19 @@ class AlerterAction extends Controller
 					}
 					if($InfoMP['mp_ferme'] AND !verifier('mp_repondre_mp_fermes'))
 					{
-						return redirect(281, 'lire-'.$_GET['id'].'.html', MSG_ERROR);
+						return redirect('Ce MP est fermé.', 'lire-'.$_GET['id'].'.html', MSG_ERROR);
 					}
 					elseif($NombreParticipants < 2)
 					{
-						return redirect(275, 'lire-'.$_GET['id'].'.html', MSG_ERROR);
+						return redirect(
+						    'Vous êtes seul dans ce MP ! <img src="/images/smilies/siffle.png" alt=":-°" title=":-°" />',
+                            'lire-'.$_GET['id'].'.html',
+                            MSG_ERROR
+                        );
 					}
 					elseif($AlerteDejaPostee)
 					{
-						return redirect(43, 'lire-'.$_GET['id'].'.html', MSG_ERROR);
+						return redirect('Les modérateurs ont déjà été prévenus.', 'lire-'.$_GET['id'].'.html', MSG_ERROR);
 					}
 					else
 					{
@@ -89,27 +94,31 @@ class AlerterAction extends Controller
 							return render_to_response(array('InfoMP' => $InfoMP));
 						}
 						elseif(trim($_POST['texte']) == '')
-							return redirect(41, 'alerter-'.$_GET['id'].'.html', MSG_ERROR);
+							return redirect(
+							    'Vous devez indiquer une raison.',
+                                'alerter-'.$_GET['id'].'.html',
+                                MSG_ERROR
+                            );
 						else
 						{
 							AjouterAlerte();
-							return redirect(40, 'lire-'.$_GET['id'].'.html');
+							return redirect('Les modérateurs ont bien été prévenus.', 'lire-'.$_GET['id'].'.html');
 						}
 					}
 				}
 				else
 				{
-					throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+					throw new AccessDeniedHttpException();
 				}
 			}
 			else
 			{
-				return redirect(262, 'index.html', MSG_ERROR);
+				throw new NotFoundHttpException();
 			}
 		}
 		else
 		{
-			return redirect(263, 'index.html', MSG_ERROR);
+            throw new NotFoundHttpException();
 		}
 	}
 }

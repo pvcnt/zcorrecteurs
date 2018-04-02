@@ -38,6 +38,6 @@ class MarquerAlertesResoluesAction extends Controller
 		ResoudreAlertes();
 		$this->get('zco_core.cache')->delete('taches_admin_alertes_mp');
 		
-		return redirect(289, '/admin/index.html');
+		return redirect('Les alertes ont bien été marquées comme résolues.', '/admin/index.html');
 	}
 }

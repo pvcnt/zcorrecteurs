@@ -47,7 +47,7 @@ class AjouterAction extends Controller
 		    if ($form->isValid())
 			{
 				$recrutement->save();
-				return redirect(1, 'recrutement-'.$recrutement['id'].'-'.rewrite($recrutement['nom']).'.html');
+				return redirect('Le recrutement a bien été ajouté.', 'recrutement-'.$recrutement['id'].'-'.rewrite($recrutement['nom']).'.html');
 		    }
 		}
 

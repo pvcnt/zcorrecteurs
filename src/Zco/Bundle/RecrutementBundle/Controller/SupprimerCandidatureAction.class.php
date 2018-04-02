@@ -20,7 +20,9 @@
  */
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Contrôleur gérant la suppression d'une candidature.
@@ -39,19 +41,18 @@ class SupprimerCandidatureAction extends Controller
 		{
 			$InfosCandidature = InfosCandidature($_GET['id']);
 			if(empty($InfosCandidature))
-				return redirect(227, 'gestion.html', MSG_ERROR);
-			zCorrecteurs::VerifierFormatageUrl($InfosCandidature['candidature_pseudo'], true);
+				throw new NotFoundHttpException();
 
 			//Si on veut supprimer
 			if(isset($_POST['confirmer']))
 			{
 				SupprimerCandidature($_GET['id']);
-				return redirect(169, 'gestion.html');
+				return redirect('La candidature a bien été supprimée.', 'gestion.html');
 			}
 			//Si on annule
 			elseif(isset($_POST['annuler']))
 			{
-				return new Symfony\Component\HttpFoundation\RedirectResponse('candidature-'.$_GET['id'].'.html');
+				return new RedirectResponse('candidature-'.$_GET['id'].'.html');
 			}
 
 			//Inclusion de la vue
@@ -65,6 +66,6 @@ class SupprimerCandidatureAction extends Controller
 			return render_to_response(array('InfosCandidature' => $InfosCandidature));
 		}
 		else
-			return redirect(226, 'gestion.html', MSG_ERROR);
+			throw new NotFoundHttpException();
 	}
 }

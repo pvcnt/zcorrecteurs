@@ -185,7 +185,7 @@ class LoginListener implements EventSubscriberInterface
 
 if($blocages != 0)
 {
-	return redirect(12, '/', MSG_ERROR);
+	return redirect('La connexion à ce compte est bloquée.', '/', MSG_ERROR);
 }
 
 if ($captcha && !Captcha::verifier($_POST['captcha']))

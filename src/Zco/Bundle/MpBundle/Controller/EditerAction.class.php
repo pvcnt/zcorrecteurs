@@ -21,6 +21,7 @@
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Contrôleur gérant la modification d'un message d'un MP si et
@@ -68,11 +69,11 @@ class EditerAction extends Controller
 					}
 					if($InfoMessage['mp_ferme'] AND !verifier('mp_repondre_mp_fermes'))
 					{
-						return redirect(281, 'lire-'.$InfoMessage['mp_id'].'-'.$_GET['id'].'.html', MSG_ERROR);
+						return redirect('Ce MP est fermé.', 'lire-'.$InfoMessage['mp_id'].'-'.$_GET['id'].'.html', MSG_ERROR);
 					}
 					elseif($InfoMessage['pas_autoriser_edition'] && !verifier('mp_editer_ses_messages_deja_lus'))
 					{
-						return redirect(48, 'lire-'.$InfoMessage['mp_id'].'-'.$_GET['id'].'.html', MSG_ERROR);
+                        throw new AccessDeniedHttpException();
 					}
 					if(empty($_POST['texte']))
 					{
@@ -92,24 +93,28 @@ class EditerAction extends Controller
 					{
 						//On édite la réponse en BDD
 						if(EditerReponse() === false)
-							return redirect(292, 'editer-'.$_GET['id'].'.html', MSG_ERROR);
+							return redirect(
+							    'Le destinataire n\'a pas renseigné de clé PGP, le MP ne peut donc pas être crypté.',
+                                'editer-'.$_GET['id'].'.html',
+                                MSG_ERROR
+                            );
 
-						return redirect(35, 'lire-'.$InfoMessage['mp_id'].'-'.$_GET['id'].'.html');
+						return redirect('Le message a bien été modifié.', 'lire-'.$InfoMessage['mp_id'].'-'.$_GET['id'].'.html');
 					}
 				}
 				else
 				{
-					return redirect(280, 'lire-'.$InfoMessage['mp_id'].'-'.$_GET['id'].'.html', MSG_ERROR);
+					throw new AccessDeniedHttpException();
 				}
 			}
 			else
 			{
-				return redirect(262, 'index.html', MSG_ERROR);
+                throw new NotFoundHttpException();
 			}
 		}
 		else
 		{
-			return redirect(263, 'index.html', MSG_ERROR);
+			throw new NotFoundHttpException();
 		}
 	}
 }

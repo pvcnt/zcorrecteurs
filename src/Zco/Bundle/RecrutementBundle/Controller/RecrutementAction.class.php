@@ -20,6 +20,7 @@
  */
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Contrôleur gérant l'affichage de toutes les informations relatives à un
@@ -33,13 +34,13 @@ class RecrutementAction extends Controller
 	{
 		if (empty($_GET['id']) || !is_numeric($_GET['id']))
 		{
-			return redirect(228, '/recrutement/', MSG_ERROR);
+            throw new NotFoundHttpException();
 		}
 
-		$recrutement = Doctrine_Core::getTable('Recrutement')->recuperer($_GET['id']);
+		$recrutement = \Doctrine_Core::getTable('Recrutement')->recuperer($_GET['id']);
 		if (!$recrutement || ($recrutement['etat'] == \Recrutement::CACHE && !verifier('recrutements_editer') && !verifier('recrutements_voir_candidatures')))
 		{
-			return redirect(229, '/recrutement/', MSG_ERROR);
+            throw new NotFoundHttpException();
 		}
 
 		\zCorrecteurs::VerifierFormatageUrl($recrutement['nom'], true);

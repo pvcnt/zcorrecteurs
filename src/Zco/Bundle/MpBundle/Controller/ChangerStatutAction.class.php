@@ -21,6 +21,7 @@
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Contrôleur gérant la fermeture / ouverture d'un MP.
@@ -57,33 +58,36 @@ class ChangerStatutAction extends Controller
 						if($_GET['id2'] == 0)
 						{
 							OuvrirMP($_GET['id']);
-							return redirect(282, 'lire-'.$_GET['id'].'.html');
+							return redirect('Le MP a bien été ouvert.', 'lire-'.$_GET['id'].'.html');
 						}
 						elseif($_GET['id2'] == 1)
 						{
 							FermerMP($_GET['id']);
-							return redirect(283, 'lire-'.$_GET['id'].'.html');
+							return redirect('Le MP a bien été fermé.', 'lire-'.$_GET['id'].'.html');
 						}
-
 					}
 					else
 					{
-						return redirect(288, 'lire-'.$_GET['id'].'.html', MSG_ERROR);
+						return redirect(
+						    'Vous ne pouvez pas changer le statut d\'un MP.',
+                            'lire-'.$_GET['id'].'.html',
+                            MSG_ERROR
+                        );
 					}
 				}
 				else
 				{
-					throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+					throw new AccessDeniedHttpException();
 				}
 			}
 			else
 			{
-				return redirect(262, 'index.html', MSG_ERROR);
+                throw new NotFoundHttpException();
 			}
 		}
 		else
 		{
-			return redirect(263, 'index.html', MSG_ERROR);
+			throw new NotFoundHttpException();
 		}
 	}
 }

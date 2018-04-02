@@ -21,6 +21,7 @@
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Contrôleur gérant la réponse à un MP.
@@ -62,11 +63,15 @@ class RepondreAction extends Controller
 					}
 					if($InfoMP['mp_ferme'] && !verifier('mp_repondre_mp_fermes'))
 					{
-						return redirect(281, 'lire-'.$_GET['id'].'.html', MSG_ERROR);
+						return redirect('Ce MP est fermé.', 'lire-'.$_GET['id'].'.html', MSG_ERROR);
 					}
 					elseif($NombreParticipants < 2)
 					{
-						return redirect(275, 'lire-'.$_GET['id'].'.html', MSG_ERROR);
+						return redirect(
+						    'Vous êtes seul dans ce MP ! <img src="/images/smilies/siffle.png" alt=":-°" title=":-°" />',
+                            'lire-'.$_GET['id'].'.html',
+                            MSG_ERROR
+                        );
 					}
 					else
 					{
@@ -119,7 +124,11 @@ class RepondreAction extends Controller
 							//On ajoute la réponse en BDD
 							$NouveauMessageID = AjouterReponse();
 							if($NouveauMessageID === false)
-								return redirect(292, 'repondre-'.$_GET['id'].'.html', MSG_ERROR);
+								return redirect(
+								    'Le destinataire n\'a pas renseigné de clé PGP, le MP ne peut donc pas être crypté.',
+                                    'repondre-'.$_GET['id'].'.html',
+                                    MSG_ERROR
+                                );
 
 							//On vide les caches de tous les participants
 							$current_participant = 0;
@@ -132,23 +141,23 @@ class RepondreAction extends Controller
 									$this->get('zco_core.cache')->set('MPnonLu'.$valeur['mp_participant_id'], true, strtotime('+1 hour'));
 								}
 							}
-							return redirect(34, 'lire-'.$_GET['id'].'-'.$NouveauMessageID.'.html');
+							return redirect('Le message a bien été ajouté.', 'lire-'.$_GET['id'].'-'.$NouveauMessageID.'.html');
 						}
 					}
 				}
 				else
 				{
-					return redirect(262, 'index.html', MSG_ERROR);
+                    throw new NotFoundHttpException();
 				}
 			}
 			else
 			{
-				throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+				throw new AccessDeniedHttpException();
 			}
 		}
 		else
 		{
-			return redirect(263, 'index.html', MSG_ERROR);
+			throw new NotFoundHttpException();
 		}
 	}
 }

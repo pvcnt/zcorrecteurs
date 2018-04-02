@@ -20,7 +20,9 @@
  */
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Contrôleur gérant la suppression d'un dossier de MP.
@@ -29,45 +31,35 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
  */
 class SupprimerDossierAction extends Controller
 {
-	public function execute()
-	{
+    public function execute()
+    {
         if (!verifier('connecte')) {
             throw new AccessDeniedHttpException();
         }
-		if(isset($_POST['annuler']))
-		{
-			return new Symfony\Component\HttpFoundation\RedirectResponse('index.html');
-		}
-		zCorrecteurs::VerifierFormatageUrl(null, true);
-		include(BASEPATH.'/src/Zco/Bundle/MpBundle/modeles/dossiers.php');
+        if (isset($_POST['annuler'])) {
+            return new RedirectResponse('index.html');
+        }
+        zCorrecteurs::VerifierFormatageUrl(null, true);
+        include(BASEPATH . '/src/Zco/Bundle/MpBundle/modeles/dossiers.php');
 
-		if(!empty($_GET['id']) AND is_numeric($_GET['id']))
-		{
-			$DossierExiste = DossierExiste();
-			if($DossierExiste)
-			{
-				if(!isset($_POST['confirmation']))
-				{
-					//Inclusion de la vue
-					fil_ariane('Supprimer un dossier');
-					Page::$titre = $DossierExiste['mp_dossier_titre'].' - Suppression du dossier - '.Page::$titre;
-					
-					return render_to_response(array('DossierExiste' => $DossierExiste));
-				}
-				else
-				{
-					SupprimerDossier();
-					return redirect(260, 'index.html');
-				}
-			}
-			else
-			{
-				return redirect(257, 'index.html', MSG_ERROR);
-			}
-		}
-		else
-		{
-			return redirect(257, 'index.html', MSG_ERROR);
-		}
-	}
+        if (!empty($_GET['id']) AND is_numeric($_GET['id'])) {
+            $DossierExiste = DossierExiste();
+            if ($DossierExiste) {
+                if (!isset($_POST['confirmation'])) {
+                    //Inclusion de la vue
+                    fil_ariane('Supprimer un dossier');
+                    Page::$titre = $DossierExiste['mp_dossier_titre'] . ' - Suppression du dossier - ' . Page::$titre;
+
+                    return render_to_response(array('DossierExiste' => $DossierExiste));
+                } else {
+                    SupprimerDossier();
+                    return redirect('Le dossier a bien été supprimé.', 'index.html');
+                }
+            } else {
+                throw new NotFoundHttpException();
+            }
+        } else {
+            throw new NotFoundHttpException();
+        }
+    }
 }

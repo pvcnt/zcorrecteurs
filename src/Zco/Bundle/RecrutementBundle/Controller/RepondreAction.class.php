@@ -21,6 +21,7 @@
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Contrôleur gérant la réponse à une candidature (test, acceptation ou refus).
@@ -39,12 +40,12 @@ class RepondreAction extends Controller
 		{
 			$InfosCandidature = InfosCandidature($_GET['id']);
 			if(empty($InfosCandidature))
-				return redirect(227, '/recrutement/', MSG_ERROR);
-			zCorrecteurs::VerifierFormatageUrl($InfosCandidature['candidature_pseudo'], true);
+				throw new NotFoundHttpException();
+
 			Page::$titre = 'Candidature de '.htmlspecialchars($InfosCandidature['utilisateur_pseudo']).' - Réponse à la candidature';
 
 			if(!in_array($InfosCandidature['candidature_etat'], array(CANDIDATURE_TESTE, CANDIDATURE_ENVOYE)))
-				throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+				throw new AccessDeniedHttpException();
 
 			//Si on a envoyé la réponse
 			if(isset($_POST['etat']) && is_numeric($_POST['etat']) && in_array($_POST['etat'], array(CANDIDATURE_ACCEPTE, CANDIDATURE_REFUSE, CANDIDATURE_ATTENTE_TEST)))
@@ -74,7 +75,7 @@ class RepondreAction extends Controller
 						));
 						
 						AjouterMPAuto('[Recrutement] Vous avez été accepté !', '', $InfosCandidature['utilisateur_id'], $message);
-						return redirect(203, 'recrutement-'.$InfosCandidature['recrutement_id'].'.html#candidatures');
+						return redirect('La candidature a bien été acceptée.', 'recrutement-'.$InfosCandidature['recrutement_id'].'.html#candidatures');
 					}
 					else
 					{
@@ -89,12 +90,16 @@ class RepondreAction extends Controller
 						));
 
 						AjouterMPAuto('[Recrutement] Vous avez été refusé', '', $InfosCandidature['utilisateur_id'], $message);
-						return redirect(167, 'recrutement-'.$InfosCandidature['recrutement_id'].'.html#candidatures');
+						return redirect('La candidature a bien été refusée.', 'recrutement-'.$InfosCandidature['recrutement_id'].'.html#candidatures');
 					}
 				}
 				elseif(in_array($_POST['etat'], array(CANDIDATURE_ACCEPTE, CANDIDATURE_REFUSE)) && empty($_POST['comm']))
 				{
-					return redirect(17, 'repondre-'.$_GET['id'].'.html', MSG_ERROR);
+					return redirect(
+					    'Vous devez remplir tous les champs nécessaires !',
+                        'repondre-'.$_GET['id'].'.html',
+                        MSG_ERROR
+                    );
 				}
 				elseif($_POST['etat'] == CANDIDATURE_ATTENTE_TEST)
 				{
@@ -108,7 +113,7 @@ class RepondreAction extends Controller
 
 							//Vérification de l'extension.
 							if($extension_fichier != '.tuto')
-								return redirect(125, 'repondre-'.$_GET['id'].'.html', MSG_ERROR);
+								return redirect('Mauvaise extension.', 'repondre-'.$_GET['id'].'.html', MSG_ERROR);
 
 							//Déplacement du fichier temporaire vers le dossier des tutos
 							$nom_fichier = time().$extension_fichier;
@@ -132,10 +137,8 @@ class RepondreAction extends Controller
 					AjouterMPAuto('[Recrutement] Un test est requis', '', $InfosCandidature['utilisateur_id'], $message);
 
 					TesterCandidature($_GET['id'], $nom_fichier);
-					return redirect(168, 'recrutement-'.$InfosCandidature['recrutement_id'].'.html#candidatures');
+					return redirect('Le candidat a bien été soumis à un test.', 'recrutement-'.$InfosCandidature['recrutement_id'].'.html#candidatures');
 				}
-				//else
-				//	return redirect(17, 'repondre-'.$_GET['id'].'.html', MSG_ERROR);
 			}
 
 			//Inclusion de la vue
@@ -148,6 +151,6 @@ class RepondreAction extends Controller
 			return render_to_response(array('InfosCandidature' => $InfosCandidature));
 		}
 		else
-			return redirect(226, 'index.html', MSG_ERROR);
+            throw new NotFoundHttpException();
 	}
 }

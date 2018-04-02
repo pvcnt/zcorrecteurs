@@ -425,35 +425,22 @@ function liste_pages($page, $nb_page, $nb_mess, $nb_mess_par_page, $url, $revers
 define('MSG_ERROR', 0);
 define('MSG_NEUTRAL', 1);
 define('MSG_OK', 2);
+
 /**
  * Fonction permettant de rediriger le visiteur avec un message.
  *
- * @param integer $idMsg L'id du message à afficher.
+ * @param string $message Message à afficher.
  * @param string $url L'url cible.
  * @param integer $type Le type de message (confirmation par défaut).
- * @param integer $time Le temps d'affichage de la page (1 par défaut, si 0 aucune page de redirection, -1 pour pas de redirection).
  * @return Response
  */
-function redirect($idMsg = null, $url = '', $type = MSG_OK, $time = null)
+function redirect($message = null, $url = '', $type = MSG_OK)
 {
-    if ($idMsg == null)
-        return new Symfony\Component\HttpFoundation\RedirectResponse($url);
-
-    if (is_string($idMsg) && !empty($idMsg)) {
-        $message = $idMsg;
-        $idMsg = null;
-    } else {
-        Config::load('messages');
-        $message = Config::get('messages');
-        $message = $message['msg'][$idMsg];
-    }
-
     //--- Si on est dans une requête Ajax ---
     if (Container::getService('request')->isXmlHttpRequest()) {
         $type = ($type == MSG_OK) ? 'info' : 'error';
         return new Response(json_encode(array(
             'msg' => $message,
-            'id' => $idMsg,
             'type' => $type,
             'url' => $url,
         )));
@@ -464,12 +451,14 @@ function redirect($idMsg = null, $url = '', $type = MSG_OK, $time = null)
             $url = str_replace('_', '-', $action) . '.html';
         }
 
-        if ($type == MSG_OK || $type == MSG_NEUTRAL) {
-            $_SESSION['message'][] = $message;
-        } else {
-            $_SESSION['erreur'][] = $message;
+        if ($message !== null) {
+            if ($type == MSG_OK || $type == MSG_NEUTRAL) {
+                $_SESSION['message'][] = $message;
+            } else {
+                $_SESSION['erreur'][] = $message;
+            }
         }
-
+        
         return new Symfony\Component\HttpFoundation\RedirectResponse($url);
     }
 }

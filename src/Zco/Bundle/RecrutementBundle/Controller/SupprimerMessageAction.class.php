@@ -20,7 +20,9 @@
  */
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Contrôleur gérant la suppression d'un message de la shoutbox des
@@ -41,26 +43,26 @@ class SupprimerMessageAction extends Controller
 
 			$InfosCommentaire = InfosCommentaire($_GET['id']);
 			if(empty($InfosCommentaire))
-				return redirect(350, '/recrutement/', MSG_ERROR);
+				throw new NotFoundHttpException();
 
 			if(!($InfosCommentaire['recrutement_etat'] != RECRUTEMENT_FINI &&
 			     verifier('recrutements_voir_shoutbox')) &&
 			   !($InfosCommentaire['recrutement_etat'] == RECRUTEMENT_FINI &&
 			     verifier('recrutements_termines_voir_shoutbox')))
-				throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-
-
-			zCorrecteurs::VerifierFormatageUrl($InfosCommentaire['utilisateur_pseudo'], true);
+				throw new AccessDeniedHttpException();
 
 			if(isset($_POST['cancel']))
 			{
-				return new Symfony\Component\HttpFoundation\RedirectResponse('candidature-'.$InfosCommentaire['commentaire_candidature_id'].'.html');
+				return new RedirectResponse('candidature-'.$InfosCommentaire['commentaire_candidature_id'].'.html');
 			}
 
 			if(isset($_POST['submit']))
 			{
 				SupprimerCommentaireShoutbox($_GET['id']);
-				return redirect(351, 'candidature-'.$InfosCommentaire['commentaire_candidature_id'].'.html');
+				return redirect(
+				    'Le message a bien été supprimé.',
+                    'candidature-'.$InfosCommentaire['commentaire_candidature_id'].'.html'
+                );
 			}
 
 			$InfosCandidature = InfosCandidature($InfosCommentaire['commentaire_candidature_id']);
@@ -72,6 +74,6 @@ class SupprimerMessageAction extends Controller
 			return render_to_response(array('InfosCommentaire' => $InfosCommentaire));
 		}
 		else
-			return redirect(349, '/recrutement/', MSG_ERROR);
+            throw new NotFoundHttpException();
 	}
 }

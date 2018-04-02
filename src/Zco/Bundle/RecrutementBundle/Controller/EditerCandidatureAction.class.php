@@ -21,6 +21,7 @@
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Contrôleur gérant la modification d'une candidature (texte de motivation,
@@ -40,17 +41,20 @@ class EditerCandidatureAction extends Controller
 		{
 			$InfosCandidature = InfosCandidature($_GET['id']);
 			if(empty($InfosCandidature))
-				return redirect(227, '/recrutement/', MSG_ERROR);
-			zCorrecteurs::VerifierFormatageUrl($InfosCandidature['candidature_pseudo'], true);
+                throw new NotFoundHttpException();
 
 			if($InfosCandidature['candidature_etat'] == CANDIDATURE_REDACTION)
-				return redirect(4, 'candidature-'.$_GET['id'].'.html', MSG_ERROR);
+				return redirect(
+				    'Vous ne pouvez pas modifier une candidature en rédaction.',
+                    'candidature-'.$_GET['id'].'.html',
+                    MSG_ERROR
+                );
 
 			//Si on a envoyé l'édition
 			if(!empty($_POST['motiv']))
 			{
 				EditerCandidature($_GET['id']);
-				return redirect(235, 'candidature-'.$_GET['id'].'.html');
+				return redirect('La candidature a bien été éditée.', 'candidature-'.$_GET['id'].'.html');
 			}
 
 			//Inclusion de la vue
@@ -65,6 +69,6 @@ class EditerCandidatureAction extends Controller
 			));
 		}
 		else
-			return redirect(226, '/recrutement/', MSG_ERROR);
+            throw new NotFoundHttpException();
 	}
 }

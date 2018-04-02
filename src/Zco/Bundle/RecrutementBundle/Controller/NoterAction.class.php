@@ -21,6 +21,7 @@
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
 * Contrôleur gérant la notation d'une copie par son correcteur.
@@ -39,8 +40,7 @@ class NoterAction extends Controller
 		{
 			$InfosCandidature = InfosCandidature($_GET['id']);
 			if(empty($InfosCandidature))
-				return redirect(227, '/recrutement/', MSG_ERROR);
-			zCorrecteurs::VerifierFormatageUrl($InfosCandidature['candidature_pseudo'], true);
+				throw new NotFoundHttpException();
 			Page::$titre = 'Candidature de '.htmlspecialchars($InfosCandidature['utilisateur_pseudo']).' - Noter la copie';
 
 			if($InfosCandidature['candidature_correcteur'] == $_SESSION['id'])
@@ -49,7 +49,7 @@ class NoterAction extends Controller
 				if(isset($_POST['note']))
 				{
 					NoterCopie($_GET['id'], $_POST['note']);
-					return redirect(479, 'candidature-'.$_GET['id'].'.html');
+					return redirect('Cette copie a bien été notée conformément à vos souhaits.', 'candidature-'.$_GET['id'].'.html');
 				}
 
 				//Inclusion de la vue
@@ -62,9 +62,9 @@ class NoterAction extends Controller
 				return render_to_response(array('InfosCandidature' => $InfosCandidature));
 			}
 			else
-				throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+                throw new AccessDeniedHttpException();
 		}
 		else
-			return redirect(226, 'index.html', MSG_ERROR);
+            throw new NotFoundHttpException();
 	}
 }

@@ -21,6 +21,7 @@
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Contrôleur gérant l'ajout d'un message dans la shoutbox des administrateurs.
@@ -38,13 +39,13 @@ class AjouterMessageAction extends Controller
 		{
 			$InfosCandidature = InfosCandidature($_GET['id']);
 			if(empty($InfosCandidature))
-				return redirect(227, '/recrutement/', MSG_ERROR);
+				throw new NotFoundHttpException();
 
 			if(!($InfosCandidature['recrutement_etat'] != RECRUTEMENT_FINI &&
 			     verifier('recrutements_voir_shoutbox')) &&
 			   !($InfosCandidature['recrutement_etat'] == RECRUTEMENT_FINI &&
 			     verifier('recrutements_termines_voir_shoutbox')))
-				throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+				throw new AccessDeniedHttpException();
 
 			include(dirname(__FILE__).'/../modeles/commentaires.php');
 
@@ -60,10 +61,10 @@ class AjouterMessageAction extends Controller
 			{
 				$_POST['texte'] = trim($_POST['texte']);
 				if(empty($_POST['texte']))
-					return redirect(17, 'ajouter-message-'.$_GET['id'].'.html', MSG_ERROR);
+					return redirect('Vous devez remplir tous les champs nécessaires !', 'ajouter-message-'.$_GET['id'].'.html', MSG_ERROR);
 
 				$new_com = AjouterCommentaireShoutbox($_GET['id'], $_POST['texte']);
-				return redirect(348, 'candidature-'.$_GET['id'].'-'.$new_com.'.html');
+				return redirect('Votre commentaire a bien été ajouté.', 'candidature-'.$_GET['id'].'-'.$new_com.'.html');
 			}
 
 			fil_ariane(array(
@@ -78,6 +79,6 @@ class AjouterMessageAction extends Controller
 			));
 		}
 		else
-			return redirect(226, 'index.html', MSG_ERROR);
+            throw new NotFoundHttpException();
 	}
 }

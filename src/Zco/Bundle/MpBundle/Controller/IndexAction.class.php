@@ -22,6 +22,7 @@
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Contrôleur gérant l'affichage de la liste de tous les MP.
@@ -72,7 +73,7 @@ class IndexAction extends Controller
 			$url = 'index-'.$_GET['id'].'-p%s.html';
 
 		if(!isset($nbMp))
-			return redirect(257, 'index.html', MSG_ERROR);
+			throw new NotFoundHttpException();
 
 		$recherche = !empty($_POST['recherche_mp']) ? $_POST['recherche_mp'] : null;
 		$nbMpParPage = 30;
@@ -103,29 +104,29 @@ class IndexAction extends Controller
 				if($_POST['action'] == 'ouvrir' && verifier('mp_fermer'))
 				{
 					OuvrirMP($_POST['MP']);
-					return redirect(52, 'index.html');
+					return redirect('Les opérations multiples ont bien été effectuées.', 'index.html');
 				}
 				elseif($_POST['action'] == 'fermer' && verifier('mp_fermer'))
 				{
 					FermerMP($_POST['MP']);
-					return redirect(52, 'index.html');
+                    return redirect('Les opérations multiples ont bien été effectuées.', 'index.html');
 				}
 				elseif($_POST['action'] == 'lus')
 				{
 					RendreMPLus($_POST['MP'], $ListerMP);
 					unset($_SESSION['MPsnonLus']);
-					return redirect(52, 'index.html');
+                    return redirect('Les opérations multiples ont bien été effectuées.', 'index.html');
 				}
 				elseif($_POST['action'] == 'nonlus')
 				{
 					RendreMPNonLus($_POST['MP']);
 					unset($_SESSION['MPsnonLus']);
-					return redirect(52, 'index.html');
+                    return redirect('Les opérations multiples ont bien été effectuées.', 'index.html');
 				}
 				elseif($_POST['action'] == 'deplacer' && isset($_POST['deplacer_lieu']) && $ListerDossiers)
 				{
 					DeplacerMP($_POST['MP'], $_POST['deplacer_lieu']);
-					return redirect(52, 'index.html');
+                    return redirect('Les opérations multiples ont bien été effectuées.', 'index.html');
 				}
 				elseif($_POST['action'] == 'supprimer')
 				{
@@ -134,7 +135,7 @@ class IndexAction extends Controller
 						SupprimerMultipleMP($_POST['MP']);
 						unset($_SESSION['MPs']);
 						unset($_SESSION['MPsnonLus']);
-						return redirect(52, 'index.html');
+                        return redirect('Les opérations multiples ont bien été effectuées.', 'index.html');
 					}
 					else
 					{
@@ -158,7 +159,6 @@ class IndexAction extends Controller
 					$MP['_lu'] = LuNonlu($EnvoiDesInfos);
 
 					// Liste des pages
-					$nbMessagesParPage = 20;
 					$MP['_pages'] = liste_pages(-1,
 						ceil(($MP['mp_reponses'] + 1) / 20),
 						$MP['mp_reponses'] + 1,

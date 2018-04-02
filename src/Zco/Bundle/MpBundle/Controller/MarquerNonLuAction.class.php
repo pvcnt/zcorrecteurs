@@ -21,6 +21,7 @@
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Contrôleur gérant le marquage en non-lu d'un MP.
@@ -29,38 +30,31 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
  */
 class MarquerNonLuAction extends Controller
 {
-	public function execute()
-	{
+    public function execute()
+    {
         if (!verifier('connecte')) {
             throw new AccessDeniedHttpException();
         }
-		include(BASEPATH.'/src/Zco/Bundle/MpBundle/modeles/lire.php');
-		include(BASEPATH.'/src/Zco/Bundle/MpBundle/modeles/action_etendue_plusieurs_mp.php');
-		if(!empty($_GET['id']) AND is_numeric($_GET['id']))
-		{
-			$InfoMP = InfoMP();
+        include(BASEPATH . '/src/Zco/Bundle/MpBundle/modeles/lire.php');
+        include(BASEPATH . '/src/Zco/Bundle/MpBundle/modeles/action_etendue_plusieurs_mp.php');
+        if (!empty($_GET['id']) AND is_numeric($_GET['id'])) {
+            $InfoMP = InfoMP();
 
-			$autoriser_ecrire = true;
-			if(empty($InfoMP['mp_participant_mp_id']) AND verifier('mp_espionner'))
-			{
-				$autoriser_ecrire = false;
-			}
+            $autoriser_ecrire = true;
+            if (empty($InfoMP['mp_participant_mp_id']) AND verifier('mp_espionner')) {
+                $autoriser_ecrire = false;
+            }
 
-			if(isset($InfoMP['mp_id']) AND !empty($InfoMP['mp_id']) AND !empty($InfoMP['mp_participant_mp_id']) AND $autoriser_ecrire)
-			{
-				RendreMPNonLus($_GET['id']);
-				unset($_SESSION['MPsnonLus']);
-				return redirect(285, 'index.html');
+            if (isset($InfoMP['mp_id']) AND !empty($InfoMP['mp_id']) AND !empty($InfoMP['mp_participant_mp_id']) AND $autoriser_ecrire) {
+                RendreMPNonLus($_GET['id']);
+                unset($_SESSION['MPsnonLus']);
+                return redirect('Le MP a été marqué comme non-lu.', 'index.html');
 
-			}
-			else
-			{
-				return redirect(262, 'index.html', MSG_ERROR);
-			}
-		}
-		else
-		{
-			return redirect(263, 'index.html', MSG_ERROR);
-		}
-	}
+            } else {
+                throw new NotFoundHttpException();
+            }
+        } else {
+            throw new NotFoundHttpException();
+        }
+    }
 }

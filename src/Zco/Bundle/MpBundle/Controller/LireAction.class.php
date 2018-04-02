@@ -22,6 +22,7 @@
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Contrôleur gérant la lecture d'un MP et les actions associées.
@@ -67,13 +68,12 @@ class LireAction extends Controller
 					if(isset($_POST['deplacer_lieu']) AND is_numeric($_POST['deplacer_lieu']) AND $ListerDossiers)
 					{
 						DeplacerMP($_GET['id'], $_POST['deplacer_lieu']);
-						return redirect(286, 'lire-'.$_GET['id'].'.html');
+						return redirect('Le MP a bien été déplacé.', 'lire-'.$_GET['id'].'.html');
 					}
 				}
 
 				$page = !empty($_GET['p']) && is_numeric($_GET['p']) ? $_GET['p'] : 1;
 				$_GET['p'] = $page;
-				$nbMessagesParPage = 20;
 				$ListePages = liste_pages($page, ceil(($InfoMP['mp_reponses']+1) / 20), $InfoMP['mp_reponses']+1, 20, 'lire-'.$_GET['id'].'-p%s.html');
 
 				$ListerParticipants = ListerParticipants($_GET['id']);
@@ -135,12 +135,12 @@ class LireAction extends Controller
 			}
 			else
 			{
-				return redirect(262, 'index.html', MSG_ERROR);
+                throw new NotFoundHttpException();
 			}
 		}
 		else
 		{
-			return redirect(263, 'index.html', MSG_ERROR);
+			throw new NotFoundHttpException();
 		}
 	}
 }
