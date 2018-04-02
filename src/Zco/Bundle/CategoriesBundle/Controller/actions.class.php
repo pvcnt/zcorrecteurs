@@ -21,6 +21,7 @@
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -35,8 +36,11 @@ class CategoriesActions extends Controller
 	 */
 	public function executeIndex()
 	{
+	    if (!verifier('cats_editer')) {
+	        throw new AccessDeniedHttpException();
+        }
 		//Si on veut descendre une catégorie
-		if(!empty($_GET['descendre']) && is_numeric($_GET['descendre']) && verifier('cats_ordonner'))
+		if(!empty($_GET['descendre']) && is_numeric($_GET['descendre']))
 		{
 			$InfosCategorie = InfosCategorie($_GET['descendre']);
 			if(!empty($InfosCategorie))
@@ -51,7 +55,7 @@ class CategoriesActions extends Controller
 		}
 
 		//Si on veut monter une catégorie
-		if(!empty($_GET['monter']) && is_numeric($_GET['monter']) && verifier('cats_ordonner'))
+		if(!empty($_GET['monter']) && is_numeric($_GET['monter']))
 		{
 			$InfosCategorie = InfosCategorie($_GET['monter']);
 			if(!empty($InfosCategorie))
@@ -80,6 +84,9 @@ class CategoriesActions extends Controller
 	 */
 	public function executeAjouter()
 	{
+        if (!verifier('cats_editer')) {
+            throw new AccessDeniedHttpException();
+        }
 		Page::$titre = 'Ajouter une catégorie';
 
 		//Si on veut ajouter une catégorie
@@ -99,6 +106,9 @@ class CategoriesActions extends Controller
 	 */
 	public function executeEditer()
 	{
+        if (!verifier('cats_editer')) {
+            throw new AccessDeniedHttpException();
+        }
 		Page::$titre = 'Modifier une catégorie';
 
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))
@@ -142,6 +152,9 @@ class CategoriesActions extends Controller
 	 */
 	public function executeSupprimer()
 	{
+        if (!verifier('cats_editer')) {
+            throw new AccessDeniedHttpException();
+        }
 		Page::$titre = 'Supprimer une catégorie';
 
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))
@@ -184,6 +197,9 @@ class CategoriesActions extends Controller
 	 */
 	public function executeImage()
 	{
+        if (!verifier('cats_editer')) {
+            throw new AccessDeniedHttpException();
+        }
 		Page::$titre = 'Représentation graphique';
 		fil_ariane(Page::$titre);
 		return render_to_response(array('categories' => ListerCategories()));
@@ -195,6 +211,9 @@ class CategoriesActions extends Controller
 	 */
 	public function executeGraphique()
 	{
+        if (!verifier('cats_editer')) {
+            throw new AccessDeniedHttpException();
+        }
 		isset($_POST['id']) && $_GET['id'] = $_POST['id'];
 		isset($_POST['id2']) && $_GET['id2'] = $_POST['id2'];
 		isset($_POST['orientation']) && $_GET['orientation'] = $_POST['orientation'];

@@ -21,6 +21,7 @@
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -32,7 +33,9 @@ class SupprimerCommentairesAction extends BlogActions
 {
 	public function execute()
 	{
-		zCorrecteurs::VerifierFormatageUrl(null, true);
+        if (!verifier('blog_editer_commentaires')) {
+            throw new AccessDeniedHttpException();
+        }
 
 		//Si on a bien demandé à voir un billet
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))

@@ -73,7 +73,7 @@
 </h2>
 
 <p class="reponse_ajout_sujet">
-	<?php if($InfosBillet['blog_commentaires'] == COMMENTAIRES_OK && verifier('blog_commenter')){ ?>
+	<?php if($InfosBillet['blog_commentaires'] == COMMENTAIRES_OK && verifier('connecte')){ ?>
 	<a href="ajouter-commentaire-<?php echo $_GET['id']; ?>.html" title="Ajouter un commentaire">
 		<img src="/bundles/zcoforum/img/repondre.png" alt="Ajouter un commentaire" />
 	</a>
@@ -142,7 +142,7 @@
 				</span>
 
 				Ajouté <?php echo dateformat($valeur['commentaire_date'], MINUSCULE); ?>
-				<?php if(verifier('blog_commenter') && ($InfosBillet['blog_commentaires'] == COMMENTAIRES_OK || verifier('blog_poster_commentaires_fermes'))){ ?>
+				<?php if(verifier('connecte') && ($InfosBillet['blog_commentaires'] == COMMENTAIRES_OK || verifier('blog_poster_commentaires_fermes'))){ ?>
 				<a href="ajouter-commentaire-<?php echo $_GET['id']; ?>-<?php echo $valeur['commentaire_id']; ?>.html"><img src="/bundles/zcoforum/img/citer.png" alt="Citer" title="Citer" /></a>
 				<?php }
 				if(
@@ -158,7 +158,7 @@
 				if((($valeur['id_auteur'] == $_SESSION['id'] && verifier('blog_editer_ses_commentaires')) || verifier('blog_editer_commentaires')) && ($InfosBillet['blog_commentaires'] == COMMENTAIRES_OK || verifier('blog_poster_commentaires_fermes'))){ ?>
 				<a href="<?php echo 'editer-commentaire-'.$valeur['commentaire_id']; ?>.html" title="Modifier ce commentaire">
 					<img src="/img/editer.png" alt="Modifier" /></a>
-				<?php } if(verifier('blog_supprimer_commentaires') || ($createur == true && in_array($InfosBillet['blog_etat'], array(BLOG_REFUSE, BLOG_BROUILLON)))){ ?>
+				<?php } if(verifier('blog_editer_commentaires') || ($createur == true && in_array($InfosBillet['blog_etat'], array(BLOG_REFUSE, BLOG_BROUILLON)))){ ?>
 				<a href="supprimer-commentaire-<?php echo $valeur['commentaire_id']; ?>.html" title="Supprimer ce commentaire">
 					<img src="/img/supprimer.png" alt="Supprimer" />
 				</a>
@@ -236,12 +236,12 @@
 
 <?php } else{	?>
 Aucun commentaire n'a encore été déposé sur ce billet.
-<?php if(($InfosBillet['blog_commentaires'] == COMMENTAIRES_OK && verifier('blog_commenter')) || ($InfosBillet['blog_commentaires'] == COMMENTAIRES_NONE && verifier('blog_poster_commentaires_fermes'))) echo '<a href="ajouter-commentaire-'.$_GET['id'].'.html">Soyez le premier à en déposer un !</a>'; ?>
+<?php if(($InfosBillet['blog_commentaires'] == COMMENTAIRES_OK && verifier('connecte')) || ($InfosBillet['blog_commentaires'] == COMMENTAIRES_NONE && verifier('blog_poster_commentaires_fermes'))) echo '<a href="ajouter-commentaire-'.$_GET['id'].'.html">Soyez le premier à en déposer un !</a>'; ?>
 <?php }	?>
 
 <?php if (count($ListerCommentaires) > 0){ ?>
 <p class="reponse_ajout_sujet">
-	<?php if($InfosBillet['blog_commentaires'] == COMMENTAIRES_OK && verifier('blog_commenter')){ ?>
+	<?php if($InfosBillet['blog_commentaires'] == COMMENTAIRES_OK && verifier('connecte')){ ?>
 	<a href="ajouter-commentaire-<?php echo $_GET['id']; ?>.html" title="Ajouter un commentaire">
 		<img src="/bundles/zcoforum/img/repondre.png" alt="Ajouter un commentaire" />
 	</a>
@@ -276,7 +276,7 @@ Aucun commentaire n'a encore été déposé sur ce billet.
 			<img src="/bundles/zcoforum/img/cadenas.png" alt="" />
 			<a href="?fermer=0">Ouvrir les commentaires</a>
 		</li>
-		<?php } if(verifier('blog_supprimer_commentaires')){ ?>
+		<?php } if(verifier('blog_editer_commentaires')){ ?>
 		<li>
 			<img src="/img/supprimer.png" alt="" />
 			<a href="supprimer-commentaires-<?php echo $_GET['id']; ?>.html">

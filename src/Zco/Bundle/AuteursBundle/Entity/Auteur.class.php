@@ -31,24 +31,19 @@ class Auteur extends BaseAuteur
 	 */
 	public function listerRessourcesLiees()
 	{
-		$dbh = Doctrine_Manager::connection()->getDbh();
 		$ressources = array();
-
-		if (verifier('dictees_voir'))
-		{
-			$temp = Doctrine_Core::getTable('Dictee')->findByAuteurId($this->id);
-			foreach ($temp as $t)
-			{
-				$ressources[] = array(
-					'objet'     => 'dictee',
-					'res_id'    => $t->id,
-					'res_titre' => $t->titre,
-					'res_date'  => $t->validation,
-					'res_url'   => '/dictees/dictee-%d-%s.html',
-					null
-				);
-			}
-		}
+        $temp = Doctrine_Core::getTable('Dictee')->findByAuteurId($this->id);
+        foreach ($temp as $t)
+        {
+            $ressources[] = array(
+                'objet'     => 'dictee',
+                'res_id'    => $t->id,
+                'res_titre' => $t->titre,
+                'res_date'  => $t->validation,
+                'res_url'   => '/dictees/dictee-%d-%s.html',
+                null
+            );
+        }
 		return $ressources;
 	}
 }

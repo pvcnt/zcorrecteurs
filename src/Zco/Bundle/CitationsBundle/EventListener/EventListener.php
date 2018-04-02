@@ -64,10 +64,10 @@ class EventListener implements EventSubscriberInterface
 
         $tab->addChild('Ajouter une citation', array(
             'uri' => '/citations/ajouter.html'
-        ))->secure('citations_ajouter');
+        ))->secure('citations_modifier');
 
         $tab->addChild('Gérer les citations', array(
             'uri' => '/citations/',
-        ))->secure(array('or', 'citations_modifier', 'citations_supprimer', 'citations_autoriser'));
+        ))->secure('citations_modifier');
     }
 }

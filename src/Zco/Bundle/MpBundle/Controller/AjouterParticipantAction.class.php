@@ -20,6 +20,7 @@
  */
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Contrôleur gérant l'ajout d'un participant à un MP.
@@ -30,6 +31,9 @@ class AjouterParticipantAction extends Controller
 {
 	public function execute()
 	{
+        if (!verifier('connecte')) {
+            throw new AccessDeniedHttpException();
+        }
 		zCorrecteurs::VerifierFormatageUrl(null, true);
 		include(__DIR__.'/../modeles/lire.php');
 		include(__DIR__.'/../modeles/participants.php');

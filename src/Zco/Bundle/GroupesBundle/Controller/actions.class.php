@@ -21,6 +21,7 @@
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -40,6 +41,9 @@ class GroupesActions extends Controller
 	 */
 	public function executeIndex()
 	{
+	    if (!verifier('groupes_gerer')) {
+	        throw new AccessDeniedHttpException();
+        }
 		fil_ariane('Gestion des groupes');
 
 		return render_to_response(array(
@@ -53,6 +57,9 @@ class GroupesActions extends Controller
 	 */
 	public function executeAjouter()
 	{
+        if (!verifier('groupes_gerer')) {
+            throw new AccessDeniedHttpException();
+        }
 		Page::$titre = 'Ajouter un groupe';
 
 		//Si on veut ajouter un groupe
@@ -72,10 +79,12 @@ class GroupesActions extends Controller
 
 	/**
 	 * Modifie un groupe.
-	 * @author vincent1870 <vincent@zcorrecteurs.fr>
 	 */
 	public function executeEditer()
 	{
+        if (!verifier('groupes_gerer')) {
+            throw new AccessDeniedHttpException();
+        }
 		Page::$titre = 'Modifier un groupe';
 
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))
@@ -104,6 +113,9 @@ class GroupesActions extends Controller
 	 */
 	public function executeSupprimer()
 	{
+        if (!verifier('groupes_gerer')) {
+            throw new AccessDeniedHttpException();
+        }
 		Page::$titre = 'Supprimer un groupe';
 
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))
@@ -138,6 +150,9 @@ class GroupesActions extends Controller
 	 */
 	public function executeVerifier()
 	{
+        if (!verifier('groupes_changer_droits')) {
+            throw new AccessDeniedHttpException();
+        }
 		Page::$titre = 'Vérification des droits d\'un groupe';
 
 		$ListerGroupes = ListerGroupes();
@@ -179,6 +194,9 @@ class GroupesActions extends Controller
 	 */
 	public function executeRechargerDroits()
 	{
+        if (!verifier('groupes_changer_membre')) {
+            throw new AccessDeniedHttpException();
+        }
 		Page::$titre = 'Recharger les droits des groupes';
 
 		//Si on veut recharger le cache
@@ -204,6 +222,9 @@ class GroupesActions extends Controller
 	 */
 	public function executeChangerMembreGroupe()
 	{
+        if (!verifier('groupes_changer_membre')) {
+            throw new AccessDeniedHttpException();
+        }
 		Page::$titre = 'Changer un membre de groupe';
 
 		if(!empty($_POST['pseudo']))
@@ -289,6 +310,9 @@ class GroupesActions extends Controller
 	 */
 	public function executeDroits()
 	{
+        if (!verifier('groupes_changer_droits')) {
+            throw new AccessDeniedHttpException();
+        }
 		Page::$titre = 'Changement des droits d\'un groupe';
 
 		$ListerGroupes = array_merge(ListerGroupes(), ListerGroupesSecondaires());
@@ -424,6 +448,9 @@ class GroupesActions extends Controller
 	 */
 	public function executeGestionDroits()
 	{
+        if (!verifier('droits_gerer')) {
+            throw new AccessDeniedHttpException();
+        }
 		fil_ariane('Gestion des droits');
 
 		return render_to_response(array(
@@ -437,6 +464,9 @@ class GroupesActions extends Controller
 	 */
 	public function executeAjouterDroit()
 	{
+        if (!verifier('droits_gerer')) {
+            throw new AccessDeniedHttpException();
+        }
 		Page::$titre = 'Ajouter un droit';
 
 		//Si on veut ajouter un droit
@@ -460,6 +490,9 @@ class GroupesActions extends Controller
 	 */
 	public function executeEditerDroit()
 	{
+        if (!verifier('droits_gerer')) {
+            throw new AccessDeniedHttpException();
+        }
 		Page::$titre = 'Modifier un droit';
 
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))
@@ -494,6 +527,9 @@ class GroupesActions extends Controller
 	 */
 	public function executeSupprimerDroit()
 	{
+        if (!verifier('droits_gerer')) {
+            throw new AccessDeniedHttpException();
+        }
 		Page::$titre = 'Supprimer un droit';
 
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))
@@ -532,6 +568,9 @@ class GroupesActions extends Controller
 	 */
 	public function executeHistoriqueGroupes()
 	{
+        if (!verifier('groupes_changer_membre')) {
+            throw new AccessDeniedHttpException();
+        }
 		Page::$titre = 'Historique des changements de groupe';
 
 		$NombreDeChangements = CompterChangementHistorique();

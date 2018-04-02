@@ -19,6 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+
 /**
  * Contrôleur gérant l'affichage des billets proposés.
  *
@@ -28,6 +30,9 @@ class PropositionsAction extends BlogActions
 {
 	public function execute()
 	{
+        if (!verifier('blog_voir_billets_proposes')) {
+            throw new AccessDeniedHttpException();
+        }
 		Page::$titre .= ' - Voir les billets proposés';
 
 		list($ListerBillets, $Auteurs) = ListerBillets(array(

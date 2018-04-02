@@ -42,30 +42,23 @@ class Tag extends BaseTag
 		$stmt->bindValue(':id', $this['id']);
 		$stmt->execute();
 		$temp = $stmt->fetchAll();
-		foreach($temp as $cle =>$suj)
-		{
-			if(!verifier('blog_voir', $suj['blog_id_categorie']))
-				unset($temp[$cle]);
-		}
 		$ressources = array_merge($ressources, $temp);
 		$stmt->closeCursor();
 
 		//Dictées
-		if (verifier('dictees_voir'))
-		{
-			$temp = Doctrine_Core::getTable('DicteeTag')->getDictees($this->id);
-			foreach ($temp as $t)
-			{
-				$ressources[] = array(
-					'objet'     => 'dictee',
-					'res_id'    => $t->id,
-					'res_titre' => $t->titre,
-					'res_date'  => $t->validation,
-					'res_url'   => '/dictees/dictee-%d-%s.html',
-					NULL
-				);
-			}
-		}
+        $temp = Doctrine_Core::getTable('DicteeTag')->getDictees($this->id);
+        foreach ($temp as $t)
+        {
+            $ressources[] = array(
+                'objet'     => 'dictee',
+                'res_id'    => $t->id,
+                'res_titre' => $t->titre,
+                'res_date'  => $t->validation,
+                'res_url'   => '/dictees/dictee-%d-%s.html',
+                NULL
+            );
+        }
+
 		return $ressources;
 	}
 }

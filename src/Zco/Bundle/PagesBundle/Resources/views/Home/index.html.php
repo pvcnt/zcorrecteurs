@@ -82,12 +82,8 @@
 	<tr>
 	<td>
 		<h2 class="mod_dictees">Dictées</h2>
-		<?php if (verifier('dictees_voir')): ?>
-			<?php echo $view->render('ZcoDicteesBundle::_bloc_accueil.html.php',
-				compact('DicteesAccueil', 'DicteeHasard', 'DicteesLesPlusJouees')) ?>
-		<?php else: ?>
-			<p>Vous n'avez pas accès aux dictées.</p>
-		<?php endif ?>
+        <?php echo $view->render('ZcoDicteesBundle::_bloc_accueil.html.php',
+            compact('DicteesAccueil', 'DicteeHasard', 'DicteesLesPlusJouees')) ?>
 	</td>
 
 	<td>

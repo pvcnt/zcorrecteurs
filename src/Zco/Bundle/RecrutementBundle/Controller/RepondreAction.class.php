@@ -20,6 +20,7 @@
  */
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Contrôleur gérant la réponse à une candidature (test, acceptation ou refus).
@@ -30,6 +31,9 @@ class RepondreAction extends Controller
 {
 	public function execute()
 	{
+        if (!verifier('recrutements_repondre')) {
+            throw new AccessDeniedHttpException();
+        }
 		//Si on a bien envoyé une candidature
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))
 		{

@@ -20,6 +20,7 @@
  */
 
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Ajout d'une dictée.
@@ -30,7 +31,9 @@ class AjouterAction extends DicteesActions
 {
 	public function execute()
 	{
-		zCorrecteurs::VerifierFormatageUrl();
+		if (!verifier('dictees_ajouter')) {
+		    throw new AccessDeniedHttpException();
+        }
 		Page::$titre = 'Ajouter une dictée';
 
 		include(dirname(__FILE__).'/../forms/AjouterForm.class.php');

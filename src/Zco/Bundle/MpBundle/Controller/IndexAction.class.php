@@ -21,6 +21,7 @@
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Contrôleur gérant l'affichage de la liste de tous les MP.
@@ -31,6 +32,9 @@ class IndexAction extends Controller
 {
 	public function execute()
 	{
+        if (!verifier('connecte')) {
+            throw new AccessDeniedHttpException();
+        }
 		if (isset($_POST['annuler']))
 		{
 			return new RedirectResponse('index.html');

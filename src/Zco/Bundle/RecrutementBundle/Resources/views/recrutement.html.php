@@ -4,7 +4,7 @@
 
 <h1><?php echo htmlspecialchars($recrutement['nom']) ?></h1>
 
-<?php if (verifier('recrutements_postuler') && ($recrutement->depotPossible() || !empty($maCandidature))){ ?>
+<?php if (verifier('connecte') && ($recrutement->depotPossible() || !empty($maCandidature))){ ?>
 <div class="box center" style="font-size: 1.1em;">
 	<?php if ($recrutement->depotPossible() && empty($maCandidature)){ ?>
 	<a href="postuler-<?php echo $recrutement['id']; ?>.html" class="bold">Postuler maintenant</a>
@@ -59,7 +59,7 @@
 		</ul>
 	</div>
 
-	<?php if (verifier('recrutements_editer') || verifier('recrutements_supprimer') || verifier('recrutements_voir_candidatures') || (verifier('recrutements_postuler') && ($InfosRecrutement['depot_possible'] || !empty($InfosCandidature)))){ ?>
+	<?php if (verifier('recrutements_editer') || verifier('recrutements_voir_candidatures') || (verifier('connecte') && ($InfosRecrutement['depot_possible'] || !empty($InfosCandidature)))){ ?>
 	<div class="box">
 		<ul>
 			<?php if (verifier('recrutements_voir_candidatures')){ ?>
@@ -69,7 +69,7 @@
 					<?php echo count($candidatures) ?> candidature<?php echo pluriel(count($candidatures)) ?>
 				</a>
 			</li>
-			<?php } if (verifier('recrutements_postuler') && !empty($InfosCandidature) && verifier('recrutements_desistement') && !in_array($InfosCandidature['candidature_etat'], array(CANDIDATURE_REDACTION, CANDIDATURE_DESISTE, CANDIDATURE_REFUSE, CANDIDATURE_ACCEPTE))) { ?>
+			<?php } if (verifier('connecte') && !empty($InfosCandidature) && verifier('recrutements_desistement') && !in_array($InfosCandidature['candidature_etat'], array(CANDIDATURE_REDACTION, CANDIDATURE_DESISTE, CANDIDATURE_REFUSE, CANDIDATURE_ACCEPTE))) { ?>
 			<li>
 				<img src="/img/recrutement/desister.png" alt="" />
 				<a href="desister-<?php echo $InfosCandidature['candidature_id']; ?>.html">
@@ -83,7 +83,6 @@
 					Modifier le recrutement
 				</a>
 			</li>
-			<?php } if(verifier('recrutements_supprimer')){ ?>
 			<li>
 				<img src="/img/supprimer.png" alt="" />
 				<a href="supprimer-recrutement-<?php echo $recrutement['id']; ?>.html">

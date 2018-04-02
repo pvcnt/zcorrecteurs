@@ -19,6 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+
 /**
  * Contrôleur gérant l'affichage des statistiques temporelles
  * d'utilisation du forum.
@@ -30,8 +32,10 @@ class StatistiquesTemporellesAction extends ForumActions
 {
 	public function execute()
 	{
+        if (!verifier('forum_stats_generales')) {
+            throw new AccessDeniedHttpException();
+        }
 		Page::$titre .= ' - Statistiques d\'utilisation du forum';
-		zCorrecteurs::VerifierFormatageUrl();
 
 		//Inclusion du modèle
 		include(dirname(__FILE__).'/../modeles/statistiques.php');

@@ -301,11 +301,7 @@ in_array($InfosCandidature['candidature_etat'], array(CANDIDATURE_ACCEPTE, CANDI
 					Posté <?php echo dateformat($valeur['commentaire_date'], MINUSCULE);
 					if(verifier('recrutements_ecrire_shoutbox')): ?>
 					<a href="ajouter-message-<?php echo $_GET['id']; ?>-<?php echo $valeur['commentaire_id'];?>.html"><img src="/img/citer.png" alt="Citer"></a>
-					<?php endif;
-					if(verifier('recrutements_editer_shoutbox')): ?>
 					<a href="editer-message-<?php echo $valeur['commentaire_id']; ?>.html"><img src="/img/editer.png" alt="Éditer"></a>
-					<?php endif;
-					if(verifier('recrutements_supprimer_shoutbox')): ?>
 					<a href="supprimer-message-<?php echo $valeur['commentaire_id']; ?>.html"><img src="/img/supprimer.png" alt="Supprimer"></a>
 					<?php endif; ?>
 				</td>

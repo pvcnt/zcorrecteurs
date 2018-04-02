@@ -20,6 +20,7 @@
  */
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Contrôleur gérant l'ajout d'un dossier de MP.
@@ -30,6 +31,9 @@ class AjouterDossierAction extends Controller
 {
 	public function execute()
 	{
+        if (!verifier('connecte')) {
+            throw new AccessDeniedHttpException();
+        }
 		zCorrecteurs::VerifierFormatageUrl();
 		include(__DIR__.'/../modeles/dossiers.php');
 		

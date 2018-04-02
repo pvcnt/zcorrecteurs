@@ -50,7 +50,7 @@ class SupprimerCommentaireAction extends BlogActions
             Page::$titre = htmlspecialchars($InfosCommentaire['version_titre']) . ' - Supprimer un commentaire';
 
             //Si on a bien le droit de supprimer le commentaire
-            if (verifier('blog_supprimer_commentaires') || ($InfosCommentaire['utilisateur_id'] == $_SESSION['id'] && verifier('blog_supprimer_ses_commentaire')) || ($createur == true && $nfosBillet['blog_etat'] != BLOG_VALIDE)) {
+            if (verifier('blog_editer_commentaires') || ($InfosCommentaire['utilisateur_id'] == $_SESSION['id'] && verifier('blog_supprimer_ses_commentaire')) || ($createur == true && $nfosBillet['blog_etat'] != BLOG_VALIDE)) {
                 //Si on veut le supprimer
                 if (isset($_POST['confirmer'])) {
                     SupprimerCommentaire($_GET['id']);

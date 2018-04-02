@@ -12,10 +12,3 @@ services:
             - [setContainer, ["@service_container"]]
         tags:
             - { name: kernel.event_subscriber }
-
-    zco_core.security_listener:
-        class: Zco\Bundle\CoreBundle\EventListener\SecurityListener
-        calls:
-            - [setContainer, ["@service_container"]]
-        tags:
-            - { name: kernel.event_subscriber }

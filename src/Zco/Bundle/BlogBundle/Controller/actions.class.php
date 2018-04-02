@@ -103,7 +103,7 @@ class BlogActions extends Controller
 		$this->verifier_voir = false;
 		if(
 			//-> Billet en ligne
-			($this->InfosBillet['blog_etat'] == BLOG_VALIDE &&  strtotime($this->InfosBillet['blog_date_publication']) <= time() && verifier('blog_voir', $this->InfosBillet['blog_id_categorie']))
+			($this->InfosBillet['blog_etat'] == BLOG_VALIDE &&  strtotime($this->InfosBillet['blog_date_publication']) <= time())
 			||
 			//-> Billet programmé
 			($this->InfosBillet['blog_etat'] == BLOG_VALIDE && strtotime($this->InfosBillet['blog_date_publication']) >= time() && verifier('blog_valider', $this->InfosBillet['blog_id_categorie']))

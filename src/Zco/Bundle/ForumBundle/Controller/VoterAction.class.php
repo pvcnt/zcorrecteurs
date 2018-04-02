@@ -19,6 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+
 /**
  * Contrôleur pour le vote (vérification et enregistrement du vote).
  *
@@ -30,6 +32,9 @@ class VoterAction extends ForumActions
 {
 	public function execute()
 	{
+        if (!verifier('connecte')) {
+            throw new AccessDeniedHttpException();
+        }
 		//Inclusion des modèles
 		include(dirname(__FILE__).'/../modeles/votes.php');
 		include(dirname(__FILE__).'/../modeles/sujets.php');

@@ -20,6 +20,7 @@
  */
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Contrôleur gérant le marquage en non-lu d'un MP.
@@ -30,6 +31,9 @@ class MarquerNonLuAction extends Controller
 {
 	public function execute()
 	{
+        if (!verifier('connecte')) {
+            throw new AccessDeniedHttpException();
+        }
 		include(BASEPATH.'/src/Zco/Bundle/MpBundle/modeles/lire.php');
 		include(BASEPATH.'/src/Zco/Bundle/MpBundle/modeles/action_etendue_plusieurs_mp.php');
 		if(!empty($_GET['id']) AND is_numeric($_GET['id']))

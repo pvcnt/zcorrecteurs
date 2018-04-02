@@ -20,6 +20,7 @@
  */
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Contrôleur gérant l'ajout d'un message dans la shoutbox des administrateurs.
@@ -30,7 +31,9 @@ class AjouterMessageAction extends Controller
 {
 	public function execute()
 	{
-		zCorrecteurs::VerifierFormatageUrl(null, true, true);
+        if (!verifier('recrutements_ecrire_shoutbox')) {
+            throw new AccessDeniedHttpException();
+        }
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))
 		{
 			$InfosCandidature = InfosCandidature($_GET['id']);

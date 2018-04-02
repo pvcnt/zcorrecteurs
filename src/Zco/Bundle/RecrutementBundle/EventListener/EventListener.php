@@ -63,22 +63,15 @@ class EventListener implements EventSubscriberInterface
 		$nombreCandidatures = $this->container->get('zco_admin.manager')->get('recrutement');
 		
 		$tab->addChild('Ajouter un recrutement', array(
-			'credentials' => 'recrutements_ajouter', 
+			'credentials' => 'recrutements_editer',
 			'uri' => '/recrutement/ajouter.html',
 		));
 	
 		$tab->addChild('Voir les candidatures en attente', array(
 			'label' => 'Il y a ' . $nombreCandidatures . ' candidature' . pluriel($nombreCandidatures) . ' en attente',
-			'credentials' => array('and', 'recrutements_voir',
-								array('or', 'recrutements_editer', 'recrutements_ajouter',
-					  			'recrutements_supprimer', 'recrutements_voir_candidatures', 'recrutements_repondre')),
+			'credentials' => array('recrutements_voir_candidatures'),
 			'uri' => '/recrutement/gestion.html',
 			'count' => $nombreCandidatures,
-		));
-	
-		$tab->addChild('Accéder à l\'espace recrutement', array(
-			'credentials' => 'recrutements_voir', 
-			'uri' => '/recrutement/',
 		));
 	}
 	

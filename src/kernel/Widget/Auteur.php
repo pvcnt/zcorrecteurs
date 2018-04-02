@@ -46,7 +46,7 @@ class Widget_Auteur extends Widget
 
 		$html .= '</optgroup></select>';
 
-		if (verifier('auteurs_ajouter'))
+		if (verifier('auteurs_modifier'))
 		{
 			$html .= ' <a href="/auteurs/ajouter-1.html"
 				onclick="window.open(\'/auteurs/ajouter-1.html#'.$this->attrs['id']

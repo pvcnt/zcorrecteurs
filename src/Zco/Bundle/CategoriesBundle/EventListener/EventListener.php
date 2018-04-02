@@ -44,14 +44,14 @@ class EventListener implements EventSubscriberInterface
 		
 		$tab->addChild('Ajouter une catégorie', array(
 			'uri' => '/categories/ajouter.html',
-		))->secure('cats_ajouter');
+		))->secure('cats_editer');
 		
 		$tab->addChild('Gérer les catégories', array(
 			'uri' => '/categories/',
-		))->secure(array('or', 'cats_ordonner', 'cats_editer', 'cats_supprimer'));
+		))->secure('cats_editer');
 		
 		$tab->addChild('Afficher un graphique des catégories', array(
 			'uri' => '/categories/image.html'
-		))->secure(array('or', 'cats_ordonner', 'cats_editer', 'cats_supprimer'));
+		))->secure('cats_editer');
 	}
 }

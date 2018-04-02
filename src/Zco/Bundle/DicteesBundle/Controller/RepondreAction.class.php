@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -30,6 +31,9 @@ class RepondreAction extends DicteesActions
 {
 	public function execute()
 	{
+        if (!verifier('dictees_publier')) {
+            throw new AccessDeniedHttpException();
+        }
 		// Vérification de l'existence de la dictée
 		$Dictee = $_GET['id'] ? Dictee($_GET['id']) : null;
 		if(!$Dictee)

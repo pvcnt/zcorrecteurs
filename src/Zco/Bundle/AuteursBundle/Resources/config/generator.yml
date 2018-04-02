@@ -5,7 +5,7 @@ Auteur:
 
     actions:
         _delete:     { label: Supprimer, credentials: [auteurs_modifier] }
-        _new:        { label: Ajouter un auteur, credentials: [auteurs_ajouter] }
+        _new:        { label: Ajouter un auteur, credentials: [auteurs_modifier] }
         _edit:       { label: Modifier, credentials: [auteurs_modifier] }
 
     form:

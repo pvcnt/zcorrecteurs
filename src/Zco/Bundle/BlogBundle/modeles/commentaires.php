@@ -380,8 +380,7 @@ function ListerCommentairesNonValides($page = 1)
 	foreach(ListerGroupes() as $grp)
 	{
 		$droits = RecupererDroitsGroupe($grp['groupe_id']);
-		if(isset($droits['blog_supprimer_commentaires'])
-		 ||isset($droits['blog_editer_commentaires']))
+		if(isset($droits['blog_editer_commentaires']))
 			$groupes[] = (int)$grp['groupe_id'];
 	}
 	$groupes = implode(', ', $groupes);

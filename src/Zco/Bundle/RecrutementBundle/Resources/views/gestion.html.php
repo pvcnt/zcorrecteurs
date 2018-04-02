@@ -2,9 +2,7 @@
 
 <h1>Liste des recrutements</h1>
 
-<?php if(verifier('recrutements_ajouter')){ ?>
 <p class="gras centre"><a href="ajouter.html">Ajouter un recrutement</a></p>
-<?php } ?>
 
 <p>
 	Sur cette page se trouvent tous les recrutements, y compris les recrutements
@@ -21,9 +19,7 @@
 			<th style="width: 15%;">Début</th>
 			<th style="width: 15%;">Fin de dépôt des candidatures</th>
 			<th style="width: 15%;">Groupe concerné</th>
-			<?php if(verifier('recrutements_editer') || verifier('recrutements_supprimer')){ ?>
 			<th style="width: 5%;">Actions</th>
-			<?php } ?>
 		</tr>
 	</thead>
 
@@ -62,19 +58,14 @@
 					<?php echo htmlspecialchars($r['groupe_nom']);
 					if($r['recrutement_nb_personnes'] > 0) echo ' ('.$r['recrutement_nb_personnes'].')'; ?>
 				</td>
-				<?php if(verifier('recrutements_editer') || verifier('recrutements_supprimer')){ ?>
 				<td class="centre">
-				    <?php if(verifier('recrutements_editer')){ ?>
 					<a href="editer-recrutement-<?php echo $r['recrutement_id']; ?>.html">
 						<img src="/img/editer.png" alt="Modifier" />
 					</a>
-				    <?php } if(verifier('recrutements_supprimer')){ ?>
 					<a href="supprimer-recrutement-<?php echo $r['recrutement_id']; ?>.html">
 						<img src="/img/supprimer.png" alt="Supprimer" />
 					</a>
-					<?php } ?>
 				</td>
-				<?php } ?>
 			</tr>
 			<?php }	?>
 	</tbody>

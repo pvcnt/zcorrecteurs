@@ -20,6 +20,7 @@
  */
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Contrôleur gérant la suppression d'un message de la shoutbox des
@@ -31,6 +32,9 @@ class SupprimerMessageAction extends Controller
 {
 	public function execute()
 	{
+        if (!verifier('recrutements_ecrire_shoutbox')) {
+            throw new AccessDeniedHttpException();
+        }
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))
 		{
 			include(dirname(__FILE__).'/../modeles/commentaires.php');

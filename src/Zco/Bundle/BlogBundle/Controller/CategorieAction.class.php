@@ -37,9 +37,6 @@ class CategorieAction extends BlogActions
 			if(empty($InfosCategorie))
                 throw new NotFoundHttpException();
 
-			if(!verifier('blog_voir', $_GET['id']))
-				throw new AccessDeniedHttpException();
-
 			zCorrecteurs::VerifierFormatageUrl($InfosCategorie['cat_nom'], true, false, 1);
 			$NombreDeBillet = CompterListerBilletsEnLigne($_GET['id']);
 			$nbBilletsParPage = 15;

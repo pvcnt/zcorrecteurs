@@ -31,6 +31,9 @@ class EditerSondageAction extends ForumActions
 {
 	public function execute()
 	{
+        if (!verifier('editer_sondages')) {
+            throw new AccessDeniedHttpException();
+        }
 		include(dirname(__FILE__).'/../modeles/sondages.php');
 
 		if(empty($_GET['id']) || !is_numeric($_GET['id']))

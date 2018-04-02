@@ -32,7 +32,9 @@ class ValidationAction extends BlogActions
 {
 	public function execute()
 	{
-		zCorrecteurs::VerifierFormatageUrl(null, true);
+        if (!verifier('blog_voir_historique')) {
+            throw new AccessDeniedHttpException();
+        }
 
 		//Si on a bien demandé à voir un billet
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))

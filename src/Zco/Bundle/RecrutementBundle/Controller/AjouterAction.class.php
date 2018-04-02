@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Zco\Bundle\RecrutementBundle\Form\Type\RecrutementType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -32,7 +33,9 @@ class AjouterAction extends Controller
 {
 	public function execute(Request $request)
 	{
-		\zCorrecteurs::VerifierFormatageUrl();
+		if (!verifier('recrutements_editer')) {
+		    throw new AccessDeniedHttpException();
+        }
 		\Page::$titre = 'Ajouter un recrutement';
 		
 		$recrutement = new Recrutement();

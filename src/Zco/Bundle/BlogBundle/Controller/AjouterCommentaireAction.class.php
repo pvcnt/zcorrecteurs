@@ -33,6 +33,9 @@ class AjouterCommentaireAction extends BlogActions
 {
 	public function execute()
 	{
+        if (!verifier('connecte')) {
+            throw new AccessDeniedHttpException();
+        }
 		zCorrecteurs::VerifierFormatageUrl(null, true, true);
 
 		//Si on a bien demandé à voir un billet

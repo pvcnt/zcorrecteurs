@@ -61,7 +61,7 @@ class RecrutementAction extends Controller
 		fil_ariane(htmlspecialchars($recrutement['nom']));
 		
 		return render_to_response(array(
-			'maCandidature' => verifier('recrutements_postuler') ? Doctrine_Core::getTable('RecrutementCandidature')->recupererRecrutementUtilisateur($recrutement['id'], $_SESSION['id']) : null,
+			'maCandidature' => verifier('connecte') ? Doctrine_Core::getTable('RecrutementCandidature')->recupererRecrutementUtilisateur($recrutement['id'], $_SESSION['id']) : null,
 			'candidatures' => verifier('recrutements_voir_candidatures') ? Doctrine_Core::getTable('RecrutementCandidature')->listerRecrutement($recrutement['id'], !empty($_GET['tri']) ? $_GET['tri'] : 'etat') : null,
 			'recrutement' => $recrutement,
 		));

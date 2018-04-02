@@ -20,6 +20,7 @@
  */
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -31,6 +32,9 @@ class ProposerAction extends DicteesActions
 {
 	public function execute()
 	{
+        if (!verifier('connecte')) {
+            throw new AccessDeniedHttpException();
+        }
 		zCorrecteurs::VerifierFormatageUrl(null, true);
 
 		// On veut proposer une dictée

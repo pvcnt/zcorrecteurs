@@ -19,6 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+
 /**
  * Contrôleur gérant l'ajout d'un billet.
  *
@@ -28,6 +30,9 @@ class AjouterAction extends BlogActions
 {
 	public function execute()
 	{
+	    if (!verifier('connecte')) {
+	        throw new AccessDeniedHttpException();
+        }
 		zCorrecteurs::VerifierFormatageUrl();
 		Page::$titre .= ' - Ajouter un billet';
 

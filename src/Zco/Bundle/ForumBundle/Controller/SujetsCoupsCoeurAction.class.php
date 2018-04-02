@@ -19,6 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+
 /**
  * Controleur pour l'affichage des sujets en coups de coeur.
  *
@@ -28,6 +30,9 @@ class SujetsCoupsCoeurAction extends ForumActions
 {
 	public function execute()
 	{
+        if (!verifier('mettre_sujets_coup_coeur')) {
+            throw new AccessDeniedHttpException();
+        }
 		Page::$titre = 'Gérer les sujets en coups de cœur';
 
 		//Inclusion du modèle

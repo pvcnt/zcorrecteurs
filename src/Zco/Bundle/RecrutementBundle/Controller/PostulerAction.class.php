@@ -21,6 +21,7 @@
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Contrôleur gérant l'affichage de la page recueillant une candidature (envoi de
@@ -32,6 +33,9 @@ class PostulerAction extends Controller
 {
 	public function execute()
 	{
+        if (!verifier('connecte')) {
+            throw new AccessDeniedHttpException();
+        }
 	    include(__DIR__.'/../modeles/quiz.php');
 	    
 		//Si on a bien envoyé un recrutement
@@ -41,7 +45,7 @@ class PostulerAction extends Controller
 			if(
 				empty($InfosRecrutement) ||
 				($InfosRecrutement['recrutement_prive'] && !verifier('recrutements_voir_prives')) ||
-				($InfosRecrutement['recrutement_etat'] == RECRUTEMENT_CACHE && !verifier('recrutements_ajouter') && !verifier('recrutements_editer') && !verifier('recrutements_supprimer') && !verifier('recrutements_voir_candidatures') && !verifier('recrutements_repondre'))
+				($InfosRecrutement['recrutement_etat'] == RECRUTEMENT_CACHE && !verifier('recrutements_editer') && !verifier('recrutements_voir_candidatures') && !verifier('recrutements_repondre'))
 			)
 				return redirect(229, '/recrutement/', MSG_ERROR);
 			zCorrecteurs::VerifierFormatageUrl($InfosRecrutement['recrutement_nom'], true);

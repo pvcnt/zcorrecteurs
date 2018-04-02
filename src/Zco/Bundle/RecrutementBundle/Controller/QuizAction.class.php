@@ -40,7 +40,7 @@ class QuizAction extends Controller
                         if(
                                 empty($InfosRecrutement) ||
                                 ($InfosRecrutement['recrutement_prive'] && !verifier('recrutements_voir_prives')) ||
-                                ($InfosRecrutement['recrutement_etat'] == RECRUTEMENT_CACHE && !verifier('recrutements_ajouter') && !verifier('recrutements_editer') && !verifier('recrutements_supprimer') && !verifier('recrutements_voir_candidatures') && !verifier('recrutements_repondre'))
+                                ($InfosRecrutement['recrutement_etat'] == RECRUTEMENT_CACHE && !verifier('recrutements_editer') && !verifier('recrutements_voir_candidatures') && !verifier('recrutements_repondre'))
                         )
                                 return redirect(229, '/recrutement/', MSG_ERROR);
 

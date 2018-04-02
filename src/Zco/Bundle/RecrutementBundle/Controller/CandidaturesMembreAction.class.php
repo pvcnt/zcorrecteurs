@@ -20,6 +20,8 @@
  */
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Contrôleur gérant l'affichage de la liste des candidatures d'un membre
@@ -32,9 +34,11 @@ class CandidaturesMembreAction extends Controller
 	{
 		if ($_GET['id'])
 		{
-		    zCorrecteurs::VerifierFormatageUrl(null, true);
+            if (!verifier('recrutements_voir_candidatures')) {
+                throw new AccessDeniedHttpException();
+            }
 		    
-			$membre = Doctrine_Query::create()
+			$membre = \Doctrine_Query::create()
 				->select('u.pseudo')
 				->from('Utilisateur u')
 				->where('u.id = ?', $_GET['id'])
@@ -42,7 +46,7 @@ class CandidaturesMembreAction extends Controller
 				->offsetGet(0);
 			
 			if (!$membre->id)
-				return redirect(123, 'index.html', MSG_ERROR);
+				throw new NotFoundHttpException();
 			
 			$vars = array('Membre' => $membre);
 			$vars['Candidatures'] = Doctrine_Core::getTable('RecrutementCandidature')->ListerCandidaturesMembre($_GET['id']);
@@ -53,6 +57,6 @@ class CandidaturesMembreAction extends Controller
 			return render_to_response($vars);
 		}
 		else
-			return redirect(123, $this->generateUrl('zco_user_index'), MSG_ERROR);
+            throw new NotFoundHttpException();
 	}
 }

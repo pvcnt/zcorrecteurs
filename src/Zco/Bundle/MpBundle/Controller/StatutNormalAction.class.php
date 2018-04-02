@@ -20,6 +20,7 @@
  */
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Contrôleur gérant le retrait des droits de maître à un participant.
@@ -30,6 +31,9 @@ class StatutNormalAction extends Controller
 {
 	public function execute()
 	{
+        if (!verifier('connecte')) {
+            throw new AccessDeniedHttpException();
+        }
 		zCorrecteurs::VerifierFormatageUrl(null, true, true);
 		include(BASEPATH.'/src/Zco/Bundle/MpBundle/modeles/lire.php');
 		include(BASEPATH.'/src/Zco/Bundle/MpBundle/modeles/participants.php');

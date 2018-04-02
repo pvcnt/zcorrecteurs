@@ -19,6 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+
 /**
  * Contrôleur gérant l'affichage des billets en cours de rédaction.
  *
@@ -28,7 +30,9 @@ class BrouillonsAction extends BlogActions
 {
 	public function execute()
 	{
-		zCorrecteurs::VerifierFormatageUrl();
+        if (!verifier('blog_voir_billets_redaction')) {
+            throw new AccessDeniedHttpException();
+        }
 		Page::$titre .= ' - Voir les billets en cours de rédaction';
 
 		list($ListerBillets, $Auteurs) = ListerBillets(array('etat' => BLOG_BROUILLON));

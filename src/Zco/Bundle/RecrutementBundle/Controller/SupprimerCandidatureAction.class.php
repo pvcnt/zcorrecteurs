@@ -20,6 +20,7 @@
  */
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Contrôleur gérant la suppression d'une candidature.
@@ -30,6 +31,9 @@ class SupprimerCandidatureAction extends Controller
 {
 	public function execute()
 	{
+        if (!verifier('recrutements_supprimer_candidatures')) {
+            throw new AccessDeniedHttpException();
+        }
 		//Si on a bien envoyé une candidature
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))
 		{

@@ -72,7 +72,7 @@ if(
 $verifier_voir = false;
 if(
 	//-> Billet en ligne
-	($InfosBillet['blog_etat'] == BLOG_VALIDE &&  strtotime($InfosBillet['blog_date_publication']) <= time() && verifier('blog_voir', $InfosBillet['blog_id_categorie']))
+	($InfosBillet['blog_etat'] == BLOG_VALIDE &&  strtotime($InfosBillet['blog_date_publication']) <= time())
 	||
 	//-> Billet programmé
 	($InfosBillet['blog_etat'] == BLOG_VALIDE && strtotime($InfosBillet['blog_date_publication']) >= time() && verifier('blog_valider', $InfosBillet['blog_id_categorie']))

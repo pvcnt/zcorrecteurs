@@ -34,11 +34,18 @@ class AuteursActions extends Generator
 
 	public function executeIndex()
 	{
+	    if (!verifier('auteurs_modifier')) {
+	        throw new AccessDeniedHttpException();
+        }
 		return $this->executeList();
 	}
 
 	public function executeAjouter()
 	{
+        if (!verifier('auteurs_modifier')) {
+            throw new AccessDeniedHttpException();
+        }
+
 		if (empty($_GET['id']))
 			return $this->executeNew();
 
@@ -66,13 +73,17 @@ class AuteursActions extends Generator
 
 	public function executeModifier()
 	{
-		zCorrecteurs::VerifierFormatageUrl(null, true);
+        if (!verifier('auteurs_modifier')) {
+            throw new AccessDeniedHttpException();
+        }
 		return $this->executeEdit($_GET['id']);
 	}
 
 	public function executeSupprimer()
 	{
-		zCorrecteurs::VerifierFormatageUrl(null, true);
+        if (!verifier('auteurs_modifier')) {
+            throw new AccessDeniedHttpException();
+        }
 		return $this->executeDelete($_GET['id']);
 	}
 
@@ -101,6 +112,6 @@ class AuteursActions extends Generator
 			));
 		}
 		else
-			throw new AccessDeniedHttpException();
+			throw new NotFoundHttpException();
 	}
 }

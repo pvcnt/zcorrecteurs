@@ -139,7 +139,7 @@
 	</div> <!-- /.accordion-group -->
 	<?php ++$c; endif ?>
 
-	<?php if (verifier('voir_historique_groupes') && count($ListerGroupes) > 0): ?>
+	<?php if (verifier('groupes_changer_membre') && count($ListerGroupes) > 0): ?>
 	<div class="accordion-group">
 		<div class="accordion-heading">
             <a class="accordion-toggle" data-toggle="collapse" href="#profile-infos-groups">

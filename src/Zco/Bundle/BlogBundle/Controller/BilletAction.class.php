@@ -121,7 +121,7 @@ class BilletAction extends BlogActions
             }
 
             //Droit de voir le panel moderation
-            if((verifier('blog_supprimer_commentaires') || verifier('blog_choisir_comms')) && $this->comms == true)
+            if((verifier('blog_editer_commentaires') || verifier('blog_choisir_comms')) && $this->comms == true)
                 $this->voir_moderation = true;
             else
                 $this->voir_moderation = false;

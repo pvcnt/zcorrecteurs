@@ -19,6 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+
 /**
  * Contrôleur gérant l'affichage des billets refusés.
  *
@@ -28,6 +30,9 @@ class RefusAction extends BlogActions
 {
 	public function execute()
 	{
+        if (!verifier('blog_voir_refus')) {
+            throw new AccessDeniedHttpException();
+        }
 		Page::$titre = 'Voir les billets refusés';
 
 		list($ListerBillets, $Auteurs) = ListerBillets(array(

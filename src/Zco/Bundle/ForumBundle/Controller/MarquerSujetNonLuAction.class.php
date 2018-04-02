@@ -19,6 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+
 /**
  * Contrôleur pour le marquage d'un sujet ponctuel comme étant non-lu
  *
@@ -28,6 +30,10 @@ class MarquerSujetNonLuAction extends ForumActions
 {
     public function execute()
     {
+        if (!verifier('connecte')) {
+            throw new AccessDeniedHttpException();
+        }
+
         //Vérification du token.
         if (empty($_GET['token']) || $_GET['token'] != $_SESSION['token'])
             throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;

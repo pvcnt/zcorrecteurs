@@ -20,6 +20,7 @@
  */
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Contrôleur gérant le marquage en résolues de toutes les alertes.
@@ -30,6 +31,9 @@ class MarquerAlertesResoluesAction extends Controller
 {
 	public function execute()
 	{
+        if (!verifier('mp_alertes')) {
+            throw new AccessDeniedHttpException();
+        }
 		include(BASEPATH.'/src/Zco/Bundle/MpBundle/modeles/alertes.php');
 		ResoudreAlertes();
 		$this->get('zco_core.cache')->delete('taches_admin_alertes_mp');

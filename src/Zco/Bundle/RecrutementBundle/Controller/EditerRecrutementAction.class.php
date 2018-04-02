@@ -19,10 +19,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Zco\Bundle\RecrutementBundle\Form\Type\RecrutementType;
-
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\RecrutementBundle\Form\Type\RecrutementType;
 
 /**
  * Contrôleur gérant la modification d'un recrutement.
@@ -31,44 +32,42 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
  */
 class EditerRecrutementAction extends Controller
 {
-	public function execute(Request $request)
-	{
-		if (empty($_GET['id']) || !is_numeric($_GET['id']))
-		{
-			return redirect(228, '/recrutement/', MSG_ERROR);
-		}
+    public function execute(Request $request)
+    {
+        if (!verifier('recrutements_editer')) {
+            throw new AccessDeniedHttpException();
+        }
+        if (empty($_GET['id']) || !is_numeric($_GET['id'])) {
+            throw new NotFoundHttpException();
+        }
+        $recrutement = \Doctrine_Core::getTable('Recrutement')->recuperer($_GET['id']);
+        if (!$recrutement) {
+            throw new NotFoundHttpException();
+        }
 
-		$recrutement = Doctrine_Core::getTable('Recrutement')->recuperer($_GET['id']);
-		if (!$recrutement)
-		{
-			return redirect(229, 'gestion.html', MSG_ERROR);
-		}
-		
-		$form = $this->get('form.factory')->create(new RecrutementType(), $recrutement);
+        $form = $this->get('form.factory')->create(new RecrutementType(), $recrutement);
 
-		if ($request->getMethod() == 'POST')
-		{
-		    $form->submit($request);
-		    if ($form->isValid())
-			{
-				$recrutement->save();
-				return redirect(2, 'recrutement-'.$recrutement['id'].'-'.rewrite($recrutement['nom']).'.html');
-		    }
-		}
-		
-		zCorrecteurs::VerifierFormatageUrl($recrutement['nom'], true);
-		Page::$titre = htmlspecialchars($recrutement['nom']);
-		
-		//Inclusion de la vue
-		fil_ariane(array(
-			htmlspecialchars($recrutement['nom']) => 'recrutement-'.$recrutement['id'].'.html',
-			'Modifier le recrutement'
-		));
-		
-		return render_to_response(array(
-			'form'        => $form->createView(),
-			'recrutement' => $recrutement,
-			'quiz'        => $this->get('zco_quiz.manager.quiz')->lister(true),
-		));
-	}
+        if ($request->getMethod() == 'POST') {
+            $form->submit($request);
+            if ($form->isValid()) {
+                $recrutement->save();
+                return redirect(2, 'recrutement-' . $recrutement['id'] . '-' . rewrite($recrutement['nom']) . '.html');
+            }
+        }
+
+        zCorrecteurs::VerifierFormatageUrl($recrutement['nom'], true);
+        Page::$titre = htmlspecialchars($recrutement['nom']);
+
+        //Inclusion de la vue
+        fil_ariane(array(
+            htmlspecialchars($recrutement['nom']) => 'recrutement-' . $recrutement['id'] . '.html',
+            'Modifier le recrutement'
+        ));
+
+        return render_to_response(array(
+            'form' => $form->createView(),
+            'recrutement' => $recrutement,
+            'quiz' => $this->get('zco_quiz.manager.quiz')->lister(true),
+        ));
+    }
 }

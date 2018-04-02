@@ -26,7 +26,7 @@
 			<th style="width: 15%;">Début</th>
 			<th style="width: 25%;">Fin de dépôt des candidatures</th>
 			<th style="width: 20%;">Groupe concerné</th>
-			<?php if(verifier('recrutements_postuler')){ ?>
+			<?php if(verifier('connecte')){ ?>
 			<th style="width: 10%;">Postuler !</th>
 			<?php } ?>
 		</tr>
@@ -73,7 +73,7 @@
 					<?php echo htmlspecialchars($r['groupe_nom']);
 					if($r['recrutement_nb_personnes'] > 0) echo ' ('.$r['recrutement_nb_personnes'].')'; ?>
 				</td>
-				<?php if(verifier('recrutements_postuler')){ ?>
+				<?php if(verifier('connecte')){ ?>
 				<td class="centre">
 					<?php if($r['depot_possible'] || !empty($r['candidature_etat'])){ ?>
 					<a href="postuler-<?php echo $r['recrutement_id']; ?>.html"><img src="/img/recrutement/postuler.png" alt="Postuler" /></a>

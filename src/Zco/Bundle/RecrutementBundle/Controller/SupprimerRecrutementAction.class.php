@@ -19,8 +19,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Contrôleur gérant la suppression d'un recrutement.
@@ -29,39 +31,34 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
  */
 class SupprimerRecrutementAction extends Controller
 {
-	public function execute()
-	{
-		if (empty($_GET['id']) || !is_numeric($_GET['id']))
-		{
-			return redirect(228, '/recrutement/', MSG_ERROR);
-		}
+    public function execute()
+    {
+        if (!verifier('recrutements_editer')) {
+            throw new AccessDeniedHttpException();
+        }
+        if (empty($_GET['id']) || !is_numeric($_GET['id'])) {
+            throw new NotFoundHttpException();
+        }
+        $recrutement = \Doctrine_Core::getTable('Recrutement')->recuperer($_GET['id']);
+        if (!$recrutement) {
+            throw new NotFoundHttpException();
+        }
+        Page::$titre = htmlspecialchars($recrutement['nom']);
 
-		$recrutement = Doctrine_Core::getTable('Recrutement')->recuperer($_GET['id']);
-		if (!$recrutement)
-		{
-			return redirect(229, 'gestion.html', MSG_ERROR);
-		}
-		
-		zCorrecteurs::VerifierFormatageUrl($recrutement['nom'], true);
-		Page::$titre = htmlspecialchars($recrutement['nom']);
+        //Si on veut supprimer
+        if (isset($_POST['confirmer'])) {
+            $recrutement->delete();
+            return redirect('Le recrutement a bien été supprimé.', 'gestion.html');
+        } //Si on annule
+        elseif (isset($_POST['annuler'])) {
+            return new RedirectResponse('gestion.html');
+        }
 
-		//Si on veut supprimer
-		if (isset($_POST['confirmer']))
-		{
-			$recrutement->delete();
-			return redirect(3, 'gestion.html');
-		}
-		//Si on annule
-		elseif (isset($_POST['annuler']))
-		{
-			return new RedirectResponse('gestion.html');
-		}
-
-		//Inclusion de la vue
-		fil_ariane(array(
-			htmlspecialchars($recrutement['nom']) => 'recrutement-'.$recrutement['id'].'.html',
-			'Supprimer le recrutement'
-		));
-		return render_to_response(array('recrutement' => $recrutement));
-	}
+        //Inclusion de la vue
+        fil_ariane(array(
+            htmlspecialchars($recrutement['nom']) => 'recrutement-' . $recrutement['id'] . '.html',
+            'Supprimer le recrutement'
+        ));
+        return render_to_response(array('recrutement' => $recrutement));
+    }
 }

@@ -20,6 +20,7 @@
  */
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Contrôleur gérant la suppression d'un dossier de MP.
@@ -30,6 +31,9 @@ class SupprimerDossierAction extends Controller
 {
 	public function execute()
 	{
+        if (!verifier('connecte')) {
+            throw new AccessDeniedHttpException();
+        }
 		if(isset($_POST['annuler']))
 		{
 			return new Symfony\Component\HttpFoundation\RedirectResponse('index.html');

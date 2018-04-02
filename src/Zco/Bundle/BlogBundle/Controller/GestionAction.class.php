@@ -19,6 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+
 /**
  * Contrôleur gérant l'affichage des billets en ligne (côté admin).
  *
@@ -28,6 +30,9 @@ class GestionAction extends BlogActions
 {
 	public function execute()
 	{
+        if (!verifier('blog_editer_valide') && !verifier('blog_supprimer')) {
+            throw new AccessDeniedHttpException();
+        }
 		zCorrecteurs::VerifierFormatageUrl(null, false, false, 1);
 		Page::$titre .= ' - Liste des billets en ligne';
 

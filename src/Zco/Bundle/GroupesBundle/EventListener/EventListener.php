@@ -65,7 +65,7 @@ class EventListener implements EventSubscriberInterface
 	
 		$tab->addChild('Recharger le cache des droits et les groupes', array(
 			'uri' => '/groupes/recharger-droits.html',
-		))->secure('droits_recharger');
+		))->secure('groupes_changer_membre');
 	
 		$tab->addChild('Changer un membre de groupe', array(
 			'uri' => '/groupes/changer-membre-groupe.html',
@@ -79,6 +79,6 @@ class EventListener implements EventSubscriberInterface
 		
 		$tab->addChild('Historique des changements de groupe', array(
 			'uri' => '/groupes/historique-groupes.html',
-		))->secure('voir_historique_groupes');
+		))->secure('groupes_changer_membre');
 	}
 }

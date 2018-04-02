@@ -184,7 +184,7 @@ class DefaultController extends Controller
         if (verifier('membres_voir_ch_pseudos')) {
             $vars['newPseudo'] = \Doctrine_Core::getTable('UserNewUsername')->getByUserId($user->getId());
         }
-        if (verifier('voir_historique_groupes') || $user->isTeam()) {
+        if (verifier('groupes_changer_membre') || $user->isTeam()) {
             require_once __DIR__ . '/../../GroupesBundle/modeles/groupes.php';
             $vars['ListerGroupes'] = \ListerChangementGroupeMembre($user->getId());
             if ($user->isTeam() && count($vars['ListerGroupes'])) {
@@ -206,7 +206,7 @@ class DefaultController extends Controller
             && ($_SESSION['MPs'] < verifier('mp_quota') OR verifier('mp_quota') == -1);
         $vars['canSendEmail'] = verifier('rechercher_mail') || $user->isEmailDisplayed();
         $vars['canSeeInfos'] = verifier('membres_voir_ch_pseudos') || verifier('voir_sanctions')
-            || verifier('voir_historique_groupes') || verifier('ips_analyser');
+            || verifier('groupes_changer_membre') || verifier('ips_analyser');
         $vars['canAdmin'] = verifier('groupes_changer_membre') || verifier('membres_editer_titre') || verifier('options_editer_profils');
         $vars['own'] = $_SESSION['id'] == $user->getId();
 

@@ -83,7 +83,7 @@ class UiListener implements EventSubscriberInterface
 			'uri' => '/blog/nouveaux-commentaires.html',
 			'count' => $tasks,
 			'separator' => true,
-		))->secure('blog_supprimer_commentaires');
+		))->secure('blog_editer_commentaires');
 		
 		$tab->addChild('Voir tous les commentaires', array(
 			'uri' => '/blog/tous-les-commentaires.html',
