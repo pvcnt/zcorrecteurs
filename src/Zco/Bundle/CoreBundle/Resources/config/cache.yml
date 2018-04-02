@@ -1,12 +1,12 @@
 services:
     zco_core.cache.file:
         class: Zco\Bundle\CoreBundle\Cache\FileCache
-        arguments: [%kernel.cache_dir%/zco_core_cache, %cache_default_lifetime%, @?logger]
+        arguments: ["%kernel.cache_dir%/zco_core_cache", "%cache_default_lifetime%", "@?logger"]
     
     zco_core.cache.memcache:
         class: Zco\Bundle\CoreBundle\Cache\MemcacheCache
-        arguments: [%cache_default_lifetime%, @?logger]
+        arguments: ["%cache_default_lifetime%", "@?logger"]
     
     zco_core.cache.memory:
         class: Zco\Bundle\CoreBundle\Cache\MemoryCache
-        arguments: [%cache_default_lifetime%, @?logger]
+        arguments: ["%cache_default_lifetime%", "@?logger"]

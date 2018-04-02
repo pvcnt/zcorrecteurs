@@ -48,4 +48,4 @@ services:
     
     zco_doctrine1.migrations.configuration:
         class: Zco\Bundle\Doctrine1Bundle\Migrations\Configuration\Configuration
-        arguments: [%kernel.root_dir%/../data/migrations, @service_container]
+        arguments: ["%kernel.root_dir%/../data/migrations", "@service_container"]

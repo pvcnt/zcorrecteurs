@@ -2,20 +2,20 @@ services:
     zco_core.event_listener:
         class: Zco\Bundle\CoreBundle\EventListener\EventListener
         calls:
-            - [setContainer, [@service_container]]
+            - [setContainer, ["@service_container"]]
         tags:
             - { name: kernel.event_subscriber }
     
     zco_core.router_listener:
         class: Zco\Bundle\CoreBundle\EventListener\RouterListener
         calls:
-            - [setContainer, [@service_container]]
+            - [setContainer, ["@service_container"]]
         tags:
             - { name: kernel.event_subscriber }
 
     zco_core.security_listener:
         class: Zco\Bundle\CoreBundle\EventListener\SecurityListener
         calls:
-            - [setContainer, [@service_container]]
+            - [setContainer, ["@service_container"]]
         tags:
             - { name: kernel.event_subscriber }

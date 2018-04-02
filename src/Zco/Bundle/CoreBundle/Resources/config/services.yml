@@ -4,7 +4,7 @@ parameters:
 services:
     zco_core.registry:
         class:     Zco\Bundle\CoreBundle\Registry
-        arguments: [@zco_core.cache]
+        arguments: ["@zco_core.cache"]
 
     zco_core.form.type.zform:
         class: Zco\Bundle\CoreBundle\Form\Type\ZformType

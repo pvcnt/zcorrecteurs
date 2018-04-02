@@ -105,7 +105,7 @@ class ModelsBuilder
 	        //qu'il contient. On s'assure que chaque modèle ne soit défini qu'une fois.
 	        foreach (glob($configDir.'/*.yml') as $file)
 	        {
-	            $schema = Yaml::parse($file);
+	            $schema = Yaml::parse(file_get_contents($file));
 	            foreach ($schema as $model => $definition)
 	            {
 	                if ($model === 'options')

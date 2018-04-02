@@ -8,11 +8,11 @@ services:
     
     zco_parser.parser.zcode:
         class: Zco\Bundle\ParserBundle\Parser\zCodeParser
-        arguments: [@event_dispatcher]
+        arguments: ["@event_dispatcher"]
     
     zco_parser.feature.cache:
         class: Zco\Bundle\ParserBundle\Feature\CacheFeature
-        arguments: [@zco_core.cache]
+        arguments: ["@zco_core.cache"]
         tags:
             - { name: kernel.event_subscriber }
 

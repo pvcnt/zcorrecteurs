@@ -2,7 +2,7 @@ services:
     zco_twitter.event_listener:
         class: Zco\Bundle\TwitterBundle\EventListener\EventListener
         calls:
-            - [setContainer, [@service_container]]
+            - [setContainer, ["@service_container"]]
         tags:
             - { name: kernel.event_subscriber }
     

@@ -2,6 +2,6 @@ services:
     zco_dictees.event_listener:
         class: Zco\Bundle\DicteesBundle\EventListener\EventListener
         calls:
-            - [setContainer, [@service_container]]
+            - [setContainer, ["@service_container"]]
         tags:
             - { name: kernel.event_subscriber }
