@@ -1,5 +1,0 @@
-services:
-    zco_sondages.event_listener:
-        class: Zco\Bundle\SondagesBundle\EventListener\EventListener
-        tags:
-            - { name: kernel.event_subscriber }

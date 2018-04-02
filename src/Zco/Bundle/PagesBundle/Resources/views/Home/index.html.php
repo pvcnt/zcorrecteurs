@@ -51,10 +51,6 @@
 					'BilletHasard' => $BilletHasard,
 					'BilletAuteurs' => $BilletAuteurs,
 					'ListerRecrutements' => $ListerRecrutements,
-					'question' => $question,
-					'reponses' => $reponses,
-					'sondage'  => $sondage,
-					'a_vote'   => $a_vote,
 					'Tweets'   => $Tweets,
 					'Dictee' => $Dictee
 			)) ?>

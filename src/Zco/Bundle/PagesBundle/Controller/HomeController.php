@@ -48,10 +48,6 @@ class HomeController extends Controller
         $vars = array();
         $vars['quel_bloc'] = $registry->get('bloc_accueil');
         $vars['Informations'] = $registry->get('accueil_informations');
-        $vars['a_vote'] = null;
-        $vars['question'] = null;
-        $vars['reponses'] = null;
-        $vars['sondage'] = null;
         $vars['ListerRecrutements'] = null;
         $vars['QuizSemaine'] = null;
         $vars['SujetSemaine'] = null;
@@ -61,14 +57,7 @@ class HomeController extends Controller
         $vars['Tweets'] = null;
         $vars['Dictee'] = null;
 
-        if ($vars['quel_bloc'] == 'sondage') {
-            $ip = $this->get('request')->getClientIp(true);
-            $question = \Doctrine_Core::getTable('SondageQuestion')->getAccueil($_SESSION['id'], $ip);
-            $vars['a_vote'] = $question->aVote($_SESSION['id'], $ip);
-            $vars['question'] = $question;
-            $vars['reponses'] = $question->Reponses;
-            $vars['sondage'] = $question->Sondage;
-        } elseif ($vars['quel_bloc'] == 'recrutement') {
+        if ($vars['quel_bloc'] == 'recrutement') {
             $cacheKey = verifier('recrutements_voir_prives') ? 'liste_recrutements_prives' : 'liste_recrutements_publics';
             if (($ListerRecrutements = $cache->get($cacheKey)) === false) {
                 $ListerRecrutements = ListerRecrutements();
@@ -147,7 +136,6 @@ class HomeController extends Controller
         $resourceManager = $this->get('zco_vitesse.resource_manager');
         $resourceManager->requireResources([
             '@ZcoPagesBundle/Resources/public/css/home.css',
-            '@ZcoSondagesBundle/Resources/public/css/sondage.css',
             '@ZcoCoreBundle/Resources/public/css/zcode.css',
             '@ZcoDicteesBundle/Resources/public/css/dictees.css'
         ]);

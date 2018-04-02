@@ -17,9 +17,6 @@
 			<option value="annonce"<?php echo ($bloc_accueil == 'annonce') ? ' selected="selected"' : ''; ?>>
 				Afficher une annonce personnalisée
 			</option>
-			<option value="sondage"<?php echo ($bloc_accueil == 'sondage') ? ' selected="selected"' : ''; ?>>
-				Afficher le bloc sondage
-			</option>
 			<option value="recrutement"<?php echo ($bloc_accueil == 'recrutement') ? ' selected="selected"' : ''; ?>>
 				Afficher les recrutements en cours
 			</option>

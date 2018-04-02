@@ -36,15 +36,6 @@
 		<?php echo htmlspecialchars($SujetSemaine['sujet_sous_titre']); ?>
 		<?php } ?>
 	</div>
-<?php } else if ($quel_bloc == 'sondage' && verifier('sondages_voir')) { ?>
-	<h2 class="mod_sondage">Sondages</h2>
-	<?php echo $view->render('ZcoSondagesBundle::_bloc_accueil.html.php',
-		array(
-			'question' => $question,
-			'reponses' => $reponses,
-			'sondage'  => $sondage,
-			'a_vote'   => $a_vote,
-		)) ?>
 <?php } elseif ($quel_bloc == 'recrutement' && verifier('recrutements_voir')) { ?>
 	<h2 class="mod_communaute">Recrutements en cours</h2>
 	<ul>
