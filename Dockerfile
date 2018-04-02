@@ -52,7 +52,7 @@ RUN mkdir /run/apache2 \
     && sed -i "s/#LoadModule\ deflate_module/LoadModule\ deflate_module/" /etc/apache2/httpd.conf \
     && sed -i "s#^DocumentRoot \".*#DocumentRoot \"/opt/app/web\"#g" /etc/apache2/httpd.conf \
     && sed -i "s#/var/www/localhost/htdocs#/opt/app/web#" /etc/apache2/httpd.conf \
-    && printf "\n<Directory \"/app/public\">\n\tAllowOverride All\n</Directory>\n" >> /etc/apache2/httpd.conf \
+    && printf "\n<Directory \"/opt/app/web\">\n\tAllowOverride All\n</Directory>\n" >> /etc/apache2/httpd.conf \
     && sed -i "s/variables_order\ =\ \"GPCS\"/variables_order\ =\ \"EGPCS\"/" /etc/php7/php.ini
 
 # Add a custom entrypoint.
