@@ -9,4 +9,8 @@
 /web/uploads/*
 
 # Ignore vendor libraries, they will be installed from fresh at build time.
-/vendor/*
+#/vendor/*
+
+# Ignore git files.
+.git/*
+.gitignore
