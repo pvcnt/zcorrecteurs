@@ -20,6 +20,7 @@
  */
 
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Contrôleur gérant la réponse à un sujet.
@@ -36,7 +37,7 @@ class RepondreAction extends ForumActions
 
 		if (empty($_GET['id']) || !is_numeric($_GET['id']))
 		{
-			return redirect(45, '/forum/', MSG_ERROR);
+			throw new NotFoundHttpException();
 		}
 		else
 		{
@@ -44,17 +45,17 @@ class RepondreAction extends ForumActions
 			$InfosForum = InfosCategorie($InfosSujet['sujet_forum_id']);
 			if (!$InfosSujet)
 			{
-				return redirect(47, '/forum/', MSG_ERROR);
+                throw new NotFoundHttpException();
 			}
 			if ((!verifier('repondre_sujets', $InfosSujet['sujet_forum_id']) AND !$InfosSujet['sujet_ferme']) OR (!verifier('repondre_sujets_fermes', $InfosSujet['sujet_forum_id']) AND $InfosSujet['sujet_ferme']))
 			{
-				throw new AccessDeniedHttpException;
+				throw new AccessDeniedHttpException();
 			}
 			
 			// Si le forum est archivé
 			if ( $InfosForum['cat_archive'] == 1 ) 
 			{
-				return redirect(357, '/forum/', MSG_ERROR);
+				return redirect('Le forum n\'est plus accessible.', '/forum/', MSG_ERROR);
 			}
 		}
 		
@@ -82,7 +83,11 @@ class RepondreAction extends ForumActions
 
 		if (!verifier('epargne_anti_up') AND ($secondes > 0) AND $InfosSujet['dernier_message_auteur'] == $_SESSION['id'])
 		{
-			return redirect(134, '/forum/sujet-'.$_GET['id'].'-'.$InfosSujet['sujet_dernier_message'].'-'.rewrite($InfosSujet['sujet_titre']).'.html', MSG_ERROR);
+			return redirect(
+			    'Vous devez attendre 12 heures pour pouvoir poster deux fois de suite.',
+                '/forum/sujet-'.$_GET['id'].'-'.$InfosSujet['sujet_dernier_message'].'-'.rewrite($InfosSujet['sujet_titre']).'.html',
+                MSG_ERROR
+            );
 		}
 
 		Page::$titre = htmlspecialchars($InfosSujet['sujet_titre']).' - Ajout d\'une réponse';
@@ -155,7 +160,7 @@ class RepondreAction extends ForumActions
 			//On a validé le formulaire. Des vérifications s'imposent.
 			if (empty($_POST['texte']))
 			{
-				return redirect(17, '/forum/', MSG_ERROR);
+				return redirect('Vous devez remplir tous les champs nécessaires !', '/forum/', MSG_ERROR);
 			}
 			elseif (!empty($_SESSION['sujet_dernier_message'][$_GET['id']]) && $_SESSION['sujet_dernier_message'][$_GET['id']] != $InfosSujet['sujet_dernier_message'])
 			{
@@ -217,7 +222,7 @@ class RepondreAction extends ForumActions
 					}
 				}
 				
-				return redirect(34, 'sujet-'.$_GET['id'].'-'.$nouveau_message_id.'-'.rewrite($InfosSujet['sujet_titre']).'.html');
+				return redirect('Le message a bien été ajouté.', 'sujet-'.$_GET['id'].'-'.$nouveau_message_id.'-'.rewrite($InfosSujet['sujet_titre']).'.html');
 			}
 		}
 	}

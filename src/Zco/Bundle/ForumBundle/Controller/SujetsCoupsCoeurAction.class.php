@@ -28,7 +28,6 @@ class SujetsCoupsCoeurAction extends ForumActions
 {
 	public function execute()
 	{
-		zCorrecteurs::VerifierFormatageUrl();
 		Page::$titre = 'Gérer les sujets en coups de cœur';
 
 		//Inclusion du modèle
@@ -37,7 +36,7 @@ class SujetsCoupsCoeurAction extends ForumActions
 		if ((isset($_GET['action']) == 'changer_coup_coeur') && intval($_GET['id_sujet']) != null)
 		{
 			ChangerCoupCoeur($_GET['id_sujet'], true);
-			return redirect(299, '/forum/sujets-coups-coeur.html');
+			return redirect('Le sujet a bien été retiré des coups de c&oelig;ur.', '/forum/sujets-coups-coeur.html');
 		}
 
 		//Inclusion de la vue

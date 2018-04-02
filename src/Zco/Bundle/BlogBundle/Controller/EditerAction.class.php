@@ -19,6 +19,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 /**
  * Contrôleur gérant l'édition d'un billet.
  *
@@ -44,7 +48,7 @@ class EditerAction extends BlogActions
 				if(isset($_POST['submit']))
 				{
 					if(empty($_POST['titre']) || empty($_POST['intro']) || empty($_POST['texte']))
-						return redirect(17, 'editer-'.$_GET['id'].'.html', MSG_ERROR, -1);
+						return redirect('Vous devez remplir tous les champs nécessaires !', 'editer-'.$_GET['id'].'.html', MSG_ERROR, -1);
 
 					EditerBillet($_GET['id'], array(
 						'titre' => $_POST['titre'],
@@ -57,7 +61,7 @@ class EditerAction extends BlogActions
 						'commentaire' => $_POST['commentaire'],
 					));
 
-					return redirect(8, 'admin-billet-'.$_GET['id'].'.html');
+					return redirect('Le billet a bien été édité.', 'admin-billet-'.$_GET['id'].'.html');
 				}
 
 				$this->Categories = ListerEnfants(GetIDCategorieCourante());
@@ -72,12 +76,12 @@ class EditerAction extends BlogActions
 			}
 			else
 			{
-				throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+				throw new AccessDeniedHttpException();
 			}
 		}
 		else
 		{
-			return redirect(20, '/blog/', MSG_ERROR);
+			throw new NotFoundHttpException();
 		}
 	}
 }

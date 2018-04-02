@@ -21,6 +21,7 @@
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Contrôleur gérant les actions sur les groupes et les droits.
@@ -36,12 +37,9 @@ class GroupesActions extends Controller
 
 	/**
 	 * Affiche la liste des groupes.
-	 * @author vincent1870 <vincent@zcorrecteurs.fr>
 	 */
 	public function executeIndex()
 	{
-		zCorrecteurs::VerifierFormatageUrl();
-
 		fil_ariane('Gestion des groupes');
 
 		return render_to_response(array(
@@ -52,18 +50,16 @@ class GroupesActions extends Controller
 
 	/**
 	 * Ajoute un nouveau groupe.
-	 * @author vincent1870 <vincent@zcorrecteurs.fr>
 	 */
 	public function executeAjouter()
 	{
-		zCorrecteurs::VerifierFormatageUrl();
 		Page::$titre = 'Ajouter un groupe';
 
 		//Si on veut ajouter un groupe
 		if(!empty($_POST['nom']))
 		{
 			AjouterGroupe();
-			return redirect(6, 'index.html');
+			return redirect('Le groupe a bien été ajouté.', 'index.html');
 		}
 
 		fil_ariane('Ajouter un groupe');
@@ -88,25 +84,23 @@ class GroupesActions extends Controller
 			if(!empty($_POST['nom']))
 			{
 				EditerGroupe($_GET['id']);
-				return redirect(7, 'index.html');
+				return redirect('Le groupe a bien été modifié.', 'index.html');
 			}
 
 			$InfosGroupe = InfosGroupe($_GET['id']);
 			if(empty($InfosGroupe))
-				return redirect(2, 'index.html', MSG_ERROR);
+				throw new NotFoundHttpException();
 
-			zCorrecteurs::VerifierFormatageUrl($InfosGroupe['groupe_nom'], true);
 			fil_ariane('Modifier un groupe');
 
 			return render_to_response(array('InfosGroupe' => $InfosGroupe));
 		}
 		else
-			return redirect(167, 'index.html', MSG_ERROR);
+            throw new NotFoundHttpException();
 	}
 
 	/**
 	 * Supprime un groupe.
-	 * @author vincent1870 <vincent@zcorrecteurs.fr>
 	 */
 	public function executeSupprimer()
 	{
@@ -120,7 +114,7 @@ class GroupesActions extends Controller
 				SupprimerGroupe($_GET['id']);
 				$this->get('zco_core.cache')->set('dernier_refresh_droits', time(), 0);
 
-				return redirect(8, 'index.html');
+				return redirect('Le groupe a bien été supprimé.', 'index.html');
 			}
 			//Si on annule
 			elseif(isset($_POST['annuler']))
@@ -130,20 +124,17 @@ class GroupesActions extends Controller
 
 			$InfosGroupe = InfosGroupe($_GET['id']);
 			if(empty($InfosGroupe))
-				return redirect(2, 'index.html', MSG_ERROR);
-
-			zCorrecteurs::VerifierFormatageUrl($InfosGroupe['groupe_nom'], true);
+                throw new NotFoundHttpException();
 
 			fil_ariane('Supprimer un groupe');
 			return render_to_response(array('InfosGroupe' => $InfosGroupe));
 		}
 		else
-			return redirect(2, 'index.html', MSG_ERROR);
+            throw new NotFoundHttpException();
 	}
 
 	/**
 	 * Vérifier la liste des droits attribués à un groupe.
-	 * @author vincent1870 <vincent@zcorrecteurs.fr>
 	 */
 	public function executeVerifier()
 	{
@@ -163,11 +154,8 @@ class GroupesActions extends Controller
 		{
 			$InfosGroupe = InfosGroupe($_GET['id']);
 			if(empty($InfosGroupe))
-				return redirect(2, 'verifier.html', MSG_ERROR);
-			zCorrecteurs::VerifierFormatageUrl($InfosGroupe['groupe_nom'], true);
+				throw new NotFoundHttpException();
 		}
-		else
-			zCorrecteurs::VerifierFormatageUrl();
 
 		//Listage des droits
 		if(!empty($InfosGroupe))
@@ -188,11 +176,9 @@ class GroupesActions extends Controller
 
 	/**
 	 * Recharge les droits de chaque groupe et l'id du groupe stocké en session.
-	 * @author vincent1870 <vincent@zcorrecteurs.fr>
 	 */
 	public function executeRechargerDroits()
 	{
-		zCorrecteurs::VerifierFormatageUrl();
 		Page::$titre = 'Recharger les droits des groupes';
 
 		//Si on veut recharger le cache
@@ -201,7 +187,7 @@ class GroupesActions extends Controller
 			$this->get('zco_core.cache')->set('dernier_refresh_droits', time(), 0);
 			$this->get('zco_core.cache')->delete('droits_groupe_*');
 
-			return redirect(5, '/admin/');
+			return redirect('Les droits ont bien été rechargés.', '/admin/');
 		}
 		//Si on annule
 		elseif(isset($_POST['annuler']))
@@ -231,10 +217,9 @@ class GroupesActions extends Controller
 		if(isset($InfosUtilisateur))
 		{
 			if(empty($InfosUtilisateur))
-				return redirect(1, '', MSG_ERROR);
+                throw new NotFoundHttpException();
 
 			$_GET['id'] = $InfosUtilisateur['utilisateur_id'];
-			zCorrecteurs::VerifierFormatageUrl($InfosUtilisateur['utilisateur_pseudo'], true);
 
 			if(!isset($_POST['groupe']))
 			{
@@ -248,7 +233,7 @@ class GroupesActions extends Controller
 				ChangerGroupeUtilisateur();
 				$this->get('zco_core.cache')->set('dernier_refresh_droits', time(), 0);
 
-				return redirect(9, 'changer-membre-groupe-'.$_GET['id'].'.html');
+				return redirect('Le membre a bien été changé de groupe.', 'changer-membre-groupe-'.$_GET['id'].'.html');
 			}
 			else
 				$ListerGroupes = null;
@@ -262,7 +247,8 @@ class GroupesActions extends Controller
 				$this->get('zco_core.cache')->set('dernier_refresh_droits', time(), 0);
 				$this->get('zco_core.cache')->delete('saut_rapide_utilisateur_'.$_GET['id']);
 
-				return redirect(9,
+				return redirect(
+				    'Le membre a bien été changé de groupe.',
 					'/groupes/changer-membre-groupe-'
 					.$InfosUtilisateur['utilisateur_id'].'-'
 					.rewrite($InfosUtilisateur['utilisateur_pseudo']).'.html');
@@ -300,7 +286,6 @@ class GroupesActions extends Controller
 
 	/**
 	 * Modifie la liste des droits attribués à un groupe.
-	 * @author vincent1870 <vincent@zcorrecteurs.fr>
 	 */
 	public function executeDroits()
 	{
@@ -314,7 +299,7 @@ class GroupesActions extends Controller
 		{
 			$InfosGroupe = InfosGroupe($_GET['id']);
 			if(empty($InfosGroupe))
-				return redirect(2, 'gestion-droits.html', MSG_ERROR);
+				throw new NotFoundHttpException();
 		}
 		else
 		{
@@ -325,7 +310,7 @@ class GroupesActions extends Controller
 		{
 			$InfosDroit = InfosDroit($_GET['id2']);
 			if(empty($InfosDroit))
-				return redirect(3, 'gestion-droits.html', MSG_ERROR);
+                throw new NotFoundHttpException();
 		}
 		else
 		{
@@ -411,7 +396,10 @@ class GroupesActions extends Controller
 			//Suppression des caches
 			$this->get('zco_core.cache')->delete('droits_groupe_'.$_GET['id']);
 
-			return redirect(4, 'droits-'.$_GET['id'].'-'.$_GET['id2'].'.html');
+			return redirect(
+			    'Le droit de ce groupe a bien été mis à jour.',
+                'droits-'.$_GET['id'].'-'.$_GET['id2'].'.html'
+            );
 		}
 
 		//Inclusion de la vue
@@ -433,11 +421,9 @@ class GroupesActions extends Controller
 
 	/**
 	 * AAffiche la liste de tous les droits.
-	 * @author vincent1870 <vincent@zcorrecteurs.fr>
 	 */
 	public function executeGestionDroits()
 	{
-		zCorrecteurs::VerifierFormatageUrl();
 		fil_ariane('Gestion des droits');
 
 		return render_to_response(array(
@@ -448,11 +434,9 @@ class GroupesActions extends Controller
 
 	/**
 	 * Ajoute un nouveau droit.
-	 * @author vincent1870 <vincent@zcorrecteurs.fr>
 	 */
 	public function executeAjouterDroit()
 	{
-		zCorrecteurs::VerifierFormatageUrl();
 		Page::$titre = 'Ajouter un droit';
 
 		//Si on veut ajouter un droit
@@ -462,7 +446,7 @@ class GroupesActions extends Controller
 			$_POST['cat'], isset($_POST['choix_cat']), !isset($_POST['choix_binaire']));
 			$this->get('zco_core.cache')->delete('droits_groupe_*');
 
-			return redirect(10, 'gestion-droits.html');
+			return redirect('Le droit a bien été ajouté.', 'gestion-droits.html');
 		}
 
 		//Inclusion de la vue
@@ -473,7 +457,6 @@ class GroupesActions extends Controller
 
 	/**
 	 * Modifie un droit.
-	 * @author vincent1870 <vincent@zcorrecteurs.fr>
 	 */
 	public function executeEditerDroit()
 	{
@@ -483,8 +466,7 @@ class GroupesActions extends Controller
 		{
 			$InfosDroit = InfosDroit($_GET['id']);
 			if(empty($InfosDroit))
-				return redirect(3, 'gestion-droits.html', MSG_ERROR);
-			zCorrecteurs::VerifierFormatageUrl($InfosDroit['droit_nom'], true);
+                throw new NotFoundHttpException();
 
 			//Si on veut éditer le droit
 			if(!empty($_POST['nom']) && !empty($_POST['desc']) && !empty($_POST['cat']))
@@ -493,7 +475,7 @@ class GroupesActions extends Controller
 				$_POST['cat'], isset($_POST['choix_cat']), !isset($_POST['choix_binaire']));
 				$this->get('zco_core.cache')->delete('droits_groupe_*');
 
-				return redirect(11, 'gestion-droits.html');
+				return redirect('Le droit a bien été modifié.', 'gestion-droits.html');
 			}
 
 			fil_ariane(array('Gestion des droits' => 'gestion-droits.html', 'Modifier un droit'));
@@ -504,12 +486,11 @@ class GroupesActions extends Controller
 			));
 		}
 		else
-			return redirect(3, 'gestion-droits.html', MSG_ERROR);
+            throw new NotFoundHttpException();
 	}
 
 	/**
 	 * Supprime un droit.
-	 * @author vincent1870 <vincent@zcorrecteurs.fr>
 	 */
 	public function executeSupprimerDroit()
 	{
@@ -519,8 +500,7 @@ class GroupesActions extends Controller
 		{
 			$InfosDroit = InfosDroit($_GET['id']);
 			if(empty($InfosDroit))
-				return redirect(3, 'gestion-droits.html', MSG_ERROR);
-			zCorrecteurs::VerifierFormatageUrl($InfosDroit['droit_nom'], true);
+                throw new NotFoundHttpException();
 
 			//Si on veut supprimer le droit
 			if(isset($_POST['confirmer']))
@@ -528,7 +508,7 @@ class GroupesActions extends Controller
 				SupprimerDroit($_GET['id']);
 				$this->get('zco_core.cache')->delete('droits_groupe_*');
 
-				return redirect(12, 'gestion-droits.html');
+				return redirect('Le droit a bien été supprimé.', 'gestion-droits.html');
 			}
 			//Si on annule
 			elseif(isset($_POST['annuler']))
@@ -543,7 +523,7 @@ class GroupesActions extends Controller
 
 		}
 		else
-			return redirect(3, 'gestion-droits.html', MSG_ERROR);
+            throw new NotFoundHttpException();
 	}
 
 	/**
@@ -552,7 +532,6 @@ class GroupesActions extends Controller
 	 */
 	public function executeHistoriqueGroupes()
 	{
-		zCorrecteurs::VerifierFormatageUrl(null, false, false, 1);
 		Page::$titre = 'Historique des changements de groupe';
 
 		$NombreDeChangements = CompterChangementHistorique();

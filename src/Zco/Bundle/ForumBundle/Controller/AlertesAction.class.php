@@ -36,10 +36,10 @@ class AlertesAction extends ForumActions
 		{
 			$InfosSujet = InfosSujet($_GET['id']);
 			if(empty($InfosSujet))
-				return redirect(45, '/forum/', MSG_ERROR);
+				throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
 
 			if(!verifier('voir_alertes', $InfosSujet['sujet_forum_id']))
-				return redirect(104, 'sujet-'.$InfosSujet['sujet_id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html', MSG_ERROR);
+				throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException();
 		}
 		else
 		{
@@ -55,20 +55,26 @@ class AlertesAction extends ForumActions
 				$alerte['resolu'] = true;
 				$alerte['admin_id'] = $_SESSION['id'];
 				$alerte->save();
-				return redirect(101, (!empty($InfosSujet) ? 'alertes-'.$_GET['id'].'.html' : 'alertes.html'));
+				return redirect(
+				    'L\'alerte a bien été marquée comme résolue.',
+                    (!empty($InfosSujet) ? 'alertes-'.$_GET['id'].'.html' : 'alertes.html')
+                );
 			}
 		}
 
 		//Si on veut marquer en non-résolu une alerte
 		if(!empty($_GET['nonresolu']) && is_numeric($_GET['nonresolu']))
 		{
-		$alerte = Doctrine_Core::getTable('ForumAlerte')->find($_GET['nonresolu']);
+		$alerte = \Doctrine_Core::getTable('ForumAlerte')->find($_GET['nonresolu']);
 			if ($alerte !== false)
 			{
 				$alerte['resolu'] = false;
 				$alerte['admin_id'] = null;
 				$alerte->save();
-				return redirect(102, (!empty($InfosSujet) ? 'alertes-'.$_GET['id'].'.html' : 'alertes.html'));
+				return redirect(
+				    'L\'alerte a bien été marquée comme non résolue.',
+                    (!empty($InfosSujet) ? 'alertes-'.$_GET['id'].'.html' : 'alertes.html')
+                );
 			}
 		}
 
@@ -79,7 +85,7 @@ class AlertesAction extends ForumActions
 
 		$sujet_id = !empty($InfosSujet) ? $_GET['id'] : null;
 		$solved = isset($_GET['solved']) ? (boolean)$_GET['solved'] : null;
-		$Alertes = Doctrine_Core::GetTable('ForumAlerte')->ListerAlertes($solved, $sujet_id);
+		$Alertes = \Doctrine_Core::GetTable('ForumAlerte')->ListerAlertes($solved, $sujet_id);
 
 		//Inclusion de la vue
 		if(!empty($InfosSujet))

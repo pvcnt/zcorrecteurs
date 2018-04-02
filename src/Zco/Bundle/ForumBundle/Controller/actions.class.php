@@ -19,8 +19,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ForumActions extends Controller
 {
@@ -34,7 +35,7 @@ class ForumActions extends Controller
 
 	public function executeAjaxAutocompleteTitre()
 	{
-		$dbh = Doctrine_Manager::connection()->getDbh();
+		$dbh = \Doctrine_Manager::connection()->getDbh();
 
 		$stmt = $dbh->prepare("SELECT sujet_titre, sujet_forum_id
 			FROM zcov2_forum_sujets
@@ -45,7 +46,7 @@ class ForumActions extends Controller
 		foreach($donnees as $row)
 			if(verifier('voir_sujets', $row['sujet_forum_id']))
 				$retour[] = $row['sujet_titre'];
-		$response = new Symfony\Component\HttpFoundation\Response;
+		$response = new Response;
 		$response->headers->set('Content-type',  'application/json');
 		$response->setContent(json_encode($retour));
 		return $response;
@@ -61,20 +62,20 @@ class ForumActions extends Controller
 				($infos['sujet_auteur'] == $_SESSION['id'] && verifier('editer_ses_sujets', $infos['sujet_forum_id']))
 			)
 			{
-				$dbh = Doctrine_Manager::connection()->getDbh();
+				$dbh = \Doctrine_Manager::connection()->getDbh();
 				$stmt = $dbh->prepare("UPDATE zcov2_forum_sujets
 					SET sujet_titre = :titre
 					WHERE sujet_id = :id");
 				$stmt->bindParam(':id', $_POST['id_suj']);
 				$stmt->bindValue(':titre', trim($_POST['data']));
 				$stmt->execute();
-				return new Symfony\Component\HttpFoundation\Response($_POST['data']);
+				return new Response($_POST['data']);
 			}
 			else
-				return new Symfony\Component\HttpFoundation\Response('Vous n\'avez pas l\'autorisation de modifier le titre.');
+				return new Response('Vous n\'avez pas l\'autorisation de modifier le titre.');
 		}
 		else
-			return new Symfony\Component\HttpFoundation\Response('ERREUR');
+			return new Response('ERREUR');
 	}
 
 	public function executeAjaxEditInPlaceSousTitre()
@@ -87,20 +88,20 @@ class ForumActions extends Controller
 				($infos['sujet_auteur'] == $_SESSION['id'] && verifier('editer_ses_sujets', $infos['sujet_forum_id']))
 			)
 			{
-				$dbh = Doctrine_Manager::connection()->getDbh();
+				$dbh = \Doctrine_Manager::connection()->getDbh();
 				$stmt = $dbh->prepare("UPDATE zcov2_forum_sujets
 					SET sujet_sous_titre = :sous_titre
 					WHERE sujet_id = :id");
 				$stmt->bindParam(':id', $_POST['id_suj']);
 				$stmt->bindValue(':sous_titre', trim($_POST['data']));
 				$stmt->execute();
-				return new Symfony\Component\HttpFoundation\Response($_POST['data']);
+				return new Response($_POST['data']);
 			}
 			else
-				return new Symfony\Component\HttpFoundation\Response('Vous n\'avez pas l\'autorisation de modifier le sous-titre.');
+				return new Response('Vous n\'avez pas l\'autorisation de modifier le sous-titre.');
 		}
 		else
-			return new Symfony\Component\HttpFoundation\Response('ERREUR');
+			return new Response('ERREUR');
 	}
 
 	public function executeAjaxDeplacementMassif()
@@ -146,7 +147,7 @@ class ForumActions extends Controller
 			$ret = 'Vous n\'avez pas les droits requis ou un paramètre a été omis.';
 		}
         
-		return new Symfony\Component\HttpFoundation\Response($ret);
+		return new Response($ret);
 	}
 
 	public function executeAjaxDeplacerSujet()
@@ -206,7 +207,7 @@ class ForumActions extends Controller
 		{
 			$ret = 'Vous n\'avez pas les droits requis ou un paramètre a été omis.';
 		}
-		return new Symfony\Component\HttpFoundation\Response($ret);
+		return new Response($ret);
 	}
 
 	public function executeAjaxMultiCiter()
@@ -274,28 +275,28 @@ class ForumActions extends Controller
 						}
 						$retour .= ', ';
 					}
-					return new Symfony\Component\HttpFoundation\Response(mb_substr($retour, 0, -2));
+					return new Response(mb_substr($retour, 0, -2));
 				}
 				else
 				{
-					return new Symfony\Component\HttpFoundation\Response('Ce sondage n\'existe pas ou personne n\'y a voté.');
+					return new Response('Ce sondage n\'existe pas ou personne n\'y a voté.');
 				}
 
 			}
 			else
 			{
-				return new Symfony\Component\HttpFoundation\Response('Vous n\'avez pas le droit de voir qui a voté.');
+				return new Response('Vous n\'avez pas le droit de voir qui a voté.');
 			}
 		}
 		else
 		{
-			return new Symfony\Component\HttpFoundation\Response('Le forum visionné actuellement n\'est pas spécifié.');
+			return new Response('Le forum visionné actuellement n\'est pas spécifié.');
 		}
 	}
 
 	public function executeAjaxOrdre($ordre = false)
 	{
-		$dbh = Doctrine_Manager::connection()->getDbh();
+		$dbh = \Doctrine_Manager::connection()->getDbh();
 		if(!$ordre && isset($_POST['ordre']))
 		{
 			$stmt = $dbh->prepare('REPLACE INTO zcov2_forum_ordre '
@@ -304,7 +305,7 @@ class ForumActions extends Controller
 			$stmt->bindParam(':id', $_SESSION['id']);
 			$stmt->bindValue(':ordre', $_POST['ordre']);
 			$stmt->execute();
-			return new Symfony\Component\HttpFoundation\Response('');
+			return new Response('');
 		}
 
 		$stmt = $dbh->prepare('SELECT ordre FROM zcov2_forum_ordre '
@@ -313,7 +314,7 @@ class ForumActions extends Controller
 		$stmt->execute();
 		$d = $stmt->fetchColumn(0);
 		if($ordre) return $d;
-		return new Symfony\Component\HttpFoundation\Response($d);
+		return new Response($d);
 	}
 
 	public function initSujet()
@@ -326,13 +327,13 @@ class ForumActions extends Controller
 
 		//--- Récupération des infos sur le sujet ---
 		if(empty($_GET['id']) || !is_numeric($_GET['id']))
-			return array(redirect(45, '/forum/', MSG_ERROR), null);
+			throw new NotFoundHttpException();
 		else
 		{
 			$InfosSujet = InfosSujet($_GET['id']);
 			$InfosForum = InfosCategorie($InfosSujet['sujet_forum_id']);
 			if(empty($InfosSujet))
-				return array(redirect(47, '/forum/', MSG_ERROR), null);
+				throw new NotFoundHttpException();
 		}
 
 		//--- Modification des balises méta ---

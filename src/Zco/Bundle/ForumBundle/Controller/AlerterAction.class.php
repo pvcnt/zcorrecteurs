@@ -36,7 +36,7 @@ class AlerterAction extends ForumActions
 			$InfosSujet = InfosSujet($_GET['id']);
 			$InfosForum = InfosCategorie($InfosSujet['sujet_forum_id']);
 			if(empty($InfosSujet))
-				return redirect(47, '/forum/', MSG_ERROR);
+				throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
 
 			zCorrecteurs::VerifierFormatageUrl($InfosSujet['sujet_titre'], true);
 			Page::$titre .= ' - '.$InfosSujet['sujet_titre'].' - Alerter les modérateurs';
@@ -48,16 +48,24 @@ class AlerterAction extends ForumActions
 			{
 				//Si le sujet est fermé
 				if($InfosSujet['sujet_ferme'])
-					return redirect(41, 'sujet-'.$InfosSujet['sujet_id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html', MSG_ERROR);
+					return redirect(
+					    'Vous ne pouvez pas alerter les modérateurs sur ce sujet : il est fermé.',
+                        'sujet-'.$InfosSujet['sujet_id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html',
+                        MSG_ERROR
+                    );
 				//S'il y a déjà une alerte en cours
-				elseif(!Doctrine_Core::getTable('ForumAlerte')->VerifierAutorisationAlerter($_GET['id']))
-					return redirect(42, 'sujet-'.$InfosSujet['sujet_id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html', MSG_ERROR);
+				elseif(!\Doctrine_Core::getTable('ForumAlerte')->VerifierAutorisationAlerter($_GET['id']))
+					return redirect(
+					    'Les modérateurs ont déjà été prévenus.',
+                        'sujet-'.$InfosSujet['sujet_id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html',
+                        MSG_ERROR
+                    );
 
 				//Si on veut signaler le sujet
 				if(isset($_POST['send']))
 				{
 					if(empty($_POST['texte']))
-						return redirect(17, 'sujet-'.$InfosSujet['sujet_id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html', MSG_ERROR);
+						return redirect('Vous devez remplir tous les champs nécessaires !', 'sujet-'.$InfosSujet['sujet_id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html', MSG_ERROR);
 
 					$alerte = new ForumAlerte;
 					$alerte['sujet_id'] = $_GET['id'];
@@ -66,7 +74,7 @@ class AlerterAction extends ForumActions
 					$alerte['ip'] = ip2long($this->get('request')->getClientIp(true));
 					$alerte->save();
 
-					return redirect(40, 'sujet-'.$InfosSujet['sujet_id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html');
+					return redirect('Les modérateurs ont bien été alertés.', 'sujet-'.$InfosSujet['sujet_id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html');
 				}
 				//Inclusion de la vue
 				fil_ariane($InfosSujet['sujet_forum_id'], array(htmlspecialchars($InfosSujet['sujet_titre']) => 'sujet-'.$_GET['id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html', 'Alerter les modérateurs'));
@@ -81,6 +89,6 @@ class AlerterAction extends ForumActions
 				throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 		}
 		else
-			return redirect(45, '/forum/', MSG_ERROR);
+            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
 	}
 }

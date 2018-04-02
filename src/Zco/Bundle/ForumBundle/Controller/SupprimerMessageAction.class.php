@@ -19,6 +19,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 /**
  * Contrôleur pour la suppression d'un message.
  *
@@ -34,11 +38,11 @@ class SupprimerMessageAction extends ForumActions
 
 		//Si on n'a pas envoyé de message
 		if(empty($_GET['id']) || !is_numeric($_GET['id']))
-			return redirect(44, '/forum/', MSG_ERROR);
+			throw new NotFoundHttpException();
 
 		$InfosMessage = InfosMessage($_GET['id']);
 		if(empty($InfosMessage) || !verifier('voir_sujets', $InfosMessage['sujet_forum_id']))
-			return redirect(46, '/forum/', MSG_ERROR);
+            throw new NotFoundHttpException();
 
 		//Si on a le droit de supprimer ce message
 		if(
@@ -61,12 +65,15 @@ class SupprimerMessageAction extends ForumActions
 			if(isset($_POST['confirmer']))
 			{
 				SupprimerMessage($_GET['id'], $InfosMessage['sujet_id'], $InfosMessage['sujet_dernier_message'],  $InfosMessage['sujet_forum_id'], $InfosMessage['sujet_corbeille']);
-				return redirect(36, 'sujet-'.$InfosMessage['sujet_id'].'-'.rewrite($InfosMessage['sujet_titre']).'.html');
+				return redirect(
+				    'Le message a bien été supprimé.',
+                    'sujet-'.$InfosMessage['sujet_id'].'-'.rewrite($InfosMessage['sujet_titre']).'.html'
+                );
 			}
 			//Si on annule
 			elseif(isset($_POST['annuler']))
 			{
-				return new Symfony\Component\HttpFoundation\RedirectResponse('sujet-'.$InfosMessage['sujet_id'].'-'.$_GET['id'].'-'.rewrite($InfosMessage['sujet_titre']).'.html');
+				return new RedirectResponse('sujet-'.$InfosMessage['sujet_id'].'-'.$_GET['id'].'-'.rewrite($InfosMessage['sujet_titre']).'.html');
 			}
 
 			//Si le message n'est pas le premier message
@@ -79,9 +86,13 @@ class SupprimerMessageAction extends ForumActions
 				return render_to_response(array('InfosMessage' => $InfosMessage));
 			}
 			else
-				return redirect(74, 'sujet-'.$_GET['id'].'-'.rewrite($InfosMessage['sujet_titre']).'.html', MSG_ERROR);
+				return redirect(
+				    'La suppression du message a échoué : on ne peut pas supprimer le premier message du sujet.',
+                    'sujet-'.$_GET['id'].'-'.rewrite($InfosMessage['sujet_titre']).'.html',
+                    MSG_ERROR
+                );
 		}
 		else
-			throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+			throw new AccessDeniedHttpException();
 	}
 }

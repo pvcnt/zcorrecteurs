@@ -19,6 +19,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 /**
  * Contrôleur pour le marquage du dernier message lu d'un sujet
  *
@@ -26,31 +29,34 @@
  */
 class MarquerDernierMessageLuAction extends ForumActions
 {
-	public function execute()
-	{
-		//Vérification du token.
-		if(empty($_GET['token']) || $_GET['token'] != $_SESSION['token'])
-			throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+    public function execute()
+    {
+        //Vérification du token.
+        if (empty($_GET['token']) || $_GET['token'] != $_SESSION['token'])
+            throw new AccessDeniedHttpException();
 
-		//Inclusion des modèles
-		include(dirname(__FILE__).'/../modeles/messages.php');
-		include(dirname(__FILE__).'/../modeles/membres.php');
+        //Inclusion des modèles
+        include(dirname(__FILE__) . '/../modeles/messages.php');
+        include(dirname(__FILE__) . '/../modeles/membres.php');
 
-		//Si on n'a pas envoyé de message
-		if(empty($_GET['id']) || !is_numeric($_GET['id']))
-			return redirect(44, '/forum/', MSG_ERROR);
+        //Si on n'a pas envoyé de message
+        if (empty($_GET['id']) || !is_numeric($_GET['id']))
+            throw new NotFoundHttpException();
 
-		$InfosMessage = InfosMessage($_GET['id']);
-		if(empty($InfosMessage) || !verifier('voir_sujets', $InfosMessage['sujet_forum_id']))
-			return redirect(46, '/forum/', MSG_ERROR);
+        $InfosMessage = InfosMessage($_GET['id']);
+        if (empty($InfosMessage) || !verifier('voir_sujets', $InfosMessage['sujet_forum_id']))
+            throw new NotFoundHttpException();
 
-                if(!$InfosMessage['lunonlu_utilisateur_id'])
-                        return redirect(354, 'sujet-'.$InfosMessage['sujet_id'].'-'.rewrite($InfosMessage['sujet_titre']).'.html', MSG_ERROR);
+        if (!$InfosMessage['lunonlu_utilisateur_id'])
+            return redirect('Vous n\'avez jamais lu ce sujet.', 'sujet-' . $InfosMessage['sujet_id'] . '-' . rewrite($InfosMessage['sujet_titre']) . '.html', MSG_ERROR);
 
-                $titre = @substr($InfosMessage['message_texte'], 0, strpos($InfosMessage['message_texte'], ' ', 20));
-                zCorrecteurs::VerifierFormatageUrl($titre, true);
+        $titre = @substr($InfosMessage['message_texte'], 0, strpos($InfosMessage['message_texte'], ' ', 20));
+        zCorrecteurs::VerifierFormatageUrl($titre, true);
 
-                MarquerDernierMessageLu($_GET['id'], $InfosMessage['sujet_id']);
-                return redirect(355, 'forum-'.$InfosMessage['sujet_forum_id'].'.html');
-        }
+        MarquerDernierMessageLu($_GET['id'], $InfosMessage['sujet_id']);
+        return redirect(
+            'Le message a bien été marqué comme le dernier lu du sujet',
+            'forum-' . $InfosMessage['sujet_forum_id'] . '.html'
+        );
+    }
 }

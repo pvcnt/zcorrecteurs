@@ -36,12 +36,12 @@ class AjouterAction extends BlogActions
 		{
 			if(!empty($_POST['titre']) && !empty($_POST['texte']) && !empty($_POST['intro']))
 			{
-				$IdBillet = AjouterBillet();
+				AjouterBillet();
 				
-				return redirect(10, 'mes-billets.html');
+				return redirect('Le billet a bien été ajouté.', 'mes-billets.html');
 			}
 			else
-				return redirect(17, '', MSG_ERROR, -1);
+				return redirect('Vous devez remplir tous les champs nécessaires !', '', MSG_ERROR, -1);
 		}
 		//Inclusion de la vue
 		fil_ariane(array('Mes billets' => 'mes-billets.html', 'Ajouter un billet'));

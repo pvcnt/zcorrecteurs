@@ -20,6 +20,7 @@
  */
 
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Contrôleur pour l'édition d'un message.
@@ -39,9 +40,9 @@ class EditerAction extends ForumActions
 			$InfosMessage = InfosMessage($_GET['id']);
 			if (!$InfosMessage)
 			{
-				return redirect(46, '/forum/', MSG_ERROR);
+				throw new NotFoundHttpException();
 			}
-			elseif
+			if
 			(
 				!(
 					(
@@ -51,7 +52,7 @@ class EditerAction extends ForumActions
 				)
 			)
 			{
-				throw new AccessDeniedHttpException;
+				throw new AccessDeniedHttpException();
 			}
 			
 			//Mise à jour de la position sur le site.
@@ -94,21 +95,27 @@ class EditerAction extends ForumActions
 				//On a validé le formulaire. Des vérifications s'imposent.
 				if (empty($_POST['texte']))
 				{
-					return redirect(17, 'sujet-'.$InfosMessage['message_sujet_id'].'-'.rewrite($InfosMessage['sujet_titre']).'.html', MSG_ERROR);
+					return redirect(
+					    'Vous devez remplir tous les champs nécessaires !',
+                        'sujet-'.$InfosMessage['message_sujet_id'].'-'.rewrite($InfosMessage['sujet_titre']).'.html',
+                        MSG_ERROR
+                    );
 				}
 				else
 				{
 					$InfosMessage['sujet_annonce'] = isset($_POST['annonce']) ? 1 : 0;
 					$InfosMessage['sujet_ferme'] = isset($_POST['ferme']) ? 1 : 0;
 					$InfosMessage['sujet_resolu'] = isset($_POST['resolu']) ? 1 : 0;
-					
 					EditerMessage($_GET['id'], $InfosMessage['sujet_forum_id'], $InfosMessage['message_sujet_id'], $InfosMessage['sujet_annonce'], $InfosMessage['sujet_ferme'], $InfosMessage['sujet_resolu'], $InfosMessage['sujet_auteur']);
 
-					return redirect(35, 'sujet-'.$InfosMessage['message_sujet_id'].'-'.$_GET['id'].'-'.rewrite($InfosMessage['sujet_titre']).'.html');
+					return redirect(
+					    'Le message a bien été édité.',
+                        'sujet-'.$InfosMessage['message_sujet_id'].'-'.$_GET['id'].'-'.rewrite($InfosMessage['sujet_titre']).'.html'
+                    );
 				}
 			}
 		}
 		else
-			return redirect(44, 'index.html', MSG_ERROR);
+            throw new NotFoundHttpException();
 	}
 }

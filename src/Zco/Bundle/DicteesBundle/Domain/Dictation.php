@@ -19,25 +19,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\CaptchaBundle\Controller;
+namespace Zco\Bundle\DicteesBundle\Domain;
 
-use Zco\Bundle\CaptchaBundle\Captcha\Captcha;
-use Symfony\Component\HttpFoundation\Response;
-
-/**
- * Génération et affichage
- *
- * @author mwsaz <mwsaz@zcorrecteurs.fr>
- */
-class IndexController
+class Dictation
 {
-    public function defaultAction()
-    {
-        $captcha = new Captcha();
-        $captcha->afficher();
-
-        $response = new Response();
-        $response->headers->set('Content-Type', 'image/png');
-        return $response;
-    }
+    const LEVELS = [
+        1 => 'Facile',
+        2 => 'Moyen',
+        3 => 'Difficile',
+        4 => 'Cauchemardesque',
+    ];
+    const COLORS = [
+        1 => 'green',
+        2 => 'orange',
+        3 => 'red',
+        4 => '#770000',
+    ];
+    const STATUSES = [
+        1 => 'Brouillon',
+        2 => 'Proposée',
+        3 => 'Validée',
+    ];
 }

@@ -23,6 +23,7 @@ namespace Zco\Bundle\TagsBundle\Controller;
 
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zco\Bundle\CoreBundle\Generator\Generator;
 
 /**
@@ -80,7 +81,7 @@ class DefaultController extends Generator
 			$Tag = \Doctrine_Core::getTable('Tag')->find($_GET['id']);
 			if ($Tag === false)
 			{
-				return redirect(1, 'index.html', MSG_ERROR, -1);
+				throw new NotFoundHttpException();
 			}
 
 			\Page::$titre = htmlspecialchars($Tag['nom']);
@@ -98,7 +99,7 @@ class DefaultController extends Generator
 			));
 		}
 		else
-			return redirect(1, 'index.html', MSG_ERROR, -1);
+            throw new NotFoundHttpException();
 	}
 
     /**

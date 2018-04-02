@@ -19,6 +19,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 /**
  * Modification d'une dictée.
  *
@@ -31,11 +35,11 @@ class EditerAction extends DicteesActions
 		// Vérification de l'existence de la dictée
 		$Dictee = $_GET['id'] ? Dictee($_GET['id']) : null;
 		if(!$Dictee)
-			return redirect(501, 'index.html', MSG_ERROR);
+			throw new NotFoundHttpException();
 
 		// Vérification du droit
 		if(!DicteeDroit($Dictee, 'editer'))
-			throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+			throw new AccessDeniedHttpException();
 
 		if(isset($_SESSION['dictee_data']))
 		{
@@ -67,11 +71,11 @@ class EditerAction extends DicteesActions
 				if(!$r)
 				{
 					$_SESSION['dictee_data'] = $_POST;
-					return redirect(509, 'editer'.$url, MSG_ERROR);
+					return redirect('Une erreur est survenue lors de l\'envoi du fichier audio.', 'editer'.$url, MSG_ERROR);
 				}
 				elseif($r instanceof Response)
 					return $r;
-				return redirect(505, 'dictee'.$url);
+				return redirect('La dictée a été modifiée.', 'dictee'.$url);
 			}
 			$Form->setDefaults($_POST);
 		}

@@ -28,7 +28,7 @@ class DetailMessagesAction extends ForumActions
 
 		$InfosUtilisateur = InfosUtilisateur($_GET['id']);
 		if(empty($InfosUtilisateur))
-			return redirect(123, '/forum/', MSG_ERROR);
+			throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
 
 		zCorrecteurs::VerifierFormatageUrl($InfosUtilisateur['utilisateur_pseudo'], true);
 		Page::$titre .= ' - Détail de l\'activité de '.$InfosUtilisateur['utilisateur_pseudo'].' sur les forums';

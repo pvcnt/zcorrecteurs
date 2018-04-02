@@ -25,6 +25,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zco\Bundle\AdminBundle\AdminEvents;
 use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
+use Zco\Bundle\DicteesBundle\Domain\Dictation;
 use Zco\Bundle\PagesBundle\Event\FilterSitemapEvent;
 use Zco\Bundle\PagesBundle\PagesEvents;
 use Zco\Component\Templating\Event\FilterVariablesEvent;
@@ -52,12 +53,10 @@ class EventListener implements EventSubscriberInterface
 		{
 			return;
 		}
-		
-		$config = \Config::Get('messages');
-		
-		$event->add('DicteeDifficultes', $config['DicteeDifficultes']);
-		$event->add('DicteeEtats', $config['DicteeEtats']);
-		$event->add('DicteeCouleurs', $config['DicteeCouleurs']);
+
+		$event->add('DicteeDifficultes', Dictation::LEVELS);
+		$event->add('DicteeEtats', Dictation::STATUSES);
+		$event->add('DicteeCouleurs', Dictation::COLORS);
 	}
 	
 	public function onFilterAdmin(FilterMenuEvent $event)

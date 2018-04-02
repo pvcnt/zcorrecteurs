@@ -20,6 +20,8 @@
  */
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Actions pour tout ce qui concerne la gestion des catégories du site.
@@ -33,8 +35,6 @@ class CategoriesActions extends Controller
 	 */
 	public function executeIndex()
 	{
-		zCorrecteurs::VerifierFormatageUrl();
-
 		//Si on veut descendre une catégorie
 		if(!empty($_GET['descendre']) && is_numeric($_GET['descendre']) && verifier('cats_ordonner'))
 		{
@@ -42,12 +42,12 @@ class CategoriesActions extends Controller
 			if(!empty($InfosCategorie))
 			{
 				if(DescendreCategorie($InfosCategorie))
-					return redirect(5, '/categories/');
+					return redirect('La catégorie a bien été descendue.', '/categories/');
 				else
-					return redirect(9, '/categories/', MSG_ERROR);
+					return redirect('Impossible de descendre cette catégorie car elle est déjà en bas.', '/categories/', MSG_ERROR);
 			}
 			else
-				return redirect(6, '/categories/', MSG_ERROR);
+				throw new NotFoundHttpException();
 		}
 
 		//Si on veut monter une catégorie
@@ -57,12 +57,16 @@ class CategoriesActions extends Controller
 			if(!empty($InfosCategorie))
 			{
 				if(MonterCategorie($InfosCategorie))
-					return redirect(4, '/categories/');
+					return redirect('La catégorie a bien été montée.', '/categories/');
 				else
-					return redirect(8, '/categories/', MSG_ERROR);
+					return redirect(
+					    'Impossible de monter cette catégorie car elle est déjà en haut.',
+                        '/categories/',
+                        MSG_ERROR
+                    );
 			}
 			else
-				return redirect(6, '/categories/', MSG_ERROR);
+				throw new NotFoundHttpException();
 		}
 
 		fil_ariane('Liste des catégories');
@@ -76,14 +80,13 @@ class CategoriesActions extends Controller
 	 */
 	public function executeAjouter()
 	{
-		zCorrecteurs::VerifierFormatageUrl();
 		Page::$titre = 'Ajouter une catégorie';
 
 		//Si on veut ajouter une catégorie
 		if(!empty($_POST['nom']))
 		{
 			AjouterCategorie();
-			return redirect(1, 'index.html');
+			return redirect('La catégorie a bien été ajoutée.', 'index.html');
 		}
 
 		fil_ariane('Ajouter une catégorie');
@@ -96,20 +99,19 @@ class CategoriesActions extends Controller
 	 */
 	public function executeEditer()
 	{
-		zCorrecteurs::VerifierFormatageUrl(null, true);
 		Page::$titre = 'Modifier une catégorie';
 
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))
 		{
 			$InfosCategorie = InfosCategorie($_GET['id']);
 			if(empty($InfosCategorie))
-				return redirect(6, 'index.html', MSG_ERROR);
+				throw new NotFoundHttpException();
 
 			//Si on veut éditer la catégorie
 			if(!empty($_POST['nom']))
 			{
 				EditerCategorie($_GET['id']);
-				return redirect(2, 'index.html');
+				return redirect('La catégorie a bien été modifiée.', 'index.html');
 			}
 
 			fil_ariane('Modifier une catégorie');
@@ -126,7 +128,7 @@ class CategoriesActions extends Controller
 			}
 		}
 		else
-			return redirect(6, 'index.html', MSG_ERROR);
+            throw new NotFoundHttpException();
 
 		return render_to_response(array(
 			'InfosCategorie' => $InfosCategorie,
@@ -140,28 +142,31 @@ class CategoriesActions extends Controller
 	 */
 	public function executeSupprimer()
 	{
-		zCorrecteurs::VerifierFormatageUrl(null, true);
 		Page::$titre = 'Supprimer une catégorie';
 
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))
 		{
 			$InfosCategorie = InfosCategorie($_GET['id']);
 			if(empty($InfosCategorie))
-				return redirect(6, 'index.html', MSG_ERROR);
+                throw new NotFoundHttpException();
 
 			if($InfosCategorie['cat_droite'] - $InfosCategorie['cat_gauche'] > 1)
-				return redirect(7, 'index.html', MSG_ERROR);
+				return redirect(
+				    'Vous ne pouvez pas supprimer cette catégorie car elle a des sous-catégories.',
+                    'index.html',
+                    MSG_ERROR
+                );
 
 			//Si on veut supprimer la catégorie
 			if(isset($_POST['confirmer']))
 			{
 				SupprimerCategorie($_GET['id']);
-				return redirect(3, 'index.html');
+				return redirect('La catégorie a bien été supprimée.', 'index.html');
 			}
 			//Si on annule
 			elseif(isset($_POST['annuler']))
 			{
-				return new Symfony\Component\HttpFoundation\RedirectResponse('index.html');
+				return new RedirectResponse('index.html');
 			}
 
 			fil_ariane('Supprimer une catégorie');
@@ -169,7 +174,7 @@ class CategoriesActions extends Controller
 		}
 		else
 		{
-			return redirect(6, 'index.html', MSG_ERROR);
+            throw new NotFoundHttpException();
 		}
 	}
 
@@ -179,7 +184,6 @@ class CategoriesActions extends Controller
 	 */
 	public function executeImage()
 	{
-		zCorrecteurs::VerifierFormatageUrl();
 		Page::$titre = 'Représentation graphique';
 		fil_ariane(Page::$titre);
 		return render_to_response(array('categories' => ListerCategories()));
@@ -196,7 +200,6 @@ class CategoriesActions extends Controller
 		isset($_POST['orientation']) && $_GET['orientation'] = $_POST['orientation'];
 		unset($_POST['id'], $_POST['id2'], $_POST['orientation']);
 
-		zCorrecteurs::VerifierFormatageUrl(null, true, true);
 		include(dirname(__FILE__).'/../modeles/graphique.php');
 
 		$cat = is_numeric($_GET['id']) ? $_GET['id'] : 1;

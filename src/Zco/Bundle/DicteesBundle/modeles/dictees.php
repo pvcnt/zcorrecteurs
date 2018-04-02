@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpFoundation\Response;
 use Zco\Bundle\CoreBundle\Paginator\Paginator;
 
 /**
@@ -98,7 +99,11 @@ function AjouterDictee(AjouterForm &$form)
 		$chemin = BASEPATH.'/web/uploads/dictees';
 		
 		if (!File_Upload::Fichier($_FILES['icone'], $chemin, $nom, File_Upload::FILE|File_Upload::IMAGE))
-			return redirect(514, 'editer-'.$Dictee->id.'-'.rewrite($Dictee->titre).'.html', MSG_ERROR);
+			return redirect(
+			    'Une erreur est survenue lors de l\'envoi de l\'icône : le format est peut-être invalide.',
+                'editer-'.$Dictee->id.'-'.rewrite($Dictee->titre).'.html',
+                MSG_ERROR
+            );
 			
 		$Dictee->icone = '/uploads/dictees/'.$nom;
 	}
@@ -170,7 +175,11 @@ function EditerDictee(Dictee $Dictee, AjouterForm &$Form)
 
 		
 		if (!File_Upload::Fichier($_FILES['icone'], $chemin, $nom, File_Upload::FILE|File_Upload::IMAGE))
-			return redirect(514, 'editer-'.$Dictee->id.'-'.rewrite($Dictee->titre).'.html', MSG_ERROR);
+			return redirect(
+			    'Une erreur est survenue lors de l\'envoi de l\'icône : le format est peut-être invalide.',
+                'editer-'.$Dictee->id.'-'.rewrite($Dictee->titre).'.html',
+                MSG_ERROR
+            );
 		
 		$Dictee->icone = '/uploads/dictees/'.$nom;
 	}
@@ -422,7 +431,11 @@ function DicteeEnvoyerSon(Dictee $Dictee, $field = false)
 		return false;
 	$ext = strtolower(strrchr($_FILES[$field]['name'], '.'));
 	if($ext != '.mp3' && $ext != '.ogg')
-		return redirect(512, 'editer-'.$Dictee->id.'-'.rewrite($Dictee->titre).'.html', MSG_ERROR);
+		return redirect(
+		    'Format du fichier audio invalide.',
+            'editer-'.$Dictee->id.'-'.rewrite($Dictee->titre).'.html',
+            MSG_ERROR
+        );
 	$Dictee->format = substr($ext, 1);
 	$path = BASEPATH.'/web/uploads/dictees';
 	$name = DicteeSon($Dictee, $field);

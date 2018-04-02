@@ -62,7 +62,7 @@ class BlogActions extends Controller
 		{
 			$Auteurs = InfosBillet($_GET['id']);
 			if(empty($Auteurs))
-				return redirect(210, '/blog/', MSG_ERROR);
+				return redirect('Ce billet n\'existe pas.', '/blog/', MSG_ERROR);
 			$this->Auteurs = $Auteurs;
 			$this->InfosBillet = $Auteurs[0];
 		}

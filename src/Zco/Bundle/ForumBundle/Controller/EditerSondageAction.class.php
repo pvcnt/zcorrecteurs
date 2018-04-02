@@ -19,6 +19,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 /**
  * Contrôleur pour l'édition d'un sondage.
  *
@@ -31,13 +34,13 @@ class EditerSondageAction extends ForumActions
 		include(dirname(__FILE__).'/../modeles/sondages.php');
 
 		if(empty($_GET['id']) || !is_numeric($_GET['id']))
-			return redirect(94, '/forum/', MSG_ERROR);
+			throw new NotFoundHttpException();
 
 		// Pas le droit
 		$InfosSondage = InfosSondage($_GET['id']);
 		if (!$InfosSondage)
 		{
-			return redirect(95, '/forum/', MSG_ERROR);
+            throw new NotFoundHttpException();
 		}
 		
 		zCorrecteurs::VerifierFormatageUrl($InfosSondage['sujet_titre'], true);
@@ -67,7 +70,7 @@ class EditerSondageAction extends ForumActions
 
 			// Question vide
 			if(empty($_POST['question']))
-				return redirect(100, $url, MSG_ERROR);
+				return redirect('Veuillez remplir la question.', $url, MSG_ERROR);
 
 			// Nettoyage des réponses
 			$reponses = isset($_POST['reponses']) ? $_POST['reponses'] : array();
@@ -80,11 +83,11 @@ class EditerSondageAction extends ForumActions
 
 			// Moins de deux réponses
 			if(count($reponses) < 2)
-				return redirect(99, $url, MSG_ERROR);
+				return redirect('Veuillez remplir au moins deux réponses.', $url, MSG_ERROR);
 
 			// Enregistrement du sondage modifié
 			ModifierSondage($InfosSondage, $ListerQuestions, $reponses);
-			return redirect(96, 'sujet-'.$InfosSondage['sujet_id'].'-'
+			return redirect('Le sondage a bien été édité.', 'sujet-'.$InfosSondage['sujet_id'].'-'
 				.rewrite($InfosSondage['sujet_titre']).'.html');
 		}
 	}

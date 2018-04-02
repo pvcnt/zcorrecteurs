@@ -31,7 +31,7 @@ class MessagesAction extends ForumActions
 	public function execute()
 	{
 		if (empty($_GET['id']))
-			return redirect(353, 'index.html', MSG_ERROR);
+			throw new NotFoundHttpException();
 
 		$membre = Doctrine_Query::create()
 			->select('u.pseudo, u.avatar, u.sexe, g.nom, g.class, g.logo, g.logo_feminin')
@@ -41,7 +41,7 @@ class MessagesAction extends ForumActions
 			->execute()
 			->offsetGet(0);
 		if (!$membre)
-			return redirect(353, 'index.html', MSG_ERROR);
+            throw new NotFoundHttpException();
 
 		zCorrecteurs::VerifierFormatageUrl($membre->pseudo, true, false, 1);
 		Page::$titre = 'Messages de '.htmlspecialchars($membre->pseudo);
@@ -65,7 +65,7 @@ class MessagesAction extends ForumActions
 		}
 		catch (\InvalidArgumentException $e)
 		{
-		    throw new NotFoundHttpException('La page demandée n\'existe pas.');
+		    throw new NotFoundHttpException();
 		}
 
 		return render_to_response(

@@ -20,6 +20,7 @@
  */
 
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Contrôleur gérant la création d'un nouveau sujet.
@@ -37,26 +38,26 @@ class NouveauAction extends ForumActions
 
 		if (empty($_GET['id']) || !is_numeric($_GET['id']))
 		{
-			return redirect(49, '/forum/', MSG_ERROR);
+            throw new NotFoundHttpException();
 		}
 		else
 		{
 			$InfosForum = InfosCategorie($_GET['id']);
 			if (!$InfosForum)
 			{
-				return redirect(50, '/forum/', MSG_ERROR);
+                throw new NotFoundHttpException();
 			}
 			if (!verifier('creer_sujets', $_GET['id']))
 			{
-				throw new AccessDeniedHttpException;
+				throw new AccessDeniedHttpException();
 			}
 			if (!empty($_GET['trash']) AND !verifier('corbeille_sujets', $_GET['id']))
 			{
-				throw new AccessDeniedHttpException;
+				throw new AccessDeniedHttpException();
 			}
 			if ( $InfosForum['cat_archive'] == 1 )
 			{
-				return redirect(357, '/forum/', MSG_ERROR);
+				return redirect('Le forum n\'est plus accessible.', '/forum/', MSG_ERROR);
 			}
 		}
 
@@ -96,7 +97,7 @@ class NouveauAction extends ForumActions
 		if(empty($_POST['titre']) || empty($_POST['texte']))
 		{
 			$_SESSION['forum_message_texte'] = $_POST['texte'];
-			return redirect(17, $_SERVER['REQUEST_URI'], MSG_ERROR);
+			return redirect('Vous devez remplir tous les champs nécessaires !', $_SERVER['REQUEST_URI'], MSG_ERROR);
 		}
 		else
 		{
@@ -148,7 +149,10 @@ class NouveauAction extends ForumActions
 				}
 			}
 
-			return redirect(37, 'sujet-'.$nouveau_sujet_id.'-'.rewrite($_POST['titre']).'.html');
+			return redirect(
+			    'Le sujet a bien été créé.',
+                'sujet-'.$nouveau_sujet_id.'-'.rewrite($_POST['titre']).'.html'
+            );
 		}
 	}
 }

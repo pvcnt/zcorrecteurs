@@ -19,6 +19,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use \Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 /**
  * Contrôleur gérant l'édition d'un commentaire sur un billet du blog.
  *
@@ -55,7 +58,10 @@ class EditerCommentaireAction extends BlogActions
 				{
 					EditerCommentaire($_GET['id'], $_SESSION['id'], $_POST['texte']);
 					
-					return redirect(136, 'billet-'.$InfosCommentaire['blog_id'].'-'.$_GET['id'].'-'.rewrite($InfosCommentaire['version_titre']).'.html#commentaires');
+					return redirect(
+					    'Le commentaire a bien été édité.',
+                        'billet-'.$InfosCommentaire['blog_id'].'-'.$_GET['id'].'-'.rewrite($InfosCommentaire['version_titre']).'.html#commentaires'
+                    );
 				}
 
 				//Inclusion de la vue
@@ -75,9 +81,9 @@ class EditerCommentaireAction extends BlogActions
 				));
 			}
 			else
-				throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+				throw new AccessDeniedHttpException;
 		}
 		else
-			return redirect(138, 'index.html', MSG_ERROR);
+			throw new NotFoundHttpException();
 	}
 }

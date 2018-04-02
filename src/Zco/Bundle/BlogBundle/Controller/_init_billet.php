@@ -32,7 +32,7 @@ if(!isset($InfosBillet) || !isset($Auteurs))
 {
 	$Auteurs = InfosBillet($_GET['id']);
 	if(empty($Auteurs))
-		return redirect(210, '/blog/', MSG_ERROR);
+		return redirect('Ce billet n\'existe pas.', '/blog/', MSG_ERROR);
 	$InfosBillet = $Auteurs[0];
 }
 $InfosCategorie = InfosCategorie($InfosBillet['blog_id_categorie']);

@@ -19,12 +19,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 /**
  * Suppression d'une dictée.
  *
  * @author mwsaz <mwsaz@zcorrecteurs.fr>
  */
-
 class SupprimerAction extends DicteesActions
 {
 	public function execute()
@@ -32,11 +35,11 @@ class SupprimerAction extends DicteesActions
 		// Vérification de l'existence de la dictée
 		$Dictee = $_GET['id'] ? Dictee($_GET['id']) : null;
 		if(!$Dictee)
-			return redirect(501, 'index.html', MSG_ERROR);
+			throw new NotFoundHttpException();
 
 		// Vérification du droit
 		if(!DicteeDroit($Dictee, 'supprimer'))
-			throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+			throw new AccessDeniedHttpException();
 
 		zCorrecteurs::VerifierFormatageUrl($Dictee->titre, true);
 		Page::$titre = 'Supprimer une dictée';
@@ -48,10 +51,10 @@ class SupprimerAction extends DicteesActions
 		{
 			if($r = zCorrecteurs::verifierToken()) return $r;
 			SupprimerDictee($Dictee);
-			return redirect(504, 'index.html');
+			return redirect('La dictée a été supprimée.', 'index.html');
 		}
 		if(isset($_POST['annuler']))
-			return new Symfony\Component\HttpFoundation\RedirectResponse($url);
+			return new RedirectResponse($url);
 
 		fil_ariane(array(
 			htmlspecialchars($Dictee->titre) => $url,

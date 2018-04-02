@@ -35,7 +35,7 @@ class SujetsParticipeAction extends ForumActions
 
 		$InfosUtilisateur = InfosUtilisateur($_GET['id']);
 		if(empty($InfosUtilisateur))
-			return redirect(123, '/forum/', MSG_ERROR);
+			throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
 
 		Page::$titre = 'Liste des sujets auxquels '.htmlspecialchars($InfosUtilisateur['utilisateur_pseudo']).' a participé';
 		Page::$description = 'Activité de '.htmlspecialchars($InfosUtilisateur['utilisateur_pseudo']).' sur les forums';
@@ -46,7 +46,7 @@ class SujetsParticipeAction extends ForumActions
 			$InfosCategorie = InfosCategorie($_GET['id2']);
 			if(empty($InfosCategorie) || !verifier('voir_sujets', $_GET['id2']))
 			{
-				return redirect(50, 'sujets-participe-'.$_GET['id'].'.html', MSG_ERROR);
+				throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
 			}
 			Page::$titre .= ' - '.$InfosCategorie['cat_nom'];
 			$titre .= '-'.$InfosCategorie['cat_nom'];

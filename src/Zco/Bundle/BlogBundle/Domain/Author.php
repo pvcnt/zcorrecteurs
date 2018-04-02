@@ -19,25 +19,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\CaptchaBundle\Controller;
+namespace Zco\Bundle\BlogBundle\Domain;
 
-use Zco\Bundle\CaptchaBundle\Captcha\Captcha;
-use Symfony\Component\HttpFoundation\Response;
-
-/**
- * Génération et affichage
- *
- * @author mwsaz <mwsaz@zcorrecteurs.fr>
- */
-class IndexController
+class Author
 {
-    public function defaultAction()
-    {
-        $captcha = new Captcha();
-        $captcha->afficher();
+    const READER = 1;
+    const WRITER = 2;
+    const OWNER = 3;
 
-        $response = new Response();
-        $response->headers->set('Content-Type', 'image/png');
-        return $response;
-    }
+    const STATUSES = [
+        self::READER => 'Lecteur',
+        self::WRITER => 'Rédacteur',
+        self::OWNER => 'Créateur',
+    ];
 }

@@ -19,6 +19,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use \Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 /**
  * Contrôleur gérant la validation d'un billet.
  *
@@ -52,11 +57,11 @@ class ValiderAction extends BlogActions
 				if(isset($_POST['confirmer']))
 				{
 					ValiderBillet($_GET['id'], isset($_POST['conserver_date_pub']));
-					return redirect(14, 'gestion.html');
+					return redirect('Le billet a bien été validé.', 'gestion.html');
 				}
 				//Si on annule
 				elseif(isset($_POST['annuler']))
-					return new Symfony\Component\HttpFoundation\RedirectResponse('admin-billet-'.$_GET['id'].'.html');
+					return new RedirectResponse('admin-billet-'.$_GET['id'].'.html');
 
 				//Inclusion de la vue
 				fil_ariane($this->InfosBillet['cat_id'], array(
@@ -66,9 +71,9 @@ class ValiderAction extends BlogActions
 				return render_to_response($this->getVars());
 			}
 			else
-				throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+				throw new AccessDeniedHttpException();
 		}
 		else
-			return redirect(20, 'index.html', MSG_ERROR);
+			throw new NotFoundHttpException();
 	}
 }

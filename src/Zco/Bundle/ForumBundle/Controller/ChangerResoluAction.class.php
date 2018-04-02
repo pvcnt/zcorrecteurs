@@ -19,6 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpFoundation\Response;
+
 /**
  * Contrôleur chargé du changement du statut résolu d'un sujet.
  *
@@ -30,15 +32,12 @@ class ChangerResoluAction extends ForumActions
 	{
 		//On récupère les infos sur le sujet.
 		list($InfosSujet, $InfosForum) = $this->initSujet();
-		if ($InfosSujet instanceof Response)
-			return $InfosSujet;
 		include(dirname(__FILE__).'/../modeles/moderation.php');
-
 		zCorrecteurs::VerifierFormatageUrl($InfosSujet['sujet_titre'], true);
 
 		//Vérification du token.
 		if(empty($_GET['token']) || $_GET['token'] != $_SESSION['token'])
-			throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+			throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException();
 
 		if(
 			(
@@ -51,9 +50,12 @@ class ChangerResoluAction extends ForumActions
 		)
 		{
 			ChangerResoluSujet($_GET['id'], $InfosSujet['sujet_resolu']);
-			return redirect(($InfosSujet['sujet_resolu'] ? 54 : 53), 'sujet-'.$_GET['id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html');
+			return redirect(
+			    ($InfosSujet['sujet_resolu'] ? 'Le sujet a bien été marqué comme non résolu.' : 'Le sujet a bien été marqué comme résolu.'),
+                'sujet-'.$_GET['id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html'
+            );
 		}
 		else
-			return redirect(70, 'sujet-'.$_GET['id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html');
+			throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException();
 	}
 }

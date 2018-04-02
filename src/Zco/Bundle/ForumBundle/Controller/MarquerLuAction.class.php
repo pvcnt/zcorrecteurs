@@ -36,12 +36,12 @@ class MarquerLuAction extends ForumActions
 		if($_GET['id'] == 1)
 		{
 			MarquerForumsLus(true);
-			return redirect(350, '/forum/');
+			return redirect('Tous les sujets ont été marqués comme lus.', '/forum/');
 		}
 		else if($_GET['id'] == 2)
 		{
 			MarquerForumsLus(false);
-			return redirect(351, '/forum/');
+			return redirect('Tous les sujets ont été marqués comme non lus.', '/forum/');
 		}
 	}
 }

@@ -19,6 +19,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpFoundation\Response;
+use \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use \Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 /**
  * Contrôleur gérant la proposition d'un billet.
  *
@@ -53,7 +57,10 @@ class ProposerAction extends BlogActions
 						'date_proposition' => 'NOW'
 					));
 					
-					return redirect(12, 'mes-billets.html');
+					return redirect(
+					    'Votre billet a bien été proposé. Votre demande sera examinée par les administrateurs.',
+                        'mes-billets.html'
+                    );
 				}
 
 				//Inclusion de la vue
@@ -65,9 +72,9 @@ class ProposerAction extends BlogActions
 				return render_to_response($this->getVars());
 			}
 			else
-				throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+				throw new AccessDeniedHttpException();
 		}
 		else
-			return redirect(20, 'index.html', MSG_ERROR);
+			throw new NotFoundHttpException();
 	}
 }

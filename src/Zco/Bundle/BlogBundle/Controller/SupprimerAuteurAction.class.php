@@ -19,6 +19,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 /**
  * Contrôleur gérant la suppression d'un auteur.
  *
@@ -57,7 +62,11 @@ class SupprimerAuteurAction extends BlogActions
 							$valide = true;
 					}
 					if($valide == false)
-						return redirect(175, 'auteurs-'.$_GET['id'].'.html', MSG_ERROR);
+						return redirect(
+						    'Cet auteur n\'est pas affecté à ce billet.',
+                            'auteurs-'.$_GET['id'].'.html',
+                            MSG_ERROR
+                        );
 					$InfosUtilisateur = InfosUtilisateur($_GET['id2']);
 					$this->setRef('InfosUtilisateur', $InfosUtilisateur);
 
@@ -65,12 +74,12 @@ class SupprimerAuteurAction extends BlogActions
 					if(isset($_POST['confirmer']))
 					{
 						SupprimerAuteur($_GET['id2'], $_GET['id']);
-						return redirect(174, 'admin-billet-'.$_GET['id'].'.html');
+						return redirect('L\'auteur a bien été supprimé.', 'admin-billet-'.$_GET['id'].'.html');
 					}
 					//Si on annule
 					elseif(isset($_POST['annuler']))
 					{
-						return new Symfony\Component\HttpFoundation\RedirectResponse('admin-billet-'.$_GET['id'].'.html');
+						return new RedirectResponse('admin-billet-'.$_GET['id'].'.html');
 					}
 
 					//Inclusion de la vue
@@ -84,12 +93,12 @@ class SupprimerAuteurAction extends BlogActions
 					));
 				}
 				else
-					throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+					throw new AccessDeniedHttpException();
 			}
 			else
-				return redirect(123, 'admin-billet-'.$_GET['id'].'.html', MSG_ERROR);
+                throw new NotFoundHttpException();
 		}
 		else
-			return redirect(20, 'index.html', MSG_ERROR);
+			throw new NotFoundHttpException();
 	}
 }

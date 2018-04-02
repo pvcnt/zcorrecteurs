@@ -19,6 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpFoundation\Response;
+
 /**
  * Ajout d'une dictée.
  *
@@ -42,10 +44,10 @@ class AjouterAction extends DicteesActions
 			{
 				$r = AjouterDictee($Form);
 				if(!$r)
-					return redirect(509, '', MSG_ERROR);
+					return redirect('Une erreur est survenue lors de l\'envoi du fichier audio.', '', MSG_ERROR);
 				elseif($r instanceof Response)
 					return $r;
-				return redirect(500, 'index.html');
+				return redirect('La dictée a été ajoutée.', 'index.html');
 			}
 		}
 		fil_ariane('Ajout d\'une dictée');

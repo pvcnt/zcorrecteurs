@@ -19,7 +19,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Contrôleur gérant la page de modification du billet.
@@ -48,7 +50,7 @@ class AdminBilletAction extends BlogActions
 			foreach($this->ListerTagsBillet as $tag)
 				$Tags[$tag['id']] = mb_strtolower(htmlspecialchars($tag['nom']));
 			$this->setRef('Tags', $Tags);
-			
+
 			//--- Si on veut modifier tous les tags ---
 			if(isset($_POST['tags']) && $this->verifier_editer)
 			{
@@ -64,7 +66,7 @@ class AdminBilletAction extends BlogActions
 					if(!in_array($cle, $TagsExtraits))
 						SupprimerTagBillet($_GET['id'], $cle);
 				}
-				return redirect(427, 'admin-billet-'.$_GET['id'].'.html');
+				return redirect('Les mots clés ont bien été modifiés.', 'admin-billet-'.$_GET['id'].'.html');
 			}
 
 			//--- Si on veut ajouteur un auteur ---
@@ -74,11 +76,11 @@ class AdminBilletAction extends BlogActions
 				if(!empty($InfosUtilisateur))
 				{
 					AjouterAuteur($_GET['id'], $InfosUtilisateur['utilisateur_id'], $_POST['statut']);
-					return redirect(172, 'admin-billet-'.$_GET['id'].'.html');
+					return redirect('L\'auteur a bien été ajouté.', 'admin-billet-'.$_GET['id'].'.html');
 				}
 				else
 				{
-					return redirect(123, 'admin-billet-'.$_GET['id'].'.html', MSG_ERROR, -1);
+					return redirect('Ce membre n\'existe pas.', 'admin-billet-'.$_GET['id'].'.html', MSG_ERROR, -1);
 				}
 			}
 
@@ -90,17 +92,17 @@ class AdminBilletAction extends BlogActions
 				if($urlimage[0] === false)
 				{
 					if($urlimage[1] == 0)
-						return redirect(194, '', MSG_ERROR, -1); // pas de fichier à uploader
+						return redirect('Erreur : pas de fichier à uploader ?', '', MSG_ERROR, -1); // pas de fichier à uploader
 					elseif($urlimage[1] == 1)
-						return redirect(197, '', MSG_ERROR, -1); // extension inconnue
+						return redirect('Erreur serveur : transfert bloqué à cause de l\'extension.', '', MSG_ERROR, -1); // extension inconnue
 					elseif($urlimage[1] == 2)
-						return redirect(198, '', MSG_ERROR, -1); // imagepng fail
+						return redirect('Erreur serveur : impossible d\'enregistrer l\'image.', '', MSG_ERROR, -1); // imagepng fail
 					else
 						exit('unknown code');
 				}
 
 				EditerBillet($_GET['id'], array('image' => $urlimage[1]));
-				return redirect(443, 'admin-billet-'.$_GET['id'].'.html');
+				return redirect('Le logo de ce billet a bien été changé.', 'admin-billet-'.$_GET['id'].'.html');
 			}
 
 			//--- Si on veut changer le type de commentaires ---
@@ -110,7 +112,7 @@ class AdminBilletAction extends BlogActions
 					'commentaires' => $_POST['commentaires'],
 					'lien_topic' => $_POST['lien']
 				));
-				return redirect(445, 'admin-billet-'.$_GET['id'].'.html');
+				return redirect('Le nouveau choix de commentaires a bien été mémorisé.', 'admin-billet-'.$_GET['id'].'.html');
 			}
 
 			//--- Si on veut changer l'url de redirection ---
@@ -122,7 +124,7 @@ class AdminBilletAction extends BlogActions
 				EditerBillet($_GET['id'], array(
 					'url_redirection' => $_POST['redirection']
 				));
-				return redirect(446, 'admin-billet-'.$_GET['id'].'.html');
+				return redirect('La nouvelle adresse de l\'article virtuel a bien été mémorisée.', 'admin-billet-'.$_GET['id'].'.html');
 			}
 
 			//--- Si on veut changer la date de publication ---
@@ -131,7 +133,7 @@ class AdminBilletAction extends BlogActions
 				EditerBillet($_GET['id'], array(
 					'date_publication' => $_POST['date_pub']
 				));
-				return redirect(444, 'admin-billet-'.$_GET['id'].'.html');
+				return redirect('La date de publication de ce billet a bien été changée.', 'admin-billet-'.$_GET['id'].'.html');
 			}
 
 			//Inclusion de la vue
@@ -143,6 +145,6 @@ class AdminBilletAction extends BlogActions
 			return render_to_response($this->getVars());
 		}
 		else
-			return redirect(20, '/blog/', MSG_ERROR);
+			throw new NotFoundHttpException();
 	}
 }

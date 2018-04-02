@@ -23,6 +23,7 @@ namespace Zco\Bundle\BlogBundle\EventListener;
 
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Zco\Bundle\BlogBundle\Domain\Author;
 use Zco\Bundle\PagesBundle\Event\FilterSitemapEvent;
 use Zco\Bundle\PagesBundle\PagesEvents;
 use Zco\Component\Templating\Event\FilterResourcesEvent;
@@ -71,11 +72,8 @@ class EventListener implements EventSubscriberInterface
 		{
 			return;
 		}
-		
-		\Config::load('messages');
-		$config = \Config::get('messages');
 
-		$event->add('BlogStatuts', $config['BlogStatuts']);
+		$event->add('BlogStatuts', Author::STATUSES);
 		$event->add('AuteursClass', array(3 => 'gras', 2 => 'normal', 1 => 'italique'));
 		$event->add('Etats', array(
 			BLOG_BROUILLON => 'Brouillon',

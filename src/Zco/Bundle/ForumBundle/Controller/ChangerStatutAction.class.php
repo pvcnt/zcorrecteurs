@@ -19,6 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpFoundation\Response;
+
 /**
  * Contrôleur chargé du changement du statut fermé d'un sujet.
  *
@@ -30,10 +32,7 @@ class ChangerStatutAction extends ForumActions
 	{
 		//On récupère les infos sur le sujet.
 		list($InfosSujet, $InfosForum) = $this->initSujet();
-		if ($InfosSujet instanceof Response)
-			return $InfosSujet;
 		include(dirname(__FILE__).'/../modeles/moderation.php');
-
 		zCorrecteurs::VerifierFormatageUrl($InfosSujet['sujet_titre'], true);
 
 		//Vérification du token.
@@ -43,9 +42,12 @@ class ChangerStatutAction extends ForumActions
 		if(verifier('fermer_sujets', $InfosSujet['sujet_forum_id']))
 		{
 			ChangerStatutSujet($_GET['id'], $InfosSujet['sujet_ferme']);
-			return redirect(($InfosSujet['sujet_ferme'] ? 57 : 56), 'sujet-'.$_GET['id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html');
+			return redirect(
+			    ($InfosSujet['sujet_ferme'] ? 'Le sujet a bien été ouvert.' : 'Le sujet a bien été fermé.'),
+                'sujet-'.$_GET['id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html'
+            );
 		}
 		else
-			return redirect(70, 'sujet-'.$_GET['id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html', MSG_ERROR);
+			throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException();
 	}
 }

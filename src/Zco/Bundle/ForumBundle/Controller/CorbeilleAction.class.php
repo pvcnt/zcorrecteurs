@@ -19,6 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+
 /**
  * Contrôleur chargé du changement de la mise en corbeille ou de la
  * restauration d'un sujet.
@@ -31,36 +33,32 @@ class CorbeilleAction extends ForumActions
 	{
 		//On récupère les infos sur le sujet.
 		list($InfosSujet, $InfosForum) = $this->initSujet();
-		if ($InfosSujet instanceof Response)
-			return $InfosSujet;
 		include(dirname(__FILE__).'/../modeles/moderation.php');
 		include(dirname(__FILE__).'/../modeles/messages.php');
 
-		zCorrecteurs::VerifierFormatageUrl($InfosSujet['sujet_titre'], true, true);
-
 		//Vérification du token.
 		if(empty($_GET['token']) || $_GET['token'] != $_SESSION['token'])
-			throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+			throw new AccessDeniedHttpException();
 
 		if(!empty($_GET['id2']) && $_GET['id2'] == 1)
 		{
 			if(verifier('corbeille_sujets', $InfosSujet['sujet_forum_id']))
 			{
 				Corbeille($InfosSujet['sujet_id'], $InfosSujet['sujet_forum_id']);
-				return redirect(61, 'sujet-'.$_GET['id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html');
+				return redirect('Le sujet a bien été mis en corbeille.', 'sujet-'.$_GET['id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html');
 			}
 			else
-				return redirect(70, 'sujet-'.$_GET['id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html', MSG_ERROR);
+                throw new AccessDeniedHttpException();
 		}
 		else
 		{
 			if(verifier('corbeille_sujets', $InfosSujet['sujet_forum_id']))
 			{
 				Restaurer($InfosSujet['sujet_id'], $InfosSujet['sujet_forum_id']);
-				return redirect(62, 'sujet-'.$_GET['id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html');
+				return redirect('Le sujet a bien été mis en restauré.', 'sujet-'.$_GET['id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html');
 			}
 			else
-				return redirect(70, 'sujet-'.$_GET['id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html', MSG_ERROR);
+                throw new AccessDeniedHttpException();
 		}
 	}
 }

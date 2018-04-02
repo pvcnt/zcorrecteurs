@@ -19,6 +19,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpFoundation\Response;
+use \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use \Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 /**
  * Contrôleur gérant la validation d'un billet.
  *
@@ -80,9 +84,9 @@ class RepondreAction extends BlogActions
 					}
 
 					if($_POST['decision'] == DECISION_REFUSER)
-						return redirect(13, 'refus.html');
+						return redirect('Le billet a bien été refusé.', 'refus.html');
 					else
-						return redirect(14, 'propositions.html');
+						return redirect('Le billet a bien été validé.', 'propositions.html');
 				}
 
 				//Infos sur le commentaire
@@ -99,12 +103,12 @@ class RepondreAction extends BlogActions
 			}
 			else
 			{
-				throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+				throw new AccessDeniedHttpException();
 			}
 		}
 		else
 		{
-			return redirect(20, 'propositions.html');
+			throw new NotFoundHttpException();
 		}
 	}
 }

@@ -19,6 +19,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 /**
  * Contrôleur gérant la division d'un sujet.
  *
@@ -26,76 +29,73 @@
  */
 class FusionnerAction extends ForumActions
 {
-	public function execute()
-	{
-		//Inclusion des modèles
-		include(dirname(__FILE__).'/../modeles/sujets.php');
-		include(dirname(__FILE__).'/../modeles/forums.php');
-		include(dirname(__FILE__).'/../modeles/moderation.php');
+    public function execute()
+    {
+        //Inclusion des modèles
+        include(dirname(__FILE__) . '/../modeles/sujets.php');
+        include(dirname(__FILE__) . '/../modeles/forums.php');
+        include(dirname(__FILE__) . '/../modeles/moderation.php');
 
-		!isset($_POST['titre']) && $_POST['titre'] = null;
-		if(empty($_GET['id']) || !is_numeric($_GET['id']))
-		{
-			return redirect(45, '/forum/', MSG_ERROR);
-		}
-		else
-		{
-			$InfosSujet = InfosSujet($_GET['id']);
-			if(!$InfosSujet)
-			{
-				return redirect(47, '/forum/', MSG_ERROR);
-			}
-		}
+        !isset($_POST['titre']) && $_POST['titre'] = null;
+        if (empty($_GET['id']) || !is_numeric($_GET['id'])) {
+            throw new NotFoundHttpException();
+        }
+        $InfosSujet = InfosSujet($_GET['id']);
+        if (!$InfosSujet) {
+            throw new NotFoundHttpException();
+        }
 
-		Page::$titre = $InfosSujet['sujet_titre'].' - Fusionner le sujet';
-		
-		//Mise à jour de la position sur le site.
-		\Doctrine_Core::getTable('Online')->updateUserPosition($_SESSION['id'], 'ZcoForumBundle:sujet', $_GET['id']);
+        Page::$titre = $InfosSujet['sujet_titre'] . ' - Fusionner le sujet';
 
-		if(verifier('fusionner_sujets', $InfosSujet['sujet_forum_id']))
-		{
-			//Si on veut fusionner le sujet
-			if(isset($_POST['submit']))
-			{
-				if(empty($_POST['sujet']) || count($_POST['sujet']) == 1)
-					return redirect(17, 'fusionner-'.$_GET['id'].'.html', MSG_ERROR);
+        //Mise à jour de la position sur le site.
+        \Doctrine_Core::getTable('Online')->updateUserPosition($_SESSION['id'], 'ZcoForumBundle:sujet', $_GET['id']);
 
-				//Si tout va bien on fusionner
-				FusionnerSujets($InfosSujet, $InfosSujet['sujet_corbeille']);
-				return redirect(256, 'sujet-'.$_GET['id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html');
-			}
+        if (verifier('fusionner_sujets', $InfosSujet['sujet_forum_id'])) {
+            //Si on veut fusionner le sujet
+            if (isset($_POST['submit'])) {
+                if (empty($_POST['sujet']) || count($_POST['sujet']) == 1)
+                    return redirect(
+                        'Vous devez remplir tous les champs nécessaires !',
+                        'fusionner-' . $_GET['id'] . '.html',
+                        MSG_ERROR
+                    );
 
-			//Si chercher des sujets
-			if(isset($_POST['search']) && !empty($_POST['titre']))
-			{
-				$ListerSujets = ListerSujetsTitre($_POST['titre']);
-			}
+                //Si tout va bien on fusionner
+                FusionnerSujets($InfosSujet, $InfosSujet['sujet_corbeille']);
+                return redirect(
+                    'Les sujets ont bien été fusionnés.',
+                    'sujet-' . $_GET['id'] . '-' . rewrite($InfosSujet['sujet_titre']) . '.html'
+                );
+            }
 
-			//On récupère la liste des sujets
-			$in = array();
-			if(isset($_POST['sujet']))
-			{
-				foreach($_POST['sujet'] as $cle => $valeur)
-					$in[] = $cle;
-			}
-			if(!in_array($_GET['id'], $in))
-				$in[] = $_GET['id'];
+            //Si chercher des sujets
+            if (isset($_POST['search']) && !empty($_POST['titre'])) {
+                $ListerSujets = ListerSujetsTitre($_POST['titre']);
+            }
 
-			$ListerSujetsSelectionnes = ListerSujetsIn($in);
+            //On récupère la liste des sujets
+            $in = array();
+            if (isset($_POST['sujet'])) {
+                foreach ($_POST['sujet'] as $cle => $valeur)
+                    $in[] = $cle;
+            }
+            if (!in_array($_GET['id'], $in))
+                $in[] = $_GET['id'];
 
-			//Inclusion de la vue
-			fil_ariane($InfosSujet['sujet_forum_id'], array(
-				htmlspecialchars($InfosSujet['sujet_titre']) => 'sujet-'.$_GET['id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html',
-				'Fusionner le sujet'
-			));
-			
-			return render_to_response(array(
-				'InfosSujet' => $InfosSujet,
-				'ListerSujetsSelectionnes' => $ListerSujetsSelectionnes,
-				'ListerSujets' => !empty($ListerSujets) ? $ListerSujets : null,
-			));
-		}
-		else
-			throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-	}
+            $ListerSujetsSelectionnes = ListerSujetsIn($in);
+
+            //Inclusion de la vue
+            fil_ariane($InfosSujet['sujet_forum_id'], array(
+                htmlspecialchars($InfosSujet['sujet_titre']) => 'sujet-' . $_GET['id'] . '-' . rewrite($InfosSujet['sujet_titre']) . '.html',
+                'Fusionner le sujet'
+            ));
+
+            return render_to_response(array(
+                'InfosSujet' => $InfosSujet,
+                'ListerSujetsSelectionnes' => $ListerSujetsSelectionnes,
+                'ListerSujets' => !empty($ListerSujets) ? $ListerSujets : null,
+            ));
+        } else
+            throw new AccessDeniedHttpException();
+    }
 }

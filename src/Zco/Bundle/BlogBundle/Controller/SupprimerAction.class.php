@@ -19,6 +19,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 /**
  * Contôleur gérant la suppression d'un billet.
  *
@@ -45,18 +50,18 @@ class SupprimerAction extends BlogActions
 					SupprimerBillet($_GET['id']);
 
 					if($this->autorise == true)
-						return redirect(9, 'mes-billets.html');
+						return redirect('Le billet a bien été supprimé.', 'mes-billets.html');
 					else
-						return redirect(9, 'gestion.html');
+						return redirect('Le billet a bien été supprimé.', 'gestion.html');
 				}
 
 				//Si on annule
 				elseif(isset($_POST['annuler']))
 				{
 					if($this->autorise == true)
-						return new Symfony\Component\HttpFoundation\RedirectResponse('mes-billets.html');
+						return new RedirectResponse('mes-billets.html');
 					else
-						return new Symfony\Component\HttpFoundation\RedirectResponse('gestion.html');
+						return new RedirectResponse('gestion.html');
 				}
 
 				//Inclusion de la vue
@@ -66,10 +71,10 @@ class SupprimerAction extends BlogActions
 				return render_to_response(array('InfosBillet' => $this->InfosBillet));
 			}
 			else
-				throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+				throw new AccessDeniedHttpException();
 
 		}
 		else
-			return redirect(20, 'index.html', MSG_ERROR);
+			throw new NotFoundHttpException();
 	}
 }

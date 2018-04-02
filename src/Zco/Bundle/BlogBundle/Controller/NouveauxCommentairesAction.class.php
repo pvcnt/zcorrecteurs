@@ -54,7 +54,7 @@ class NouveauxCommentairesAction extends BlogActions
 			if($billets)
 				MarquerCommentairesLus2($billets);
 
-			return redirect(500, 'nouveaux-commentaires.html');
+			return redirect('Les commentaires sélectionnés ont été marqués comme lus.', 'nouveaux-commentaires.html');
 		}
 
 		//Inclusion de la vue

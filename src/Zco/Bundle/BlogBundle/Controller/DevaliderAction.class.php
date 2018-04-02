@@ -19,6 +19,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 /**
  * Contrôleur gérant la dévalidation d'un billet.
  *
@@ -44,12 +49,12 @@ class DevaliderAction extends BlogActions
 				if(isset($_POST['confirmer']))
 				{
 					EditerBillet($_GET['id'], array('etat' => BLOG_BROUILLON));
-					return redirect(7, 'brouillons.html');
+					return redirect('Le billet a bien été dévalidé.', 'brouillons.html');
 				}
 				//Si on annule
 				elseif(isset($_POST['annuler']))
 				{
-					return new Symfony\Component\HttpFoundation\RedirectResponse('gestion.html');
+					return new RedirectResponse('gestion.html');
 				}
 
 				//Inclusion de la vue
@@ -62,12 +67,12 @@ class DevaliderAction extends BlogActions
 			}
 			else
 			{
-				throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+				throw new AccessDeniedHttpException;
 			}
 		}
 		else
 		{
-			return redirect(20, '/blog/', MSG_ERROR);
+			throw new NotFoundHttpException();
 		}
 	}
 }

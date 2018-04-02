@@ -19,6 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpFoundation\Response;
+
 /**
  * Contrôleur chargé du changement du statut coup de coeur d'un sujet.
  *
@@ -30,8 +32,6 @@ class ChangerCoupCoeurAction extends ForumActions
 	{
 		//On récupère les infos sur le sujet.
 		list($InfosSujet, $InfosForum) = $this->initSujet();
-		if ($InfosSujet instanceof Response)
-			return $InfosSujet;
 		include(dirname(__FILE__).'/../modeles/moderation.php');
 
 		zCorrecteurs::VerifierFormatageUrl($InfosSujet['sujet_titre'], true);
@@ -43,9 +43,12 @@ class ChangerCoupCoeurAction extends ForumActions
 		if(verifier('mettre_sujets_coup_coeur'))
 		{
 			ChangerCoupCoeur($_GET['id'], $InfosSujet['sujet_coup_coeur']);
-			return redirect($InfosSujet['sujet_coup_coeur'] ? 299 : 298, 'sujet-'.$_GET['id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html');
+			return redirect(
+			    $InfosSujet['sujet_coup_coeur'] ? 'Le sujet a bien été retiré des coups de c&oelig;ur.' : 'Le sujet a bien été mis en coup de c&oelig;ur.',
+                'sujet-'.$_GET['id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html'
+            );
 		}
 		else
-			return redirect(70, 'sujet-'.$_GET['id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html');
+			throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException();
 	}
 }

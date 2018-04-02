@@ -557,7 +557,7 @@ function DescendreCategorie($InfosCategorie)
 /**
  * Monte une catégorie.
  * @param array $InfosCategorie						Les infos sur la catégorie.
- * @return void
+ * @return bool
  */
 function MonterCategorie($InfosCategorie)
 {

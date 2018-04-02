@@ -19,6 +19,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 /**
  * Listage des dictées d'un membre.
  *
@@ -36,18 +39,18 @@ class ProposerAction extends DicteesActions
 			// Vérification de l'existence de la dictée
 			$Dictee = $_GET['id'] ? Dictee($_GET['id']) : null;
 			if(!$Dictee)
-				return redirect(501, 'proposer.html', MSG_ERROR);
+				throw new NotFoundHttpException();
 			if($Dictee->etat != DICTEE_BROUILLON)
-				return redirect(510, 'proposer.html', MSG_ERROR);
+				return redirect('Vous ne pouvez proposer que vos brouillons.', 'proposer.html', MSG_ERROR);
 
 			if(isset($_POST['confirmer']))
 			{
 				if($r = zCorrecteurs::verifierToken()) return $r;
 				ProposerDictee($Dictee);
-				return redirect(511, 'proposer.html');
+				return redirect('Votre dictée a été proposée.', 'proposer.html');
 			}
 			if(isset($_POST['annuler']))
-				return new Symfony\Component\HttpFoundation\RedirectResponse('proposer.html');
+				return new RedirectResponse('proposer.html');
 
 			Page::$titre = 'Proposer une dictée';
 			$url = 'dictee-'.$Dictee->id.'-'.rewrite($Dictee->titre).'.html';

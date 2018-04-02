@@ -19,6 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 /**
  * Passage d'une dictée en/hors ligne.
  *
@@ -31,10 +33,10 @@ class ValiderAction extends DicteesActions
 		if($r = zCorrecteurs::verifierToken()) return $r;
 		$Dictee = $_GET['id'] ? Dictee($_GET['id']) : null;
 		if(!$Dictee)
-			redirect(501, 'index.html', MSG_ERROR);
+			throw new NotFoundHttpException();
 
 		ValiderDictee($Dictee, $_GET['id2']);
-		return redirect($_GET['id2'] ? 502 : 503,
+		return redirect($_GET['id2'] ? 'La dictée a bien été validée.' : 'La dictée a bien été refusée.',
 			'dictee-'.$Dictee->id.'-'.rewrite($Dictee->titre).'.html');
 	}
 }

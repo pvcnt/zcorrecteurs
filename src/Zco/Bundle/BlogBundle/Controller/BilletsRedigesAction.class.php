@@ -19,6 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 /**
  * Contrôleur gérant l'affichage de tous les billets validés d'un membre.
  *
@@ -34,7 +36,7 @@ class BilletsRedigesAction extends BlogActions
 		{
 			$InfosUtilisateur = InfosUtilisateur($_GET['id']);
 			if(empty($InfosUtilisateur))
-				return redirect(123, $this->generateUrl('zco_user_index'), MSG_ERROR);
+				throw new NotFoundHttpException();
 
 			Page::$titre = 'Liste des billets rédigés par '.htmlspecialchars($InfosUtilisateur['utilisateur_pseudo']);
 
@@ -55,6 +57,6 @@ class BilletsRedigesAction extends BlogActions
 			));
 		}
 		else
-			return redirect(122, '/', MSG_ERROR);
+            throw new NotFoundHttpException();
 	}
 }

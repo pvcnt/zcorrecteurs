@@ -19,6 +19,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 /**
  * Contrôleur gérant le déplacement d'un sujet.
  *
@@ -28,37 +31,36 @@ class DeplacerAction extends ForumActions
 {
 	public function execute()
 	{
-		//On récupère les infos sur le sujet.
 		list($InfosSujet, $InfosForum) = $this->initSujet();
-		if ($InfosSujet instanceof Response)
-			return $InfosSujet;
 		include(dirname(__FILE__).'/../modeles/moderation.php');
-
-		zCorrecteurs::VerifierFormatageUrl($InfosSujet['sujet_titre'], true);
 
 		if(verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']))
 		{
 			//Forum cible non envoyé.
 			if(empty($_POST['forum_cible']) || !is_numeric($_POST['forum_cible']))
-				return redirect(49, 'sujet-'.$_GET['id'].'.html', MSG_ERROR);
+				throw new NotFoundHttpException();
 
 			//Si on n'a pas le droit de voir un des deux forums.
-			elseif(!verifier('voir_sujets', $InfosSujet['sujet_forum_id']) || !verifier('voir_sujets', $_POST['forum_cible']))
-				return redirect(50, 'sujet-'.$_GET['id'].'.html', MSG_ERROR);
+			if(!verifier('voir_sujets', $InfosSujet['sujet_forum_id']) || !verifier('voir_sujets', $_POST['forum_cible']))
+                throw new NotFoundHttpException();
 
 			//Si forum source et cible sont identiques.
-			elseif($InfosSujet['sujet_forum_id'] == $_POST['forum_cible'])
-				return redirect(75, 'sujet-'.$_GET['id'].'.html', MSG_ERROR);
+			if($InfosSujet['sujet_forum_id'] == $_POST['forum_cible'])
+				return redirect(
+				    'Le forum source doit être différent du forum cible.',
+                    'sujet-'.$_GET['id'].'.html',
+                    MSG_ERROR
+                );
 
 			//Si sujet en corbeille.
-			elseif($InfosSujet['sujet_corbeille'])
-				return redirect(70, 'sujet-'.$_GET['id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html', MSG_ERROR);
+			if($InfosSujet['sujet_corbeille'])
+				throw new AccessDeniedHttpException();
 
 
 			DeplacerSujet($_GET['id'], $InfosSujet['sujet_forum_id'], $_POST['forum_cible']);
-			return redirect(55, 'sujet-'.$_GET['id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html');
+			return redirect('Le sujet a bien été déplacé.', 'sujet-'.$_GET['id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html');
 		}
 		else
-			throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+			throw new AccessDeniedHttpException();
 	}
 }

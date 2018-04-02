@@ -19,6 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zco\Bundle\CoreBundle\Generator\Generator;
 
 /**
@@ -81,7 +83,7 @@ class AuteursActions extends Generator
 		{
 			$Auteur = Doctrine_Core::getTable('Auteur')->find($_GET['id']);
 			if($Auteur === false)
-				return redirect(1, 'index.html', MSG_ERROR, -1);
+				throw new NotFoundHttpException();
 
 			Page::$titre = htmlspecialchars($Auteur);
 			zCorrecteurs::VerifierFormatageUrl($Auteur->__toString(), true);
@@ -99,6 +101,6 @@ class AuteursActions extends Generator
 			));
 		}
 		else
-			return redirect(1, 'index.html', MSG_ERROR, -1);
+			throw new AccessDeniedHttpException();
 	}
 }

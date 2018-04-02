@@ -19,6 +19,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 /**
  * Contrôleur gérant l'ajout d'un commentaire sur un billet du blog.
  *
@@ -48,7 +52,7 @@ class AjouterCommentaireAction extends BlogActions
 				{
 					$id = AjouterCommentaire($_GET['id'], $_SESSION['id'], $_POST['texte']);
 					
-					return redirect(137, 'billet-'.$_GET['id'].'-'.$id.'-'.rewrite($this->InfosBillet['version_titre']).'.html');
+					return redirect('Le commentaire a bien été ajouté.', 'billet-'.$_GET['id'].'-'.$id.'-'.rewrite($this->InfosBillet['version_titre']).'.html');
 				}
 
 				//Si on veut citer un message
@@ -80,9 +84,9 @@ class AjouterCommentaireAction extends BlogActions
 				return render_to_response($this->getVars());
 			}
 			else
-				throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+				throw new AccessDeniedHttpException();
 		}
 		else
-			return redirect(20, 'index.html', MSG_ERROR);
+			throw new NotFoundHttpException();
 	}
 }

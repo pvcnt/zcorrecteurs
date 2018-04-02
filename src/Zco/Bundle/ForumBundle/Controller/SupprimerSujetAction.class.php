@@ -19,6 +19,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+
 /**
  * Contrôleur pour la suppression d'un sujet.
  *
@@ -29,8 +33,6 @@ class SupprimerSujetAction extends ForumActions
 	public function execute()
 	{
 		list($InfosSujet, $InfosForum) = $this->initSujet();
-		if ($InfosSujet instanceof Response)
-			return $InfosSujet;
 		include(dirname(__FILE__).'/../modeles/moderation.php');
 
 		if(verifier('suppr_sujets', $InfosSujet['sujet_forum_id']))
@@ -39,11 +41,11 @@ class SupprimerSujetAction extends ForumActions
 			if(isset($_POST['confirmer']))
 			{
 				Supprimer($InfosSujet['sujet_id'], $InfosSujet['sujet_forum_id'], $InfosSujet['sujet_corbeille']);
-				return redirect(60, 'forum-'.$InfosSujet['sujet_forum_id'].'-'.rewrite($InfosForum['cat_nom']).'.html');
+				return redirect('Le sujet a bien été supprimé.', 'forum-'.$InfosSujet['sujet_forum_id'].'-'.rewrite($InfosForum['cat_nom']).'.html');
 			}
 			elseif(isset($_POST['annuler']))
 			{
-				return new Symfony\Component\HttpFoundation\RedirectResponse('sujet-'.$_GET['id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html');
+				return new RedirectResponse('sujet-'.$_GET['id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html');
 			}
 
 			//Inclusion de la vue
@@ -57,6 +59,6 @@ class SupprimerSujetAction extends ForumActions
 			));
 		}
 		else
-			throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+			throw new AccessDeniedHttpException;
 	}
 }

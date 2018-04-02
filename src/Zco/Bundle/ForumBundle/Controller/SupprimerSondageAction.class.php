@@ -34,21 +34,24 @@ class SupprimerSondageAction extends ForumActions
 		//Si aucun sondage n'a été envoyé
 		if(empty($_GET['id']) || !is_numeric($_GET['id']))
 		{
-			return redirect(94, '/forum/', MSG_ERROR);
+			throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
 		}
 
 		//Si on n'a pas le droit de le voir
 		$InfosSondage = InfosSondage($_GET['id']);
 		if(!$InfosSondage)
 		{
-			return redirect(95, '/forum/', MSG_ERROR);
+            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
 		}
 
 		if(verifier('supprimer_sondages', $InfosSondage['cat_id']))
 		{
 			//On supprime le sondage
 			SupprimerSondage($_GET['id']);
-			return redirect(97, 'sujet-'.$InfosSondage['sujet_id'].'-'.rewrite($InfosSondage['sujet_titre']).'.html');
+			return redirect(
+			    'Le sondage a bien été supprimé',
+                'sujet-'.$InfosSondage['sujet_id'].'-'.rewrite($InfosSondage['sujet_titre']).'.html'
+            );
 		}
 		else
 		{

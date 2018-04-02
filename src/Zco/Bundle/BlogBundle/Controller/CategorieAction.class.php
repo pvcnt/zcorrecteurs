@@ -19,6 +19,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+
 /**
  * Contrôleur gérant l'affichage des billets d'une catégorie.
  *
@@ -32,10 +35,10 @@ class CategorieAction extends BlogActions
 		{
 			$InfosCategorie = InfosCategorie($_GET['id']);
 			if(empty($InfosCategorie))
-				return redirect(217, '/blog/', MSG_ERROR);
+                throw new NotFoundHttpException();
 
 			if(!verifier('blog_voir', $_GET['id']))
-				throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+				throw new AccessDeniedHttpException();
 
 			zCorrecteurs::VerifierFormatageUrl($InfosCategorie['cat_nom'], true, false, 1);
 			$NombreDeBillet = CompterListerBilletsEnLigne($_GET['id']);
@@ -72,7 +75,7 @@ class CategorieAction extends BlogActions
 		}
 		else
 		{
-			return redirect(216, '/blog/', MSG_ERROR);
+            throw new NotFoundHttpException();
 		}
 	}
 }

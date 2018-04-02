@@ -19,6 +19,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 /**
  * Contrôleur gérant la comparaison entre deux versions d'un billet.
  *
@@ -37,7 +41,7 @@ class ComparaisonAction extends BlogActions
 			$infos_old = InfosVersion($_GET['id2']);
 
 			if(empty($infos_new) || empty($infos_old))
-				return redirect(1, 'index.html', MSG_ERROR);
+				throw new AccessDeniedHttpException();
 
 			if($infos_new['version_id_billet'] == $infos_old['version_id_billet'])
 			{
@@ -76,10 +80,10 @@ class ComparaisonAction extends BlogActions
 					));
 				}
 				else
-					throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+					throw new AccessDeniedHttpException();
 			}
 		}
-		return new Symfony\Component\HttpFoundation\Response('Oops, merci de créer un rapport de bug');
+		return new NotFoundHttpException();
 
 		//TODO : Sinon on affiche juste le formulaire de choix
 	}

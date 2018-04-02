@@ -19,19 +19,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 /**
  * Lecture d'une dictée.
  *
  * @author mwsaz <mwsaz@zcorrecteurs.fr>
  */
-
 class DicteeAction extends DicteesActions
 {
 	public function execute()
 	{
 		$Dictee = $_GET['id'] ? Dictee($_GET['id']) : null;
 		if(!$Dictee)
-			return redirect(501, 'index.html', MSG_ERROR);
+			throw new NotFoundHttpException();
 
 		zCorrecteurs::VerifierFormatageUrl($Dictee->titre, true);
 
@@ -47,4 +48,3 @@ class DicteeAction extends DicteesActions
 		return render_to_response(compact('Dictee', 'Tags'));
 	}
 }
-?>

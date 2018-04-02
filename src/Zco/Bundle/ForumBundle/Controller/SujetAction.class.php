@@ -20,6 +20,7 @@
  */
 
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Contrôleur gérant l'affichage d'un sujet.
@@ -41,13 +42,11 @@ class SujetAction extends ForumActions
 
 		//On récupère les infos sur le sujet
 		list($InfosSujet, $InfosForum) = $this->initSujet();
-		if ($InfosSujet instanceof Response)
-			return $InfosSujet;
 		zCorrecteurs::VerifierFormatageUrl($InfosSujet['sujet_titre'], true, true, 1);
 		
 		// Si le forum est archivé
 		if( $InfosForum['cat_archive'] == 1 && !verifier('voir_archives')) {
-			return redirect(357, '/forum/', MSG_ERROR);
+			return redirect('Le forum n\'est plus accessible.', '/forum/', MSG_ERROR);
 		}
 
 		// Détermination de la page courante
@@ -74,7 +73,10 @@ class SujetAction extends ForumActions
 			// Au moins deux réponses
 			if(count($reponses) >= 2)
 				CreerSondageSujet($_GET['id'], $reponses);
-			return redirect(478, 'sujet-'.$_GET['id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html');
+			return redirect(
+			    'Le sondage a bien été ajouté.',
+                'sujet-'.$_GET['id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html'
+            );
 		}
 
 		//--- Redirection de la mort qui tue pour le référencement. :D ---
@@ -83,11 +85,11 @@ class SujetAction extends ForumActions
 			$_GET['p'] = TrouverLaPageDeCeMessage($_GET['id'], $_GET['id2']);
 			if($_GET['p'] == 1)
 			{
-				return new Symfony\Component\HttpFoundation\RedirectResponse('sujet-'.$_GET['id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html#m'.$_GET['id2'], 301);
+				return new RedirectResponse('sujet-'.$_GET['id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html#m'.$_GET['id2'], 301);
 			}
 			else
 			{
-				return new Symfony\Component\HttpFoundation\RedirectResponse('sujet-'.$_GET['id'].'-p'.$_GET['p'].'-'.rewrite($InfosSujet['sujet_titre']).'.html#m'.$_GET['id2'], 301);
+				return new RedirectResponse('sujet-'.$_GET['id'].'-p'.$_GET['p'].'-'.rewrite($InfosSujet['sujet_titre']).'.html#m'.$_GET['id2'], 301);
 			}
 		}
 
@@ -95,17 +97,20 @@ class SujetAction extends ForumActions
 		if(isset($_GET['changer_favori']) && $_GET['changer_favori'] == 1 && verifier('mettre_sujet_favori'))
 		{
 			if(empty($_GET['token']) || $_GET['token'] != $_SESSION['token'])
-				return redirect(1, 'sujet-'.$_GET['id'].'.html', MSG_ERROR);
+				throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
 
 			ChangerFavori($_GET['id'], $InfosSujet['lunonlu_favori']);
-			return redirect(($InfosSujet['lunonlu_favori'] ? 372 : 371), 'sujet-'.$_GET['id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html');
+			return redirect(
+			    ($InfosSujet['lunonlu_favori'] ? 'Le sujet a bien été enlevé de vos favoris.' : 'Le sujet a bien été mis en favori.'),
+                'sujet-'.$_GET['id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html'
+            );
 		}
 
 		//On récupère la liste des numéros des pages.
 		$nbMessagesParPage = 20;
 		$NombreDePages = ceil($InfosSujet['nombre_de_messages'] / $nbMessagesParPage);
 		if($_GET['p'] > $NombreDePages)
-			return redirect(352, 'sujet-'.$_GET['id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html', MSG_ERROR);
+			throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
 		$tableau_pages = liste_pages($_GET['p'],$NombreDePages,$InfosSujet['nombre_de_messages'],$nbMessagesParPage,'sujet-'.$_GET['id'].'-p%s-'.rewrite($InfosSujet['sujet_titre']).'.html');
 		$debut = ($_GET['p'] - 1) * $nbMessagesParPage;
 

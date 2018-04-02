@@ -19,6 +19,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 /**
  * Lecture d'une dictée.
  *
@@ -30,11 +33,11 @@ class CorrigerAction extends DicteesActions
 	{
 		$Dictee = $_GET['id'] ? Dictee($_GET['id']) : null;
 		if(!$Dictee)
-			return redirect(501, 'index.html', MSG_ERROR);
+			throw new NotFoundHttpException();
 
 		$url = 'dictee-'.$Dictee->id.'-'.rewrite($Dictee->titre).'.html';
 		if(empty($_POST['texte']))
-			return new Symfony\Component\HttpFoundation\RedirectResponse($url);
+			return new RedirectResponse($url);
 
         //On vérifie qu'il y ait un minimum de ressemblance entre les deux textes.
         //Pour cela on vérifie que le nombre de mots soumis soit au moins 60% du 
@@ -42,7 +45,11 @@ class CorrigerAction extends DicteesActions
         $nbMotsOriginal = count(explode(' ', $Dictee->texte));
         $nbMotsSoumis   = count(explode(' ', $_POST['texte']));
         if ($nbMotsSoumis/$nbMotsOriginal < 0.6)
-            return redirect(513, $url, MSG_ERROR);
+            return redirect(
+                'Soit vous avez fait beaucoup trop de fautes, soit vous n\'avez pas terminé la dictée, soit vous vous êtes trompé de texte !',
+                $url,
+                MSG_ERROR
+            );
 
 		if($r = zCorrecteurs::verifierToken()) return $r;
 
@@ -59,7 +66,7 @@ class CorrigerAction extends DicteesActions
 		    '@ZcoCoreBundle/Resources/public/css/zcode.css',
 		    '@ZcoDicteesBundle/Resources/public/css/dictees.css',
 		));
-		
+
 		return render_to_response(compact('Dictee', 'note', 'diff'));
 	}
 }

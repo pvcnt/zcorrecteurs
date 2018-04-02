@@ -26,30 +26,35 @@
  */
 class MarquerSujetNonLuAction extends ForumActions
 {
-	public function execute()
-	{
-            	//Vérification du token.
-		if(empty($_GET['token']) || $_GET['token'] != $_SESSION['token'])
-			throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+    public function execute()
+    {
+        //Vérification du token.
+        if (empty($_GET['token']) || $_GET['token'] != $_SESSION['token'])
+            throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
-		//Inclusion des modèles
-		include(dirname(__FILE__).'/../modeles/sujets.php');
-		include(dirname(__FILE__).'/../modeles/membres.php');
+        //Inclusion des modèles
+        include(dirname(__FILE__) . '/../modeles/sujets.php');
+        include(dirname(__FILE__) . '/../modeles/membres.php');
 
-		//Si on n'a pas envoyé de sujet
-		if(empty($_GET['id']) || !is_numeric($_GET['id']))
-			return redirect(45, '/forum/', MSG_ERROR);
+        //Si on n'a pas envoyé de sujet
+        if (empty($_GET['id']) || !is_numeric($_GET['id']))
+            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
 
-		$InfosSujet = InfosSujet($_GET['id']);
-		if(empty($InfosSujet) || !verifier('voir_sujets', $InfosSujet['sujet_forum_id']))
-			return redirect(47, '/forum/', MSG_ERROR);
+        $InfosSujet = InfosSujet($_GET['id']);
+        if (empty($InfosSujet) || !verifier('voir_sujets', $InfosSujet['sujet_forum_id']))
+            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
 
-                if(!$InfosSujet['lunonlu_utilisateur_id'])
-                        return redirect(354, 'forum-'.$InfosSujet['sujet_forum_id'].'.html', MSG_ERROR);
+        if (!$InfosSujet['lunonlu_utilisateur_id'])
+            return redirect(
+                'Vous n\'avez jamais lu ce sujet.',
+                'forum-' . $InfosSujet['sujet_forum_id'] . '.html',
+                MSG_ERROR
+            );
 
-                zCorrecteurs::VerifierFormatageUrl($InfosSujet['sujet_titre'], true);
-
-                MarquerSujetLu($_GET['id'], false);
-                return redirect(356, 'forum-'.$InfosSujet['sujet_forum_id'].'.html');
-        }
+        MarquerSujetLu($_GET['id'], false);
+        return redirect(
+            'Le sujet a bien été marqué comme non-lu.',
+            'forum-' . $InfosSujet['sujet_forum_id'] . '.html'
+        );
+    }
 }

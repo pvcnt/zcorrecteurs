@@ -35,7 +35,46 @@ class Captcha
 		$decalage,
 		$image;
 
-	public function __construct($config)
+	const DEFAULT_CONFIG = [
+        'fond' => [
+            'rouge' => 255,
+            'vert' => 255,
+            'bleu' => 255,
+            'transparent' => true,
+        ],
+        'caracteres' => [
+            'rouge' => 0,
+            'vert' => 0,
+            'bleu' => 0,
+            'aleatoire' => true, // Couleur choisie aléatoirement
+            'luminosite' => 1, // Luminosité des caractères de 1 (sombre) à 4 (clair)
+            'transparence' => 10, // Transparence des caractères de 0 (opaque) à 127 (invisible)
+            'liste' => 'ABCDEFGHKLMNPRTWXYZ',
+            'nombre' => 4, // Nombre de caractères
+            'espacement' => 20, // Espacement des caractères
+            'taille' => ['min' => 14, 'max' => 16],
+            'polices' => ['luggerbu.ttf'],
+            'anglemax' => 25,
+        ],
+        'brouillage' => [
+            'flouGaussien' => false, // Appliquer un flou gaussien
+            'niveauxGris' => false, // Image en noir et blanc (niveaux de gris)
+            'bruit' => [
+                'pixels' => ['min' => 10, 'max' => 50],
+                'lignes' => ['min' => 1, 'max' => 5],
+                'cercles' => ['min' => 1, 'max' => 5],
+                'type' => 'dessous', // Le bruit est-il par-dessus ou par-dessous les caractères ?
+                'epaisseur' => ['min' => 1, 'max' => 4],
+            ],
+        ],
+        'format' => 'png',
+        'intervalle' => 2, // Temps d'attente entre deux générations d'image par le même client (s)
+        'largeur' => 130,
+        'hauteur' => 40,
+        'cadre' => true,
+    ];
+
+	public function __construct($config = self::DEFAULT_CONFIG)
 	{
 		$this->config = $config;
 

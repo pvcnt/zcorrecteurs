@@ -19,6 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpFoundation\Response;
+
 /**
  * Contrôleur chargé du changement du statut annonce d'un sujet.
  *
@@ -30,8 +32,6 @@ class ChangerTypeAction extends ForumActions
 	{
 		//On récupère les infos sur le sujet.
 		list($InfosSujet, $InfosForum) = $this->initSujet();
-		if ($InfosSujet instanceof Response)
-			return $InfosSujet;
 		include(dirname(__FILE__).'/../modeles/moderation.php');
 
 		zCorrecteurs::VerifierFormatageUrl($InfosSujet['sujet_titre'], true);
@@ -43,9 +43,12 @@ class ChangerTypeAction extends ForumActions
 		if(verifier('epingler_sujets', $InfosSujet['sujet_forum_id']))
 		{
 			ChangerTypeSujet($_GET['id'], $InfosSujet['sujet_annonce']);
-			return redirect(($InfosSujet['sujet_annonce'] ? 59 : 58), 'sujet-'.$_GET['id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html');
+			return redirect(
+			    ($InfosSujet['sujet_annonce'] ? 'Le sujet a bien été désépinglé.' : 'Le sujet a bien été épinglé.'),
+                'sujet-'.$_GET['id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html'
+            );
 		}
 		else
-			return redirect(70, 'sujet-'.$_GET['id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html');
+			throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException();
 	}
 }

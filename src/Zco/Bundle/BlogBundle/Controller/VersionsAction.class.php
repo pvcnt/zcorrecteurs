@@ -56,6 +56,6 @@ class VersionsAction extends BlogActions
 				throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 		}
 		else
-			return redirect(20, 'index.html', MSG_ERROR);
+			throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
 	}
 }

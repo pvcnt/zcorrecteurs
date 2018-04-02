@@ -38,36 +38,49 @@ class VoterAction extends ForumActions
 		if((empty($_POST['choix']) || !is_numeric($_POST['choix'])) && isset($_POST['voter']) && ! empty($_POST['s']) && is_numeric($_POST['s']))
 		{
 			$InfosSujet = InfosSujet($_POST['s']);
-			return redirect(93, 'sujet-'.$_POST['s'].'-'.rewrite($InfosSujet['sujet_titre']).'.html', MSG_ERROR);
+			return redirect(
+			    'Que voulez-vous voter ?',
+                'sujet-'.$_POST['s'].'-'.rewrite($InfosSujet['sujet_titre']).'.html',
+                MSG_ERROR
+            );
 		}
 		//Si son choix n'est pas valide
 		elseif(isset($_POST['voter']) && !VerifierValiditeChoix($_POST['choix']) && ! empty($_POST['s']) && is_numeric($_POST['s']))
 		{
 			$InfosSujet = InfosSujet($_POST['s']);
-			return redirect(92, 'sujet-'.$_POST['s'].'-'.rewrite($InfosSujet['sujet_titre']).'.html', MSG_ERROR);
+			return redirect(
+			    'Ce choix n\'existe pas, ou le sondage est fermé.',
+                'sujet-'.$_POST['s'].'-'.rewrite($InfosSujet['sujet_titre']).'.html',
+                MSG_ERROR);
 		}
 		//Si aucun sondage n'a été envoyé
 		elseif(empty($_POST['sondage']) || !is_numeric($_POST['sondage']) && ! empty($_POST['s']) && is_numeric($_POST['s']))
 		{
-			$InfosSujet = InfosSujet($_POST['s']);
-			return redirect(94, 'sujet-'.$_POST['s'].'-'.rewrite($InfosSujet['sujet_titre']).'.html', MSG_ERROR);
+			throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
 		}
 		//Si aucun sujet n'a été envoyé
 		elseif(empty($_POST['s']) || !is_numeric($_POST['s']))
 		{
-			return redirect(45, '/forum/');
+            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
 		}
 
 		//S'il n'y a pas d'erreur, on enregistre le vote !
 		if(Voter($_POST['sondage'], (isset($_POST['blanc']) ? 0 : $_POST['choix'])))
 		{
 			$InfosSujet = InfosSujet($_POST['s']);
-			return redirect(91, 'sujet-'.$_POST['s'].'-'.rewrite($InfosSujet['sujet_titre']).'.html');
+			return redirect(
+			    'Votre vote a bien été pris en compte. Merci d\'avoir voté !',
+                'sujet-'.$_POST['s'].'-'.rewrite($InfosSujet['sujet_titre']).'.html'
+            );
 		}
 		else
 		{
 			$InfosSujet = InfosSujet($_POST['s']);
-			return redirect(90, 'sujet-'.$_POST['s'].'-'.rewrite($InfosSujet['sujet_titre']).'.html', MSG_ERROR);
+			return redirect(
+			    'Impossible de voter : vous avez déjà voté.',
+                'sujet-'.$_POST['s'].'-'.rewrite($InfosSujet['sujet_titre']).'.html',
+                MSG_ERROR
+            );
 		}
 	}
 }

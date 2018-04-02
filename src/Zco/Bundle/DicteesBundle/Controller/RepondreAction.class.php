@@ -19,6 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 /**
  * Réponse à une soumission.
  *
@@ -31,10 +33,10 @@ class RepondreAction extends DicteesActions
 		// Vérification de l'existence de la dictée
 		$Dictee = $_GET['id'] ? Dictee($_GET['id']) : null;
 		if(!$Dictee)
-			return redirect(501, 'index.html', MSG_ERROR);
+			throw new NotFoundHttpException();
 
 		if($Dictee->etat != DICTEE_PROPOSEE)
-			return redirect(508, 'propositions.html', MSG_ERROR);
+			return redirect('Cette dictée n\'est pas proposée.', 'propositions.html', MSG_ERROR);
 
 		zCorrecteurs::VerifierFormatageUrl($Dictee->titre, true);
 		Page::$titre = 'Répondre à une soumission';
@@ -47,7 +49,10 @@ class RepondreAction extends DicteesActions
 			if($r = zCorrecteurs::verifierToken()) return $r;
 			$Form->bind($_POST);
 			if($Form->isValid())
-				return redirect(RepondreDictee($Dictee, $Form) ? 506 : 507, 'propositions.html');
+				return redirect(
+				    RepondreDictee($Dictee, $Form) ? 'La proposition a été acceptée.' : 'La proposition a été refusée.',
+                    'propositions.html'
+                );
 		}
 
 		fil_ariane(Page::$titre);

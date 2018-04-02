@@ -35,7 +35,7 @@ class CategorieAction extends ForumActions
 		//Si aucune catégorie n'a été spécifiée
 		if(empty($_GET['id']) || !is_numeric($_GET['id']))
 		{
-			return redirect(64, '/forum/', MSG_ERROR);
+			throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
 		}
 		//Si elle n'existe pas on si on n'a pas le droit de la voir
 		$InfosCategorie = InfosCategorie($_GET['id']);
@@ -43,12 +43,12 @@ class CategorieAction extends ForumActions
 		$droit = !empty($_GET['trash']) ? 'corbeille_sujets' : 'voir_sujets';
 		if(empty($InfosCategorie) || !verifier($droit, $_GET['id']))
 		{
-			return redirect(65, '/forum/', MSG_ERROR);
+            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
 		}
 		
-		// Si la catégorie est archiver on redirige l'utilisateur
+		// Si la catégorie est archivée on redirige l'utilisateur
 		if( $InfosCategorie['cat_archive'] == 1 && !verifier('voir_archives')) {
-			return redirect(357, '/forum/', MSG_ERROR);
+			return redirect('Le forum n\'est plus accessible.', '/forum/', MSG_ERROR);
 		}
 
 		zCorrecteurs::VerifierFormatageUrl($InfosCategorie['cat_nom'], true);
