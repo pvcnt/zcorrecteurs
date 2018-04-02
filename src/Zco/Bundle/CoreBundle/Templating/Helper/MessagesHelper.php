@@ -157,50 +157,6 @@ class MessagesHelper extends Helper
 	}
 	
 	/**
-	 * Parse un message écrit dans le zCode du SdZ pour l'affichage.
-	 *
-	 * @param  string $texte Le texte à parser
-	 * @return string Code HTML prêt à l'affichage
-	 */
-	public function parseSdz($texte)
-	{
-	    $this->resourceManager->requireResource(
-	        '@ZcoCoreBundle/Resources/public/css/zcode.css'
-	    );
-		return $this->parser->with('sdz')->parse($texte);
-	}
-
-	/**
-	 * Parse de façon automatique les liens dans un texte.
-	 *
-	 * @param  string $texte Texte à parser.
-	 * @return string
-	 */
-	public function parseLiens($texte)
-	{
-		return preg_replace(
-			'`(\s|^|>)'
-			.'((?:http|https|ftp)://[.0-9a-z/~;:@?&=#%_-]+)'
-			.'(\s|$|<)`i',
-			'$1<a href="$2">$2</a>$3', $texte);
-	}
-
-	/**
-	 * Parse les mots clés spécifiques à twitter dans un texte.
-	 *
-	 * @param  string $texte Texte à parser.
-	 * @return string
-	 */
-	public function parseTwitter($texte)
-	{
-		return preg_replace(
-			'`(\s|^|>)'
-			.'@([0-9a-z_-]+)'
-			.'(\\.|\s|$|<)`i',
-			'$1<a href="http://twitter.com/$2">@$2</a>$3', $texte);
-	}
-	
-	/**
 	 * {@inheritdoc}
 	 */
 	public function getName()

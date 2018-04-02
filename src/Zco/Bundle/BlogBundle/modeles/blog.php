@@ -358,7 +358,6 @@ function EditerBillet($id, $params)
 	$set_billet = array();
 	$set_version = false;
 	$bind_billet = array();
-	$tweeter_billet = false;
 	$infos = null;
 	$champs_versionnes = array('titre', 'sous_titre', 'texte', 'intro', 'commentaire');
 
@@ -383,12 +382,6 @@ function EditerBillet($id, $params)
 	 			$set_billet[] = 'blog_'.$cle.' = :'.$cle;
 	 			$bind_billet[$cle] = $valeur;
 	 		}
-	 	}
-
-	 	if ($cle == 'etat')
-	 	{
-			if($valeur == BLOG_VALIDE)
-				$tweeter_billet = true;
 	 	}
 	}
 
@@ -434,26 +427,6 @@ function EditerBillet($id, $params)
 	foreach($bind_billet as $cle => &$valeur)
 		$stmt->bindParam(':'.$cle, $valeur);
 	$stmt->execute();
-
-	if ($tweeter_billet)
-	{
-		$billet = InfosBillet($id);
-		$url = URL_SITE.'/blog/billet-'.$billet[0]['blog_id'].'-'.rewrite($billet[0]['version_titre']).'.html';
-
-		$pre = 'Nouveau billet : ';
-		$post = ' − ';
-		$milieu = $billet[0]['version_titre'];
-
-		$restant = 140 - (mb_strlen($pre.$post) + 20);
-		if (mb_strlen($milieu) > $restant)
-		{
-			$milieu = mb_substr($milieu, 0, $restant - 1).'…';
-		}
-
-		$texte = $pre.$milieu.$post.$url;
-		\Doctrine_Core::getTable('TwitterTweet')->add($texte, $_SESSION['id']);
-	}
-
 }
 
 /**

@@ -51,7 +51,6 @@ class DefaultController extends Controller
         // Configuration pour les trois actions (avant et après la recherche)
         $CatsForum = ListerEnfants(GetIDCategorie('forum'), true, true);
         $CatsBlog = ListerEnfants(GetIDCategorie('blog'), true, true);
-        $CatsTwitter = \Doctrine_Core::getTable('TwitterCompte')->getAll(true);
         \Page::$titre = 'Recherche';
         $this->get('zco_vitesse.resource_manager')->requireResources(array(
             '@ZcoForumBundle/Resources/public/css/forum.css',
@@ -79,7 +78,7 @@ class DefaultController extends Controller
 
         if (!$request->query->has('recherche')) {
             return render_to_response('ZcoSearchBundle::index.html.php', compact(
-                'CatsForum', 'CatsBlog', 'CatsTwitter', '_flags'
+                'CatsForum', 'CatsBlog', '_flags'
             ));
         }
 
@@ -154,7 +153,7 @@ class DefaultController extends Controller
         }
 
         return render_to_response('ZcoSearchBundle::index.html.php', compact(
-            'CatsForum', 'CatsBlog', 'CatsTwitter', '_flags',
+            'CatsForum', 'CatsBlog', '_flags',
             'pages', 'CompterResultats', 'Resultats', 'section'
         ));
     }

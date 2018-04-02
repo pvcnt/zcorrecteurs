@@ -132,7 +132,7 @@ class EventListener implements EventSubscriberInterface
 
         //Ajout de variables au layout.
         $module = $this->container->get('request')->attributes->get('_module');
-        $searchSection = ($module === 'blog') ? 'blog' : ($module === 'twitter' ? 'twitter' : 'forum');
+        $searchSection = ($module === 'blog') ? 'blog' : 'forum';
         $event->add('searchSection', $searchSection);
 
         $nbOnline = (int)$this->container->get('zco_core.cache')->get('nb_connectes');

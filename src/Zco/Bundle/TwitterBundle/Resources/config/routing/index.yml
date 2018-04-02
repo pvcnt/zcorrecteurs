@@ -1,7 +1,0 @@
-zco_twitter_default:
-    resource: "@ZcoTwitterBundle/Resources/config/routing/default.yml"
-    prefix:   /twitter
-
-zco_twitter_api:
-    resource: "@ZcoTwitterBundle/Resources/config/routing/api.yml"
-    prefix:   /_api/twitter

@@ -1,5 +1,0 @@
-zco_twitter_api_bitly:
-    path:   /bitly
-    defaults:  { _controller: ZcoTwitterBundle:Api:bitly, _format: json }
-    options:   { expose: true }
-    methods:   [POST]

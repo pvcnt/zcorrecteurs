@@ -22,7 +22,7 @@
 		</select><br />
 
 		<div id="options_auteur"
-		<?php if(!in_array($section, array('twitter', 'forum'))) echo ' style="display: none;"';
+		<?php if(!in_array($section, array('forum'))) echo ' style="display: none;"';
 		?>>
 			<label for="auteur">Auteur :</label>
 			<input type="text" name="auteur" id="auteur" value="<?php
@@ -50,8 +50,6 @@
 
 		<div id="options_blog"<?php if($section != 'blog') echo ' style="display: none;"'; ?>>
 		</div>
-
-		<div id="options_twitter"<?php if($section != 'twitter') echo ' style="display: none;"'; ?>>
 		</div>
 	</fieldset>
 
@@ -88,11 +86,6 @@
 			?>>
 				Dans les billets du blog
 			</option>
-			<option value="twitter"<?php
-			if($section == 'twitter') echo ' selected="selected"';
-			?>>
-				Dans les tweets
-			</option>
 		</select><br />
 
 		<select name="categories[]" id="cats_forum" multiple="multiple"<?php
@@ -119,18 +112,7 @@
 			</option>
 			<?php } ?>
 		</select>
-
-		<select name="categories[]" id="cats_twitter" multiple="multiple" style="<?php
-		if($section != 'twitter') echo 'display: none;'; ?> width: 200px;">
-			<?php foreach($CatsTwitter as $cat){ ?>
-			<option value="<?php echo $cat['id']; ?>"<?php
-			if(isset($_GET['categories']) && in_array($cat['id'], $_GET['categories']))
-			echo ' selected="selected"'; ?>>
-				<?php echo htmlspecialchars($cat['nom']); ?>
-			</option>
-			<?php } ?>
-		</select>
-		<p><em>Vous pouvez sélectionner plusieurs catégories en maintenant CTRL ou MAJ enfoncée.</em></p>
+        <p><em>Vous pouvez sélectionner plusieurs catégories en maintenant CTRL ou MAJ enfoncée.</em></p>
 	</fieldset>
 
 	<div class="centre">
@@ -162,7 +144,6 @@ function switch_cat(cat)
 {
 	var cfrm = $('cats_forum');
 	var cblg = $('cats_blog');
-	var ctwt = $('cats_twitter');
 	if(cat == 'forum')
 	{
 		for (var i = cblg.options.length - 1; i >= 0; i--)
@@ -177,7 +158,6 @@ function switch_cat(cat)
 		$('options_forum').setStyle('display', 'block');
 		$('options_auteur').setStyle('display', 'block');
 		$('options_blog').setStyle('display', 'none');
-		$('options_twitter').setStyle('display', 'none');
 	}
 	if(cat == 'blog')
 	{
@@ -193,23 +173,6 @@ function switch_cat(cat)
 		$('options_forum').setStyle('display', 'none');
 		$('options_blog').setStyle('display', 'block');
 		$('options_auteur').setStyle('display', 'none');
-		$('options_twitter').setStyle('display', 'none');
-	}
-	if(cat == 'twitter')
-	{
-		for (var i = cfrm.options.length - 1; i >= 0; i--)
-			cfrm.options[i].selected = false;
-		for (var i = cblg.options.length - 1; i >= 0; i--)
-			cblg.options[i].selected = false;
-
-		cfrm.setStyle('display', 'none');
-		cblg.setStyle('display', 'none');
-		ctwt.setStyle('display', 'block');
-		ctwt.setStyle('margin-left', '200px');
-		$('options_forum').setStyle('display', 'none');
-		$('options_blog').setStyle('display', 'none');
-		$('options_twitter').setStyle('display', 'block');
-		$('options_auteur').setStyle('display', 'block');
 	}
 }
 </script>

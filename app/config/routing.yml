@@ -22,9 +22,6 @@ zco_search:
 zco_stats:
   resource: "@ZcoStatsBundle/Resources/config/routing.yml"
 
-zco_twitter:
-  resource: "@ZcoTwitterBundle/Resources/config/routing/index.yml"
-
 zco_user:
   resource: "@ZcoUserBundle/Resources/config/routing/index.yml"
 

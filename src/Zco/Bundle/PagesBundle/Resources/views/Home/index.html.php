@@ -34,13 +34,6 @@
 	</td>
 
 	<td>
-		<span style="float: right; margin-left: 10px;">
-			<?php if ($quel_bloc == 'twitter'): ?>
-				<a href="<?php echo $view['router']->path('zco_twitter_index') ?>">
-					<img src="/bundles/zcotwitter/img/bouton.png" alt="twitter"/>
-				</a>
-			<?php endif ?>
-		</span>
 		<?php echo $view->render('ZcoPagesBundle:Home:_annonces.html.php',
 				array(
 					'quel_bloc' => $quel_bloc,

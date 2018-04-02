@@ -9,8 +9,6 @@ parameters:
   gmaps_api_key:  ''
   analytics_account: ''
   analytics_domain: 'zcorrecteurs.fr'
-  twitter_api_key: ''
-  twitter_api_secret: ''
 
   sphinx_host: localhost
   sphinx_port: 5000

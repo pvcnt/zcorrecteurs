@@ -36,9 +36,6 @@
 			<option value="billet_hasard"<?php echo ($bloc_accueil == 'billet_hasard') ? ' selected="selected"' : ''; ?>>
 				Afficher un billet au hasard
 			</option>
-			<option value="twitter"<?php echo ($bloc_accueil == 'twitter') ? ' selected="selected"' : ''; ?>>
-				Afficher les derniers tweets
-			</option>
 		</select>
 		<input type="submit" value="Envoyer" />
 	</fieldset>
@@ -50,7 +47,6 @@
 	<a href="#bloc_quiz">Modifier le quiz mis en valeur</a> |
 	<a href="#bloc_billet">Modifier le billet mis en valeur</a> |
 	<a href="#bloc_billet_hasard">Modifier les paramètres du billet au hasard</a> |
-	<a href="#bloc_twitter">Modifier les paramètres des tweets</a> |
 	<a href="#bloc_dictee">Modifier les paramètres de la dictée</a>
 </p>
 
@@ -229,22 +225,6 @@
 			<div class="send"><input type="submit" value="Choisir" /></div>
 		</form>
 	</fieldset>
-</div>
-
-<div id="bloc_twitter">
-	<form action="" method="post">
-		<fieldset>
-			<legend>Modifier les paramètres des tweets</legend>
-
-			<label for="input_tweets">Nombre de tweets à afficher :</label>
-			<input type="text" name="tweets" id="input_tweets"<?php
-			if ($nb = $accueil_tweets)
-			echo ' value="'.(int)$nb.'"' ?>/>
-			<br/>
-
-			<input type="submit" value="Envoyer" />
-		</fieldset>
-	</form>
 </div>
 
 <div id="bloc_dictee">
