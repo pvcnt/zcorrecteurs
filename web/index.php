@@ -25,7 +25,7 @@ define('BASEPATH', realpath(__DIR__ . '/..'));
 define('APP_PATH', BASEPATH . '/app');
 
 $env = getenv('SYMFONY_ENVIRONMENT') ?: 'prod';
-$debug = 'true' === getenv('SYMFONY_DEBUG') && 'prod' !== $env;
+$debug = 'yes' === getenv('SYMFONY_DEBUG') && 'prod' !== $env;
 
 /** @var \Composer\Autoload\ClassLoader $loader */
 $loader = require __DIR__ . '/../app/autoload.php';
