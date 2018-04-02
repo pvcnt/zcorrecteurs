@@ -1,35 +1,35 @@
 zco_twitter_index:
-    pattern:   /
+    path:   /
     defaults:  { _controller: ZcoTwitterBundle:Default:index, page: 1 }
 
 zco_twitter_indexWithPage:
-    pattern:   /{page}
+    path:   /{page}
     defaults:  { _controller: ZcoTwitterBundle:Default:index, page: 1 }
     requirements:
         page: \d+
 
 zco_twitter_accounts:
-    pattern:   /comptes
+    path:   /comptes
     defaults:  { _controller: ZcoTwitterBundle:Default:accounts }
 
 zco_twitter_addAccount:
-    pattern:   /comptes/nouveau
+    path:   /comptes/nouveau
     defaults:  { _controller: ZcoTwitterBundle:Default:addAccount }
 
 zco_twitter_deleteAccount:
-    pattern:   /comptes/supprimer/{id}
+    path:   /comptes/supprimer/{id}
     defaults:  { _controller: ZcoTwitterBundle:Default:deleteAccount }
     requirements:
         id: \d+
 
 zco_twitter_newTweet:
-    pattern:   /nouveau-tweet/{mention}
+    path:   /nouveau-tweet/{mention}
     defaults:  { _controller: ZcoTwitterBundle:Default:newTweet, mention: ~ }
     requirements:
         id: \d+
 
 zco_twitter_mentions:
-    pattern:   /mentions/{page}
+    path:   /mentions/{page}
     defaults:  { _controller: ZcoTwitterBundle:Default:mentions, page: 1 }
     requirements:
         page: \d+

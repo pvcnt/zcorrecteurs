@@ -1,63 +1,63 @@
 zco_user_admin_validateAccount:
-    pattern:   /valider/{id}
+    path:   /valider/{id}
     defaults:  { _controller: ZcoUserBundle:Admin:validateAccount, status: true }
     requirements:
         id: \d+
 
 zco_user_admin_unvalidateAccount:
-    pattern:   /devalider/{id}
+    path:   /devalider/{id}
     defaults:  { _controller: ZcoUserBundle:Admin:validateAccount, status: false }
     requirements:
         id: \d+
 
 zco_user_admin_deleteAccount:
-    pattern:   /supprimer/{id}
+    path:   /supprimer/{id}
     defaults:  { _controller: ZcoUserBundle:Admin:deleteAccount }
     requirements:
         id: \d+
 
 zco_user_admin_punish:
-    pattern:   /sanctionner/{id}
+    path:   /sanctionner/{id}
     defaults:  { _controller: ZcoUserBundle:Admin:punish, id: ~ }
     requirements:
         id: \d+
 
 zco_user_admin_cancelPunishment:
-    pattern:   /sanctionner/annuler/{id}
+    path:   /sanctionner/annuler/{id}
     defaults:  { _controller: ZcoUserBundle:Admin:cancelPunishment }
     requirements:
         id: \d+
 
 zco_user_admin_blocages:
-    pattern:   /blocages
+    path:   /blocages
     defaults:  { _controller: ZcoUserBundle:Admin:blocages }
 
 zco_user_admin_searchEmail:
-    pattern:   /rechercher-email
+    path:   /rechercher-email
     defaults:  { _controller: ZcoUserBundle:Admin:searchEmail }
 
 zco_user_admin_unvalidAccounts:
-    pattern:   /comptes-non-valides
+    path:   /comptes-non-valides
     defaults:  { _controller: ZcoUserBundle:Admin:unvalidAccounts }
 
 zco_user_admin_bannedEmails:
-    pattern:   /courriels-bannis
+    path:   /courriels-bannis
     defaults:  { _controller: ZcoUserBundle:Admin:bannedEmails }
 
 zco_user_admin_newBannedEmail:
-    pattern:   /courriels-bannis/nouveau
+    path:   /courriels-bannis/nouveau
     defaults:  { _controller: ZcoUserBundle:Admin:newBannedEmail }
 
 zco_user_admin_deleteBannedEmail:
-    pattern:   /courriels-bannis/supprimer/{id}
+    path:   /courriels-bannis/supprimer/{id}
     defaults:  { _controller: ZcoUserBundle:Admin:bannedEmails }
 
 zco_user_admin_newPseudoQueries:
-    pattern:   /nouveau-pseudo/en-attente
+    path:   /nouveau-pseudo/en-attente
     defaults:  { _controller: ZcoUserBundle:Admin:newPseudoQueries }
 
 zco_user_admin_newPseudoAnswer:
-    pattern:   /nouveau-pseudo/repondre/{id}
+    path:   /nouveau-pseudo/repondre/{id}
     defaults:  { _controller: ZcoUserBundle:Admin:newPseudoAnswer }
     requirements:
         id: \d+

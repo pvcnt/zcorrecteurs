@@ -1,45 +1,45 @@
 zco_user_index:
-    pattern:   /
+    path:   /
     defaults:  { _controller: ZcoUserBundle:Default:index, page: 1 }
 
 zco_user_indexWithPage:
-    pattern:   /{page}
+    path:   /{page}
     defaults:  { _controller: ZcoUserBundle:Default:index, page: 1 }
     requirements:
         page: \d+
 
 zco_user_online:
-    pattern:   /connectes
+    path:   /connectes
     defaults:  { _controller: ZcoUserBundle:Default:online, showAnonymousUsers: false }
 
 zco_user_online_all:
-    pattern:   /connectes/tous
+    path:   /connectes/tous
     defaults:  { _controller: ZcoUserBundle:Default:online, showAnonymousUsers: true }
 
 zco_user_profile:
-    pattern:   /{id}/{slug}
+    path:   /{id}/{slug}
     defaults:  { _controller: ZcoUserBundle:Default:profile }
     requirements:
         id: \d+
         slug: '[a-z0-9-]+'
 
 zco_user_editTitle:
-    pattern:   /modifier-titre/{id}
+    path:   /modifier-titre/{id}
     defaults:  { _controller: ZcoUserBundle:Default:editTitle }
     requirements:
         page: \d+
 
 zco_user_newPseudo:
-    pattern:   /nouveau-pseudo/{id}
+    path:   /nouveau-pseudo/{id}
     defaults:  { _controller: ZcoUserBundle:Default:newPseudo, id: ~ }
     requirements:
         id: \d+
 
 zco_user_localisation:
-    pattern:   /carte
+    path:   /carte
     defaults:  { _controller: ZcoUserBundle:Default:localisation }
 
 zco_user_zformBackups:
-    pattern:   /sauvegardes-zform/{textarea}
+    path:   /sauvegardes-zform/{textarea}
     defaults:  { _controller: ZcoUserBundle:Default:zformBackups, textarea: ~ }
     options:   { expose: true }

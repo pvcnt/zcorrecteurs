@@ -1,77 +1,77 @@
 zco_home:
-  pattern:   /
+  path:   /
   defaults:  { _controller: ZcoPagesBundle:Home:index }
 
 zco_home_config:
-  pattern:   /admin/accueil
+  path:   /admin/accueil
   defaults:  { _controller: ZcoPagesBundle:Home:config }
 
 zco_about_index:
-  pattern:   /apropos
+  path:   /apropos
   defaults:  { _controller: ZcoPagesBundle:About:index }
 
 zco_about_banners:
-  pattern:   /apropos/bannieres
+  path:   /apropos/bannieres
   defaults:  { _controller: ZcoPagesBundle:About:banners }
 
 zco_about_team:
-  pattern:   /apropos/equipe
+  path:   /apropos/equipe
   defaults:  { _controller: ZcoPagesBundle:About:team }
 
 zco_about_corrigraphie:
-  pattern:   /apropos/association-corrigraphie
+  path:   /apropos/association-corrigraphie
   defaults:  { _controller: ZcoPagesBundle:About:corrigraphie }
 
 zco_about_opensource:
-  pattern:   /apropos/logiciel-libre
+  path:   /apropos/logiciel-libre
   defaults:  { _controller: ZcoPagesBundle:About:openSource }
 
 zco_about_contact:
-  pattern:   /apropos/contact
+  path:   /apropos/contact
   defaults:  { _controller: ZcoPagesBundle:About:contact }
 
 zco_donate_index:
-  pattern:  /dons
+  path:  /dons
   defaults:  { _controller: ZcoPagesBundle:Donate:index }
 
 zco_donate_otherWays:
-  pattern:  /dons/cheque-ou-virement
+  path:  /dons/cheque-ou-virement
   defaults:  { _controller: ZcoPagesBundle:Donate:otherWays }
 
 zco_donate_fiscalDeduction:
-  pattern:  /dons/deduction-fiscale
+  path:  /dons/deduction-fiscale
   defaults:  { _controller: ZcoPagesBundle:Donate:fiscalDeduction }
 
 zco_donate_thanks:
-  pattern:  /dons/merci
+  path:  /dons/merci
   defaults:  { _controller: ZcoPagesBundle:Donate:thanks }
 
 zco_legal_mentions:
-  pattern:   /legal/mentions
+  path:   /legal/mentions
   defaults:  { _controller: ZcoPagesBundle:Legal:mentions }
 
 zco_legal_privacy:
-  pattern:   /legal/confidentialite
+  path:   /legal/confidentialite
   defaults:  { _controller: ZcoPagesBundle:Legal:privacy }
 
 zco_legal_rules:
-  pattern:   /legal/reglement
+  path:   /legal/reglement
   defaults:  { _controller: ZcoPagesBundle:Legal:rules }
 
 zco_error:
-  pattern:   /_erreur/{code}
+  path:   /_erreur/{code}
   requirements:
     code: \d+
   defaults:  { _controller: ZcoPagesBundle:Error:index }
 
 zco_sitemap:
-  pattern:   /sitemap.xml
+  path:   /sitemap.xml
   defaults:  { _controller: ZcoPagesBundle:Default:sitemap }
 
 zco_health:
-  pattern:   /health
+  path:   /health
   defaults:  { _controller: ZcoPagesBundle:Default:health }
 
 zco_robots:
-  pattern:   /robots.txt
+  path:   /robots.txt
   defaults:  { _controller: ZcoPagesBundle:Default:robots }

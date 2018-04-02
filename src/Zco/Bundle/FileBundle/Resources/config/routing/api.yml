@@ -1,5 +1,5 @@
 zco_file_api_save:
-    pattern:   /sauvegarder/{id}
+    path:   /sauvegarder/{id}
     defaults:  { _controller: ZcoFileBundle:Api:save, _format: json }
     options:   { expose: true }
     methods:   [POST]
@@ -7,7 +7,7 @@ zco_file_api_save:
         id: \d+
 
 zco_file_api_edit:
-    pattern:   /modifier/{id}
+    path:   /modifier/{id}
     defaults:  { _controller: ZcoFileBundle:Api:edit, _format: json }
     options:   { expose: true }
     methods:   [POST]
@@ -15,14 +15,14 @@ zco_file_api_edit:
         id: \d+
 
 zco_file_api_delete:
-    pattern:   /supprimer/{id}
+    path:   /supprimer/{id}
     defaults:  { _controller: ZcoFileBundle:Api:delete, _format: json }
     options:   { expose: true }
     requirements:
         id: \d+
 
 zco_file_api_search:
-    pattern:   /recherche/{folder}/{entities}
+    path:   /recherche/{folder}/{entities}
     defaults:  { _controller: ZcoFileBundle:Api:search, _format: json, entities: '' }
     options:   { expose: true }
     methods:   [POST]
@@ -30,6 +30,6 @@ zco_file_api_search:
         folder: \d+
 
 zco_file_api_usage:
-    pattern:   /usage
+    path:   /usage
     defaults:  { _controller: ZcoFileBundle:Api:usage, _format: json }
     options:   { expose: true }
