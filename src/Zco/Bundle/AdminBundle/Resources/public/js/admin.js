@@ -1,14 +1,11 @@
 /**
- * @provides vitesse-behavior-admin-homepage
- * @requires @ZcoCoreBundle/Resources/public/js/vendor/bootstrap.js
- */
-
-/**
- * Retient le dernier onglet visité par l'utilisateur et le recharche 
- * à sa prochaine visite.
+ * Retient le dernier onglet visité par l'utilisateur et le recharge à sa prochaine visite.
  *
  * @author mwsaz <mwsaz@zcorrecteurs.fr>
+ * @provides vitesse-behavior-admin-homepage
+ * @requires vitesse-behavior @ZcoCoreBundle/Resources/public/js/vendor/bootstrap.js
  */
+
 Behavior.create('admin-homepage', function()
 {
 	var tabs = jQuery('.admin-wrapper a[data-toggle="tab"]');
