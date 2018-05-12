@@ -116,9 +116,9 @@ class IpManager
         if (!is_file(BASEPATH . '/data/GeoLiteCity.dat')) {
             return null;
         }
-        $gi = geoip_open(BASEPATH . '/data/GeoLiteCity.dat', GEOIP_STANDARD);
-        $location = geoip_record_by_addr($gi, $ip);
-        geoip_close($gi);
+        $gi = \geoip_open(BASEPATH . '/data/GeoLiteCity.dat', GEOIP_STANDARD);
+        $location = \geoip_record_by_addr($gi, $ip);
+        \geoip_close($gi);
 
         if (empty($location)) {
             return [];

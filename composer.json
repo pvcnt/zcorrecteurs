@@ -14,12 +14,13 @@
       "app/AppKernel.php",
       "app/AppCache.php",
       "lib/Artichow",
-      "lib/xmlrpc",
-      "lib/geoip"
+      "lib/xmlrpc"
     ],
     "files": [
       "src/kernel/functions.php",
-      "app/config/constants.php"
+      "app/config/constants.php",
+      "lib/geoip/geoip.php",
+      "lib/geoip/geoipcity.php"
     ]
   },
   "require": {
