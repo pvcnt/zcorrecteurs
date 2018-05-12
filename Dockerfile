@@ -53,7 +53,9 @@ RUN mkdir /run/apache2 \
     && sed -i "s#^DocumentRoot \".*#DocumentRoot \"/opt/app/web\"#g" /etc/apache2/httpd.conf \
     && sed -i "s#/var/www/localhost/htdocs#/opt/app/web#" /etc/apache2/httpd.conf \
     && printf "\n<Directory \"/opt/app/web\">\n\tAllowOverride All\n</Directory>\n" >> /etc/apache2/httpd.conf \
-    && sed -i "s/variables_order\ =\ \"GPCS\"/variables_order\ =\ \"EGPCS\"/" /etc/php7/php.ini
+    && sed -i "s/variables_order\ =\ \"GPCS\"/variables_order\ =\ \"EGPCS\"/" /etc/php7/php.ini \
+    && sed -i "s/;date.timezone\ =/date.timezone\ =\ \"Europe\/Paris\"/" /etc/php7/php.ini \
+    && sed -i "s/;intl.default_locale\ =/intl.default_locale\ =\ \"fr_FR.UTF-8\"/" /etc/php7/php.ini
 
 # Add a custom entrypoint.
 COPY build/entrypoint.sh /

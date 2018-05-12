@@ -29,17 +29,6 @@ class AppKernel extends Kernel
     /**
      * {@inheritdoc}
      */
-    public function __construct($environment, $debug = false)
-    {
-        parent::__construct($environment, $debug);
-        date_default_timezone_set('Europe/Paris');
-        setlocale(LC_ALL, 'fr_FR.UTF-8');
-        mb_internal_encoding('UTF-8');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function registerBundles()
     {
         $bundles = array(
