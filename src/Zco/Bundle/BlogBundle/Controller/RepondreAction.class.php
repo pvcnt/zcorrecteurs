@@ -32,7 +32,6 @@ class RepondreAction extends BlogActions
 {
 	public function execute()
 	{
-		zCorrecteurs::VerifierFormatageUrl(null, true);
 		Page::$titre .= ' - Répondre à une proposition de billet';
 
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))

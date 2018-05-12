@@ -34,8 +34,6 @@ class ChangerCoupCoeurAction extends ForumActions
 		list($InfosSujet, $InfosForum) = $this->initSujet();
 		include(dirname(__FILE__).'/../modeles/moderation.php');
 
-		zCorrecteurs::VerifierFormatageUrl($InfosSujet['sujet_titre'], true);
-
 		//Vérification du token.
 		if(empty($_GET['token']) || $_GET['token'] != $_SESSION['token'])
 			throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;

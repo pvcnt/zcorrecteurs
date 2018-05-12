@@ -34,7 +34,6 @@ class AjouterParticipantAction extends Controller
         if (!verifier('connecte')) {
             throw new AccessDeniedHttpException();
         }
-		zCorrecteurs::VerifierFormatageUrl(null, true);
 		include(__DIR__.'/../modeles/lire.php');
 		include(__DIR__.'/../modeles/participants.php');
 

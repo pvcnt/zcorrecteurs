@@ -35,7 +35,6 @@ class ProposerAction extends DicteesActions
         if (!verifier('connecte')) {
             throw new AccessDeniedHttpException();
         }
-		zCorrecteurs::VerifierFormatageUrl(null, true);
 
 		// On veut proposer une dictée
 		if(!empty($_GET['id']))

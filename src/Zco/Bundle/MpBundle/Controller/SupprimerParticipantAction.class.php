@@ -39,7 +39,6 @@ class SupprimerParticipantAction extends Controller
         if (isset($_POST['annuler'])) {
             return new RedirectResponse('Location: lire-' . $_GET['id'] . '.html');
         }
-        zCorrecteurs::VerifierFormatageUrl(null, true, true);
         include(BASEPATH . '/src/Zco/Bundle/MpBundle/modeles/lire.php');
         include(BASEPATH . '/src/Zco/Bundle/MpBundle/modeles/participants.php');
 

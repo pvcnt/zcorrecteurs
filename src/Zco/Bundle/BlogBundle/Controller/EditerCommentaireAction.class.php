@@ -31,8 +31,6 @@ class EditerCommentaireAction extends BlogActions
 {
 	public function execute()
 	{
-		zCorrecteurs::VerifierFormatageUrl(null, true);
-
 		//Si on a bien demandé à voir un commentaire
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))
 		{

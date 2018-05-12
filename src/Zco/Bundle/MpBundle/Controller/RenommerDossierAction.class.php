@@ -35,7 +35,6 @@ class RenommerDossierAction extends Controller
         if (!verifier('connecte')) {
             throw new AccessDeniedHttpException();
         }
-		zCorrecteurs::VerifierFormatageUrl(null, true);
 		include(BASEPATH.'/src/Zco/Bundle/MpBundle/modeles/dossiers.php');
 
 		if(!empty($_GET['id']) AND is_numeric($_GET['id']))

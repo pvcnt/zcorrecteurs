@@ -46,8 +46,6 @@ class StatistiquesAction extends DicteesActions
 			return $Response;
 		}
 
-		zCorrecteurs::VerifierFormatageUrl();
-
 		$_POST['participations'] = isset($_POST['participations']) ?
 			$_POST['participations'] : 10;
 

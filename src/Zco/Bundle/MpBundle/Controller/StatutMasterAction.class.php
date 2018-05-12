@@ -35,7 +35,6 @@ class StatutMasterAction extends Controller
         if (!verifier('connecte')) {
             throw new AccessDeniedHttpException();
         }
-        zCorrecteurs::VerifierFormatageUrl(null, true, true);
         include(BASEPATH . '/src/Zco/Bundle/MpBundle/modeles/lire.php');
         include(BASEPATH . '/src/Zco/Bundle/MpBundle/modeles/participants.php');
         if (!empty($_GET['id']) AND is_numeric($_GET['id']) AND !empty($_GET['id2']) AND is_numeric($_GET['id2'])) {

@@ -32,8 +32,6 @@ class ComparaisonAction extends BlogActions
 {
 	public function execute()
 	{
-		zCorrecteurs::VerifierFormatageUrl(null, true, true);
-
 		//Si on envoie les id de deux versions à comparer
 		if(!empty($_GET['id']) && !empty($_GET['id2']) && is_numeric($_GET['id']) && is_numeric($_GET['id2']))
 		{

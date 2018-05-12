@@ -35,7 +35,6 @@ class ReponseHelpAction extends ForumActions
         include(dirname(__FILE__) . '/../modeles/moderation.php');
         include(dirname(__FILE__) . '/../modeles/messages.php');
         list($InfosSujet, $InfosForum) = $this->initSujet();
-        zCorrecteurs::VerifierFormatageUrl($InfosSujet['sujet_titre'], true, true);
 
         //Vérification du token.
         if (empty($_GET['token']) || $_GET['token'] != $_SESSION['token'])

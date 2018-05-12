@@ -61,7 +61,6 @@ class NouveauAction extends ForumActions
 			}
 		}
 
-		zCorrecteurs::VerifierFormatageUrl($InfosForum['cat_nom'], true);
 		Page::$titre = htmlspecialchars($InfosForum['cat_nom']).' - Nouveau sujet';
 		
 		//Mise à jour de la position sur le site.

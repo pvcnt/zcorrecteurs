@@ -33,7 +33,6 @@ class GestionAction extends BlogActions
         if (!verifier('blog_editer_valide') && !verifier('blog_supprimer')) {
             throw new AccessDeniedHttpException();
         }
-		zCorrecteurs::VerifierFormatageUrl(null, false, false, 1);
 		Page::$titre .= ' - Liste des billets en ligne';
 
 		$nbBilletsParPage = 30;

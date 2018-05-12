@@ -44,7 +44,6 @@ class DiviserAction extends ForumActions
         if (!$InfosSujet) {
             throw new NotFoundHttpException();
         }
-        zCorrecteurs::VerifierFormatageUrl($InfosSujet['sujet_titre'], true);
 
         Page::$titre = $InfosSujet['sujet_titre'] . ' - Diviser le sujet';
 

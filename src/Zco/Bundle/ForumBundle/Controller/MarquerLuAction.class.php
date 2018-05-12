@@ -33,9 +33,7 @@ class MarquerLuAction extends ForumActions
         if (!verifier('connecte')) {
             throw new AccessDeniedHttpException();
         }
-		zCorrecteurs::VerifierFormatageUrl(null, true);
 
-		//Inclusion des modèles
 		include(dirname(__FILE__).'/../modeles/membres.php');
 
 		if($_GET['id'] == 1)

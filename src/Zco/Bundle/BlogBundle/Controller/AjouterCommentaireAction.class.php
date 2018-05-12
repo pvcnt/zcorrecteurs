@@ -36,7 +36,6 @@ class AjouterCommentaireAction extends BlogActions
         if (!verifier('connecte')) {
             throw new AccessDeniedHttpException();
         }
-		zCorrecteurs::VerifierFormatageUrl(null, true, true);
 
 		//Si on a bien demandé à voir un billet
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))

@@ -37,7 +37,6 @@ class SupprimerSujetAction extends ForumActions
 
 		if(verifier('suppr_sujets', $InfosSujet['sujet_forum_id']))
 		{
-			zCorrecteurs::VerifierFormatageUrl($InfosSujet['sujet_titre'], true);
 			if(isset($_POST['confirmer']))
 			{
 				Supprimer($InfosSujet['sujet_id'], $InfosSujet['sujet_forum_id'], $InfosSujet['sujet_corbeille']);

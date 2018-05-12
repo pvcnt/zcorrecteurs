@@ -51,7 +51,6 @@ class MarquerDernierMessageLuAction extends ForumActions
             return redirect('Vous n\'avez jamais lu ce sujet.', 'sujet-' . $InfosMessage['sujet_id'] . '-' . rewrite($InfosMessage['sujet_titre']) . '.html', MSG_ERROR);
 
         $titre = @substr($InfosMessage['message_texte'], 0, strpos($InfosMessage['message_texte'], ' ', 20));
-        zCorrecteurs::VerifierFormatageUrl($titre, true);
 
         MarquerDernierMessageLu($_GET['id'], $InfosMessage['sujet_id']);
         return redirect(

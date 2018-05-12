@@ -33,8 +33,6 @@ class SupprimerAuteurAction extends BlogActions
 {
 	public function execute()
 	{
-		zCorrecteurs::VerifierFormatageUrl(null, true, true);
-
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))
 		{
 			$ret = $this->initBillet();

@@ -33,8 +33,6 @@ class ValiderAction extends BlogActions
 {
 	public function execute()
 	{
-		zCorrecteurs::VerifierFormatageUrl(null, true);
-
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))
 		{
 			//On récupère des infos sur le billet

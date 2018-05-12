@@ -39,7 +39,6 @@ class SupprimerDossierAction extends Controller
         if (isset($_POST['annuler'])) {
             return new RedirectResponse('index.html');
         }
-        zCorrecteurs::VerifierFormatageUrl(null, true);
         include(BASEPATH . '/src/Zco/Bundle/MpBundle/modeles/dossiers.php');
 
         if (!empty($_GET['id']) AND is_numeric($_GET['id'])) {

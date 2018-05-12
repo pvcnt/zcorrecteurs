@@ -45,8 +45,7 @@ class EditerSondageAction extends ForumActions
 		{
             throw new NotFoundHttpException();
 		}
-		
-		zCorrecteurs::VerifierFormatageUrl($InfosSondage['sujet_titre'], true);
+
 		Page::$titre = $InfosSondage['sondage_question'].' - Modification d\'un sondage';
 		$ListerQuestions = ListerQuestions($_GET['id']);
 		

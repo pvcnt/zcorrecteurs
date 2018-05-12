@@ -38,7 +38,6 @@ class AlerterAction extends ForumActions
 			if(empty($InfosSujet))
 				throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
 
-			zCorrecteurs::VerifierFormatageUrl($InfosSujet['sujet_titre'], true);
 			Page::$titre .= ' - '.$InfosSujet['sujet_titre'].' - Alerter les modérateurs';
 			
 			//Mise à jour de la position sur le site.

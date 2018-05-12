@@ -32,8 +32,6 @@ class SupprimerCommentaireAction extends BlogActions
 {
     public function execute()
     {
-        zCorrecteurs::VerifierFormatageUrl(null, true);
-
         //Si on a bien demandé à supprimer un commentaire
         if (!empty($_GET['id']) && is_numeric($_GET['id'])) {
             //On récupère des infos sur le commentaire

@@ -41,8 +41,6 @@ class SuiviAction extends ForumActions
 		include(dirname(__FILE__).'/../modeles/moderation.php');
 		include(dirname(__FILE__).'/../modeles/membres.php');
 
-		zCorrecteurs::VerifierFormatageUrl(null, false, false, 1);
-
 		$CompterSujets = CompterSujets(NULL);
 		$nbSujetsParPage = 30;
 		$NombreDePages = ceil($CompterSujets / $nbSujetsParPage);

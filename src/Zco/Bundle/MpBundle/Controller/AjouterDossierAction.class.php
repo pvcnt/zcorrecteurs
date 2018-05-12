@@ -34,7 +34,6 @@ class AjouterDossierAction extends Controller
         if (!verifier('connecte')) {
             throw new AccessDeniedHttpException();
         }
-		zCorrecteurs::VerifierFormatageUrl();
 		include(__DIR__.'/../modeles/dossiers.php');
 		
 		if(isset($_POST['dossier_nom']))

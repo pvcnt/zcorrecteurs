@@ -61,7 +61,6 @@ class EditerAction extends ForumActions
 			$InfosForum = InfosCategorie($InfosMessage['sujet_forum_id']);
 			$InfosSujet = InfosSujet($InfosMessage['sujet_id']);
 
-			zCorrecteurs::VerifierFormatageUrl($InfosMessage['sujet_titre'], true);
 			Page::$titre .= ' - Modifier un message';
 			
 			//Si on n'a rien posté

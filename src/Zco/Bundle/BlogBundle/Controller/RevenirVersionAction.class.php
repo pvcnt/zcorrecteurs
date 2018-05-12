@@ -33,8 +33,6 @@ class RevenirVersionAction extends BlogActions
 {
 	public function execute()
 	{
-		zCorrecteurs::VerifierFormatageUrl(null, true, true);
-
 		//Si on a bien demandé à voir un billet
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))
 		{

@@ -34,7 +34,6 @@ class NouveauAction extends Controller
         if (!verifier('connecte')) {
             throw new AccessDeniedHttpException();
         }
-        zCorrecteurs::VerifierFormatageUrl(null, true);
         include(__DIR__ . '/../modeles/participants.php');
         include(__DIR__ . '/../modeles/ecrire.php');
 

@@ -35,7 +35,6 @@ class AlerterAction extends Controller
         if (!verifier('connecte')) {
             throw new AccessDeniedHttpException();
         }
-		zCorrecteurs::VerifierFormatageUrl(null, true);
 		include(BASEPATH.'/src/Zco/Bundle/MpBundle/modeles/lire.php');
 		include(BASEPATH.'/src/Zco/Bundle/MpBundle/modeles/participants.php');
 		include(BASEPATH.'/src/Zco/Bundle/MpBundle/modeles/alertes.php');

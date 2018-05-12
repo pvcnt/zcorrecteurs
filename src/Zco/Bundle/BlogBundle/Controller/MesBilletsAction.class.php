@@ -33,8 +33,7 @@ class MesBilletsAction extends BlogActions
         if (!verifier('connecte')) {
             throw new AccessDeniedHttpException();
         }
-		zCorrecteurs::VerifierFormatageUrl(null, true);
-		Page::$titre = 'Mes billets';
+        Page::$titre = 'Mes billets';
 
 		$params = array('id_utilisateur' => $_SESSION['id']);
 		if(!empty($_GET['id'])) $params['etat'] = $_GET['id'];

@@ -58,7 +58,6 @@ class EditerRecrutementAction extends Controller
             }
         }
 
-        zCorrecteurs::VerifierFormatageUrl($recrutement['nom'], true);
         Page::$titre = htmlspecialchars($recrutement['nom']);
 
         //Inclusion de la vue

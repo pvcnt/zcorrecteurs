@@ -33,7 +33,6 @@ class ChangerStatutAction extends ForumActions
 		//On récupère les infos sur le sujet.
 		list($InfosSujet, $InfosForum) = $this->initSujet();
 		include(dirname(__FILE__).'/../modeles/moderation.php');
-		zCorrecteurs::VerifierFormatageUrl($InfosSujet['sujet_titre'], true);
 
 		//Vérification du token.
 		if(empty($_GET['token']) || $_GET['token'] != $_SESSION['token'])

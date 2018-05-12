@@ -59,7 +59,6 @@ class SupprimerMessageAction extends ForumActions
 		)
 		{
 			$titre = @substr($InfosMessage['message_texte'], 0, strpos($InfosMessage['message_texte'], ' ', 20));
-			zCorrecteurs::VerifierFormatageUrl($titre, true);
 
 			//Si on confirme la suppression
 			if(isset($_POST['confirmer']))
