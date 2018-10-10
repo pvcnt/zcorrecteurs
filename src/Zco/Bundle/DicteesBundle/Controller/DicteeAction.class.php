@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -26,7 +27,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  *
  * @author mwsaz <mwsaz@zcorrecteurs.fr>
  */
-class DicteeAction extends DicteesActions
+class DicteeAction extends Controller
 {
 	public function execute()
 	{

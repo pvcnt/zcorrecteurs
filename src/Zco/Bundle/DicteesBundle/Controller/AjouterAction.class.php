@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
@@ -27,7 +28,7 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
  *
  * @author mwsaz <mwsaz@zcorrecteurs.fr>
  */
-class AjouterAction extends DicteesActions
+class AjouterAction extends Controller
 {
 	public function execute()
 	{

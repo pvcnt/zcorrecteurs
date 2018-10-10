@@ -14,7 +14,8 @@
       "app/AppKernel.php",
       "app/AppCache.php",
       "lib/Artichow",
-      "lib/xmlrpc"
+      "lib/diff",
+      "lib/wdiff"
     ],
     "files": [
       "src/kernel/functions.php",

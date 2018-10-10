@@ -21,8 +21,8 @@
 
 namespace Zco\Bundle\TagsBundle\Controller;
 
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zco\Bundle\CoreBundle\Generator\Generator;
 
@@ -33,140 +33,110 @@ use Zco\Bundle\CoreBundle\Generator\Generator;
  */
 class DefaultController extends Generator
 {
-	protected $modelName = 'Tag';
-	
-	/**
-	 * Affichage de la liste des mots-clés disponibles.
-	 */
-	public function indexAction()
-	{
-		return $this->executeList();
-	}
+    protected $modelName = 'Tag';
+
+    /**
+     * Affichage de la liste des mots-clés disponibles.
+     */
+    public function indexAction()
+    {
+        return $this->executeList();
+    }
 
     /**
      * Ajout d'un nouveau mot-clé.
      */
-	public function ajouterAction()
-	{
-		return $this->executeNew();
-	}
+    public function ajouterAction()
+    {
+        return $this->executeNew();
+    }
 
     /**
      * Modification d'un mot-clé existant.
      */
-	public function modifierAction()
-	{
-		\zCorrecteurs::VerifierFormatageUrl(null, true);
-		
-		return $this->executeEdit($_GET['id']);
-	}
+    public function modifierAction()
+    {
+        \zCorrecteurs::VerifierFormatageUrl(null, true);
+
+        return $this->executeEdit($_GET['id']);
+    }
 
     /**
      * Suppression d'un mot-clé existant.
      */
-	public function supprimerAction()
-	{
-		\zCorrecteurs::VerifierFormatageUrl(null, true);
-		
-		return $this->executeDelete($_GET['id']);
-	}
+    public function supprimerAction()
+    {
+        \zCorrecteurs::VerifierFormatageUrl(null, true);
 
-	/**
-	 * Affichage des ressources liées à un tag.
-	 */
-	public function tagAction()
-	{
-		if (!empty($_GET['id']) && is_numeric($_GET['id']))
-		{
-			$Tag = \Doctrine_Core::getTable('Tag')->find($_GET['id']);
-			if ($Tag === false)
-			{
-				throw new NotFoundHttpException();
-			}
+        return $this->executeDelete($_GET['id']);
+    }
 
-			\Page::$titre = htmlspecialchars($Tag['nom']);
-            \zCorrecteurs::VerifierFormatageUrl($Tag['nom'], true);
-			
-			//Inclusion de la vue
-			fil_ariane(array(
-				htmlspecialchars($Tag->nom) => 'tag-'.$Tag['id'].'-'.rewrite($Tag['nom']).'.html',
-				'Voir les ressources liées'
-			));
-			
-			return render_to_response(array(
-				'Tag' => $Tag,
-				'Ressources' => $Tag->listerRessourcesLiees(),
-			));
-		}
-		else
+    /**
+     * Affichage des ressources liées à un tag.
+     */
+    public function tagAction()
+    {
+        if (empty($_GET['id'])) {
             throw new NotFoundHttpException();
-	}
+        }
+        $Tag = \Doctrine_Core::getTable('Tag')->find($_GET['id']);
+        if ($Tag === false) {
+            throw new NotFoundHttpException();
+        }
+
+        \Page::$titre = htmlspecialchars($Tag['nom']);
+        \zCorrecteurs::VerifierFormatageUrl($Tag['nom'], true);
+
+        //Inclusion de la vue
+        fil_ariane(array(
+            htmlspecialchars($Tag->nom) => 'tag-' . $Tag['id'] . '-' . rewrite($Tag['nom']) . '.html',
+            'Voir les ressources liées'
+        ));
+
+        return render_to_response(array(
+            'Tag' => $Tag,
+            'Ressources' => $Tag->listerRessourcesLiees(),
+        ));
+    }
 
     /**
      * Retour de la liste des tags disponibles en JSON.
      */
-	public function ajaxListeAction()
-	{
-		if ($this->get('request')->getMethod() != 'POST' || empty($_POST))
-		{
-			throw new AccessDeniedHttpException();
-		}
+    public function ajaxListeAction()
+    {
+        if ($this->get('request')->getMethod() != 'POST' || empty($_POST)) {
+            throw new AccessDeniedHttpException();
+        }
 
-		$options['nom'] = current($_POST)
-			? trim(current($_POST))
-			: null;
-		$options['couleur'] = !(bool)$options['nom'];
+        $options['nom'] = current($_POST)
+            ? trim(current($_POST))
+            : null;
+        $options['couleur'] = !(bool)$options['nom'];
 
-		$q = \Doctrine_Query::create()
-			->select('t.nom')
-			->from('Tag t')
-			->orderBy('t.nom ASC');
+        $q = \Doctrine_Query::create()
+            ->select('t.nom')
+            ->from('Tag t')
+            ->orderBy('t.nom ASC');
 
-		if ($options['couleur'])
-		{
-			$q->addWhere('t.couleur <> ?', '');
-		}
-		if ($options['nom'])
-		{
-			$debut = str_replace(array('%', '_'),
-			                     array('%%', '\\_'),
-			                     $options['nom']);
-			$q->addWhere('t.nom LIKE ?', $debut.'%');
-		}
+        if ($options['couleur']) {
+            $q->addWhere('t.couleur <> ?', '');
+        }
+        if ($options['nom']) {
+            $debut = str_replace(array('%', '_'),
+                array('%%', '\\_'),
+                $options['nom']);
+            $q->addWhere('t.nom LIKE ?', $debut . '%');
+        }
 
-		$retour = array();
-		foreach ($q->execute(array(), \Doctrine_Core::HYDRATE_SCALAR) as $t)
-		{
-			$retour[] = $t['t_nom'];
-		}
-		
-		$response = new Response();
-		$response->headers->set('Content-type', 'application/json');
-		$response->setContent(json_encode($retour));
-		
-		return $response;
-	}
+        $retour = array();
+        foreach ($q->execute(array(), \Doctrine_Core::HYDRATE_SCALAR) as $t) {
+            $retour[] = $t['t_nom'];
+        }
 
-/*	public function executeAjaxAjouter()
-	{
-		if ($this->get('request')->getMethod() != 'POST'
-		 || empty($_POST['nom']))
-		{
-			throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-		}
-		$_POST['nom'] = trim($_POST['nom']);
+        $response = new Response();
+        $response->headers->set('Content-type', 'application/json');
+        $response->setContent(json_encode($retour));
 
-		$existing = Doctrine_Core::getTable('Tag')->findOneByNom($_POST['nom']);
-		if ($existing)
-			return new Symfony\Component\HttpFoundation\Response((string)$existing->id);
-
-		$Tag = new Tag;
-		$Tag->utilisateur_id = $_SESSION['id'];
-		$Tag->couleur = '';
-		$Tag->nom = $_POST['nom'];
-		$Tag->save();
-
-		return new Symfony\Component\HttpFoundation\Response((string)$Tag->id);
-	}
-*/
+        return $response;
+    }
 }

@@ -19,18 +19,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
 /**
  * Statistiques sur un membre.
  *
  * @author mwsaz <mwsaz@zcorrecteurs.fr>
  */
-
-include(dirname(__FILE__).'/../modeles/statistiques.php');
-
-class StatistiquesAction extends DicteesActions
+class StatistiquesAction extends Controller
 {
 	public function execute()
 	{
+        include_once(dirname(__FILE__).'/../modeles/statistiques.php');
+
 		if (!empty($_GET['id2'])) // Graphiques
 		{
 			$d = null;

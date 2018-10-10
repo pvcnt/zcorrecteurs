@@ -103,14 +103,4 @@ class Config
 
 		return self::$config[$index];
 	}
-
-	/**
-	 * Enregistre une configuration.
-	 * @param string $index		La clé de configuration.
-	 * @param mixed $value		La valeur à donner.
-	 */
-	public static function set($index, $value)
-	{
-		self::$config[$index] = $value;
-	}
 }

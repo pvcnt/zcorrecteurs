@@ -19,18 +19,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
 /**
  * Graphiques de la progression d'un membre sur les dictées.
  *
  * @author mwsaz <mwsaz@zcorrecteurs.fr>
  */
-
-include(dirname(__FILE__).'/../modeles/statistiques.php');
-
-class GraphiqueAction extends DicteesActions
+class GraphiqueAction extends Controller
 {
 	public function execute()
 	{
+        include_once(dirname(__FILE__).'/../modeles/statistiques.php');
 		$d = null;
 		if($_GET['id'] == GRAPHIQUE_FREQUENCE)
 			$d = GraphiqueFrequenceNotes();

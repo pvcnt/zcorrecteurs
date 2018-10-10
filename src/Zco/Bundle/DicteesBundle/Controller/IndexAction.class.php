@@ -19,12 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
 /**
  * Accueil des dictées.
  *
  * @author mwsaz <mwsaz@zcorrecteurs.fr>
  */
-class IndexAction extends DicteesActions
+class IndexAction extends Controller
 {
 	public function execute()
 	{

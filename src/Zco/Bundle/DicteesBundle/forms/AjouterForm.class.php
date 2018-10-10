@@ -19,21 +19,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Zco\Bundle\DicteesBundle\Domain\Dictation;
+
 /**
  * Formulaire d'ajout d'une dictée
  *
  * @copyright   Copyright (c) www.zcorrecteurs.fr 2011
  * @author mwsaz@zcorrecteurs.fr
  */
-
 class AjouterForm extends Form
 {
 	protected function configure()
 	{
-		$cfg = Config::get('messages');
 		$difficultes = array();
-		foreach($cfg['DicteeDifficultes'] as $k => &$diff)
-			$difficultes[$k] = array($diff, ' style="color:'.$cfg['DicteeCouleurs'][$k].'"');
+		foreach(Dictation::LEVELS as $k => $label)
+			$difficultes[$k] = array($label, ' style="color:'.Dictation::COLORS[$k].'"');
 		$this->addFieldset('Dictée');
 		$this->addWidget('titre', new Widget_Input_Text(array(), array('size' => 60, 'maxlength' => 255)));
 		$this->addWidget('difficulte', new Widget_Select(array('choices' => $difficultes)));

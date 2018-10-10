@@ -24,213 +24,173 @@
  *
  * @author mwsaz
  */
-
 class DicteeDiff
 {
-	protected $original, $modifie;
-	protected $ajoute, $supprime;
-	protected $wdiff, $html, $fautes;
+    protected $original, $modifie;
+    protected $ajoute, $supprime;
+    protected $wdiff, $html, $fautes;
 
-	// Ne prend pas en compte la typographie pour la notation
-	public static function doubleDiff($Dictee, $texte)
-	{
-		$diff = new DicteeDiff(
-			htmlspecialchars(str_replace('’', "'", $texte)),
-			htmlspecialchars(str_replace('’', "'", $Dictee->texte)));
-		$diff2 = new DicteeDiff(
-			htmlspecialchars(StandardiserTexte($texte)),
-			htmlspecialchars(StandardiserTexte($Dictee->texte)));
-		$diff->fautes = $diff2->fautes;
+    // Ne prend pas en compte la typographie pour la notation
+    public static function doubleDiff($Dictee, $texte)
+    {
+        $diff = new DicteeDiff(
+            htmlspecialchars(str_replace('’', "'", $texte)),
+            htmlspecialchars(str_replace('’', "'", $Dictee->texte)));
+        $diff2 = new DicteeDiff(
+            htmlspecialchars(self::normalize($texte)),
+            htmlspecialchars(self::normalize($Dictee->texte)));
+        $diff->fautes = $diff2->fautes;
 
-		return $diff;
-	}
+        return $diff;
+    }
 
+    public function __construct($original, $modifie)
+    {
+        $this->original = $original;
+        $this->modifie = $modifie;
+        $this->calculerDiff();
+        $this->buildHtml();
+    }
 
+    public function __toString()
+    {
+        return $this->html;
+    }
 
-	public function __construct($original, $modifie)
-	{
-		$this->original = $original;
-		$this->modifie = $modifie;
+    public function fautes()
+    {
+        return $this->fautes;
+    }
 
-		$this->calculerDiff();
-		$this->buildHtml();
-	}
+    protected function buildHtml()
+    {
+        $conv = array(
+            '<-' => '<del>',
+            '->' => '</del>',
+            '<+' => '<ins>',
+            '+>' => '</ins>'
+        );
+        $this->html = str_replace(array_keys($conv), $conv, $this->wdiff);
+    }
 
-	public function __toString()
-	{
-		return $this->html;
-	}
+    protected function calculerDiff()
+    {
+        $this->wdiff = \SimpleDiff::wdiff($this->original, $this->modifie);
+        $this->ajoute = $this->supprime = 0;
 
-	public function fautes()
-	{
-		return $this->fautes;
-	}
+        $corrige = preg_replace_callback('`\\<([+-])([^>]+)\\1\\>`',
+            array($this, 'faute'), $this->wdiff);
+        $corrige = preg_replace(
+            '`\\<-([^>]+)-\\>(\s+\\<\\+[^>]\\+\\>)? \\<\\<`',
+            '$1$2', $corrige);
+        $corrige = preg_replace('`\\{([^|}]+)(?:|[^}])*\\}`', '$1', $corrige);
+        $corrige = str_replace(array('+> <+', '-> <-'), ' ', $corrige);
 
-	protected function wdiff($boundaries)
-	{
-		$t = microtime(true);
-		$original =  '/dev/shm/diff-'.$t.'-o';
-		$modifie = '/dev/shm/diff-'.$t.'-m';
+        $this->wdiff = $corrige;
+        $this->fautes = round(min($this->ajoute, $this->supprime))
+            + abs($this->ajoute - $this->supprime);
+    }
 
-		file_put_contents($original, $this->original);
-		file_put_contents($modifie, $this->modifie);
+    protected function faute($match)
+    {
+        static $supprime = null;
 
-		$o = '';
-		foreach($boundaries as $opt => $value)
-			$o .= '--'.$opt.' "'.$value.'" ';
-		$o = substr($o, 0, -1);
+        if ($match[1] === '-') {
+            $supprime = $match[2];
+            $this->supprime++;
+            return $match[0];
+        } elseif ($match[1] === '+' &&
+            ($pos1 = strpos($match[2], '{')) !== false &&
+            ($pos2 = strpos($match[2], '}')) !== false &&
+            $pos1 < $pos2) {
+            // Plusieurs possibilités
 
-		$out = shell_exec('wdiff '.$o.' '.$original.' '.$modifie);
+            $avant = trim(substr($match[2], 0, $pos1));
+            $dedans = trim(substr($match[2], $pos1 + 1, $pos2 - $pos1 - 1));
+            $apres = trim(substr($match[2], $pos2 + 1));
 
-		unlink($original);
-		unlink($modifie);
+            if ($avant !== '') {
+                $avant = preg_replace('` {2,}`', ' ', trim($avant));
+                $this->ajoute += substr_count($avant, ' ') + 1;
+                $avant = '<+' . $avant . '+> ';
+                $supprime = null;
+            }
+            if ($apres !== '') {
+                $apres = preg_replace('` {2,}`', ' ', trim($apres));
+                $this->ajoute += substr_count($apres, ' ') + 1;
+                $apres = ' <+' . $apres . '+>';
+            }
 
-		return $out;
-	}
+            $mots = explode('|', $dedans);
 
-	protected function buildHtml()
-	{
-		$conv = array(
-			'<-' => '<del>',
-			'->' => '</del>',
-			'<+' => '<ins>',
-			'+>' => '</ins>'
-		);
-		$this->html = str_replace(array_keys($conv), $conv, $this->wdiff);
-	}
+            if ($supprime !== null) {
+                $trouve = in_array($supprime, $mots);
+                $supprime = '';
 
-	protected function calculerDiff()
-	{
-		$opts = array(
-			'start-delete' => '<-',
-			'end-delete'   => '->',
-			'start-insert' => '<+',
-			'end-insert'   => '+>'
-		);
-		$this->wdiff = $this->wdiff($opts);
-		$this->ajoute = $this->supprime = 0;
-
-		$corrige = preg_replace_callback('`\\<([+-])([^>]+)\\1\\>`',
-			array($this, 'faute'), $this->wdiff);
-		$corrige = preg_replace(
-			'`\\<-([^>]+)-\\>(\s+\\<\\+[^>]\\+\\>)? \\<\\<`',
-			'$1$2', $corrige);
-		$corrige = preg_replace('`\\{([^|}]+)(?:|[^}])*\\}`', '$1', $corrige);
-		$corrige = str_replace(array('+> <+', '-> <-'), ' ', $corrige);
-
-		$this->wdiff = $corrige;
-		$this->fautes = round(min($this->ajoute, $this->supprime))
-		              + abs($this->ajoute - $this->supprime);
-	}
-
-	protected function faute($match)
-	{
-		static $supprime = null;
-
-		if ($match[1] === '-')
-		{
-			$supprime = $match[2];
-			$this->supprime++;
-			return $match[0];
-		}
-		elseif ($match[1] === '+' &&
-		        ($pos1 = strpos($match[2], '{')) !== false &&
-		        ($pos2 = strpos($match[2], '}')) !== false &&
-		        $pos1 < $pos2)
-		{
-			// Plusieurs possibilités
-
-			$avant = trim(substr($match[2], 0, $pos1));
-			$dedans = trim(substr($match[2], $pos1 + 1, $pos2 - $pos1 - 1));
-			$apres = trim(substr($match[2], $pos2 + 1));
-
-			if ($avant !== '')
-			{
-				$avant = preg_replace('` {2,}`', ' ', trim($avant));
-				$this->ajoute += substr_count($avant, ' ') + 1;
-				$avant = '<+'.$avant.'+> ';
-				$supprime = null;
-			}
-			if ($apres !== '')
-			{
-				$apres = preg_replace('` {2,}`', ' ', trim($apres));
-				$this->ajoute += substr_count($apres, ' ') + 1;
-				$apres = ' <+'.$apres.'+>';
-			}
-
-			$mots = explode('|', $dedans);
-
-			if ($supprime !== null)
-			{
-				$trouve = in_array($supprime, $mots);
-				$supprime = '';
-
-				if ($trouve)
-				{
-					$this->supprime--;
-					$apres = '';
+                if ($trouve) {
+                    $this->supprime--;
+                    $apres = '';
 
 
-					return $avant.'<<'.$apres;
-				}
-			}
-			// La première possibilité est la graphie recommandée.
-			$out = $avant.'<+'.$mots[0].'+>'.$apres;
-			return $out;
-		}
+                    return $avant . '<<' . $apres;
+                }
+            }
+            // La première possibilité est la graphie recommandée.
+            $out = $avant . '<+' . $mots[0] . '+>' . $apres;
+            return $out;
+        }
 
-		if ($match[1] === '+')
-		{
-			$this->ajoute++;
-			return $match[0];
-		}
-		return '';
-	}
-}
+        if ($match[1] === '+') {
+            $this->ajoute++;
+            return $match[0];
+        }
+        return '';
+    }
 
-/**
- * Remplace les caractères "spéciaux" par ceux standards, sur le clavier.
- *
- * @param String  $texte Le texte ou faire les rempalcements.
- * @return String Texte nettoyé.
-*/
-function StandardiserTexte($texte)
-{
-	$caracteres = array(
-		'æ'   => 'ae',
-		'œ'   => 'oe',
-		'Æ'   => 'AE',
-		'Œ'   => 'OE',
+    /**
+     * Remplace les caractères "spéciaux" par ceux standards, sur le clavier.
+     *
+     * @param String $texte Le texte ou faire les rempalcements.
+     * @return String Texte nettoyé.
+     */
+    public static function normalize($texte)
+    {
+        $caracteres = array(
+            'æ' => 'ae',
+            'œ' => 'oe',
+            'Æ' => 'AE',
+            'Œ' => 'OE',
 
-		'À'   => 'A',
-		'Ç'   => 'C',
-		'É'   => 'E',
-		'È'   => 'E',
-		'Ê'   => 'E',
-		'Ï'   => 'I',
-		'Î'   => 'I',
-		'Ö'   => 'O',
-		'Ô'   => 'O',
-		'Ü'   => 'U',
-		'Û'   => 'U',
-		'Ÿ'   => 'Y',
-		'Ŷ'   => 'Y',
+            'À' => 'A',
+            'Ç' => 'C',
+            'É' => 'E',
+            'È' => 'E',
+            'Ê' => 'E',
+            'Ï' => 'I',
+            'Î' => 'I',
+            'Ö' => 'O',
+            'Ô' => 'O',
+            'Ü' => 'U',
+            'Û' => 'U',
+            'Ÿ' => 'Y',
+            'Ŷ' => 'Y',
 
-		' '   => ' ', // Espace insécable
-		'…'   => '...',
-		'«'   => '"',
-		'»'   => '"',
-		'−'   => '-',
-		'—'   => '-',
-		'’'   => "'",
-		'‘'   => "'",
-	);
+            ' ' => ' ', // Espace insécable
+            '…' => '...',
+            '«' => '"',
+            '»' => '"',
+            '−' => '-',
+            '—' => '-',
+            '’' => "'",
+            '‘' => "'",
+        );
 
-	$texte = str_replace(
-		array('« ', ' »', '« ', ' »'),
-		array('«', '»', '«', '»'), $texte);
+        $texte = str_replace(
+            array('« ', ' »', '« ', ' »'),
+            array('«', '»', '«', '»'), $texte);
 
-	$texte = str_replace(array_keys($caracteres), $caracteres, $texte);
+        $texte = str_replace(array_keys($caracteres), $caracteres, $texte);
 
-	return $texte;
+        return $texte;
+    }
 }
