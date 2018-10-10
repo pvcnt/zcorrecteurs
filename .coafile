@@ -2,6 +2,6 @@
 bears = PHPLintBear
 files = app/**.php,src/**.php,web/*.php,lib/**.php
 
-;[Javascript]
+[Javascript]
 ;bears = ESLintBear
 ;files = src/**.js
