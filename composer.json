@@ -6,16 +6,16 @@
     "psr-0": {
       "Zco\\": "src",
       "": "src/kernel",
-      "Doctrine_": "lib/doctrine1",
-      "CssMin": "lib/cssmin",
-      "JavascriptMinifier": "lib/jsmin"
+      "Doctrine_": "lib/doctrine1"
     },
     "classmap": [
       "app/AppKernel.php",
       "app/AppCache.php",
       "lib/Artichow",
       "lib/diff",
-      "lib/wdiff"
+      "lib/wdiff",
+      "lib/jsmin",
+      "lib/cssmin"
     ],
     "files": [
       "src/kernel/functions.php",
@@ -26,6 +26,7 @@
   },
   "require": {
     "php": ">=7.1.1",
+    "ext-json": "*",
     "symfony/symfony": "2.8.*",
     "symfony/swiftmailer-bundle": "~2.3",
     "symfony/monolog-bundle": "~2.11.3",
@@ -34,7 +35,6 @@
     "kriswallsmith/assetic": "~1.4.0",
     "doctrine/dbal": "^2.5.5",
     "doctrine/doctrine-bundle": "^1.6.4",
-    "jms/metadata": "~1.6.0",
     "imagine/imagine": "^0.6.3",
     "knplabs/knp-gaufrette-bundle": "^0.1.3",
     "knplabs/knp-menu-bundle": "1.1.2",
@@ -42,8 +42,6 @@
     "friendsofsymfony/jsrouting-bundle": "^1.6.0",
     "willdurand/geocoder-bundle": "2.0.0",
     "rkmax/sphinx-client": "^1.0.1",
-    "jimdo/prometheus_client_php": "^0.8",
-    "beberlei/assert": "^2.7",
     "scrivo/highlight.php": "^9.0"
   },
   "require-dev": {
