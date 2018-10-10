@@ -52,7 +52,7 @@ class DefaultController extends Controller
         $CatsForum = ListerEnfants(GetIDCategorie('forum'), true, true);
         $CatsBlog = ListerEnfants(GetIDCategorie('blog'), true, true);
         \Page::$titre = 'Recherche';
-        $this->get('zco_vitesse.resource_manager')->requireResources(array(
+        $this->get('zco_core.resource_manager')->requireResources(array(
             '@ZcoForumBundle/Resources/public/css/forum.css',
             '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
             '@ZcoCoreBundle/Resources/public/css/zcode.css',

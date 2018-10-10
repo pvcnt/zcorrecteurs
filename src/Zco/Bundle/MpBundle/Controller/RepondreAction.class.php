@@ -104,7 +104,7 @@ class RepondreAction extends Controller
 							));
 
 							Page::$titre = $InfoMP['mp_titre'].' - Ajout d\'une réponse - '.Page::$titre;
-							$this->get('zco_vitesse.resource_manager')->requireResources(array(
+							$this->get('zco_core.resource_manager')->requireResources(array(
             				    '@ZcoForumBundle/Resources/public/css/forum.css',
             				    '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
             				));

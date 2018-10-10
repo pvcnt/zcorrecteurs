@@ -61,7 +61,7 @@ class QuizAction extends Controller
 			DebutQuiz($InfosCandidature);
 
 			Page::$titre = htmlspecialchars($InfosRecrutement['recrutement_nom']).' - Répondre au quiz';
-			$this->get('zco_vitesse.resource_manager')->requireResource('@ZcoCoreBundle/Resources/public/css/zcode.css');
+			$this->get('zco_core.resource_manager')->requireResource('@ZcoCoreBundle/Resources/public/css/zcode.css');
 			
 			return render_to_response(compact('quiz', 'InfosCandidature', 'quiz', 'InfosCandidature', 'InfosRecrutement'));
 		}

@@ -64,7 +64,7 @@ class NouveauxCommentairesAction extends BlogActions
 		//Inclusion de la vue
 		Page::$titre = 'Nouveaux commentaires';
 		fil_ariane('Commentaires non validés');
-		$resourceManager = $this->get('zco_vitesse.resource_manager');
+		$resourceManager = $this->get('zco_core.resource_manager');
 		$resourceManager->requireResource('@ZcoCoreBundle/Resources/public/css/zcode.css');
 		
 		return render_to_response(array(

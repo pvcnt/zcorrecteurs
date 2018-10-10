@@ -63,7 +63,7 @@ class CorrigerAction extends Controller
 			'Correction'
 		));
 
-		$this->get('zco_vitesse.resource_manager')->requireResources(array(
+		$this->get('zco_core.resource_manager')->requireResources(array(
 		    '@ZcoCoreBundle/Resources/public/css/zcode.css',
 		    '@ZcoDicteesBundle/Resources/public/css/dictees.css',
 		));

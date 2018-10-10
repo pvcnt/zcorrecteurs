@@ -75,10 +75,10 @@ class AjouterCommentaireAction extends BlogActions
 					htmlspecialchars($this->InfosBillet['version_titre']) => 'billet-'.$_GET['id'].'-'.rewrite($this->InfosBillet['version_titre']).'.html',
 					'Ajouter un commentaire'
 				));
-				$this->get('zco_vitesse.resource_manager')->requireResource(
+				$this->get('zco_core.resource_manager')->requireResource(
 				    '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css'
 				);
-				$this->get('zco_vitesse.resource_manager')->requireResource(
+				$this->get('zco_core.resource_manager')->requireResource(
 				    '@ZcoForumBundle/Resources/public/css/forum.css'
 				);
 				

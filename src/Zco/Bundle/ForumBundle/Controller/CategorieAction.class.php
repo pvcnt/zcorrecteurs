@@ -118,7 +118,7 @@ class CategorieAction extends ForumActions
 		else
 			fil_ariane($_GET['id'], 'Liste des forums');
 		
-		$this->get('zco_vitesse.resource_manager')->requireResource(
+		$this->get('zco_core.resource_manager')->requireResource(
 		    '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css'
 		);
 		

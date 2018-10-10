@@ -105,7 +105,7 @@ class SujetsParticipeAction extends ForumActions
 
 		// Inclusion de la vue
 		fil_ariane('Voir les sujets auxquels un membre a participé');
-		$this->get('zco_vitesse.resource_manager')->requireResource(
+		$this->get('zco_core.resource_manager')->requireResource(
 		    '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css'
 		);
 		

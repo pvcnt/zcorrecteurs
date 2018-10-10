@@ -65,7 +65,7 @@ class Widget_DatePicker extends Widget
 		);
 		unset($options['skin']);
 
-		$javelin = Container::getService('zco_vitesse.javelin');
+		$javelin = Container::getService('zco_core.javelin');
 		$javelin->initBehavior('datepicker', array('id' => $this->attrs['id'], 'options' => $options));
         
 		return sprintf('<input type="text"%s /><noscript>Format : %s</noscript>', $this->flatAttrs(), $this->getOption('inputOutputFormat'));

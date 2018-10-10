@@ -19,15 +19,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\VitesseBundle\Resource;
+namespace Zco\Bundle\CoreBundle\Javelin\Filter;
 
-interface ResourceManagerInterface
+use Assetic\Filter\FilterInterface;
+use Assetic\Asset\AssetInterface;
+
+/**
+ * Filters assets through JavascriptMinifier.
+ *
+ * @author vincent1870 <vincent@zcorrecteurs.fr>
+ */
+class CssMinFilter implements FilterInterface
 {
-	function requireResource($symbol);
-	
-	function requireResources(array $symbols);
-	
-	function stylesheets(array $stylesheets = array());
-	
-	function javascripts(array $javascripts = array());	
+    public function filterLoad(AssetInterface $asset)
+    {
+    }
+
+    public function filterDump(AssetInterface $asset)
+    {
+        $asset->setContent(\CssMin::minify($asset->getContent()));
+    }
 }

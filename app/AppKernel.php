@@ -38,7 +38,6 @@ class AppKernel extends Kernel
             new Symfony\Bundle\MonologBundle\MonologBundle(),
             new Symfony\Bundle\TwigBundle\TwigBundle(),
             new Zco\Bundle\Doctrine1Bundle\ZcoDoctrine1Bundle(),
-            new Zco\Bundle\VitesseBundle\ZcoVitesseBundle(),
             new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
@@ -105,7 +104,7 @@ class AppKernel extends Kernel
     public function getCacheDir()
     {
         // We use Symfony 3 directory structure, and allow to overwrite this directory by environment variable.
-        return (getenv('SYMFONY_CACHE_DIR') ?: dirname(__DIR__) . '/var/cache') . '/' . $this->environment;
+        return (getenv('SYMFONY_CACHE_DIR') ?: dirname(__DIR__) . '../var/cache') . '/' . $this->environment;
     }
 
     /**
@@ -114,7 +113,7 @@ class AppKernel extends Kernel
     public function getLogDir()
     {
         // We use Symfony 3 directory structure, and allow to overwrite this directory by environment variable.
-        return getenv('SYMFONY_LOG_DIR') ?: dirname(__DIR__) . '/var/logs';
+        return getenv('SYMFONY_LOG_DIR') ?: dirname(__DIR__) . '../var/logs';
     }
 
     protected function getEnvParameters()

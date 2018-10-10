@@ -78,7 +78,7 @@ class EditerAction extends Controller
 					{
 						//Inclusion de la vue
 						fil_ariane(array(htmlspecialchars($InfoMessage['mp_titre']) => 'lire-'.$_GET['id'].'.html', '&Eacute;diter un message'));
-						$this->get('zco_vitesse.resource_manager')->requireResources(array(
+						$this->get('zco_core.resource_manager')->requireResources(array(
         				    '@ZcoForumBundle/Resources/public/css/forum.css',
         				    '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
         				));

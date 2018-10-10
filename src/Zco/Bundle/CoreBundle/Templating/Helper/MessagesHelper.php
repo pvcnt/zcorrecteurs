@@ -22,7 +22,7 @@
 namespace Zco\Bundle\CoreBundle\Templating\Helper;
 
 use Zco\Bundle\ParserBundle\Parser\ParserInterface;
-use Zco\Bundle\VitesseBundle\Resource\ResourceManagerInterface;
+use Zco\Bundle\CoreBundle\Javelin\ResourceManager;
 use Symfony\Component\Templating\Helper\Helper;
 
 /**
@@ -39,8 +39,9 @@ class MessagesHelper extends Helper
 	 * Constructeur.
 	 *
 	 * @param ParserInterface $parser
+     * @param ResourceManager $resourceManager
 	 */
-	public function __construct(ParserInterface $parser, ResourceManagerInterface $resourceManager)
+	public function __construct(ParserInterface $parser, ResourceManager $resourceManager)
 	{
 	    $this->parser = $parser;
 	    $this->resourceManager = $resourceManager;

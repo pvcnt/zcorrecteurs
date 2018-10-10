@@ -375,7 +375,7 @@ class Generator extends Controller
 		//Inclusion de la vue et décoration avec le layout.
 		fil_ariane($config['list']['title']);
 		\Page::$titre = $config['list']['title'];
-		$this->get('zco_vitesse.resource_manager')->requireResources(array(
+		$this->get('zco_core.resource_manager')->requireResources(array(
 		    '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
 		    '@ZcoCoreBundle/Resources/public/css/zcode.css',
 		    '@ZcoCoreBundle/Resources/public/css/generator.css',
@@ -457,7 +457,7 @@ class Generator extends Controller
 		//Inclusion de la vue et décoration avec le layout.
 		\Page::$titre = $config['new']['title'];
 		fil_ariane($config['new']['title']);
-		$this->get('zco_vitesse.resource_manager')->requireResources(array(
+		$this->get('zco_core.resource_manager')->requireResources(array(
 		    '@ZcoCoreBundle/Resources/public/css/zcode.css',
 		    '@ZcoCoreBundle/Resources/public/css/generator.css',
 		    
@@ -553,7 +553,7 @@ class Generator extends Controller
 		$config['new']['description'] = $this->replaceReferences($config['new']['description'], $object);
 		\Page::$titre = $config['new']['title'];
 		fil_ariane($config['new']['title']);
-		$this->get('zco_vitesse.resource_manager')->requireResources(array(
+		$this->get('zco_core.resource_manager')->requireResources(array(
 		    '@ZcoCoreBundle/Resources/public/css/zcode.css',
 		    '@ZcoCoreBundle/Resources/public/css/generator.css',
 		    
@@ -621,7 +621,7 @@ class Generator extends Controller
 		//Inclusion de la vue et décoration avec le layout.
 		\Page::$titre = $title;
 		fil_ariane($title);
-		$this->get('zco_vitesse.resource_manager')->requireResources(array(
+		$this->get('zco_core.resource_manager')->requireResources(array(
 		    '@ZcoCoreBundle/Resources/public/css/generator.css',
 		    '@ZcoCoreBundle/Resources/public/js/generator.js',
 		    '@ZcoCoreBundle/Resources/public/js/messages.js',

@@ -19,9 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\VitesseBundle\Javelin;
-
-use Zco\Bundle\VitesseBundle\Resource\ResourceManagerInterface;
+namespace Zco\Bundle\CoreBundle\Javelin;
 
 /**
  * Assure la liaison avec les comportements Javascripts définis côté client.
@@ -42,9 +40,9 @@ class Javelin
 	/**
 	 * Constructeur.
 	 *
-	 * @param ResourceManagerInterface $resourceManager
+	 * @param ResourceManager $resourceManager
 	 */
-	public function __construct(ResourceManagerInterface $resourceManager)
+	public function __construct(ResourceManager $resourceManager)
 	{
 		$this->resourceManager = $resourceManager;
 		

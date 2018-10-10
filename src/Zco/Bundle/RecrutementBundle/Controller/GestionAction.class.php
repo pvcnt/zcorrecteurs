@@ -38,7 +38,7 @@ class GestionAction extends Controller
 
 		//Inclusion de la vue
 		fil_ariane('Gestion des recrutements');
-		$this->get('zco_vitesse.resource_manager')->requireResources(array(
+		$this->get('zco_core.resource_manager')->requireResources(array(
 		    '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
 		    '@ZcoCoreBundle/Resources/public/css/zcode.css',
 		));

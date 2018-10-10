@@ -109,7 +109,7 @@ class IndexAction extends ForumActions
 			fil_ariane('Accueil des forums');
 		}
 		
-		$this->get('zco_vitesse.resource_manager')->requireResources(array(
+		$this->get('zco_core.resource_manager')->requireResources(array(
 			'@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
 			'@ZcoForumBundle/Resources/public/js/forum.js',
 		));

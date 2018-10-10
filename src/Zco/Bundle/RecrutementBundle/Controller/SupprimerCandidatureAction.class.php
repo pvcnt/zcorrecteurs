@@ -61,7 +61,7 @@ class SupprimerCandidatureAction extends Controller
 				'Candidature de '.htmlspecialchars($InfosCandidature['utilisateur_pseudo']) => 'candidature-'.$_GET['id'].'.html',
 				'Supprimer la candidature'
 			));
-			$this->get('zco_vitesse.resource_manager')->requireResource('@ZcoCoreBundle/Resources/public/css/zcode.css');
+			$this->get('zco_core.resource_manager')->requireResource('@ZcoCoreBundle/Resources/public/css/zcode.css');
 			
 			return render_to_response(array('InfosCandidature' => $InfosCandidature));
 		}

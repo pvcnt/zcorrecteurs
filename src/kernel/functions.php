@@ -599,7 +599,10 @@ function render_to_response($template = array(), array $vars = array(), array $h
     $vars = $event->getAll();
 
     //Register resources.
-    $event = new FilterResourcesEvent(\Container::getService('zco_vitesse.resource_manager'), \Container::getService('zco_vitesse.javelin'));
+    $event = new FilterResourcesEvent(
+        \Container::getService('zco_core.resource_manager'),
+        \Container::getService('zco_core.javelin')
+    );
     $dispatcher->dispatch(TemplatingEvents::FILTER_RESOURCES, $event);
 
     //Template rendering.

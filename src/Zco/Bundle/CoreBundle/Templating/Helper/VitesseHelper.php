@@ -19,9 +19,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\VitesseBundle\Templating\Helper;
+namespace Zco\Bundle\CoreBundle\Templating\Helper;
 
-use Zco\Bundle\VitesseBundle\Resource\ResourceManagerInterface;
+use Zco\Bundle\CoreBundle\Javelin\ResourceManager;
 use Symfony\Component\Templating\Helper\Helper;
 
 /**
@@ -34,7 +34,7 @@ class VitesseHelper extends Helper
 {
     private $manager;
     
-	public function __construct(ResourceManagerInterface $manager)
+	public function __construct(ResourceManager $manager)
 	{
 	    $this->manager = $manager;
 	}
@@ -51,12 +51,12 @@ class VitesseHelper extends Helper
 	
 	public function addFeeds(array $feeds)
 	{
-	    return $this->manager->addFeeds($feeds);
+	    $this->manager->addFeeds($feeds);
 	}
 		
 	public function addFeed($feed, array $options = array())
 	{
-	    return $this->manager->addFeed($feed, $options);
+	    $this->manager->addFeed($feed, $options);
 	}
 	
 	public function renderFeeds()

@@ -185,7 +185,7 @@ class IndexAction extends Controller
 			//Inclusion de la vue
 			fil_ariane('Accueil des MP');
 			Page::$titre = 'Accueil des MP';
-			$this->get('zco_vitesse.resource_manager')->requireResources(array(
+			$this->get('zco_core.resource_manager')->requireResources(array(
 			    '@ZcoForumBundle/Resources/public/css/forum.css',
 			    '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
 			    '@ZcoCoreBundle/Resources/public/js/messages.js',

@@ -21,10 +21,16 @@
 
 namespace Zco\Bundle\CoreBundle\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\Config\Resource\FileResource;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Zco\Bundle\CoreBundle\Javelin\DocblockParser;
+use Zco\Bundle\CoreBundle\Javelin\ResourceGraph;
 
 /**
  * ZcoCoreExtension.
@@ -33,21 +39,169 @@ use Symfony\Component\Config\FileLocator;
  */
 class ZcoCoreExtension extends Extension
 {
-	/**
-	 * Responds to the app.config configuration parameter.
-	 *
-	 * @param array			$configs
-	 * @param ContainerBuilder $container
-	 */
-	public function load(array $configs, ContainerBuilder $container)
-	{
-		$loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-		$loader->load('services.yml');
-		$loader->load('listeners.yml');
-		$loader->load('cache.yml');
-		$loader->load('templating_helpers.yml');
+    /**
+     * Responds to the app.config configuration parameter.
+     *
+     * @param array $configs
+     * @param ContainerBuilder $container
+     */
+    public function load(array $configs, ContainerBuilder $container)
+    {
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader->load('services.yml');
+        $loader->load('listeners.yml');
+        $loader->load('cache.yml');
+        $loader->load('templating_helpers.yml');
 
         $config = $this->processConfiguration(new Configuration(), $configs);
-		$container->setAlias('zco_core.cache', 'zco_core.cache.'.$config['cache']['default']);
-	}
+
+        // Alias pour l'implémentation de cache.
+        $container->setAlias('zco_core.cache', 'zco_core.cache.' . $config['cache']['default']);
+
+        // Définit les paramètres pour Vitesse.
+        $cacheDir = $container->getParameterBag()->resolveValue('%kernel.cache_dir%/zco_vitesse');
+        $container->setParameter('zco_core.vitesse.cache_dir', $cacheDir);
+        $container->setParameter(
+            'zco_core.vitesse.combine_assets',
+            ($config['vitesse']['combine_assets'] === null)
+                ? !$container->getParameterBag()->resolveValue('kernel.debug')
+                : $config['vitesse']['combine_assets']
+        );
+
+        $definition = $container->getDefinition('zco_core.assetic.asset_manager');
+        $resourceGraph = array();
+        $aliases = array();
+
+        // Configure le chargement des ressources définies dans la configuration.
+        foreach ($config['vitesse']['assets'] as $provides => $formula) {
+            if (count($formula['inputs']) === 1) {
+                if (!preg_match('/\.(css|js)$/', $provides, $matches)) {
+                    if (empty($formula['type'])) {
+                        throw new \InvalidArgumentException(sprintf('Cannot guess type of "%s" asset.', $provides));
+                    }
+                    $type = $formula['type'];
+                } else {
+                    $type = $matches[1];
+                }
+
+                $name = sha1($provides) . '_' . $type;
+            } else {
+                $name = sha1($provides) . '_pkg';
+            }
+
+            $definition->addMethodCall('setFormula', array($name, array($formula['inputs'], array(), array())));
+            $resourceGraph[$name] = array();
+            $aliases[$provides] = $name;
+        }
+
+        foreach ($container->getParameter('kernel.bundles') as $bundle => $className) {
+            $rc = new \ReflectionClass($className);
+            $publicDir = dirname($rc->getFileName()) . '/Resources/public';
+            if (!is_dir($publicDir)) {
+                continue;
+            }
+
+            $finder = Finder::create()
+                ->files()
+                ->name('/\.js$/')
+                ->name('/\.css$/')
+                ->followLinks()
+                ->in($publicDir);
+
+            $i = 0;
+            foreach ($finder as $file) {
+                /** @var \SplFileInfo $file */
+                $type = $file->getExtension();
+                $defaultProvides = str_replace(DIRECTORY_SEPARATOR, '/', sprintf('@%s/Resources/public%s',
+                    $bundle,
+                    preg_replace('@^' . preg_quote($publicDir, '@') . '@', '', $file->getPathname())
+                ));
+
+                if (!preg_match('@/[*][*].*?[*]/@s', file_get_contents($file->getRealPath()), $matches)) {
+                    $provides = $defaultProvides;
+                    $requires = array();
+                } else {
+                    $parser = new DocblockParser();
+                    list(, $metadata) = $parser->parse($matches[0]);
+
+                    $provides = preg_split('/\s+/', trim(isset($metadata['provides']) ? $metadata['provides'] : $defaultProvides));
+                    $requires = preg_split('/\s+/', trim(isset($metadata['requires']) ? $metadata['requires'] : ''));
+                    $provides = array_filter($provides);
+                    $requires = array_filter($requires);
+
+                    if (count($provides) > 1) {
+                        // NOTE: Documentation-only JS is permitted to @provide no targets.
+                        throw new \InvalidArgumentException(sprintf(
+                            'File "%s" must @provide at most one Vitesse target.',
+                            $file->getPath()
+                        ));
+                    }
+
+                    $provides = reset($provides);
+                }
+
+                $assetName = sha1($provides) . '_' . $type;
+                $serviceName = 'zco_core.assetic.asset.' . $bundle . '_' . (++$i);
+
+                $container->setDefinition(
+                    $serviceName,
+                    new Definition('Assetic\Asset\FileAsset', array($file->getRealpath()))
+                );
+                $container->addResource(new FileResource($file->getRealPath()));
+                $definition->addMethodCall('set', array($assetName, new Reference($serviceName)));
+                $resourceGraph[$assetName] = $requires;
+
+                $aliases[$provides] = $assetName;
+                if ($provides !== $defaultProvides) {
+                    $aliases[$defaultProvides] = $assetName;
+                }
+            }
+        }
+
+        foreach ($resourceGraph as $name => $requires) {
+            foreach ($requires as $i => $req) {
+                if (!isset($aliases[$req])) {
+                    unset($resourceGraph[$name][$i]);
+                } else {
+                    $resourceGraph[$name][$i] = $aliases[$req];
+                }
+            }
+        }
+
+        $graph = new ResourceGraph();
+        $graph->addNodes($resourceGraph);
+        $graph->setResourceGraph($resourceGraph);
+        $graph->loadGraph();
+
+        foreach ($resourceGraph as $provides => $requires) {
+            $cycle = $graph->detectCycles($provides);
+            if ($cycle) {
+                throw new \RuntimeException(sprintf(
+                    'Cycle detected in resource graph: %s.',
+                    implode($cycle, ' => ')
+                ));
+            }
+        }
+
+        ksort($resourceGraph);
+        $resourceGraph = var_export($resourceGraph, true);
+        $resourceGraph = preg_replace('/\s+$/m', '', $resourceGraph);
+        $resourceGraph = preg_replace('/array \(/', 'array(', $resourceGraph);
+
+        ksort($aliases);
+        $aliases = var_export($aliases, true);
+        $aliases = preg_replace('/\s+$/m', '', $aliases);
+        $aliases = preg_replace('/array \(/', 'array(', $aliases);
+
+        if (!is_dir($cacheDir)) {
+            if (false === @mkdir($cacheDir, 0777, true)) {
+                throw new \RuntimeException(sprintf('Unable to create the Vitesse cache directory "%s".', $cacheDir));
+            }
+        } elseif (!is_writable($cacheDir)) {
+            throw new \RuntimeException(sprintf('The Vitesse cache directory "%s" is not writeable for the current system user.', $cacheDir));
+        }
+
+        file_put_contents($cacheDir . '/resourceGraph.php', '<?php' . "\n" . 'return ' . $resourceGraph . ';');
+        file_put_contents($cacheDir . '/aliases.php', '<?php' . "\n" . 'return ' . $aliases . ';');
+    }
 }

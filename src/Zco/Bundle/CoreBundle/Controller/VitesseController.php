@@ -19,13 +19,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\VitesseBundle\Controller;
+namespace Zco\Bundle\CoreBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
-use Zco\Bundle\VitesseBundle\Assetic\Filter\CssRewriteFilter;
+use Zco\Bundle\CoreBundle\Javelin\Filter\CssRewriteFilter;
 
-class AssetsController extends Controller
+class VitesseController extends Controller
 {
     public function renderAction($hash)
     {
@@ -45,7 +45,7 @@ class AssetsController extends Controller
             ));
         }
         
-        $asset = $this->get('zco_vitesse.assetic.asset_manager')->get($hash);
+        $asset = $this->get('zco_core.assetic.asset_manager')->get($hash);
         if ($type === 'css')
         {
             $asset->ensureFilter(new CssRewriteFilter());

@@ -61,7 +61,7 @@ class RepondreAction extends Controller
 		}
 
 		fil_ariane(Page::$titre);
-        $this->get('zco_vitesse.resource_manager')->requireResources(array(
+        $this->get('zco_core.resource_manager')->requireResources(array(
 		    '@ZcoDicteesBundle/Resources/public/css/dictees.css',
 		));
 		

@@ -19,9 +19,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\VitesseBundle\Templating\Helper;
+namespace Zco\Bundle\CoreBundle\Templating\Helper;
 
-use Zco\Bundle\VitesseBundle\Javelin\Javelin;
+use Zco\Bundle\CoreBundle\Javelin\Javelin;
 use Symfony\Component\Templating\Helper\Helper;
 
 /**
@@ -37,7 +37,7 @@ class JavelinHelper extends Helper
     }
 	public function initBehavior($behavior, array $config = array())
 	{
-	    return $this->javelin->initBehavior($behavior, $config);
+	    $this->javelin->initBehavior($behavior, $config);
 	}
 	
 	public function onload($call)

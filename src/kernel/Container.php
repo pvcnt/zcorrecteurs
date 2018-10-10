@@ -63,8 +63,8 @@ final class Container
 	/**
 	 * Shortcut to get a service without using the container instance.
 	 *
-	 * @param string $service		The service name.
-	 * @return ContainerInterface			The required service.
+	 * @param string $service The service name.
+	 * @return object The required service.
 	 */
 	public static function getService($service)
 	{
@@ -82,7 +82,7 @@ final class Container
 	{
 		return self::getInstance()->getParameter($parameter);
 	}
-	
+
 	/**
 	 * Shortcut to check if a parameter exists using the
 	 * container instance.

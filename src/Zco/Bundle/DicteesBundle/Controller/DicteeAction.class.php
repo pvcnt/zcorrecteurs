@@ -41,7 +41,7 @@ class DicteeAction extends Controller
 
 		Page::$titre = htmlspecialchars($Dictee->titre);
 		fil_ariane(Page::$titre);
-        $this->get('zco_vitesse.resource_manager')->requireResources(array(
+        $this->get('zco_core.resource_manager')->requireResources(array(
 		    '@ZcoCoreBundle/Resources/public/css/zcode.css',
 		    '@ZcoDicteesBundle/Resources/public/css/dictees.css',
 		));

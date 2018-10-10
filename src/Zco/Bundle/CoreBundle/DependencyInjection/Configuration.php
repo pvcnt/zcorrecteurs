@@ -43,6 +43,38 @@ class Configuration implements ConfigurationInterface
 						->scalarNode('default')->defaultValue('file')->end()
 					->end()
 				->end()
+                ->arrayNode('vitesse')
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->booleanNode('combine_assets')->defaultNull()->end()
+                    ->arrayNode('assets')
+                        ->useAttributeAsKey('name')
+                        ->prototype('array')
+                            ->beforeNormalization()
+                                ->always()
+                                ->then(function($v)
+                                {
+                                    foreach (array('inputs', 'filters') as $key)
+                                    {
+                                        if (isset($v[$key]) && !is_array($v[$key]))
+                                        {
+                                            $v[$key] = array($v[$key]);
+                                        }
+                                    }
+
+                                    return $v;
+                                })
+                                ->end()
+                            ->children()
+                                ->arrayNode('inputs')
+                                    ->requiresAtLeastOneElement()
+                                    ->prototype('scalar')->end()
+                                ->end()
+                                ->scalarNode('type')->defaultNull()->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
 			->end()
 		;
 

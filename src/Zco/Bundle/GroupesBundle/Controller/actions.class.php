@@ -428,7 +428,7 @@ class GroupesActions extends Controller
 
 		//Inclusion de la vue
 		fil_ariane('Changer les droits d\'un groupe');
-		$this->get('zco_vitesse.resource_manager')->requireResource(
+		$this->get('zco_core.resource_manager')->requireResource(
 		    '@ZcoCoreBundle/Resources/public/css/zcode.css'
 		);
 

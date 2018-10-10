@@ -35,7 +35,7 @@
  * limitations under the License.
  */
 
-namespace Zco\Bundle\VitesseBundle\Annotation;
+namespace Zco\Bundle\CoreBundle\Javelin;
 
 /**
  * Parse a docblock comment from source code into raw text documentation and

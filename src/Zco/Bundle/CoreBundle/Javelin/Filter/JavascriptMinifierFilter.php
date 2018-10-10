@@ -19,14 +19,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\CoreBundle\Tests;
+namespace Zco\Bundle\CoreBundle\Javelin\Filter;
 
-use Zco\Bundle\CoreBundle\Cache\MemoryCache;
+use Assetic\Filter\FilterInterface;
+use Assetic\Asset\AssetInterface;
 
-class MemoryCacheTest extends AbstractCacheTest
-{	
-	protected function getCache()
-	{
-		return new MemoryCache(600);
-	}
+/**
+ * Filters assets through JavascriptMinifier.
+ *
+ * @author vincent1870 <vincent@zcorrecteurs.fr>
+ */
+class JavascriptMinifierFilter implements FilterInterface
+{
+    public function filterLoad(AssetInterface $asset)
+    {
+    }
+
+    public function filterDump(AssetInterface $asset)
+    {
+        $asset->setContent(\JavascriptMinifier::minify($asset->getContent()));
+    }
 }

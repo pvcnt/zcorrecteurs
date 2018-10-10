@@ -33,7 +33,7 @@ class PourquoiNousRejoindreAction extends Controller
 	{
 		zCorrecteurs::VerifierFormatageUrl();
 		Page::$titre = 'Pourquoi nous rejoindre ?';
-        $this->get('zco_vitesse.resource_manager')->requireResource(
+        $this->get('zco_core.resource_manager')->requireResource(
 		    '@ZcoRecrutementBundle/Resources/public/css/recrutement.css'
 		);
 		

@@ -67,7 +67,7 @@ class DefaultController extends Controller
         \Page::$titre = htmlspecialchars($quiz['nom']);
         \Page::$description = htmlspecialchars($quiz['description']);
         fil_ariane($quiz['categorie_id'], array(htmlspecialchars($quiz['nom'])));
-        $this->get('zco_vitesse.resource_manager')->requireResources([
+        $this->get('zco_core.resource_manager')->requireResources([
             '@ZcoCoreBundle/Resources/public/css/zcode.css',
             '@ZcoCoreBundle/Resources/public/css/zform.css',
             '@ZcoQuizBundle/Resources/public/css/quiz.css',

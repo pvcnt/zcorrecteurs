@@ -19,15 +19,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\VitesseBundle\Resource;
+namespace Zco\Bundle\CoreBundle\Javelin;
 
-use Zco\Bundle\VitesseBundle\Assetic\Filter\CssRewriteFilter;
-use Zco\Bundle\VitesseBundle\Assetic\Filter\JavascriptMinifierFilter;
-use Zco\Bundle\VitesseBundle\Assetic\Filter\CssMinFilter;
+use Zco\Bundle\CoreBundle\Javelin\Filter\CssRewriteFilter;
+use Zco\Bundle\CoreBundle\Javelin\Filter\JavascriptMinifierFilter;
+use Zco\Bundle\CoreBundle\Javelin\Filter\CssMinFilter;
 use Assetic\Asset\AssetCollection;
 use Assetic\AssetManager;
 use Assetic\AssetWriter;
-use Symfony\Component\HttpKernel\Log\LoggerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
@@ -36,7 +36,7 @@ use Symfony\Component\Routing\RouterInterface;
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class ResourceManager implements ResourceManagerInterface
+class ResourceManager
 {
 	private $am;
 	private $map;
@@ -280,7 +280,7 @@ class ResourceManager implements ResourceManagerInterface
 		foreach ($symbols as $symbol)
 		{
 			$urls[] = $this->router->generate(
-				'zco_vitesse_asset', 
+				'zco_core_asset',
 				array('hash' => str_replace('_', '.', $symbol))
 			);
 		}

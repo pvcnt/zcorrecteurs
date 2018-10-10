@@ -68,7 +68,7 @@ class ComparaisonAction extends BlogActions
 						htmlspecialchars($InfosBillet['version_titre']) => 'admin-billet-'.$_GET['id'].'.html',
 						'Historique des versions' => 'versions-'.$_GET['id'].'.html',
 						'Comparaison'));
-					$this->get('zco_vitesse.resource_manager')->requireResource(
+					$this->get('zco_core.resource_manager')->requireResource(
         			    '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css'
         			);
 					

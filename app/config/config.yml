@@ -26,15 +26,16 @@ swiftmailer:
   port:       587
   spool:      { type: memory }
 
-zco_vitesse:
-  combine_assets: true
-  assets:
-    - name: google-jsapi
-      type: js
-      inputs: 'https://www.google.com/jsapi'
-    - name: google-maps
-      type: js
-      inputs: 'http://maps.google.com/maps?file=api&amp;v=2&amp;key=%gmaps_api_key%'
+zco_core:
+  vitesse:
+    combine_assets: true
+    assets:
+      - name: google-jsapi
+        type: js
+        inputs: 'https://www.google.com/jsapi'
+      - name: google-maps
+        type: js
+        inputs: 'http://maps.google.com/maps?file=api&amp;v=2&amp;key=%gmaps_api_key%'
 
 knp_gaufrette:
   adapters:

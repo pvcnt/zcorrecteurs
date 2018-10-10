@@ -7,8 +7,7 @@ _profiler:
     prefix:   /_profiler
 
 zco_vitesse:
-    resource: "@ZcoVitesseBundle/Resources/config/routing.yml"
-    prefix:   /res
+    resource: "@ZcoCoreBundle/Resources/config/routing_dev.yml"
 
 _main:
     resource: routing.yml

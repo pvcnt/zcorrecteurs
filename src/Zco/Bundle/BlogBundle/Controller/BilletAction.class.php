@@ -134,12 +134,12 @@ class BilletAction extends BlogActions
             fil_ariane($this->InfosBillet['cat_id'], array(
                 htmlspecialchars($this->InfosBillet['version_titre']) => 'billet-'.$_GET['id'].'-'.rewrite($this->InfosBillet['version_titre']).'.html',
                 'Lecture du billet'));
-            $this->get('zco_vitesse.resource_manager')->requireResources(array(
+            $this->get('zco_core.resource_manager')->requireResources(array(
                 '@ZcoForumBundle/Resources/public/css/forum.css',
                 '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
             ));
 
-            $this->get('zco_vitesse.resource_manager')->addFeed(
+            $this->get('zco_core.resource_manager')->addFeed(
                 'flux-'.$this->InfosBillet['cat_id'].'-'.rewrite($this->InfosBillet['cat_nom']).'.html',
                 array('title' => 'Derniers billets de cette catégorie')
             );

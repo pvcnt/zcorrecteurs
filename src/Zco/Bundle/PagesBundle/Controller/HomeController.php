@@ -133,7 +133,7 @@ class HomeController extends Controller
 
         // Inclusion de la vue
         fil_ariane('Accueil');
-        $resourceManager = $this->get('zco_vitesse.resource_manager');
+        $resourceManager = $this->get('zco_core.resource_manager');
         $resourceManager->requireResources([
             '@ZcoPagesBundle/Resources/public/css/home.css',
             '@ZcoCoreBundle/Resources/public/css/zcode.css',

@@ -74,7 +74,7 @@ class CategoriesActions extends Controller
 		}
 
 		fil_ariane('Liste des catégories');
-		$this->get('zco_vitesse.resource_manager')->requireResource('@ZcoCoreBundle/Resources/public/js/messages.js');
+		$this->get('zco_core.resource_manager')->requireResource('@ZcoCoreBundle/Resources/public/js/messages.js');
 
 		return render_to_response(array('categories' => ListerCategories()));
 	}

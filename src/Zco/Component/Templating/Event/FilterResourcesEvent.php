@@ -21,8 +21,8 @@
 
 namespace Zco\Component\Templating\Event;
 
-use Zco\Bundle\VitesseBundle\Resource\ResourceManagerInterface;
-use Zco\Bundle\VitesseBundle\Javelin\Javelin;
+use Zco\Bundle\CoreBundle\Javelin\ResourceManager;
+use Zco\Bundle\CoreBundle\Javelin\Javelin;
 use Symfony\Component\EventDispatcher\Event;
 
 class FilterResourcesEvent extends Event
@@ -30,7 +30,7 @@ class FilterResourcesEvent extends Event
 	private $manager;
 	private $javelin;
 	
-	public function __construct(ResourceManagerInterface $manager, Javelin $javelin)
+	public function __construct(ResourceManager $manager, Javelin $javelin)
 	{
 		$this->manager = $manager;
 		$this->javelin = $javelin;

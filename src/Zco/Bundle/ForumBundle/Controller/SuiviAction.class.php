@@ -83,11 +83,11 @@ class SuiviAction extends ForumActions
 		}
 
 		fil_ariane('Suivi des sujets');
-		$this->get('zco_vitesse.resource_manager')->requireResources(array(
+		$this->get('zco_core.resource_manager')->requireResources(array(
 		    '@ZcoCoreBundle/Resources/public/css/zcode.css',
 		    '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
 		));
-		$this->get('zco_vitesse.resource_manager')->requireResource('@ZcoCoreBundle/Resources/public/js/messages.js');
+		$this->get('zco_core.resource_manager')->requireResource('@ZcoCoreBundle/Resources/public/js/messages.js');
 		
 		return render_to_response(array(
 			'CompterSujets' => $CompterSujets,

@@ -72,7 +72,7 @@ class EditerAction extends ForumActions
 					htmlspecialchars($InfosMessage['sujet_titre']) => 'sujet-'.$InfosMessage['sujet_id'].'-'.rewrite($InfosMessage['sujet_titre']).'.html',
 					'Modifier un message'
 				));
-				$this->get('zco_vitesse.resource_manager')->requireResources(array(
+				$this->get('zco_core.resource_manager')->requireResources(array(
 					'@ZcoForumBundle/Resources/public/js/sujet.js',
 				    '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
 				));

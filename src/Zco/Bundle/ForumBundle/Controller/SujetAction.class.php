@@ -197,7 +197,7 @@ class SujetAction extends ForumActions
 			htmlspecialchars($InfosSujet['sujet_titre']) => 'sujet-'.$_GET['id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html',
 			'Voir le sujet'
 		));
-		$this->get('zco_vitesse.resource_manager')->requireResources(array(
+		$this->get('zco_core.resource_manager')->requireResources(array(
 		    '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
 		    '@ZcoForumBundle/Resources/public/js/sujet.js',
 		    '@ZcoCoreBundle/Resources/public/js/zform.js',

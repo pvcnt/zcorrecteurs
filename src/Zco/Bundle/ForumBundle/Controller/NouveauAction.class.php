@@ -71,7 +71,7 @@ class NouveauAction extends ForumActions
 
 			//Inclusion de la vue
 			fil_ariane($_GET['id'], 'Créer un nouveau sujet');
-			$this->get('zco_vitesse.resource_manager')->requireResource(
+			$this->get('zco_core.resource_manager')->requireResource(
 			    '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css'
 			);
 

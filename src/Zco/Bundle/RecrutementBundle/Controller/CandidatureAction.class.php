@@ -123,7 +123,7 @@ class CandidatureAction extends Controller
                 htmlspecialchars($InfosCandidature['recrutement_nom']) => 'recrutement-' . $InfosCandidature['recrutement_id'] . '.html',
                 'Candidature de ' . htmlspecialchars($InfosCandidature['utilisateur_pseudo'])
             ));
-            $this->get('zco_vitesse.resource_manager')->requireResources(array(
+            $this->get('zco_core.resource_manager')->requireResources(array(
                 '@ZcoQuizBundle/Resources/public/css/quiz.css',
                 '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
             ));

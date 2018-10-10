@@ -55,7 +55,7 @@ class CategorieAction extends BlogActions
 			//Inclusion de la vue
 			fil_ariane($_GET['id'], 'Liste des billets de la catégorie');
 			Page::$robots = 'noindex,follow';
-			$this->get('zco_vitesse.resource_manager')->addFeed(
+			$this->get('zco_core.resource_manager')->addFeed(
 			    '/blog/flux-'.$_GET['id'].'-'.rewrite($InfosCategorie['cat_nom']).'.html', 
 			    array('title' => 'Derniers billets de cette catégorie')
 			);
