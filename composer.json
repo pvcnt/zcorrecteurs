@@ -27,6 +27,9 @@
   "require": {
     "php": ">=7.1.1",
     "ext-json": "*",
+    "ext-dom": "*",
+    "ext-xsl": "*",
+    "ext-iconv": "*",
     "symfony/symfony": "2.8.*",
     "symfony/swiftmailer-bundle": "~2.3",
     "symfony/monolog-bundle": "~2.11.3",

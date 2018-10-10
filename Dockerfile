@@ -26,21 +26,19 @@ RUN apk update && \
 RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
 
 # Setup apache and php
-RUN apk add \
+RUN apk update && \
+  apk add \
 	php7-xdebug \
 	php7-mbstring \
-	php7-ldap \
 	php7-dom \
 	php7-pdo \
 	php7-zip \
 	php7-gd \
 	php7-pdo_mysql \
-	php7-xmlrpc \
 	php7-curl \
 	php7-ctype \
 	php7-session \
-	php7-simplexml \
-	php7-redis
+	php7-simplexml
 
 RUN cp /usr/bin/php7 /usr/bin/php && rm -f /var/cache/apk/*
 
