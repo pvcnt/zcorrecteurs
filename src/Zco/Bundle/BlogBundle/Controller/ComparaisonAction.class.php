@@ -60,8 +60,8 @@ class ComparaisonAction extends BlogActions
 					$intro_new = $infos_new['version_intro'];
 					$intro_old = $infos_old['version_intro'];
 
-					$this->diff_intro = diff($intro_old, $intro_new);
-					$this->diff_texte = diff($texte_old, $texte_new);
+					$this->diff_intro = $this->diff($intro_old, $intro_new);
+					$this->diff_texte = $this->diff($texte_old, $texte_new);
 
 					//Inclusion de la vue
 					fil_ariane($InfosBillet['cat_id'], array(
@@ -71,7 +71,7 @@ class ComparaisonAction extends BlogActions
 					$this->get('zco_core.resource_manager')->requireResource(
         			    '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css'
         			);
-					
+
 					return render_to_response(array_merge(
 						$this->getVars(),
 						compact('infos_old', 'infos_new')
@@ -85,4 +85,25 @@ class ComparaisonAction extends BlogActions
 
 		//TODO : Sinon on affiche juste le formulaire de choix
 	}
+
+    /**
+     * Réalise un diff entre deux chaines de caractères.
+     *
+     * @param string $old L'ancienne chaine de caractères.
+     * @param string $new La nouvelle chaine de caractères.
+     * @return string
+     */
+    private function diff($old, $new)
+    {
+        include_once(BASEPATH . '/lib/diff/diff.php');
+        include_once(BASEPATH . '/lib/diff/htmlformatter.php');
+
+        $old = explode("\n", strip_tags($old));
+        $new = explode("\n", strip_tags($new));
+
+        $diff = new Diff($old, $new);
+        $formatter = new HTMLDiffFormatter();
+
+        return $formatter->format($diff);
+    }
 }

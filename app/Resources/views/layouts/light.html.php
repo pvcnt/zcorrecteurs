@@ -54,14 +54,14 @@
             /* Affichage des messages éventuels en haut de la page */
             if (!empty($_SESSION['erreur'])) {
                 foreach ($_SESSION['erreur'] as $erreur) {
-                    afficher_erreur($erreur);
+                    echo '<p class="UI_infobox">' . $erreur . '</p>';
                 }
                 $_SESSION['erreur'] = array();
             }
 
             if (!empty($_SESSION['message'])) {
                 foreach ($_SESSION['message'] as $message) {
-                    afficher_message($message);
+                    echo '<p class="UI_infobox">' . $message . '</p>';
                 }
                 $_SESSION['message'] = array();
             }

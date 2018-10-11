@@ -654,7 +654,7 @@ function sizeint($size)
  * @param  integer $nb Le nombre à tester
  * @param  string $alt Le pluriel à afficher
  * @param  string $normal La forme singulière
- * @return array
+ * @return string
  */
 function pluriel($nb, $alt = 's', $normal = '')
 {
@@ -840,48 +840,4 @@ function extrait($texte, $taille = 50)
     if ($extrait[0] != $texte)
         $extrait[0] .= '…';
     return $extrait[0];
-}
-
-/**
- * Réalise un diff entre deux chaines de caractères.
- *
- * @param string $old L'ancienne chaine de caractères.
- * @param string $new La nouvelle chaine de caractères.
- * @param bool $new Renvoyer le diff brut ?
- * @return string
- */
-function diff($old, $new, $raw = false)
-{
-    include_once(BASEPATH . '/lib/diff/diff.php');
-    include_once(BASEPATH . '/lib/diff/htmlformatter.php');
-
-    $old = explode("\n", $raw ? $old : strip_tags($old));
-    $new = explode("\n", $raw ? $new : strip_tags($new));
-
-    $diff = new Diff($old, $new);
-    if ($raw)
-        $formatter = new UnifiedDiffFormatter();
-    else    $formatter = new HTMLDiffFormatter();
-
-    return $formatter->format($diff);
-}
-
-/**
- * Affiche un message de confirmation
- *
- * @param string $message Le message à afficher
- */
-function afficher_message($message)
-{
-    echo '<p class="UI_infobox">' . $message . '</p>';
-}
-
-/**
- * Affiche un message d'erreur
- *
- * @param string $message Le message à afficher
- */
-function afficher_erreur($message)
-{
-    echo '<p class="UI_errorbox">' . $message . '</p>';
 }
