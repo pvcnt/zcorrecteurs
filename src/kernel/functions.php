@@ -23,6 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Zco\Component\Templating\TemplatingEvents;
 use Zco\Component\Templating\Event\FilterResourcesEvent;
 use Zco\Component\Templating\Event\FilterVariablesEvent;
+use Zco\Util\Inflector;
 
 /**
  * Réduit le charset pour une URL.
@@ -590,7 +591,7 @@ function render_to_response($template = array(), array $vars = array(), array $h
         $vars = $template;
         $bundle = Container::getService('request')->attributes->get('_bundle');
         $action = Container::getService('request')->attributes->get('_action');
-        $template = $bundle . '::' . lcfirst(\Util_Inflector::camelize($action)) . '.html.php';
+        $template = $bundle . '::' . lcfirst(Inflector::camelize($action)) . '.html.php';
     }
 
     $dispatcher = \Container::getService('event_dispatcher');
@@ -618,7 +619,7 @@ function render_to_string($template = array(), array $vars = array())
         $vars = $template;
         $bundle = Container::getService('request')->attributes->get('_bundle');
         $action = Container::getService('request')->attributes->get('_action');
-        $template = $bundle . '::' . lcfirst(\Util_Inflector::camelize($action)) . '.html.php';
+        $template = $bundle . '::' . lcfirst(Inflector::camelize($action)) . '.html.php';
     }
 
     $engine = \Container::getService('templating');

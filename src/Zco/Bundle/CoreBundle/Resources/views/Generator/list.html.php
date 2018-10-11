@@ -1,4 +1,6 @@
-<?php $view->extend('::layouts/default.html.php') ?>
+<?php use Zco\Util\Inflector;
+
+$view->extend('::layouts/default.html.php') ?>
 
 <h1><?php echo $config['list']['title'] ?></h1>
 
@@ -13,7 +15,7 @@
 		<?php $route = isset($params['route']) ? $params['route'] : $config['actions'][$action]['route'] ?>
 		<?php $credentials = isset($params['credentials']) ? $params['credentials'] : (isset($config['actions'][$action]['credentials']) ? $config['actions'][$action]['credentials'] : array()) ?>
 		<?php $icon = isset($params['icon']) ? $params['icon'] : (isset($config['actions'][$action]['icon']) ? $config['actions'][$action]['icon'] : null) ?>
-		<?php $label = isset($params['label']) ? $params['label'] : (isset($config['actions'][$action]['label']) ? $config['actions'][$action]['label'] : Util_Inflector::humanize($action)) ?>
+		<?php $label = isset($params['label']) ? $params['label'] : (isset($config['actions'][$action]['label']) ? $config['actions'][$action]['label'] : Inflector::humanize($action)) ?>
 
 		<?php if (verifier_array($credentials)): ?>
 			<?php if($i > 0) echo ' - '; ?>
@@ -31,7 +33,7 @@
 	<?php include(dirname(__FILE__).'/_filters.php'); ?>
 <?php endif; ?>
 
-<table class="generator-list" class="liste_cat" onclick="InverserEtat(event);" onmouseover="InverserEtat(event);" onmouseout="InverserEtat(event);">
+<table class="generator-list liste_cat" onclick="InverserEtat(event);" onmouseover="InverserEtat(event);" onmouseout="InverserEtat(event);">
 	<thead>
 		<?php if (false){ ?>
 		<tr>
@@ -120,7 +122,7 @@
 						<?php $route = isset($params['route']) ? $params['route'] : $config['actions'][$action]['route'] ?>
 						<?php $credentials = isset($params['credentials']) ? $params['credentials'] : (isset($config['actions'][$action]['credentials']) ? $config['actions'][$action]['credentials'] : array()) ?>
 						<?php $icon = isset($params['icon']) ? $params['icon'] : (isset($config['actions'][$action]['icon']) ? $config['actions'][$action]['icon'] : null) ?>
-						<?php $label = isset($params['label']) ? $params['label'] : (isset($config['actions'][$action]['label']) ? $config['actions'][$action]['label'] : Util_Inflector::humanize($action)) ?>
+						<?php $label = isset($params['label']) ? $params['label'] : (isset($config['actions'][$action]['label']) ? $config['actions'][$action]['label'] : Inflector::humanize($action)) ?>
 
 						<?php if (verifier_array($credentials)): ?>
 							<a href="<?php echo str_replace('%id%', $row['id'], $route) ?>">

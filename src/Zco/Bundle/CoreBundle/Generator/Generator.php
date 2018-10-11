@@ -46,6 +46,7 @@ use Symfony\Component\Templating\TemplateNameParser;
 use Symfony\Component\Templating\Loader\FilesystemLoader;
 use Symfony\Component\Templating\Helper\SlotsHelper;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Zco\Util\Inflector;
 
 class Generator extends Controller
 {
@@ -99,8 +100,8 @@ class Generator extends Controller
 		);
 		$config['config'] = \Util::arrayDeepMerge(
 			array(
-				'singular' => \Util_Inflector::humanize($this->modelName),
-				'plural'   => \Util_Inflector::humanize($this->modelName).'s',
+				'singular' => Inflector::humanize($this->modelName),
+				'plural'   => Inflector::humanize($this->modelName).'s',
 			),
 			isset($this->config['config']) ? $this->config['config'] : array()
 		);
@@ -243,7 +244,7 @@ class Generator extends Controller
 				'default' => sprintf('Rechercher par %s...',
 					isset($config['fields'][$config['list']['search_field']]['label']) ?
 						lcfirst($config['fields'][$config['list']['search_field']]['label']) :
-						lcfirst(\Util_Inflector::humanize($config['list']['search_field']))
+						lcfirst(Inflector::humanize($config['list']['search_field']))
 				),
 			);
 		}
@@ -339,7 +340,7 @@ class Generator extends Controller
 			$credentials = isset($config['fields'][$name]['credentials']) ?
 				verifier_array($config['fields'][$name]['credentials']) : true;
 			$label = isset($config['fields'][$name]['label']) ?
-				$config['fields'][$name]['label'] : \Util_Inflector::humanize($name);
+				$config['fields'][$name]['label'] : Inflector::humanize($name);
 
 			//Thead element, with the label.
 			$table['thead'][$name] = array(
@@ -720,7 +721,7 @@ class Generator extends Controller
 		//Method of the model.
 		elseif (is_string($name))
 		{
-			$method = 'get'.\Util_Inflector::camelize($name);
+			$method = 'get'.Inflector::camelize($name);
 			return sprintf('echo method_exists($row, \'%s\') ? $row->%s() : \'Error: no field named %s.\';',
 				$method,
 				$method,
@@ -799,7 +800,7 @@ class Generator extends Controller
 					$column = $this->fields[$field];
 					$widget = !empty($config['form'][$field]['widget']) ? $config['form'][$field]['widget'] : null;
 					$attrs = !empty($config['fields'][$field]['attributes']) ? $config['fields'][$field]['attributes'] : array();
-					$label = !empty($config['fields'][$field]['label']) ? $config['fields'][$field]['label'] : \Util_Inflector::humanize($field);
+					$label = !empty($config['fields'][$field]['label']) ? $config['fields'][$field]['label'] : Inflector::humanize($field);
 					$help = !empty($config['fields'][$field]['help']) ? $config['fields'][$field]['help'] : '';
 					$credentials = !empty($config['fields'][$field]['credentials']) ? verifier_array($config['fields'][$field]['credentials']) : true;
 
