@@ -1,7 +1,7 @@
 services:
     zco_core.registry:
         class:     Zco\Bundle\CoreBundle\Registry
-        arguments: ["@zco_core.cache"]
+        arguments: ['@zco_core.cache']
 
     zco_core.form.type.zform:
         class: Zco\Bundle\CoreBundle\Form\Type\ZformType
@@ -14,26 +14,36 @@ services:
     zco_core.resource_manager:
         class: Zco\Bundle\CoreBundle\Javelin\ResourceManager
         arguments:
-        - "@zco_core.assetic.asset_manager"
-        - "@zco_core.resource_map"
-        - "@router"
-        - "%kernel.root_dir%/../web"
-        - "%zco_core.vitesse.combine_assets%"
-        - "%kernel.debug%"
-        - "@?logger"
+        - '@zco_core.assetic.asset_manager'
+        - '@zco_core.resource_map'
+        - '@router'
+        - '%kernel.root_dir%/../web'
+        - '%zco_core.vitesse.combine_assets%'
+        - '%kernel.debug%'
+        - '@?logger'
 
     zco_core.resource_map:
         class: Zco\Bundle\CoreBundle\Javelin\ResourceMap
-        arguments: ["%zco_core.vitesse.cache_dir%"]
+        arguments: ['%zco_core.vitesse.cache_dir%']
 
     zco_core.assetic.asset_manager:
         class: Assetic\Factory\LazyAssetManager
-        arguments: ["@zco_core.assetic.factory"]
+        arguments: ['@zco_core.assetic.factory']
 
     zco_core.assetic.factory:
         class: Assetic\Factory\AssetFactory
-        arguments: ["%kernel.root_dir%%/../web", "%kernel.debug%"]
+        arguments: ['%kernel.root_dir%%/../web', '%kernel.debug%']
 
     zco_core.javelin:
         class: Zco\Bundle\CoreBundle\Javelin\Javelin
-        arguments: ["@zco_core.resource_manager"]
+        arguments: ['@zco_core.resource_manager']
+
+    swiftmailer.transport.sendgrid:
+        arguments:
+        - '@swiftmailer.mailer.default.transport.eventdispatcher'
+        - '%zco_core.sendgrid.api_key%'
+        - '%zco_core.sendgrid.categories%'
+        calls:
+        - method: setLogger
+          arguments:
+          - '@?logger'

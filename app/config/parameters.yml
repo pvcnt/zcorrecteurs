@@ -12,5 +12,4 @@ parameters:
   sphinx_host: localhost
   sphinx_port: 5000
 
-  mailgun_username: ''
-  mailgun_password: ''
+  sendgrid_apikey: ''

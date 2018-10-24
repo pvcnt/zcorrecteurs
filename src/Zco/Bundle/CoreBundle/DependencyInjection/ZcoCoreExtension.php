@@ -58,7 +58,11 @@ class ZcoCoreExtension extends Extension
         // Alias pour l'implémentation de cache.
         $container->setAlias('zco_core.cache', 'zco_core.cache.' . $config['cache']['default']);
 
-        // Définit les paramètres pour Vitesse.
+        // Définit les paramètres de Sendgrid.
+        $container->setParameter('zco_core.sendgrid.api_key', $config['sendgrid']['api_key']);
+        $container->setParameter('zco_core.sendgrid.categories', $config['sendgrid']['categories']);
+
+        // Définit les paramètres de Vitesse.
         $cacheDir = $container->getParameterBag()->resolveValue('%kernel.cache_dir%/zco_vitesse');
         $container->setParameter('zco_core.vitesse.cache_dir', $cacheDir);
         $container->setParameter(

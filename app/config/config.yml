@@ -3,7 +3,7 @@ imports:
 
 framework:
   default_locale:  fr
-  secret:      %secret%
+  secret:      '%secret%'
   router:      { resource: "%kernel.root_dir%/config/routing.yml" }
   form:        true
   csrf_protection: true
@@ -18,21 +18,15 @@ framework:
         - 'ZcoCoreBundle:Form'
 
 swiftmailer:
-  transport:  smtp
-  host:       smtp.mailgun.org
-  username:   '%mailgun_username'
-  password:   '%mailgun_password'
-  encryption: tls
-  port:       587
+  transport:  swiftmailer.transport.sendgrid
   spool:      { type: memory }
 
 zco_core:
+  sendgrid:
+    api_key: '%sendgrid_apikey%'
   vitesse:
     combine_assets: true
     assets:
-      - name: google-jsapi
-        type: js
-        inputs: 'https://www.google.com/jsapi'
       - name: google-maps
         type: js
         inputs: 'http://maps.google.com/maps?file=api&amp;v=2&amp;key=%gmaps_api_key%'
@@ -40,7 +34,7 @@ zco_core:
 knp_gaufrette:
   adapters:
     uploads:
-      local:   { directory:  %kernel.root_dir%/../web/uploads, create: true }
+      local:   { directory: '%kernel.root_dir%/../web/uploads', create: true }
   filesystems:
       uploads: { adapter: uploads }
 
