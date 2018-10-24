@@ -46,18 +46,15 @@
     "willdurand/geocoder-bundle": "2.0.0",
     "rkmax/sphinx-client": "^1.0.1",
     "scrivo/highlight.php": "^9.0",
-    "sendgrid/sendgrid": "^7.2",
-    "sendgrid/php-http-client": "^3.9"
+    "sendgrid/sendgrid": "^7.2"
   },
   "require-dev": {
-    "sensio/generator-bundle": "~3.0",
     "symfony/phpunit-bridge": "~2.7"
   },
   "extra": {
     "symfony-app-dir": "app",
     "symfony-web-dir": "web",
     "symfony-bin-dir": "bin",
-    "symfony-tests-dir": "tests",
-    "symfony-assets-install": "relative"
+    "symfony-tests-dir": "tests"
   }
 }
