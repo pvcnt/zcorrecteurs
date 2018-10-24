@@ -4,7 +4,6 @@
  * @provides vitesse-behavior-google-analytics
  * @requires vitesse-behavior
  */
-var _gaq = _gaq || [];
 Behavior.create('google-analytics', function (config) {
     if (!config.account) {
         return;
