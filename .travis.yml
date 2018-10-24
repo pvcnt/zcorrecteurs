@@ -3,12 +3,6 @@ language: php
 php:
 - "7.1"
 
-cache:
-  directories:
-  - node_modules
-  - vendor
-  - $HOME/.composer/cache
-
 jobs:
   include:
   - stage: build docker image
