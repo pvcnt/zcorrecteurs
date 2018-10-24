@@ -39,6 +39,7 @@ services:
         arguments: ['@zco_core.resource_manager']
 
     swiftmailer.transport.sendgrid:
+        class: Zco\Bundle\CoreBundle\SwiftMailer\SendGridTransport
         arguments:
         - '@swiftmailer.mailer.default.transport.eventdispatcher'
         - '%zco_core.sendgrid.api_key%'
