@@ -53,21 +53,9 @@
     "sensio/generator-bundle": "~3.0",
     "symfony/phpunit-bridge": "~2.7"
   },
-  "scripts": {
-    "symfony-scripts": [
-      "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap"
-    ],
-    "post-install-cmd": [
-      "@symfony-scripts"
-    ],
-    "post-update-cmd": [
-      "@symfony-scripts"
-    ]
-  },
   "extra": {
     "symfony-app-dir": "app",
     "symfony-web-dir": "web",
-    "symfony-var-dir": "var",
     "symfony-bin-dir": "bin",
     "symfony-tests-dir": "tests",
     "symfony-assets-install": "relative"

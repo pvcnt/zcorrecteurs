@@ -9,9 +9,6 @@ cache:
   - vendor
   - $HOME/.composer/cache
 
-install:
-- composer install
-
 jobs:
   include:
   - stage: build docker image

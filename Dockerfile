@@ -1,7 +1,21 @@
-FROM alpine:3.6
-MAINTAINER Vincent <vincent@zcorrecteurs.fr>
+# Première étape : dépendances Composer
+FROM composer:1.7 as composer
 
-# Add basics first
+WORKDIR /opt/app/
+
+COPY composer.json composer.json
+COPY composer.lock composer.lock
+
+RUN composer install \
+    --ignore-platform-reqs \
+    --no-interaction \
+    --no-plugins \
+    --no-scripts \
+    --prefer-dist \
+    --no-autoloader
+
+FROM alpine:3.6
+
 RUN apk update && \
   apk upgrade && \
   apk add \
@@ -12,20 +26,16 @@ RUN apk update && \
 	ca-certificates \
 	openssl \
 	openssh \
-	git \
 	php7 \
 	php7-phar \
 	php7-json \
 	php7-iconv \
 	php7-openssl \
 	tzdata \
-	openntpd \
-	nano
+	openntpd
 
-# Add Composer
 RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
 
-# Setup apache and php
 RUN apk update && \
   apk add \
 	php7-xdebug \
@@ -53,10 +63,14 @@ RUN mkdir /run/apache2 \
     && sed -i "s#/var/www/localhost/htdocs#/opt/app/web#" /etc/apache2/httpd.conf \
     && printf "\n<Directory \"/opt/app/web\">\nAllowOverride All\n\tOptions -Indexes\n\tRequire all granted\n</Directory>\n" >> /etc/apache2/httpd.conf \
     && sed -i "s/variables_order\ =\ \"GPCS\"/variables_order\ =\ \"EGPCS\"/" /etc/php7/php.ini \
+    && sed -i "s/;realpath_cache_size\ =\ 4096k/realpath_cache_size=4096K/" /etc/php7/php.ini \
+    && sed -i "s/;realpath_cache_ttl\ =\ 120/realpath_cache_ttl=600/" /etc/php7/php.ini \
+    #&& sed -i "s/;opcache.validate_timestamps=1/opcache.validate_timestamps=0/" /etc/php7/php.ini \
+    && sed -i "s/;opcache.memory_consumption=128/opcache.memory_consumption=256/" /etc/php7/php.ini \
+    && sed -i "s/;opcache.max_accelerated_files=10000/opcache.max_accelerated_files=20000/" /etc/php7/php.ini \
     && sed -i "s/;date.timezone\ =/date.timezone\ =\ \"Europe\/Paris\"/" /etc/php7/php.ini \
     && sed -i "s/;intl.default_locale\ =/intl.default_locale\ =\ \"fr_FR.UTF-8\"/" /etc/php7/php.ini
 
-# Add a custom entrypoint.
 COPY build/entrypoint.sh /
 RUN chmod +x /entrypoint.sh
 
@@ -66,11 +80,11 @@ EXPOSE 80
 
 VOLUME /opt/app/web/uploads
 
-ENV COMPOSER_CACHE_DIR=/var/cache/composer \
-  SYMFONY_LOG_DIR=/var/log/symfony \
+ENV SYMFONY_LOG_DIR=/var/log/symfony \
   SYMFONY_CACHE_DIR=/var/cache/symfony \
   SYMFONY_ENVIRONMENT=prod \
   SYMFONY_DEBUG=false
 
 WORKDIR /opt/app
-COPY . /opt/app
+COPY --from=composer /opt/app/vendor vendor
+COPY . .

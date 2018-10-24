@@ -1,16 +1,8 @@
-# Logs and cache files could have been written, e.g., by running bin/console locally.
-/var/cache/*
-/var/logs/*
-/app/bootstrap.php.cache
+/.git/
+/.gitignore
+/var/
+/vendor/
+/web/bundles/
+/web/compiled/
+/web/uploads/
 
-# Ignore application-generated files.
-/web/bundles/*
-/web/compiled/*
-/web/uploads/*
-
-# Ignore vendor libraries, they will be installed from fresh at build time.
-#/vendor/*
-
-# Ignore git files.
-.git/*
-.gitignore
