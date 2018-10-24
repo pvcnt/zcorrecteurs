@@ -48,9 +48,10 @@ RUN mkdir /run/apache2 \
     && sed -i "s/#LoadModule\ session_cookie_module/LoadModule\ session_cookie_module/" /etc/apache2/httpd.conf \
     && sed -i "s/#LoadModule\ session_crypto_module/LoadModule\ session_crypto_module/" /etc/apache2/httpd.conf \
     && sed -i "s/#LoadModule\ deflate_module/LoadModule\ deflate_module/" /etc/apache2/httpd.conf \
+    && sed -i "s/#ServerName\ www.example.com:80/ServerName\ 0.0.0.0:80/" /etc/apache2/httpd.conf \
     && sed -i "s#^DocumentRoot \".*#DocumentRoot \"/opt/app/web\"#g" /etc/apache2/httpd.conf \
     && sed -i "s#/var/www/localhost/htdocs#/opt/app/web#" /etc/apache2/httpd.conf \
-    && printf "\n<Directory \"/opt/app/web\">\n\tAllowOverride All\n</Directory>\n" >> /etc/apache2/httpd.conf \
+    && printf "\n<Directory \"/opt/app/web\">\nAllowOverride All\n\tOptions -Indexes\n\tRequire all granted\n</Directory>\n" >> /etc/apache2/httpd.conf \
     && sed -i "s/variables_order\ =\ \"GPCS\"/variables_order\ =\ \"EGPCS\"/" /etc/php7/php.ini \
     && sed -i "s/;date.timezone\ =/date.timezone\ =\ \"Europe\/Paris\"/" /etc/php7/php.ini \
     && sed -i "s/;intl.default_locale\ =/intl.default_locale\ =\ \"fr_FR.UTF-8\"/" /etc/php7/php.ini
