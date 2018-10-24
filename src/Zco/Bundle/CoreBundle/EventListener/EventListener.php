@@ -89,10 +89,10 @@ class EventListener implements EventSubscriberInterface
      */
     public function onTemplatingFilterResources(FilterResourcesEvent $event)
     {
-        //Transition adoucie lors du clic sur le lien pour remonter en haut.
+        // Transition adoucie lors du clic sur le lien pour remonter en haut.
         $event->initBehavior('morph-link', array('id' => 'toplink'));
 
-        //Bulles sur les liens du menu latéral.
+        // Bulles sur les liens du menu latéral.
         $event->initBehavior('tips', array(
             'selector' => 'div.sidebarleft a',
             'options' => array(
@@ -102,17 +102,16 @@ class EventListener implements EventSubscriberInterface
             ),
         ));
 
-        //Désactivation des boutons d'envoi lors de la soumission.
+        // Désactivation des boutons d'envoi lors de la soumission.
         $event->initBehavior('disable-form-on-submit');
 
-        //Exposition des routes pour y avoir accès depuis un code Javascript.
+        // Exposition des routes pour y avoir accès depuis un code Javascript.
         $event->requireResource('@FOSJsRoutingBundle/Resources/public/js/router.js');
 
-        //Statistiques Google Analytics.
+        // Statistiques Google Analytics.
         if ($this->container->getParameter('kernel.environment') === 'prod') {
             $event->initBehavior('google-analytics', array(
                 'account' => $this->container->getParameter('analytics_account'),
-                'domain' => $this->container->getParameter('analytics_domain'),
             ));
         }
     }

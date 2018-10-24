@@ -5,20 +5,24 @@
  * @requires vitesse-behavior
  */
 var _gaq = _gaq || [];
-Behavior.create('google-analytics', function(config)
-{
-	if (!config.account || !config.domain)
-	{
-		return;
-	}
-	
-    _gaq.push(['_setAccount', config.account]);
-    _gaq.push(['_setDomainName', config.domain]);
-    _gaq.push(['_trackPageview']);
+Behavior.create('google-analytics', function (config) {
+    if (!config.account) {
+        return;
+    }
 
-    (function() {
-    	var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    	ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', config.account, 'auto');
+
+    // Les trois commandes suivantes ont pour effet d'améliorer le respect de
+    // la vie privée en désactivant les fonctionnalités marketing, obfuscant
+    // l'adresse IP et envoyant les données via SSL.
+    ga('set', 'allowAdFeatures', false);
+    ga('set', 'anonymizeIp', true);
+    ga('set', 'forceSSL', true);
+
+    ga('send', 'pageview');
 });

@@ -8,7 +8,6 @@ parameters:
   cache_default_lifetime: 600
   gmaps_api_key:  ''
   analytics_account: ''
-  analytics_domain: 'zcorrecteurs.fr'
 
   sphinx_host: localhost
   sphinx_port: 5000
