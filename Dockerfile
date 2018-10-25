@@ -58,10 +58,11 @@ RUN mkdir /run/apache2 \
     && sed -i "s/#LoadModule\ session_cookie_module/LoadModule\ session_cookie_module/" /etc/apache2/httpd.conf \
     && sed -i "s/#LoadModule\ session_crypto_module/LoadModule\ session_crypto_module/" /etc/apache2/httpd.conf \
     && sed -i "s/#LoadModule\ deflate_module/LoadModule\ deflate_module/" /etc/apache2/httpd.conf \
-    && sed -i "s/#ServerName\ www.example.com:80/ServerName\ 0.0.0.0:80/" /etc/apache2/httpd.conf \
+    && sed -i "s/#ServerName\ www.example.com:80/ServerName\ localhost:80/" /etc/apache2/httpd.conf \
     && sed -i "s#^DocumentRoot \".*#DocumentRoot \"/opt/app/web\"#g" /etc/apache2/httpd.conf \
     && sed -i "s#/var/www/localhost/htdocs#/opt/app/web#" /etc/apache2/httpd.conf \
-    && printf "\n<Directory \"/opt/app/web\">\nAllowOverride All\n\tOptions -Indexes\n\tRequire all granted\n</Directory>\n" >> /etc/apache2/httpd.conf \
+    && printf "\n<Directory \"/opt/app/web\">\n\tAllowOverride All\n\tOptions -Indexes\n\tRequire all granted\n</Directory>\n" >> /etc/apache2/httpd.conf \
+    && printf "\n<FilesMatch \.php$>\n\tSetHandler application/x-httpd-php\n</FilesMatch>\n" >> /etc/apache2/httpd.conf \
     && sed -i "s/variables_order\ =\ \"GPCS\"/variables_order\ =\ \"EGPCS\"/" /etc/php7/php.ini \
     && sed -i "s/;realpath_cache_size\ =\ 4096k/realpath_cache_size=4096K/" /etc/php7/php.ini \
     && sed -i "s/;realpath_cache_ttl\ =\ 120/realpath_cache_ttl=600/" /etc/php7/php.ini \
@@ -69,7 +70,9 @@ RUN mkdir /run/apache2 \
     && sed -i "s/;opcache.memory_consumption=128/opcache.memory_consumption=256/" /etc/php7/php.ini \
     && sed -i "s/;opcache.max_accelerated_files=10000/opcache.max_accelerated_files=20000/" /etc/php7/php.ini \
     && sed -i "s/;date.timezone\ =/date.timezone\ =\ \"Europe\/Paris\"/" /etc/php7/php.ini \
-    && sed -i "s/;intl.default_locale\ =/intl.default_locale\ =\ \"fr_FR.UTF-8\"/" /etc/php7/php.ini
+    && sed -i "s/;intl.default_locale\ =/intl.default_locale\ =\ \"fr_FR.UTF-8\"/" /etc/php7/php.ini \
+    && ln -sfT /dev/stderr /var/log/apache2/error.log \
+    && ln -sfT /dev/stdout /var/log/apache2/access.log
 
 COPY build/entrypoint.sh /
 RUN chmod +x /entrypoint.sh
