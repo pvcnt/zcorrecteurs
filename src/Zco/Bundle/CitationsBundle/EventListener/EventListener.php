@@ -51,7 +51,7 @@ class EventListener implements EventSubscriberInterface
             }
             $cache->set('header_citations', $html, 3600);
         }
-        $event->add('randomQuoteHtml', $html);
+        $event->set('randomQuoteHtml', $html);
 
     }
 

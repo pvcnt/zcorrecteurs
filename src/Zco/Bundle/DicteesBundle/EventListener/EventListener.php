@@ -54,9 +54,9 @@ class EventListener implements EventSubscriberInterface
 			return;
 		}
 
-		$event->add('DicteeDifficultes', Dictation::LEVELS);
-		$event->add('DicteeEtats', Dictation::STATUSES);
-		$event->add('DicteeCouleurs', Dictation::COLORS);
+		$event->set('DicteeDifficultes', Dictation::LEVELS);
+		$event->set('DicteeEtats', Dictation::STATUSES);
+		$event->set('DicteeCouleurs', Dictation::COLORS);
 	}
 	
 	public function onFilterAdmin(FilterMenuEvent $event)

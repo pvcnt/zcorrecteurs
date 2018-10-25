@@ -89,9 +89,6 @@ class EventListener implements EventSubscriberInterface
      */
     public function onTemplatingFilterResources(FilterResourcesEvent $event)
     {
-        // Transition adoucie lors du clic sur le lien pour remonter en haut.
-        $event->initBehavior('morph-link', array('id' => 'toplink'));
-
         // Bulles sur les liens du menu latéral.
         $event->initBehavior('tips', array(
             'selector' => 'div.sidebarleft a',
@@ -101,9 +98,6 @@ class EventListener implements EventSubscriberInterface
                 'offset' => array('x' => 160, 'y' => -10),
             ),
         ));
-
-        // Désactivation des boutons d'envoi lors de la soumission.
-        $event->initBehavior('disable-form-on-submit');
 
         // Exposition des routes pour y avoir accès depuis un code Javascript.
         $event->requireResource('@FOSJsRoutingBundle/Resources/public/js/router.js');
@@ -124,20 +118,20 @@ class EventListener implements EventSubscriberInterface
      */
     public function onTemplatingFilterVariables(FilterVariablesEvent $event)
     {
-        //Génération d'un fil d'Ariane par défaut si aucun n'a été créé.
+        // Génération d'un fil d'Ariane par défaut si aucun n'a été créé.
         if (empty(\Page::$fil_ariane) && !empty(\Page::$titre)) {
             fil_ariane(\Page::$titre);
         }
 
-        //Ajout de variables au layout.
+        // Ajout de variables au layout.
         $module = $this->container->get('request')->attributes->get('_module');
         $searchSection = ($module === 'blog') ? 'blog' : 'forum';
-        $event->add('searchSection', $searchSection);
+        $event->set('searchSection', $searchSection);
 
         $nbOnline = (int)$this->container->get('zco_core.cache')->get('nb_connectes');
-        $event->add('nbOnline', $nbOnline);
+        $event->set('nbOnline', $nbOnline);
 
         $adminCount = $this->container->get('zco_admin.manager')->count();
-        $event->add('adminCount', $adminCount);
+        $event->set('adminCount', $adminCount);
     }
 }

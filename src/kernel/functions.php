@@ -584,7 +584,7 @@ function array_trim($vars, $index = null)
  */
 function render_to_response($template = array(), array $vars = array(), array $headers = array())
 {
-    //DÉPRÉCIÉ : le premier paramètre peut-être omis.
+    // DÉPRÉCIÉ : le premier paramètre peut-être omis.
     if (is_array($template) && $vars == array()) {
         $vars = $template;
         $bundle = Container::getService('request')->attributes->get('_bundle');

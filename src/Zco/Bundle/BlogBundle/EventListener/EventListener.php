@@ -73,9 +73,9 @@ class EventListener implements EventSubscriberInterface
 			return;
 		}
 
-		$event->add('BlogStatuts', Author::STATUSES);
-		$event->add('AuteursClass', array(3 => 'gras', 2 => 'normal', 1 => 'italique'));
-		$event->add('Etats', array(
+		$event->set('BlogStatuts', Author::STATUSES);
+		$event->set('AuteursClass', array(3 => 'gras', 2 => 'normal', 1 => 'italique'));
+		$event->set('Etats', array(
 			BLOG_BROUILLON => 'Brouillon',
 			BLOG_PREPARATION => 'En cours de préparation',
 			BLOG_PROPOSE => 'Proposé',

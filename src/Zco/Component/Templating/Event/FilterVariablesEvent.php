@@ -32,13 +32,8 @@ class FilterVariablesEvent extends Event
 		$this->variables = $variables;
 	}
 	
-	public function add($key, $value)
+	public function set($key, $value)
 	{
-		if (isset($this->variables[$key]))
-		{
-			throw new Exception(sprintf('Variable %s is already defined.', $key));
-		}
-		
 		$this->variables[$key] = $value;
 	}
 	

@@ -41,7 +41,7 @@ class ZcoRecrutementBundle extends AbstractBundle
 
 		$this->container->get('event_dispatcher')->addListener(TemplatingEvents::FILTER_VARIABLES, function(FilterVariablesEvent $event)
 		{
-			$event->add('avisType', array(
+			$event->set('avisType', array(
 				array(
 					'nom' => 'Oui',
 					'couleur' => '#71b047'
