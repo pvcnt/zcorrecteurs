@@ -76,28 +76,7 @@ class ZcoCoreExtension extends Extension
         $resourceGraph = array();
         $aliases = array();
 
-        // Configure le chargement des ressources définies dans la configuration.
-        foreach ($config['vitesse']['assets'] as $provides => $formula) {
-            if (count($formula['inputs']) === 1) {
-                if (!preg_match('/\.(css|js)$/', $provides, $matches)) {
-                    if (empty($formula['type'])) {
-                        throw new \InvalidArgumentException(sprintf('Cannot guess type of "%s" asset.', $provides));
-                    }
-                    $type = $formula['type'];
-                } else {
-                    $type = $matches[1];
-                }
-
-                $name = sha1($provides) . '_' . $type;
-            } else {
-                $name = sha1($provides) . '_pkg';
-            }
-
-            $definition->addMethodCall('setFormula', array($name, array($formula['inputs'], array(), array())));
-            $resourceGraph[$name] = array();
-            $aliases[$provides] = $name;
-        }
-
+        // Crée le graph des ressources.
         foreach ($container->getParameter('kernel.bundles') as $bundle => $className) {
             $rc = new \ReflectionClass($className);
             $publicDir = dirname($rc->getFileName()) . '/Resources/public';

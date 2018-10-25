@@ -6,7 +6,6 @@ parameters:
 
   secret: dDj85§fd+dedS9-sE4
   cache_default_lifetime: 600
-  gmaps_api_key:  ''
   analytics_account: ''
 
   sphinx_host: localhost

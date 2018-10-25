@@ -26,10 +26,6 @@ zco_core:
     api_key: '%sendgrid_apikey%'
   vitesse:
     combine_assets: true
-    assets:
-      - name: google-maps
-        type: js
-        inputs: 'http://maps.google.com/maps?file=api&amp;v=2&amp;key=%gmaps_api_key%'
 
 knp_gaufrette:
   adapters:

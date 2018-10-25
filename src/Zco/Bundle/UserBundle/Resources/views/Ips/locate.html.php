@@ -18,13 +18,5 @@
 </p>
 
 <p class="center">
-	<div id="note"><strong>Localisation supposée : </strong><?php echo $info ?></div><br />
-	<div id="carte" style="width: 750px; height: 450px; margin: auto;"></div>
+	<div id="note"><strong>Localisation supposée : </strong><?php echo $info ?></div>
 </p>
-
-
-<?php $view['javelin']->initBehavior('ips-display-marker-on-map', array(
-    'id' => 'carte', 
-    'latitude' => $latitude, 
-    'longitude' => $longitude,
-)) ?>
