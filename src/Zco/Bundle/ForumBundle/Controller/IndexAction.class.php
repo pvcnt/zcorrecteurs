@@ -111,7 +111,6 @@ class IndexAction extends ForumActions
 		
 		$this->get('zco_core.resource_manager')->requireResources(array(
 			'@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
-			'@ZcoForumBundle/Resources/public/js/forum.js',
 		));
 		
 		$response = render_to_response(array(
