@@ -36,9 +36,7 @@ class SujetAction extends ForumActions
 		include(dirname(__FILE__).'/../modeles/messages.php');
 		include(dirname(__FILE__).'/../modeles/moderation.php');
 		include(dirname(__FILE__).'/../modeles/categories.php');
-
 		include(dirname(__FILE__).'/../modeles/sondages.php');
-		include(dirname(__FILE__).'/../modeles/votes.php');
 
 		//On récupère les infos sur le sujet
 		list($InfosSujet, $InfosForum) = $this->initSujet();
@@ -54,29 +52,6 @@ class SujetAction extends ForumActions
 		if ($_GET['p'] > 1)
 		{
 			Page::$titre .= ' - Page '.$_GET['p'];
-		}
-
-		//--- Si on veut ajouter un sondage au sujet ---
-		elseif(verifier('ajouter_sondages', $InfosSujet['sujet_forum_id']) &&
-			!empty($_POST['ajouter_sondage']) &&
-			!empty($_POST['sondage_question']))
-		{
-			// Nettoyage des réponses
-			$reponses = isset($_POST['reponses']) ? $_POST['reponses'] : array();
-			foreach($reponses as $k => &$v)
-			{
-				$v = trim($v);
-				if($v == '')
-					unset($reponses[$k]);
-			}
-
-			// Au moins deux réponses
-			if(count($reponses) >= 2)
-				CreerSondageSujet($_GET['id'], $reponses);
-			return redirect(
-			    'Le sondage a bien été ajouté.',
-                'sujet-'.$_GET['id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html'
-            );
 		}
 
 		//--- Redirection de la mort qui tue pour le référencement. :D ---
@@ -179,12 +154,10 @@ class SujetAction extends ForumActions
 			{
 				$nombre_total_votes += $valeur['nombre_votes'];
 			}
-			$DejaVote = VerifierDejaVote($InfosSujet['vote_membre_id']);
 		}
 		else
 		{
 			$ListerResultatsSondage = null;
-			$DejaVote = null;
 			$nombre_total_votes = null;
 		}
 
@@ -199,7 +172,6 @@ class SujetAction extends ForumActions
 		));
 		$this->get('zco_core.resource_manager')->requireResources(array(
 		    '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
-		    '@ZcoForumBundle/Resources/public/js/sujet.js',
 		    '@ZcoCoreBundle/Resources/public/js/zform.js',
 		));
 
@@ -218,22 +190,6 @@ class SujetAction extends ForumActions
 			OR verifier('fermer_sujets', $InfosSujet['sujet_forum_id'])
 			OR verifier('editer_sujets', $InfosSujet['sujet_forum_id'])
 			OR verifier('mettre_sujets_coup_coeur')
-			OR
-			(
-				verifier('fermer_sondage', $InfosSujet['sujet_forum_id']) AND !empty($InfosSujet['sujet_sondage'])
-			)
-			OR
-			(
-				verifier('ajouter_sondages', $InfosSujet['sujet_forum_id']) AND empty($InfosSujet['sujet_sondage'])
-			)
-			OR
-			(
-				verifier('editer_sondages', $InfosSujet['sujet_forum_id']) AND !empty($InfosSujet['sujet_sondage'])
-			)
-			OR
-			(
-				verifier('supprimer_sondages', $InfosSujet['sujet_forum_id']) AND !empty($InfosSujet['sujet_sondage'])
-			)
 			OR verifier('deplacer_sujets', $InfosSujet['sujet_forum_id'])
 			OR verifier('corbeille_sujets', $InfosSujet['sujet_forum_id'])
 			OR verifier('suppr_sujets', $InfosSujet['sujet_forum_id'])
@@ -258,7 +214,6 @@ class SujetAction extends ForumActions
 			'InfosLuNonlu' => $InfosLuNonlu,
 			'afficher_options' => $afficher_options,
 			'ListerResultatsSondage' => $ListerResultatsSondage,
-			'DejaVote' => $DejaVote,
 			'nombre_total_votes' => $nombre_total_votes,
 			'NombreDePages' => $NombreDePages,
 			'PremierMessage' => $PremierMessage[0],

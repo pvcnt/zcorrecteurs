@@ -183,35 +183,6 @@ function ChangerStatutSujet($sujet_id, $statut_actuel)
 }
 
 /**
- * Change le statut ouvert / fermé d'un sondage sur un sujet.
- * @param integer $sondage_id		L'id du sondage.
- * @param integer $statut_actuel	Le statut actuel.
- * @return void
- */
-function ChangerStatutSondage($sondage_id, $statut_actuel, $forum_id)
-{
-	$dbh = Doctrine_Manager::connection()->getDbh();
-	if($statut_actuel)
-	{
-		//Si le sondage est fermé, on l'ouvre.
-		$stmt = $dbh->prepare("UPDATE zcov2_forum_sondages
-		SET sondage_ferme = 0
-		WHERE sondage_id = :sondage_id");
-		$stmt->bindParam(':sondage_id', $sondage_id);
-		$stmt->execute();
-	}
-	else
-	{
-		//Si le sondage est ouvert, on le ferme.
-		$stmt = $dbh->prepare("UPDATE zcov2_forum_sondages
-		SET sondage_ferme = 1
-		WHERE sondage_id = :sondage_id");
-		$stmt->bindParam(':sondage_id', $sondage_id);
-		$stmt->execute();
-	}
-}
-
-/**
  * Déplace un sujet de forum.
  * @param integer $id_suj			L'id du sujet à déplacer.
  * @param integer $forum_source		L'id du forum du sujet.

@@ -4,13 +4,7 @@
 	<table class="UI_items">
 		<thead>
 			<tr>
-				<th style="width: xhr = new Request({method: 'post', url: '/forum/ajax-multi-citer.html',
-    				onSuccess: function(text, xml){
-    					$('texte').value += ($chk($('texte').value) ? "\n\n" : '')+text;
-    				}
-    			});
-    			xhr.send('action=ajoute&url='+encodeURIComponent(elem.href));
-    			return false;13%;">Auteur</th>
+				<th style="width: 13%;">Auteur</th>
 				<th style="width: 87%;">Message</th>
 			</tr>
 		</thead>

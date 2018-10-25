@@ -107,5 +107,3 @@
 	?>
 	</tbody>
 </table>
-
-<script type="text/javascript">var _forums_ordre = '<?php echo $Ordre; ?>';</script>

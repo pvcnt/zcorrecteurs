@@ -3,10 +3,6 @@
  * Constantes du site, qui ne sont pas modifiées dynamiquement.
  */
 
-//Questions de sondages
-define('QUESTION_SIMPLE',          1);
-define('QUESTION_MULTIPLE',        2);
-
 //État des billets du blog
 define('BLOG_BROUILLON',           1);
 define('BLOG_PROPOSE',             2);

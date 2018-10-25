@@ -100,8 +100,6 @@ class NouveauAction extends ForumActions
 		}
 		else
 		{
-			$nouveau_sondage_id = 0;
-
 			$annonce = 0;
 			$ferme = 0;
 			$corbeille = 0;
@@ -124,29 +122,7 @@ class NouveauAction extends ForumActions
 			}
 
 			//On envoie le sujet à la BDD.
-			$nouveau_sujet_id = EnregistrerNouveauSujet($_GET['id'], $nouveau_sondage_id, $annonce, $ferme, $resolu, $corbeille);
-
-			// Sondage ?
-			if (verifier('poster_sondage', $_GET['id']) &&
-				!empty($_POST['sondage_question']))
-			{
-				// Nettoyage des réponses
-				$reponses = isset($_POST['reponses']) ? $_POST['reponses'] : array();
-				foreach ($reponses as $k => &$v)
-				{
-					$v = trim($v);
-					if ($v === '')
-					{
-						unset($reponses[$k]);
-					}
-				}
-
-				// Au moins deux réponses
-				if (count($reponses) >= 2)
-				{
-					CreerSondageSujet($nouveau_sujet_id, $reponses);
-				}
-			}
+			$nouveau_sujet_id = EnregistrerNouveauSujet($_GET['id'], $annonce, $ferme, $resolu, $corbeille);
 
 			return redirect(
 			    'Le sujet a bien été créé.',

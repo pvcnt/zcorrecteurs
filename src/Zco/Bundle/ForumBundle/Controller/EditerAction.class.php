@@ -73,7 +73,6 @@ class EditerAction extends ForumActions
 					'Modifier un message'
 				));
 				$this->get('zco_core.resource_manager')->requireResources(array(
-					'@ZcoForumBundle/Resources/public/js/sujet.js',
 				    '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
 				));
 				

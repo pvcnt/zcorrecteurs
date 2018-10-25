@@ -33,40 +33,6 @@ Vous êtes dans la corbeille !
 
 		<label for="texte">Contenu du message :</label>
 		<?php echo $view->render('::zform.html.php', array('upload_utiliser_element' => true, 'texte' => $texte_zform)); ?>
-
-		<?php
-		if(verifier('poster_sondage', $_GET['id']))
-		{
-		?>
-		<div id="postage_sondage">
-			<h3>Sondage</h3>
-			<em>(Laissez vide si vous ne voulez pas faire de sondage.)</em><br />
-			<label for="sondage_question" style="width:100px;">Question :</label>
-			<?php echo $view->render('::zform.html.php', array('id' => 'sondage_question')); ?>
-
-			<div id="sondage_reponses">
-			<?php
-			for($tabindex = 200, $i = 0; $i < 10; $i++):
-				$tabindex++;
-				?>
-				<div>
-				<label	for="sdg_reponse<?php echo $tabindex; ?>"
-					style="width:100px;" >
-					Réponse <?php echo $tabindex - 200; ?> :
-				</label>
-				<input	type="text"
-					name="reponses[]"
-					id="sdg_reponse<?php echo $tabindex; ?>"
-					size="60"
-					tabindex="<?php echo $tabindex; ?>"/>
-				</div>
-			<?php endfor; ?>
-			</div>
-		</div>
-
-        <?php $view['javelin']->initBehavior('forum-poll-form', array('inject_button' => 'postage_sondage')) ?>
-		
-		<?php } ?>
 		
 		<?php
 		if(verifier('corbeille_sujets', $_GET['id']))

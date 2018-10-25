@@ -141,7 +141,6 @@ class RepondreAction extends ForumActions
 			));
 			$this->get('zco_core.resource_manager')->requireResources(array(
 			    '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
-				'@ZcoForumBundle/Resources/public/js/sujet.js'
 			));
 			
 			return render_to_response(array(
@@ -169,7 +168,6 @@ class RepondreAction extends ForumActions
 				fil_ariane($InfosSujet['sujet_forum_id'], 'Ajout d\'une réponse au sujet');
 				$this->get('zco_core.resource_manager')->requireResources(array(
 				    '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
-					'@ZcoForumBundle/Resources/public/js/sujet.js'
 				));
 				
 				return render_to_response(array(

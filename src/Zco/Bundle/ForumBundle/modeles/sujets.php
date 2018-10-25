@@ -315,31 +315,26 @@ function RevueSujet($sujet_id)
 	}
 }
 
-function EnregistrerNouveauSujet($id, $nouveau_sondage_id, $annonce, $ferme, $resolu, $corbeille)
+function EnregistrerNouveauSujet($id, $annonce, $ferme, $resolu, $corbeille)
 {
 	$dbh = Doctrine_Manager::connection()->getDbh();
 
-	//On crée le nouveau sujet
+	// Création du sujet.
 	$stmt = $dbh->prepare("INSERT INTO zcov2_forum_sujets (sujet_id, sujet_forum_id, sujet_titre, sujet_sous_titre, sujet_auteur, sujet_date, sujet_premier_message, sujet_dernier_message, sujet_sondage, sujet_annonce, sujet_ferme, sujet_resolu, sujet_corbeille)
-	VALUES ('', :sujet_forum_id, :sujet_titre, :sujet_sous_titre, :sujet_auteur, NOW(), '', '', :sujet_sondage, :sujet_annonce, :sujet_ferme, :sujet_resolu, :sujet_corbeille)");
+	VALUES ('', :sujet_forum_id, :sujet_titre, :sujet_sous_titre, :sujet_auteur, NOW(), '', '', 0, :sujet_annonce, :sujet_ferme, :sujet_resolu, :sujet_corbeille)");
 	$stmt->bindParam(':sujet_forum_id', $id);
 	$stmt->bindParam(':sujet_titre', $_POST['titre']);
 	$stmt->bindParam(':sujet_sous_titre', $_POST['sous_titre']);
 	$stmt->bindParam(':sujet_auteur', $_SESSION['id']);
-	$stmt->bindParam(':sujet_sondage', $nouveau_sondage_id);
 	$stmt->bindParam(':sujet_annonce', $annonce);
 	$stmt->bindParam(':sujet_ferme', $ferme);
 	$stmt->bindParam(':sujet_resolu', $resolu);
 	$stmt->bindParam(':sujet_corbeille', $corbeille);
 	$stmt->execute();
-
-	//On récupère l'id de l'enregistrement qui vient d'être créé (l'id du nouveau sujet).
 	$nouveau_sujet_id = $dbh->lastInsertId();
-
-
 	$stmt->closeCursor();
 
-	//On crée le post
+	// Création du premier message.
 	$stmt = $dbh->prepare("INSERT INTO zcov2_forum_messages (message_id, message_auteur, message_texte, message_date, message_sujet_id, message_edite_auteur, message_edite_date, message_ip)
 	VALUES ('', :message_auteur, :message_texte, NOW(), :message_sujet_id, 0, '', :ip)");
 	$stmt->bindParam(':message_auteur', $_SESSION['id']);
@@ -347,13 +342,10 @@ function EnregistrerNouveauSujet($id, $nouveau_sondage_id, $annonce, $ferme, $re
 	$stmt->bindParam(':message_sujet_id', $nouveau_sujet_id);
 	$stmt->bindValue(':ip', ip2long(\Container::getService('request')->getClientIp(true)));
 	$stmt->execute();
-
-	//On récupère l'id de l'enregistrement qui vient d'être créé (l'id du nouveau post).
 	$nouveau_message_id = $dbh->lastInsertId();
-
 	$stmt->closeCursor();
 
-	//Grâce au numéro du post récupéré, on peut updater la table des sujets pour indiquer que ce post est le premier et le dernier du sujet.
+	// Grâce au numéro du post récupéré, on peut updater la table des sujets pour indiquer que ce post est le premier et le dernier du sujet.
 	$stmt = $dbh->prepare("UPDATE zcov2_forum_sujets
 	SET sujet_premier_message = :sujet_premier_message, sujet_dernier_message = :sujet_dernier_message
 	WHERE sujet_id = :nouveau_sujet_id");
@@ -361,8 +353,6 @@ function EnregistrerNouveauSujet($id, $nouveau_sondage_id, $annonce, $ferme, $re
 	$stmt->bindParam(':sujet_dernier_message', $nouveau_message_id);
 	$stmt->bindParam(':nouveau_sujet_id', $nouveau_sujet_id);
 	$stmt->execute();
-
-
 	$stmt->closeCursor();
 
 	if(!$corbeille)

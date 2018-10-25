@@ -117,7 +117,6 @@ class IndexAction extends ForumActions
 			'ListerCategories' => $ListerCategories,
 			'Lu' => $Lu,
 			'ListerVisiteurs' => ListerVisiteursForumEntier(),
-			'Ordre' => $this->executeAjaxOrdre(true)
 		));
 		$response->headers->set('Pragma', 'no-cache');
 		$response->headers->set('cache-Control', 'no-cache');

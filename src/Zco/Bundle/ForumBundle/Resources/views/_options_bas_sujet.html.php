@@ -162,47 +162,11 @@ if(verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']))
 		<?php
 		}
 		//FIN favori
-
-		//DÉBUT ajouter un sondage
-		if(verifier('ajouter_sondages', $InfosSujet['sujet_forum_id']) AND $InfosSujet['sujet_sondage'] == 0)
-		{
-		?>
-		<div id="postage_sondage">
-		<fieldset>
-			<legend>Ajouter un sondage</legend>
-			<form action="" method="post">
-			<label for="sondage_question" style="width:100px;">Question :</label>
-		<input type="text" name="sondage_question" id="sondage_question" size="60" tabindex="199" />
-		<div id="sondage_reponses">
-			<?php
-			for($tabindex = 200, $i = 0; $i < 10; $i++):
-				$tabindex++;
-				?>
-				<div>
-				<label	for="sdg_reponse<?php echo $tabindex; ?>"
-					style="width:100px;" >
-					Réponse <?php echo $tabindex - 200; ?> :
-				</label>
-				<input	type="text"
-					name="reponses[]"
-					id="sdg_reponse<?php echo $tabindex; ?>"
-					size="60"
-					tabindex="<?php echo $tabindex; ?>"/>
-				</div>
-			<?php endfor; ?>
-		</div>
-		<div class="send">
-			<input type="submit" name="ajouter_sondage" value="Ajouter le sondage" />
-		</div>
-		</form>
-		</fieldset>
-		</div>
-		<?php $view['javelin']->initBehavior('forum-poll-form', array('inject_link' => 'postage_sondage')) ?>
-		<?php } ?>
+        ?>
 	</ul>
 </fieldset><br />
 
-<?php if(verifier('epingler_sujets', $InfosSujet['sujet_forum_id']) || verifier('fermer_sujets', $InfosSujet['sujet_forum_id']) || verifier('editer_sondages', $InfosSujet['sujet_forum_id']) || verifier('fermer_sondage', $InfosSujet['sujet_forum_id']) || verifier('supprimer_sondages', $InfosSujet['sujet_forum_id']) || verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']) || verifier('corbeille_sujets', $InfosSujet['sujet_forum_id']) || verifier('suppr_sujets', $InfosSujet['sujet_forum_id']) || verifier('ajouter_sondages', $InfosSujet['sujet_forum_id']) || verifier('diviser_sujets', $InfosSujet['sujet_forum_id']) || verifier('fusionner_sujets', $InfosSujet['sujet_forum_id'])){ ?>
+<?php if(verifier('epingler_sujets', $InfosSujet['sujet_forum_id']) || verifier('fermer_sujets', $InfosSujet['sujet_forum_id']) || verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']) || verifier('corbeille_sujets', $InfosSujet['sujet_forum_id']) || verifier('suppr_sujets', $InfosSujet['sujet_forum_id']) || verifier('diviser_sujets', $InfosSujet['sujet_forum_id']) || verifier('fusionner_sujets', $InfosSujet['sujet_forum_id'])){ ?>
 <fieldset>
 	<legend>Options de modération</legend>
 	<ul>
@@ -277,57 +241,6 @@ if(verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']))
 		}
 		//FIN fusionner sujet
 
-		//DÉBUT éditer sondage
-		if(verifier('editer_sondages', $InfosSujet['sujet_forum_id']) AND $InfosSujet['sujet_sondage'] > 0)
-		{
-		?>
-			<li><span><img src="/pix.gif" class="fff chart_bar" alt="Éditer" title="Éditer le sondage" /></span>
-			<a href="/forum/editer-sondage-<?php echo $InfosSujet['sujet_sondage'];?>-<?php echo rewrite($InfosSujet['sondage_question']);?>.html">Éditer le sondage</a></li>
-		<?php
-		}
-		//FIN éditer sondage
-
-		//DÉBUT fermer/ouvrir sondage
-		if(verifier('fermer_sondage', $InfosSujet['sujet_forum_id']))
-		{
-			if($InfosSujet['sujet_sondage'] > 0)
-			{
-				if($InfosSujet['sondage_ferme'])
-				{
-				?>
-				<li>
-					<img src="/pix.gif" class="fff chart_bar" alt="" />
-					<a href="changer-statut-sondage-<?php echo $_GET['id']; ?>.html?token=<?php echo $_SESSION['token']; ?>">
-						Ouvrir le sondage
-					</a>
-				</li>
-				<?php
-				}
-				else
-				{
-				?>
-				<li>
-					<img src="/pix.gif" class="fff chart_bar" alt="" />
-					<a href="changer-statut-sondage-<?php echo $_GET['id']; ?>.html?token=<?php echo $_SESSION['token']; ?>">
-						Fermer le sondage
-					</a>
-				</li>
-				<?php
-				}
-			}
-		}
-		//FIN fermer/ouvrir sondage
-
-		//DÉBUT supprimer sondage
-		if(verifier('supprimer_sondages', $InfosSujet['sujet_forum_id']) AND $InfosSujet['sujet_sondage'] > 0)
-		{
-		?>
-			<li><span><img src="/pix.gif" class="fff chart_bar" alt="Supprimer Sondage" title="Supprimer le sondage" /></span>
-			<a href="/forum/supprimer-sondage-<?php echo $InfosSujet['sujet_sondage'];?>.html" onclick="return confirm('Êtes-vous sûr ?');">Supprimer le sondage</a></li>
-		<?php
-		}
-		//FIN supprimer sondage
-
 		//DÉBUT déplacer sujet
 		if(!$InfosSujet['sujet_corbeille'] AND verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']))
 		{
@@ -360,7 +273,7 @@ if(verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']))
 			{
 			?>
 			<li>
-				<img src="/pix.gif" class="fff bin" alt="" /></span>
+				<img src="/pix.gif" class="fff bin" alt="" />
 				<a href="corbeille-<?php echo $_GET['id']; ?>-1.html?token=<?php echo $_SESSION['token']; ?>">
 					Mettre le sujet à la corbeille
 				</a>
