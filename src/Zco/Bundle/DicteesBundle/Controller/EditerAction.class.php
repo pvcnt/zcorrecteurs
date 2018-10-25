@@ -85,7 +85,6 @@ class EditerAction extends Controller
 			htmlspecialchars($Dictee->titre) => 'dictee'.$url,
 			'Editer'
 		));
-		$this->get('zco_core.resource_manager')->requireResource('@ZcoDicteesBundle/Resources/public/js/upload.js');
 		
 		return render_to_response(compact('Dictee', 'Form'));
 	}

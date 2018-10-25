@@ -71,7 +71,6 @@ class DefaultController extends Controller
             '@ZcoCoreBundle/Resources/public/css/zcode.css',
             '@ZcoCoreBundle/Resources/public/css/zform.css',
             '@ZcoQuizBundle/Resources/public/css/quiz.css',
-            '@ZcoQuizBundle/Resources/public/js/quiz.js',
         ]);
 
         return render_to_response('ZcoQuizBundle:Default:show.html.php', [

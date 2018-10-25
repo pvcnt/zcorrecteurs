@@ -55,7 +55,6 @@ class AjouterAction extends Controller
 			}
 		}
 		fil_ariane('Ajout d\'une dictée');
-		$this->get('zco_core.resource_manager')->requireResource('@ZcoDicteesBundle/Resources/public/js/upload.js');
 		
 		return render_to_response(compact('Form'));
 	}
