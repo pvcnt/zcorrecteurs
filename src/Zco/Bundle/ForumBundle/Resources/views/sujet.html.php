@@ -253,9 +253,6 @@ if($InfosSujet['sujet_sondage'] > 0)
 				<a href="<?php echo 'repondre-'.$_GET['id'].'-'.$valeur['message_id']; ?>.html">
 					<img src="/pix.gif" class="fff comment" alt="Citer" title="Citer" />
 				</a>
-				<a href="<?php echo 'repondre-'.$_GET['id'].'-'.$valeur['message_id']; ?>.html" class="lien_citer">
-					<img src="/pix.gif" class="fff comments" alt="Citation multiple" title="Citation multiple : garde ce message en mémoire" />
-				</a>
 				<?php
 				}
 				//Envoi d'un MP

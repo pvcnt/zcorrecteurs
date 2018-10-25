@@ -35,9 +35,6 @@
 				<td class="dates">
 					<a href="sujet-<?php echo $_GET['id'].'-'.$valeur['message_id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html'; ?>">#</a>
 					Posté <?php echo dateformat($valeur['message_date'], MINUSCULE); ?>
-					<a href="repondre-<?php echo $_GET['id'].'-'.$valeur['message_id'] ?>.html" class="lien_citer">
-						<img src="/pix.gif" class="fff comments" alt="Citer" title="Citer" />
-					</a>
 				</td>
 			</tr>
 			<tr>
