@@ -18,6 +18,4 @@ for directory in ${directories}; do
     chown -R apache:apache ${directory}
 done
 
-id
-
 exec "$@"
