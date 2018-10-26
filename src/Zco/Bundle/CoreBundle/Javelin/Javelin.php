@@ -30,7 +30,6 @@ namespace Zco\Bundle\CoreBundle\Javelin;
  */
 class Javelin
 {
-	protected $metadata = array();
 	protected $onload = array();
 	protected $behavior = array();
 	protected $dirty = true;
@@ -67,22 +66,7 @@ class Javelin
 			);
 		}*/
 	}
-	
-	/**
-	 * Attache des méta-données. Celles-ci doivent être sous forme de 
-	 * tableau associatif afin d'être converties en objet par json_encode().
-	 *
-	 * @param  array $metadata Les méta-données à attacher
-	 * @return string L'attribut "data-meta" à insérer sur le noeud
-	 */
-	public function addMetadata(array $metadata)
-	{
-		$id = count($this->metadata);
-		$this->metadata[$id] = $metadata;
-		
-		return $this->block.'_'.$id;
-	}
-	
+
 	/**
 	 * Enregistre un code Javascript à exécuter au chargement de la page, une 
  	 * fois que l'arbre DOM est prêt.
@@ -116,11 +100,6 @@ class Javelin
 	public function renderHTMLFooter()
 	{
 		$data = array();
-		if ($this->metadata)
-		{
-			$data[] = 'Metadata.mergeData('.$this->block.', '.json_encode($this->metadata).');';
-			$this->metadata = array();
-		}
 
 		if ($this->behavior)
 		{
@@ -164,12 +143,6 @@ class Javelin
 			'error'	=> $error,
 			'payload' => $payload,
 		);
-
-		if ($this->metadata)
-		{
-			$response['javelin_metadata'] = $this->metadata;
-			$this->metadata = array();
-		}
 
 		if ($this->behavior)
 		{

@@ -45,16 +45,6 @@ class JavelinHelper extends Helper
 	    $this->javelin->onload($call);
 	}
 	
-	public function generateUniqueNodeId()
-	{
-	    return $this->javelin->generateUniqueNodeId();
-	}
-	
-	public function addMetadata($metadata)
-	{
-	    return $this->javelin->addMetadata($metadata);
-	}
-	
 	public function renderHTMLFooter()
 	{
 	    return $this->javelin->renderHTMLFooter();
