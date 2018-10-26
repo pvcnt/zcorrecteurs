@@ -49,6 +49,7 @@ RUN apk update && \
 	php7-ctype \
 	php7-session \
 	php7-simplexml \
+	php7-xsl \
 	php7-fileinfo
 
 RUN cp /usr/bin/php7 /usr/bin/php && rm -f /var/cache/apk/*
