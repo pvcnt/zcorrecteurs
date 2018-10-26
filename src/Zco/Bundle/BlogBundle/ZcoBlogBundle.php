@@ -28,7 +28,6 @@ class ZcoBlogBundle extends AbstractBundle
 	public function preload()
 	{
 		//Enregistrement des compteurs de tâches admin.
-		$this->container->get('zco_admin.manager')->register('commentairesBlog', 'blog_editer_commentaires');
 		$this->container->get('zco_admin.manager')->register('blog', 'blog_valider');
 	}
 	

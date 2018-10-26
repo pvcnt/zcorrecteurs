@@ -76,17 +76,5 @@ class UiListener implements EventSubscriberInterface
 		$tab->addChild('Voir les billets en ligne', array(
 			'uri' => '/blog/gestion.html'
 		))->secure(array('or', 'blog_supprimer', 'blog_editer_valide'));
-		
-		$tasks = $this->container->get('zco_admin.manager')->get('commentairesBlog');
-		$tab->addChild('Voir les nouveaux commentaires', array(
-			'label' => 'Il y a '.$tasks.' nouveau'.pluriel($tasks, 'x').' commentaire'.pluriel($tasks),
-			'uri' => '/blog/nouveaux-commentaires.html',
-			'count' => $tasks,
-			'separator' => true,
-		))->secure('blog_editer_commentaires');
-		
-		$tab->addChild('Voir tous les commentaires', array(
-			'uri' => '/blog/tous-les-commentaires.html',
-		))->secure('blog_voir_tous_les_commentaires');
 	}
 }

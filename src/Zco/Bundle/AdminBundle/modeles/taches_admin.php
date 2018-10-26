@@ -54,56 +54,6 @@ function CompterTachesDictees()
 		->count();
 }
 
-function CompterTachesCommentairesBlog()
-{
-	$dbh = Doctrine_Manager::connection()->getDbh();
-
-	$groupes = array();
-	foreach(ListerGroupes() as $grp)
-	{
-		$droits = RecupererDroitsGroupe($grp['groupe_id']);
-		if(isset($droits['blog_editer_commentaires']))
-			$groupes[] = (int)$grp['groupe_id'];
-	}
-	$groupes = implode(', ', $groupes);
-
-	$stmt = $dbh->prepare('SELECT COUNT(*) '
-		.'FROM zcov2_blog_commentaires '
-
-		.'INNER JOIN zcov2_blog '
-		.'ON blog_id = commentaire_id_billet '
-
-		.'INNER JOIN zcov2_blog_versions '
-		.'ON version_id = blog_id_version_courante '
-
-		.'LEFT JOIN ( '
-			.'SELECT lunonlu_id_billet AS billet, '
-			.'MAX(commentaire_id) AS dernier_commentaire, '
-			.'MAX(lunonlu_id_commentaire) AS dernier_lu '
-			.'FROM zcov2_blog_lunonlu '
-
-			.'INNER JOIN zcov2_blog '
-			.'ON blog_id = lunonlu_id_billet '
-
-			.'LEFT JOIN zcov2_utilisateurs '
-			.'ON lunonlu_id_utilisateur = utilisateur_id '
-
-			.'INNER JOIN zcov2_blog_commentaires '
-			.'ON commentaire_id_billet = lunonlu_id_billet '
-
-			.'WHERE blog_etat = '.BLOG_VALIDE.' '
-			.'AND utilisateur_id_groupe IN('.$groupes.') '
-			.'GROUP BY lunonlu_id_billet '
-		.') AS admin_commentaires '
-		.'ON billet = commentaire_id_billet '
-
-		.'WHERE blog_etat = '.BLOG_VALIDE.' '
-		.'AND (dernier_lu IS NULL '
-		.'OR commentaire_id > dernier_lu) ');
-	$stmt->execute();
-	return $stmt->fetchColumn();
-}
-
 function CompterTachesChangementsPseudo()
 {
 	$dbh = Doctrine_Manager::connection()->getDbh();
