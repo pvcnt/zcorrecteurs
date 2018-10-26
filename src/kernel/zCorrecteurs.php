@@ -84,41 +84,6 @@ final class zCorrecteurs
 	}
 
 	/**
-	 * Crypte un message avec la clé PGP du destinataire
-	 *
-	 * @param string $message	Message à crypter.
-	 * @param integer $id		ID du destinataire.
-	 * @return string		Message crypté.
-	 */
-	static public function CrypterMessage($message, $destinataire)
-	{
-		$InfosUtilisateur = InfosUtilisateur($destinataire);
-
-		if(	empty($InfosUtilisateur) ||
-			empty($InfosUtilisateur['utilisateur_cle_pgp']) ||
-			!verifier('options_ajouter_cle_pgp', $InfosUtilisateur['utilisateur_id_groupe'])
-		)
-			return false;
-		$hd = Container::getParameter('kernel.cache_dir').'/gpg'.$InfosUtilisateur['utilisateur_id'];
-		@mkdir($hd);
-
-		file_put_contents($hd.'/pubkey', $InfosUtilisateur['utilisateur_cle_pgp']);
-		$keyid = shell_exec('gpg --batch --no-permission-warning --homedir='.$hd.' --import '.$hd.'/pubkey 2>&1');
-		preg_match('`gpg: (?:clé|key) ([0-9A-F]{8}):`', $keyid, $keyid);
-		if(!isset($keyid[1]))
-			return false;
-		$keyid = $keyid[1];
-
-		file_put_contents($hd.'/message', $message);
-		$encrypted = shell_exec('gpg --batch --yes --no-permission-warning --trust-model always '
-			.'--homedir='.$hd.' -e --armor -r '.$keyid.' -o - '.$hd.'/message');
-		foreach(glob($hd.'/*') as $f)
-			unlink($f);
-		@rmdir($hd);
-		return $encrypted;
-	}
-
-	/**
 	 * Vérifie le token (faille CSRF)
 	 * Utilisation :
 	 * <code>if($r = zCorrecteurs::verifierToken()) return $r;</code>

@@ -18,28 +18,10 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-// +----------------------------------------------------------------------+
-// | Copyright (c) www.zcorrecteurs.fr 2008                               |
-// +----------------------------------------------------------------------+
-// | Modèle concernant la création de nouvelle réponse et de nouveau MP   |
-// |                                                                      |
-// +----------------------------------------------------------------------+
-// | Auteurs:      Original DJ Fox <marthe59@yahoo.fr>                    |
-// +----------------------------------------------------------------------+
-// | Commencé le              : 07 septembre 2008                         |
-// | Dernière modification le : 09 septembre 2008                         |
-// +----------------------------------------------------------------------+
 
 function AjouterMP()
 {
 	$dbh = Doctrine_Manager::connection()->getDbh();
-
-	if(isset($_POST['crypter']))
-	{
-		$_POST['texte'] = zCorrecteurs::CrypterMessage($_POST['texte'], $_POST['participants'][0]);
-		if($_POST['texte'] === false)
-			return false;
-	}
 
 	//On crée le nouveau MP
 	$stmt = $dbh->prepare('INSERT INTO zcov2_mp_mp ('
@@ -51,7 +33,7 @@ function AjouterMP()
 	$fermer = verifier('mp_fermer') && isset($_POST['ferme']);
 
 	$stmt->bindValue(':mp_ferme', (int)$fermer);
-	$stmt->bindValue(':mp_crypte', (int)isset($_POST['crypter']));
+	$stmt->bindValue(':mp_crypte', 0);
 
 	$stmt->execute();
 
@@ -118,17 +100,6 @@ function AjouterReponse()
 	$dbh = Doctrine_Manager::connection()->getDbh();
 	$InfoMp = InfoMp();
 	$ListerParticipants = ListerParticipants($_GET['id']);
-	if($InfoMp['mp_crypte'] && isset($_POST['crypter']))
-	{
-		$participants = $ListerParticipants;
-		do $dest = array_pop($participants);
-		while($dest && $dest['mp_participant_id'] == $_SESSION['id']);
-		if(!$dest) return false;
-
-		$_POST['texte'] = zCorrecteurs::CrypterMessage($_POST['texte'], $dest['mp_participant_id']);
-		if($_POST['texte'] === false)
-			return false;
-	}
 
 	//On insère la réponse
 	$stmt = $dbh->prepare("
@@ -179,22 +150,6 @@ function EditerReponse()
 {
 	$dbh = Doctrine_Manager::connection()->getDbh();
 
-	$InfoMp = InfoMessage($_GET['id']);
-	$ListerParticipants = ListerParticipants($InfoMp['mp_id']);
-
-	if($InfoMp['mp_crypte'] && isset($_POST['crypter']))
-	{
-		$participants = $ListerParticipants;
-		do $dest = array_pop($participants);
-		while($dest && $dest['mp_participant_id'] == $_SESSION['id']);
-		if(!$dest) return false;
-
-		$_POST['texte'] = zCorrecteurs::CrypterMessage($_POST['texte'], $dest['mp_participant_id']);
-		if($_POST['texte'] === false)
-			return false;
-	}
-
-	//On edite la réponse
 	$stmt = $dbh->prepare("UPDATE zcov2_mp_messages	SET mp_message_texte = :texte WHERE mp_message_id = :msg_id");
 	$stmt->bindParam(':texte', $_POST['texte']);
 	$stmt->bindParam(':msg_id', $_GET['id']);

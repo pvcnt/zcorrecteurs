@@ -35,10 +35,6 @@ zco_user_newPseudo:
     requirements:
         id: \d+
 
-zco_user_localisation:
-    path:   /carte
-    defaults:  { _controller: ZcoUserBundle:Default:localisation }
-
 zco_user_zformBackups:
     path:   /sauvegardes-zform/{textarea}
     defaults:  { _controller: ZcoUserBundle:Default:zformBackups, textarea: ~ }

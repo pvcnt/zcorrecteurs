@@ -32,7 +32,7 @@ class StatistiquesTemporellesAction extends ForumActions
 {
 	public function execute()
 	{
-        if (!verifier('forum_stats_generales')) {
+        if (!verifier('voir_stats_generales')) {
             throw new AccessDeniedHttpException();
         }
 		Page::$titre .= ' - Statistiques d\'utilisation du forum';

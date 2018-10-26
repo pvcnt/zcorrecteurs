@@ -68,7 +68,7 @@ class DefaultController extends Controller
 
     public function registrationAction()
     {
-        if (!verifier('stats_inscription')) {
+        if (!verifier('voir_stats_generales')) {
             throw new AccessDeniedHttpException();
         }
         \Page::$titre = 'Statistiques d\'inscription du site';
@@ -138,7 +138,7 @@ class DefaultController extends Controller
 
     public function registrationChartAction()
     {
-        if (!verifier('stats_inscription')) {
+        if (!verifier('voir_stats_generales')) {
             throw new AccessDeniedHttpException();
         }
         /** @var RegistrationChartService $chartService */
@@ -168,7 +168,7 @@ class DefaultController extends Controller
 
     public function locationAction()
     {
-        if (!verifier('stats_geolocalisation')) {
+        if (!verifier('voir_stats_generales')) {
             throw new AccessDeniedHttpException();
         }
         \Page::$titre = 'Statistiques de géolocalisation';
@@ -186,7 +186,7 @@ class DefaultController extends Controller
 
     public function locationChartAction()
     {
-        if (!verifier('stats_geolocalisation')) {
+        if (!verifier('voir_stats_generales')) {
             throw new AccessDeniedHttpException();
         }
         /** @var LocationChartService $chartService */
@@ -197,7 +197,7 @@ class DefaultController extends Controller
 
     public function agesAction()
     {
-        if (!verifier('voir_stats_ages')) {
+        if (!verifier('voir_stats_generales')) {
             throw new AccessDeniedHttpException();
         }
         // Limiter le graphique à un groupe.
@@ -238,7 +238,7 @@ class DefaultController extends Controller
 
     public function agesChartAction()
     {
-        if (!verifier('voir_stats_ages')) {
+        if (!verifier('voir_stats_generales')) {
             throw new AccessDeniedHttpException();
         }
         /** @var AgesChartService $chartService */

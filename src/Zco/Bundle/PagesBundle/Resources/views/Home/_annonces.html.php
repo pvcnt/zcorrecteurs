@@ -36,7 +36,7 @@
 		<?php echo htmlspecialchars($SujetSemaine['sujet_sous_titre']); ?>
 		<?php } ?>
 	</div>
-<?php } elseif ($quel_bloc == 'recrutement' && verifier('recrutements_voir')) { ?>
+<?php } elseif ($quel_bloc == 'recrutement') { ?>
 	<h2 class="mod_communaute">Recrutements en cours</h2>
 	<ul>
 		<?php foreach($ListerRecrutements as $r){ ?>

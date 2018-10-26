@@ -7,9 +7,6 @@
 		</li>
 		<li>
 			Voir les sujets…
-			<?php if(verifier('code')){ ?>
-			<a href="?solved=0">non résolus</a> (et <a href="?solved=0&amp;closed=0">ouverts</a>),
-			<?php } ?>
 			<?php if(verifier('mettre_sujet_favori')){ ?><a href="?favori=1">en favoris</a>, <?php } ?><a href="?epingle=1">épinglés</a>, <a href="?coeur=1">coup de cœur</a>.
 		</li>
 	</ul>

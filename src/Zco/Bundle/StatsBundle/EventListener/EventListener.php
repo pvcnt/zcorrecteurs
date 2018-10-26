@@ -86,17 +86,17 @@ class EventListener implements EventSubscriberInterface
         ));
 
         $tab->addChild('Statistiques d\'inscription', array(
-            'credentials' => 'stats_inscription',
+            'credentials' => 'voir_stats_generales',
             'uri' => $this->urlGenerator->generate('zco_stats_registration'),
         ));
 
         $tab->addChild('Statistiques de géolocalisation', array(
-            'credentials' => 'stats_geolocalisation',
+            'credentials' => 'voir_stats_generales',
             'uri' => $this->urlGenerator->generate('zco_stats_location'),
         ));
 
         $tab->addChild('Âge des membres', array(
-            'credentials' => 'voir_stats_ages',
+            'credentials' => 'voir_stats_generales',
             'uri' => $this->urlGenerator->generate('zco_stats_ages'),
         ));
     }

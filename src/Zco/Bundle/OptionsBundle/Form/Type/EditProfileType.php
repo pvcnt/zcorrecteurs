@@ -53,10 +53,6 @@ class EditProfileType extends AbstractType
             'label' => 'Afficher le pays dans lequel je me trouve',
             'required' => false,
         ));
-        $builder->add('address', null, array(
-            'label' => 'Adresse ou ville',
-            'required' => false,
-        ));
         $builder->add('job', null, array(
             'label' => 'Profession ou études',
             'required' => false,

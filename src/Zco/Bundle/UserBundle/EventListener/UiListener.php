@@ -90,7 +90,7 @@ class UiListener implements EventSubscriberInterface
 
         $tab->addChild('Liste des adresses IP bannies', array(
             'uri' => $urlGenerator->generate('zco_user_ips_index'),
-        ))->secure('ips_voir_bannies');
+        ))->secure('ips_bannir');
 
         $tab->addChild('Analyser une adresse IP', array(
             'uri' => $urlGenerator->generate('zco_user_ips_analyze'),

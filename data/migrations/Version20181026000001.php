@@ -20,6 +20,6 @@ class Version20181026000001 extends AbstractMigration
 
     public function down(OutputInterface $output)
     {
-        throw new IrreversibleMigrationException();
+        $this->throwIrreversibleMigrationException();
     }
 }

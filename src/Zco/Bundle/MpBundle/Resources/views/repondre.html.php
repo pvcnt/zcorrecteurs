@@ -34,12 +34,6 @@
 			echo ' /></p>';
 		}
 		?>
-		<?php if($InfoMP['mp_crypte']) { ?>
-		<p>
-			<label for="crypter" title="Si le destinataire a renseigné une clé PGP, s'en servir pour chiffrer le message.">Chiffrer le message :</label>
-			<input type="checkbox" name="crypter" id="crypter" />
-		</p>
-		<?php } ?>
 
 		<div class="send">
 			<input type="hidden"

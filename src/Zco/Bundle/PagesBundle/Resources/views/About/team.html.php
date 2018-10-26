@@ -9,10 +9,6 @@
 	tout aussi unique. Tous ces bénévoles effectuent chaque jour un travail
 	indispensable, en corrigeant vos documents, faisant évoluer le site ou encore 
 	en enrichissant le contenu du site.
-	<?php if (verifier('voir_adresse')): ?><br />
-	En tant que membre ou ancien membre de cette équipe, vous pouvez 
-	<a href="<?php echo $view['router']->path('zco_user_localisation') ?>">consulter la localisation de ses membres</a>.
-	<?php endif ?>
 </p>
 
 <ul class="thumbnails">

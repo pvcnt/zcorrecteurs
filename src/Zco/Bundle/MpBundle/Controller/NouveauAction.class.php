@@ -101,13 +101,6 @@ class NouveauAction extends Controller
                 }
                 $NombreParticipants++; //On compte aussi le créateur du MP.
 
-                if (isset($_POST['crypter']) && $NombreParticipants != 2)
-                    return redirect(
-                        'Vous ne pouvez indiquer qu\'un seul destinataire pour les MPs cryptés.',
-                        '',
-                        MSG_ERROR
-                    );
-
                 //On vérifie qu'il y a au moins un participant en plus du créateur.
                 if ($NombreParticipants < 2) {
                     return redirect(

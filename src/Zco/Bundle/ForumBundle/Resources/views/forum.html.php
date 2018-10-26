@@ -12,12 +12,9 @@
 
 <div class="options_forum">
 	<ul>
-		<?php if(verifier('code') || verifier('mettre_sujet_favori')){ ?>
+		<?php if(verifier('mettre_sujet_favori')){ ?>
 		<li>
 			Voir les sujets…
-			<?php if(verifier('code')){ ?>
-			<a href="?solved=0">non résolus</a> (et <a href="?solved=0&closed=0">ouverts</a>),
-			<?php } ?>
 			<a href="?favori=1">en favoris</a>, <a href="?">tous</a>
 		</li>
 

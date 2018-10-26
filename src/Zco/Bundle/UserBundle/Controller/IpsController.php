@@ -43,7 +43,7 @@ class IpsController extends Controller
      */
     public function indexAction(Request $request)
     {
-        if (!verifier('ips_voir_bannies')) {
+        if (!verifier('ips_bannir')) {
             throw new AccessDeniedHttpException();
         }
         $manager = $this->get('zco_user.manager.ip');

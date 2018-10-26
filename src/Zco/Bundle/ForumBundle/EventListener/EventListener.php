@@ -100,7 +100,7 @@ class EventListener implements EventSubscriberInterface
 			'uri' => '/forum/statistiques-temporelles.html',
 			'separator' => true,
 			'weight' => 70,
-		))->secure('forum_stats_generales');
+		))->secure('voir_stats_generales');
 	}
 	
 	/**

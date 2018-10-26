@@ -88,10 +88,7 @@ class EventListener implements EventSubscriberInterface
         ));
 
         $tab->addChild('Gérer les quiz', array(
-            'credentials' =>
-                array('or', 'quiz_ajouter', 'quiz_editer', 'quiz_editer_siens', 'quiz_supprimer',
-                    'quiz_supprimer_siens', 'quiz_ajouter_questions', 'quiz_ajouter_questions_siens',
-                    'quiz_editer_ses_questions', 'quiz_editer_questions', 'quiz_supprimer_questions', 'quiz_supprimer_ses_questions'),
+            'credentials' => array('or', 'quiz_ajouter', 'quiz_editer', 'quiz_supprimer'),
             'uri' => $this->urlGenerator->generate('zco_quiz_admin'),
         ));
 
@@ -101,13 +98,13 @@ class EventListener implements EventSubscriberInterface
             ->getChild('Statistiques générales');
 
         $tab->addChild('Statistiques d\'utilisation du quiz', array(
-            'credentials' => 'quiz_stats_generales',
+            'credentials' => 'voir_stats_generales',
             'uri' => $this->urlGenerator->generate('zco_quiz_stats'),
             'weight' => 70,
         ));
 
         $tab->addChild('Statistiques de popularité des quiz', array(
-            'credentials' => 'quiz_stats_generales',
+            'credentials' => 'voir_stats_generales',
             'uri' => $this->urlGenerator->generate('zco_quiz_popularity'),
             'weight' => 80,
         ));

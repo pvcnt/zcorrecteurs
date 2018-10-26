@@ -375,7 +375,7 @@ class AdminController extends Controller
      */
     public function popularityAction()
     {
-        if (!verifier('quiz_stats_generales')) {
+        if (!verifier('voir_stats_generales')) {
             throw new AccessDeniedHttpException();
         }
         \Page::$titre = 'Popularité des quiz';
@@ -393,7 +393,7 @@ class AdminController extends Controller
      */
     public function statsAction($quizId, Request $request)
     {
-        if (!verifier('quiz_stats_generales')) {
+        if (!verifier('voir_stats_generales')) {
             throw new AccessDeniedHttpException();
         }
         $year = $request->query->get('annee', date('Y'));
@@ -454,7 +454,7 @@ class AdminController extends Controller
      */
     public function statsChartAction($quizId, Request $request)
     {
-        if (!verifier('quiz_stats_generales')) {
+        if (!verifier('voir_stats_generales')) {
             throw new AccessDeniedHttpException();
         }
         $year = $request->query->get('annee');

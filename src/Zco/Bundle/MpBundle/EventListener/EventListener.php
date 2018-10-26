@@ -36,54 +36,55 @@ class EventListener implements EventSubscriberInterface
     {
         return array(
             KernelEvents::REQUEST => array('onKernelRequest', 100),
-			AdminEvents::MENU => 'onFilterAdmin',
+            AdminEvents::MENU => 'onFilterAdmin',
         );
     }
-    
-	/**
-	 * Enregistre le compteur de tâches d'administration.
-	 * Met à jour les compteurs de MP pour le membre connecté.
-	 *
-	 * @param GetResponseEvent $event
-	 */
-	public function onKernelRequest(GetResponseEvent $event)
-	{
-		//Enregistrement du compteur de tâches admin.
-		$this->container->get('zco_admin.manager')->register('alertesMP', 'mp_alertes');
-		
-		// Mise à jour du nombre de MPs non lus.
-		$rafraichir = $this->container->get('zco_core.cache')->get('MPnonLu'.$_SESSION['id']);
-		if ($rafraichir)
-		{
-			$this->container->get('zco_core.cache')->delete('MPnonLu'.$_SESSION['id']);
-		}
-		if (verifier('mp_voir') && ($rafraichir || !isset($_SESSION['MPsnonLus'])))
-		{
-			include_once(__DIR__.'/../modeles/mp_cache.php');
-			$_SESSION['MPsnonLus'] = CompteMPnonLu();
-		}
 
-		// Mise à jour du nombre de MP total.
-		if (verifier('mp_voir') && ($rafraichir || !isset($_SESSION['MPs'])))
-		{
-			include_once(__DIR__.'/../modeles/mp_cache.php');
-			$_SESSION['MPs'] = CompteMPTotal();
-		}
-	}
-	
-	public function onFilterAdmin(FilterMenuEvent $event)
-	{
-		$tab = $event
-		    ->getRoot()
-		    ->getChild('Communauté')
-		    ->getChild('Messagerie privée');
-		
-		$NombreAlertesMP = $this->container->get('zco_admin.manager')->get('alertesMP');
-		
-		$tab->addChild('Voir les alertes non résolues', array(
-			'label' => 'Il y a ' . $NombreAlertesMP . ' alerte' . pluriel($NombreAlertesMP) . ' non résolue' . pluriel($NombreAlertesMP),
-			'uri' => '/mp/alertes.html' . ($NombreAlertesMP ? '?solved=0' : ''),
-			'count' => $NombreAlertesMP,
-		))->secure('mp_alertes');
-	}
+    /**
+     * Enregistre le compteur de tâches d'administration.
+     * Met à jour les compteurs de MP pour le membre connecté.
+     *
+     * @param GetResponseEvent $event
+     */
+    public function onKernelRequest(GetResponseEvent $event)
+    {
+        //Enregistrement du compteur de tâches admin.
+        $this->container->get('zco_admin.manager')->register('alertesMP', 'mp_alertes');
+
+        if (!verifier('connecte')) {
+            return;
+        }
+
+        // Mise à jour du nombre de MPs non lus.
+        $rafraichir = $this->container->get('zco_core.cache')->get('MPnonLu' . $_SESSION['id']);
+        if ($rafraichir) {
+            $this->container->get('zco_core.cache')->delete('MPnonLu' . $_SESSION['id']);
+        }
+        if ($rafraichir || !isset($_SESSION['MPsnonLus'])) {
+            include_once(__DIR__ . '/../modeles/mp_cache.php');
+            $_SESSION['MPsnonLus'] = CompteMPnonLu();
+        }
+
+        // Mise à jour du nombre de MP total.
+        if ($rafraichir || !isset($_SESSION['MPs'])) {
+            include_once(__DIR__ . '/../modeles/mp_cache.php');
+            $_SESSION['MPs'] = CompteMPTotal();
+        }
+    }
+
+    public function onFilterAdmin(FilterMenuEvent $event)
+    {
+        $tab = $event
+            ->getRoot()
+            ->getChild('Communauté')
+            ->getChild('Messagerie privée');
+
+        $NombreAlertesMP = $this->container->get('zco_admin.manager')->get('alertesMP');
+
+        $tab->addChild('Voir les alertes non résolues', array(
+            'label' => 'Il y a ' . $NombreAlertesMP . ' alerte' . pluriel($NombreAlertesMP) . ' non résolue' . pluriel($NombreAlertesMP),
+            'uri' => '/mp/alertes.html' . ($NombreAlertesMP ? '?solved=0' : ''),
+            'count' => $NombreAlertesMP,
+        ))->secure('mp_alertes');
+    }
 }

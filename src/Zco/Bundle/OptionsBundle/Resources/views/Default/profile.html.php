@@ -46,14 +46,7 @@
 		<?php echo $view['form']->row($form['website'], array('widget_attr' => array('class' => 'input-xxlarge'))) ?>
 		<?php echo $view['form']->row($form['twitter'], array('prepend' => '@')) ?>
 		<?php echo $view['form']->row($form['birth_date']) ?>
-
-		<?php if (verifier('modifier_adresse')): ?>
-			<?php echo $view['form']->row($form['address'], array('widget_attr' => array('class' => 'input-xxlarge'))) ?>
-		<?php endif ?>
-
-		<?php if(verifier('modifier_sexe')): ?>
-			<?php echo $view['form']->row($form['sexe']) ?>
-		<?php endif ?>
+        <?php echo $view['form']->row($form['sexe']) ?>
 	</fieldset>
 
 	<fieldset>

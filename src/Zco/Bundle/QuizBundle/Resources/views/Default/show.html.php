@@ -1,7 +1,7 @@
 <?php $view->extend('::layouts/bootstrap.html.php') ?>
 
 <span style="float: right;">
-	<?php if (verifier('quiz_stats_generales')){ ?>
+	<?php if (verifier('voir_stats_generales')){ ?>
 	<a href="statistiques-<?php echo $quiz['id'] ?>.html">
 		<img src="/img/membres/stats_zco.png" alt="Statistiques" />
 		Statistiques
