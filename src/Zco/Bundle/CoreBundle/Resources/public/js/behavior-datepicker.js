@@ -2,7 +2,7 @@
  * @provides vitesse-behavior-datepicker
  * @requires vitesse-behavior
  *           mootools
- *           @ZcoCoreBundle/Resources/public/js/vendor/DatePicker.js
+ *           @ZcoCoreBundle/Resources/public/js/DatePicker.js
  *           @ZcoCoreBundle/Resources/public/css/datepicker_vista.css
  */
 Behavior.create('datepicker', function(config)

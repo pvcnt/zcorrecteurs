@@ -6,7 +6,7 @@
  *		   @ZcoFileBundle/Resources/public/js/FormUpload/Form.Upload.js
  *		   @ZcoFileBundle/Resources/public/js/FormUpload/Form.MultipleFileInput.js
  *		   @ZcoFileBundle/Resources/public/js/FormUpload/Request.File.js
- *		   @ZcoCoreBundle/Resources/public/js/vendor/zMessage.js
+ *		   @ZcoCoreBundle/Resources/public/js/zMessage.js
  */
 Behavior.create('zco-files-drag-and-drop-area', function(config)
 {

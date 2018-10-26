@@ -8,7 +8,7 @@
  * @author		Harald Kirschner <mail [at] digitarald.de>
  * @copyright	Author
  * @requires    mootools
- *              @ZcoCoreBundle/Resources/public/js/vendor/Autocompleter.js
+ *              @ZcoCoreBundle/Resources/public/js/Autocompleter.js
  */
 
 Autocompleter.Local = new Class({

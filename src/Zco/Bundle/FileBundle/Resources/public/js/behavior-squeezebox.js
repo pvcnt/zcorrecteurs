@@ -1,7 +1,6 @@
 /**
  * @provides vitesse-behavior-squeezebox
- * @requires mootools
- *           @ZcoFileBundle/Resources/public/js/SqueezeBox.js
+ * @requires vitesse-behavior mootools @ZcoFileBundle/Resources/public/js/SqueezeBox.js
  */
 Behavior.create('squeezebox', function(config, statics)
 {

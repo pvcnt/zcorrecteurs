@@ -4,7 +4,7 @@
  * @provides vitesse-behavior-ajax-form
  * @requires vitesse-behavior 
  *           mootools
- *           @ZcoCoreBundle/Resources/public/js/vendor/zMessage.js
+ *           @ZcoCoreBundle/Resources/public/js/zMessage.js
  */
 Behavior.create('ajax-form', function(config, statics)
 {

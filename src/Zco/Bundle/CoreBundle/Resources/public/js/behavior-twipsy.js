@@ -4,7 +4,7 @@
  * @provides vitesse-behavior-twipsy
  * @requires vitesse-behavior
  *           mootools
- *           @ZcoCoreBundle/Resources/public/js/vendor/Twipsy.js
+ *           @ZcoCoreBundle/Resources/public/js/Twipsy.js
  */
 Behavior.create('twipsy', function(config)
 {

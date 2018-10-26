@@ -3,7 +3,7 @@
  *
  * @author mwsaz <mwsaz@zcorrecteurs.fr>
  * @provides vitesse-behavior-admin-homepage
- * @requires vitesse-behavior @ZcoCoreBundle/Resources/public/js/vendor/bootstrap.js
+ * @requires vitesse-behavior @ZcoCoreBundle/Resources/public/js/bootstrap.js
  */
 
 Behavior.create('admin-homepage', function()
