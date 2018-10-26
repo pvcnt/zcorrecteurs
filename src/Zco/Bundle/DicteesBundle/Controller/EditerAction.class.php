@@ -59,7 +59,6 @@ class EditerAction extends Controller
 		$data = $Dictee->toArray();
 		$data['publique'] = $data['etat'] == DICTEE_VALIDEE;
 		$data['tags'] = $Dictee->getTags();
-		$data['auteur'] = $data['auteur_id']; unset($data['auteur_id']);
 		$Form->setDefaults($data);
 
 		if($_SERVER['REQUEST_METHOD'] == 'POST')

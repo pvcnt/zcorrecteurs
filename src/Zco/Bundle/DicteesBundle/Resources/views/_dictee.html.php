@@ -23,10 +23,10 @@
 	<?php if($Dictee->source): ?>
 		<dd><strong>Source :</strong> <?php echo htmlspecialchars($Dictee->source) ?></dd>
 	<?php endif ?>
-	<?php if($Dictee->Auteur): ?>
+	<?php if($Dictee->auteur_prenom || $Dictee->auteur_nom): ?>
 		<dd><strong>Auteur :</strong>
-		    <a href="/auteurs/auteur-<?php echo $Dictee->Auteur->id.'-'.rewrite($Dictee->Auteur) ?>.html">
-		    <?php echo htmlspecialchars($Dictee->Auteur) ?></a>
+		    <?php echo htmlspecialchars($Dictee->auteur_prenom) ?>
+            <?php echo htmlspecialchars($Dictee->auteur_nom) ?>
 		</dd>
 	<?php endif ?>
 

@@ -98,12 +98,12 @@ class AjouterForm extends Form
 		$fname = 'Informations supplémentaires (facultatif)';
 		$this->addFieldset($fname);
 
-		$this->addWidget('auteur', new Widget_Auteur);
+		$this->addWidget('auteur_prenom', new Widget_Input_Text(array(), array('maxlength' => 100)));
+		$this->addWidget('auteur_nom', new Widget_Input_Text(array(), array('maxlength' => 100)));
 		$this->addWidget('source', new Widget_Input_Text(array(), array('size' => 60, 'maxlength' => 255)));
 		$this->addWidget('tags', new Widget_Tags);
 		$this->addWidget('MAX_FILE_SIZE', new Widget_Input_Hidden);
 		$this->addWidget('icone', new Widget_Input_File);
-		$this->setHelpText('auteur', 'Choisissez un auteur dans la liste, ou créez-en un s\'il n\'existe pas déjà.');
 		$this->setHelpText('source', 'Indiquez l\'origine du texte.');
 		$this->setHelpText('tags', 'Liez des mots clés à votre dictée (séparés par des virgules).');
 		$this->setHelpText('icone','Icône pour votre dictée, au format jpg ou png.');
@@ -114,24 +114,29 @@ class AjouterForm extends Form
 		$this->setHelpText('commentaires', 'Ce texte sera affiché avec la correction.');
 		$this->setDefault('MAX_FILE_SIZE', sizeint(ini_get('upload_max_filesize')));
 
+		$this->setLabel('auteur_prenom', 'Prénom de l\'auteur');
+		$this->setLabel('auteur_nom', 'Nom de l\'auteur');
 		$this->setLabel('tags', 'Mots-clés');
 		$this->setLabel('icone', 'Icône');
 
 		$this->attachFieldset(array(
-			'auteur'       => $fname,
-			'source'       => $fname,
-			'tags'         => $fname,
-			'icone'		   => $fname,
-			'description'  => $fname,
-			'indications'  => $fname,
-			'commentaires' => $fname,	
+			'auteur_prenom' => $fname,
+			'auteur_nom'    => $fname,
+			'source'        => $fname,
+			'tags'          => $fname,
+			'icone'		    => $fname,
+			'description'   => $fname,
+			'indications'   => $fname,
+			'commentaires'  => $fname,
 		));
 
 		$this->setValidators(array(
-			'titre'      => new Validator_String(array('max_length' => 40)),
-			'difficulte' => new Validator_Choices(array('choices' => array_keys($difficultes))),
-			'temps_estime' => new Validator_Choices(array('choices' => array_keys($choixTemps))),
-			'texte'      => new Validator_String,
+			'auteur_prenom' => new Validator_String(array('max_length' => 100)),
+			'auteur_nom'    => new Validator_String(array('max_length' => 100)),
+			'titre'         => new Validator_String(array('max_length' => 40)),
+			'difficulte'    => new Validator_Choices(array('choices' => array_keys($difficultes))),
+			'temps_estime'  => new Validator_Choices(array('choices' => array_keys($choixTemps))),
+			'texte'         => new Validator_String,
 			//'type_son' => new Validator_Choices(array('choices' => array_keys($voix)))
 		));
 	}

@@ -7,7 +7,6 @@ Dictee:
   columns:
     id:                 { type: integer(11), unsigned: true, primary: true, autoincrement: true }
     utilisateur_id:     { type: integer(11) }
-    auteur_id:          { type: integer(11), notnull: false }
     etat:               { type: integer(1) }
     difficulte:         { type: integer(1) }
     participations:     { type: integer(11) }
@@ -24,10 +23,11 @@ Dictee:
     commentaires:       { type: string() }
     format:             { type: string(25) }
     icone:              { type: string(255) }
+    auteur_prenom:      { type: string(100) }
+    auteur_nom:         { type: string(100) }
 
   relations:
     Utilisateur:        { local: utilisateur_id, foreign: utilisateur_id }
-    Auteur:             { local: auteur_id, foreign: id }
 
 Dictee_Participation:
   tableName: zcov2_dictees_participations

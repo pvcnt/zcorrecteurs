@@ -50,7 +50,6 @@ class AppKernel extends Kernel
             // Module bundles.
             new Zco\Bundle\AdminBundle\ZcoAdminBundle(),
             new Zco\Bundle\PagesBundle\ZcoPagesBundle(),
-            new Zco\Bundle\AuteursBundle\ZcoAuteursBundle(),
             new Zco\Bundle\BlogBundle\ZcoBlogBundle(),
             new Zco\Bundle\CaptchaBundle\ZcoCaptchaBundle(),
             new Zco\Bundle\CategoriesBundle\ZcoCategoriesBundle(),

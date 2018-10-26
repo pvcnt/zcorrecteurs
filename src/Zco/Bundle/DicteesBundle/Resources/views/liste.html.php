@@ -59,10 +59,10 @@ function flecheOrdre($col, $tri)
 				<?php echo htmlspecialchars($Dictee->source) ?>
 			</td>
 			<td>
-				<?php if($Dictee->Auteur): ?>
-					<a href="/auteurs/auteur-<?php echo $Dictee->Auteur->id.'-'.rewrite($Dictee->Auteur) ?>.html">
-						<?php echo htmlspecialchars($Dictee->Auteur) ?></a>
-				<?php endif ?>
+                <?php if($Dictee->auteur_prenom || $Dictee->auteur_nom): ?>
+                    <?php echo htmlspecialchars($Dictee->auteur_prenom) ?>
+                    <?php echo htmlspecialchars($Dictee->auteur_nom) ?>
+                <?php endif ?>
 			</td>
 			<td><?php echo $Dictee->temps_estime ?> min</td>
 			<td>

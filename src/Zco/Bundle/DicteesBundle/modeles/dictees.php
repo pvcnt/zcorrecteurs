@@ -67,8 +67,6 @@ function AjouterDictee(AjouterForm &$form)
 	else	$Dictee->etat = DICTEE_BROUILLON;
 
 	$tags = $data['tags'];
-	$data['auteur_id'] = (int)$data['auteur']; unset($data['auteur']);
-	$data['auteur_id'] = ($data['auteur_id'] == 0) ? null : $data['auteur_id'];
 
 	unset($data['publique'], $data['lecture_rapide'], $data['lecture_lente'],
 		$data['MAX_FILE_SIZE'], $data['tags'], $data['icone']);
@@ -142,9 +140,6 @@ function EditerDictee(Dictee $Dictee, AjouterForm &$Form)
 		->where('dt.dictee_id = ?', $Dictee->id)
 		->execute();
 	TaggerDictee($Dictee, $data['tags']);
-
-	$data['auteur_id'] = (int)$data['auteur']; unset($data['auteur']);
-	$data['auteur_id'] = ($data['auteur_id'] == 0) ? null : $data['auteur_id'];
 
 	unset($data['publique'], $data['lecture_rapide'], $data['lecture_lente'],
 		$data['MAX_FILE_SIZE'], $data['tags'], $data['icone']);
@@ -293,10 +288,9 @@ function DicteesEffacerCache()
 function Dictee($id)
 {
 	$Dictee = Doctrine_Query::create()
-		->select('d.*, u.id, u.pseudo, a.nom, a.prenom')
+		->select('d.*, u.id, u.pseudo')
 		->from('Dictee d')
 		->leftJoin('d.Utilisateur u')
-		->leftJoin('d.Auteur a')
 		->where('d.id = ?', $id)
 		->execute();
 	$Dictee = $Dictee ? $Dictee[0] : null;
