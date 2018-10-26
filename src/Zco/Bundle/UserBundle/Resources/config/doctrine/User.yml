@@ -19,8 +19,6 @@ Utilisateur:
     utilisateur_ip:                   { type: integer(11), name: utilisateur_ip as ip }
     utilisateur_titre:                { type: string(50), name: utilisateur_titre as title }
     utilisateur_adresse:              { type: string(80), name: utilisateur_adresse as address }
-    utilisateur_latitude:             { type: 'decimal(10, 6)', name: utilisateur_latitude as latitude }
-    utilisateur_longitude:            { type: 'decimal(10, 6)', name: utilisateur_longitude as longitude }
     utilisateur_nb_sanctions:         { type: integer(1), name: utilisateur_nb_sanctions as nb_sanctions }
     utilisateur_pourcentage:          { type: integer(1), name: utilisateur_pourcentage as percentage }
     utilisateur_afficher_mail:        { type: boolean, name: utilisateur_afficher_mail as email_displayed }

@@ -44,7 +44,6 @@
     "knplabs/knp-menu-bundle": "1.1.2",
     "knplabs/knp-paginator-bundle": "^2.5",
     "friendsofsymfony/jsrouting-bundle": "^1.6.0",
-    "willdurand/geocoder-bundle": "2.0.0",
     "rkmax/sphinx-client": "^1.0.1",
     "scrivo/highlight.php": "^9.0",
     "sendgrid/sendgrid": "^7.2"

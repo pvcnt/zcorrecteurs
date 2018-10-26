@@ -240,7 +240,7 @@ class DefaultController extends Controller
 	{
 		$user = $this->getEditableUser($id);
 		$own  = $user->getId() == $_SESSION['id'];
-		$form = $this->createForm(new EditProfileType($this->get('bazinga_geocoder.geocoder')), $user);
+		$form = $this->createForm(new EditProfileType(), $user);
 
 		if ('POST' === $request->getMethod())
 		{

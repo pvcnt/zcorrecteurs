@@ -41,7 +41,6 @@ class AppKernel extends Kernel
             new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
-            new Bazinga\Bundle\GeocoderBundle\BazingaGeocoderBundle(),
 
             // Infrastructure bundles.
             new Zco\Bundle\CoreBundle\ZcoCoreBundle(),
