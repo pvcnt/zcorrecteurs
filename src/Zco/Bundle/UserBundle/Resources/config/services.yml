@@ -24,10 +24,6 @@ services:
         class:     Zco\Bundle\UserBundle\User\User
         arguments: ["@event_dispatcher"]
 
-    zco_user.manager.user:
-        class: Zco\Bundle\UserBundle\Entity\UserManager
-        arguments: ['@zco_doctrine1.connection']
-
     zco_user.manager.ip:
         class: Zco\Bundle\UserBundle\Entity\IpManager
         arguments: ['@zco_doctrine1.connection', '@zco_core.cache']

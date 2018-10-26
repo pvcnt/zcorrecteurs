@@ -25,6 +25,7 @@ class DetailMessagesAction extends ForumActions
 		//Inclusion des modèles
 		include(dirname(__FILE__).'/../modeles/sujets.php');
 		include(dirname(__FILE__).'/../modeles/membres.php');
+        include_once(__DIR__.'/../../UserBundle/modeles/utilisateurs.php');
 
 		$InfosUtilisateur = InfosUtilisateur($_GET['id']);
 		if(empty($InfosUtilisateur))

@@ -243,6 +243,7 @@ function RepondreDictee(Dictee $Dictee, RepondreForm &$Form)
         'texte' => $data['commentaire'],
     ));
 
+    include_once(__DIR__.'/../../UserBundle/modeles/utilisateurs.php');
     AjouterMPAuto($titre,
         $Dictee->titre,
         $Dictee->utilisateur_id,

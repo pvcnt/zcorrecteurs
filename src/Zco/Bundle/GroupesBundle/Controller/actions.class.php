@@ -227,6 +227,7 @@ class GroupesActions extends Controller
         }
 		Page::$titre = 'Changer un membre de groupe';
 
+        include_once(__DIR__.'/../../UserBundle/modeles/utilisateurs.php');
 		if(!empty($_POST['pseudo']))
 		{
 			$InfosUtilisateur = InfosUtilisateur($_POST['pseudo']);

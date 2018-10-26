@@ -127,19 +127,6 @@ class AppKernel extends Kernel
     /**
      * {@inheritdoc}
      */
-    public function boot()
-    {
-        parent::boot();
-        foreach ($this->bundles as $name => $bundle) {
-            if ($bundle instanceof AbstractBundle) {
-                $bundle->preload();
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getRootDir()
     {
         // Default implementation does exactly this... but through reflection. This should be faster.

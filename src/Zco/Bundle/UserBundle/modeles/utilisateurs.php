@@ -20,53 +20,6 @@
  */
 
 /**
- * Modifie le profil d'un membre.
- *
- * @param integer $id					L'id de l'utilisateur.
- * @param array $params					Les champs à modifier (champ => nouvelle_valeur).
- */
-function ModifierUtilisateur($id, $params)
-{
-	$dbh = Doctrine_Manager::connection()->getDbh();
-	$set = array();
-	$bind = array();
-
-	foreach($params as $cle => $valeur)
-	{
-		//Cas particulier de la date de naissance
-		if($cle == 'date_naissance')
-		{
-			$set[] = 'utilisateur_date_naissance = STR_TO_DATE(:date_naissance, \'%d/%m/%Y\')';
-			$bind['date_naissance'] = $valeur;
-		}
-		else
-		{
-			if($valeur === 'NOW()')
-			{
-				$set[] = 'utilisateur_'.$cle.' = NOW()';
-			}
-			else
-			{
-				$set[] = 'utilisateur_'.$cle.' = :'.$cle;
-
-				if(is_bool($valeur))
-					$valeur = $valeur ? 1 : 0;
-				$bind[$cle] = $valeur;
-			}
-		}
-	}
-
-	//Exécution de la requête
-	$stmt = $dbh->prepare("UPDATE zcov2_utilisateurs " .
-			"SET ".implode(', ', $set)." " .
-			"WHERE utilisateur_id = :id");
-	$stmt->bindParam(':id', $id);
-	foreach($bind as $cle => &$valeur)
-		$stmt->bindParam(':'.$cle, $valeur);
-	$stmt->execute();
-}
-
-/**
  * Envoie un MP automatique (envoyé par le bot zGardien).
  *
  * @param  string $titre Titre du MP
@@ -148,38 +101,6 @@ function AjouterMPAuto($titre, $SousTitre, $participants, $message)
 }
 
 /**
- * Vérifie l'existence d'un membre à partir de son pseudo ou de son id.
- *
- * @param  string|integer $search Identifiant du membre ou pseudo
- * @return boolean
- */
-function ChercherExistenceUtilisateur($search)
-{
-	$dbh = Doctrine_Manager::connection()->getDbh();
-
-	if (is_numeric($search))
-	{
-		$stmt = $dbh->prepare("SELECT COUNT(*) AS nb
-		FROM zcov2_utilisateurs
-		WHERE utilisateur_id = :id");
-		$stmt->bindParam(':id',  $search);
-		$stmt->execute();
-		
-		return $stmt->fetchColumn() > 0;
-	}
-	else
-	{
-		$stmt = $dbh->prepare("SELECT COUNT(*) AS nb
-		FROM zcov2_utilisateurs
-		WHERE utilisateur_pseudo = :pseudo");
-		$stmt->bindParam(':pseudo',  $search);
-		$stmt->execute();
-		
-		return $stmt->fetchColumn() > 0;
-	}
-}
-
-/**
  * Récupère les informations sur un membre à partir de son pseudo ou de son id.
  *
  * @param  string|integer $search Identifiant du membre ou pseudo
@@ -219,43 +140,6 @@ function InfosUtilisateur($search)
 		
 		return $stmt->fetch(PDO::FETCH_ASSOC);
 	}
-}
-
-//Cherche les membres ayant un mail spécifié
-function ChercherAdresseMail($mail, $type = 'strict')
-{
-	$dbh = Doctrine_Manager::connection()->getDbh();
-	$mail = str_replace('%', '\%', $mail);
-
-	if($type == 'debut')
-	{
-		$where = 'LIKE';
-		$mail = $mail.'%';
-	}
-	elseif($type == 'fin')
-	{
-		$where = 'LIKE';
-		$mail = '%'.$mail;
-	}
-	elseif($type == 'contenu')
-	{
-		$where = 'LIKE';
-		$mail = '%'.$mail.'%';
-	}
-	else
-		$where = '=';
-
-	$stmt = $dbh->prepare("SELECT utilisateur_id, utilisateur_pseudo, utilisateur_email, utilisateur_date_inscription, utilisateur_ip, " .
-			"groupe_nom, groupe_class " .
-			"FROM zcov2_utilisateurs " .
-			"LEFT JOIN zcov2_groupes ON utilisateur_id_groupe = groupe_id " .
-			"WHERE utilisateur_email ".$where." :mail " .
-			"ORDER BY utilisateur_pseudo ASC");
-			$stmt->bindParam(':mail', $mail);
-
-	$stmt->execute();
-
-	return $stmt->fetchAll();
 }
 
 /**

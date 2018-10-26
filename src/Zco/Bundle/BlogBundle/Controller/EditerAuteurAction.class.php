@@ -32,9 +32,10 @@ class EditerAuteurAction extends BlogActions
 {
 	public function execute()
 	{
+        include_once(__DIR__.'/../../UserBundle/modeles/utilisateurs.php');
+
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))
 		{
-			//On récupère des infos sur le billet
 			$ret = $this->initBillet();
 			if ($ret instanceof Response)
 				return $ret;
@@ -62,7 +63,7 @@ class EditerAuteurAction extends BlogActions
 						}
 						else
 						{
-							return redirect('Ce membre n\'existe pas.', 'admin-billet-'.$_GET['id'].'.html', MSG_ERROR, -1);
+							return redirect('Ce membre n\'existe pas.', 'admin-billet-'.$_GET['id'].'.html', MSG_ERROR);
 						}
 					}
 

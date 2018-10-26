@@ -297,9 +297,8 @@ function ChangerGroupeUtilisateur()
 **/
 function AjouterGroupeHistorique($id, $groupe)
 {
-	// On récupère l'ancien groupe du membre
+    include_once(__DIR__.'/../../UserBundle/modeles/utilisateurs.php');
 	$InfoMembre = InfosUtilisateur($id);
-
 	AjouterGroupeHistoriqueUtilisateur($id, $groupe, $InfoMembre['utilisateur_id_groupe']);
 }
 

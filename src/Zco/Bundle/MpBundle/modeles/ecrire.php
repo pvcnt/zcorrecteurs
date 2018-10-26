@@ -190,6 +190,7 @@ function RevueMP()
 
 function NotifierParticipant($mp, $participant, $titre)
 {
+    include_once(__DIR__.'/../../UserBundle/modeles/utilisateurs.php');
 	$infosParticipant = InfosUtilisateur($participant);
 	if($infosParticipant['preference_activer_email_mp'])
 	{

@@ -34,6 +34,7 @@ class BilletsRedigesAction extends BlogActions
 
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))
 		{
+            include_once(__DIR__.'/../../UserBundle/modeles/utilisateurs.php');
 			$InfosUtilisateur = InfosUtilisateur($_GET['id']);
 			if(empty($InfosUtilisateur))
 				throw new NotFoundHttpException();

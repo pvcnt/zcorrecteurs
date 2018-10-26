@@ -65,6 +65,7 @@ class SupprimerAuteurAction extends BlogActions
                             'auteurs-'.$_GET['id'].'.html',
                             MSG_ERROR
                         );
+                    include_once(__DIR__.'/../../UserBundle/modeles/utilisateurs.php');
 					$InfosUtilisateur = InfosUtilisateur($_GET['id2']);
 					$this->setRef('InfosUtilisateur', $InfosUtilisateur);
 

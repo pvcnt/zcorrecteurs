@@ -34,6 +34,7 @@ class SearchService
         }
 
         if ($query->getAuthor()) {
+            include_once(__DIR__.'/../../UserBundle/modeles/utilisateurs.php');
             $user = InfosUtilisateur($query->getAuthor());
             $query->setAuthor($user ? (int)$user['utilisateur_id'] : -1);
         }

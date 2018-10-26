@@ -71,6 +71,7 @@ class AdminBilletAction extends BlogActions
 			//--- Si on veut ajouteur un auteur ---
 			if(isset($_POST['ajouter_auteur']) && ($this->createur == true || verifier('blog_toujours_createur')))
 			{
+                include_once(__DIR__.'/../../UserBundle/modeles/utilisateurs.php');
 				$InfosUtilisateur = InfosUtilisateur($_POST['pseudo']);
 				if(!empty($InfosUtilisateur))
 				{
@@ -79,7 +80,7 @@ class AdminBilletAction extends BlogActions
 				}
 				else
 				{
-					return redirect('Ce membre n\'existe pas.', 'admin-billet-'.$_GET['id'].'.html', MSG_ERROR, -1);
+					return redirect('Ce membre n\'existe pas.', 'admin-billet-'.$_GET['id'].'.html', MSG_ERROR);
 				}
 			}
 
@@ -91,11 +92,11 @@ class AdminBilletAction extends BlogActions
 				if($urlimage[0] === false)
 				{
 					if($urlimage[1] == 0)
-						return redirect('Erreur : pas de fichier à uploader ?', '', MSG_ERROR, -1); // pas de fichier à uploader
+						return redirect('Erreur : pas de fichier à uploader ?', '', MSG_ERROR); // pas de fichier à uploader
 					elseif($urlimage[1] == 1)
-						return redirect('Erreur serveur : transfert bloqué à cause de l\'extension.', '', MSG_ERROR, -1); // extension inconnue
+						return redirect('Erreur serveur : transfert bloqué à cause de l\'extension.', '', MSG_ERROR); // extension inconnue
 					elseif($urlimage[1] == 2)
-						return redirect('Erreur serveur : impossible d\'enregistrer l\'image.', '', MSG_ERROR, -1); // imagepng fail
+						return redirect('Erreur serveur : impossible d\'enregistrer l\'image.', '', MSG_ERROR); // imagepng fail
 					else
 						exit('unknown code');
 				}

@@ -32,13 +32,6 @@ use Symfony\Component\HttpKernel\Bundle\Bundle as BaseBundle;
 abstract class AbstractBundle extends BaseBundle
 {
 	/**
-	 * Méthode appelée sur tous les bundles après qu'ils aient tous booté.
-	 */
-	public function preload()
-	{
-	}
-	
-	/**
 	 * Méthode appelée sur le bundle élu par le système de routing.
 	 */
 	public function load()

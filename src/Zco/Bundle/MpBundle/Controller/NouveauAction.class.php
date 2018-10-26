@@ -55,6 +55,7 @@ class NouveauAction extends Controller
             if (empty($_POST['titre']) OR (empty($_POST['pseudo']) AND empty($_POST['destinataires'])) OR empty($_POST['texte'])) {
                 if (!empty($_GET['id']) AND is_numeric($_GET['id'])) {
                     if ($_GET['id'] != $_SESSION['id']) {
+                        include_once(__DIR__.'/../../UserBundle/modeles/utilisateurs.php');
                         $Pseudo = InfosUtilisateur($_GET['id']);
                         if (!$Pseudo['utilisateur_id'])
                             return redirect('Ce membre n\'existe pas ou il participe déjà au MP.', '', MSG_ERROR);

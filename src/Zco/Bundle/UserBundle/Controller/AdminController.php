@@ -28,11 +28,9 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zco\Bundle\UserBundle\Form\Handler\AnswerNewUsernameHandler;
 use Zco\Bundle\UserBundle\Form\Handler\PunishmentHandler;
-use Zco\Bundle\UserBundle\Form\Handler\WarningHandler;
 use Zco\Bundle\UserBundle\Form\Type\AnswerNewUsernameType;
 use Zco\Bundle\UserBundle\Form\Type\BannedEmailType;
 use Zco\Bundle\UserBundle\Form\Type\PunishmentType;
-use Zco\Bundle\UserBundle\Form\Type\WarningType;
 
 /**
  *

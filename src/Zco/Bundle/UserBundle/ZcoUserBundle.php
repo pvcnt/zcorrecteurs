@@ -21,19 +21,11 @@
 
 namespace Zco\Bundle\UserBundle;
 
-use Zco\Component\HttpKernel\Bundle\AbstractBundle;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * Fournit toutes les fonctions liées à la gestion et l'administration des 
- * membres ainsi qu'à la gestion des sessions (connexion automatique, bannissement, 
- * mise à jour des connectés, etc.).
- * 
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class ZcoUserBundle extends AbstractBundle
+class ZcoUserBundle extends Bundle
 {
-	public function preload()
-	{
-		include_once(__DIR__.'/modeles/utilisateurs.php');
-	}
 }

@@ -73,8 +73,10 @@ class RepondreAction extends Controller
 							'nom'          => $InfosCandidature['recrutement_nom'],
 							'id'           => $InfosCandidature['recrutement_id'],
 						));
-						
+
+                        include_once(__DIR__.'/../../UserBundle/modeles/utilisateurs.php');
 						AjouterMPAuto('[Recrutement] Vous avez été accepté !', '', $InfosCandidature['utilisateur_id'], $message);
+
 						return redirect('La candidature a bien été acceptée.', 'recrutement-'.$InfosCandidature['recrutement_id'].'.html#candidatures');
 					}
 					else
@@ -89,7 +91,9 @@ class RepondreAction extends Controller
 							'id'           => $InfosCandidature['recrutement_id'],
 						));
 
+                        include_once(__DIR__.'/../../UserBundle/modeles/utilisateurs.php');
 						AjouterMPAuto('[Recrutement] Vous avez été refusé', '', $InfosCandidature['utilisateur_id'], $message);
+
 						return redirect('La candidature a bien été refusée.', 'recrutement-'.$InfosCandidature['recrutement_id'].'.html#candidatures');
 					}
 				}
@@ -134,6 +138,7 @@ class RepondreAction extends Controller
 						'explicatif'   => (!empty($_POST['explicatif'])) ? '<citation nom="Explication">'.$_POST['explicatif'].'</citation>' : ''
 					));
 
+                    include_once(__DIR__.'/../../UserBundle/modeles/utilisateurs.php');
 					AjouterMPAuto('[Recrutement] Un test est requis', '', $InfosCandidature['utilisateur_id'], $message);
 
 					TesterCandidature($_GET['id'], $nom_fichier);
