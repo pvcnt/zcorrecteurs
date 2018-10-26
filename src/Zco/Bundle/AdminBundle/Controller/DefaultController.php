@@ -48,7 +48,7 @@ class DefaultController extends Controller
             throw new AccessDeniedHttpException();
         }
 
-        $this->get('zco_admin.manager')->refresh();
+        $this->get('zco.admin')->refreshAll();
 
         Page::$titre = 'Accueil de l\'administration';
         fil_ariane('Administration');

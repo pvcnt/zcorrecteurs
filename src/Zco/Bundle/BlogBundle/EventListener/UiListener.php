@@ -24,6 +24,7 @@ namespace Zco\Bundle\BlogBundle\EventListener;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zco\Bundle\AdminBundle\AdminEvents;
+use Zco\Bundle\BlogBundle\Admin\ArticlesPendingTask;
 use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
 
 /**
@@ -58,7 +59,7 @@ class UiListener implements EventSubscriberInterface
 			->getChild('Contenu')
 			->getChild('Blog');
 		
-		$tasks = $this->container->get('zco_admin.manager')->get('blog');
+		$tasks = $this->container->get('zco.admin')->get(ArticlesPendingTask::class);
 		$tab->addChild('Voir les billets proposés', array(
 			'label' => 'Il y a '.$tasks.' billet'.pluriel($tasks).' proposé'.pluriel($tasks),
 			'uri' => '/blog/propositions.html',

@@ -19,26 +19,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Zco\Bundle\MpBundle\Admin\PmAlertsPendingTask;
+namespace Zco\Bundle\AdminBundle;
 
 /**
- * Contrôleur gérant le marquage en résolues de toutes les alertes.
- *
- * @author DJ Fox <djfox@zcorrecteurs.fr>
+ * A pending administrative task that is waiting some action to be resolved.
+ * Those tasks are shown in the navbar and highlighted in the admin home.
  */
-class MarquerAlertesResoluesAction extends Controller
+interface PendingTask
 {
-    public function execute()
-    {
-        if (!verifier('mp_alertes')) {
-            throw new AccessDeniedHttpException();
-        }
-        include(BASEPATH . '/src/Zco/Bundle/MpBundle/modeles/alertes.php');
-        ResoudreAlertes();
-        $this->get('zco.admin')->refresh(PmAlertsPendingTask::class);
+    /**
+     * Count how many actions are pending. The result of this call will be
+     * cached later on, implementations do not have to handle this here.
+     *
+     * @return int
+     */
+    public function count(): int;
 
-        return redirect('Les alertes ont bien été marquées comme résolues.', '/admin/index.html');
-    }
+    /**
+     * Return a list of all the credentials the user must have to have be
+     * interested in this task.
+     *
+     * @return string[]
+     */
+    public function getCredentials(): array;
 }

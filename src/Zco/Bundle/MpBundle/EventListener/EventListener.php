@@ -27,6 +27,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Zco\Bundle\AdminBundle\AdminEvents;
 use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
+use Zco\Bundle\MpBundle\Admin\PmAlertsPendingTask;
 
 class EventListener implements EventSubscriberInterface
 {
@@ -48,9 +49,6 @@ class EventListener implements EventSubscriberInterface
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
-        //Enregistrement du compteur de tâches admin.
-        $this->container->get('zco_admin.manager')->register('alertesMP', 'mp_alertes');
-
         if (!verifier('connecte')) {
             return;
         }
@@ -79,7 +77,7 @@ class EventListener implements EventSubscriberInterface
             ->getChild('Communauté')
             ->getChild('Messagerie privée');
 
-        $NombreAlertesMP = $this->container->get('zco_admin.manager')->get('alertesMP');
+        $NombreAlertesMP = $this->container->get('zco.admin')->get(PmAlertsPendingTask::class);
 
         $tab->addChild('Voir les alertes non résolues', array(
             'label' => 'Il y a ' . $NombreAlertesMP . ' alerte' . pluriel($NombreAlertesMP) . ' non résolue' . pluriel($NombreAlertesMP),

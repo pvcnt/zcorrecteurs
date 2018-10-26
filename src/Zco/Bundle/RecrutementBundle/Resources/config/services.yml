@@ -5,3 +5,8 @@ services:
             - [setContainer, ["@service_container"]]
         tags:
             - { name: kernel.event_subscriber }
+
+    zco.admin_task.applications:
+        class: Zco\Bundle\RecrutementBundle\Admin\ApplicationsPendingTask
+        tags:
+        - { name: zco.admin_task }

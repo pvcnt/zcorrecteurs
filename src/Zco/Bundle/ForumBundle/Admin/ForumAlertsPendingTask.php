@@ -19,26 +19,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Zco\Bundle\MpBundle\Admin\PmAlertsPendingTask;
+namespace Zco\Bundle\ForumBundle\Admin;
+
+use Zco\Bundle\AdminBundle\PendingTask;
 
 /**
- * Contrôleur gérant le marquage en résolues de toutes les alertes.
+ * Counts the number of non-resolved forum alerts.
  *
- * @author DJ Fox <djfox@zcorrecteurs.fr>
+ * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class MarquerAlertesResoluesAction extends Controller
+final class ForumAlertsPendingTask implements PendingTask
 {
-    public function execute()
+    public function count(): int
     {
-        if (!verifier('mp_alertes')) {
-            throw new AccessDeniedHttpException();
-        }
-        include(BASEPATH . '/src/Zco/Bundle/MpBundle/modeles/alertes.php');
-        ResoudreAlertes();
-        $this->get('zco.admin')->refresh(PmAlertsPendingTask::class);
+        return \Doctrine_Query::create()
+            ->select('COUNT(1)')
+            ->from('ForumAlerte')
+            ->where('resolu = ?', false)
+            ->execute(array(), \Doctrine_Core::HYDRATE_SINGLE_SCALAR);
+    }
 
-        return redirect('Les alertes ont bien été marquées comme résolues.', '/admin/index.html');
+    public function getCredentials(): array
+    {
+        return ['voir_alertes'];
     }
 }

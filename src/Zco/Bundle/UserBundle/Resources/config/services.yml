@@ -31,3 +31,8 @@ services:
     zco_user.manager.ip:
         class: Zco\Bundle\UserBundle\Entity\IpManager
         arguments: ['@zco_doctrine1.connection', '@zco_core.cache']
+
+    zco.admin_task.new_username:
+        class: Zco\Bundle\UserBundle\Admin\NewUsernamePendingTask
+        tags:
+        - { name: zco.admin_task }

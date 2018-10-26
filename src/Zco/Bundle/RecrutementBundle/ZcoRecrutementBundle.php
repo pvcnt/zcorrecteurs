@@ -27,16 +27,9 @@ use Zco\Component\HttpKernel\Bundle\AbstractBundle;
 
 class ZcoRecrutementBundle extends AbstractBundle
 {
-	public function preload()
-	{
-		//Enregistrement du compteur de tâches admin.
-		$this->container->get('zco_admin.manager')->register('recrutement', 'recrutements_repondre');
-	}
-	
 	public function load()
 	{
-		//Inclusion des modèles
-		include(__DIR__.'/modeles/candidatures.php');
+		include_once(__DIR__.'/modeles/candidatures.php');
 		include_once(__DIR__.'/modeles/recrutements.php');
 
 		$this->container->get('event_dispatcher')->addListener(TemplatingEvents::FILTER_VARIABLES, function(FilterVariablesEvent $event)

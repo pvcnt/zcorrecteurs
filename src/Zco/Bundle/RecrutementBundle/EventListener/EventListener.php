@@ -27,6 +27,7 @@ use Zco\Bundle\AdminBundle\AdminEvents;
 use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
 use Zco\Bundle\PagesBundle\Event\FilterSitemapEvent;
 use Zco\Bundle\PagesBundle\PagesEvents;
+use Zco\Bundle\RecrutementBundle\Admin\ApplicationsPendingTask;
 
 /**
  * Observateur principal pour le module de recrutement.
@@ -55,12 +56,9 @@ class EventListener implements EventSubscriberInterface
 	 */
 	public function onFilterAdmin(FilterMenuEvent $event)
 	{
-		$tab = $event
-		    ->getRoot()
-		    ->getChild('Communauté')
-		    ->getChild('Recrutements');
+		$tab = $event->getRoot()->getChild('Communauté')->getChild('Recrutements');
 		
-		$nombreCandidatures = $this->container->get('zco_admin.manager')->get('recrutement');
+		$nombreCandidatures = $this->container->get('zco.admin')->get(ApplicationsPendingTask::class);
 		
 		$tab->addChild('Ajouter un recrutement', array(
 			'credentials' => 'recrutements_editer',

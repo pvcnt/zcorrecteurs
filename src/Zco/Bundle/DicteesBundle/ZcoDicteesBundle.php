@@ -25,11 +25,6 @@ use Zco\Component\HttpKernel\Bundle\AbstractBundle;
 
 class ZcoDicteesBundle extends AbstractBundle
 {
-	public function preload()
-	{
-		$this->container->get('zco_admin.manager')->register('dictees', 'dictees_publier');
-	}
-	
 	public function load()
 	{
 		include(__DIR__.'/modeles/dictees.php');

@@ -34,7 +34,6 @@ class ZcoUserBundle extends AbstractBundle
 {
 	public function preload()
 	{
-		$this->container->get('zco_admin.manager')->register('changementsPseudo', 'membres_valider_ch_pseudos');
 		include_once(__DIR__.'/modeles/utilisateurs.php');
 	}
 }

@@ -21,12 +21,8 @@
 
 namespace Zco\Bundle\ForumBundle;
 
-use Zco\Component\HttpKernel\Bundle\AbstractBundle;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class ZcoForumBundle extends AbstractBundle
+class ZcoForumBundle extends Bundle
 {
-	public function preload()
-	{
-		$this->container->get('zco_admin.manager')->register('alertes', 'voir_alertes');
-	}
 }

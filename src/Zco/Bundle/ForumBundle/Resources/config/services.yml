@@ -5,3 +5,8 @@ services:
             - [setContainer, ["@service_container"]]
         tags:
             - { name: kernel.event_subscriber }
+
+    zco.admin_task.forum_alerts:
+        class: Zco\Bundle\ForumBundle\Admin\ForumAlertsPendingTask
+        tags:
+        - { name: zco.admin_task }

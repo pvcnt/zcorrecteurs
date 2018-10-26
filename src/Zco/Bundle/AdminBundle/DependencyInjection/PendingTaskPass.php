@@ -19,26 +19,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Zco\Bundle\MpBundle\Admin\PmAlertsPendingTask;
+namespace Zco\Bundle\AdminBundle\DependencyInjection;
 
-/**
- * Contrôleur gérant le marquage en résolues de toutes les alertes.
- *
- * @author DJ Fox <djfox@zcorrecteurs.fr>
- */
-class MarquerAlertesResoluesAction extends Controller
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\Reference;
+
+final class PendingTaskPass implements CompilerPassInterface
 {
-    public function execute()
+    public function process(ContainerBuilder $container)
     {
-        if (!verifier('mp_alertes')) {
-            throw new AccessDeniedHttpException();
+        if (!$container->has('zco.admin')) {
+            return;
         }
-        include(BASEPATH . '/src/Zco/Bundle/MpBundle/modeles/alertes.php');
-        ResoudreAlertes();
-        $this->get('zco.admin')->refresh(PmAlertsPendingTask::class);
 
-        return redirect('Les alertes ont bien été marquées comme résolues.', '/admin/index.html');
+        $definition = $container->findDefinition('zco.admin');
+        $taggedServices = $container->findTaggedServiceIds('zco.admin_task');
+
+        foreach ($taggedServices as $id => $tags) {
+            $definition->addMethodCall('addTask', array(new Reference($id)));
+        }
     }
 }

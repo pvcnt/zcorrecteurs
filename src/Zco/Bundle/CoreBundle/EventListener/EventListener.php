@@ -121,7 +121,7 @@ class EventListener implements EventSubscriberInterface
         $nbOnline = (int)$this->container->get('zco_core.cache')->get('nb_connectes');
         $event->set('nbOnline', $nbOnline);
 
-        $adminCount = $this->container->get('zco_admin.manager')->count();
+        $adminCount = $this->container->get('zco.admin')->count();
         $event->set('adminCount', $adminCount);
     }
 }

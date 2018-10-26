@@ -21,14 +21,20 @@
 
 namespace Zco\Bundle\AdminBundle;
 
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Zco\Bundle\AdminBundle\DependencyInjection\PendingTaskPass;
 
 /**
- * Fournit une page recensant toutes les pages liées à des fonctionnalités 
- * d'administration du site.
- * 
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
 class ZcoAdminBundle extends Bundle
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function build(ContainerBuilder $container)
+    {
+        $container->addCompilerPass(new PendingTaskPass());
+    }
 }

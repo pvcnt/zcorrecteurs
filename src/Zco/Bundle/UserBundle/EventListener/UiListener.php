@@ -25,6 +25,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zco\Bundle\AdminBundle\AdminEvents;
 use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
+use Zco\Bundle\UserBundle\Admin\NewUsernamePendingTask;
 use Zco\Bundle\UserBundle\Form\Type\FormLoginType;
 
 /**
@@ -57,7 +58,7 @@ class UiListener implements EventSubscriberInterface
         $urlGenerator = $this->container->get('router');
         $tab = $event->getRoot()->getChild('Communauté')->getChild('Membres');
 
-        $tasks = $this->container->get('zco_admin.manager')->get('changementsPseudo');
+        $tasks = $this->container->get('zco.admin')->get(NewUsernamePendingTask::class);
         $tab->addChild('Voir les changements de pseudo en attente', array(
             'label' => 'Il y a ' . $tasks . ' changement' . pluriel($tasks) . ' de pseudo' . pluriel($tasks) . ' en attente',
             'uri' => $urlGenerator->generate('zco_user_admin_newPseudoQueries'),

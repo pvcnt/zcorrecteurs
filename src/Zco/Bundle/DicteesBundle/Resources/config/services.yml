@@ -5,3 +5,8 @@ services:
             - [setContainer, ["@service_container"]]
         tags:
             - { name: kernel.event_subscriber }
+
+    zco.admin_task.dictations:
+        class: Zco\Bundle\DicteesBundle\Admin\DictationsPendingTask
+        tags:
+        - { name: zco.admin_task }

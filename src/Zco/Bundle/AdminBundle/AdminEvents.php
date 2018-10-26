@@ -38,5 +38,4 @@ final class AdminEvents
      * @var string
      */
     const MENU = 'zco_admin.menu';
-
 }

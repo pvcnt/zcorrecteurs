@@ -25,15 +25,8 @@ use Zco\Component\HttpKernel\Bundle\AbstractBundle;
 
 class ZcoBlogBundle extends AbstractBundle
 {
-	public function preload()
-	{
-		//Enregistrement des compteurs de tâches admin.
-		$this->container->get('zco_admin.manager')->register('blog', 'blog_valider');
-	}
-	
 	public function load()
 	{
-		//Inclusion des modèles
 		include_once(__DIR__.'/modeles/blog.php');
 		include_once(__DIR__.'/modeles/commentaires.php');
 		include_once(__DIR__.'/modeles/versions.php');

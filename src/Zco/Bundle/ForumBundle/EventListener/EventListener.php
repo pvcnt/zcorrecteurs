@@ -25,6 +25,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zco\Bundle\AdminBundle\AdminEvents;
 use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
+use Zco\Bundle\ForumBundle\Admin\ForumAlertsPendingTask;
 use Zco\Bundle\PagesBundle\Event\FilterSitemapEvent;
 use Zco\Bundle\PagesBundle\PagesEvents;
 use Zco\Component\Templating\Event\FilterResourcesEvent;
@@ -79,7 +80,7 @@ class EventListener implements EventSubscriberInterface
 		    ->getChild('Contenu')
 		    ->getChild('Forums');
 		
-		$tasks = $this->container->get('zco_admin.manager')->get('alertes');
+		$tasks = $this->container->get('zco.admin')->get(ForumAlertsPendingTask::class);
 		$tab->addChild('Voir les alertes non résolues', array(
 			'label' => 'Il y a '.$tasks.' alerte non résolue'.pluriel($tasks),
 			'uri' => '/forum/alertes.html',

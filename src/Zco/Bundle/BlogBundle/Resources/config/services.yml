@@ -12,3 +12,8 @@ services:
             - [setContainer, ["@service_container"]]
         tags:
             - { name: kernel.event_subscriber }
+
+    zco.admin_task.articles:
+        class: Zco\Bundle\BlogBundle\Admin\ArticlesPendingTask
+        tags:
+        - { name: zco.admin_task }

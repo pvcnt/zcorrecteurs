@@ -25,6 +25,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zco\Bundle\AdminBundle\AdminEvents;
 use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
+use Zco\Bundle\DicteesBundle\Admin\DictationsPendingTask;
 use Zco\Bundle\DicteesBundle\Domain\Dictation;
 use Zco\Bundle\PagesBundle\Event\FilterSitemapEvent;
 use Zco\Bundle\PagesBundle\PagesEvents;
@@ -66,7 +67,7 @@ class EventListener implements EventSubscriberInterface
 			->getChild('Contenu')
 			->getChild('Dictées');
 		
-		$NombreDicteesProposees = $this->container->get('zco_admin.manager')->get('dictees');
+		$NombreDicteesProposees = $this->container->get('zco.admin')->get(DictationsPendingTask::class);
 		
 		$tab->addChild('Voir les dictées proposées', array(
 			'label' => 'Il y a '.$NombreDicteesProposees.' dictée'.pluriel($NombreDicteesProposees).' proposée'.pluriel($NombreDicteesProposees),
