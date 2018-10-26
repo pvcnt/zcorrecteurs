@@ -28,12 +28,11 @@ class DicteeTable extends Doctrine_Table implements NamedDoctrineTableInterface
 	public function getTags(Dictee $Dictee)
 	{
 		$dbh = Doctrine_Manager::connection()->getDbh();
-		$q = $dbh->prepare('SELECT t.id, t.nom, t.couleur, t.description, '
-			.'t.couleur <> \'\' AND t.couleur IS NOT NULL AS coul '
+		$q = $dbh->prepare('SELECT t.id, t.nom '
 			.'FROM zcov2_dictees_tags dt '
 			.'LEFT JOIN zcov2_tags t ON t.id = dt.tag_id '
 			.'WHERE dt.dictee_id = ? '
-			.'ORDER BY coul DESC, t.nom ASC');
+			.'ORDER BY t.nom ASC');
 		$q->execute(array($Dictee->id));
 
 		$o = array();
@@ -47,15 +46,6 @@ class DicteeTable extends Doctrine_Table implements NamedDoctrineTableInterface
 			$o[] = $out;
 		}
 		return $o;
-
-		/*return Doctrine_Query::create()
-			->select('dt.tag_id, t.nom, t.couleur, t.description)
-			->from('DicteeTag dt')
-			->leftJoin('dt.Tag t')
-			->where('dt.dictee_id = ?', $Dictee->id)
-			->orderBy('coul DESC, t.nom ASC')
-			->execute();
-		*/
 	}
 	
 	/**

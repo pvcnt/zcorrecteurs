@@ -101,7 +101,7 @@ class AjouterForm extends Form
 		$this->addWidget('auteur_prenom', new Widget_Input_Text(array(), array('maxlength' => 100)));
 		$this->addWidget('auteur_nom', new Widget_Input_Text(array(), array('maxlength' => 100)));
 		$this->addWidget('source', new Widget_Input_Text(array(), array('size' => 60, 'maxlength' => 255)));
-		$this->addWidget('tags', new Widget_Tags);
+		$this->addWidget('tags', new Widget_Input_Text(array(), array('size' => 60)));
 		$this->addWidget('MAX_FILE_SIZE', new Widget_Input_Hidden);
 		$this->addWidget('icone', new Widget_Input_File);
 		$this->setHelpText('source', 'Indiquez l\'origine du texte.');

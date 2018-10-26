@@ -1,0 +1,4 @@
+services:
+  zco.repository.tags:
+    class: Zco\Bundle\ContentBundle\Domain\TagRepository
+    arguments: ['@zco_doctrine1.connection']

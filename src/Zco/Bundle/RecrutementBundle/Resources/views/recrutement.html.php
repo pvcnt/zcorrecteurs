@@ -18,7 +18,7 @@
 
 <p class="italic">
 	<a href="https://twitter.com/share?text=<?php echo urlencode(str_replace('zCorrecteurs', '@zCorrecteurs', $recrutement['nom'])) ?>&url=<?php echo URL_SITE ?>/recrutement/recrutement-<?php echo $recrutement['id'] ?>-<?php echo rewrite($recrutement['nom']) ?>.html">
-		<img src="/bundles/zcotwitter/img/oiseau_16px.png" alt="Twitter" />
+		<img src="/img/oiseau_16px.png" alt="Twitter" />
 		Faire passer le mot sur Twitter
 	</a>
 </p>

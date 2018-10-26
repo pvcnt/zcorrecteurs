@@ -91,14 +91,14 @@
 			</a> |
 			<?php } ?>
 			<a href="https://twitter.com/share?text=<?php echo urlencode('Venez découvrir cet article des @zCorrecteurs : ') ?>&url=<?php echo URL_SITE ?>/blog/billet-<?php echo $InfosBillet['blog_id'] ?>-<?php echo rewrite($InfosBillet['version_titre']) ?>.html" class="italique">
-                <img src="/bundles/zcotwitter/img/oiseau_16px.png" alt="Twitter" />
+                <img src="/img/oiseau_16px.png" alt="Twitter" />
                 Partager sur Twitter
             </a> |
 			<a href="#header">Remonter</a>
 		</span>
 
 		<?php foreach($ListerTags as $tag){ ?>
-		<a href="/tags/tag-<?php echo $tag['id']; ?>-<?php echo rewrite($tag['nom']); ?>.html" class="tag">
+		<a href="<?php echo $view['router']->path('zco_content_tag', ['id' => $tag['id'], 'slug' => rewrite($tag['nom'])]) ?>" class="tag">
 			<?php echo htmlspecialchars($tag['nom']); ?>
 		</a>
 		<?php } ?>

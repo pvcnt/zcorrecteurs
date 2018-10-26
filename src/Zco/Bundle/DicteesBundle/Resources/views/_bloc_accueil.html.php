@@ -59,9 +59,12 @@
 					   echo rewrite($DicteeHasard->titre) ?>.html">
 						<?php echo htmlspecialchars($DicteeHasard->titre) ?>
 					</a>
-				</li>
-				<li class="dictee-description">
-					<?php echo extrait(strip_tags($DicteeHasard->description), 200) ?>
+                    <?php if($dictee->description): ?>
+                        <span class="dictee-description">
+							—
+                            <?php echo extrait(strip_tags($dictee->description)) ?>
+						</span>
+                    <?php endif ?>
 				</li>
 			<?php endif ?>
 		</ul>

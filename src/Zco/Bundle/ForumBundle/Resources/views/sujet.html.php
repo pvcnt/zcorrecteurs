@@ -404,17 +404,6 @@ if($InfosSujet['sujet_sondage'] > 0)
 					</div>
 					<?php } ?>
 
-					<?php /*if(!empty($Tags) && $_GET['p'] == 1 && $clef == 0){ ?>
-					<div class="tags">
-						<span class="label">Mots-clés :</span>
-						<?php foreach($Tags as $tag){ ?>
-						<a href="/tags/tag-<?php echo $tag['tag_id']; ?>-<?php echo rewrite($tag['tag_nom']); ?>.html" class="tag">
-							<?php echo htmlspecialchars($tag['tag_nom']); ?>
-						</a>
-						<?php } ?>
-					</div>
-					<?php }*/ ?>
-
 					<?php if(!empty($valeur['auteur_message_signature'])){ ?>
 					<div class="signature"><hr />
 					<?php

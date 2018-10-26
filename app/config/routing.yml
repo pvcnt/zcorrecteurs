@@ -1,6 +1,9 @@
 zco_admin:
   resource: "@ZcoAdminBundle/Resources/config/routing.yml"
 
+zco_content:
+  resource: "@ZcoContentBundle/Resources/config/routing.yml"
+
 zco_file:
   resource: "@ZcoFileBundle/Resources/config/routing/index.yml"
 

@@ -213,7 +213,7 @@
 	</div>
 
 	<div class="UI_rollbox">
-		<div class="title"><?php echo count($ListerTagsBillet); ?> mot<?php echo pluriel(count($ListerTagsBillet)); ?> clé<?php echo pluriel(count($ListerTagsBillet)); ?></div>
+		<div class="title"><?php echo count($Tags); ?> mot<?php echo pluriel(count($Tags)); ?> clé<?php echo pluriel(count($Tags)); ?></div>
 
 		<div class="hidden">
 			<?php if($verifier_editer){ ?>

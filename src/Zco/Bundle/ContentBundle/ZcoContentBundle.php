@@ -19,10 +19,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\TagsBundle;
+namespace Zco\Bundle\ContentBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class ZcoTagsBundle extends Bundle
+/**
+ * @author vincent1870 <vincent@zcorrecteurs.fr>
+ */
+class ZcoContentBundle extends Bundle
 {
 }

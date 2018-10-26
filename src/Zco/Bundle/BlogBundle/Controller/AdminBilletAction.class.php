@@ -22,6 +22,7 @@
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\ContentBundle\Domain\TagRepository;
 
 /**
  * Contrôleur gérant la page de modification du billet.
@@ -44,17 +45,15 @@ class AdminBilletAction extends BlogActions
 			if (!$this->verifier_admin_billet)
 				throw new AccessDeniedHttpException();
 
-			$this->ListerTags = Doctrine_Core::getTable('Tag')->findAll();
-			$this->ListerTagsBillet = ListerTagsBillet($_GET['id']);
 			$Tags = array();
-			foreach($this->ListerTagsBillet as $tag)
+			foreach(ListerTagsBillet($_GET['id']) as $tag)
 				$Tags[$tag['id']] = mb_strtolower(htmlspecialchars($tag['nom']));
 			$this->setRef('Tags', $Tags);
 
 			//--- Si on veut modifier tous les tags ---
 			if(isset($_POST['tags']) && $this->verifier_editer)
 			{
-				$TagsExtraits = Doctrine_Core::getTable('Tag')->Extraire($_POST['tags'], false);
+				$TagsExtraits = TagRepository::instance()->extract($_POST['tags']);
 
 				foreach($TagsExtraits as $tag)
 				{

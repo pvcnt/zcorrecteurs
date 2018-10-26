@@ -54,7 +54,7 @@ Cette dictée n'est pas publique, vous ne pouvez donc pas la jouer.
 		<?php echo $view->render('ZcoDicteesBundle::_audio.html.php', compact('Dictee')) ?>
 
 		<label for="texte">Votre réponse :</label>
-		<textarea id="texte" name="texte" rows="10" style="width: 98%" spellcheck="false"/></textarea>
+		<textarea id="texte" name="texte" rows="10" style="width: 98%" spellcheck="false"></textarea>
 	</fieldset>
 	<p class="centre">
 	<input type="hidden" name="token" value="<?php echo $_SESSION['token'] ?>" />
@@ -71,15 +71,10 @@ $nb = 1;
 foreach ($Tags as $Tag)
 {
 	echo sprintf(
-		'<a href="/tags/tag-'.$Tag->Tag->id.'-'.rewrite($Tag->Tag->nom).'.html">'
+		'<a href="' . $view['router']->path('zco_content_tag', ['id' => $Tag->Tag->id, 'slug' => rewrite($Tag->Tag->nom)]) . '">'
 		.'<img src="/pix.gif" alt="" class="fff tag_blue"/> '
-		.'%s%s%s'.str_repeat('&nbsp;', 5).'%s</a>',
-
-		($Tag->Tag->couleur) ? '<span style="color: '
-		                       .htmlspecialchars($Tag->Tag->couleur).'">'
-		                     : '',
-		$Tag->Tag->nom,
-		($Tag->Tag->couleur) ? '</span>' : '',
+		.'%s'.str_repeat('&nbsp;', 5).'%s</a>',
+                $Tag->Tag->nom,
 		($nb && !($nb % $tagsParColonne)) ? '</div>'."\n\n".'<div style="float: left">'
 		                                  : '<br/>'."\n"
 	);
