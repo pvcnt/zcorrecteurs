@@ -44,7 +44,7 @@ class EventListener implements EventSubscriberInterface
     {
         $cache = $this->container->get('zco_core.cache');
         if (($html = $cache->get('header_citations')) === false) {
-            $citation = \Doctrine_Core::getTable('Citation')->CitationAleatoire();
+            $citation = $this->container->get('zco.repository.quotes')->getRandom();
             $html = '';
             if ($citation) {
                 $html = render_to_string('ZcoCitationsBundle::citation.html.php', compact('citation'));
@@ -57,17 +57,14 @@ class EventListener implements EventSubscriberInterface
 
     public function onFilterAdmin(FilterMenuEvent $event)
     {
-        $tab = $event
-            ->getRoot()
-            ->getChild('Contenu')
-            ->getChild('Citations');
+        if (!verifier('citations_modifier')) {
+            return;
+        }
+        $tab = $event->getRoot()->getChild('Contenu')->getChild('Citations');
 
-        $tab->addChild('Ajouter une citation', array(
-            'uri' => '/citations/ajouter.html'
-        ))->secure('citations_modifier');
-
+        $router = $this->container->get('router');
         $tab->addChild('Gérer les citations', array(
-            'uri' => '/citations/',
-        ))->secure('citations_modifier');
+            'uri' => $router->generate('zco_quote_index'),
+        ));
     }
 }

@@ -21,107 +21,143 @@
 
 namespace Zco\Bundle\CitationsBundle\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Zco\Bundle\CoreBundle\Generator\Generator;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\CitationsBundle\Domain\QuoteRepository;
+use Zco\Bundle\CitationsBundle\Form\Handler\QuoteHandler;
+use Zco\Bundle\CitationsBundle\Form\Type\QuoteType;
 
-/**
- * Contrôleur chargé de la gestion des citations tournant dans
- * l'en-tête du site.
- *
- * @author Zopieux
- */
-class DefaultController extends Generator
+class DefaultController extends Controller
 {
-	protected $modelName = 'Citation';
-
     /**
-     * Affichage de la liste des citations.
-     */
-	public function indexAction()
-	{
-	    if (!verifier('citations_modifier')) {
-	        throw new AccessDeniedHttpException();
-        }
-		return $this->executeList();
-	}
-
-    /**
-     * Ajout d'une nouvelle citation.
-     */
-	public function ajouterAction()
-	{
-        if (!verifier('citations_modifier')) {
-            throw new AccessDeniedHttpException();
-        }
-		return $this->executeNew();
-	}
-
-    /**
-     * Modification d'une citation existante.
-     */
-	public function modifierAction()
-	{
-        if (!verifier('citations_modifier')) {
-            throw new AccessDeniedHttpException();
-        }
-		return $this->executeEdit($_GET['id']);
-	}
-
-    /**
-     * Suppression d'une citation existante.
-     */
-	public function supprimerAction()
-	{
-        if (!verifier('citations_modifier')) {
-            throw new AccessDeniedHttpException();
-        }
-		return $this->executeDelete($_GET['id']);
-	}
-	
-	/**
-	 * Renvoie la requête de listage des citations à utiliser.
-	 *
-	 * @return \Doctrine_Query
-	 */
-	protected function getListQuery()
-	{
-		return \Doctrine_Core::getTable('Citation')
-			->getRequeteTableau();
-	}
-
-    /**
-     * Affiche/masque en lot des citations à afficher dans l'en-tête.
+     * Display all quotes.
      *
-     * @param  array $pks Liste des identifiants des citations à modifier
+     * @param Request $request
      * @return Response
      */
-	protected function batchAutorisations($pks)
-	{
-		$citations = \Doctrine_Query::create()
-			->from($this->modelName)
-			->whereIn('id', $pks)
-			->execute();
-		
-		foreach ($citations as $citation)
-		{
-			$citation['statut'] = !$citation['statut'];
-			$citation->save();
-		}
-		$this->get('zco_core.cache')->delete('header_citations');
-		
-		return redirect('Les autorisations sur les citations ont bien été modifiées.');
-	}
+    public function indexAction(Request $request)
+    {
+        if (!verifier('citations_modifier')) {
+            throw new AccessDeniedHttpException();
+        }
+        /** @var QuoteRepository $repository */
+        $repository = $this->get('zco.repository.quotes');
+        $page = $request->get('page', 1);
+        $quotes = $repository->findAll(30, ($page - 1) * 30);
+        $totalCount = $repository->countAll();
 
-    /**
-     * Supprime en lot des citations existantes.
-     *
-     * @param  array $pks Liste des identifiants des citations à supprimer
-     * @return Response
-     */
-	protected function batchDelete(array $pks)
-	{
-		$this->get('zco_core.cache')->delete('header_citations');
-		
-		return parent::batchDelete($pks);
-	}
+        $pages = liste_pages($page, ceil($totalCount / 30), 0, 0, $this->generateUrl('zco_quote_index') . '?page=%s');
+
+        \Page::$titre = 'Citations';
+        $this->get('zco_core.resource_manager')->requireResources([
+            '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
+        ]);
+
+        return render_to_response('ZcoCitationsBundle::index.html.php', [
+            'quotes' => $quotes,
+            'totalCount' => $totalCount,
+            'pages' => $pages,
+        ]);
+    }
+
+    public function newAction(Request $request)
+    {
+        if (!verifier('citations_modifier')) {
+            throw new AccessDeniedHttpException();
+        }
+
+        $form = $this->get('form.factory')->create(new QuoteType());
+        //$form->setData($data);
+        if ($request->getMethod() === 'POST') {
+            $form->submit($request);
+            if ($form->isValid()) {
+                /** @var QuoteRepository $repository */
+                $repository = $this->get('zco.repository.quotes');
+                $data = $form->getData();
+                $data['utilisateur_id'] = $_SESSION['id'];
+                $repository->save($data);
+
+                return redirect('La citation a bien été créée.', $this->generateUrl('zco_quote_index'));
+            }
+        }
+
+        \Page::$titre = 'Nouvelle citation';
+        fil_ariane([
+            'Citations' => $this->generateUrl('zco_quote_index'),
+            'Nouvelle citation',
+        ]);
+
+        return render_to_response('ZcoCitationsBundle::new.html.php', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    public function editAction($id, Request $request)
+    {
+        if (!verifier('citations_modifier')) {
+            throw new AccessDeniedHttpException();
+        }
+
+        /** @var QuoteRepository $repository */
+        $repository = $this->get('zco.repository.quotes');
+        $quote = $repository->get($id);
+        if (!$quote) {
+            throw new NotFoundHttpException();
+        }
+
+        $form = $this->get('form.factory')->create(new QuoteType());
+        $form->setData($quote);
+        if ($request->getMethod() === 'POST') {
+            $form->submit($request);
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $repository->save($data);
+
+                return redirect('La citation a bien été modifiée.', $this->generateUrl('zco_quote_index'));
+            }
+        }
+
+        \Page::$titre = 'Modifier une citation';
+        fil_ariane([
+            'Citations' => $this->generateUrl('zco_quote_index'),
+            'Modifier une citation',
+        ]);
+
+        return render_to_response('ZcoCitationsBundle::edit.html.php', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    public function deleteAction($id, Request $request)
+    {
+        if (!verifier('citations_modifier')) {
+            throw new AccessDeniedHttpException();
+        }
+
+        /** @var QuoteRepository $repository */
+        $repository = $this->get('zco.repository.quotes');
+        $quote = $repository->get($id);
+        if (!$quote) {
+            throw new NotFoundHttpException();
+        }
+
+        if ($request->getMethod() === 'POST') {
+            $repository->delete($id);
+
+            return redirect('La citation a bien été supprimée.', $this->generateUrl('zco_quote_index'));
+        }
+
+        \Page::$titre = 'Supprimer une citation';
+        fil_ariane([
+            'Citations' => $this->generateUrl('zco_quote_index'),
+            'Modifier une citation',
+        ]);
+
+        return render_to_response('ZcoCitationsBundle::delete.html.php', [
+            'quote' => $quote,
+        ]);
+    }
 }

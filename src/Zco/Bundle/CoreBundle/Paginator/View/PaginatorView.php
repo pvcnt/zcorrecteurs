@@ -22,16 +22,15 @@
 namespace Zco\Bundle\CoreBundle\Paginator\View;
 
 use Zco\Bundle\CoreBundle\Paginator\Paginator;
-use Zco\Bundle\CoreBundle\View\View;
 
 /**
- * Vue du paginateur représentant une page particulière. Le rendu de la vue 
- * affiche une liste de liens permettant de changer de page tandis qu'une 
+ * Vue du paginateur représentant une page particulière. Le rendu de la vue
+ * affiche une liste de liens permettant de changer de page tandis qu'une
  * itération parcourt les différents objets associés à la vue.
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class PaginatorView extends View implements \Countable, \Iterator
+class PaginatorView implements \Countable, \Iterator
 {
 	private $objects;
 	private $count;
@@ -58,27 +57,27 @@ class PaginatorView extends View implements \Countable, \Iterator
 		$this->paginator = $paginator;
 		$this->uri = $uri;
 	}
-	
+
 	/**
 	 * Retourne l'URI utilisée pour générer le rendu de la vue.
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getUri()
 	{
 		return $this->uri;
 	}
-	
+
 	/**
 	 * Définit l'URI utilisée pour générer le rendu de la vue.
-	 * 
+	 *
 	 * @param string $uri
 	 */
 	public function setUri($uri)
 	{
 		$this->uri = $uri;
 	}
-	
+
 	/**
 	 * Renvoie le numéro de la page.
 	 *
@@ -88,7 +87,7 @@ class PaginatorView extends View implements \Countable, \Iterator
 	{
 		return $this->number;
 	}
-	
+
 	/**
 	 * Renvoie la liste des objets présents sur la page.
 	 *
@@ -98,7 +97,7 @@ class PaginatorView extends View implements \Countable, \Iterator
 	{
 		return $this->objects;
 	}
-	
+
 	/**
 	 * Retourne le nombre d'objets à afficher dans la vue.
 	 * Implémentation de \Countable.
@@ -132,16 +131,16 @@ class PaginatorView extends View implements \Countable, \Iterator
 		{
 			throw new \InvalidArgumentException('You must call setUri() before rendering a paginator view.');
 		}
-		
+
 		$bootstrap = isset($options['bootstrap']) && $options['bootstrap'];
 		$nbPagesAround = 3;
 		$str = array();
-		
+
 		if ($bootstrap)
 		{
 			$str[] = '<div class="pagination"><ul>';
 		}
-		
+
 		//Si on a besoin d'afficher un lien vers la page précédente.
 		if ($this->number > 1 && !$bootstrap)
 		{
@@ -193,7 +192,7 @@ class PaginatorView extends View implements \Countable, \Iterator
 				{
 					$i = $this->paginator->getNbPages() - $nbPagesAround;
 				}
-				
+
 				$splittedUrl = explode('%s', $this->uri);
 				$str[] = '<a href="#" onclick="page=prompt(\'Sur quelle page voulez-vous vous rendre ('
 					.$this->paginator->getNbPages().' pages) ?\'); if(page) document.location=\''
@@ -205,7 +204,7 @@ class PaginatorView extends View implements \Countable, \Iterator
 				$str[] = '</li>';
 			}
 		}
-		
+
 		//Si on a besoin d'afficher un lien vers la page suivante.
 		if ($this->number < $this->paginator->getNbPages() && !$bootstrap)
 		{
@@ -222,15 +221,15 @@ class PaginatorView extends View implements \Countable, \Iterator
 				$str[] = '<li class="disabled"><a href="#">&rarr;</a></li>';
 			}
 		}
-		
+
 		if ($bootstrap)
 		{
 			$str[] = '</ul></div>';
 		}
-		
+
 		return implode($str);
 	}
-	
+
 	/**
 	 * Implémentation de \Iterator.
 	 */
