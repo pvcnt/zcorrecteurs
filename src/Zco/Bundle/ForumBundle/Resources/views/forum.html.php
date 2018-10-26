@@ -145,11 +145,6 @@ else
 
 	<tfoot>
 		<tr>
-			<td colspan="<?php echo $colspan; ?>">
-				<?php echo $view->render('ZcoForumBundle::_liste_connectes.html.php', array('ListerVisiteurs' => $ListerVisiteurs)) ?>
-			</td>
-		</tr>
-		<tr>
 			<td colspan="<?php echo $colspan;?>">Page :
 			<?php
 			foreach($tableau_pages as $element)

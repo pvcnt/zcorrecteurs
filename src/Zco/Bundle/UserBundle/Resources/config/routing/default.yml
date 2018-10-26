@@ -8,14 +8,6 @@ zco_user_indexWithPage:
     requirements:
         page: \d+
 
-zco_user_online:
-    path:   /connectes
-    defaults:  { _controller: ZcoUserBundle:Default:online, showAnonymousUsers: false }
-
-zco_user_online_all:
-    path:   /connectes/tous
-    defaults:  { _controller: ZcoUserBundle:Default:online, showAnonymousUsers: true }
-
 zco_user_profile:
     path:   /{id}/{slug}
     defaults:  { _controller: ZcoUserBundle:Default:profile }

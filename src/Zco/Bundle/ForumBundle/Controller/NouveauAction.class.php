@@ -63,9 +63,6 @@ class NouveauAction extends ForumActions
 
 		Page::$titre = htmlspecialchars($InfosForum['cat_nom']).' - Nouveau sujet';
 		
-		//Mise à jour de la position sur le site.
-		\Doctrine_Core::getTable('Online')->updateUserPosition($_SESSION['id'], 'ZcoForumBundle:nouveau');
-
 		if (empty($_POST['send']) || $_POST['send'] != 'Envoyer')
 		{
 

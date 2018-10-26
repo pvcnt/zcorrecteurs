@@ -56,13 +56,6 @@
 			?>
 		</tr>
 	</thead>
-	<tfoot>
-		<tr>
-			<td colspan="<?php echo $colspan; ?>">
-				<?php echo $view->render('ZcoForumBundle::_liste_connectes.html.php', array('ListerVisiteurs' => $ListerVisiteurs)) ?>
-			</td>
-		</tr>
-	</tfoot>
 	<tbody>
 	<?php
 	if ($ListerCategories)

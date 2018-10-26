@@ -50,7 +50,6 @@ class LoginListener implements EventSubscriberInterface
 			UserEvents::ENV_LOGIN   => 'onEnvLogin',
 			UserEvents::PRE_LOGIN   => 'onPreLogin',
 			UserEvents::POST_LOGIN  => 'onPostLogin',
-			UserEvents::POST_LOGOUT => 'onPostLogout',
 		);
 	}
 	
@@ -146,16 +145,6 @@ class LoginListener implements EventSubscriberInterface
 			setcookie('violon', $this->generateRememberKey($event->getUser()), strtotime("+1 year"), '/');
 			setcookie('user_id', $event->getUser()->getId(), strtotime("+1 year"), '/');
 		}
-	}
-	
-	/**
-	 * Supprime l'utilisateur de la table des connectés.
-	 *
-	 * @param LoginEvent $event
-	 */
-	public function onPostLogout(LoginEvent $event)
-	{
-		\Doctrine_Core::getTable('Online')->deleteByUserId($event->getUser()->getId());
 	}
 	
 	/**

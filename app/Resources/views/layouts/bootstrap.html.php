@@ -75,11 +75,6 @@
                                 Membres
                             </a>
                         </li>
-                        <li>
-                            <a href="<?php echo $view['router']->path('zco_user_online') ?>">
-                                <?php echo $nbOnline ?> connecté<?php echo pluriel($nbOnline) ?>
-                            </a>
-                        </li>
                     </ul>
                 </div>
             </div>

@@ -128,12 +128,7 @@
 					</a>
 				</span>
 				<?php } ?>
-
-				<img src="/img/<?php echo $valeur['statut_connecte']; ?>"
-					alt="<?php echo $valeur['statut_connecte_label']; ?>"
-					title="<?php echo $valeur['statut_connecte_label']; ?>" />
-
-				<?php echo $view->get('messages')->colorerPseudo($valeur, 'id_auteur', 'pseudo_auteur') ?><br/>
+                <?php echo $view->get('messages')->colorerPseudo($valeur, 'id_auteur', 'pseudo_auteur') ?><br/>
 			</td>
 
 			<td class="dates">

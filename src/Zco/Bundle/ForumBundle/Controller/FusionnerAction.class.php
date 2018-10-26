@@ -47,9 +47,6 @@ class FusionnerAction extends ForumActions
 
         Page::$titre = $InfosSujet['sujet_titre'] . ' - Fusionner le sujet';
 
-        //Mise à jour de la position sur le site.
-        \Doctrine_Core::getTable('Online')->updateUserPosition($_SESSION['id'], 'ZcoForumBundle:sujet', $_GET['id']);
-
         if (verifier('fusionner_sujets', $InfosSujet['sujet_forum_id'])) {
             //Si on veut fusionner le sujet
             if (isset($_POST['submit'])) {

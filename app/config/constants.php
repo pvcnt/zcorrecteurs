@@ -78,7 +78,6 @@ define('SEXE_MASCULIN', 1);
 define('SEXE_FEMININ', 2);
 
 // Configuration.
-const NOMBRE_MINUTES_CONNECTE = 2;
 const TEMPS_BILLET_HASARD = 30; // minutes
 const URL_SITE = 'http://www.zcorrecteurs.fr';
 const ID_COMPTE_AUTO = 2;

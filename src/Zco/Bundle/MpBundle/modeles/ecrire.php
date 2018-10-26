@@ -162,18 +162,9 @@ function RevueMP()
 {
 	$dbh = Doctrine_Manager::connection()->getDbh();
 	$stmt = $dbh->prepare("
-	SELECT mp_message_id, mp_message_mp_id, mp_message_auteur_id, utilisateur_pseudo, utilisateur_citation, utilisateur_sexe, mp_message_date, mp_message_texte, groupe_nom, groupe_class, groupe_logo, groupe_logo_feminin, utilisateur_avatar, utilisateur_signature, utilisateur_titre,
-
-	CASE WHEN utilisateur_date_derniere_visite >= NOW() - INTERVAL ".NOMBRE_MINUTES_CONNECTE." MINUTE
-	THEN 'online.png'
-	ELSE 'offline.png'
-	END AS statut_connecte,
-
-	CASE WHEN DATE(utilisateur_date_derniere_visite ) >= DATE( NOW( ) - INTERVAL ".NOMBRE_MINUTES_CONNECTE." MINUTE )
-	THEN 'En ligne'
-	ELSE 'Hors ligne'
-	END AS statut_connecte_label
-
+	SELECT mp_message_id, mp_message_mp_id, mp_message_auteur_id, utilisateur_pseudo, utilisateur_citation, 
+	utilisateur_sexe, mp_message_date, mp_message_texte, groupe_nom, groupe_class, groupe_logo, groupe_logo_feminin, 
+	utilisateur_avatar, utilisateur_signature, utilisateur_titre
 	FROM zcov2_mp_participants
 	LEFT JOIN zcov2_mp_messages ON zcov2_mp_participants.mp_participant_mp_id = zcov2_mp_messages.mp_message_mp_id
 	LEFT JOIN zcov2_utilisateurs ON mp_message_auteur_id = utilisateur_id

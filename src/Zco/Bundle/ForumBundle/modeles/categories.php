@@ -249,19 +249,3 @@ function RecupererSautRapide($id)
 
 	return $SautRapide;
 }
-
-function ListerVisiteursForumEntier()
-{
-	$dbh = Doctrine_Manager::connection()->getDbh();
-
-	$stmt = $dbh->prepare("SELECT utilisateur_id, utilisateur_pseudo, groupe_nom, groupe_class, connecte_nom_action
-	FROM zcov2_connectes
-	LEFT JOIN zcov2_utilisateurs ON connecte_id_utilisateur = utilisateur_id
-	LEFT JOIN zcov2_groupes ON utilisateur_id_groupe = groupe_id
-	WHERE connecte_derniere_action >= NOW() - INTERVAL ".NOMBRE_MINUTES_CONNECTE." MINUTE
-	AND LOCATE('ZcoForumBundle', connecte_nom_action) = 1");
-	$stmt->execute();
-
-
-	return $stmt->fetchAll();
-}

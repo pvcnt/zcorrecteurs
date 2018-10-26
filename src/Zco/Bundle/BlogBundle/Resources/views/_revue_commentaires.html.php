@@ -23,11 +23,7 @@
 						</a>
 					</span>
 					<?php } ?>
-
-					<img src="/img/<?php echo $valeur['statut_connecte']; ?>"
-						alt="<?php echo $valeur['statut_connecte_label']; ?>"
-						title="<?php echo $valeur['statut_connecte_label']; ?>" />
-					<?php if(!empty($valeur['id_auteur'])) echo $view->get('messages')->colorerPseudo($valeur, 'id_auteur', 'pseudo_auteur') ?>				</td>
+					<?php if(!empty($valeur['id_auteur'])) echo $view->get('messages')->colorerPseudo($valeur, 'id_auteur', 'pseudo_auteur') ?>
 				</td>
 				<td class="dates">
 					<span id="m<?php echo $valeur['commentaire_id'];?>">
@@ -35,10 +31,6 @@
 					</span>
 
 					Ajouté <?php echo dateformat($valeur['commentaire_date'], MINUSCULE); ?>
-
-					<!--<a href="#" title="Citer le commentaire" onclick="">
-						<img src="/bundles/zcoforum/img/citer.png" alt="Citer" />
-					</a>-->
 
 					<?php if(
 						$_SESSION['id'] != $valeur['id_auteur']

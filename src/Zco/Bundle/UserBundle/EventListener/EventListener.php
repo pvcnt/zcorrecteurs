@@ -56,7 +56,6 @@ class EventListener implements EventSubscriberInterface
             UserEvents::VALIDATE_EMAIL => 'onValidateEmail',
             PagesEvents::SITEMAP => 'onFilterSitemap',
             CoreEvents::DAILY_CRON => 'onDailyCron',
-            CoreEvents::HOURLY_CRON => 'onHourlyCron',
         );
     }
 
@@ -113,9 +112,8 @@ class EventListener implements EventSubscriberInterface
         //Si le membre n'est toujours pas connecté on lui attribue de force
         //les attributs habituellement liés au compte.
         if (!isset($_SESSION['groupe']) || !isset($_SESSION['id'])) {
-            include_once(__DIR__.'/../modeles/utilisateurs.php');
             $_SESSION['groupe'] = InfosGroupe(\Groupe::ANONYMOUS)['groupe_id'];
-            $_SESSION['id'] = RecupererIdVisiteur();
+            $_SESSION['id'] = -1;
             $_SESSION['refresh_droits'] = time();
         }
 
@@ -200,13 +198,6 @@ class EventListener implements EventSubscriberInterface
         ) {
             $this->refreshSession();
         }
-
-        //Mise à jour du nombre de connectés (cache invalide ou 0 connecté,
-        //ce qui n'est pas possible => utilisation directe de !).
-        $cache = $this->container->get('zco_core.cache');
-        if (!$cache->get('nb_connectes')) {
-            $cache->set('nb_connectes', \Doctrine_Core::getTable('Online')->countAll(), 60 * 5);
-        }
     }
 
     /**
@@ -223,10 +214,6 @@ class EventListener implements EventSubscriberInterface
         ));
         $event->addLink($router->generate('zco_user_session_login', array(), true), array(
             'changefreq' => 'monthly',
-            'priority' => '0.5',
-        ));
-        $event->addLink($router->generate('zco_user_online', array(), true), array(
-            'changefreq' => 'daily',
             'priority' => '0.5',
         ));
         $event->addLink($router->generate('zco_user_index', array(), true), array(
@@ -280,17 +267,6 @@ class EventListener implements EventSubscriberInterface
     }
 
     /**
-     * Actions à exécuter toutes les heures.
-     *
-     * @param CronEvent $event
-     */
-    public function onHourlyCron(CronEvent $event)
-    {
-        //Mise à jour de la table des sessions.
-        \Doctrine_Core::getTable('Online')->purge();
-    }
-
-    /**
      * Met à jour les différentes données liées à la session, en particulier la
      * table gardant une trace des visiteurs navigant actuellement sur le site.
      */
@@ -298,87 +274,39 @@ class EventListener implements EventSubscriberInterface
     {
         $dbh = \Doctrine_Manager::connection()->getDbh();
         $request = $this->container->get('request');
-
         $ip = ip2long($request->getClientIp(true));
-        $cat = GetIDCategorieCourante();
-        $id1 = !empty($_GET['id']) ? $_GET['id'] : 0;
-        $id2 = !empty($_GET['id2']) ? $_GET['id2'] : 0;
-        $id = $_SESSION['id'];
 
         //Si la dernière IP diffère, on la met à jour (en cas de membre connecté uniquement)
-        if (!isset($_SESSION['last_ip']) || $_SESSION['last_ip'] != $ip) {
-            if (isset($_SESSION['last_ip'])) {
-                $ip_to_delete = $_SESSION['last_ip'];
-            } else {
-                $ip_to_delete = $ip;
-            }
+        if ((!isset($_SESSION['last_ip']) || $_SESSION['last_ip'] != $ip) && verifier('connecte')) {
+            // Géolocalisation.
+            $location = $this->container->get('zco_user.manager.ip')->Geolocaliser($ip);
+            $countryName = $location['country'] ?? 'Inconnu';
 
-            //Suppression de sa ligne de visiteur dans la table des connectés
-            \Doctrine_Core::getTable('Online')->deleteByIp($ip_to_delete);
+            // Mise à jour de la table des membres.
+            $stmt = $dbh->prepare("UPDATE zcov2_utilisateurs " .
+                "SET utilisateur_date_derniere_visite = NOW(), utilisateur_ip = :ip, utilisateur_localisation = :pays " .
+                "WHERE utilisateur_id = :id");
+            $stmt->bindParam(':id', $_SESSION['id']);
+            $stmt->bindParam(':ip', $ip);
+            $stmt->bindValue(':pays', $countryName);
+            $stmt->execute();
+            $stmt->closeCursor();
 
-            if (verifier('connecte')) {
-                //Géolocalisation
-                $location = $this->container->get('zco_user.manager.ip')->Geolocaliser($ip);
-                $countryName = $location['country'] ?? 'Inconnu';
-
-                //Mise à jour de la table des membres
-                $stmt = $dbh->prepare("UPDATE zcov2_utilisateurs " .
-                    "SET utilisateur_date_derniere_visite = NOW(), utilisateur_ip = :ip, utilisateur_localisation = :pays " .
-                    "WHERE utilisateur_id = :id");
-                $stmt->bindParam(':id', $_SESSION['id']);
-                $stmt->bindParam(':ip', $ip);
-                $stmt->bindValue(':pays', $countryName);
-                $stmt->execute();
-                $stmt->closeCursor();
-
-                //Insertion de la nouvelle ip (ou mise à jour de sa date d'utilisation)
-                $proxy = ip2long($request->getClientIp(false));
-                $proxy = $proxy === $ip ? null : $proxy;
-                $stmt = $dbh->prepare("
+            // Insertion de la nouvelle ip (ou mise à jour de sa date d'utilisation).
+            $proxy = ip2long($request->getClientIp(false));
+            $proxy = $proxy === $ip ? null : $proxy;
+            $stmt = $dbh->prepare("
 				INSERT INTO zcov2_utilisateurs_ips(ip_id_utilisateur, ip_ip, ip_proxy, ip_date_debut, ip_date_last, ip_localisation)
 				VALUES(:id, :ip, :proxy, NOW(), NOW(), :pays)
 				ON DUPLICATE KEY UPDATE ip_date_last = NOW()");
-                $stmt->bindParam(':id', $_SESSION['id']);
-                $stmt->bindParam(':ip', $ip);
-                $stmt->bindParam(':proxy', $proxy);
-                $stmt->bindParam(':pays', $countryName);
-                $stmt->execute();
-                $stmt->closeCursor();
-            }
+            $stmt->bindParam(':id', $_SESSION['id']);
+            $stmt->bindParam(':ip', $ip);
+            $stmt->bindParam(':proxy', $proxy);
+            $stmt->bindParam(':pays', $countryName);
+            $stmt->execute();
+            $stmt->closeCursor();
 
             $_SESSION['last_ip'] = $ip;
         }
-
-        //On met à jour la table des sessions.
-        $stmt = $dbh->prepare('UPDATE zcov2_connectes '
-            . 'SET connecte_ip = :ip, connecte_derniere_action = NOW(), '
-            . 'connecte_id_categorie = :cat, connecte_user_agent = :agent, '
-            . 'connecte_nom_action = \'\' '
-            . 'WHERE connecte_id_utilisateur = :u');
-        $stmt->bindValue(':ip', $ip, \PDO::PARAM_INT);
-        $stmt->bindValue(':u', $id, \PDO::PARAM_INT);
-        $stmt->bindValue(':cat', $cat, \PDO::PARAM_INT);
-        $stmt->bindValue(':agent', $request->server->get('HTTP_USER_AGENT'));
-        $stmt->execute();
-
-        if (!$stmt->rowCount()) {
-            $stmt->closeCursor();
-
-            $stmt = $dbh->prepare('INSERT INTO zcov2_connectes(connecte_ip, '
-                . 'connecte_id_utilisateur, connecte_debut, connecte_derniere_action, '
-                . 'connecte_id_categorie, connecte_user_agent) '
-                . 'VALUES(:ip, :u, NOW(), NOW(), :cat, :agent)');
-            $stmt->bindParam(':ip', $ip);
-            $stmt->bindParam(':u', $id);
-            $stmt->bindParam(':cat', $cat);
-            $stmt->bindValue(':agent', $request->server->get('HTTP_USER_AGENT'));
-            try {
-                $stmt->execute();
-            } catch (\PDOException $e) {
-                //Bloque des erreurs survenant quelquefois lors de l'insertion
-                //d'un nouvel enregistrement (clé primaire dupliquée).
-            }
-        }
-        $stmt->closeCursor();
     }
 }

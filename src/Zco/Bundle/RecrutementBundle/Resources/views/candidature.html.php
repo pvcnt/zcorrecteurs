@@ -291,7 +291,6 @@ in_array($InfosCandidature['candidature_etat'], array(CANDIDATURE_ACCEPTE, CANDI
 		<?php foreach($ListerCommentaires as &$valeur): ?>
 			<tr class="header_message">
 				<td class="pseudo_membre">
-					<img src="/img/<?php echo $valeur['statut_connecte']; ?>" alt="<?php echo $valeur['statut_connecte_label']; ?>" title="<?php echo $valeur['statut_connecte_label']; ?>" />
 					<a href="/membres/profil-<?php echo $valeur['utilisateur_id']; ?>-<?php echo rewrite($valeur['utilisateur_pseudo']); ?>.html" style="color: <?php echo $valeur['groupe_class']; ?>;">
 						<?php echo htmlspecialchars($valeur['utilisateur_pseudo']); ?>
 					</a>

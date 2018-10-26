@@ -28,76 +28,6 @@
  */
 
 /**
- * Récupère la liste des alertes sur un sujet (ou sur tout le forum).
- * @param integer $id				L'id du sujet (si aucun, tout le forum).
- * @return array					Un tableau de la forme (alertes, modos).
- */
-function ListerAlertes($id = null)
-{
-	//Récupération des alertes
-	$dbh = Doctrine_Manager::connection()->getDbh();
-	if(isset($_GET['solved']) && is_numeric($_GET['solved']) && in_array($_GET['solved'], array(0, 1)))
-		$where = '= '.$_GET['solved'];
-	else
-		$where = 'IN(0, 1)';
-	if(!is_null($id))
-		$where.= ' AND alerte_sujet_id = '.$id;
-
-	$stmt = $dbh->prepare("SELECT alerte_id, alerte_raison, alerte_ip, alerte_resolu, alerte_date, " .
-	"sujet_titre, sujet_id, sujet_resolu, sujet_ferme, sujet_corbeille, sujet_forum_id, " .
-	"g1.groupe_class AS groupe_class_membre, g2.groupe_class AS groupe_class_admin, g3.groupe_class AS groupe_class_modo, " .
-	"u1.utilisateur_id AS membre_id, COALESCE(u1.utilisateur_pseudo, 'Anonyme') AS membre_pseudo, " .
-	"u2.utilisateur_id AS admin_id, COALESCE(u2.utilisateur_pseudo, 'Anonyme') AS admin_pseudo, " .
-	"u3.utilisateur_id AS modo_id, u3.utilisateur_pseudo AS modo_pseudo, g3.groupe_team AS groupe_team_modo " .
-	"FROM zcov2_forum_alertes " .
-	"LEFT JOIN zcov2_utilisateurs u1 ON alerte_auteur = u1.utilisateur_id " .
-	"LEFT JOIN zcov2_groupes g1 ON u1.utilisateur_id_groupe = g1.groupe_id " .
-	"LEFT JOIN zcov2_utilisateurs u2 ON alerte_id_admin = u2.utilisateur_id " .
-	"LEFT JOIN zcov2_groupes g2 ON u2.utilisateur_id_groupe = g2.groupe_id " .
-	"LEFT JOIN zcov2_forum_sujets ON alerte_sujet_id = sujet_id " .
-	"LEFT JOIN zcov2_connectes ON connecte_id1 = sujet_id AND connecte_nom_module = 'forum' AND connecte_nom_action = 'sujet' AND connecte_derniere_action >= NOW() - INTERVAL ".NOMBRE_MINUTES_CONNECTE." MINUTE " .
-	"LEFT JOIN zcov2_utilisateurs u3 ON connecte_id_utilisateur = u3.utilisateur_id " .
-	"LEFT JOIN zcov2_groupes g3 ON u3.utilisateur_id_groupe = g3.groupe_id " .
-	"WHERE alerte_resolu ".$where." " .
-	"ORDER BY alerte_resolu ASC, alerte_date DESC");
-	$stmt->bindParam(':s', $id);
-	$stmt->execute();
-	$alertes = $stmt->fetchAll();
-
-	//Filtrage selon les droits
-	if(is_null($id))
-	{
-		foreach($alertes as $cle=>$valeur)
-		{
-			if(!verifier('voir_alertes', $valeur['sujet_forum_id']))
-				unset($alertes[$cle]);
-		}
-	}
-
-	//Création de l'array des modos
-	$modos = array();
-	$current = null;
-	foreach($alertes as $cle=>$valeur)
-	{
-		if($valeur['groupe_team_modo'])
-		{
-			$modos[$valeur['alerte_id']][] = array('utilisateur_id' => $valeur['modo_id'], 'utilisateur_pseudo' => $valeur['modo_pseudo'], 'groupe_class' => $valeur['groupe_class_modo']);
-		}
-
-		if($current != $valeur['alerte_id'])
-		{
-			$current = $valeur['alerte_id'];
-		}
-		else
-		{
-			unset($alertes[$cle]);
-		}
-	}
-
-	return array($alertes, $modos);
-}
-
-/**
  * Marquer une alerte comme résolue.
  * @param integer $id				L'id de l'alerte.
  * @return void
@@ -193,39 +123,4 @@ function EnregistrerNouvelleAlerte($id)
 	$stmt->bindParam(':texte', $_POST['texte']);
 	$stmt->bindValue(':ip', ip2long(\Container::getService('request')->getClientIp(true)));
 	$stmt->execute();
-}
-
-/**
- * Récupère la liste des alertes, formatée pour l'afficher dans un flux.
- * @param integer $id_groupe	L'id du groupe dotn on va vérifier les droits.
- * @return array
- */
-function ListerAlertesFlux($id_groupe)
-{
-	$dbh = Doctrine_Manager::connection()->getDbh();
-
-	//Récupération des alertes
-	$stmt = $dbh->prepare("SELECT alerte_id, alerte_raison, " .
-	"UNIX_TIMESTAMP(alerte_date) as pubtime, utilisateur_email, " .
-	"sujet_titre, sujet_id, sujet_forum_id, utilisateur_id, utilisateur_pseudo  " .
-	"FROM zcov2_forum_alertes " .
-	"LEFT JOIN zcov2_utilisateurs ON alerte_auteur = utilisateur_id " .
-	"LEFT JOIN zcov2_forum_sujets ON alerte_sujet_id = sujet_id " .
-	"WHERE alerte_resolu = 0 " .
-	"ORDER BY alerte_date DESC");
-	$stmt->execute();
-	$alertes = $stmt->fetchAll();
-
-	$latest = array('pubtime' => 0);
-
-	//Filtrage selon les droits
-	foreach($alertes as $cle => &$valeur)
-	{
-		if(!verifier('voir_alertes', $valeur['sujet_forum_id'], $id_groupe))
-			unset($alertes[$cle]);
-		elseif($valeur['pubtime'] > $latest['pubtime'])
-			$latest = &$valeur;
-	}
-
-	return array($latest, $alertes);
 }

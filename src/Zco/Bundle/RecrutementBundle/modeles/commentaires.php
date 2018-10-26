@@ -33,21 +33,10 @@ function ListerCommentairesShoutbox($id, $page = 1)
 
 	$stmt = $db->prepare("SELECT commentaire_id, groupe_class, groupe_logo, groupe_logo_feminin, groupe_nom,
 		commentaire_date, commentaire_texte, utilisateur_id, utilisateur_avatar, utilisateur_sexe,
-		IFNULL(utilisateur_pseudo, 'Anonyme') as utilisateur_pseudo,
-		CASE WHEN connecte_derniere_action >= NOW() - INTERVAL ".NOMBRE_MINUTES_CONNECTE." MINUTE
-		THEN 'online.png'
-		ELSE 'offline.png'
-		END AS statut_connecte,
-
-		CASE WHEN connecte_derniere_action >= NOW() - INTERVAL ".NOMBRE_MINUTES_CONNECTE." MINUTE
-		THEN 'En ligne'
-		ELSE 'Hors ligne'
-		END AS statut_connecte_label
-
+		IFNULL(utilisateur_pseudo, 'Anonyme') as utilisateur_pseudo
 		FROM zcov2_recrutements_commentaires
-			LEFT JOIN zcov2_utilisateurs ON commentaire_utilisateur_id = utilisateur_id
-			LEFT JOIN zcov2_groupes ON utilisateur_id_groupe = groupe_id
-			LEFT JOIN zcov2_connectes ON connecte_id_utilisateur = utilisateur_id
+		LEFT JOIN zcov2_utilisateurs ON commentaire_utilisateur_id = utilisateur_id
+	    LEFT JOIN zcov2_groupes ON utilisateur_id_groupe = groupe_id
 		WHERE commentaire_candidature_id = :id
 		ORDER BY commentaire_date ASC
 		LIMIT ".$debut.", 15");

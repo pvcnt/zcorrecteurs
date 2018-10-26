@@ -57,24 +57,12 @@ function ListerCommentairesBillet($id, $page)
 			"Mb.utilisateur_id AS id_edite, " .
 			"Mb.utilisateur_pseudo AS pseudo_edite, " .
 			"groupe_class, groupe_nom, groupe_logo, groupe_logo_feminin, " .
-			"commentaire_date, commentaire_edite_date, " .
-
-			"CASE WHEN connecte_derniere_action >= NOW() - INTERVAL ".NOMBRE_MINUTES_CONNECTE." MINUTE " .
-			"THEN 'online.png' " .
-			"ELSE 'offline.png' " .
-			"END AS statut_connecte, " .
-
-
-			"CASE WHEN connecte_derniere_action >= NOW() - INTERVAL ".NOMBRE_MINUTES_CONNECTE." MINUTE " .
-			"THEN 'En ligne' " .
-			"ELSE 'Hors ligne' " .
-			"END AS statut_connecte_label " .
+			"commentaire_date, commentaire_edite_date " .
 
 			"FROM zcov2_blog_commentaires " .
 			"LEFT JOIN zcov2_utilisateurs Ma ON Ma.utilisateur_id = commentaire_id_utilisateur " .
 			"LEFT JOIN zcov2_utilisateurs Mb ON Mb.utilisateur_id = commentaire_id_edite " .
 			"LEFT JOIN zcov2_groupes ON Ma.utilisateur_id_groupe = groupe_id " .
-			"LEFT JOIN zcov2_connectes ON connecte_id_utilisateur = Ma.utilisateur_id " .
 
 			"WHERE commentaire_id_billet = :id " .
 			"ORDER BY commentaire_date ".$order." " .

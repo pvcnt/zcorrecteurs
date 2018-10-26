@@ -118,23 +118,14 @@ function ListerMessages($page, $rev = false)
 
 	$dbh = Doctrine_Manager::connection()->getDbh();
 	$stmt = $dbh->prepare("
-	SELECT utilisateur_sexe, mp_message_id, mp_message_mp_id, mp_message_auteur_id, utilisateur_pseudo, mp_message_date, mp_message_texte, mp_participant_statut, groupe_nom, groupe_class, groupe_logo, groupe_logo_feminin, utilisateur_avatar, utilisateur_nb_sanctions, utilisateur_pourcentage, mp_message_ip, utilisateur_signature, utilisateur_citation, utilisateur_titre, utilisateur_absent, utilisateur_fin_absence,
-
-	CASE WHEN connecte_derniere_action >= NOW() - INTERVAL ".NOMBRE_MINUTES_CONNECTE." MINUTE
-	THEN 'online.png'
-	ELSE 'offline.png'
-	END AS statut_connecte,
-
-	CASE WHEN connecte_derniere_action >= NOW() - INTERVAL ".NOMBRE_MINUTES_CONNECTE." MINUTE
-	THEN 'En ligne'
-	ELSE 'Hors ligne'
-	END AS statut_connecte_label
-
+	SELECT utilisateur_sexe, mp_message_id, mp_message_mp_id, mp_message_auteur_id, utilisateur_pseudo, 
+	mp_message_date, mp_message_texte, mp_participant_statut, groupe_nom, groupe_class, groupe_logo, 
+	groupe_logo_feminin, utilisateur_avatar, utilisateur_nb_sanctions, utilisateur_pourcentage, mp_message_ip,
+	utilisateur_signature, utilisateur_citation, utilisateur_titre, utilisateur_absent, utilisateur_fin_absence
 	FROM zcov2_mp_messages
 	LEFT JOIN zcov2_mp_participants ON zcov2_mp_messages.mp_message_mp_id = zcov2_mp_participants.mp_participant_mp_id AND mp_participant_id = mp_message_auteur_id
 	LEFT JOIN zcov2_utilisateurs ON mp_message_auteur_id = utilisateur_id
 	LEFT JOIN zcov2_groupes ON utilisateur_id_groupe = groupe_id
-	LEFT JOIN zcov2_connectes ON connecte_id_utilisateur = utilisateur_id
 	WHERE mp_message_mp_id = :mp_id
 	ORDER BY mp_message_date ".($rev ? 'DESC' : 'ASC')."
 	LIMIT ".$debut." , ".$nombreDeMessagesAafficher);
