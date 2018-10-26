@@ -89,16 +89,6 @@ class EventListener implements EventSubscriberInterface
      */
     public function onTemplatingFilterResources(FilterResourcesEvent $event)
     {
-        // Bulles sur les liens du menu latéral.
-        $event->initBehavior('tips', array(
-            'selector' => 'div.sidebarleft a',
-            'options' => array(
-                'fixed' => true,
-                'showDelay' => 1000,
-                'offset' => array('x' => 160, 'y' => -10),
-            ),
-        ));
-
         // Exposition des routes pour y avoir accès depuis un code Javascript.
         $event->requireResource('@FOSJsRoutingBundle/Resources/public/js/router.js');
 

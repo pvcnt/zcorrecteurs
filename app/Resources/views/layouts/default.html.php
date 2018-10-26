@@ -129,28 +129,22 @@
                     <h4>Mon compte</h4>
                     <ul class="nav nav-list">
                         <li class="first">
-                            <a href="<?php echo $view['router']->path('zco_user_profile', ['id' => $_SESSION['id'], 'slug' => rewrite($_SESSION['pseudo'])]) ?>"
-                               rel="Vous êtes actuellement connecté en tant que <?php echo htmlspecialchars($_SESSION['pseudo']) ?>."
-                               title="<?php echo htmlspecialchars($_SESSION['pseudo']) ?>">
+                            <a href="<?php echo $view['router']->path('zco_user_profile', ['id' => $_SESSION['id'], 'slug' => rewrite($_SESSION['pseudo'])]) ?>">
                                 <?php echo htmlspecialchars($_SESSION['pseudo']) ?>
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo $view['router']->path('zco_options_index') ?>"
-                               rel="Changer mon pseudo, mot de passe, avatar, profil, etc., ainsi que les options de navigation et tout ce qui concerne votre compte."
-                               title="Mes options">
+                            <a href="<?php echo $view['router']->path('zco_options_index') ?>">
                                 Mes options
                             </a>
                         </li>
                         <li>
-                            <a href="/blog/mes-billets.html"
-                               rel="Proposez votre billet pour qu'il apparaisse sur la page d'accueil du site."
-                               title="Mes billets">
+                            <a href="/blog/mes-billets.html">
                                 Mes billets
                             </a>
                         </li>
                         <li>
-                            <a href="/dictees/proposer.html" rel="Proposez votre dictée." title="">Mes dictées</a>
+                            <a href="/dictees/proposer.html">Mes dictées</a>
                         </li>
                         <li class="last">
                             <a href="<?php echo $view['router']->path('zco_user_session_logout', ['token' => $_SESSION['token']]) ?>"
@@ -167,37 +161,27 @@
                 <h4>Communauté</h4>
                 <ul class="nav nav-list">
                     <li class="first">
-                        <a href="/recrutement/" style="font-weight: bold;"
-                           rel="Vous souhaitez nous rejoindre ? Postulez sur notre module de recrutement."
-                           title="Recrutement">
+                        <a href="/recrutement/" style="font-weight: bold;">
                             Nous rejoindre
                         </a>
                     </li>
                     <li>
-                        <a href="<?php echo $view['router']->path('zco_donate_index') ?>"
-                           rel="Vous souhaitez aider financièrement le site ? Faites un don !"
-                           title="Faire un don">
+                        <a href="<?php echo $view['router']->path('zco_donate_index') ?>">
                             Faire un don
                         </a>
                     </li>
                     <li>
-                        <a href="<?php echo $view['router']->path('zco_about_team') ?>"
-                           rel="Une page spéciale pour présenter ceux qui dépensent tant d'énergie pour corriger vos documents et faire vivre le site."
-                           title="L'équipe">
+                        <a href="<?php echo $view['router']->path('zco_about_team') ?>">
                             L'équipe
                         </a>
                     </li>
                     <li>
-                        <a href="<?php echo $view['router']->path('zco_user_index') ?>"
-                           rel="Découvrez la liste des membres de ce site."
-                           title="Membres">
+                        <a href="<?php echo $view['router']->path('zco_user_index') ?>">
                             Membres
                         </a>
                     </li>
                     <li>
-                        <a href="<?php echo $view['router']->path('zco_user_online') ?>"
-                           rel="Quels sont les membres actuellement connectés sur le site ?"
-                           title="Connectés">
+                        <a href="<?php echo $view['router']->path('zco_user_online') ?>">
                             <?php echo $nbOnline ?> connecté<?php echo pluriel($nbOnline) ?>
                         </a>
                     </li>
