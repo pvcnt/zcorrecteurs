@@ -14,21 +14,11 @@
 <h1 id="titre">
 	<?php echo htmlspecialchars($InfosSujet['sujet_titre']); ?>
 </h1>
-<?php $view['javelin']->initBehavior('edit-in-place', array(
-	'id' => 'titre', 
-	'callback' => '/forum/ajax-edit-in-place-titre.html',
-	'options' => array('extraData' => array('id_suj' => $_GET['id'])),
-)) ?>
 
 <?php if(!empty($InfosSujet['sujet_sous_titre'])){ ?>
 	<h2 id="sous_titre">
 		<?php echo htmlspecialchars($InfosSujet['sujet_sous_titre']); ?>
 	</h2>
-	<?php $view['javelin']->initBehavior('edit-in-place', array(
-		'id' => 'sous_titre', 
-		'callback' => '/forum/ajax-edit-in-place-sous-titre.html',
-		'options' => array('extraData' => array('id_suj' => $_GET['id'])),
-	)) ?>
 <?php } ?>
 
 <?php if(!empty($InfosSujet['cat_reglement'])) echo '<div class="reglement">'.$view['messages']->parse($InfosSujet['cat_reglement']).'</div>'; ?>

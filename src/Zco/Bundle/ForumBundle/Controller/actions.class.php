@@ -52,58 +52,6 @@ class ForumActions extends Controller
 		return $response;
 	}
 
-	public function executeAjaxEditInPlaceTitre()
-	{
-		if(!empty($_POST['id_suj']))
-		{
-			include(BASEPATH.'/src/Zco/Bundle/ForumBundle/modeles/sujets.php');
-			$infos = InfosSujet($_POST['id_suj']);
-			if(verifier('editer_sujets', $infos['sujet_forum_id']) ||
-				($infos['sujet_auteur'] == $_SESSION['id'] && verifier('editer_ses_sujets', $infos['sujet_forum_id']))
-			)
-			{
-				$dbh = \Doctrine_Manager::connection()->getDbh();
-				$stmt = $dbh->prepare("UPDATE zcov2_forum_sujets
-					SET sujet_titre = :titre
-					WHERE sujet_id = :id");
-				$stmt->bindParam(':id', $_POST['id_suj']);
-				$stmt->bindValue(':titre', trim($_POST['data']));
-				$stmt->execute();
-				return new Response($_POST['data']);
-			}
-			else
-				return new Response('Vous n\'avez pas l\'autorisation de modifier le titre.');
-		}
-		else
-			return new Response('ERREUR');
-	}
-
-	public function executeAjaxEditInPlaceSousTitre()
-	{
-		if(!empty($_POST['id_suj']))
-		{
-			include(BASEPATH.'/src/Zco/Bundle/ForumBundle/modeles/sujets.php');
-			$infos = InfosSujet($_POST['id_suj']);
-			if(verifier('editer_sujets', $infos['sujet_forum_id']) ||
-				($infos['sujet_auteur'] == $_SESSION['id'] && verifier('editer_ses_sujets', $infos['sujet_forum_id']))
-			)
-			{
-				$dbh = \Doctrine_Manager::connection()->getDbh();
-				$stmt = $dbh->prepare("UPDATE zcov2_forum_sujets
-					SET sujet_sous_titre = :sous_titre
-					WHERE sujet_id = :id");
-				$stmt->bindParam(':id', $_POST['id_suj']);
-				$stmt->bindValue(':sous_titre', trim($_POST['data']));
-				$stmt->execute();
-				return new Response($_POST['data']);
-			}
-			else
-				return new Response('Vous n\'avez pas l\'autorisation de modifier le sous-titre.');
-		}
-		else
-			return new Response('ERREUR');
-	}
-
 	public function executeAjaxDeplacementMassif()
 	{
 		//Inclusion du modèle
