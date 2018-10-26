@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\CitationsBundle\EventListener;
+namespace Zco\Bundle\ContentBundle\EventListener;
 
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -47,12 +47,11 @@ class EventListener implements EventSubscriberInterface
             $citation = $this->container->get('zco.repository.quotes')->getRandom();
             $html = '';
             if ($citation) {
-                $html = render_to_string('ZcoCitationsBundle::citation.html.php', compact('citation'));
+                $html = render_to_string('ZcoContentBundle:Quotes:header.html.php', compact('citation'));
             }
             $cache->set('header_citations', $html, 3600);
         }
         $event->set('randomQuoteHtml', $html);
-
     }
 
     public function onFilterAdmin(FilterMenuEvent $event)

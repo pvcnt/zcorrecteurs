@@ -19,18 +19,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\CitationsBundle\Controller;
+namespace Zco\Bundle\ContentBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Zco\Bundle\CitationsBundle\Domain\QuoteRepository;
-use Zco\Bundle\CitationsBundle\Form\Handler\QuoteHandler;
-use Zco\Bundle\CitationsBundle\Form\Type\QuoteType;
+use Zco\Bundle\ContentBundle\Domain\QuoteRepository;
+use Zco\Bundle\ContentBundle\Form\Type\QuoteType;
 
-class DefaultController extends Controller
+class QuotesController extends Controller
 {
     /**
      * Display all quotes.
@@ -56,7 +55,7 @@ class DefaultController extends Controller
             '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
         ]);
 
-        return render_to_response('ZcoCitationsBundle::index.html.php', [
+        return render_to_response('ZcoContentBundle:Quotes:index.html.php', [
             'quotes' => $quotes,
             'totalCount' => $totalCount,
             'pages' => $pages,
@@ -90,7 +89,7 @@ class DefaultController extends Controller
             'Nouvelle citation',
         ]);
 
-        return render_to_response('ZcoCitationsBundle::new.html.php', [
+        return render_to_response('ZcoContentBundle:Quotes:new.html.php', [
             'form' => $form->createView(),
         ]);
     }
@@ -126,7 +125,7 @@ class DefaultController extends Controller
             'Modifier une citation',
         ]);
 
-        return render_to_response('ZcoCitationsBundle::edit.html.php', [
+        return render_to_response('ZcoContentBundle:Quotes:edit.html.php', [
             'form' => $form->createView(),
         ]);
     }
@@ -156,7 +155,7 @@ class DefaultController extends Controller
             'Modifier une citation',
         ]);
 
-        return render_to_response('ZcoCitationsBundle::delete.html.php', [
+        return render_to_response('ZcoContentBundle:Quotes:delete.html.php', [
             'quote' => $quote,
         ]);
     }

@@ -4,9 +4,6 @@ zco_admin:
 zco_content:
   resource: "@ZcoContentBundle/Resources/config/routing.yml"
 
-zco_quote:
-  resource: "@ZcoCitationsBundle/Resources/config/routing.yml"
-
 zco_file:
   resource: "@ZcoFileBundle/Resources/config/routing/index.yml"
 

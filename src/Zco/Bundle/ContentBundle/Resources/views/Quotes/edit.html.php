@@ -2,4 +2,4 @@
 
 <h1>Modifier une citation</h1>
 
-<?php echo $view->render('ZcoCitationsBundle::form.html.php', ['form' => $form]) ?>
+<?php echo $view->render('ZcoContentBundle:Quotes:form.html.php', ['form' => $form]) ?>

@@ -1,4 +1,15 @@
 services:
+  zco_content.event_listener:
+    class: Zco\Bundle\ContentBundle\EventListener\EventListener
+    calls:
+    - [setContainer, ['@service_container']]
+    tags:
+    - { name: kernel.event_subscriber }
+
+  zco.repository.quotes:
+    class: Zco\Bundle\ContentBundle\Domain\QuoteRepository
+    arguments: ['@zco_doctrine1.connection']
+
   zco.repository.tags:
     class: Zco\Bundle\ContentBundle\Domain\TagRepository
     arguments: ['@zco_doctrine1.connection']

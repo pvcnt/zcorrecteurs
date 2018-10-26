@@ -53,7 +53,7 @@ class TagsController extends Controller
         \Page::$titre = htmlspecialchars($tag['nom']);
         // TODO: check slug.
 
-        return render_to_response('ZcoContentBundle::tag.html.php', [
+        return render_to_response('ZcoContentBundle:Tags:view.html.php', [
             'tag' => $tag,
             'objects' => $repository->findRelatedObjects($id),
         ]);
