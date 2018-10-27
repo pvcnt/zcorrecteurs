@@ -22,7 +22,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Debug\Debug;
 
 define('BASEPATH', realpath(__DIR__ . '/..'));
-define('APP_PATH', BASEPATH . '/app');
 
 $env = getenv('SYMFONY_ENVIRONMENT') ?: 'prod';
 $debug = 'yes' === getenv('SYMFONY_DEBUG') && 'prod' !== $env;

@@ -43,35 +43,6 @@ function AjouterDroit($nom, $desc, $desc_longue, $id_cat, $choix_cat, $choix_bin
 	$stmt->bindParam(':choix_binaire', $choix_binaire);
 	$stmt->execute();
 	return $dbh->lastInsertId();
-
-	/*$xml = new DomDocument();
-	$xml->load(APP_PATH.'/config/droits.xml');
-	$xml->formatOutput = true;
-	$roots = $xml->getElementsByTagName('droits');
-	$root = $roots->item(0);
-
-	$droit = $xml->createElement('droit');
-	$droit->setAttribute('idcat', $id_cat);
-	$droit->setAttribute('parcategorie', $choix_cat);
-	$droit->setAttribute('binaire', $choix_binaire);
-	$droit = $root->appendChild($droit);
-
-	$_nom = $xml->createElement('nom');
-	$_nom = $droit->appendChild($_nom);
-	$nom_text = $xml->createTextNode($nom);
-	$nom_text = $_nom->appendChild($nom_text);
-
-	$nom = $xml->createElement('description');
-	$nom = $droit->appendChild($nom);
-	$nom_text = $xml->createCDATASection($desc);
-	$nom_text = $nom->appendChild($nom_text);
-
-	$nom = $xml->createElement('commentaire');
-	$nom = $droit->appendChild($nom);
-	$nom_text = $xml->createCDATASection($desc_longue);
-	$nom_text = $nom->appendChild($nom_text);
-
-	$xml->save(APP_PATH.'/config/droits.xml');*/
 }
 
 function EditerDroit($infos, $nom, $desc, $desc_longue, $id_cat, $choix_cat, $choix_binaire)

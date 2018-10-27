@@ -1,10 +1,9 @@
 <?php
 /* Frontend minimal */
 define('BASEPATH', dirname(__FILE__).'/../..');
-define('APP_PATH', BASEPATH.'/app');
 
-include(APP_PATH.'/autoload.php');
-include(APP_PATH.'/AppKernel.php');
+include(BASEPATH.'/vendor/autoload.php');
+include(BASEPATH.'/app/AppKernel.php');
 $app = new AppKernel('prod', false);
 $app->boot();
 $cache = \Container::getService('zco_core.templating.helper.cache');
