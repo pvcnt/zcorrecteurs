@@ -33,3 +33,21 @@ ForumMessage:
     Utilisateur:             { local: message_auteur, foreign: utilisateur_id }
     Editeur:                 { class: Utilisateur, local: message_edite_auteur, foreign: utilisateur_id }
     Sujet:                   { class: ForumSujet, local: sujet_id, foreign: sujet_id }
+
+ForumSujet:
+  tableName: zcov2_forum_sujets
+  columns:
+    sujet_id:                 { type: integer(11), primary: true, autoincrement: true, name: sujet_id as id }
+    sujet_forum_id:           { type: integer(11), name: sujet_forum_id as forum_id }
+    sujet_titre:              { type: string(150), name: sujet_titre as titre }
+    sujet_sous_titre:         { type: string(255), name: sujet_sous_titre as sous_titre }
+    sujet_auteur:             { type: integer(11) }
+    sujet_date:               { type: timestamp(25), name: sujet_date as date }
+    sujet_annonce:            { type: boolean, name: sujet_annonce as annonce }
+    sujet_ferme:              { type: boolea, name: sujet_ferme as ferme }
+    sujet_resolu:             { type: boolean, name: sujet_resolu as resolu }
+    sujet_corbeille:          { type: boolean, name: sujet_corbeille as corbeille }
+    sujet_coup_coeur:         { type: boolean, name: sujet_coup_coeur as coup_coeur }
+  relations:
+    Utilisateur:              { local: sujet_auteur, foreign: utilisateur_id }
+    Categorie:                { local: sujet_forum_id, foreign: cat_id }
