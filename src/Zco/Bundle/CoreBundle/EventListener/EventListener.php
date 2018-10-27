@@ -23,10 +23,6 @@ namespace Zco\Bundle\CoreBundle\EventListener;
 
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Component\HttpKernel\KernelEvents;
 use Zco\Component\Templating\Event\FilterResourcesEvent;
 use Zco\Component\Templating\Event\FilterVariablesEvent;
 use Zco\Component\Templating\TemplatingEvents;
@@ -50,35 +46,7 @@ class EventListener implements EventSubscriberInterface
         return array(
             TemplatingEvents::FILTER_RESOURCES => 'onTemplatingFilterResources',
             TemplatingEvents::FILTER_VARIABLES => 'onTemplatingFilterVariables',
-            KernelEvents::REQUEST => 'onKernelRequest',
         );
-    }
-
-    /**
-     * Vérifie si le site est en mode maintenance et le cas échéant si
-     * l'utilisateur a le droit d'y accéder ou pas. Si le site est bloqué,
-     * renvoie directement la page de maintenance.
-     *
-     * Le mode maintenance s'active en créant le fichier app/config/maintenance.
-     * Les différentes adresses IP autorisées sont placées à l'intérieur.
-     *
-     * @param GetResponseEvent $event
-     */
-    public function onKernelRequest(GetResponseEvent $event)
-    {
-        if (HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
-            return;
-        }
-
-        if (is_file(APP_PATH . '/config/maintenance')) {
-            $this->maintenance = true;
-            if (strpos(
-                    file_get_contents(APP_PATH . '/config/maintenance'),
-                    $event->getRequest()->getClientIp(true)) === false
-            ) {
-                $event->setResponse(new Response(render_to_string('ZcoCoreBundle::maintenance.html.php')));
-            }
-        }
     }
 
     /**
