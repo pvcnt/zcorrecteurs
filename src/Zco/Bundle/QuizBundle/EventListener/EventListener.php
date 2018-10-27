@@ -24,8 +24,6 @@ namespace Zco\Bundle\QuizBundle\EventListener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Zco\Bundle\CoreBundle\Cache\CacheInterface;
-use Zco\Bundle\CoreBundle\CoreEvents;
-use Zco\Bundle\CoreBundle\Event\CronEvent;
 use Zco\Bundle\PagesBundle\Event\FilterSitemapEvent;
 use Zco\Bundle\PagesBundle\PagesEvents;
 use Zco\Bundle\QuizBundle\Entity\QuizManager;
@@ -63,7 +61,6 @@ class EventListener implements EventSubscriberInterface
     {
         return array(
             PagesEvents::SITEMAP => 'onFilterSitemap',
-            CoreEvents::DAILY_CRON => 'onDailyCron',
         );
     }
 
@@ -85,16 +82,5 @@ class EventListener implements EventSubscriberInterface
                 'priority' => '0.5',
             ));
         }
-    }
-
-    /**
-     * Actions à exécuter chaque jour.
-     *
-     * @param CronEvent $event
-     */
-    public function onDailyCron(CronEvent $event)
-    {
-        // Mise en cache des quiz les plus fréquentés
-        $this->cache->delete('quiz_liste_frequentes');
     }
 }

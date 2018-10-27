@@ -29,13 +29,6 @@ namespace Zco\Bundle\CoreBundle;
 final class CoreEvents
 {
 	/**
-	 * Événement déclenché chaque heure par l'exécution du cron horaire.
-	 *
-	 * L'événement associé est de type Zco\Bundle\CoreBundle\Event\CronEvent.
-	 */
-	const HOURLY_CRON = 'zco_core.hourly_cron';
-	
-	/**
 	 * Événement déclenché chaque jour par l'exécution du cron quotidien.
 	 *
 	 * L'événement associé est de type Zco\Bundle\CoreBundle\Event\CronEvent.

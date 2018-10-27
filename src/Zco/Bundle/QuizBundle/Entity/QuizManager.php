@@ -151,6 +151,7 @@ class QuizManager
                 ->orderBy('COUNT(*) DESC')
                 ->limit(2)
                 ->execute();
+            // Cache for one day.
             $this->cache->set('quiz_liste_frequentes', $listeQuizFrequentes, 86400);
         }
         return $listeQuizFrequentes;

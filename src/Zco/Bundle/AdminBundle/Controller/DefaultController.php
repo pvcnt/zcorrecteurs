@@ -54,6 +54,7 @@ class DefaultController extends Controller
         Page::$titre = 'Accueil de l\'administration';
 
         $this->get('zco.admin')->refreshAll();
+
         $menu = $this->createMenu();
         $renderer = new AdminRenderer();
 
