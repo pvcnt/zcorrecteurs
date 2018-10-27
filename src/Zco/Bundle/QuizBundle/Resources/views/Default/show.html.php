@@ -27,13 +27,10 @@
 	<strong>Règles :</strong> sélectionnez la bonne réponse. Il n'y a qu'une
 	seule réponse juste pour chaque question. Une réponse fausse, de même que
 	l'absence de réponse n'enlève aucun point.
-</div><br />
-
-<div id="quiz_note" class="alert alert-info" style="display: none;"></div>
+</div>
 
 <?php if (count($questions) > 0){ ?>
     <form method="post" id="form_jouer" class="form-horizontal">
-        <input type="hidden" name="quiz_id" value="<?php echo $quiz['id'] ?>" />
         <?php $i = 0 ?>
         <?php foreach ($questions as $key => $question){ ?>
             <input type="hidden" name="rep[]" value="<?php echo $question['id'] ?>" />
@@ -41,7 +38,6 @@
             <p class="bold">
                 Question <?php echo $key+1 ?> : <?php echo $view['messages']->parse($question['question']); ?>
             </p>
-            <div id="correction_<?php echo $question['id'] ?>" class="correction"></div>
 
             <?php for ($j = 1; $j <= 4; $j++): ?>
                 <label class="radio" style="float: none;" for="<?php echo 'id'.$i; ?>" id="q<?php echo $question['id'] ?>r<?php echo $j ?>">

@@ -22,6 +22,8 @@
 namespace Zco\Bundle\QuizBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zco\Bundle\QuizBundle\Chart\MyStatsChart;
@@ -52,17 +54,21 @@ class DefaultController extends Controller
     }
 
     /**
-     * Affiche les questions d'un quiz .
+     * Affiche les questions d'un quiz.
+     *
+     * @param int $id
+     * @param string $slug
+     * @param Request $request
+     * @return Response
      */
-    public function showAction($id, $slug)
+    public function showAction($id, $slug, Request $request)
     {
         $repository = $this->get('zco_quiz.manager.quiz');
         $quiz = $repository->get($id);
         if ($quiz === false || !$quiz->visible) {
             throw new NotFoundHttpException();
         }
-        $questions = $repository->findQuestions($quiz['id'], $quiz['aleatoire']);
-        //\zCorrecteurs::VerifierFormatageUrl($quiz['nom'], true);
+        //TODO: check slug.
 
         \Page::$titre = htmlspecialchars($quiz['nom']);
         \Page::$description = htmlspecialchars($quiz['description']);
@@ -72,6 +78,29 @@ class DefaultController extends Controller
             '@ZcoCoreBundle/Resources/public/css/zform.css',
             '@ZcoQuizBundle/Resources/public/css/quiz.css',
         ]);
+
+        if ($request->getMethod() === 'POST') {
+            $questions = $repository->findQuestions($quiz['id'], $_POST['rep']);
+            $note = $quiz->Soumettre($questions);
+            $reponses = [];
+            foreach ($questions as $question) {
+                $choice = $_POST['rep' . $question['id']];
+                $correct = $choice != 0 && $choice == $question['reponse_juste'];
+                $reponses[] = [
+                    'choice' => $choice,
+                    'correct' => $correct,
+                ];
+            }
+
+            return render_to_response('ZcoQuizBundle:Default:correction.html.php', [
+                'quiz' => $quiz,
+                'questions' => $questions,
+                'note' => $note,
+                'reponses' => $reponses,
+            ]);
+        }
+
+        $questions = $repository->findQuestions($quiz['id'], $quiz['aleatoire']);
 
         return render_to_response('ZcoQuizBundle:Default:show.html.php', [
             'quiz' => $quiz,

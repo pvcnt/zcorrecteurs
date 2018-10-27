@@ -3,9 +3,9 @@ zco_quiz_index:
   defaults:  { _controller: ZcoQuizBundle:Default:index }
 
 zco_quiz_show:
-  path: /quiz/jouer/{id}/{slug}
+  path: /quiz/{id}/{slug}
   defaults:  { _controller: ZcoQuizBundle:Default:show, slug: ~ }
-  methods:   [GET]
+  methods:   [GET, POST]
   requirements:
     id: \d+
 
@@ -22,29 +22,29 @@ zco_quiz_admin:
   defaults:  { _controller: ZcoQuizBundle:Admin:index }
 
 zco_quiz_newQuiz:
-  path: /quiz/questionnaire/nouveau
+  path: /quiz/ajouter
   defaults:  { _controller: ZcoQuizBundle:Admin:newQuiz }
 
 zco_quiz_editQuiz:
-  path: /quiz/questionnaire/modifier/{id}
+  path: /quiz/modifier/{id}
   defaults:  { _controller: ZcoQuizBundle:Admin:editQuiz }
   requirements:
     id: \d+
 
 zco_quiz_publishQuiz:
-  path: /quiz/questionnaire/publier/{id}/{status}
+  path: /quiz/publier/{id}/{status}
   defaults:  { _controller: ZcoQuizBundle:Admin:publishQuiz }
   requirements:
     id: \d+
 
 zco_quiz_deleteQuiz:
-  path: /quiz/questionnaire/supprimer/{id}
+  path: /quiz/supprimer/{id}
   defaults:  { _controller: ZcoQuizBundle:Admin:deleteQuiz }
   requirements:
     id: \d+
 
 zco_quiz_newQuestion:
-  path: /quiz/question/nouvelle/{quizId}
+  path: /quiz/question/ajouter/{quizId}
   defaults:  { _controller: ZcoQuizBundle:Admin:newQuestion }
   requirements:
     quizId: \d+
@@ -68,11 +68,11 @@ zco_quiz_deleteQuestion:
     id: \d+
 
 zco_quiz_stats:
-  path: /quiz/statistiques/{quizId}
+  path: /quiz/stats/{quizId}
   defaults:  { _controller: ZcoQuizBundle:Admin:stats, quizId: ~ }
 
 zco_quiz_statsChart:
-  path: /quiz/statistiques/{quizId}.png
+  path: /quiz/stats/{quizId}.png
   defaults:  { _controller: ZcoQuizBundle:Admin:statsChart, quizId: ~ }
 
 zco_quiz_popularity:

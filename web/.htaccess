@@ -49,12 +49,11 @@ RewriteRule ^forum/typographie-f42.html /forum/forum-46-typographie.html [R=301,
 RewriteRule ^equipe\.html /apropos/equipe [R=301,L]
 RewriteRule ^membres\.html /membres/ [R=301,L]
 RewriteRule ^uploads/?$ /fichiers/ [R=301,L]
-RewriteRule ^membres/connectes.html$ /membres/connectes [R=301,L]
 RewriteRule ^profil-([0-9]+)\.html$ /membres/$1/inconnu [L,R=301]
 RewriteRule ^membres/profil-([0-9]+)\.html$ /membres/$1/inconnu [L,R=301]
 RewriteRule ^membres/profil-([0-9]+)-([a-zA-Z0-9-]+)\.html$ /membres/$1/$2 [L,R=301]
-RewriteRule ^quiz/quiz-([0-9]+)\.html$ /quiz/jouer/$1 [L,R=301]
-RewriteRule ^quiz/quiz-([0-9]+)-([a-zA-Z0-9-]+)\.html$ /quiz/jouer/$1/$2 [L,R=301]
+RewriteRule ^quiz/quiz-([0-9]+)\.html$ /quiz/$1 [L,R=301]
+RewriteRule ^quiz/quiz-([0-9]+)-([a-zA-Z0-9-]+)\.html$ /quiz/$1/$2 [L,R=301]
 RewriteRule ^images/(zcorrecteur\.jpg|zcorrige\.png)$ ext/$1 [L]
 RewriteRule ^css/img/zcode/smilies/([a-z_]+\.png)$ /bundles/zcocore/img/zcode/smilies/$1 [L,R=301]
 
@@ -66,7 +65,6 @@ RewriteRule ^ext/signature\.png$ ext/signature.php [L]
 RewriteRule ^contact/$ /apropos/contact [L,R=301]
 RewriteRule ^inscription/$ /membres/inscription [L,R=301]
 RewriteRule ^connexion/$ /membres/connexion [L,R=301]
-RewriteRule ^zeditor.html$ http://www.siteduzero.com/tutoriel-3-61374-guide-d-utilisation-de-zeditor.html [L,R=301]
 
 # Règles spécifiques
 RewriteRule ^index\.html$ / [R=301,L]

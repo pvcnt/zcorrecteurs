@@ -17,17 +17,15 @@
 }
 .correction.faux .type {
 	color: red;
-	background-image: url(../img/faux.png);
-	background-repeat: no-repeat;
+	background: url(../img/faux.png) no-repeat;
 }
 .correction.juste .type {
 	color: green;
-	background-image: url(../img/juste.png);
-	background-repeat: no-repeat;
+	background: url(../img/juste.png) no-repeat;
 }
 
 .correction .explication {
-	margin-left: 50px;
+	margin-top: 10px;
 	padding: 5px;
 	border: 1px dashed #787878;
 }
