@@ -6,22 +6,6 @@ zco_stats_alexaChart:
     path:   /admin/stats/alexa.png
     defaults:  { _controller: ZcoStatsBundle:Default:alexaChart }
 
-zco_stats_location:
-    path:   /admin/stats/geolocalisation
-    defaults:  { _controller: ZcoStatsBundle:Default:location }
-
-zco_stats_locationChart:
-    path:   /admin/stats/geolocalisation.png
-    defaults:  { _controller: ZcoStatsBundle:Default:locationChart }
-
-zco_stats_ages:
-    path:   /admin/stats/ages
-    defaults:  { _controller: ZcoStatsBundle:Default:ages }
-
-zco_stats_agesChart:
-    path:   /admin/stats/ages.png
-    defaults:  { _controller: ZcoStatsBundle:Default:agesChart }
-
 zco_stats_registration:
     path:   /admin/stats/inscription
     defaults:  { _controller: ZcoStatsBundle:Default:registration }

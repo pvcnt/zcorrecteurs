@@ -111,12 +111,6 @@ class DefaultController extends Controller
             $section->addChild('Statistiques d\'inscription', array(
                 'uri' => $router->generate('zco_stats_registration'),
             ));
-            $section->addChild('Statistiques de géolocalisation', array(
-                'uri' => $router->generate('zco_stats_location'),
-            ));
-            $section->addChild('Âge des membres', array(
-                'uri' => $router->generate('zco_stats_ages'),
-            ));
             $section->addChild('Statistiques temporelles du forum', [
                 'uri' => '/forum/statistiques-temporelles.html',
             ]);

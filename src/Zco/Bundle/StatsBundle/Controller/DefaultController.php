@@ -23,11 +23,8 @@ namespace Zco\Bundle\StatsBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Zco\Bundle\StatsBundle\Service\AgesChartService;
 use Zco\Bundle\StatsBundle\Service\AlexaChartService;
 use Zco\Bundle\StatsBundle\Service\AlexaStatsService;
-use Zco\Bundle\StatsBundle\Service\LocationChartService;
 use Zco\Bundle\StatsBundle\Service\RegistrationChartService;
 use Zco\Bundle\StatsBundle\Service\UserStatsService;
 
@@ -164,87 +161,6 @@ class DefaultController extends Controller
         }
 
         return $this->createChartResponse($chartService->draw($classementFils, $classementSql, $annee, $mois, $jour));
-    }
-
-    public function locationAction()
-    {
-        if (!verifier('voir_stats_generales')) {
-            throw new AccessDeniedHttpException();
-        }
-        \Page::$titre = 'Statistiques de géolocalisation';
-        fil_ariane(['Administration' => $this->generateUrl('zco_admin_index'), 'Statistiques de géolocalisation']);
-
-        /** @var UserStatsService $statsService */
-        $statsService = $this->get('zco_stats.user_stats');
-        list($Stats, $NbUtilisateurs) = $statsService->getLocationStats();
-
-        return render_to_response('ZcoStatsBundle::location.html.php', array(
-            'Stats' => $Stats,
-            'NbUtilisateurs' => $NbUtilisateurs
-        ));
-    }
-
-    public function locationChartAction()
-    {
-        if (!verifier('voir_stats_generales')) {
-            throw new AccessDeniedHttpException();
-        }
-        /** @var LocationChartService $chartService */
-        $chartService = $this->get('zco_stats.location_chart');
-
-        return $this->createChartResponse($chartService->draw());
-    }
-
-    public function agesAction()
-    {
-        if (!verifier('voir_stats_generales')) {
-            throw new AccessDeniedHttpException();
-        }
-        // Limiter le graphique à un groupe.
-        $afficherGroupe = isset($_GET['groupe']) && $_GET['groupe'] !== '' ? (int)$_GET['groupe'] : null;
-        $listeGroupes = ListerGroupes();
-        if ($afficherGroupe !== null) {
-            $groupeTrouve = false;
-            foreach ($listeGroupes as $groupe) {
-                if ($groupe['groupe_id'] == $afficherGroupe) {
-                    $groupeTrouve = true;
-                    break;
-                }
-            }
-            if (!$groupeTrouve) {
-                throw new NotFoundHttpException();
-            }
-        }
-
-        /** @var UserStatsService $statsService */
-        $statsService = $this->get('zco_stats.user_stats');
-        $repartitionAges = $statsService->getAgeStats($afficherGroupe);
-        $nombreUtilisateurs = \Doctrine_Core::getTable('Utilisateur')->count();
-        $agesInconnus = 0;
-        if (is_array($repartitionAges)) {
-            $agesInconnus = $nombreUtilisateurs - array_sum($repartitionAges);
-        }
-
-        \Page::$titre = 'Répartition des membres selon l\'âge';
-        fil_ariane(['Administration' => $this->generateUrl('zco_admin_index'), 'Statistiques d\'âge des membres']);
-
-        return render_to_response('ZcoStatsBundle::ages.html.php', [
-            'afficherGroupe' => $afficherGroupe,
-            'listeGroupes' => $listeGroupes,
-            'repartitionAges' => $repartitionAges,
-            'agesInconnus' => $agesInconnus
-        ]);
-    }
-
-    public function agesChartAction()
-    {
-        if (!verifier('voir_stats_generales')) {
-            throw new AccessDeniedHttpException();
-        }
-        /** @var AgesChartService $chartService */
-        $chartService = $this->get('zco_stats.ages_chart');
-
-        return $this->createChartResponse($chartService->draw());
     }
 
     private function createChartResponse($data)
