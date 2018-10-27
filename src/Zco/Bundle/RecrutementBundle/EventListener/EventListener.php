@@ -23,11 +23,8 @@ namespace Zco\Bundle\RecrutementBundle\EventListener;
 
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Zco\Bundle\AdminBundle\AdminEvents;
-use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
 use Zco\Bundle\PagesBundle\Event\FilterSitemapEvent;
 use Zco\Bundle\PagesBundle\PagesEvents;
-use Zco\Bundle\RecrutementBundle\Admin\ApplicationsPendingTask;
 
 /**
  * Observateur principal pour le module de recrutement.
@@ -44,28 +41,8 @@ class EventListener implements EventSubscriberInterface
 	static public function getSubscribedEvents()
 	{
 		return array(
-			AdminEvents::MENU => 'onFilterAdmin',
 			PagesEvents::SITEMAP => 'onFilterSitemap',
 		);
-	}
-	
-	/**
-	 * Ajoute les liens vers les pages d'administration du module de recrutement.
-	 *
-	 * @param FilterMenuEvent $event
-	 */
-	public function onFilterAdmin(FilterMenuEvent $event)
-	{
-		$tab = $event->getRoot()->getChild('Recrutements');
-		
-		$nombreCandidatures = $this->container->get('zco.admin')->get(ApplicationsPendingTask::class);
-	
-		$tab->addChild('Voir les candidatures en attente', array(
-			'label' => 'Il y a ' . $nombreCandidatures . ' candidature' . pluriel($nombreCandidatures) . ' en attente',
-			'credentials' => array('recrutements_voir_candidatures'),
-			'uri' => '/recrutement/gestion.html',
-			'count' => $nombreCandidatures,
-		));
 	}
 	
 	/**

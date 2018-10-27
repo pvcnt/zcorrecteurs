@@ -6,13 +6,6 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    zco_blog.ui_listener:
-        class: Zco\Bundle\BlogBundle\EventListener\UiListener
-        calls:
-            - [setContainer, ["@service_container"]]
-        tags:
-            - { name: kernel.event_subscriber }
-
     zco.admin_task.articles:
         class: Zco\Bundle\BlogBundle\Admin\ArticlesPendingTask
         tags:

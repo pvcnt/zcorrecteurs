@@ -21,13 +21,9 @@
 
 namespace Zco\Bundle\StatsBundle\EventListener;
 
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Zco\Bundle\AdminBundle\AdminEvents;
 use Zco\Bundle\CoreBundle\CoreEvents;
 use Zco\Bundle\CoreBundle\Event\CronEvent;
-use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
 use Zco\Bundle\StatsBundle\Service\AlexaStatsService;
 
 /**
@@ -37,18 +33,15 @@ use Zco\Bundle\StatsBundle\Service\AlexaStatsService;
  */
 class EventListener implements EventSubscriberInterface
 {
-    private $urlGenerator;
     private $alexaStats;
 
     /**
      * Constructor.
      *
-     * @param UrlGeneratorInterface $urlGenerator
      * @param AlexaStatsService $alexaStats
      */
-    public function __construct(UrlGeneratorInterface $urlGenerator, AlexaStatsService $alexaStats)
+    public function __construct(AlexaStatsService $alexaStats)
     {
-        $this->urlGenerator = $urlGenerator;
         $this->alexaStats = $alexaStats;
     }
 
@@ -58,39 +51,8 @@ class EventListener implements EventSubscriberInterface
     static public function getSubscribedEvents()
     {
         return array(
-            AdminEvents::MENU => 'onFilterAdmin',
             CoreEvents::DAILY_CRON => 'onDailyCron',
         );
-    }
-
-    /**
-     * Ajoute des liens sur le panneau d'administration.
-     *
-     * @param FilterMenuEvent $event
-     */
-    public function onFilterAdmin(FilterMenuEvent $event)
-    {
-        $tab = $event->getRoot()->getChild('Statistiques générales');
-        $tab->addChild('Statistiques générales (GA)', array(
-            'credentials' => 'voir_stats_generales',
-            'uri' => 'https://www.google.com/analytics/reporting/dashboard?id=6978501&scid=1725896',
-        ));
-        $tab->addChild('Statistiques Alexa (classement du site)', array(
-            'credentials' => 'voir_stats_generales',
-            'uri' => $this->urlGenerator->generate('zco_stats_alexa'),
-        ));
-        $tab->addChild('Statistiques d\'inscription', array(
-            'credentials' => 'voir_stats_generales',
-            'uri' => $this->urlGenerator->generate('zco_stats_registration'),
-        ));
-        $tab->addChild('Statistiques de géolocalisation', array(
-            'credentials' => 'voir_stats_generales',
-            'uri' => $this->urlGenerator->generate('zco_stats_location'),
-        ));
-        $tab->addChild('Âge des membres', array(
-            'credentials' => 'voir_stats_generales',
-            'uri' => $this->urlGenerator->generate('zco_stats_ages'),
-        ));
     }
 
     public function onDailyCron(CronEvent $event)

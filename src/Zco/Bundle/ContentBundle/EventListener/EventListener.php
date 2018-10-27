@@ -23,8 +23,6 @@ namespace Zco\Bundle\ContentBundle\EventListener;
 
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Zco\Bundle\AdminBundle\AdminEvents;
-use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
 use Zco\Component\Templating\Event\FilterVariablesEvent;
 use Zco\Component\Templating\TemplatingEvents;
 
@@ -36,7 +34,6 @@ class EventListener implements EventSubscriberInterface
     {
         return array(
             TemplatingEvents::FILTER_VARIABLES => 'onTemplatingFilterVariables',
-            AdminEvents::MENU => 'onFilterAdmin',
         );
     }
 
@@ -52,18 +49,5 @@ class EventListener implements EventSubscriberInterface
             $cache->set('header_citations', $html, 3600);
         }
         $event->set('randomQuoteHtml', $html);
-    }
-
-    public function onFilterAdmin(FilterMenuEvent $event)
-    {
-        if (!verifier('citations_modifier')) {
-            return;
-        }
-        $tab = $event->getRoot()->getChild('Citations');
-
-        $router = $this->container->get('router');
-        $tab->addChild('Gérer les citations', array(
-            'uri' => $router->generate('zco_quote_index'),
-        ));
     }
 }

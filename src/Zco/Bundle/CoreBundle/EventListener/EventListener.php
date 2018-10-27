@@ -27,7 +27,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
 use Zco\Component\Templating\Event\FilterResourcesEvent;
 use Zco\Component\Templating\Event\FilterVariablesEvent;
 use Zco\Component\Templating\TemplatingEvents;

@@ -36,9 +36,9 @@ zco_user_admin_searchEmail:
     path:   /rechercher-email
     defaults:  { _controller: ZcoUserBundle:Admin:searchEmail }
 
-zco_user_admin_unvalidAccounts:
+zco_user_admin_invalidAccounts:
     path:   /comptes-non-valides
-    defaults:  { _controller: ZcoUserBundle:Admin:unvalidAccounts }
+    defaults:  { _controller: ZcoUserBundle:Admin:invalidAccounts }
 
 zco_user_admin_bannedEmails:
     path:   /courriels-bannis

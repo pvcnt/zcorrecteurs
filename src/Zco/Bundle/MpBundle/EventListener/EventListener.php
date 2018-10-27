@@ -25,9 +25,6 @@ use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Zco\Bundle\AdminBundle\AdminEvents;
-use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
-use Zco\Bundle\MpBundle\Admin\PmAlertsPendingTask;
 
 class EventListener implements EventSubscriberInterface
 {
@@ -37,7 +34,6 @@ class EventListener implements EventSubscriberInterface
     {
         return array(
             KernelEvents::REQUEST => array('onKernelRequest', 100),
-            AdminEvents::MENU => 'onFilterAdmin',
         );
     }
 
@@ -68,18 +64,5 @@ class EventListener implements EventSubscriberInterface
             include_once(__DIR__ . '/../modeles/mp_cache.php');
             $_SESSION['MPs'] = CompteMPTotal();
         }
-    }
-
-    public function onFilterAdmin(FilterMenuEvent $event)
-    {
-        $tab = $event->getRoot()->getChild('Messagerie privée');
-
-        $NombreAlertesMP = $this->container->get('zco.admin')->get(PmAlertsPendingTask::class);
-
-        $tab->addChild('Voir les alertes non résolues', array(
-            'label' => 'Il y a ' . $NombreAlertesMP . ' alerte' . pluriel($NombreAlertesMP) . ' non résolue' . pluriel($NombreAlertesMP),
-            'uri' => '/mp/alertes.html' . ($NombreAlertesMP ? '?solved=0' : ''),
-            'count' => $NombreAlertesMP,
-        ))->secure('mp_alertes');
     }
 }

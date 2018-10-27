@@ -24,8 +24,6 @@ namespace Zco\Bundle\PagesBundle\EventListener;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Zco\Bundle\AdminBundle\AdminEvents;
-use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
 use Zco\Bundle\PagesBundle\Event\FilterSitemapEvent;
 use Zco\Bundle\PagesBundle\PagesEvents;
 
@@ -45,18 +43,7 @@ class EventListener implements EventSubscriberInterface
     {
         return array(
             PagesEvents::SITEMAP => 'onFilterSitemap',
-            AdminEvents::MENU => 'onFilterAdmin',
         );
-    }
-
-    public function onFilterAdmin(FilterMenuEvent $event)
-    {
-        /** @var UrlGeneratorInterface $router */
-        $router = $this->container->get('router');
-        $tab = $event->getRoot()->getChild('Communication');
-        $tab->addChild('Modifier les annonces de la page d\'accueil', array(
-            'uri' => $router->generate('zco_home_config'),
-        ))->secure('gerer_breve_accueil');
     }
 
     public function onFilterSitemap(FilterSitemapEvent $event)

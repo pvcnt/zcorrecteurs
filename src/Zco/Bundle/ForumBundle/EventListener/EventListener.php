@@ -23,9 +23,6 @@ namespace Zco\Bundle\ForumBundle\EventListener;
 
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Zco\Bundle\AdminBundle\AdminEvents;
-use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
-use Zco\Bundle\ForumBundle\Admin\ForumAlertsPendingTask;
 use Zco\Bundle\PagesBundle\Event\FilterSitemapEvent;
 use Zco\Bundle\PagesBundle\PagesEvents;
 use Zco\Component\Templating\Event\FilterResourcesEvent;
@@ -47,7 +44,6 @@ class EventListener implements EventSubscriberInterface
 	{
 		return array(
 			TemplatingEvents::FILTER_RESOURCES => 'onTemplatingFilterResources',
-			AdminEvents::MENU => 'onFilterAdmin',
 			PagesEvents::SITEMAP => 'onFilterSitemap',
 		);
 	}
@@ -66,32 +62,6 @@ class EventListener implements EventSubscriberInterface
 		{
 			$event->requireResource('@ZcoForumBundle/Resources/public/css/forum.css');
 		}
-	}
-	
-	/**
-	 * Ajoute les liens vers les pages d'administration.
-	 *
-	 * @param FilterMenuEvent $event
-	 */
-	public function onFilterAdmin(FilterMenuEvent $event)
-	{
-		$tab = $event->getRoot()->getChild('Forums');
-		$tasks = $this->container->get('zco.admin')->get(ForumAlertsPendingTask::class);
-		$tab->addChild('Voir les alertes non résolues', array(
-			'label' => 'Il y a '.$tasks.' alerte non résolue'.pluriel($tasks),
-			'uri' => '/forum/alertes.html',
-			'count' => $tasks,
-		))->secure('voir_alertes');
-		$tab->addChild('Gérer les sujets en coup de cœur', array(
-			'uri' => '/forum/sujets-coups-coeur.html',
-		))->secure('mettre_sujets_coup_coeur');
-		
-		$tab = $event->getRoot()->getChild('Statistiques générales');
-		$tab->addChild('Statistiques temporelles du forum', array(
-			'uri' => '/forum/statistiques-temporelles.html',
-			'separator' => true,
-			'weight' => 70,
-		))->secure('voir_stats_generales');
 	}
 	
 	/**

@@ -1,8 +1,3 @@
 services:
-    zco_catgories.event_listener:
-        class: Zco\Bundle\CategoriesBundle\EventListener\EventListener
-        tags:
-            - { name: kernel.event_subscriber }
-
     zco_category.manager.category:
         class: Zco\Bundle\CategoriesBundle\Entity\CategoryManager

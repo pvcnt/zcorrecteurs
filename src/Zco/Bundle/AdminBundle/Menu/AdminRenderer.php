@@ -19,32 +19,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\AdminBundle\Menu\Renderer;
-
-use Knp\Menu\ItemInterface;
-use Knp\Menu\Renderer\Renderer;
+namespace Zco\Bundle\AdminBundle\Menu;
 
 /**
- * Moteur de rendu permettant d'afficher l'accueil de l'administration.
- * La majorité des options habituellement disponibles sur un MenuItem
- * ne sont pas supportées pour se concentrer uniquement sur l'affichage
- * de cette page spécifique.
- *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class AdminRenderer extends Renderer
+final class AdminRenderer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function render(ItemInterface $item, array $options = array())
+    public function render(MenuItem $item)
     {
-        if (!$item->hasChildren() || !$item->getDisplayChildren()) {
-            return '';
-        }
-
         $html = '<table border="0" cellspacing="4" cellpadding="0" width="100%"><tbody><tr><td>';
-        $perColumn = ceil(count($item) / 2);
+        $perColumn = ceil(count($item->getChildren()) / 2);
         $i = 0;
 
         foreach ($item->getChildren() as $section) {
@@ -69,15 +54,14 @@ class AdminRenderer extends Renderer
                 if (!$link->isDisplayed()) {
                     continue;
                 }
-
-                $html .= '<li' . ($link->isSeparator() ? ' class="admin_sep"' : '') . '>' .
-                    '<a href="' . $link->getUri() . '"'
+                $html .= '<li>' .
+                    '<a href="' . $link->getUri() . '" '
                     . ($link->getCount() ? ' class="action_a_faire"' : '') . '>'
-                    . $this->escape($link->getLabel())
+                    . htmlspecialchars($link->getLabel())
                     . '</a></li>';
             }
 
-            $html .= '</ul></div></div>' . "\n";
+            $html .= '</ul></div></div>';
             $i++;
         }
 
@@ -86,12 +70,10 @@ class AdminRenderer extends Renderer
         return $html;
     }
 
-    protected function alter(ItemInterface $item)
+    protected function alter(MenuItem $item)
     {
         $count = 0;
         $displayed = false;
-        $item->reorderChildren(null);
-
         foreach ($item->getChildren() as $link) {
             if ($link->isDisplayed()) {
                 $count += $link->getCount();
@@ -105,14 +87,8 @@ class AdminRenderer extends Renderer
         }
     }
 
-    /**
-     * Effectue le rendu d'un label avec son nombre de tâches associées.
-     *
-     * @param  ItemInterface $item
-     * @return string
-     */
-    protected function renderLabel(ItemInterface $item)
+    protected function renderLabel(MenuItem $item)
     {
-        return $this->escape($item->getLabel() . ($item->getCount() ? ' (' . $item->getCount() . ')' : ''));
+        return htmlspecialchars($item->getLabel() . ($item->getCount() ? ' (' . $item->getCount() . ')' : ''));
     }
 }

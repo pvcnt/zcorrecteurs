@@ -1,7 +1,7 @@
 services:
   zco_stats.event_listener:
     class: Zco\Bundle\StatsBundle\EventListener\EventListener
-    arguments: ['@router', '@zco_stats.alexa_stats']
+    arguments: ['@zco_stats.alexa_stats']
     tags:
       - { name: kernel.event_subscriber }
 
@@ -12,10 +12,6 @@ services:
   zco_stats.user_stats:
       class: Zco\Bundle\StatsBundle\Service\UserStatsService
       arguments: ['@zco_doctrine1.connection']
-
-  zco_stats.forum_stats:
-      class: Zco\Bundle\StatsBundle\Service\ForumStatsService
-      arguments: ['@zco_doctrine1.connection', '@zco_core.cache']
 
   zco_stats.alexa_chart:
     class: Zco\Bundle\StatsBundle\Service\AlexaChartService

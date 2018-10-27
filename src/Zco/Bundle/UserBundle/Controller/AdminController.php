@@ -85,7 +85,7 @@ class AdminController extends Controller
      *
      * @return Response
      */
-    public function unvalidAccountsAction()
+    public function invalidAccountsAction()
     {
         if (!verifier('gerer_comptes_valides')) {
             throw new AccessDeniedHttpException;

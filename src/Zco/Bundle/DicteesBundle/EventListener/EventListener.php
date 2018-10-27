@@ -23,9 +23,6 @@ namespace Zco\Bundle\DicteesBundle\EventListener;
 
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Zco\Bundle\AdminBundle\AdminEvents;
-use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
-use Zco\Bundle\DicteesBundle\Admin\DictationsPendingTask;
 use Zco\Bundle\DicteesBundle\Domain\Dictation;
 use Zco\Bundle\PagesBundle\Event\FilterSitemapEvent;
 use Zco\Bundle\PagesBundle\PagesEvents;
@@ -40,7 +37,6 @@ class EventListener implements EventSubscriberInterface
 	{
 		return array(
 			TemplatingEvents::FILTER_VARIABLES => 'onTemplatingFilterVariables',
-			AdminEvents::MENU => 'onFilterAdmin',
 			PagesEvents::SITEMAP => 'onFilterSitemap',
 		);
 	}
@@ -58,17 +54,6 @@ class EventListener implements EventSubscriberInterface
 		$event->set('DicteeDifficultes', Dictation::LEVELS);
 		$event->set('DicteeEtats', Dictation::STATUSES);
 		$event->set('DicteeCouleurs', Dictation::COLORS);
-	}
-	
-	public function onFilterAdmin(FilterMenuEvent $event)
-	{
-		$tab = $event->getRoot()->getChild('Dictées');
-		$NombreDicteesProposees = $this->container->get('zco.admin')->get(DictationsPendingTask::class);
-		$tab->addChild('Voir les dictées proposées', array(
-			'label' => 'Il y a '.$NombreDicteesProposees.' dictée'.pluriel($NombreDicteesProposees).' proposée'.pluriel($NombreDicteesProposees),
-			'uri' => '/dictees/propositions.html', 
-			'count' => $NombreDicteesProposees,
-		))->secure('dictees_publier');
 	}
 	
 	/**

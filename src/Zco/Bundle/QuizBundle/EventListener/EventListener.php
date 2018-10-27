@@ -23,11 +23,9 @@ namespace Zco\Bundle\QuizBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Zco\Bundle\AdminBundle\AdminEvents;
 use Zco\Bundle\CoreBundle\Cache\CacheInterface;
 use Zco\Bundle\CoreBundle\CoreEvents;
 use Zco\Bundle\CoreBundle\Event\CronEvent;
-use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
 use Zco\Bundle\PagesBundle\Event\FilterSitemapEvent;
 use Zco\Bundle\PagesBundle\PagesEvents;
 use Zco\Bundle\QuizBundle\Entity\QuizManager;
@@ -64,37 +62,9 @@ class EventListener implements EventSubscriberInterface
     static public function getSubscribedEvents()
     {
         return array(
-            AdminEvents::MENU => 'onFilterAdmin',
             PagesEvents::SITEMAP => 'onFilterSitemap',
             CoreEvents::DAILY_CRON => 'onDailyCron',
         );
-    }
-
-    /**
-     * Ajoute les liens vers les pages d'administration.
-     *
-     * @param FilterMenuEvent $event
-     */
-    public function onFilterAdmin(FilterMenuEvent $event)
-    {
-        $tab = $event->getRoot()->getChild('Quiz');
-        $tab->addChild('Gérer les quiz', array(
-            'credentials' => array('or', 'quiz_ajouter', 'quiz_editer', 'quiz_supprimer'),
-            'uri' => $this->urlGenerator->generate('zco_quiz_admin'),
-        ));
-
-        $tab = $event->getRoot()->getChild('Statistiques générales');
-        $tab->addChild('Statistiques d\'utilisation du quiz', array(
-            'credentials' => 'voir_stats_generales',
-            'uri' => $this->urlGenerator->generate('zco_quiz_stats'),
-            'weight' => 70,
-        ));
-
-        $tab->addChild('Statistiques de popularité des quiz', array(
-            'credentials' => 'voir_stats_generales',
-            'uri' => $this->urlGenerator->generate('zco_quiz_popularity'),
-            'weight' => 80,
-        ));
     }
 
     /**
@@ -124,7 +94,7 @@ class EventListener implements EventSubscriberInterface
      */
     public function onDailyCron(CronEvent $event)
     {
-        //Mise en cache des quiz les plus fréquentés
+        // Mise en cache des quiz les plus fréquentés
         $this->cache->delete('quiz_liste_frequentes');
     }
 }
