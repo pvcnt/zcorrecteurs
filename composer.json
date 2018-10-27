@@ -31,6 +31,7 @@
     "ext-xsl": "*",
     "ext-iconv": "*",
     "ext-fileinfo": "*",
+    "ext-gd": "*",
     "symfony/symfony": "2.8.*",
     "symfony/swiftmailer-bundle": "~2.3",
     "symfony/monolog-bundle": "~2.11.3",
