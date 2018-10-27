@@ -23,10 +23,8 @@ namespace Zco\Bundle\OptionsBundle\EventListener;
 
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Zco\Bundle\AdminBundle\AdminEvents;
 use Zco\Bundle\CoreBundle\CoreEvents;
 use Zco\Bundle\CoreBundle\Event\CronEvent;
-use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
 
 /**
  * Observateur principal pour le module d'options.
@@ -37,37 +35,23 @@ class EventListener implements EventSubscriberInterface
 {
     use ContainerAwareTrait;
 
-	/**
-	 * {@inheritdoc}
-	 */
-	static public function getSubscribedEvents()
-	{
-		return array(
-			AdminEvents::MENU                       => 'onFilterAdmin',
-			CoreEvents::DAILY_CRON                  => 'onDailyCron',
-		);
-	}
-	
-	/**
-	 * Ajoute des liens sur le panneau d'administration.
-	 *
-	 * @param FilterMenuEvent $event
-	 */
-	public function onFilterAdmin(FilterMenuEvent $event)
-	{
-	    $tab = $event->getRoot()->getChild('Options');
-		$tab->addChild('Modifier les options de navigation par défaut', array(
-			'uri' => $this->container->get('router')->generate('zco_options_preferences', array('id' => '0')),
-		))->secure('options_editer_defaut');
-	}
+    /**
+     * {@inheritdoc}
+     */
+    static public function getSubscribedEvents()
+    {
+        return array(
+            CoreEvents::DAILY_CRON => 'onDailyCron',
+        );
+    }
 
-	/**
-	 * Met à jour les absences chaque jour.
-	 *
-	 * @param CronEvent $event
-	 */
-	public function onDailyCron(CronEvent $event)
-	{
-		\Doctrine_Core::getTable('Utilisateur')->purgeAbsences();
-	}
+    /**
+     * Met à jour les absences chaque jour.
+     *
+     * @param CronEvent $event
+     */
+    public function onDailyCron(CronEvent $event)
+    {
+        \Doctrine_Core::getTable('Utilisateur')->purgeAbsences();
+    }
 }

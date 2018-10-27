@@ -301,10 +301,11 @@ class UtilisateurTable extends Doctrine_Table
 		}
 		$user->save();
 		
-		//Ajout des préférences en recopiant celles par défaut.
-		$defaultPrefs = \Doctrine_Core::getTable('UserPreference')->find(0);
-		$userPrefs    = $defaultPrefs->copy();
-		$userPrefs->setUserId($user->getId());
+		// Ajout des préférences par défaut.
+        $userPrefs = new \UserPreference();
+        $userPrefs->setUserId($user->getId());
+        $userPrefs->setEmailOnMp(true);
+        $userPrefs->setTimeDifference(3600);
 		$userPrefs->save();
 	}
 	

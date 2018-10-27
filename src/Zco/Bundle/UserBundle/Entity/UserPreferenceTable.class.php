@@ -27,16 +27,6 @@
 class UserPreferenceTable extends Doctrine_Table
 {
 	/**
-	 * Récupère les préférences par défaut.
-	 *
-	 * @return UserPreference
-	 */
-	public function getDefault()
-	{
-		return $this->getById(0);
-	}
-
-	/**
 	 * Récupère les préférences d'un utilisateur donné.
 	 *
 	 * @param  integer $id L'identifiant de l'utilisateur

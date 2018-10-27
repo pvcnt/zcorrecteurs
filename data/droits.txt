@@ -32,7 +32,6 @@ membres_voir_ch_pseudos
 membres_valider_ch_pseudos
 membres_editer_pseudos
 options_editer_profils
-options_editer_defaut
 ips_analyser
 ips_bannir
 gerer_breve_accueil
