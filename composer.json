@@ -18,8 +18,8 @@
       "lib/cssmin"
     ],
     "files": [
-      "src/kernel/functions.php",
-      "app/config/constants.php",
+      "app/functions.php",
+      "app/constants.php",
       "lib/geoip/geoip.php",
       "lib/geoip/geoipcity.php"
     ]

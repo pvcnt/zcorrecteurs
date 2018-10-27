@@ -3,8 +3,9 @@ FROM composer:1.7 as composer
 
 WORKDIR /opt/app/
 
-COPY composer.json composer.json
-COPY composer.lock composer.lock
+COPY lib ./lib
+COPY app ./app
+COPY composer.json composer.lock ./
 
 RUN composer install \
     --ignore-platform-reqs \
@@ -12,8 +13,10 @@ RUN composer install \
     --no-plugins \
     --no-scripts \
     --prefer-dist \
-    --no-autoloader
+    --optimize-autoloader \
+    --no-dev
 
+# Dernière étape : création de l'image qui sera exécutée
 FROM alpine:3.6
 
 RUN apk update && \
@@ -33,8 +36,6 @@ RUN apk update && \
 	php7-openssl \
 	tzdata \
 	openntpd
-
-RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
 
 RUN apk update && \
   apk add \
