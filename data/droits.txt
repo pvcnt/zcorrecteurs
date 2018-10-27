@@ -87,7 +87,6 @@ voir
 membres_editer_propre_titre
 membres_editer_titre
 citations_modifier
-lister_blocages
 mettre_sujet_favori
 mp_editer_ses_messages_deja_lus
 voir_coms_billets_proposes

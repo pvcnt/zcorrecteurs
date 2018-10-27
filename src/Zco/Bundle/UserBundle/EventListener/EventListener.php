@@ -242,9 +242,6 @@ class EventListener implements EventSubscriberInterface
             \Doctrine_Core::getTable('UserPunishment')->purge();
         }
 
-        //Supprime les blocages de comptes suite à trop de tentatives ratées
-        \Doctrine_Core::getTable('Tentative')->purge();
-
         //Suppression de l'historique des adresses IP de plus d'un an.
         //Ne surtout pas supprimer (déclaration CNIL, toussa).
         \Doctrine_Core::getTable('UtilisateurIp')->purge();

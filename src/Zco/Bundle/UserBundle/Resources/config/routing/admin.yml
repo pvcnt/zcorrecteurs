@@ -28,10 +28,6 @@ zco_user_admin_cancelPunishment:
     requirements:
         id: \d+
 
-zco_user_admin_blocages:
-    path:   /blocages
-    defaults:  { _controller: ZcoUserBundle:Admin:blocages }
-
 zco_user_admin_searchEmail:
     path:   /rechercher-email
     defaults:  { _controller: ZcoUserBundle:Admin:searchEmail }

@@ -13,12 +13,6 @@
 
     <?php echo $view['form']->rest($form); ?>
 
-    <?php /*if($captcha){ ?><br />
-    <?php echo $view->render('ZcoCaptchaBundle::_image.html.php'); ?>
-    <label for="captcha">Recopier le code : </label>
-    <input type="text" name="captcha" id="captcha" />
-    <?php }*/ ?>
-
     <div class="form-actions">
         <input type="submit" class="btn btn-primary" value="Connexion" />
     </div>

@@ -257,10 +257,6 @@ abstract class BaseUtilisateur extends Doctrine_Record
              'local' => 'id',
              'foreign' => 'utilisateur_id'));
 
-        $this->hasMany('Tentative', array(
-             'local' => 'utilisateur_id',
-             'foreign' => 'user'));
-
         $this->hasMany('UtilisateurIp', array(
              'local' => 'utilisateur_id',
              'foreign' => 'ip_id_utilisateur'));

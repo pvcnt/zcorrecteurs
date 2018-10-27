@@ -60,27 +60,6 @@ class AdminController extends Controller
     }
 
     /**
-     * Affiche la liste des blocages de connexion suite à des tentatives ratées
-     * trop nombreuses.
-     *
-     * @param  integer $page
-     * @return Response
-     */
-    public function blocagesAction($page = 1)
-    {
-        if (!verifier('lister_blocages')) {
-            throw new AccessDeniedHttpException;
-        }
-        $query = \Doctrine_Core::getTable('Tentative')->getByBlockedQuery();
-        $paginator = $this->get('knp_paginator');
-        $blocages = $paginator->paginate($query, $page, 20);
-        $blocages->setUsedRoute('zco_user_blocages');
-        \Page::$titre = 'Tentatives de connexion ratées';
-
-        return render_to_response('ZcoUserBundle:Admin:blocages.html.php', compact('blocages'));
-    }
-
-    /**
      * Affiche la liste des comptes non encore validés.
      *
      * @return Response

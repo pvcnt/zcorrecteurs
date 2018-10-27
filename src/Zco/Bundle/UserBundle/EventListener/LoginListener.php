@@ -91,23 +91,6 @@ class LoginListener implements EventSubscriberInterface
 		{
 			$event->setUser($user);
 		}
-		
-		$tentatives = \Doctrine_Core::getTable('Tentative')->countByIp(ip2long($event->getRequest()->getClientIp()));
-		if ($tentatives >= 5)
-		{
-			$this->captcha = true;
-			$this->blocage = true;
-		}
-		elseif ($tentatives >= 3)
-		{
-			$this->captcha = true;
-			$this->blocage = false;
-		}
-		else
-		{
-			$this->captcha = false;
-			$this->blocage = false;
-		}
 	}
 	
 	/**
@@ -129,17 +112,11 @@ class LoginListener implements EventSubscriberInterface
 	}
 	
 	/**
-	 * Supprime toutes les tentatives de connexion ratées et dépose les cookies 
-	 * nécessaires à une future connexion automatique après une connexion 
-	 * réalisée avec succès.
-	 * 
 	 * @param LoginEvent $event
 	 */
 	public function onPostLogin(LoginEvent $event)
 	{
-		\Doctrine_Core::getTable('Tentative')->deleteByUserIdAndIp(
-			$event->getUser()->getId(), ip2long($this->container->get('request')->getClientIp()));
-		
+       // Dépose les cookies nécessaires à une future connexion automatique après une connexion réalisée avec succès.
 		if ($event->isRemember())
 		{
 			setcookie('violon', $this->generateRememberKey($event->getUser()), strtotime("+1 year"), '/');
@@ -161,43 +138,3 @@ class LoginListener implements EventSubscriberInterface
 		return sha1($browser.$user->getUsername().$user->getPassword().'ezgnmlwxsainymktiwuv');
 	}
 }
-
-
-/*$blocages = Doctrine_Query::create()
-	->from('Tentative t')
-	->leftJoin('t.Utilisateur u')
-	->addWhere('t.user = ?', $user->id)
-	->addWhere('t.ip = ?', ip2long(User::getIp()))
-	->addWhere('t.blocage = 1')
-	->addWhere('DATE_SUB(CURDATE(), INTERVAL 1 DAY) <= t.date')
-	->count();
-
-if($blocages != 0)
-{
-	return redirect('La connexion à ce compte est bloquée.', '/', MSG_ERROR);
-}
-
-if ($captcha && !Captcha::verifier($_POST['captcha']))
-{
-	return redirect('Le code que vous avez entré est invalide.', 
-		$this->generateUrl('zco_user_session_login'), MSG_ERROR);
-}
-if (false !== (list($id, $groupe, $user_pseudo, $user_mdp, $age) = Connexion($_POST['utilisateur'], sha1($_POST['mot_de_passe']))))
-{
-}
-else
-{
-	$tentative = new Tentative;
-	$tentative->ip = ip2long(User::getIp());
-	$tentative->user = $user->id;
-	if($blocage)
-	{
-		$tentative->blocage = 1;
-		$participants = array($user->id);
-		AjouterMPAuto('Tentative de connexion', '', $participants,
-			"Bonjour,\n\nQuelqu'un a tenté de se connecter à votre compte.\n"
-			."Son IP est " . User::getIp() . "\n\nCordialement,\nzGardien.");
-	}
-	$tentative->save();
-}
-}*/

@@ -233,11 +233,6 @@ class DefaultController extends Controller
                 'uri' => $router->generate('zco_user_admin_invalidAccounts'),
             ));
         }
-        if (verifier('lister_blocages')) {
-            $menu->getChild('Journaux')->addChild('Historique des tentatives de connexion ratées', array(
-                'uri' => $router->generate('zco_user_admin_blocages'),
-            ));
-        }
         if (verifier('ips_bannir')) {
             $menu->getChild('Adresses IP')->addChild('Liste des adresses IP bannies', array(
                 'uri' => $router->generate('zco_user_ips_index'),
