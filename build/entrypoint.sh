@@ -7,7 +7,6 @@ for directory in ${directories}; do
     mkdir -p ${directory}
 done
 
-php bin/console doctrine:models -v --env=${SYMFONY_ENVIRONMENT}
 php bin/console assets:install web -v --env=${SYMFONY_ENVIRONMENT}
 php bin/console doctrine:migrations:execute  --env=${SYMFONY_ENVIRONMENT} -v --force
 php bin/console cache:clear -v  --env=${SYMFONY_ENVIRONMENT}
