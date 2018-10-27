@@ -9,12 +9,6 @@ zco_quiz_show:
   requirements:
     id: \d+
 
-zco_quiz_api_correction:
-  path: /api/quiz/correction
-  defaults:  { _controller: ZcoQuizBundle:Api:correction }
-  options:   { expose: true }
-  methods:   [POST]
-
 zco_quiz_myStats:
   path: /quiz/mes-statistiques
   defaults:  { _controller: ZcoQuizBundle:Default:myStats }
