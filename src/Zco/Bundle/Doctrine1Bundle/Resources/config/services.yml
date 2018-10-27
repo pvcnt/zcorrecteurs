@@ -1,14 +1,4 @@
 services:
-    zco_doctrine1.models_builder:
-        class: Zco\Bundle\Doctrine1Bundle\Builder\ModelsBuilder
-        arguments: ['@kernel']
-    
-    zco_doctrine1.models_cache_warmer:
-        class: Zco\Bundle\Doctrine1Bundle\CacheWarmer\ModelsCacheWarmer
-        arguments: ['@zco_doctrine1.models_builder']
-        tags:
-            - { name: kernel.cache_warmer }
-
     zco_doctrine1.connection:
         class: Doctrine_Connection
         factory: [Doctrine_Manager, connection]

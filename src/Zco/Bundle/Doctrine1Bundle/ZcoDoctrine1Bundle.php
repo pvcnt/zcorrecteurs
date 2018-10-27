@@ -40,27 +40,18 @@ class ZcoDoctrine1Bundle extends Bundle
         $manager = \Doctrine_Manager::getInstance();
         $manager->setAttribute(\Doctrine_Core::ATTR_TBLNAME_FORMAT, 'zcov2_%s');
 
-        //Configure le chargement des modèles.
-        //TODO: mettre ça en cache lors de la génération des modèles.
+        // Configure model autoload.
         $directories = array();
         foreach ($this->container->get('kernel')->getBundles() as $bundle) {
             if (is_dir($bundle->getPath() . '/Entity')) {
                 $directories[] = $bundle->getPath() . '/Entity';
             }
         }
-
-        //Les modèles générés sont cherchés en cache, les autres sont cherchés directement dans les bundles.
-        $dir = $this->container->getParameter('kernel.cache_dir') . '/zco_doctrine1/generated';
-        spl_autoload_register(function ($className) use ($directories, $dir) {
-            if (strpos($className, 'Base') === 0) {
-                if (is_file($file = $dir . '/' . $className . '.class.php')) {
-                    include($file);
-                    return true;
-                }
-            }
+        spl_autoload_register(function ($className) use ($directories) {
             foreach ($directories as $dir) {
                 if (is_file($file = $dir . '/' . $className . '.class.php')) {
                     include($file);
+
                     return true;
                 }
             }
