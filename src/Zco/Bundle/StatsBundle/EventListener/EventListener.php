@@ -70,31 +70,23 @@ class EventListener implements EventSubscriberInterface
      */
     public function onFilterAdmin(FilterMenuEvent $event)
     {
-        $tab = $event
-            ->getRoot()
-            ->getChild('Informations')
-            ->getChild('Statistiques générales');
-
+        $tab = $event->getRoot()->getChild('Statistiques générales');
         $tab->addChild('Statistiques générales (GA)', array(
             'credentials' => 'voir_stats_generales',
             'uri' => 'https://www.google.com/analytics/reporting/dashboard?id=6978501&scid=1725896',
         ));
-
         $tab->addChild('Statistiques Alexa (classement du site)', array(
             'credentials' => 'voir_stats_generales',
             'uri' => $this->urlGenerator->generate('zco_stats_alexa'),
         ));
-
         $tab->addChild('Statistiques d\'inscription', array(
             'credentials' => 'voir_stats_generales',
             'uri' => $this->urlGenerator->generate('zco_stats_registration'),
         ));
-
         $tab->addChild('Statistiques de géolocalisation', array(
             'credentials' => 'voir_stats_generales',
             'uri' => $this->urlGenerator->generate('zco_stats_location'),
         ));
-
         $tab->addChild('Âge des membres', array(
             'credentials' => 'voir_stats_generales',
             'uri' => $this->urlGenerator->generate('zco_stats_ages'),

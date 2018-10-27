@@ -72,10 +72,7 @@ class EventListener implements EventSubscriberInterface
 
     public function onFilterAdmin(FilterMenuEvent $event)
     {
-        $tab = $event
-            ->getRoot()
-            ->getChild('Communauté')
-            ->getChild('Messagerie privée');
+        $tab = $event->getRoot()->getChild('Messagerie privée');
 
         $NombreAlertesMP = $this->container->get('zco.admin')->get(PmAlertsPendingTask::class);
 

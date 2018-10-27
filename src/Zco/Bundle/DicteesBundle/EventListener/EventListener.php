@@ -62,22 +62,13 @@ class EventListener implements EventSubscriberInterface
 	
 	public function onFilterAdmin(FilterMenuEvent $event)
 	{
-		$tab = $event
-			->getRoot()
-			->getChild('Contenu')
-			->getChild('Dictées');
-		
+		$tab = $event->getRoot()->getChild('Dictées');
 		$NombreDicteesProposees = $this->container->get('zco.admin')->get(DictationsPendingTask::class);
-		
 		$tab->addChild('Voir les dictées proposées', array(
 			'label' => 'Il y a '.$NombreDicteesProposees.' dictée'.pluriel($NombreDicteesProposees).' proposée'.pluriel($NombreDicteesProposees),
 			'uri' => '/dictees/propositions.html', 
 			'count' => $NombreDicteesProposees,
 		))->secure('dictees_publier');
-		
-		$tab->addChild('Ajouter une dictée', array(
-			'uri' => '/dictees/ajouter.html',
-		))->secure('dictees_ajouter');
 	}
 	
 	/**

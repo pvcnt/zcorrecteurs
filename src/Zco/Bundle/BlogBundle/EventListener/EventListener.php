@@ -92,7 +92,6 @@ class EventListener implements EventSubscriberInterface
 	public function onFilterSitemap(FilterSitemapEvent $event)
 	{
 		include_once(__DIR__.'/../modeles/blog.php');
-		
 		$event->addLink(URL_SITE.'/blog/', array(
 			'changefreq' => 'weekly',
 			'priority'	 => '0.6',

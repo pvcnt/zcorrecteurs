@@ -77,26 +77,13 @@ class EventListener implements EventSubscriberInterface
      */
     public function onFilterAdmin(FilterMenuEvent $event)
     {
-        $tab = $event
-            ->getRoot()
-            ->getChild('Contenu')
-            ->getChild('Quiz');
-
-        $tab->addChild('Ajouter un quiz', array(
-            'credentials' => 'quiz_ajouter',
-            'uri' => $this->urlGenerator->generate('zco_quiz_newQuiz'),
-        ));
-
+        $tab = $event->getRoot()->getChild('Quiz');
         $tab->addChild('Gérer les quiz', array(
             'credentials' => array('or', 'quiz_ajouter', 'quiz_editer', 'quiz_supprimer'),
             'uri' => $this->urlGenerator->generate('zco_quiz_admin'),
         ));
 
-        $tab = $event
-            ->getRoot()
-            ->getChild('Informations')
-            ->getChild('Statistiques générales');
-
+        $tab = $event->getRoot()->getChild('Statistiques générales');
         $tab->addChild('Statistiques d\'utilisation du quiz', array(
             'credentials' => 'voir_stats_generales',
             'uri' => $this->urlGenerator->generate('zco_quiz_stats'),

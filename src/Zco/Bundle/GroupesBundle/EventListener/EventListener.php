@@ -37,46 +37,24 @@ class EventListener implements EventSubscriberInterface
 	
 	public function onFilterAdmin(FilterMenuEvent $event)
 	{
-		$tab = $event
-		    ->getRoot()
-		    ->getChild('Communauté')
-		    ->getChild('Groupes');
-		
-		$tab->addChild('Ajouter un groupe', array(
-			'uri' => '/groupes/ajouter.html',
-		))->secure('groupes_gerer');
-	
+		$tab = $event->getRoot()->getChild('Groupes');
 		$tab->addChild('Gérer les groupes', array(
 			'uri' => '/groupes/',
 		))->secure('groupes_gerer');
-	
 		$tab->addChild('Éditer les droits d\'un groupe', array(
 			'uri' => '/groupes/droits.html',
 		))->secure('groupes_changer_droits');
-	
-		$tab->addChild('Ajouter un droit', array(
-			'uri' => '/groupes/ajouter-droit.html',
-			'separator' => true,
-		))->secure('droits_gerer');
-	
 		$tab->addChild('Gérer les droits', array(
 			'uri' => '/groupes/gestion-droits.html',
 		))->secure('droits_gerer');
-	
 		$tab->addChild('Recharger le cache des droits et les groupes', array(
 			'uri' => '/groupes/recharger-droits.html',
 		))->secure('groupes_changer_membre');
-	
 		$tab->addChild('Changer un membre de groupe', array(
 			'uri' => '/groupes/changer-membre-groupe.html',
-			'separator' => true,
 		))->secure('groupes_changer_membre');
 		
-		$tab = $event
-		    ->getRoot()
-		    ->getChild('Informations')
-		    ->getChild('Journaux');
-		
+		$tab = $event->getRoot()->getChild('Journaux');
 		$tab->addChild('Historique des changements de groupe', array(
 			'uri' => '/groupes/historique-groupes.html',
 		))->secure('groupes_changer_membre');

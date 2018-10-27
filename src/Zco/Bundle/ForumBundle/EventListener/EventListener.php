@@ -75,28 +75,18 @@ class EventListener implements EventSubscriberInterface
 	 */
 	public function onFilterAdmin(FilterMenuEvent $event)
 	{
-		$tab = $event
-		    ->getRoot()
-		    ->getChild('Contenu')
-		    ->getChild('Forums');
-		
+		$tab = $event->getRoot()->getChild('Forums');
 		$tasks = $this->container->get('zco.admin')->get(ForumAlertsPendingTask::class);
 		$tab->addChild('Voir les alertes non résolues', array(
 			'label' => 'Il y a '.$tasks.' alerte non résolue'.pluriel($tasks),
 			'uri' => '/forum/alertes.html',
 			'count' => $tasks,
 		))->secure('voir_alertes');
-		
 		$tab->addChild('Gérer les sujets en coup de cœur', array(
 			'uri' => '/forum/sujets-coups-coeur.html',
-			'separator' => true,
 		))->secure('mettre_sujets_coup_coeur');
 		
-		$tab = $event
-		    ->getRoot()
-		    ->getChild('Informations')
-		    ->getChild('Statistiques générales');
-		
+		$tab = $event->getRoot()->getChild('Statistiques générales');
 		$tab->addChild('Statistiques temporelles du forum', array(
 			'uri' => '/forum/statistiques-temporelles.html',
 			'separator' => true,

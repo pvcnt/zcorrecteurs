@@ -56,14 +56,9 @@ class EventListener implements EventSubscriberInterface
 	 */
 	public function onFilterAdmin(FilterMenuEvent $event)
 	{
-		$tab = $event->getRoot()->getChild('Communauté')->getChild('Recrutements');
+		$tab = $event->getRoot()->getChild('Recrutements');
 		
 		$nombreCandidatures = $this->container->get('zco.admin')->get(ApplicationsPendingTask::class);
-		
-		$tab->addChild('Ajouter un recrutement', array(
-			'credentials' => 'recrutements_editer',
-			'uri' => '/recrutement/ajouter.html',
-		));
 	
 		$tab->addChild('Voir les candidatures en attente', array(
 			'label' => 'Il y a ' . $nombreCandidatures . ' candidature' . pluriel($nombreCandidatures) . ' en attente',

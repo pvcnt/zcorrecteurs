@@ -37,21 +37,9 @@ class EventListener implements EventSubscriberInterface
 	
 	public function onFilterAdmin(FilterMenuEvent $event)
 	{
-		$tab = $event
-		    ->getRoot()
-		    ->getChild('Gestion technique')
-		    ->getChild('Catégories');
-		
-		$tab->addChild('Ajouter une catégorie', array(
-			'uri' => '/categories/ajouter.html',
-		))->secure('cats_editer');
-		
+		$tab = $event->getRoot()->getChild('Catégories');
 		$tab->addChild('Gérer les catégories', array(
 			'uri' => '/categories/',
-		))->secure('cats_editer');
-		
-		$tab->addChild('Afficher un graphique des catégories', array(
-			'uri' => '/categories/image.html'
 		))->secure('cats_editer');
 	}
 }

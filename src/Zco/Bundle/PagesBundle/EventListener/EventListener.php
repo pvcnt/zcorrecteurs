@@ -53,11 +53,7 @@ class EventListener implements EventSubscriberInterface
     {
         /** @var UrlGeneratorInterface $router */
         $router = $this->container->get('router');
-        $tab = $event
-            ->getRoot()
-            ->getChild('Contenu')
-            ->getChild('Communication');
-
+        $tab = $event->getRoot()->getChild('Communication');
         $tab->addChild('Modifier les annonces de la page d\'accueil', array(
             'uri' => $router->generate('zco_home_config'),
         ))->secure('gerer_breve_accueil');

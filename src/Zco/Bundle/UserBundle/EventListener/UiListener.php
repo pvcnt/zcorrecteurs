@@ -56,7 +56,7 @@ class UiListener implements EventSubscriberInterface
     public function onFilterAdmin(FilterMenuEvent $event)
     {
         $urlGenerator = $this->container->get('router');
-        $tab = $event->getRoot()->getChild('Communauté')->getChild('Membres');
+        $tab = $event->getRoot()->getChild('Membres');
 
         $tasks = $this->container->get('zco.admin')->get(NewUsernamePendingTask::class);
         $tab->addChild('Voir les changements de pseudo en attente', array(
@@ -81,13 +81,13 @@ class UiListener implements EventSubscriberInterface
             'uri' => $urlGenerator->generate('zco_user_admin_unvalidAccounts'),
         ))->secure('gerer_comptes_valides');
 
-        $tab = $event->getRoot()->getChild('Informations')->getChild('Journaux');
+        $tab = $event->getRoot()->getChild('Journaux');
 
         $tab->addChild('Historique des tentatives de connexion ratées', array(
             'uri' => $urlGenerator->generate('zco_user_admin_blocages'),
         ))->secure('lister_blocages');
 
-        $tab = $event->getRoot()->getChild('Communauté')->getChild('Adresses IP');
+        $tab = $event->getRoot()->getChild('Adresses IP');
 
         $tab->addChild('Liste des adresses IP bannies', array(
             'uri' => $urlGenerator->generate('zco_user_ips_index'),

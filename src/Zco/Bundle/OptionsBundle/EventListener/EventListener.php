@@ -55,11 +55,7 @@ class EventListener implements EventSubscriberInterface
 	 */
 	public function onFilterAdmin(FilterMenuEvent $event)
 	{
-	    $tab = $event
-	        ->getRoot()
-	        ->getChild('Gestion technique')
-	        ->getChild('Options');
-	    
+	    $tab = $event->getRoot()->getChild('Options');
 		$tab->addChild('Modifier les options de navigation par défaut', array(
 			'uri' => $this->container->get('router')->generate('zco_options_preferences', array('id' => '0')),
 		))->secure('options_editer_defaut');

@@ -59,7 +59,7 @@ class EventListener implements EventSubscriberInterface
         if (!verifier('citations_modifier')) {
             return;
         }
-        $tab = $event->getRoot()->getChild('Contenu')->getChild('Citations');
+        $tab = $event->getRoot()->getChild('Citations');
 
         $router = $this->container->get('router');
         $tab->addChild('Gérer les citations', array(

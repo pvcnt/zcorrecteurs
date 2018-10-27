@@ -54,10 +54,7 @@ class UiListener implements EventSubscriberInterface
 	 */	
 	public function onFilterAdmin(FilterMenuEvent $event)
 	{
-		$tab = $event
-			->getRoot()
-			->getChild('Contenu')
-			->getChild('Blog');
+		$tab = $event->getRoot()->getChild('Blog');
 		
 		$tasks = $this->container->get('zco.admin')->get(ArticlesPendingTask::class);
 		$tab->addChild('Voir les billets proposés', array(
