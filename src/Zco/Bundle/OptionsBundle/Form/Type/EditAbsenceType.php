@@ -22,8 +22,10 @@
 namespace Zco\Bundle\OptionsBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zco\Bundle\CoreBundle\Form\Type\ZformType;
 
 /**
  * Formulaire permettant de modifier le profil d'un utilisateur.
@@ -37,20 +39,20 @@ class EditAbsenceType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('absence_start_date', 'date', array(
+        $builder->add('absence_start_date', DateType::class, array(
             'label' => 'Absent à partir du',
             'input' => 'string',
             'widget' => 'single_text',
             'format' => 'Y-MM-dd',
         ));
-        $builder->add('absence_end_date', null, array(
+        $builder->add('absence_end_date', DateType::class, array(
             'label' => 'Absent jusqu\'au',
             'required' => false,
             'input' => 'string',
             'widget' => 'single_text',
             'format' => 'Y-MM-dd',
         ));
-        $builder->add('absence_reason', 'zform', array(
+        $builder->add('absence_reason', ZformType::class, array(
             'label' => 'Raison de mon absence',
             'required' => false,
         ));
@@ -59,7 +61,7 @@ class EditAbsenceType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Utilisateur',
+            'data_class' => \Utilisateur::class,
             'validation_groups' => array('absence'),
         ]);
     }

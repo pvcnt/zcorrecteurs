@@ -22,8 +22,11 @@
 namespace Zco\Bundle\RecrutementBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zco\Bundle\CoreBundle\Form\Type\ZformType;
 
 class RecrutementType extends AbstractType
 {
@@ -41,8 +44,8 @@ class RecrutementType extends AbstractType
 			'input' => 'string', 
 			'widget' => 'single_text',
 		));
-		$builder->add('etat', 'choice', array('label' => 'État', 'choices' => \Recrutement::getEtats()));
-		$builder->add('texte', 'zform', array('label' => 'Description'));
+		$builder->add('etat', ChoiceType::class, array('label' => 'État', 'choices' => \Recrutement::getEtats()));
+		$builder->add('texte', ZformType::class, array('label' => 'Description'));
 		$builder->add('redaction', null, array('label' => 'Rédaction requise ?', 'required' => false));
 		$builder->add('Quiz', null, array(
 			'label' => 'Épreuve de quiz', 
@@ -55,7 +58,7 @@ class RecrutementType extends AbstractType
 			'class' => 'Groupe',
 		));
 		$builder->add('test', null, array('label' => 'Test requis ?', 'required' => false));
-		$builder->add('lien', 'url', array(
+		$builder->add('lien', UrlType::class, array(
 			'label' => 'Lien vers un sujet d\'aide', 
 			'required' => false, 
 			'attr' => array('size' => 40),
@@ -65,7 +68,7 @@ class RecrutementType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-			'data_class' => '\Recrutement',
+			'data_class' => \Recrutement::class,
 		]);
 	}
 }

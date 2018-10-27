@@ -22,6 +22,7 @@
 namespace Zco\Bundle\OptionsBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zco\Bundle\OptionsBundle\Form\Model\EditEmail;
@@ -38,7 +39,7 @@ class EditEmailType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('current', 'password', array(
+        $builder->add('current', PasswordType::class, array(
             'label' => 'Votre mot de passe',
         ));
 

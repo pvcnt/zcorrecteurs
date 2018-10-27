@@ -22,8 +22,11 @@
 namespace Zco\Bundle\OptionsBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zco\Bundle\CoreBundle\Form\Type\ZformType;
 
 /**
  * Formulaire permettant de modifier le profil d'un utilisateur.
@@ -68,11 +71,11 @@ class EditProfileType extends AbstractType
             'widget' => 'single_text',
             'format' => 'Y-MM-dd',
         ));
-        $builder->add('website', 'url', array(
+        $builder->add('website', UrlType::class, array(
             'label' => 'Site web',
             'required' => false,
         ));
-        $builder->add('sexe', 'choice', array(
+        $builder->add('sexe', ChoiceType::class, array(
             'label' => 'Sexe',
             'required' => true,
             'choices' => array(
@@ -85,11 +88,11 @@ class EditProfileType extends AbstractType
             'label' => 'Citation',
             'required' => false,
         ));
-        $builder->add('signature', 'zform', array(
+        $builder->add('signature', ZformType::class, array(
             'label' => 'Signature',
             'required' => false,
         ));
-        $builder->add('biography', 'zform', array(
+        $builder->add('biography', ZformType::class, array(
             'label' => 'Présentation personnelle',
             'required' => false,
         ));
@@ -98,7 +101,7 @@ class EditProfileType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Utilisateur',
+            'data_class' => \Utilisateur::class,
             'validation_groups' => array('Default'),
         ]);
     }

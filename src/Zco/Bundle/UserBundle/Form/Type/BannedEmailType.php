@@ -22,8 +22,10 @@
 namespace Zco\Bundle\UserBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zco\Bundle\CoreBundle\Form\Type\ZformType;
 
 /**
  * Adresses courriel bannies.
@@ -37,10 +39,10 @@ class BannedEmailType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('email', null, array(
+        $builder->add('email', TextType::class, array(
             'label' => 'Plage à bannir',
         ));
-        $builder->add('reason', 'zform', array(
+        $builder->add('reason', ZformType::class, array(
             'label' => 'Raison visible par les administrateurs',
             'required' => false,
         ));

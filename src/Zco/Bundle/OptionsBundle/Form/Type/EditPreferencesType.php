@@ -22,6 +22,8 @@
 namespace Zco\Bundle\OptionsBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -37,11 +39,11 @@ class EditPreferencesType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('email_on_mp', null, array(
+        $builder->add('email_on_mp', CheckboxType::class, array(
             'label' => 'M\'avertir par courriel quand je reçois un MP',
             'required' => false,
         ));
-        $builder->add('time_difference', 'choice', array(
+        $builder->add('time_difference', ChoiceType::class, array(
             'label' => 'Mon fuseau horaire',
             'choices' => array(
                 -43200 => '(GMT -12:00) Eniwetok, Kwajalein',
@@ -82,7 +84,7 @@ class EditPreferencesType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'UserPreference',
+            'data_class' => \UserPreference::class,
         ]);
     }
 }

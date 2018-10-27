@@ -22,8 +22,10 @@
 namespace Zco\Bundle\UserBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zco\Bundle\CoreBundle\Form\Type\ZformType;
 use Zco\Bundle\UserBundle\Form\EventListener\AddUserFieldSubscriber;
 
 /**
@@ -42,7 +44,7 @@ class PunishmentType extends AbstractType
 			'label' => 'Sanction',
 			'query' => \Doctrine_Core::getTable('Groupe')->getByPunishmentQuery()
 		));
-		$builder->add('duration', 'integer', array(
+		$builder->add('duration', IntegerType::class, array(
 			'label' => 'Durée', 
 		));
 		$builder->add('link', null, array(
@@ -52,7 +54,7 @@ class PunishmentType extends AbstractType
 			'label'  => 'Raison donnée au membre',
 			'attr' => array('class' => 'textarea'),
 		));
-		$builder->add('admin_reason', 'zform', array(
+		$builder->add('admin_reason', ZformType::class, array(
 			'label'  => 'Raison visible par les admins',
 		));
 		
@@ -63,7 +65,7 @@ class PunishmentType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-			'data_class' => 'UserPunishment',
+			'data_class' => \UserPunishment::class,
 		]);
 	}
 }

@@ -22,6 +22,9 @@
 namespace Zco\Bundle\UserBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -37,14 +40,14 @@ class CreateUserType extends AbstractType
 	 */
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
-		$builder->add('username', 'text', array(
+		$builder->add('username', TextType::class, array(
 			'label' => 'Pseudonyme',
 		));
-		$builder->add('email', null, array(
+		$builder->add('email', EmailType::class, array(
 			'label' => 'Adresse courriel', 
 			'required' => true,
 		));
-		$builder->add('rawPassword', 'repeated', array(
+		$builder->add('rawPassword', RepeatedType::class, array(
 			'type'  => 'password',
 			'first_options' => ['label' => 'Mot de passe'],
 			'second_options' => ['label' => 'Confirmez le mot de passe'],
@@ -58,7 +61,7 @@ class CreateUserType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-			'data_class'        => 'Utilisateur',
+			'data_class'        => \Utilisateur::class,
 			'validation_groups' => array('registration')
 		]);
 	}

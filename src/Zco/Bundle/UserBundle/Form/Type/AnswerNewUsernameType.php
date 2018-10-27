@@ -22,6 +22,8 @@
 namespace Zco\Bundle\UserBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -37,14 +39,14 @@ class AnswerNewUsernameType extends AbstractType
 	 */
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
-		$builder->add('status', 'choice', array(
+		$builder->add('status', ChoiceType::class, array(
 			'label' => 'Réponse',
 			'choices' => array(
 				CH_PSEUDO_ACCEPTE => 'Accepter',
 				CH_PSEUDO_REFUSE => 'Refuser',
 			),
 		));
-		$builder->add('adminResponse', 'textarea', array(
+		$builder->add('adminResponse', TextareaType::class, array(
 			'label' => 'Raison envoyée par courriel',
 			'attr' => array('class' => 'textarea'),
 		));

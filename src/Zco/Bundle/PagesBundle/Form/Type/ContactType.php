@@ -22,6 +22,10 @@
 namespace Zco\Bundle\PagesBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zco\Bundle\PagesBundle\Entity\Contact;
@@ -30,21 +34,21 @@ class ContactType extends AbstractType
 {
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
-		$builder->add('nom', 'text', array(
+		$builder->add('nom', TextType::class, array(
 			'required' => false, 
 			'label' => 'Votre nom',
 		));
-		$builder->add('courriel', 'email', array(
+		$builder->add('courriel', EmailType::class, array(
 			'label' => 'Adresse courriel', 
 		));
-		$builder->add('raison', 'choice', array(
+		$builder->add('raison', ChoiceType::class, array(
 			'empty_value' => 'Choisissez une raison', 
 			'choices' => Contact::getChoices(),
 		));
-		$builder->add('sujet', 'text', array(
+		$builder->add('sujet', TextType::class, array(
 			'attr' => array('class' => 'input-xxlarge'),
 		));
-		$builder->add('message', 'textarea', array(
+		$builder->add('message', TextareaType::class, array(
 			'label' => 'Votre message',
 			'attr' => array('class' => 'input-xxlarge', 'rows' => '10'),
 		));

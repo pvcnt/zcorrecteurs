@@ -24,6 +24,7 @@ namespace Zco\Bundle\UserBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zco\Bundle\CoreBundle\Form\Type\ZformType;
 use Zco\Bundle\UserBundle\Form\EventListener\AddAutoValidateFieldSubscriber;
 
 /**
@@ -42,7 +43,7 @@ class NewUsernameType extends AbstractType
 			'label' => 'Nouveau pseudonyme',
 			'required' => true,
 		));
-		$builder->add('reason', 'zform', array(
+		$builder->add('reason', ZformType::class, array(
 			'label' => 'Raison du changement',
 		));
 		
