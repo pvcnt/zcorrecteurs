@@ -35,10 +35,7 @@ RUN apk update && \
 	php7-iconv \
 	php7-openssl \
 	tzdata \
-	openntpd
-
-RUN apk update && \
-  apk add \
+	openntpd \
 	php7-xdebug \
 	php7-mbstring \
 	php7-dom \
@@ -47,6 +44,7 @@ RUN apk update && \
 	php7-gd \
 	php7-pdo_mysql \
 	php7-curl \
+	php7-apcu \
 	php7-ctype \
 	php7-session \
 	php7-simplexml \
