@@ -48,7 +48,7 @@ function AjouterMP()
 	$stmt->bindParam(':NouveauMPID', $NouveauMPID);
 	$stmt->bindParam(':auteur', $_SESSION['id']);
 	$stmt->bindParam(':texte', $_POST['texte']);
-	$stmt->bindValue(':ip', ip2long(\Container::getService('request')->getClientIp()));
+	$stmt->bindValue(':ip', ip2long(\Container::request()->getClientIp()));
 	$stmt->execute();
 
 	//On récupère l'id de du message nouvellement créé.
@@ -108,7 +108,7 @@ function AjouterReponse()
 	$stmt->bindParam(':mp_id', $_GET['id']);
 	$stmt->bindParam(':user_id', $_SESSION['id']);
 	$stmt->bindParam(':texte', $_POST['texte']);
-	$stmt->bindValue(':ip', ip2long(\Container::getService('request')->getClientIp()));
+	$stmt->bindValue(':ip', ip2long(\Container::request()->getClientIp()));
 
 	$stmt->execute();
 

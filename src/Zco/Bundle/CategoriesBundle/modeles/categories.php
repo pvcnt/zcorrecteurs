@@ -670,7 +670,7 @@ function GetIDCategorie($module = null, $plus_precis = false)
 
 	if (!$module)
 	{
-        $module = Container::getService('request')->attributes->get('_module');
+        $module = Container::request()->attributes->get('_module');
 		if (empty($module))
 		{
 		    return 1;
@@ -704,7 +704,7 @@ function GetIDCategorie($module = null, $plus_precis = false)
 	//en dur pour tenir compte des spécificités de chaque catégorie.
 	else
 	{
-	    $action = \Container::getService('request')->attributes->get('_action');
+	    $action = \Container::request()->attributes->get('_action');
 		if($module === 'blog' && $action === 'categorie')
 			return !empty($_GET['id']) ? $_GET['id'] : null;
 		elseif($module === 'forum' && in_array($action, array('categorie', 'forum')))

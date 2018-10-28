@@ -56,7 +56,7 @@ function AjouterMPAuto($titre, $SousTitre, $participants, $message)
 	$stmt->bindParam(':NouveauMPID', $NouveauMPID);
 	$stmt->bindValue(':auteur', ID_COMPTE_AUTO);
 	$stmt->bindParam(':texte', $message);
-	$stmt->bindValue(':ip', ip2long(\Container::getService('request')->getClientIp()));
+	$stmt->bindValue(':ip', ip2long(\Container::request()->getClientIp()));
 	$stmt->execute();
 
 	//On récupère l'id de du message nouvellement créé.

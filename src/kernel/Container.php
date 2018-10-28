@@ -29,6 +29,7 @@
 use Doctrine\Common\Cache\CacheProvider;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 final class Container
 {
@@ -69,6 +70,11 @@ final class Container
     public static function getService($service)
     {
         return self::getInstance()->get($service);
+    }
+
+    public static function request(): Request
+    {
+        return self::getInstance()->get('request');
     }
 
     public static function cache(): CacheProvider

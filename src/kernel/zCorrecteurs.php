@@ -22,7 +22,7 @@ final class zCorrecteurs
 		if($_POST != array())
 			return;
 		
-		$request = \Container::getService('request');
+		$request = \Container::request();
 
 		$titre != null && $titre = rewrite($titre);
 

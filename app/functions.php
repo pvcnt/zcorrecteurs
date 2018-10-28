@@ -438,7 +438,7 @@ define('MSG_OK', 2);
 function redirect($message = null, $url = '', $type = MSG_OK)
 {
     //--- Si on est dans une requête Ajax ---
-    if (Container::getService('request')->isXmlHttpRequest()) {
+    if (Container::request()->isXmlHttpRequest()) {
         $type = ($type == MSG_OK) ? 'info' : 'error';
         return new Response(json_encode(array(
             'msg' => $message,
@@ -448,7 +448,7 @@ function redirect($message = null, $url = '', $type = MSG_OK)
     } //--- Sinon on redirige de la façon ordinaire ---
     else {
         if (empty($url)) {
-            $action = Container::getService('request')->attributes->get('_action');
+            $action = Container::request()->attributes->get('_action');
             $url = str_replace('_', '-', $action) . '.html';
         }
 
@@ -587,8 +587,8 @@ function render_to_response($template = array(), array $vars = array(), array $h
     // DÉPRÉCIÉ : le premier paramètre peut-être omis.
     if (is_array($template) && $vars == array()) {
         $vars = $template;
-        $bundle = Container::getService('request')->attributes->get('_bundle');
-        $action = Container::getService('request')->attributes->get('_action');
+        $bundle = Container::request()->attributes->get('_bundle');
+        $action = Container::request()->attributes->get('_action');
         $template = $bundle . '::' . lcfirst(Inflector::camelize($action)) . '.html.php';
     }
 
@@ -615,8 +615,8 @@ function render_to_string($template = array(), array $vars = array())
     //First parameter can be omitted.
     if (is_array($template) && $vars == array()) {
         $vars = $template;
-        $bundle = Container::getService('request')->attributes->get('_bundle');
-        $action = Container::getService('request')->attributes->get('_action');
+        $bundle = Container::request()->attributes->get('_bundle');
+        $action = Container::request()->attributes->get('_action');
         $template = $bundle . '::' . lcfirst(Inflector::camelize($action)) . '.html.php';
     }
 

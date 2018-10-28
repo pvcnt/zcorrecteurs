@@ -106,7 +106,7 @@ function AjouterCommentaire($id, $id_u, $texte)
 			"VALUES(:id_billet, :id_utilisateur, :ip, :texte, NOW())");
 	$stmt->bindParam(':id_billet', $id);
 	$stmt->bindParam(':id_utilisateur', $id_u);
-	$stmt->bindValue(':ip', ip2long(\Container::getService('request')->getClientIp()));
+	$stmt->bindValue(':ip', ip2long(\Container::request()->getClientIp()));
 	$stmt->bindParam(':texte', $texte);
 	$stmt->execute();
 	return $dbh->lastInsertId();
