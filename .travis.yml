@@ -8,5 +8,8 @@ jobs:
   - stage: build docker image
     script:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-    - docker build -t zcorrecteurs/monolith-www .
+    - docker build -t monolith-www .
+    - docker tag monolith-www zcorrecteurs/monolith-www
+    - docker tag monolith-www "zcorrecteurs/monolith-www:$TRAVIS_COMMIT"
     - docker push zcorrecteurs/monolith-www
+    - docker push "zcorrecteurs/monolith-www:$TRAVIS_COMMIT"
