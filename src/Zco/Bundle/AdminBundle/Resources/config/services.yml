@@ -1,4 +1,4 @@
 services:
   zco.admin:
     class: Zco\Bundle\AdminBundle\Admin
-    arguments: ['@zco_core.cache']
+    arguments: ['@cache']

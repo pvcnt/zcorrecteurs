@@ -1,7 +1,7 @@
 services:
     zco_core.registry:
         class:     Zco\Bundle\CoreBundle\Registry
-        arguments: ['@zco_core.cache']
+        arguments: ['@cache']
 
     zco_core.form.type.zform:
         class: Zco\Bundle\CoreBundle\Form\Type\ZformType
@@ -11,7 +11,7 @@ services:
     imagine:
         class: Imagine\Gd\Imagine
 
-    zco_core.cache:
+    cache:
         class: Doctrine\Common\Cache\ApcuCache
 
     zco_core.resource_manager:

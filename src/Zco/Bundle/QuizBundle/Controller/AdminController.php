@@ -89,7 +89,7 @@ class AdminController extends Controller
             $question['explication'] = $_POST['texte'];
             $question->save();
 
-            $this->get('zco_core.cache')->delete('quiz_liste_nouveaux');
+            $this->get('cache')->delete('quiz_liste_nouveaux');
 
             return redirect(
                 'La question a bien été ajoutée.',

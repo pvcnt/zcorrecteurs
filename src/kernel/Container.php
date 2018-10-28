@@ -73,7 +73,7 @@ final class Container
 
     public static function cache(): CacheProvider
     {
-        return self::getInstance()->get('zco_core.cache');
+        return self::getInstance()->get('cache');
     }
 
     /**

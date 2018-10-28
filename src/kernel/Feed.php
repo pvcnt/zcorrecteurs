@@ -80,7 +80,7 @@ abstract class Feed extends Controller
 			(!empty($_GET['id']) ? '_'.$_GET['id'] : '').
 			(!empty($_GET['id2']) ? '_'.$_GET['id2'] : '').'.xml';
 		$lifetime = isset($this->lifetime) ? $this->lifetime : 3600;
-		$cache = $this->get('zco_core.cache');
+		$cache = $this->get('cache');
 
 		if(($content = $cache->fetch($cache_file)) === false)
 		{

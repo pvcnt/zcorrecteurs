@@ -134,7 +134,7 @@ class NouveauAction extends Controller
                 foreach ($_POST['participants'] as $valeur) {
                     if ($current_participant != $valeur) {
                         $current_participant = $valeur;
-                        $this->get('zco_core.cache')->save('MPnonLu' . $valeur, true, 3600);
+                        $this->get('cache')->save('MPnonLu' . $valeur, true, 3600);
                     }
                 }
 

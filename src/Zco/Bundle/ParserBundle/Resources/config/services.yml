@@ -12,7 +12,7 @@ services:
     
 #    zco_parser.feature.cache:
 #        class: Zco\Bundle\ParserBundle\Feature\CacheFeature
-#        arguments: ["@zco_core.cache"]
+#        arguments: ["@cache"]
 #        tags:
 #            - { name: kernel.event_subscriber }
 

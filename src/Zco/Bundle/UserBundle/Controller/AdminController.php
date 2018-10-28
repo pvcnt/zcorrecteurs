@@ -190,7 +190,7 @@ class AdminController extends Controller
         }
 
         $form = $this->get('form.factory')->create(new PunishmentType);
-        $handler = new PunishmentHandler($form, $request, $this->get('zco_core.cache'));
+        $handler = new PunishmentHandler($form, $request, $this->get('cache'));
         if ($handler->process($punishment)) {
             return redirect('Le membre a bien été sanctionné.',
                 $this->generateUrl('zco_user_profile', array('id' => $punishment->getUserId(), 'slug' => rewrite($punishment->getUser()->getUsername()))));

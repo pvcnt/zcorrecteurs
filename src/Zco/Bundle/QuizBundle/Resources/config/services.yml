@@ -10,7 +10,7 @@ services:
 
   zco_quiz.manager.quiz:
       class: Zco\Bundle\QuizBundle\Entity\QuizManager
-      arguments: ['@zco_doctrine1.connection', '@zco_core.cache']
+      arguments: ['@zco_doctrine1.connection', '@cache']
 
   zco_quiz.manager.score:
         class: Zco\Bundle\QuizBundle\Entity\QuizScoreManager

@@ -34,7 +34,7 @@ class HomeController extends Controller
     public function indexAction()
     {
         $registry = $this->get('zco_core.registry');
-        $cache = $this->get('zco_core.cache');
+        $cache = $this->get('cache');
 
         \Page::$titre = 'zCorrecteurs.fr - Les réponses à toutes vos questions concernant la langue française !';
 
@@ -137,7 +137,7 @@ class HomeController extends Controller
         $registry = $this->get('zco_core.registry');
 
         if (!empty($_POST))
-            $this->get('zco_core.cache')->save('accueil_maj', date('c'), 0);
+            $this->get('cache')->save('accueil_maj', date('c'), 0);
 
         //--- Si on veut modifier le bloc ---
         $bloc_accueil = $registry->get('bloc_accueil');
@@ -288,7 +288,7 @@ class HomeController extends Controller
         }
 
         if (isset($_GET['supprimer_cache'])) {
-            $this->get('zco_core.cache')->delete('billet_hasard');
+            $this->get('cache')->delete('billet_hasard');
 
             return redirect('Le billet au hasard a bien été régénéré.', $this->generateUrl('zco_home_config'));
         }

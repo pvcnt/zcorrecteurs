@@ -124,7 +124,7 @@ class GroupesActions extends Controller
 			if(isset($_POST['confirmer']))
 			{
 				SupprimerGroupe($_GET['id']);
-				$this->get('zco_core.cache')->save('dernier_refresh_droits', time(), 0);
+				$this->get('cache')->save('dernier_refresh_droits', time(), 0);
 
 				return redirect('Le groupe a bien été supprimé.', 'index.html');
 			}
@@ -225,7 +225,7 @@ class GroupesActions extends Controller
 			{
 				$_POST['id'] = $_GET['id'];
 				ChangerGroupeUtilisateur();
-				$this->get('zco_core.cache')->save('dernier_refresh_droits', time(), 0);
+				$this->get('cache')->save('dernier_refresh_droits', time(), 0);
 
 				return redirect('Le membre a bien été changé de groupe.', 'changer-membre-groupe-'.$_GET['id'].'.html');
 			}
@@ -238,7 +238,7 @@ class GroupesActions extends Controller
 					$_GET['id'],
 					isset($_POST['groupes_secondaires']) ? $_POST['groupes_secondaires'] : array()
 				);
-				$this->get('zco_core.cache')->save('dernier_refresh_droits', time(), 0);
+				$this->get('cache')->save('dernier_refresh_droits', time(), 0);
 
 				return redirect(
 				    'Le membre a bien été changé de groupe.',
@@ -390,7 +390,7 @@ class GroupesActions extends Controller
 			}
 
 			//Suppression des caches
-			$this->get('zco_core.cache')->delete('droits_groupe_'.$_GET['id']);
+			$this->get('cache')->delete('droits_groupe_'.$_GET['id']);
 
 			return redirect(
 			    'Le droit de ce groupe a bien été mis à jour.',

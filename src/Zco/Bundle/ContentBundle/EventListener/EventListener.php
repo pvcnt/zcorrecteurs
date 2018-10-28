@@ -39,7 +39,7 @@ class EventListener implements EventSubscriberInterface
 
     public function onTemplatingFilterVariables(FilterVariablesEvent $event)
     {
-        $cache = $this->container->get('zco_core.cache');
+        $cache = $this->container->get('cache');
         if (($html = $cache->fetch('header_citations')) === false) {
             $citation = $this->container->get('zco.repository.quotes')->getRandom();
             $html = '';

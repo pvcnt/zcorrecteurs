@@ -86,7 +86,7 @@ class EventListener implements EventSubscriberInterface
         // Mise à jour temps réel des groupes associés au compte de
         // l'utilisateur actuellement connecté.
         if ($user->isAuthenticated() && isset($_SESSION['refresh_droits'])) {
-            $forceRefresh = $this->container->get('zco_core.cache')->fetch('dernier_refresh_droits');
+            $forceRefresh = $this->container->get('cache')->fetch('dernier_refresh_droits');
             if ($forceRefresh !== false && $forceRefresh >= $_SESSION['refresh_droits']) {
                 $user->reloadGroups();
             }
@@ -112,7 +112,7 @@ class EventListener implements EventSubscriberInterface
         }
 
         // Check for IP ban.
-        $cache = $this->container->get('zco_core.cache');
+        $cache = $this->container->get('cache');
         $ip = ip2long($event->getRequest()->getClientIp());
         $ips = $cache->fetch('ips_bannies');
         if ($ips === false) {
@@ -207,6 +207,6 @@ class EventListener implements EventSubscriberInterface
             $stmt->closeCursor();
         }
 
-        $this->container->get('zco_core.cache')->delete('ips_bannies');
+        $this->container->get('cache')->delete('ips_bannies');
     }
 }

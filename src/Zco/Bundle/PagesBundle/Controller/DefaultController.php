@@ -50,7 +50,7 @@ class DefaultController extends Controller
 
     public function sitemapAction()
     {
-        $cache = $this->get('zco_core.cache');
+        $cache = $this->get('cache');
         if (($content = $cache->fetch('zco_pages.sitemap')) === false) {
             $xml = new \DomDocument();
             $xml->formatOutput = true;
