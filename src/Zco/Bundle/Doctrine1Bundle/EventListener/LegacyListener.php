@@ -25,6 +25,7 @@ class LegacyListener extends \Doctrine_EventListener
 {
     public function postConnect(\Doctrine_Event $event)
     {
+        $event->getInvoker()->exec('SET NAMES utf8');
         $event->getInvoker()->exec('SET sql_mode = \'\'');
     }
 }
