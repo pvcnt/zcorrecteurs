@@ -212,7 +212,7 @@ function ValiderDictee(Dictee $Dictee, $valide)
     $Dictee->save();
 
     DicteesEffacerCache();
-    \Container::getService('zco.admin')->get('dictees', true);
+    \Container::get('zco.admin')->get('dictees', true);
 }
 
 /**
@@ -263,7 +263,7 @@ function ProposerDictee(Dictee $Dictee)
 {
     $Dictee->etat = DICTEE_PROPOSEE;
     $Dictee->save();
-    \Container::getService('zco.admin')->get('dictees', true);
+    \Container::get('zco.admin')->get('dictees', true);
 }
 
 

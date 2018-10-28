@@ -36,20 +36,6 @@ final class Container
     protected static $instance;
 
     /**
-     * Get the instance of the container class.
-     *
-     * @return ContainerInterface
-     */
-    public static function getInstance()
-    {
-        if (!isset(self::$instance)) {
-            self::$instance = new ContainerBuilder;
-        }
-
-        return self::$instance;
-    }
-
-    /**
      * Defines the instance of the container. This is not a very
      * proper way to do this, but this allow customization of the class on the
      * fly and allow using the PHP cache of the container.
@@ -64,45 +50,36 @@ final class Container
     /**
      * Shortcut to get a service without using the container instance.
      *
-     * @param string $service The service name.
+     * @param string $service The service identifier.
+     * @param int $invalidBehavior The behavior when the service does not exist.
      * @return object The required service.
      */
-    public static function getService($service)
+    public static function get($service, $invalidBehavior = ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE)
     {
-        return self::getInstance()->get($service);
+        return self::instance()->get($service, $invalidBehavior);
     }
 
     public static function request(): Request
     {
-        return self::getInstance()->get('request');
+        return self::instance()->get('request');
     }
 
     public static function cache(): CacheProvider
     {
-        return self::getInstance()->get('cache');
+        return self::instance()->get('cache');
     }
 
     /**
-     * Shortcut to get the value of a parameter without using the
-     * container instance.
+     * Get the instance of the container class.
      *
-     * @param string $parameter The parameter name.
-     * @return mixed                The parameter value.
+     * @return ContainerInterface
      */
-    public static function getParameter($parameter)
+    private static function instance()
     {
-        return self::getInstance()->getParameter($parameter);
-    }
+        if (!isset(self::$instance)) {
+            self::$instance = new ContainerBuilder;
+        }
 
-    /**
-     * Shortcut to check if a parameter exists using the
-     * container instance.
-     *
-     * @param string $parameter The parameter name.
-     * @return Boolean                The presence of parameter in container.
-     */
-    public static function hasParameter($parameter)
-    {
-        return self::getInstance()->hasParameter($parameter);
+        return self::$instance;
     }
 }

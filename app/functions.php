@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Zco\Component\Templating\TemplatingEvents;
 use Zco\Component\Templating\Event\FilterResourcesEvent;
@@ -486,14 +487,15 @@ function preference($nom)
             return $_SESSION['prefs'][$nom];
         }
 
-        $container = \Container::getInstance();
-        if ($container->has('logger')) {
-            $container->get('logger')->warn(sprintf(
-                'La préférence "%s" n\'existe pas.', $nom
-            ));
+        $logger = \Container::get('logger', ContainerInterface::NULL_ON_INVALID_REFERENCE);
+        if ($logger) {
+            $logger->warn(sprintf('La préférence "%s" n\'existe pas.', $nom));
         }
+
         return false;
     }
+
+    return null;
 }
 
 /**
@@ -516,7 +518,7 @@ function send_mail($destinataire_adresse, $destinataire_nom, $objet, $message_ht
             ->setTo(array($destinataire_adresse => $destinataire_nom))
             ->setBody($message_html, 'text/html');
 
-        return \Container::getService('mailer')->send($message);
+        return \Container::get('mailer')->send($message);
     }
 
     return false;
@@ -592,20 +594,20 @@ function render_to_response($template = array(), array $vars = array(), array $h
         $template = $bundle . '::' . lcfirst(Inflector::camelize($action)) . '.html.php';
     }
 
-    $dispatcher = \Container::getService('event_dispatcher');
+    $dispatcher = \Container::get('event_dispatcher');
     $event = new FilterVariablesEvent($vars);
     $dispatcher->dispatch(TemplatingEvents::FILTER_VARIABLES, $event);
     $vars = $event->getAll();
 
     //Register resources.
     $event = new FilterResourcesEvent(
-        \Container::getService('zco_core.resource_manager'),
-        \Container::getService('zco_core.javelin')
+        \Container::get('zco_core.resource_manager'),
+        \Container::get('zco_core.javelin')
     );
     $dispatcher->dispatch(TemplatingEvents::FILTER_RESOURCES, $event);
 
     //Template rendering.
-    $engine = \Container::getService('templating');
+    $engine = \Container::get('templating');
 
     return new Response($engine->render($template, $vars), 200, $headers);
 }
@@ -620,7 +622,7 @@ function render_to_string($template = array(), array $vars = array())
         $template = $bundle . '::' . lcfirst(Inflector::camelize($action)) . '.html.php';
     }
 
-    $engine = \Container::getService('templating');
+    $engine = \Container::get('templating');
     return $engine->render($template, $vars);
 }
 

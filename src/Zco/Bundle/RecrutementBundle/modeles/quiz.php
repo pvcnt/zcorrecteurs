@@ -95,7 +95,7 @@ function RecupererReponses($recrutement, $utilisateur)
 		$reponses[$rep['question_id']] = $rep;
 
 	// Liste des questions du quiz, avec la bonne réponse
-	$quiz = \Container::getService('zco_quiz.manager.quiz')->get($recrutement['recrutement_quiz_id']);
+	$quiz = \Container::get('zco_quiz.manager.quiz')->get($recrutement['recrutement_quiz_id']);
 	if ($quiz === false)
 		return null;
 

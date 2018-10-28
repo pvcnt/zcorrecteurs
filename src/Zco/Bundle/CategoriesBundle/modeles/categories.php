@@ -100,7 +100,7 @@ function AjouterCategorie()
 		
 	    File_Upload::Fichier($nom_fichier, BASEPATH.'/web/uploads/categories/', $id_cat.'.'.$extension, $upload_type);
 		
-		\Container::getService('imagine')
+		\Container::get('imagine')
 			->open(BASEPATH.'/web/uploads/categories/'.$id_cat.'.'.$extension)
 			->thumbnail(new \Imagine\Image\Box(80, 80))
 			->save(BASEPATH.'/web/uploads/categories/'.$id_cat.'.png');
@@ -209,7 +209,7 @@ function EditerCategorie($id)
 
 	    File_Upload::Fichier($nom_fichier, BASEPATH.'/web/uploads/categories/', $id.'.'.$extension, $upload_type);
 		
-		\Container::getService('imagine')
+		\Container::get('imagine')
 			->open(BASEPATH.'/web/uploads/categories/'.$id.'.'.$extension)
 			->thumbnail(new \Imagine\Image\Box(80, 80))
 			->save(BASEPATH.'/web/uploads/categories/'.$id.'.png');

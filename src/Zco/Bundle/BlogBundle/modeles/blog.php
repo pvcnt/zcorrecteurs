@@ -326,7 +326,7 @@ function AjouterBilletImage($id, $url)
 
 	try
 	{
-		$thumbnail = \Container::getService('imagine')
+		$thumbnail = \Container::get('imagine')
 			->open($url)
             ->thumbnail(new \Imagine\Image\Box(100, 100));
 		$path = BASEPATH.'/web/uploads/miniatures/blog/'.$id.'.png';

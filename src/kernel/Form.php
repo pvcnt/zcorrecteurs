@@ -53,7 +53,7 @@ class Form implements ArrayAccess
 		$this->defaults = $defaults;
 		$this->configure();
 		$this->addWidget('token', new Widget_Input_Token);
-		\Container::getService('zco_core.resource_manager')->requireResource('@ZcoCoreBundle/Resources/public/js/form.js');
+		\Container::get('zco_core.resource_manager')->requireResource('@ZcoCoreBundle/Resources/public/js/form.js');
 	}
 
 	/**
