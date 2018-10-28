@@ -21,7 +21,8 @@
 
 function StatsGeneralesForumMessages()
 {
-	if (false === ($res = Container::getService('zco_core.cache')->Get('forum_statistiques_temporelles_messages'))) {
+    $cache = Container::cache();
+	if (false === ($res = $cache->fetch('forum_statistiques_temporelles_messages'))) {
 		$dbh = Doctrine_Manager::connection()->getDbh();
 		$res = $dbh->query("
 		SELECT SUM(nb) AS count_total, SUM(team) as count_team, mois, annee FROM (
@@ -34,14 +35,15 @@ function StatsGeneralesForumMessages()
 		GROUP BY annee, mois
 		ORDER BY annee ASC, mois ASC");
 		$res = $res->fetchAll();
-		Container::getService('zco_core.cache')->Set('forum_statistiques_temporelles_messages', $res, 86400);
+		$cache->save('forum_statistiques_temporelles_messages', $res, 86400);
 	}
 	return $res;
 }
 
 function StatsGeneralesForumSujets()
 {
-	if (false === ($res = Container::getService('zco_core.cache')->Get('forum_statistiques_temporelles_sujets'))) {
+    $cache = Container::cache();
+	if (false === ($res = $cache->fetch('forum_statistiques_temporelles_sujets'))) {
 		$dbh = Doctrine_Manager::connection()->getDbh();
 		$res = $dbh->query("
 		SELECT SUM(nb) AS count, mois, annee FROM (
@@ -52,7 +54,7 @@ function StatsGeneralesForumSujets()
 		GROUP BY annee, mois
 		ORDER BY annee ASC, mois ASC");
 		$res = $res->fetchAll();
-		Container::getService('zco_core.cache')->Set('forum_statistiques_temporelles_sujets', $res, 86400);
+		$cache->save('forum_statistiques_temporelles_sujets', $res, 86400);
 	}
 	return $res;
 }

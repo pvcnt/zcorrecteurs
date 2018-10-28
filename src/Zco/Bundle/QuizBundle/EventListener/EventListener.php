@@ -23,7 +23,6 @@ namespace Zco\Bundle\QuizBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Zco\Bundle\CoreBundle\Cache\CacheInterface;
 use Zco\Bundle\PagesBundle\Event\FilterSitemapEvent;
 use Zco\Bundle\PagesBundle\PagesEvents;
 use Zco\Bundle\QuizBundle\Entity\QuizManager;
@@ -37,20 +36,17 @@ class EventListener implements EventSubscriberInterface
 {
     private $urlGenerator;
     private $quizManager;
-    private $cache;
 
     /**
      * Constructor.
      *
      * @param UrlGeneratorInterface $urlGenerator
      * @param QuizManager $quizManager
-     * @param CacheInterface $cache
      */
-    public function __construct(UrlGeneratorInterface $urlGenerator, QuizManager $quizManager, CacheInterface $cache)
+    public function __construct(UrlGeneratorInterface $urlGenerator, QuizManager $quizManager)
     {
         $this->urlGenerator = $urlGenerator;
         $this->quizManager = $quizManager;
-        $this->cache = $cache;
     }
 
 

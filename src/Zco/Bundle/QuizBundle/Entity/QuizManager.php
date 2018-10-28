@@ -2,7 +2,7 @@
 
 namespace Zco\Bundle\QuizBundle\Entity;
 
-use Zco\Bundle\CoreBundle\Cache\CacheInterface;
+use Doctrine\Common\Cache\Cache;
 
 class QuizManager
 {
@@ -13,9 +13,9 @@ class QuizManager
      * Constructor.
      *
      * @param $conn
-     * @param CacheInterface $cache
+     * @param Cache $cache
      */
-    public function __construct(\Doctrine_Connection $conn, CacheInterface $cache)
+    public function __construct(\Doctrine_Connection $conn, Cache $cache)
     {
         $this->conn = $conn;
         $this->cache = $cache;
@@ -140,7 +140,7 @@ class QuizManager
      */
     public function listerParFrequentation()
     {
-        if (!($listeQuizFrequentes = $this->cache->get('quiz_liste_frequentes'))) {
+        if (!($listeQuizFrequentes = $this->cache->fetch('quiz_liste_frequentes'))) {
             $listeQuizFrequentes = \Doctrine_Query::create()
                 ->select('q.id, q.nom, q.description, q.date, q.difficulte, q.aleatoire')
                 ->from('Quiz q')
@@ -152,7 +152,7 @@ class QuizManager
                 ->limit(2)
                 ->execute();
             // Cache for one day.
-            $this->cache->set('quiz_liste_frequentes', $listeQuizFrequentes, 86400);
+            $this->cache->save('quiz_liste_frequentes', $listeQuizFrequentes, 86400);
         }
         return $listeQuizFrequentes;
     }
@@ -165,7 +165,7 @@ class QuizManager
      */
     public function listerRecents()
     {
-        if (($listeNouveauxQuiz = $this->cache->get('quiz_liste_nouveaux')) === false) {
+        if (($listeNouveauxQuiz = $this->cache->fetch('quiz_liste_nouveaux')) === false) {
             $listeNouveauxQuiz = $this->conn->fetchAll('SELECT DISTINCT question.quiz_id AS id, quiz.nom, quiz.description '
                 . 'FROM '
                 . '(SELECT quiz_id, date '
@@ -175,7 +175,7 @@ class QuizManager
                 . 'ON quiz.id = question.quiz_id '
                 . 'WHERE quiz.visible = 1 '
                 . 'LIMIT 2');
-            $this->cache->set('quiz_liste_nouveaux', $listeNouveauxQuiz, 86400);
+            $this->cache->save('quiz_liste_nouveaux', $listeNouveauxQuiz, 86400);
         }
 
         return $listeNouveauxQuiz;
@@ -188,7 +188,7 @@ class QuizManager
      */
     public function hasard()
     {
-        if (!($quizHasard = $this->cache->get('quiz_quiz_tire_au_hasard'))) {
+        if (!($quizHasard = $this->cache->fetch('quiz_quiz_tire_au_hasard'))) {
             $quizHasard = \Doctrine_Query::create()
                 ->select('q.id, q.nom, q.description, q.date, q.difficulte, q.aleatoire')
                 ->from('Quiz q')
@@ -196,7 +196,7 @@ class QuizManager
                 ->orderBy('RAND()')
                 ->limit(1)
                 ->fetchOne();
-            $this->cache->set('quiz_quiz_tire_au_hasard', $quizHasard, 86400);
+            $this->cache->save('quiz_quiz_tire_au_hasard', $quizHasard, 86400);
         }
         return $quizHasard;
     }

@@ -272,7 +272,7 @@ function AjouterBillet()
 			"VALUES(:id_utilisateur, NOW(), :ip, :titre, :sous_titre, :texte, " .
 			":intro, NULL, 'Création du billet.')");
 	$stmt->bindParam(':id_utilisateur', $_SESSION['id']);
-	$stmt->bindValue(':ip', ip2long(\Container::getService('request')->getClientIp(true)));
+	$stmt->bindValue(':ip', ip2long(\Container::getService('request')->getClientIp()));
 	$stmt->bindParam(':titre', $_POST['titre']);
 	$stmt->bindParam(':sous_titre', $_POST['sous_titre']);
 	$stmt->bindParam(':texte', $_POST['texte']);
@@ -407,7 +407,7 @@ function EditerBillet($id, $params)
 		$stmt->bindParam(':id_b', $id);
 		$stmt->bindParam(':id_v', $id_v);
 		$stmt->bindParam(':id_u', $_SESSION['id']);
-		$stmt->bindValue(':ip', ip2long(\Container::getService('request')->getClientIp(true)));
+		$stmt->bindValue(':ip', ip2long(\Container::getService('request')->getClientIp()));
 		$stmt->bindParam(':titre', $params['titre']);
 		$stmt->bindParam(':sous_titre', $params['sous_titre']);
 		$stmt->bindParam(':texte', $params['texte']);

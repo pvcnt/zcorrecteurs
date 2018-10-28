@@ -21,8 +21,8 @@
 
 namespace Zco\Bundle\ParserBundle\Feature;
 
+use Doctrine\Common\Cache\Cache;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Zco\Bundle\CoreBundle\Cache\CacheInterface;
 use Zco\Bundle\ParserBundle\ParserEvents;
 use Zco\Bundle\ParserBundle\Event\FilterContentEvent;
 
@@ -42,9 +42,10 @@ class CacheFeature implements EventSubscriberInterface
     /**
      * Constructeur.
      *
-     * @param CacheInterface $cache
+     * @param Cache $cache
+     * @param boolean $debug
      */
-    public function __construct(CacheInterface $cache, $debug = false)
+    public function __construct(Cache $cache, $debug = false)
     {
         $this->cache = $cache;
         $this->debug = $debug;
@@ -73,7 +74,7 @@ class CacheFeature implements EventSubscriberInterface
 		//peut demander ou non à afficher des ancres à côté des titres.
         $this->cacheKey = 'zco_core:parser:'.sha1($event->getContent()).'_'.sha1(serialize($event->getOptions()));
 		
-		if (($text = $this->cache->get($this->cacheKey)) !== false)
+		if (($text = $this->cache->fetch($this->cacheKey)) !== false)
 		{
 		    if ($this->debug)
 		    {
@@ -95,6 +96,6 @@ class CacheFeature implements EventSubscriberInterface
      */
     public function postProcessText(FilterContentEvent $event)
     {
-        $this->cache->set($this->cacheKey, $event->getContent(), 3600 * 24 * 7);
+        $this->cache->save($this->cacheKey, $event->getContent(), 3600);
     }
 }

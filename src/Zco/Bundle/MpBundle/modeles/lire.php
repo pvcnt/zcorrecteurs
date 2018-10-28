@@ -206,7 +206,7 @@ function MarquerMPLu($mp_id)
 	$stmt->bindParam(':message_id', $mp['mp_dernier_message_id']);
 	$stmt->execute();
 
-	Container::getService('zco_core.cache')->Set('MPnonLu'.$_SESSION['id'], 1);
+	Container::cache()->save('MPnonLu'.$_SESSION['id'], 1, 3600);
 }
 
 function RendreLeMPLu($mp_id, $nombreDePages, $dernier_message, $ListerMessages, $InfosLuNonlu)
@@ -237,7 +237,7 @@ function RendreLeMPLu($mp_id, $nombreDePages, $dernier_message, $ListerMessages,
 			$stmt->execute();
 
 			$stmt->closeCursor();
-			Container::getService('zco_core.cache')->Set('MPnonLu'.$_SESSION['id'], 1);
+			Container::cache()->save('MPnonLu'.$_SESSION['id'], 1, 3600);
 			if($_SESSION['MPsnonLus'] > 0)
 				$_SESSION['MPsnonLus']--;
 		}

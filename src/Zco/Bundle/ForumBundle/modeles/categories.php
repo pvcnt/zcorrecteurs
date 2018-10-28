@@ -177,22 +177,8 @@ function ListeCategoriesForums()
 
 function RecupererSautRapide($id)
 {
-	if (empty($_SESSION['groupes_secondaires']))
-	{
-		if(($ListerCategories = Container::getService('zco_core.cache')->Get('saut_rapide_'.$_SESSION['groupe'])) === false)
-		{
-			$ListerCategories = ListerCategoriesForum();
-			Container::getService('zco_core.cache')->Set('saut_rapide_'.$_SESSION['groupe'], $ListerCategories, 3600);
-		}
-	}
-	else
-	{
-		if(($ListerCategories = Container::getService('zco_core.cache')->Get('saut_rapide_utilisateur_'.$_SESSION['id'])) === false)
-		{
-			$ListerCategories = ListerCategoriesForum();
-			Container::getService('zco_core.cache')->Set('saut_rapide_utilisateur_'.$_SESSION['id'], $ListerCategories, 3600);
-		}
-	}
+    //TODO: reuse global categories cache here.
+    $ListerCategories = ListerCategoriesForum();
 
 	$SautRapide = '';
 	if(!empty($ListerCategories))

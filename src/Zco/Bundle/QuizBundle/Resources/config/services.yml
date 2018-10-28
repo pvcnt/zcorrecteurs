@@ -1,7 +1,7 @@
 services:
   zco_quiz.event_listener:
     class: Zco\Bundle\QuizBundle\EventListener\EventListener
-    arguments: ['@router', '@zco_quiz.manager.quiz', '@zco_core.cache']
+    arguments: ['@router', '@zco_quiz.manager.quiz']
     tags:
       - { name: kernel.event_subscriber }
 

@@ -329,7 +329,7 @@ function EnregistrerNouveauSujet($id, $annonce, $ferme, $resolu, $corbeille)
 	$stmt->bindParam(':message_auteur', $_SESSION['id']);
 	$stmt->bindParam(':message_texte', $_POST['texte']);
 	$stmt->bindParam(':message_sujet_id', $nouveau_sujet_id);
-	$stmt->bindValue(':ip', ip2long(\Container::getService('request')->getClientIp(true)));
+	$stmt->bindValue(':ip', ip2long(\Container::getService('request')->getClientIp()));
 	$stmt->execute();
 	$nouveau_message_id = $dbh->lastInsertId();
 	$stmt->closeCursor();

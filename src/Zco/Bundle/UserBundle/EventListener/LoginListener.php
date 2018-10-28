@@ -117,7 +117,7 @@ class LoginListener implements EventSubscriberInterface
         }
 
         // Détection de l'adresse IP et du pays du membre.
-        $ip = ip2long($event->getRequest()->getClientIp(true));
+        $ip = ip2long($event->getRequest()->getClientIp());
         $dbh = \Doctrine_Manager::connection()->getDbh();
         $location = $this->container->get('zco_user.manager.ip')->Geolocaliser($ip);
         $countryName = $location['country'] ?? 'Inconnu';

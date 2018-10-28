@@ -83,14 +83,13 @@ class EventListener implements EventSubscriberInterface
 
         $user = $this->container->get('zco_user.user');
 
-        //Mise à jour temps réel des groupes associés au compte de
-        //l'utilisateur actuellement connecté.
-        if (
-            $user->isAuthenticated()
-            && isset($_SESSION['refresh_droits'])
-            && $this->container->get('zco_core.cache')->get('dernier_refresh_droits') >= $_SESSION['refresh_droits']
-        ) {
-            $user->reloadGroups();
+        // Mise à jour temps réel des groupes associés au compte de
+        // l'utilisateur actuellement connecté.
+        if ($user->isAuthenticated() && isset($_SESSION['refresh_droits'])) {
+            $forceRefresh = $this->container->get('zco_core.cache')->fetch('dernier_refresh_droits');
+            if ($forceRefresh !== false && $forceRefresh >= $_SESSION['refresh_droits']) {
+                $user->reloadGroups();
+            }
         }
 
         //Tentative de connexion depuis l'environnement courant. Normalement seul
@@ -114,8 +113,8 @@ class EventListener implements EventSubscriberInterface
 
         // Check for IP ban.
         $cache = $this->container->get('zco_core.cache');
-        $ip = ip2long($this->container->get('request')->getClientIp(true));
-        $ips = $cache->get('ips_bannies');
+        $ip = ip2long($event->getRequest()->getClientIp());
+        $ips = $cache->fetch('ips_bannies');
         if ($ips === false) {
             $ips = array();
             $dbh = \Doctrine_Manager::connection()->getDbh();
@@ -128,7 +127,7 @@ class EventListener implements EventSubscriberInterface
                     $ips[] = $valeur['ip_ip'];
                 }
             }
-            $cache->set('ips_bannies', $ips, 0);
+            $cache->save('ips_bannies', $ips, 0);
         }
 
         if (in_array($ip, $ips)) {

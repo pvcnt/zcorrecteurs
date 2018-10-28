@@ -137,9 +137,6 @@ class DefaultController extends Controller
             ));
         }
         if (verifier('groupes_changer_membre')) {
-            $menu->getChild('Groupes')->addChild('Recharger le cache des droits et les groupes', array(
-                'uri' => '/groupes/recharger-droits.html',
-            ));
             $menu->getChild('Groupes')->addChild('Changer un membre de groupe', array(
                 'uri' => '/groupes/changer-membre-groupe.html',
             ));

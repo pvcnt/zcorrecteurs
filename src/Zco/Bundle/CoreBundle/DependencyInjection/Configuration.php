@@ -37,12 +37,6 @@ class Configuration implements ConfigurationInterface
 
 		$builder->root('zco_core')
 			->children()
-				->arrayNode('cache')
-					->addDefaultsIfNotSet()
-					->children()
-						->scalarNode('default')->defaultValue('file')->end()
-					->end()
-				->end()
                 ->arrayNode('sendgrid')
                     ->addDefaultsIfNotSet()
                     ->children()

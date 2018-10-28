@@ -45,8 +45,8 @@ function AjouterRecrutement($id_u, $id_grp, $nom, $texte, $lien, $date_fin_depot
 	$stmt->bindValue(':id_quiz', $id_quiz);
 	$stmt->execute();
 
-	Container::getService('zco_core.cache')->Delete('liste_recrutements_prives');
-	Container::getService('zco_core.cache')->Delete('liste_recrutements_publics');
+	Container::cache()->delete('liste_recrutements_prives');
+	Container::cache()->delete('liste_recrutements_publics');
 }
 
 function EditerRecrutement($id, $params)
@@ -78,8 +78,8 @@ function EditerRecrutement($id, $params)
 		$stmt->bindParam(':'.$cle, $valeur);
 	$stmt->execute();
 
-	Container::getService('zco_core.cache')->Delete('liste_recrutements_prives');
-	Container::getService('zco_core.cache')->Delete('liste_recrutements_publics');
+	Container::cache()->delete('liste_recrutements_prives');
+	Container::cache()->delete('liste_recrutements_publics');
 }
 
 function SupprimerRecrutement($id)
@@ -95,9 +95,9 @@ function SupprimerRecrutement($id)
 	$stmt->bindParam(':id', $id);
 	$stmt->execute();
 
-
-	Container::getService('zco_core.cache')->Delete('liste_recrutements_prives');
-	Container::getService('zco_core.cache')->Delete('liste_recrutements_publics');
+	$cache = Container::cache();
+	$cache->delete('liste_recrutements_prives');
+	$cache->delete('liste_recrutements_publics');
 }
 
 function ListerRecrutements()

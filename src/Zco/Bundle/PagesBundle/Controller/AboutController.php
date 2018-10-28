@@ -144,7 +144,7 @@ class AboutController extends Controller
 
 				$message = render_to_string('ZcoPagesBundle:Mail:contact.html.php', array(
 					'contact'	=> $contact,
-					'ip'		=> $request->getClientIp(true),
+					'ip'		=> $request->getClientIp(),
 				));
 				
 				send_mail(

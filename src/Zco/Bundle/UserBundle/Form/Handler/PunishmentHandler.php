@@ -21,9 +21,9 @@
 
 namespace Zco\Bundle\UserBundle\Form\Handler;
 
+use Doctrine\Common\Cache\Cache;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
-use Zco\Bundle\CoreBundle\Cache\CacheInterface;
 
 /**
  * Gère la soumission du formulaire de sanction d'un utilisateur.
@@ -41,9 +41,9 @@ class PunishmentHandler
 	 *
 	 * @param Form $form
 	 * @param Request $request
-	 * @param CacheInterface $cache
+	 * @param Cache $cache
 	 */
-	public function __construct(Form $form, Request $request, CacheInterface $cache)
+	public function __construct(Form $form, Request $request, Cache $cache)
 	{
 		$this->form    = $form;
 		$this->request = $request;
@@ -53,7 +53,7 @@ class PunishmentHandler
 	/**
 	 * Procède à la soumission du formulaire.
 	 *
-	 * @param  UserPunishment $punishment L'entité liée au formulaire
+	 * @param \UserPunishment $punishment L'entité liée au formulaire
 	 * @return boolean Le formulaire a-t-il été traité correctement ?
 	 */
 	public function process(\UserPunishment $punishment = null)
@@ -81,13 +81,13 @@ class PunishmentHandler
 	/**
 	 * Action à effectuer lorsque le formulaire est valide.
 	 *
-	 * @param UserPunishment $punishment L'entité liée au formulaire
+	 * @param \UserPunishment $punishment L'entité liée au formulaire
 	 */
 	protected function onSuccess(\UserPunishment $punishment)
 	{
 		$punishment->save();
 		$punishment->getUser()->applyPunishment($punishment);
-		$this->cache->set('dernier_refresh_droits', time(), 0);
+		$this->cache->save('dernier_refresh_droits', time(), 0);
 		
 		$message = render_to_string('ZcoUserBundle:Mail:punishment.html.php', array(
 			'pseudo'      => $punishment->getUser()->getUsername(),

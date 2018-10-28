@@ -59,9 +59,9 @@ class HomeController extends Controller
 
         if ($vars['quel_bloc'] == 'recrutement') {
             $cacheKey = verifier('recrutements_voir_prives') ? 'liste_recrutements_prives' : 'liste_recrutements_publics';
-            if (($ListerRecrutements = $cache->get($cacheKey)) === false) {
+            if (($ListerRecrutements = $cache->fetch($cacheKey)) === false) {
                 $ListerRecrutements = ListerRecrutements();
-                $cache->set($cacheKey, $ListerRecrutements, 0);
+                $cache->save($cacheKey, $ListerRecrutements, 0);
             }
             $vars['ListerRecrutements'] = $ListerRecrutements;
         } elseif ($vars['quel_bloc'] == 'quiz') {
@@ -74,7 +74,7 @@ class HomeController extends Controller
             $vars['BilletAuteurs'] = $vars['BilletSemaine'];
             $vars['BilletSemaine'] = $vars['BilletSemaine'][0];
         } elseif ($vars['quel_bloc'] == 'billet_hasard') {
-            if ($billet = $cache->get('billet_hasard')) {
+            if ($billet = $cache->fetch('billet_hasard')) {
                 $vars['BilletHasard'] = InfosBillet($billet);
                 $vars['BilletAuteurs'] = $vars['BilletHasard'];
                 $vars['BilletHasard'] = $vars['BilletHasard'][0];
@@ -82,29 +82,11 @@ class HomeController extends Controller
                 if (!$categories = $registry->get('categories_billet_hasard'))
                     $categories = array();
                 $rand = BilletAleatoire($categories);
-                $cache->set('billet_hasard', $rand, TEMPS_BILLET_HASARD * 60);
+                $cache->save('billet_hasard', $rand, TEMPS_BILLET_HASARD * 60);
                 $vars['BilletHasard'] = InfosBillet($rand);
                 $vars['BilletAuteurs'] = $vars['BilletHasard'];
                 $vars['BilletHasard'] = $vars['BilletHasard'][0];
             }
-        } elseif ($vars['quel_bloc'] == 'twitter') {
-            if (!$tweets = $cache->get('accueil_derniersTweets')) {
-                $nb = $cache->get('accueil_tweets');
-                !$nb && $nb = 4;
-
-                $tweets = \Doctrine_Core::getTable('TwitterTweet')
-                    ->createQuery('t')
-                    ->select('t.twitter_id, t.creation, t.texte, '
-                        . 'u.id, u.pseudo, u.avatar, '
-                        . 'c.nom')
-                    ->leftJoin('t.Utilisateur u')
-                    ->leftJoin('t.Compte c')
-                    ->orderBy('id DESC')
-                    ->limit($nb)
-                    ->execute();
-                $cache->set('accueil_derniersTweets', $tweets, 0);
-            }
-            $vars['Tweets'] = $tweets ? $tweets : array();
         } elseif ($vars['quel_bloc'] == 'dictee') {
             $dictee = $registry->get('dictee_en_avant');
             $vars['Dictee'] = ($dictee) ? ($dictee) : (array());
@@ -155,7 +137,7 @@ class HomeController extends Controller
         $registry = $this->get('zco_core.registry');
 
         if (!empty($_POST))
-            $this->get('zco_core.cache')->set('accueil_maj', date('c'), 0);
+            $this->get('zco_core.cache')->save('accueil_maj', date('c'), 0);
 
         //--- Si on veut modifier le bloc ---
         $bloc_accueil = $registry->get('bloc_accueil');
@@ -348,7 +330,6 @@ class HomeController extends Controller
             $selectDictee = null;
         }
 
-        //Inclusion de la vue
         fil_ariane('Modifier les annonces');
 
         return render_to_response('ZcoPagesBundle:Home:config.html.php', compact(

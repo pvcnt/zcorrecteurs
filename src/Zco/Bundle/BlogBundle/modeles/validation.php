@@ -70,7 +70,7 @@ function AjouterHistoriqueValidation($id_billet, $id_u, $id_version, $texte, $de
 	$stmt->bindParam(':id_billet', $id_billet);
 	$stmt->bindParam(':id_utilisateur', $id_u);
 	$stmt->bindParam(':id_version', $id_version);
-	$stmt->bindValue(':ip', ip2long(\Container::getService('request')->getClientIp(true)));
+	$stmt->bindValue(':ip', ip2long(\Container::getService('request')->getClientIp()));
 	$stmt->bindParam(':commentaire', $texte);
 	$stmt->bindParam(':decision', $decision);
 	$stmt->execute();

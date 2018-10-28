@@ -2,7 +2,7 @@
 
 namespace Zco\Bundle\UserBundle\Entity;
 
-use Zco\Bundle\CoreBundle\Cache\CacheInterface;
+use Doctrine\Common\Cache\Cache;
 
 class IpManager
 {
@@ -13,9 +13,9 @@ class IpManager
      * Constructor.
      *
      * @param \Doctrine_Connection $conn
-     * @param CacheInterface $cache
+     * @param Cache $cache
      */
-    public function __construct(\Doctrine_Connection $conn, CacheInterface $cache)
+    public function __construct(\Doctrine_Connection $conn, Cache $cache)
     {
         $this->conn = $conn;
         $this->cache = $cache;
@@ -35,9 +35,9 @@ class IpManager
             $stmt->bindParam(':id', $_SESSION['id']);
             $stmt->execute();
 
-            $contenu = $this->cache->get('ips_bannies');
+            $contenu = $this->cache->fetch('ips_bannies');
             $contenu[] = $ip;
-            $this->cache->set('ips_bannies', $contenu, 0);
+            $this->cache->save('ips_bannies', $contenu, 0);
 
             return true;
         } else {

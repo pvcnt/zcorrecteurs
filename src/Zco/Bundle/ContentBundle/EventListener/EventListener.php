@@ -40,13 +40,13 @@ class EventListener implements EventSubscriberInterface
     public function onTemplatingFilterVariables(FilterVariablesEvent $event)
     {
         $cache = $this->container->get('zco_core.cache');
-        if (($html = $cache->get('header_citations')) === false) {
+        if (($html = $cache->fetch('header_citations')) === false) {
             $citation = $this->container->get('zco.repository.quotes')->getRandom();
             $html = '';
             if ($citation) {
                 $html = render_to_string('ZcoContentBundle:Quotes:header.html.php', compact('citation'));
             }
-            $cache->set('header_citations', $html, 3600);
+            $cache->save('header_citations', $html, 3600);
         }
         $event->set('randomQuoteHtml', $html);
     }

@@ -21,7 +21,7 @@
 
 namespace Zco\Bundle\AdminBundle;
 
-use Zco\Bundle\CoreBundle\Cache\CacheInterface;
+use Doctrine\Common\Cache\Cache;
 
 /**
  * @author vincent1870 <vincent@zcorrecteurs.fr>
@@ -39,9 +39,9 @@ final class Admin
     /**
      * Constructor.
      *
-     * @param CacheInterface $cache
+     * @param Cache $cache
      */
-    public function __construct(CacheInterface $cache)
+    public function __construct(Cache $cache)
     {
         $this->cache = $cache;
     }
@@ -101,9 +101,9 @@ final class Admin
             return $this->values[$cacheKey];
         }
 
-        if (($value = $this->cache->get($cacheKey)) === false) {
+        if (($value = $this->cache->fetch($cacheKey)) === false) {
             $value = (int)$task->count();
-            $this->cache->set($cacheKey, $value, 3600);
+            $this->cache->save($cacheKey, $value, 3600);
         }
 
         $this->values[$cacheKey] = $value;

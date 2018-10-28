@@ -35,7 +35,7 @@ class FluxAction extends Feed
 
 		include_once(dirname(__FILE__).'/../modeles/blog.php');
 		AjouterVisiteFlux(
-			ip2long($this->get('request')->getClientIp(true)),
+			ip2long($this->get('request')->getClientIp()),
 			!empty($_GET['id']) && is_numeric($_GET['id']) ? $_GET['id'] : GetIDCategorie('blog'),
 			isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : null);
 

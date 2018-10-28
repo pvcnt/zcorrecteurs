@@ -67,7 +67,7 @@ class AlerterAction extends ForumActions
 					$alerte['sujet_id'] = $_GET['id'];
 					$alerte['resolu'] = false;
 					$alerte['raison'] = $_POST['texte'];
-					$alerte['ip'] = ip2long($this->get('request')->getClientIp(true));
+					$alerte['ip'] = ip2long($this->get('request')->getClientIp());
 					$alerte->save();
 
 					return redirect('Les modérateurs ont bien été alertés.', 'sujet-'.$InfosSujet['sujet_id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html');

@@ -121,6 +121,6 @@ function EnregistrerNouvelleAlerte($id)
 	$stmt->bindParam(':id_utilisateur', $_SESSION['id']);
 	$stmt->bindParam(':id_sujet', $id);
 	$stmt->bindParam(':texte', $_POST['texte']);
-	$stmt->bindValue(':ip', ip2long(\Container::getService('request')->getClientIp(true)));
+	$stmt->bindValue(':ip', ip2long(\Container::getService('request')->getClientIp()));
 	$stmt->execute();
 }

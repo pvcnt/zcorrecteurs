@@ -127,7 +127,7 @@ function EnregistrerNouveauMessage($id, $forum_id, $annonce, $ferme, $resolu, $c
 	$stmt->bindParam(':message_auteur', $_SESSION['id']);
 	$stmt->bindParam(':message_texte', $_POST['texte']);
 	$stmt->bindParam(':message_sujet_id', $id);
-	$stmt->bindValue(':ip', ip2long(\Container::getService('request')->getClientIp(true)));
+	$stmt->bindValue(':ip', ip2long(\Container::getService('request')->getClientIp()));
 	$stmt->execute();
 
 	// On récupère l'id de l'enregistrement qui vient d'être créé (l'id du nouveau post).

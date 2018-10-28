@@ -19,90 +19,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- *Modèle gérant les actions sur les droits.
- *
- * @author vincent1870 <vincent@zcorrecteurs.fr>
- * @begin 17/11/2008
- * @last 17/11/2008 vincent1870
- */
-
-function AjouterDroit($nom, $desc, $desc_longue, $id_cat, $choix_cat, $choix_binaire)
-{
-	$dbh = Doctrine_Manager::connection()->getDbh();
-
-	$stmt = $dbh->prepare("INSERT INTO zcov2_droits(droit_id_categorie, " .
-			"droit_nom, droit_description, droit_choix_categorie, " .
-			"droit_choix_binaire, droit_description_longue) " .
-			"VALUES(:cat, :nom, :desc, :choix_cat, :choix_binaire, :desc_longue)");
-	$stmt->bindParam(':nom', $nom);
-	$stmt->bindParam(':desc', $desc);
-	$stmt->bindParam(':desc_longue', $desc_longue);
-	$stmt->bindParam(':cat', $id_cat);
-	$stmt->bindParam(':choix_cat', $choix_cat);
-	$stmt->bindParam(':choix_binaire', $choix_binaire);
-	$stmt->execute();
-	return $dbh->lastInsertId();
-}
-
-function EditerDroit($infos, $nom, $desc, $desc_longue, $id_cat, $choix_cat, $choix_binaire)
-{
-	$dbh = Doctrine_Manager::connection()->getDbh();
-
-	//Édition en BDD
-	$stmt = $dbh->prepare("UPDATE zcov2_droits " .
-			"SET droit_id_categorie = :cat, droit_nom = :nom, droit_description = :desc, " .
-			"droit_choix_categorie = :choix_cat, droit_choix_binaire = :choix_binaire, " .
-			"droit_description_longue = :desc_longue " .
-			"WHERE droit_id = :id");
-	$stmt->bindParam(':id', $infos['droit_id']);
-	$stmt->bindValue(':cat', (int)$id_cat);
-	$stmt->bindParam(':nom', $nom);
-	$stmt->bindParam(':desc', $desc);
-	$stmt->bindParam(':desc_longue', $desc_longue);
-	$stmt->bindValue(':choix_cat', (int)$choix_cat);
-	$stmt->bindValue(':choix_binaire', (int)$choix_binaire);
-	$stmt->execute();
-
-	//Si on change la catégorie parente
-	if($infos['droit_id_categorie'] != (int)$id_cat && $choix_cat == false)
-	{
-		$stmt = $dbh->prepare("UPDATE zcov2_groupes_droits " .
-				"SET gd_id_categorie = :id_cat " .
-				"WHERE gd_id_droit = :id");
-		$stmt->bindParam(':id', $infos['droit_id']);
-		$stmt->bindValue(':id_cat', (int)$id_cat);
-		$stmt->execute();
-	}
-	elseif($infos['droit_id_categorie'] != $id_cat && $choix_cat == true)
-	{
-		$stmt = $dbh->prepare("DELETE FROM zcov2_groupes_droits " .
-				"WHERE gd_id_droit = :id AND gd_id_categorie <> :id_cat");
-		$stmt->bindParam(':id', $infos['droit_id']);
-		$stmt->bindValue(':id_cat', (int)$id_cat);
-		$stmt->execute();
-	}
-
-	//Si on change le choix par catégorie
-	if($infos['droit_choix_categorie'] == true && $choix_cat == false)
-	{
-		$stmt = $dbh->prepare("DELETE FROM zcov2_groupes_droits " .
-				"WHERE gd_id_droit = :id AND gd_id_categorie <> :id_cat");
-		$stmt->bindParam(':id', $infos['droit_id']);
-		$stmt->bindValue(':id_cat', (int)$id_cat);
-		$stmt->execute();
-	}
-
-	//Si on change le choix binaire
-	if($infos['droit_choix_binaire'] != $choix_binaire)
-	{
-		$stmt = $dbh->prepare("DELETE FROM zcov2_groupes_droits " .
-				"WHERE gd_id_droit = :id");
-		$stmt->bindParam(':id', $infos['droit_id']);
-		$stmt->execute();
-	}
-}
-
 function SupprimerDroit($id)
 {
 	$dbh = Doctrine_Manager::connection()->getDbh();
@@ -184,7 +100,8 @@ function RecupererValeurDroit($droit, $groupe)
 
 function RecupererDroitsGroupe($groupe)
 {
-	if(($retour = Container::getService('zco_core.cache')->Get('droits_groupe_'.$groupe)) === false)
+    $cache = Container::cache();
+	if(($retour = $cache->fetch('droits_groupe_'.$groupe)) === false)
 	{
 		//Récupération depuis la BDD
 		$dbh = Doctrine_Manager::connection()->getDbh();
@@ -209,7 +126,7 @@ function RecupererDroitsGroupe($groupe)
 				$retour[$r['droit_nom']][$r['gd_id_categorie']] = (int)$r['gd_valeur'];
 			}
 
-		Container::getService('zco_core.cache')->Set('droits_groupe_'.$groupe, $retour, 0);
+		$cache->save('droits_groupe_'.$groupe, $retour, 0);
 	}
 	return $retour;
 }

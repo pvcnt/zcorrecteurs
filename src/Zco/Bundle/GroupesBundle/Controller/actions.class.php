@@ -124,7 +124,7 @@ class GroupesActions extends Controller
 			if(isset($_POST['confirmer']))
 			{
 				SupprimerGroupe($_GET['id']);
-				$this->get('zco_core.cache')->set('dernier_refresh_droits', time(), 0);
+				$this->get('zco_core.cache')->save('dernier_refresh_droits', time(), 0);
 
 				return redirect('Le groupe a bien été supprimé.', 'index.html');
 			}
@@ -190,34 +190,6 @@ class GroupesActions extends Controller
 	}
 
 	/**
-	 * Recharge les droits de chaque groupe et l'id du groupe stocké en session.
-	 */
-	public function executeRechargerDroits()
-	{
-        if (!verifier('groupes_changer_membre')) {
-            throw new AccessDeniedHttpException();
-        }
-		Page::$titre = 'Recharger les droits des groupes';
-
-		//Si on veut recharger le cache
-		if(isset($_POST['confirmer']))
-		{
-			$this->get('zco_core.cache')->set('dernier_refresh_droits', time(), 0);
-			$this->get('zco_core.cache')->delete('droits_groupe_*');
-
-			return redirect('Les droits ont bien été rechargés.', '/admin/');
-		}
-		//Si on annule
-		elseif(isset($_POST['annuler']))
-		{
-			return new RedirectResponse('/admin/');
-		}
-
-		fil_ariane('Recharger le cache des groupes et des droits');
-		return render_to_response(array());
-	}
-
-	/**
 	 * Change un membre de groupe.
 	 */
 	public function executeChangerMembreGroupe()
@@ -253,7 +225,7 @@ class GroupesActions extends Controller
 			{
 				$_POST['id'] = $_GET['id'];
 				ChangerGroupeUtilisateur();
-				$this->get('zco_core.cache')->set('dernier_refresh_droits', time(), 0);
+				$this->get('zco_core.cache')->save('dernier_refresh_droits', time(), 0);
 
 				return redirect('Le membre a bien été changé de groupe.', 'changer-membre-groupe-'.$_GET['id'].'.html');
 			}
@@ -266,8 +238,7 @@ class GroupesActions extends Controller
 					$_GET['id'],
 					isset($_POST['groupes_secondaires']) ? $_POST['groupes_secondaires'] : array()
 				);
-				$this->get('zco_core.cache')->set('dernier_refresh_droits', time(), 0);
-				$this->get('zco_core.cache')->delete('saut_rapide_utilisateur_'.$_GET['id']);
+				$this->get('zco_core.cache')->save('dernier_refresh_droits', time(), 0);
 
 				return redirect(
 				    'Le membre a bien été changé de groupe.',
@@ -461,69 +432,6 @@ class GroupesActions extends Controller
 	}
 
 	/**
-	 * Ajoute un nouveau droit.
-	 */
-	public function executeAjouterDroit()
-	{
-        if (!verifier('droits_gerer')) {
-            throw new AccessDeniedHttpException();
-        }
-		Page::$titre = 'Ajouter un droit';
-
-		//Si on veut ajouter un droit
-		if(!empty($_POST['nom']) && !empty($_POST['desc']) && !empty($_POST['cat']))
-		{
-			AjouterDroit($_POST['nom'], $_POST['desc'], $_POST['texte'],
-			$_POST['cat'], isset($_POST['choix_cat']), !isset($_POST['choix_binaire']));
-			$this->get('zco_core.cache')->delete('droits_groupe_*');
-
-			return redirect('Le droit a bien été ajouté.', 'gestion-droits.html');
-		}
-
-		//Inclusion de la vue
-		fil_ariane('Ajouter un droit');
-
-		return render_to_response(array());
-	}
-
-	/**
-	 * Modifie un droit.
-	 */
-	public function executeEditerDroit()
-	{
-        if (!verifier('droits_gerer')) {
-            throw new AccessDeniedHttpException();
-        }
-		Page::$titre = 'Modifier un droit';
-
-		if(!empty($_GET['id']) && is_numeric($_GET['id']))
-		{
-			$InfosDroit = InfosDroit($_GET['id']);
-			if(empty($InfosDroit))
-                throw new NotFoundHttpException();
-
-			//Si on veut éditer le droit
-			if(!empty($_POST['nom']) && !empty($_POST['desc']) && !empty($_POST['cat']))
-			{
-				EditerDroit($InfosDroit, $_POST['nom'], $_POST['desc'], $_POST['texte'],
-				$_POST['cat'], isset($_POST['choix_cat']), !isset($_POST['choix_binaire']));
-				$this->get('zco_core.cache')->delete('droits_groupe_*');
-
-				return redirect('Le droit a bien été modifié.', 'gestion-droits.html');
-			}
-
-			fil_ariane(array('Gestion des droits' => 'gestion-droits.html', 'Modifier un droit'));
-
-			return render_to_response(array(
-				'ListerCategories' => ListerCategories(),
-				'InfosDroit' => $InfosDroit,
-			));
-		}
-		else
-            throw new NotFoundHttpException();
-	}
-
-	/**
 	 * Supprime un droit.
 	 */
 	public function executeSupprimerDroit()
@@ -543,7 +451,6 @@ class GroupesActions extends Controller
 			if(isset($_POST['confirmer']))
 			{
 				SupprimerDroit($_GET['id']);
-				$this->get('zco_core.cache')->delete('droits_groupe_*');
 
 				return redirect('Le droit a bien été supprimé.', 'gestion-droits.html');
 			}

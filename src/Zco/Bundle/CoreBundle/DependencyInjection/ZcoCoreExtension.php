@@ -50,13 +50,9 @@ class ZcoCoreExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
         $loader->load('listeners.yml');
-        $loader->load('cache.yml');
         $loader->load('templating_helpers.yml');
 
         $config = $this->processConfiguration(new Configuration(), $configs);
-
-        // Alias pour l'implémentation de cache.
-        $container->setAlias('zco_core.cache', 'zco_core.cache.' . $config['cache']['default']);
 
         // Définit les paramètres de Sendgrid.
         $container->setParameter('zco_core.sendgrid.api_key', $config['sendgrid']['api_key']);

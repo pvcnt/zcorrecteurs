@@ -11,6 +11,9 @@ services:
     imagine:
         class: Imagine\Gd\Imagine
 
+    zco_core.cache:
+        class: Doctrine\Common\Cache\ApcuCache
+
     zco_core.resource_manager:
         class: Zco\Bundle\CoreBundle\Javelin\ResourceManager
         arguments:

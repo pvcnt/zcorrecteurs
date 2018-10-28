@@ -112,6 +112,7 @@ function AjouterCategorie()
 	}
 
 	//Insertion des droits si besoin
+    $cache = Container::cache();
 	if(!empty($_POST['cat']) && is_numeric($_POST['cat']))
 	{
 		//On récupère les droits sur cette catégorie
@@ -125,8 +126,6 @@ function AjouterCategorie()
 		$stmt->closeCursor();
 
 		$groupes = array();
-
-		//Et on insère les droits
 		foreach($droits as &$d)
 		{
 			$stmt = $dbh->prepare("INSERT INTO zcov2_groupes_droits(gd_id_droit, gd_id_groupe, gd_id_categorie, gd_valeur) " .
@@ -141,11 +140,12 @@ function AjouterCategorie()
 			$groupes[$d['gd_id_groupe']] = true;
 		}
 
-		//On supprime les caches de catégorie
-		Container::getService('zco_core.cache')->Delete('droits_groupe_*');
-		Container::getService('zco_core.cache')->Delete('saut_rapide_*');
+		// On supprime les caches des droits.
+        foreach (array_keys($groupes) as $groupId) {
+            $cache->delete('droits_groupe_' . $groupId);
+        }
 	}
-	Container::getService('zco_core.cache')->Delete('categories');
+    $cache->delete('categories');
 	return $id_cat;
 }
 
@@ -221,6 +221,7 @@ function EditerCategorie($id)
 	}
 
 	//Si le parent change, on déplace la catégorie
+    $cache = Container::cache();
 	if($ListerParents[count($ListerParents)-1]['cat_id'] != $_POST['parent'] && !empty($InfosNouveauParent))
 	{
 		// On va simuler une suppression/réinsertion de la catégorie à déplacer (au lieu de supprimer, on la déplace dans des bornes négatives)
@@ -259,7 +260,7 @@ function EditerCategorie($id)
 
 		// On récupère les nouvelles informations du parent
 		// (au cas où il aurait changé de borne avec les modifs précédentes)
-		Container::getService('zco_core.cache')->Delete('categories');
+        $cache->delete('categories');
 		$InfosNouveauParent = InfosCategorie($_POST['parent']);
 
 		// Insertion
@@ -306,9 +307,7 @@ function EditerCategorie($id)
 	//Archivage ou non dans le cas d'un forum
 	isset($_POST['archiver']) ? ArchiverForum($id) : DesarchiverForum($id);
 
-	//On supprime les caches de catégorie
-	Container::getService('zco_core.cache')->Delete('saut_rapide_*');
-	Container::getService('zco_core.cache')->Delete('categories');
+    $cache->delete('categories');
 }
 
 /**
@@ -348,11 +347,8 @@ function SupprimerCategorie($id)
 	$stmt->execute();
 	$stmt->closeCursor();
 
-	//On supprime les caches de catégorie
-	Container::getService('zco_core.cache')->Delete('droits_groupe_*');
-	Container::getService('zco_core.cache')->Delete('saut_rapide_*');
-
-	Container::getService('zco_core.cache')->Delete('categories');
+	//On supprime les caches de catégorie.
+    Container::cache()->delete('categories');
 }
 
 /**
@@ -382,7 +378,8 @@ function ListerCategories($verif_droits = false)
 
 	if (!$retour)
 	{
-		if(!($retour = Container::getService('zco_core.cache')->Get('categories')))
+	    $cache = Container::cache();
+		if(!($retour = $cache->fetch('categories')))
 		{
 			$dbh = Doctrine_Manager::connection()->getDbh();
 			$retour = array();
@@ -400,7 +397,7 @@ function ListerCategories($verif_droits = false)
 			foreach($ListerCategories as $c)
 				$retour[$c['cat_id']] = $c;
 
-			Container::getService('zco_core.cache')->Set('categories', $retour, 0);
+			$cache->save('categories', $retour, 0);
 		}
 	}
 
@@ -546,8 +543,7 @@ function DescendreCategorie($InfosCategorie)
 		$stmt->closeCursor();
 
 		//On supprime les caches de catégorie
-		Container::getService('zco_core.cache')->Delete('saut_rapide_*');
-		Container::getService('zco_core.cache')->Delete('categories');
+        Container::cache()->delete('categories');
 
 		return true;
 	}
@@ -621,8 +617,7 @@ function MonterCategorie($InfosCategorie)
 		$stmt->closeCursor();
 
 		//On supprime les caches de catégorie
-		Container::getService('zco_core.cache')->Delete('saut_rapide_*');
-		Container::getService('zco_core.cache')->Delete('categories');
+		Container::cache()->delete('categories');
 
 		return true;
 	}
@@ -748,7 +743,7 @@ function ArchiverForum($id)
 	$req->execute();
 	$req->closeCursor();
 		
-	Container::getService('zco_core.cache')->Delete('categories');
+	Container::cache()->delete('categories');
 }
 
 /**
@@ -766,6 +761,6 @@ function ArchiverForum($id)
 	$req->execute();
 	$req->closeCursor();
 
-	Container::getService('zco_core.cache')->Delete('categories');
+	Container::cache()->delete('categories');
  }
 

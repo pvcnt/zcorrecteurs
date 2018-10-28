@@ -76,7 +76,7 @@ function AjouterAlerte()
 	$stmt->bindParam(':mp_id', $_GET['id']);
 	$stmt->bindParam(':auteur', $_SESSION['id']);
 	$stmt->bindValue(':raison', htmlspecialchars($_POST['texte']));
-	$stmt->bindValue(':ip', ip2long(\Container::getService('request')->getClientIp(true)));
+	$stmt->bindValue(':ip', ip2long(\Container::getService('request')->getClientIp()));
 	$stmt->execute();
 	return true;
 }

@@ -56,7 +56,7 @@ function AjouterMPAuto($titre, $SousTitre, $participants, $message)
 	$stmt->bindParam(':NouveauMPID', $NouveauMPID);
 	$stmt->bindValue(':auteur', ID_COMPTE_AUTO);
 	$stmt->bindParam(':texte', $message);
-	$stmt->bindValue(':ip', ip2long(\Container::getService('request')->getClientIp(true)));
+	$stmt->bindValue(':ip', ip2long(\Container::getService('request')->getClientIp()));
 	$stmt->execute();
 
 	//On récupère l'id de du message nouvellement créé.
@@ -93,7 +93,7 @@ function AjouterMPAuto($titre, $SousTitre, $participants, $message)
 		$stmt->bindValue(':statut', MP_STATUT_NORMAL);
 		$stmt->execute();
 
-		Container::getService('zco_core.cache')->Set('MPnonLu'.$valeur, true, strtotime('+1 hour'));
+		Container::cache()->save('MPnonLu'.$valeur, true, 3600);
 	}
 	$stmt->closeCursor();
 

@@ -65,7 +65,7 @@ function AjouterDictee(AjouterForm &$form)
 
     if (verifier('dictees_publier') && $data['publique']) {
         $Dictee->etat = DICTEE_VALIDEE;
-        Container::getService('zco_core.cache')->Delete('dictees_accueil');
+        Container::cache()->delete('dictees_accueil');
     } else    $Dictee->etat = DICTEE_BROUILLON;
 
     $tags = $data['tags'];
@@ -129,7 +129,7 @@ function EditerDictee(Dictee $Dictee, AjouterForm &$Form)
         elseif ($Dictee->etat != DICTEE_PROPOSEE)
             $Dictee->etat = DICTEE_BROUILLON;
         if ($Dictee->etat != $etat)
-            Container::getService('zco_core.cache')->Delete('dictees_accueil');
+            Container::cache()->delete('dictees_accueil');
     }
 
     // Tags
@@ -229,7 +229,7 @@ function RepondreDictee(Dictee $Dictee, RepondreForm &$Form)
         $Dictee->etat = DICTEE_VALIDEE;
         $mp = 'dictee_acceptee';
         $titre = 'Votre dictée a été acceptée';
-        Container::getService('zco_core.cache')->Delete('dictees_accueil');
+        Container::cache()->delete('dictees_accueil');
     } else {
         $Dictee->etat = DICTEE_BROUILLON;
         $mp = 'dictee_refusee';
@@ -270,7 +270,7 @@ function ProposerDictee(Dictee $Dictee)
 function DicteesEffacerCache()
 {
     foreach (array('accueil', 'statistiques', 'plusJouees') as $c)
-        Container::getService('zco_core.cache')->Delete('dictees_' . $c);
+        Container::cache()->delete('dictees_' . $c);
 }
 
 /**
@@ -485,9 +485,8 @@ function CorrigerDictee(Dictee $Dictee, $texte)
  */
 function DicteesStatistiques()
 {
-    $Stats = new StdClass;
-
-    if (!$Stats = Container::getService('zco_core.cache')->Get('dictees_statistiques')) {
+    $cache = Container::cache();
+    if (!$Stats = $cache->fetch('dictees_statistiques')) {
         $Stats = new StdClass;
         $Stats->nombreDictees = Doctrine_Query::create()
             ->select('COUNT(*) AS total')
@@ -506,7 +505,7 @@ function DicteesStatistiques()
         $Stats->noteMoyenne = round($d->moyenne, 2);
         $Stats->nombreParticipations = $d->total;
 
-        Container::getService('zco_core.cache')->Set('dictees_statistiques', $Stats, 3600);
+        $cache->save('dictees_statistiques', $Stats, 3600);
     }
 
     return $Stats;

@@ -15,12 +15,6 @@ services:
         tags:
             - { name: templating.helper, alias: widget }
     
-    zco_core.templating.helper.cache:
-        class: Zco\Bundle\CoreBundle\Templating\Helper\CacheHelper
-        arguments: ["@zco_core.cache"]
-        tags:
-            - { name: templating.helper, alias: cache }
-
     zco_core.templating.helper.vitesse:
         class: Zco\Bundle\CoreBundle\Templating\Helper\VitesseHelper
         arguments: ["@zco_core.resource_manager"]

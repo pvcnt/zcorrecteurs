@@ -50,7 +50,7 @@ class EventListener implements EventSubscriberInterface
         }
 
         // Mise à jour du nombre de MPs non lus.
-        $rafraichir = $this->container->get('zco_core.cache')->get('MPnonLu' . $_SESSION['id']);
+        $rafraichir = $this->container->get('zco_core.cache')->fetch('MPnonLu' . $_SESSION['id']);
         if ($rafraichir) {
             $this->container->get('zco_core.cache')->delete('MPnonLu' . $_SESSION['id']);
         }

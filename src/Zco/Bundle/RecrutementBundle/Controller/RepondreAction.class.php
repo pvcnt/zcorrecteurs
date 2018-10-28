@@ -61,7 +61,7 @@ class RepondreAction extends Controller
 							$_POST['id'] = $InfosCandidature['utilisateur_id'];
 							$_POST['groupe'] = $InfosCandidature['recrutement_id_groupe'];
 							ChangerGroupeUtilisateur();
-							$this->get('zco_core.cache')->set('dernier_refresh_droits', time(), 0);
+							$this->get('zco_core.cache')->save('dernier_refresh_droits', time(), 0);
 						}
 
 						//Envoi du MP

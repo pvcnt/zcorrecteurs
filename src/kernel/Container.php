@@ -26,72 +26,77 @@
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
 
+use Doctrine\Common\Cache\CacheProvider;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 final class Container
 {
-	protected static $instance;
+    protected static $instance;
 
-	/**
-	 * Get the instance of the container class.
-	 *
-	 * @return ContainerInterface
-	 */
-	public static function getInstance()
-	{
-		if (!isset(self::$instance))
-		{
-			self::$instance = new ContainerBuilder;
-		}
+    /**
+     * Get the instance of the container class.
+     *
+     * @return ContainerInterface
+     */
+    public static function getInstance()
+    {
+        if (!isset(self::$instance)) {
+            self::$instance = new ContainerBuilder;
+        }
 
-		return self::$instance;
-	}
+        return self::$instance;
+    }
 
-	/**
-	 * Defines the instance of the container. This is not a very
-	 * proper way to do this, but this allow customization of the class on the
-	 * fly and allow using the PHP cache of the container.
-	 *
-	 * @param ContainerInterface $container
-	 */
-	public static function setInstance(ContainerInterface $container)
-	{
-		self::$instance = $container;
-	}
+    /**
+     * Defines the instance of the container. This is not a very
+     * proper way to do this, but this allow customization of the class on the
+     * fly and allow using the PHP cache of the container.
+     *
+     * @param ContainerInterface $container
+     */
+    public static function setInstance(ContainerInterface $container)
+    {
+        self::$instance = $container;
+    }
 
-	/**
-	 * Shortcut to get a service without using the container instance.
-	 *
-	 * @param string $service The service name.
-	 * @return object The required service.
-	 */
-	public static function getService($service)
-	{
-		return self::getInstance()->get($service);
-	}
+    /**
+     * Shortcut to get a service without using the container instance.
+     *
+     * @param string $service The service name.
+     * @return object The required service.
+     */
+    public static function getService($service)
+    {
+        return self::getInstance()->get($service);
+    }
 
-	/**
-	 * Shortcut to get the value of a parameter without using the
-	 * container instance.
-	 *
-	 * @param string $parameter		The parameter name.
-	 * @return mixed				The parameter value.
-	 */
-	public static function getParameter($parameter)
-	{
-		return self::getInstance()->getParameter($parameter);
-	}
+    public static function cache(): CacheProvider
+    {
+        return self::getInstance()->get('zco_core.cache');
+    }
 
-	/**
-	 * Shortcut to check if a parameter exists using the
-	 * container instance.
-	 *
-	 * @param string $parameter		The parameter name.
-	 * @return Boolean				The presence of parameter in container.
-	 */
-	public static function hasParameter($parameter)
-	{
-		return self::getInstance()->hasParameter($parameter);
-	}
+    /**
+     * Shortcut to get the value of a parameter without using the
+     * container instance.
+     *
+     * @param string $parameter The parameter name.
+     * @return mixed                The parameter value.
+     */
+    public static function getParameter($parameter)
+    {
+        return self::getInstance()->getParameter($parameter);
+    }
+
+    /**
+     * Shortcut to check if a parameter exists using the
+     * container instance.
+     *
+     * @param string $parameter The parameter name.
+     * @return Boolean                The presence of parameter in container.
+     */
+    public static function hasParameter($parameter)
+    {
+        return self::getInstance()->hasParameter($parameter);
+    }
 }

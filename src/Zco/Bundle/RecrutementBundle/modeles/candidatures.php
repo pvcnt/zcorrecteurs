@@ -224,7 +224,7 @@ function AjouterCandidature($id)
 	$stmt->bindValue(':ip', 0);
 	$stmt->execute();
 
-	Container::getService('zco_core.cache')->Delete('liste_recrutements');
+	Container::cache()->delete('liste_recrutements');
 }
 
 function EditerMotivationCandidature($id)
@@ -240,7 +240,7 @@ function EditerMotivationCandidature($id)
 	$stmt->bindParam(':id', $id);
 	$stmt->execute();
 
-	Container::getService('zco_core.cache')->Delete('liste_recrutements');
+	Container::cache()->delete('liste_recrutements');
 }
 
 function EditerQuestionnaireCandidature($id, $score)
@@ -267,7 +267,7 @@ function EnvoyerMotivationCandidature($id)
 	$stmt->bindParam(':id', $id);
 	$stmt->execute();
 
-	Container::getService('zco_core.cache')->Delete('liste_recrutements');
+	Container::cache()->delete('liste_recrutements');
 }
 
 function EditerCorrectionCandidature($id)
@@ -376,7 +376,7 @@ function SupprimerCandidature($id)
 	$stmt->bindParam(':id', $id);
 	$stmt->execute();
 
-	Container::getService('zco_core.cache')->Delete('liste_recrutements');
+	Container::cache()->delete('liste_recrutements');
 }
 
 /**
