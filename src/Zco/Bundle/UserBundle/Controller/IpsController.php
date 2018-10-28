@@ -22,10 +22,10 @@
 namespace Zco\Bundle\UserBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Actions gérant les actions liées à l'analyse et au bannissement des
@@ -78,56 +78,32 @@ class IpsController extends Controller
     }
 
     /**
-     * Analyse une adresse IP en trouvant toutes ses occurences dans la BDD.
-     */
-    public function analyzeAction($ip, Request $request)
-    {
-        if (!verifier('ips_analyser')) {
-            throw new AccessDeniedHttpException();
-        }
-        if (!$ip && $request->query->has('ip')) {
-            $ip = $request->query->get('ip');
-        }
-        if ($ip) {
-            $utilisateurs = \Doctrine_Core::getTable('UtilisateurIp')->findByIP($ip);
-            $location = $this->get('zco_user.manager.ip')->Geolocaliser($ip);
-        } else {
-            $utilisateurs = [];
-            $location = [];
-        }
-        \Page::$titre = 'Analyser une adresse IP';
-
-        return render_to_response('ZcoUserBundle:Ips:analyze.html.php', array(
-            'utilisateurs' => $utilisateurs,
-            'nombre' => count($utilisateurs),
-            'ip' => $ip,
-            'pays' => $location['country'] ?? 'Inconnu',
-        ));
-    }
-
-    /**
      * Tente de géolocaliser une adresse IP.
+     *
+     * @param Request $request
+     * @return Response
      */
-    public function locateAction($ip, Request $request)
+    public function locateAction(Request $request)
     {
         if (!verifier('ips_analyser')) {
             throw new AccessDeniedHttpException();
         }
-        if (!$ip && $request->query->has('ip')) {
-            $ip = $request->query->get('ip');
+        $ip = $request->get('ip');
+        if (!$ip) {
+            throw new NotFoundHttpException();
         }
         $manager = $this->get('zco_user.manager.ip');
         if ($manager->isLocal($ip)) {
             return redirect(
                 'L\'adresse IP est une adresse privée (de type locale).',
-                $this->generateUrl('zco_user_ips_analyze', ['ip' => $ip]),
+                $request->headers->get('referer'),
                 MSG_ERROR);
         }
         $location = $manager->Geolocaliser($ip);
         if (empty($location)) {
             return redirect(
                 'L\'adresse IP n\'a pas pu être localisée.',
-                $this->generateUrl('zco_user_ips_analyze', ['ip' => $ip]),
+                $request->headers->get('referer'),
                 MSG_ERROR);
         }
         $info = implode(', ', array_filter($location['city'] ?? null, $location['country'] ?? null));
@@ -143,50 +119,36 @@ class IpsController extends Controller
 
     /**
      * Affiche le formulaire permettant de bannir une adresse IP.
+     *
+     * @param Request $request
+     * @return Response
      */
-    public function banAction($ip)
+    public function banAction(Request $request)
     {
         if (!verifier('ips_bannir')) {
             throw new AccessDeniedHttpException();
         }
-        if (!empty($_POST['ip']) && is_numeric($_POST['duree'])) {
+        $ip = $request->get('ip');
+        if ($ip && $request->isMethod('POST')) {
             //Si on a posté une nouvelle IP à bannir.
-            $res = $this->get('zco_user.manager.ip')->BannirIp($_POST['ip'], $_POST['raison'], $_POST['texte'], $_POST['duree']);
-            if ($res) {
-                return redirect(
-                    'L\'adresse IP a bien été bannie.',
-                    $this->generateUrl('zco_user_ips_index')
-                );
-            } else {
+            $res = $this->get('zco_user.manager.ip')->BannirIp($ip, $_POST['raison'], $_POST['texte'], $_POST['duree']);
+            if (!$res) {
                 return redirect(
                     'L\'adresse IP spécifiée n\'est pas valide.',
                     $this->generateUrl('zco_user_ips_index'),
                     MSG_ERROR
                 );
             }
+
+            return redirect(
+                'L\'adresse IP a bien été bannie.',
+                $this->generateUrl('zco_user_ips_index')
+            );
         }
         \Page::$titre = 'Bannir une adresse IP';
 
         return render_to_response('ZcoUserBundle:Ips:ban.html.php', [
             'ip' => $ip,
         ]);
-    }
-
-    /**
-     * Affiches les doublons d'IP
-     *
-     * @author Skydreamer
-     */
-    public function duplicatesAction()
-    {
-        if (!verifier('ips_analyser')) {
-            throw new AccessDeniedHttpException();
-        }
-        \Page::$titre = 'Rechercher les doublons d\'adresses IP';
-        $duplicates = $this->get('zco_user.manager.ip')->getDoublons();
-
-        return render_to_response('ZcoUserBundle:Ips:duplicates.html.php', array(
-            'doublons' => $duplicates,
-        ));
     }
 }

@@ -39,7 +39,7 @@
         <?php foreach ($ListerIPs as $cle => $valeur) { ?>
             <tr>
                 <td class="center">
-                    <a href="<?php echo $view['router']->path('zco_user_ips_analyze', ['ip' => long2ip($valeur['ip_ip'])]) ?>">
+                    <a href="<?php echo $view['router']->path('zco_user_ips_locate', ['ip' => long2ip($valeur['ip_ip'])]) ?>">
                         <?php echo long2ip($valeur['ip_ip']) ?>
                     </a>
                 </td>

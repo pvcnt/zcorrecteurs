@@ -74,7 +74,7 @@
 			</td>
 			<?php if(verifier('ips_analyser')){ ?>
 			<td>
-				<a href="<?php echo $view['router']->path('zco_user_ips_analyze', ['ip' => long2ip($alerte['ip'])]) ?>">
+				<a href="<?php echo $view['router']->path('zco_user_ips_locate', ['ip' => long2ip($alerte['ip'])]) ?>">
 					<?php echo long2ip($alerte['ip']); ?>
 				</a>
 			</td>

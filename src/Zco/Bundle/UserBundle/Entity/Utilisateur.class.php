@@ -491,12 +491,6 @@ class Utilisateur extends BaseUtilisateur
 		$stmt->execute();
 
 		$stmt = $dbh->prepare("
-		DELETE FROM zcov2_utilisateurs_ips
-		WHERE ip_id_utilisateur = :id");
-		$stmt->bindValue(':id', $this->getId());
-		$stmt->execute();
-
-		$stmt = $dbh->prepare("
 		DELETE FROM zcov2_sanctions
 		WHERE sanction_id_utilisateur = :id");
 		$stmt->bindValue(':id', $this->getId());

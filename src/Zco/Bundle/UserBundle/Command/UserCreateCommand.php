@@ -21,9 +21,6 @@
 
 namespace Zco\Bundle\UserBundle\Command;
 
-use Zco\Bundle\UserBundle\Event\RegisterEvent;
-use Zco\Bundle\UserBundle\Event\FilterRegisterEvent;
-use Zco\Bundle\UserBundle\UserEvents;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
@@ -89,21 +86,9 @@ You can create an invalid user (will not be able to log in):
         {
             throw new \InvalidArgumentException((string) $errors);
         }
-        
-        //Propagation de l'événement avant inscription.
-        $event = new FilterRegisterEvent($user);
-        $this->getContainer()->get('event_dispatcher')->dispatch(UserEvents::PRE_REGISTER, $event);
-        if ($event->isAborted())
-        {
-            throw new \RuntimeException($event->getErrorMessage() ?: 'Error while registering.');
-        }
-        
+
         //Inscription effective de l'utilisateur.
         \Doctrine_Core::getTable('Utilisateur')->insert($user);
-        
-        //Propagation de l'événement après inscription.
-        $event = new RegisterEvent($user);
-        $this->getContainer()->get('event_dispatcher')->dispatch(UserEvents::POST_REGISTER, $event);
         
         $output->writeln(sprintf('Tue user "<info>%s</info>" has been created.', $user->getUsername()));
         

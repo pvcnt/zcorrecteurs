@@ -80,25 +80,6 @@ class IpManager
             'ORDER BY ip_fini, ip_date DESC');
     }
 
-    public function ListerIPsMembre($id)
-    {
-        return $this->conn->fetchAll('
-            SELECT ip_ip, ip_proxy, ip_date_debut, ip_date_last, ip_localisation 
-            FROM zcov2_utilisateurs_ips 
-            WHERE ip_id_utilisateur = ? 
-            ORDER BY ip_date_last DESC', [$id]);
-    }
-
-    public function getDoublons()
-    {
-        return $this->conn->fetchAll('
-            SELECT ip_ip, COUNT(ip_ip) AS nombre 
-            FROM zcov2_utilisateurs_ips 
-            GROUP BY ip_ip 
-            HAVING COUNT(ip_ip) > 1 
-            ORDER BY COUNT(ip_ip) DESC');
-    }
-
     public function isLocal($ip)
     {
         $match = explode('.', $ip);

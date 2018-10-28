@@ -48,7 +48,6 @@
  * @property Doctrine_Collection $BannedEmail
  * @property Doctrine_Collection $SecondaryGroups
  * @property Doctrine_Collection $Tentative
- * @property Doctrine_Collection $UtilisateurIp
  * @property Doctrine_Collection $UserNewUsername
  * @property Doctrine_Collection $UserPunishment
  * @property Doctrine_Collection $ZformBackup
@@ -256,10 +255,6 @@ abstract class BaseUtilisateur extends Doctrine_Record
         $this->hasMany('SecondaryGroup as SecondaryGroups', array(
              'local' => 'id',
              'foreign' => 'utilisateur_id'));
-
-        $this->hasMany('UtilisateurIp', array(
-             'local' => 'utilisateur_id',
-             'foreign' => 'ip_id_utilisateur'));
 
         $this->hasMany('UserNewUsername', array(
              'local' => 'id',

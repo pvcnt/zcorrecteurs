@@ -49,7 +49,7 @@
 			</td>
 			<?php if (verifier('ips_analyser')): ?>
 			<td class="center">
-				<a href="<?php echo $view['router']->path('zco_user_ips_analyze', ['ip' => long2ip($user->getLastIpAddress())]) ?>">
+				<a href="<?php echo $view['router']->path('zco_user_ips_locate', ['ip' => long2ip($user->getLastIpAddress())]) ?>">
 					<?php echo long2ip($user->getLastIpAddress()); ?>
 				</a>
 			</td>

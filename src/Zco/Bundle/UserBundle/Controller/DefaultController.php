@@ -157,9 +157,6 @@ class DefaultController extends Controller
                 $vars['lastGroupChange'] = $user->getRegistrationDate();
             }
         }
-        if (verifier('ips_analyser')) {
-            $vars['ListerIPs'] = $this->get('zco_user.manager.ip')->ListerIPsMembre($user->getId());
-        }
         $vars['canSendMp'] = $_SESSION['id'] != $user->getId() && verifier('connecte') && $user->getId() != ID_COMPTE_AUTO
             && ($_SESSION['MPs'] < verifier('mp_quota') OR verifier('mp_quota') == -1);
         $vars['canSendEmail'] = verifier('rechercher_mail') || $user->isEmailDisplayed();

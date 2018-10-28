@@ -31,6 +31,6 @@
 
 <?php if ($canSeeInfos): ?>
 	<div style="margin-top: 20px;">
-		<?php echo $view->render('ZcoUserBundle:Profile:_infos.html.php', compact('user', 'newPseudo', 'warnings', 'punishments', 'ListerGroupes', 'ListerIPs')) ?>
+		<?php echo $view->render('ZcoUserBundle:Profile:_infos.html.php', compact('user', 'newPseudo', 'warnings', 'punishments', 'ListerGroupes')) ?>
 	</div>
 <?php endif ?>

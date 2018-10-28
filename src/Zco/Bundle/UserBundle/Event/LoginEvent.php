@@ -22,32 +22,40 @@
 namespace Zco\Bundle\UserBundle\Event;
 
 use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\HttpFoundation\Request;
 
 class LoginEvent extends Event
 {
-	protected $user;
-	protected $remember;
-	private $state;
-	
-	public function __construct(\Utilisateur $user, $remember, $state)
-	{
-		$this->user     = $user;
-		$this->state    = $state;
-		$this->remember = $remember;
-	}
-	
-	public function getUser()
-	{
-		return $this->user;
-	}
-	
-	public function getState()
-	{
-		return $this->state;
-	}
-	
-	public function isRemember()
-	{
-		return $this->remember;
-	}
+    protected $user;
+    protected $remember;
+    private $request;
+    private $state;
+
+    public function __construct(Request $request, \Utilisateur $user, $remember, $state)
+    {
+        $this->request = $request;
+        $this->user = $user;
+        $this->state = $state;
+        $this->remember = $remember;
+    }
+
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    public function getRequest(): Request
+    {
+        return $this->request;
+    }
+
+    public function isRemember()
+    {
+        return $this->remember;
+    }
 }

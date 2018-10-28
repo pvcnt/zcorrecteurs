@@ -172,53 +172,6 @@
 		</div> <!-- /.accordion-body -->
 	</div> <!-- /.accordion-group -->
 	<?php ++$c; endif ?>
-
-	<?php if (verifier('ips_analyser') && count($ListerIPs)): ?>
-	<div class="accordion-group">
-		<div class="accordion-heading">
-            <a class="accordion-toggle" data-toggle="collapse" href="#profile-infos-ips">
-                <?php echo count($ListerIPs) ?> adresse<?php echo pluriel(count($ListerIPs)) ?> IP
-            </a>
-        </div>
-        <div id="profile-infos-ips" class="accordion-body collapse">
-            <div class="accordion-inner">
-            	<table class="table">
-					<thead>
-						<tr>
-							<th>IP</th>
-							<th>Proxy</th>
-							<th>Date</th>
-							<th>Géolocalisation</th>
-						</tr>
-					</thead>
-					<tbody>
-						<?php foreach ($ListerIPs as $ip): ?>
-						<tr>
-							<td>
-								<a href="<?php echo $view['router']->path('zco_user_ips_analyze', ['ip' => long2ip($ip['ip_ip'])]) ?>">
-                                    <?php echo long2ip($ip['ip_ip']); ?>
-                                </a>
-							</td>
-							<td>
-								<?php if(!empty($ip['ip_proxy'])): ?>
-									<?php echo long2ip($ip['ip_proxy']) ?>
-								<?php endif ?>
-							</td>
-							<td>
-								<?php echo dateformat($ip['ip_date_debut'], DATE) ?> &rarr; 
-								<?php echo dateformat($ip['ip_date_last'], DATE) ?>
-							</td>
-							<td>
-								<?php echo !empty($ip['ip_localisation']) ? htmlspecialchars($ip['ip_localisation']) : 'Inconnue' ?>
-							</td>
-						</tr>
-						<?php endforeach ?>
-					</tbody>
-				</table>
-			</div> <!-- /.accordion-inner -->
-		</div> <!-- /.accordion-body -->
-	</div> <!-- /.accordion-group -->
-	<?php ++$c; endif ?>
 	
 	<?php if ($c === 0): ?>
 		<div class="alert alert-info">

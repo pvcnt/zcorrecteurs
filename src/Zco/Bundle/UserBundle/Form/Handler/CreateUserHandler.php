@@ -21,9 +21,6 @@
 
 namespace Zco\Bundle\UserBundle\Form\Handler;
 
-use Zco\Bundle\UserBundle\Event\RegisterEvent;
-use Zco\Bundle\UserBundle\Event\FilterRegisterEvent;
-use Zco\Bundle\UserBundle\UserEvents;
 use Zco\Bundle\CaptchaBundle\Captcha\Captcha;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\Form;
@@ -91,15 +88,7 @@ class CreateUserHandler
 	 */
 	protected function onSuccess(\Utilisateur $user)
 	{
-		$event = new FilterRegisterEvent($user);
-		$this->eventDispatcher->dispatch(UserEvents::PRE_REGISTER, $event);
-		if ($event->isAborted())
-		{
-			$this->form->addError(new FormError($event->getErrorMessage() ?: 'Erreur lors de l\'inscription.'));
-			
-			return false;
-		}
-		elseif (!Captcha::verifier($this->request->request->get('captcha')))
+        if (!Captcha::verifier($this->request->request->get('captcha')))
 		{
 			$this->form->addError(new FormError('Erreur lors de la vérification de l\'anti-spam.'));
 			
@@ -115,9 +104,6 @@ class CreateUserHandler
 		));
 		send_mail($user->getEmail(), $user->getUsername(), 
 			'[zCorrecteurs.fr] Confirmation de votre inscription', $message);
-		
-		$event = new RegisterEvent($user);
-		$this->eventDispatcher->dispatch(UserEvents::POST_REGISTER, $event);
 		
 		return true;
 	}

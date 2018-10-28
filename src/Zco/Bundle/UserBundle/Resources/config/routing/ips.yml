@@ -3,17 +3,9 @@ zco_user_ips_index:
   defaults:  { _controller: ZcoUserBundle:Ips:index }
 
 zco_user_ips_ban:
-  path:   /ips/bannir/{ip}
-  defaults:  { _controller: ZcoUserBundle:Ips:ban, ip: ~ }
-
-zco_user_ips_duplicates:
-  path:   /ips/doublons
-  defaults:  { _controller: ZcoUserBundle:Ips:duplicates }
+  path:   /ips/bannir
+  defaults:  { _controller: ZcoUserBundle:Ips:ban }
 
 zco_user_ips_locate:
-  path:   /ips/localiser/{ip}
+  path:   /ips/localiser
   defaults:  { _controller: ZcoUserBundle:Ips:locate }
-
-zco_user_ips_analyze:
-  path:   /ips/analyser/{ip}
-  defaults:  { _controller: ZcoUserBundle:Ips:analyze, ip: ~ }

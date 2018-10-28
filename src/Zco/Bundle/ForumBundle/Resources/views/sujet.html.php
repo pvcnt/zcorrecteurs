@@ -339,7 +339,7 @@ if($InfosSujet['sujet_sondage'] > 0)
 				<br /><a href="/membres/profil-<?php echo $valeur['message_auteur']; ?>-<?php echo rewrite($valeur['auteur_message_pseudo']); ?>.html#sanctions">Sanction(s) : <?php echo $valeur['utilisateur_nb_sanctions']; ?></a>
 
 				<?php } if(verifier('ips_analyser') && !empty($valeur['message_ip'])){ ?>
-				<br /><br />IP : <a href="<?php echo $view['router']->path('zco_user_ips_analyze', ['ip' => long2ip($valeur['message_ip'])]) ?>"><?php echo long2ip($valeur['message_ip']); ?></a>
+				<br /><br />IP : <a href="<?php echo $view['router']->path('zco_user_ips_locate', ['ip' => long2ip($valeur['message_ip'])]) ?>"><?php echo long2ip($valeur['message_ip']); ?></a>
 				<?php } ?>
 			</td>
 			<td class="message<?php if($valeur['message_help']) echo ' bonne_reponse'; ?>">

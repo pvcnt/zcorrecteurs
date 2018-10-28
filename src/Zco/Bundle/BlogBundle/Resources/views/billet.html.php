@@ -185,7 +185,7 @@
 				<?php if(verifier('ips_analyser')){ ?>
 				<br /><br />
 				IP :
-				<a href="<?php echo $view['router']->path('zco_user_ips_analyze', ['ip' => long2ip($valeur['commentaire_ip'])]) ?>">
+				<a href="<?php echo $view['router']->path('zco_user_ips_locate', ['ip' => long2ip($valeur['commentaire_ip'])]) ?>">
 					<?php echo long2ip($valeur['commentaire_ip']); ?>
 				</a>
 				<?php } ?>

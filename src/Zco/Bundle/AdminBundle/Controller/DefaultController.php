@@ -232,14 +232,6 @@ class DefaultController extends Controller
                 'uri' => $router->generate('zco_user_ips_index'),
             ));
         }
-        if (verifier('ips_analyser')) {
-            $menu->getChild('Adresses IP')->addChild('Analyser une adresse IP', array(
-                'uri' => $router->generate('zco_user_ips_analyze'),
-            ));
-            $menu->getChild('Adresses IP')->addChild('Afficher les doublons d\'adresses IP', array(
-                'uri' => $router->generate('zco_user_ips_duplicates'),
-            ));
-        }
 
         return $menu;
     }
