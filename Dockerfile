@@ -1,22 +1,25 @@
-# Première étape : dépendances Composer
+# First step: Composer dependencies & autoloader
 FROM composer:1.7 as composer
 
 WORKDIR /opt/app/
 
-COPY lib ./lib/
-COPY app/*.php ./app/
+# First copy only the composer files, to avoid re-downloading dependencies
+# every time the source code changes.
 COPY composer.json composer.lock ./
-
 RUN composer install \
     --ignore-platform-reqs \
     --no-interaction \
     --no-plugins \
-    --no-scripts \
     --prefer-dist \
-    --optimize-autoloader \
-    --no-dev
+    --no-dev \
+    --no-autoloader \
+    --no-scripts
 
-# Dernière étape : création de l'image qui sera exécutée
+# Then copy the whole source code, and generate the autoloader.
+COPY . .
+RUN composer dump-autoload --optimize
+
+# Second step: creation of the executable image
 FROM alpine:3.6
 
 RUN apk update && \
