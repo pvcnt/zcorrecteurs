@@ -21,7 +21,6 @@
 
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Zco\Component\HttpKernel\Bundle\AbstractBundle;
 use Symfony\Component\HttpKernel\Kernel;
 
 class AppKernel extends Kernel

@@ -33,6 +33,9 @@ class EditerCandidatureAction extends Controller
 {
 	public function execute()
 	{
+        include_once(__DIR__.'/../modeles/candidatures.php');
+        include_once(__DIR__.'/../modeles/recrutements.php');
+
         if (!verifier('recrutements_repondre')) {
             throw new AccessDeniedHttpException();
         }

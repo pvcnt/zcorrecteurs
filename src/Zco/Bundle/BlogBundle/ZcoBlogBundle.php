@@ -21,15 +21,8 @@
 
 namespace Zco\Bundle\BlogBundle;
 
-use Zco\Component\HttpKernel\Bundle\AbstractBundle;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class ZcoBlogBundle extends AbstractBundle
+class ZcoBlogBundle extends Bundle
 {
-	public function load()
-	{
-		include_once(__DIR__.'/modeles/blog.php');
-		include_once(__DIR__.'/modeles/commentaires.php');
-		include_once(__DIR__.'/modeles/versions.php');
-		include_once(__DIR__.'/modeles/validation.php');
-	}
 }

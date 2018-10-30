@@ -32,11 +32,12 @@ class GestionAction extends Controller
 {
 	public function execute()
 	{
+        include_once(__DIR__.'/../modeles/recrutements.php');
+
         if (!verifier('recrutements_voir_candidatures')) {
             throw new AccessDeniedHttpException();
         }
 
-		//Inclusion de la vue
 		fil_ariane('Gestion des recrutements');
 		$this->get('zco_core.resource_manager')->requireResources(array(
 		    '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',

@@ -188,9 +188,9 @@
 			</td>
 			<?php if (verifier('recrutements_avis')){ ?>
 			<td class="center"<?php if ($candidature['mon_avis']) echo ' style="background: #D1FFD1"' ?>>
-				<span class="bold" style="<?php if ($candidature['mon_avis'] === '0') echo 'text-decoration: underline; ' ?>color: <?php echo $avisType[0]['couleur'] ?>;" title="<?php echo $avisType[0]['nom'] ?>"><?php echo $candidature['nb_oui'] ?></span> |
-				<span class="bold" style="<?php if ($candidature['mon_avis'] == 1) echo 'text-decoration: underline; ' ?>color: <?php echo $avisType[1]['couleur'] ?>;" title="<?php echo $avisType[1]['nom'] ?>"><?php echo $candidature['nb_non'] ?></span> |
-				<span class="bold" style="<?php if ($candidature['mon_avis'] == 2) echo 'text-decoration: underline; ' ?>color: <?php echo $avisType[2]['couleur'] ?>;" title="<?php echo $avisType[2]['nom'] ?>"><?php echo $candidature['nb_reserve'] ?></span>
+				<span class="bold" style="<?php if ($candidature['mon_avis'] === '0') echo 'text-decoration: underline; ' ?>color: <?php echo \RecrutementAvis::VALUES[0]['couleur'] ?>;" title="<?php echo \RecrutementAvis::VALUES[0]['nom'] ?>"><?php echo $candidature['nb_oui'] ?></span> |
+				<span class="bold" style="<?php if ($candidature['mon_avis'] == 1) echo 'text-decoration: underline; ' ?>color: <?php echo \RecrutementAvis::VALUES[1]['couleur'] ?>;" title="<?php echo \RecrutementAvis::VALUES[1]['nom'] ?>"><?php echo $candidature['nb_non'] ?></span> |
+				<span class="bold" style="<?php if ($candidature['mon_avis'] == 2) echo 'text-decoration: underline; ' ?>color: <?php echo \RecrutementAvis::VALUES[2]['couleur'] ?>;" title="<?php echo \RecrutementAvis::VALUES[2]['nom'] ?>"><?php echo $candidature['nb_reserve'] ?></span>
 			</td>
 			<?php } ?>
 			<td class="center">

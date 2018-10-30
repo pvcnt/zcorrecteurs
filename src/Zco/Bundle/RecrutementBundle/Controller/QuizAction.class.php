@@ -31,6 +31,8 @@ class QuizAction extends Controller
 {
 	public function execute()
 	{
+        include_once(__DIR__.'/../modeles/candidatures.php');
+        include_once(__DIR__.'/../modeles/recrutements.php');
 	    include_once(__DIR__.'/../modeles/quiz.php');
 	    
 		//Si on a bien envoyé un recrutement

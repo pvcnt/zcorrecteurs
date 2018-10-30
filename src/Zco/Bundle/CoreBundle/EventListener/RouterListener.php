@@ -25,7 +25,6 @@ use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Zco\Component\HttpKernel\Bundle\AbstractBundle;
 
 /**
  * Effectue le routage d'une requête entrante de façon à rester compatible 
@@ -99,13 +98,7 @@ class RouterListener implements EventSubscriberInterface
 		}
 		$bundle = $this->container->get('kernel')->getBundle($bundle);
 		
-		//Cas particulier : on indique au bundle élu qu'il l'a été.
-		if ($bundle instanceof AbstractBundle)
-		{
-			$bundle->load();
-		}
-		
-		//Cas 1 : on tente de charger un contrôleur à sa place dans le bon 
+		//Cas 1 : on tente de charger un contrôleur à sa place dans le bon
 		//espace de noms.
 		$namespacedAction1 = $bundle->getNamespace().'\\Controller\\'.$camelizedAction.'Controller';
 		$namespacedAction2 = $bundle->getNamespace().'\\Controller\\DefaultController';

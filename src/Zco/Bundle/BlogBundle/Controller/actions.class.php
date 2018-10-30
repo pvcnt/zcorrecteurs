@@ -24,7 +24,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class BlogActions extends Controller
 {
     protected $_vars = array();
-    
+
+    public function __construct()
+    {
+        include_once(__DIR__.'/../modeles/blog.php');
+        include_once(__DIR__.'/../modeles/commentaires.php');
+        include_once(__DIR__.'/../modeles/versions.php');
+        include_once(__DIR__.'/../modeles/validation.php');
+    }
+
     public function getVars()
 	{
 		return $this->_vars;
