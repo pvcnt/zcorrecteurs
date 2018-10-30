@@ -219,7 +219,7 @@ class CategoriesActions extends Controller
 		isset($_POST['orientation']) && $_GET['orientation'] = $_POST['orientation'];
 		unset($_POST['id'], $_POST['id2'], $_POST['orientation']);
 
-		include(dirname(__FILE__).'/../modeles/graphique.php');
+		include(__DIR__.'/../modeles/graphique.php');
 
 		$cat = is_numeric($_GET['id']) ? $_GET['id'] : 1;
 		$bornes = !empty($_GET['id2']);

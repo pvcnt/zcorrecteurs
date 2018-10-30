@@ -32,9 +32,9 @@ class NouveauAction extends ForumActions
 	public function execute()
 	{
 		//Inclusion des modèles
-		include(dirname(__FILE__).'/../modeles/sujets.php');
-		include(dirname(__FILE__).'/../modeles/forums.php');
-		include(dirname(__FILE__).'/../modeles/sondages.php');
+		include(__DIR__.'/../modeles/sujets.php');
+		include(__DIR__.'/../modeles/forums.php');
+		include(__DIR__.'/../modeles/sondages.php');
 
 		if (empty($_GET['id']) || !is_numeric($_GET['id']))
 		{

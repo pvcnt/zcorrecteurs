@@ -48,7 +48,7 @@ class RepondreAction extends Controller
 		zCorrecteurs::VerifierFormatageUrl($Dictee->titre, true);
 		Page::$titre = 'Répondre à une soumission';
 
-		include(dirname(__FILE__).'/../forms/RepondreForm.class.php');
+		include(__DIR__.'/../forms/RepondreForm.class.php');
 		$Form = new RepondreForm;
 
 		if ($_SERVER['REQUEST_METHOD'] == 'POST')

@@ -39,7 +39,7 @@ class AjouterAction extends Controller
         }
 		Page::$titre = 'Ajouter une dictée';
 
-		include_once(dirname(__FILE__).'/../forms/AjouterForm.class.php');
+		include_once(__DIR__.'/../forms/AjouterForm.class.php');
 		$Form = new AjouterForm;
 
 		if($_SERVER['REQUEST_METHOD'] == 'POST')

@@ -70,7 +70,7 @@ class CandidatureAction extends Controller
                     verifier('recrutements_voir_shoutbox'))
                 || ($InfosCandidature['recrutement_etat'] == RECRUTEMENT_FINI &&
                     verifier('recrutements_termines_voir_shoutbox'))) {
-                include(dirname(__FILE__) . '/../modeles/commentaires.php');
+                include(__DIR__ . '/../modeles/commentaires.php');
 
 
                 //Si on veut voir un commentaire en particulier

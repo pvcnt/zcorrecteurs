@@ -54,4 +54,4 @@
 </p>
 
 
-<?php include(dirname(__FILE__).'/_revue_mp.html.php'); ?>
+<?php include(__DIR__.'/_revue_mp.html.php'); ?>

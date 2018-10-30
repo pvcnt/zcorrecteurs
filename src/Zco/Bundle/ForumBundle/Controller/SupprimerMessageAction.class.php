@@ -33,8 +33,8 @@ class SupprimerMessageAction extends ForumActions
 	public function execute()
 	{
 		//Inclusion des modèles
-		include(dirname(__FILE__).'/../modeles/messages.php');
-		include(dirname(__FILE__).'/../modeles/moderation.php');
+		include(__DIR__.'/../modeles/messages.php');
+		include(__DIR__.'/../modeles/moderation.php');
 
 		//Si on n'a pas envoyé de message
 		if(empty($_GET['id']) || !is_numeric($_GET['id']))

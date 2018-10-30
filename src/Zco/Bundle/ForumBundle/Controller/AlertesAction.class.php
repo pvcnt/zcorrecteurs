@@ -33,7 +33,7 @@ class AlertesAction extends ForumActions
 		if (!verifier('voir_alertes')) {
 		    throw new AccessDeniedHttpException();
         }
-		include(dirname(__FILE__).'/../modeles/sujets.php');
+		include(__DIR__.'/../modeles/sujets.php');
 
 		//Si un sujet a été envoyé
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))

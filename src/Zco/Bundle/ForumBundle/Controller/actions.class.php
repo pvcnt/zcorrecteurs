@@ -160,7 +160,7 @@ class ForumActions extends Controller
 
 	public function initSujet()
 	{
-		include(dirname(__FILE__).'/../modeles/sujets.php');
+		include(__DIR__.'/../modeles/sujets.php');
 
 		//Compatibilité
 		if(!isset($_GET['s'])) $_GET['s'] = $_GET['id'];

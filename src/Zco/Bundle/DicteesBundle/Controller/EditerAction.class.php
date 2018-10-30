@@ -53,7 +53,7 @@ class EditerAction extends Controller
 		zCorrecteurs::VerifierFormatageUrl($Dictee->titre, true);
 		Page::$titre = 'Modifier une dictée';
 
-		include(dirname(__FILE__).'/../forms/AjouterForm.class.php');
+		include(__DIR__.'/../forms/AjouterForm.class.php');
 		$Form = new AjouterForm;
 
 		$url = '-'.$Dictee->id.'-'.rewrite($Dictee->titre).'.html';

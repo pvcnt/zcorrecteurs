@@ -360,7 +360,7 @@ else
 <?php
 if($action_etendue_a_plusieurs_messages_actif AND $ListerSujets)
 {
-	include(dirname(__FILE__).'/action_etendue_plusieurs_sujets.html.php');
+	include(__DIR__.'/action_etendue_plusieurs_sujets.html.php');
 	echo '</form>';
 }
 

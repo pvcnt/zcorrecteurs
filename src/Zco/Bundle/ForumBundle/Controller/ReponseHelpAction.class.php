@@ -32,8 +32,8 @@ class ReponseHelpAction extends ForumActions
 {
     public function execute()
     {
-        include(dirname(__FILE__) . '/../modeles/moderation.php');
-        include(dirname(__FILE__) . '/../modeles/messages.php');
+        include(__DIR__ . '/../modeles/moderation.php');
+        include(__DIR__ . '/../modeles/messages.php');
         list($InfosSujet, $InfosForum) = $this->initSujet();
 
         //Vérification du token.

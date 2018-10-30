@@ -36,8 +36,8 @@ class MarquerDernierMessageLuAction extends ForumActions
             throw new AccessDeniedHttpException();
 
         //Inclusion des modèles
-        include(dirname(__FILE__) . '/../modeles/messages.php');
-        include(dirname(__FILE__) . '/../modeles/membres.php');
+        include(__DIR__ . '/../modeles/messages.php');
+        include(__DIR__ . '/../modeles/membres.php');
 
         //Si on n'a pas envoyé de message
         if (empty($_GET['id']) || !is_numeric($_GET['id']))

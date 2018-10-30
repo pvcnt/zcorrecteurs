@@ -41,7 +41,7 @@ class EditerMessageAction extends Controller
         }
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))
 		{
-			include(dirname(__FILE__).'/../modeles/commentaires.php');
+			include(__DIR__.'/../modeles/commentaires.php');
 
 			$InfosCommentaire = InfosCommentaire($_GET['id']);
 			if(empty($InfosCommentaire))

@@ -36,7 +36,7 @@ class SujetsCoupsCoeurAction extends ForumActions
 		Page::$titre = 'Gérer les sujets en coups de cœur';
 
 		//Inclusion du modèle
-		include(dirname(__FILE__).'/../modeles/moderation.php');
+		include(__DIR__.'/../modeles/moderation.php');
 
 		if ((isset($_GET['action']) == 'changer_coup_coeur') && intval($_GET['id_sujet']) != null)
 		{

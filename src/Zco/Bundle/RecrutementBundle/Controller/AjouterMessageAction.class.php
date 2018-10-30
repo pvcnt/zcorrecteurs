@@ -50,7 +50,7 @@ class AjouterMessageAction extends Controller
 			     verifier('recrutements_termines_voir_shoutbox')))
 				throw new AccessDeniedHttpException();
 
-			include(dirname(__FILE__).'/../modeles/commentaires.php');
+			include(__DIR__.'/../modeles/commentaires.php');
 
 			if(!empty($_GET['id2']))
 			{

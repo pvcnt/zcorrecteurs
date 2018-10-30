@@ -117,7 +117,7 @@ else
 	</fieldset>
 </form>
 
-<?php include(dirname(__FILE__).'/revue_sujet.html.php'); ?>
+<?php include(__DIR__.'/revue_sujet.html.php'); ?>
 
 <p class="centre">
 <strong>Retour <a href="sujet-<?php echo $InfosSujet['sujet_id'].'-'.rewrite($InfosSujet['sujet_titre']); ?>.html">au sujet "<?php echo htmlspecialchars($InfosSujet['sujet_titre']); ?>"</a>

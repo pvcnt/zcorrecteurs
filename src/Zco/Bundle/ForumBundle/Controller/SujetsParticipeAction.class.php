@@ -30,8 +30,8 @@ class SujetsParticipeAction extends ForumActions
 	public function execute()
 	{
 		// Inclusion des modèles
-		include(dirname(__FILE__).'/../modeles/membres.php');
-		include(dirname(__FILE__).'/../modeles/forums.php');
+		include(__DIR__.'/../modeles/membres.php');
+		include(__DIR__.'/../modeles/forums.php');
         include_once(__DIR__.'/../../UserBundle/modeles/utilisateurs.php');
 
 		$InfosUtilisateur = InfosUtilisateur($_GET['id']);

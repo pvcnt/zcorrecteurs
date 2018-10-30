@@ -34,7 +34,7 @@ class MarquerLuAction extends ForumActions
             throw new AccessDeniedHttpException();
         }
 
-		include(dirname(__FILE__).'/../modeles/membres.php');
+		include(__DIR__.'/../modeles/membres.php');
 
 		if($_GET['id'] == 1)
 		{

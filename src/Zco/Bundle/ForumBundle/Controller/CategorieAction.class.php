@@ -29,8 +29,8 @@ class CategorieAction extends ForumActions
 	public function execute()
 	{
 		//Inclusion du modèle
-		include(dirname(__FILE__).'/../modeles/categories.php');
-		include(dirname(__FILE__).'/../modeles/membres.php');
+		include(__DIR__.'/../modeles/categories.php');
+		include(__DIR__.'/../modeles/membres.php');
 
 		//Si aucune catégorie n'a été spécifiée
 		if(empty($_GET['id']) || !is_numeric($_GET['id']))

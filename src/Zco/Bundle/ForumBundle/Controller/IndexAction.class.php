@@ -39,8 +39,8 @@ class IndexAction extends ForumActions
 		}
 		
 		//Inclusion du modèle
-		include(dirname(__FILE__).'/../modeles/categories.php');
-		include(dirname(__FILE__).'/../modeles/membres.php');
+		include(__DIR__.'/../modeles/categories.php');
+		include(__DIR__.'/../modeles/membres.php');
 
 		$ListerCategories = ListerCategoriesForum(array());
 		$derniere_lecture = DerniereLecture($_SESSION['id']);

@@ -33,7 +33,7 @@ class FluxAction extends Feed
 	{
 		zCorrecteurs::VerifierFormatageUrl(null, true);
 
-		include_once(dirname(__FILE__).'/../modeles/blog.php');
+		include_once(__DIR__.'/../modeles/blog.php');
 		AjouterVisiteFlux(
 			ip2long($this->get('request')->getClientIp()),
 			!empty($_GET['id']) && is_numeric($_GET['id']) ? $_GET['id'] : GetIDCategorie('blog'),

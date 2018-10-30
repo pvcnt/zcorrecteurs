@@ -116,7 +116,7 @@ if(verifier('creer_sujets', $InfosSujet['sujet_forum_id']) OR verifier('repondre
 //Si le sujet est un sondage, on affiche le sondage en haut.
 if($InfosSujet['sujet_sondage'] > 0)
 {
-	include(dirname(__FILE__).'/sondage.html.php');
+	include(__DIR__.'/sondage.html.php');
 }
 ?>
 
@@ -536,6 +536,6 @@ if(!$InfosSujet['sujet_corbeille'])
 
 if($afficher_options)
 {
-	include(dirname(__FILE__).'/_options_bas_sujet.html.php');
+	include(__DIR__.'/_options_bas_sujet.html.php');
 }
 ?>

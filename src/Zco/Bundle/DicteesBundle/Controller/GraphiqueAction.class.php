@@ -31,7 +31,7 @@ class GraphiqueAction extends Controller
 	public function execute()
 	{
         include_once(__DIR__.'/../modeles/dictees.php');
-        include_once(dirname(__FILE__).'/../modeles/statistiques.php');
+        include_once(__DIR__.'/../modeles/statistiques.php');
 		$d = null;
 		if($_GET['id'] == GRAPHIQUE_FREQUENCE)
 			$d = GraphiqueFrequenceNotes();

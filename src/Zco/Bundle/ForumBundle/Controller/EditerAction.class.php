@@ -32,8 +32,8 @@ class EditerAction extends ForumActions
 	public function execute()
 	{
 		//Inclusion du modèle
-		include(dirname(__FILE__).'/../modeles/messages.php');
-		include(dirname(__FILE__).'/../modeles/sujets.php');
+		include(__DIR__.'/../modeles/messages.php');
+		include(__DIR__.'/../modeles/sujets.php');
 
 		if (!empty($_GET['id']) && is_numeric($_GET['id']))
 		{

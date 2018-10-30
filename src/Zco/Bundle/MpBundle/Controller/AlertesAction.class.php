@@ -35,8 +35,8 @@ class AlertesAction extends Controller
         if (!verifier('mp_alertes')) {
             throw new AccessDeniedHttpException();
         }
-        include(dirname(__FILE__) . '/../modeles/alertes.php');
-        include(dirname(__FILE__) . '/../modeles/lire.php');
+        include(__DIR__ . '/../modeles/alertes.php');
+        include(__DIR__ . '/../modeles/lire.php');
 
         //On compte le nombre d'alertes à afficher.
         if (isset($_GET['solved']) AND $_GET['solved']) {

@@ -374,5 +374,5 @@ if($NombreParticipants > 1 AND $autoriser_ecrire)
 
 if($autoriser_ecrire)
 {
-	include(dirname(__FILE__).'/_options_bas_mp.html.php');
+	include(__DIR__.'/_options_bas_mp.html.php');
 }

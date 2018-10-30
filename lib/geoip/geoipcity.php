@@ -29,8 +29,8 @@
 
 define("FULL_RECORD_LENGTH",50);
 
-require_once dirname(__FILE__).'/geoip.php';
-require_once dirname(__FILE__).'/geoipregionvars.php';
+require_once __DIR__.'/geoip.php';
+require_once __DIR__.'/geoipregionvars.php';
 
 class geoiprecord {
   var $country_code;
