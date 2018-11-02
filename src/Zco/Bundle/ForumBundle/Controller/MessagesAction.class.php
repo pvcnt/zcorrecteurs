@@ -20,6 +20,7 @@
  */
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
 
 /**
  * Liste des messages d'un membre.
@@ -52,7 +53,7 @@ class MessagesAction extends ForumActions
 			Page::$titre .= ' - Page '.(int)$_GET['p'];
 
 		$categoriesAutorisees = array();
-		foreach (ListerEnfants(GetIDCategorie('forum'), true, true) as $cat)
+		foreach (CategoryDAO::ListerEnfants(CategoryDAO::GetIDCategorie('forum'), true, true) as $cat)
 			$categoriesAutorisees[] = $cat['cat_id'];
 
 		$paginator = Doctrine_Core::getTable('ForumMessage')

@@ -22,6 +22,7 @@
 namespace Zco\Bundle\QuizBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -31,7 +32,7 @@ class QuizType extends AbstractType
     {
         $builder->add('nom', null);
         $builder->add('description', null, ['attr' => ['class' => 'input-xxlarge']]);
-        $builder->add('difficulte', 'choice', array('label' => 'Difficulté', 'choices' => \Quiz::LEVELS));
+        $builder->add('difficulte', ChoiceType::class, array('label' => 'Difficulté', 'choices' => \Quiz::LEVELS));
         $builder->add('Categorie', null, array(
             'label' => 'Catégorie',
             'class' => 'Categorie',

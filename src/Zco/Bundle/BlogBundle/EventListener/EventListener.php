@@ -24,6 +24,7 @@ namespace Zco\Bundle\BlogBundle\EventListener;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zco\Bundle\BlogBundle\Domain\Author;
+use Zco\Bundle\BlogBundle\Domain\BlogDAO;
 use Zco\Bundle\PagesBundle\Event\FilterSitemapEvent;
 use Zco\Bundle\PagesBundle\PagesEvents;
 use Zco\Component\Templating\Event\FilterResourcesEvent;
@@ -68,7 +69,7 @@ class EventListener implements EventSubscriberInterface
 	 */
 	public function onTemplatingFilterVariables(FilterVariablesEvent $event)
 	{
-		if ($this->container->get('request')->attributes->get('_module') !== 'blog')
+		if (\Container::request()->attributes->get('_module') !== 'blog')
 		{
 			return;
 		}
@@ -91,12 +92,11 @@ class EventListener implements EventSubscriberInterface
      */
 	public function onFilterSitemap(FilterSitemapEvent $event)
 	{
-		include_once(__DIR__.'/../modeles/blog.php');
 		$event->addLink(URL_SITE.'/blog/', array(
 			'changefreq' => 'weekly',
 			'priority'	 => '0.6',
 		));
-		foreach (ListerBilletsId() as $billet)
+		foreach (BlogDAO::ListerBilletsId() as $billet)
 		{
 			$event->addLink(URL_SITE.'/blog/billet-'.$billet['blog_id'].'-'.rewrite($billet['version_titre']).'.html', array(
 				'changefreq' => 'weekly',

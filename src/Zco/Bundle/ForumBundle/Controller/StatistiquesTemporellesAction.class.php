@@ -38,7 +38,7 @@ class StatistiquesTemporellesAction extends ForumActions
 		Page::$titre .= ' - Statistiques d\'utilisation du forum';
 
 		//Inclusion du modèle
-		include(dirname(__FILE__).'/../modeles/statistiques.php');
+		include(__DIR__.'/../modeles/statistiques.php');
 
 		$mois = array(
 			1 => 'janvier', 'février', 'mars', 'avril', 'mai', 'juin',

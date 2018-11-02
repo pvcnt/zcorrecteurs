@@ -1,41 +1,42 @@
-# Première étape : dépendances Composer
+# First step: Composer dependencies & autoloader
 FROM composer:1.7 as composer
 
 WORKDIR /opt/app/
 
-COPY lib ./lib/
-COPY app/*.php ./app/
+# First copy only the composer files, to avoid re-downloading dependencies
+# every time the source code changes.
 COPY composer.json composer.lock ./
-
 RUN composer install \
     --ignore-platform-reqs \
     --no-interaction \
     --no-plugins \
-    --no-scripts \
     --prefer-dist \
-    --optimize-autoloader \
-    --no-dev
+    --no-dev \
+    --no-autoloader \
+    --no-scripts
 
-# Dernière étape : création de l'image qui sera exécutée
+# Then copy the whole source code, and generate the autoloader.
+COPY . .
+RUN composer dump-autoload --optimize
+
+# Second step: creation of the executable image
 FROM alpine:3.6
 
 RUN apk update && \
   apk upgrade && \
   apk add \
 	apache2 \
-	bash \
-	php7-apache2 \
-	curl \
-	ca-certificates \
 	openssl \
-	openssh \
+    openssh \
+    tzdata \
+    openntpd \
+    bash \
+	php7-apache2 \
 	php7 \
 	php7-phar \
 	php7-json \
 	php7-iconv \
 	php7-openssl \
-	tzdata \
-	openntpd \
 	php7-xdebug \
 	php7-mbstring \
 	php7-dom \
@@ -49,7 +50,8 @@ RUN apk update && \
 	php7-session \
 	php7-simplexml \
 	php7-xsl \
-	php7-fileinfo
+	php7-fileinfo \
+	php7-tokenizer
 
 RUN cp /usr/bin/php7 /usr/bin/php && rm -f /var/cache/apk/*
 

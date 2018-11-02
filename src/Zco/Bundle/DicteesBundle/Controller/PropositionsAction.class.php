@@ -31,6 +31,8 @@ class PropositionsAction extends Controller
 {
 	public function execute()
 	{
+        include_once(__DIR__.'/../modeles/dictees.php');
+
         if (!verifier('dictees_publier')) {
             throw new AccessDeniedHttpException();
         }

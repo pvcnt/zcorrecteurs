@@ -20,11 +20,13 @@
  */
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Zco\Bundle\BlogBundle\Domain\BlogDAO;
+use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
 
 class BlogActions extends Controller
 {
     protected $_vars = array();
-    
+
     public function getVars()
 	{
 		return $this->_vars;
@@ -60,13 +62,13 @@ class BlogActions extends Controller
 		//--- On récupère les infos sur le billet et les auteurs ---
 		if(!isset($this->InfosBillet) || !isset($this->Auteurs))
 		{
-			$Auteurs = InfosBillet($_GET['id']);
+			$Auteurs = BlogDAO::InfosBillet($_GET['id']);
 			if(empty($Auteurs))
 				return redirect('Ce billet n\'existe pas.', '/blog/', MSG_ERROR);
 			$this->Auteurs = $Auteurs;
 			$this->InfosBillet = $Auteurs[0];
 		}
-		$this->InfosCategorie = InfosCategorie($this->InfosBillet['blog_id_categorie']);
+		$this->InfosCategorie = CategoryDAO::InfosCategorie($this->InfosBillet['blog_id_categorie']);
 
 		//--- Définition du statut par rapport au billet ---
 		$this->autorise = false;

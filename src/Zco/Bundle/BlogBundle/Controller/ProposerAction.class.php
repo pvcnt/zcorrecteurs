@@ -22,6 +22,7 @@
 use Symfony\Component\HttpFoundation\Response;
 use \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use \Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\BlogBundle\Domain\BlogDAO;
 
 /**
  * Contrôleur gérant la proposition d'un billet.
@@ -47,10 +48,10 @@ class ProposerAction extends BlogActions
 				{
 					//Ajout de l'entrée dans l'historique de validation et
 					//modification du billet
-					AjouterHistoriqueValidation($_GET['id'], $_SESSION['id'],
+                    BlogDAO::AjouterHistoriqueValidation($_GET['id'], $_SESSION['id'],
 					$this->InfosBillet['blog_id_version_courante'], $_POST['texte'], DECISION_NONE);
 
-					EditerBillet($_GET['id'], array(
+                    BlogDAO::EditerBillet($_GET['id'], array(
 						'etat' => BLOG_PROPOSE,
 						'date_proposition' => 'NOW'
 					));

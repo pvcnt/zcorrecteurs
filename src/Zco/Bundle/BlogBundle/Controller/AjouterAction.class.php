@@ -20,6 +20,8 @@
  */
 
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Zco\Bundle\BlogBundle\Domain\BlogDAO;
+use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
 
 /**
  * Contrôleur gérant l'ajout d'un billet.
@@ -33,7 +35,6 @@ class AjouterAction extends BlogActions
 	    if (!verifier('connecte')) {
 	        throw new AccessDeniedHttpException();
         }
-		zCorrecteurs::VerifierFormatageUrl();
 		Page::$titre .= ' - Ajouter un billet';
 
 		//Si on a posté un nouveau billet
@@ -41,18 +42,16 @@ class AjouterAction extends BlogActions
 		{
 			if(!empty($_POST['titre']) && !empty($_POST['texte']) && !empty($_POST['intro']))
 			{
-				AjouterBillet();
+                BlogDAO::AjouterBillet();
 				
 				return redirect('Le billet a bien été ajouté.', 'mes-billets.html');
 			}
-			else
-				return redirect('Vous devez remplir tous les champs nécessaires !', '', MSG_ERROR, -1);
+			return redirect('Vous devez remplir tous les champs nécessaires !', '', MSG_ERROR);
 		}
-		//Inclusion de la vue
 		fil_ariane(array('Mes billets' => 'mes-billets.html', 'Ajouter un billet'));
 		
 		return render_to_response(array(
-			'Categories' => ListerEnfants(GetIDCategorieCourante()),
+			'Categories' => CategoryDAO::ListerEnfants(CategoryDAO::GetIDCategorieCourante()),
 			'tabindex_zform' => 5,
 		));
 	}

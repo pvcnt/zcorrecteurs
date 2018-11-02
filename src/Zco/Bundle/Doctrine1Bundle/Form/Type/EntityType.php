@@ -22,6 +22,7 @@
 namespace Zco\Bundle\Doctrine1Bundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -53,13 +54,8 @@ class EntityType extends AbstractType
         });
     }
 
-    public function getName()
-    {
-        return 'entity';
-    }
-
     public function getParent()
     {
-        return 'choice';
+        return ChoiceType::class;
     }
 }

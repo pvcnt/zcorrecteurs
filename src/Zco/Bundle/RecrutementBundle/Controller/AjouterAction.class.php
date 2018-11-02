@@ -39,19 +39,14 @@ class AjouterAction extends Controller
 		\Page::$titre = 'Ajouter un recrutement';
 		
 		$recrutement = new Recrutement();
-		$form = $this->get('form.factory')->create(new RecrutementType(), $recrutement);
-		
-		if ($request->getMethod() == 'POST')
-		{
-		    $form->submit($request);
-		    if ($form->isValid())
-			{
-				$recrutement->save();
-				return redirect('Le recrutement a bien été ajouté.', 'recrutement-'.$recrutement['id'].'-'.rewrite($recrutement['nom']).'.html');
-		    }
-		}
+		$form = $this->createForm(RecrutementType::class, $recrutement);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            $recrutement->save();
+            return redirect('Le recrutement a bien été ajouté.', 'recrutement-'.$recrutement['id'].'-'.rewrite($recrutement['nom']).'.html');
+        }
 
-		//Inclusion de la vue
 		fil_ariane('Ajouter un recrutement');
 		
 		return render_to_response(array(

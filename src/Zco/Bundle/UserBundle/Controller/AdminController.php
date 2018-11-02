@@ -116,18 +116,17 @@ class AdminController extends Controller
 
         $email = new \BannedEmail;
         $email->setUserId($_SESSION['id']);
-        $form = $this->get('form.factory')->create(new BannedEmailType(), $email);
-        if ($request->getMethod() === 'POST') {
-            $form->submit($request);
-            if ($form->isValid()) {
-                $email->save();
+        $form = $this->createForm(BannedEmailType::class, $email);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $email->save();
 
-                return redirect(
-                    'La plage spécifiée a bien été bannie.',
-                    $this->get('router')->generate('zco_user_admin_bannedEmails')
-                );
-            }
+            return redirect(
+                'La plage spécifiée a bien été bannie.',
+                $this->get('router')->generate('zco_user_admin_bannedEmails')
+            );
         }
+
         \Page::$titre = 'Bannir une plage d\'adresses courriel';
         fil_ariane(array(
             'Adresses courriel bannies' => $this->get('router')->generate('zco_user_admin_bannedEmails'),
@@ -189,7 +188,7 @@ class AdminController extends Controller
             $user = null;
         }
 
-        $form = $this->get('form.factory')->create(new PunishmentType);
+        $form = $this->createForm(PunishmentType::class);
         $handler = new PunishmentHandler($form, $request, $this->get('cache'));
         if ($handler->process($punishment)) {
             return redirect('Le membre a bien été sanctionné.',
@@ -282,7 +281,7 @@ class AdminController extends Controller
             throw new NotFoundHttpException('Cette demande n\'existe pas.');
         }
 
-        $form = $this->get('form.factory')->create(new AnswerNewUsernameType);
+        $form = $this->createForm(AnswerNewUsernameType::class);
         $handler = new AnswerNewUsernameHandler($form, $request);
         if ($handler->process($query)) {
             return redirect('La réponse a bien été transmise au membre.',

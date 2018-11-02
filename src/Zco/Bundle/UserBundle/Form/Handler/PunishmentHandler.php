@@ -63,17 +63,13 @@ class PunishmentHandler
 			$punishment = new \UserPunishment;
 		}
 		$this->form->setData($punishment);
-		
-		if ($this->request->getMethod() === 'POST')
-		{
-			$this->form->submit($this->request);
-			if ($this->form->isValid())
-			{
-				$this->onSuccess($punishment);
-				
-				return true;
-			}
-		}
+        $this->form->handleRequest($this->request);
+        if ($this->form->isSubmitted() && $this->form->isValid())
+        {
+            $this->onSuccess($punishment);
+
+            return true;
+        }
 
 		return false;
 	}

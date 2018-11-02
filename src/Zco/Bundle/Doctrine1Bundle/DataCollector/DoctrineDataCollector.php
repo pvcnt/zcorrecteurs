@@ -116,4 +116,12 @@ class DoctrineDataCollector extends DataCollector
     {
         return 'doctrine1';
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function reset()
+    {
+        $this->data = ['queries' => [], 'connections' => []];
+    }
 }

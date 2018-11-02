@@ -15,6 +15,7 @@ services:
 
     zco_user.user:
         class:     Zco\Bundle\UserBundle\User\User
+        public:    true
         arguments: ["@event_dispatcher"]
 
     zco_user.manager.ip:

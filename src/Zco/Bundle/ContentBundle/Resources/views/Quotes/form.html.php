@@ -11,6 +11,6 @@
 
     <div class="form-actions">
         <input type="submit" class="btn btn-primary" value="Sauvegarder" />
-        <a href="<?php echo $view['router']->generate('zco_quote_index') ?>" class="btn">Annuler</a>
+        <a href="<?php echo $view['router']->path('zco_quote_index') ?>" class="btn">Annuler</a>
     </div>
 </form>

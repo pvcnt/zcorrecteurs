@@ -15,7 +15,7 @@
 	<a href="<?php echo $view['router']->path('zco_about_contact', array('objet' => 'Inscription')) ?>">nous joindre</a>.
 </p>
 
-<form method="post" action="<?php echo $view['router']->path('zco_user_session_register') ?>" class="form-horizontal" <?php echo $view['form']->enctype($form) ?>>
+<form method="post" action="<?php echo $view['router']->path('zco_user_session_register') ?>" class="form-horizontal">
 	<div class="row-fluid">
 		<div class="span6">
 			<fieldset>

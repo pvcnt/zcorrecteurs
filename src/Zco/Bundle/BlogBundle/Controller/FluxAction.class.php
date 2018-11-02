@@ -19,6 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
+
 /**
  * Fichier générant le flux du blog (global ou par catégorie).
  *
@@ -28,19 +30,6 @@ class FluxAction extends Feed
 {
 	protected $link = URL_SITE;
 	protected $itemAuthorEmail = 'contact@zcorrecteurs.fr';
-
-	public function execute()
-	{
-		zCorrecteurs::VerifierFormatageUrl(null, true);
-
-		include_once(dirname(__FILE__).'/../modeles/blog.php');
-		AjouterVisiteFlux(
-			ip2long($this->get('request')->getClientIp()),
-			!empty($_GET['id']) && is_numeric($_GET['id']) ? $_GET['id'] : GetIDCategorie('blog'),
-			isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : null);
-
-		return parent::execute();
-	}
 
 	protected function getTitle($object)
 	{
@@ -116,7 +105,7 @@ class FluxAction extends Feed
 
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))
 		{
-			$categorie = InfosCategorie($_GET['id']);
+			$categorie = CategoryDAO::InfosCategorie($_GET['id']);
 			return !empty($categorie) ? $categorie : null;
 		}
 		return null;

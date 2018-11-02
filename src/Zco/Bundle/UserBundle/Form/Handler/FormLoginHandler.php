@@ -21,10 +21,10 @@
 
 namespace Zco\Bundle\UserBundle\Form\Handler;
 
+use Symfony\Component\Form\FormInterface;
 use Zco\Bundle\UserBundle\User\User;
 use Zco\Bundle\UserBundle\Exception\LoginException;
 use Symfony\Component\Form\FormError;
-use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -43,11 +43,11 @@ class FormLoginHandler
 	/**
 	 * Constructeur.
 	 *
-	 * @param Form $form
+	 * @param FormInterface $form
 	 * @param Request $request
 	 * @param User $user
 	 */
-	public function __construct(Form $form, Request $request, User $user)
+	public function __construct(FormInterface $form, Request $request, User $user)
 	{
 		$this->form 	= $form;
 		$this->request 	= $request;
@@ -61,14 +61,11 @@ class FormLoginHandler
 	 */
 	public function process()
 	{
-		if ($this->request->getMethod() === 'POST')
-		{
-			$this->form->submit($this->request);
-			if ($this->form->isValid())
-			{
-				return $this->onSuccess();
-			}
-		}
+        $this->form->handleRequest($this->request);
+        if ($this->form->isSubmitted() && $this->form->isValid())
+        {
+            return $this->onSuccess();
+        }
 
 		return false;
 	}
@@ -84,7 +81,7 @@ class FormLoginHandler
 		try
 		{
 			$remember = isset($data['remember']) ? (bool) $data['remember'] : true;
-			$userEntity = $this->user->attemptFormLogin($data, $this->request);
+			$userEntity = $this->user->attemptFormLogin($data);
 			$this->user->login($this->request, $userEntity, $remember);
 		}
 		catch (LoginException $e)

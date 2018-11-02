@@ -23,6 +23,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\BlogBundle\Domain\BlogDAO;
 
 /**
  * Contrôleur gérant la suppression d'un auteur.
@@ -72,7 +73,7 @@ class SupprimerAuteurAction extends BlogActions
 					//Si on veut supprimer l'auteur
 					if(isset($_POST['confirmer']))
 					{
-						SupprimerAuteur($_GET['id2'], $_GET['id']);
+                        BlogDAO::SupprimerAuteur($_GET['id2'], $_GET['id']);
 						return redirect('L\'auteur a bien été supprimé.', 'admin-billet-'.$_GET['id'].'.html');
 					}
 					//Si on annule

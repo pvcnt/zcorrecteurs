@@ -19,6 +19,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Zco\Bundle\BlogBundle\Domain\BlogDAO;
+use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
+
 /**
  * Contrôleur gérant l'accueil du blog.
  *
@@ -43,18 +46,18 @@ class IndexAction extends BlogActions
 			}
 		}
 
-		$NombreDeBillet = CompterListerBilletsEnLigne();
+		$NombreDeBillet = BlogDAO::CompterListerBilletsEnLigne();
 		$nbBilletsParPage = 15;
 		$NombreDePage = ceil($NombreDeBillet / $nbBilletsParPage);
 		$page = is_numeric($_GET['p']) ? $_GET['p'] : 1;
 		if ($page > 1) Page::$titre .= ' - Page '.$page;
 
-		list($ListerBillets, $BilletsAuteurs) = ListerBillets(array(
+		list($ListerBillets, $BilletsAuteurs) = BlogDAO::ListerBillets(array(
 			'lecteurs' => false,
 			'etat' => BLOG_VALIDE,
 			'futur' => false,
 		), $page);
-		$Categories = ListerEnfants(InfosCategorie(GetIDCategorieCourante()));
+		$Categories = CategoryDAO::ListerEnfants(CategoryDAO::InfosCategorie(CategoryDAO::GetIDCategorieCourante()));
 		$ListePage = liste_pages($page, $NombreDePage, $NombreDeBillet, $nbBilletsParPage, 'index-p%s.html');
 
 		//Inclusion de la vue

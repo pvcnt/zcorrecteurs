@@ -19,6 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
+
 /**
  * Controleur pour le listage des sujets dans auxquels un membre a
  * participé.
@@ -30,8 +32,8 @@ class SujetsParticipeAction extends ForumActions
 	public function execute()
 	{
 		// Inclusion des modèles
-		include(dirname(__FILE__).'/../modeles/membres.php');
-		include(dirname(__FILE__).'/../modeles/forums.php');
+		include(__DIR__.'/../modeles/membres.php');
+		include(__DIR__.'/../modeles/forums.php');
         include_once(__DIR__.'/../../UserBundle/modeles/utilisateurs.php');
 
 		$InfosUtilisateur = InfosUtilisateur($_GET['id']);
@@ -44,7 +46,7 @@ class SujetsParticipeAction extends ForumActions
 
 		if(!empty($_GET['id2']))
 		{
-			$InfosCategorie = InfosCategorie($_GET['id2']);
+			$InfosCategorie = CategoryDAO::InfosCategorie($_GET['id2']);
 			if(empty($InfosCategorie) || !verifier('voir_sujets', $_GET['id2']))
 			{
 				throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();

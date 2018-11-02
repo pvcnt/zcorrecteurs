@@ -26,6 +26,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
 use Zco\Bundle\QuizBundle\Chart\GlobalStatsChart;
 use Zco\Bundle\QuizBundle\Entity\QuizScoreManager;
 
@@ -136,8 +137,7 @@ class AdminController extends Controller
             );
         }
 
-        $categoryManager = $this->get('zco_category.manager.category');
-        $categories = $categoryManager->getChildren($categoryManager->getModuleId('quiz'));
+        $categories = CategoryDAO::ListerEnfants(CategoryDAO::GetIDCategorie('quiz'));
         \Page::$titre = 'Ajouter un quiz';
 
         return render_to_response('ZcoQuizBundle:Admin:newQuiz.html.php', [
@@ -221,8 +221,7 @@ class AdminController extends Controller
         }
 
         $questions = $quizManager->findQuestions($quiz['id']);
-        $categoryManager = $this->get('zco_category.manager.category');
-        $categories = $categoryManager->getChildren($categoryManager->getModuleId('quiz'));
+        $categories = CategoryDAO::ListerEnfants(CategoryDAO::GetIDCategorie('quiz'));
         \Page::$titre = 'Modifier le quiz';
         fil_ariane(htmlspecialchars($quiz['nom']));
 

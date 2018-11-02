@@ -57,7 +57,7 @@ class SessionController extends Controller
 			throw new AccessDeniedHttpException('Vous êtes déjà connecté.');
 		}
 		
-		$form    = $this->get('form.factory')->create(new FormLoginType());
+		$form    = $this->createForm(FormLoginType::class);
 		$handler = new FormLoginHandler($form, $request, $this->get('zco_user.user'));
 		
 		if ($handler->process())
@@ -189,7 +189,7 @@ class SessionController extends Controller
 		}
 		
 		$user    = new \Utilisateur;
-		$form    = $this->get('form.factory')->create(new CreateUserType());
+		$form    = $this->createForm(CreateUserType::class);
 		$handler = new CreateUserHandler($form, $request, $this->get('event_dispatcher'));
 		
 		if ($handler->process($user))

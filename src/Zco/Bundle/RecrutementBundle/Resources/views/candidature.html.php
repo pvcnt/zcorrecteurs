@@ -134,10 +134,10 @@ in_array($InfosCandidature['candidature_etat'], array(CANDIDATURE_ACCEPTE, CANDI
 if(verifier('recrutements_avis'))
 {
 	$donnees = array();
-	for($i = 0; $i < count($avisType); $i++)
+	for($i = 0; $i < count(\RecrutementAvis::VALUES); $i++)
 	{
-		$donnees[$i]['nom'] = $avisType[$i]['nom'];
-		$donnees[$i]['couleur'] = $avisType[$i]['couleur'];
+		$donnees[$i]['nom'] = \RecrutementAvis::VALUES[$i]['nom'];
+		$donnees[$i]['couleur'] = \RecrutementAvis::VALUES[$i]['couleur'];
 		if(array_key_exists($i, $avis))
 		{
 			$donnees[$i]['votes'] = $avis[$i];

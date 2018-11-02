@@ -33,12 +33,15 @@ class EditerMessageAction extends Controller
 {
 	public function execute()
 	{
+        include_once(__DIR__.'/../modeles/candidatures.php');
+        include_once(__DIR__.'/../modeles/recrutements.php');
+
         if (!verifier('recrutements_ecrire_shoutbox')) {
             throw new AccessDeniedHttpException();
         }
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))
 		{
-			include(dirname(__FILE__).'/../modeles/commentaires.php');
+			include(__DIR__.'/../modeles/commentaires.php');
 
 			$InfosCommentaire = InfosCommentaire($_GET['id']);
 			if(empty($InfosCommentaire))

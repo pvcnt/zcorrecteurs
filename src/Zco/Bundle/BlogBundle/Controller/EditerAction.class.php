@@ -22,6 +22,8 @@
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\BlogBundle\Domain\BlogDAO;
+use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
 
 /**
  * Contrôleur gérant l'édition d'un billet.
@@ -46,9 +48,9 @@ class EditerAction extends BlogActions
 				if(isset($_POST['submit']))
 				{
 					if(empty($_POST['titre']) || empty($_POST['intro']) || empty($_POST['texte']))
-						return redirect('Vous devez remplir tous les champs nécessaires !', 'editer-'.$_GET['id'].'.html', MSG_ERROR, -1);
+						return redirect('Vous devez remplir tous les champs nécessaires !', 'editer-'.$_GET['id'].'.html', MSG_ERROR);
 
-					EditerBillet($_GET['id'], array(
+                    BlogDAO::EditerBillet($_GET['id'], array(
 						'titre' => $_POST['titre'],
 						'sous_titre' => $_POST['sous_titre'],
 						'intro' => $_POST['intro'],
@@ -62,7 +64,7 @@ class EditerAction extends BlogActions
 					return redirect('Le billet a bien été édité.', 'admin-billet-'.$_GET['id'].'.html');
 				}
 
-				$this->Categories = ListerEnfants(GetIDCategorieCourante());
+				$this->Categories = CategoryDAO::ListerEnfants(CategoryDAO::GetIDCategorieCourante());
 
 				//Inclusion de la vue
 				fil_ariane($this->InfosBillet['cat_id'], array(

@@ -21,6 +21,7 @@
 
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
 
 /**
  * Contrôleur pour l'édition d'un message.
@@ -32,8 +33,8 @@ class EditerAction extends ForumActions
 	public function execute()
 	{
 		//Inclusion du modèle
-		include(dirname(__FILE__).'/../modeles/messages.php');
-		include(dirname(__FILE__).'/../modeles/sujets.php');
+		include(__DIR__.'/../modeles/messages.php');
+		include(__DIR__.'/../modeles/sujets.php');
 
 		if (!empty($_GET['id']) && is_numeric($_GET['id']))
 		{
@@ -55,7 +56,7 @@ class EditerAction extends ForumActions
 				throw new AccessDeniedHttpException();
 			}
 			
-			$InfosForum = InfosCategorie($InfosMessage['sujet_forum_id']);
+			$InfosForum = CategoryDAO::InfosCategorie($InfosMessage['sujet_forum_id']);
 			$InfosSujet = InfosSujet($InfosMessage['sujet_id']);
 
 			Page::$titre .= ' - Modifier un message';

@@ -42,7 +42,7 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        fil_ariane('Accueil du quiz');
+        \Page::$titre = 'Accueil du quiz';
         $registry = $this->get('zco_core.registry');
         $pinnedQuiz = $registry->get('bloc_accueil') === 'quiz' ? $registry->get('accueil_quiz', null) : null;
         $quizList = $this->get('zco_quiz.manager.quiz')->lister();

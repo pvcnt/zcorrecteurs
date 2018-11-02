@@ -1,4 +1,4 @@
-<form action="" method="post" <?php echo $view['form']->enctype($form) ?>>
+<form action="" method="post">
     <?php echo $view['form']->errors($form) ?>
 	<fieldset>
 		<legend>Présentation du recrutement</legend>

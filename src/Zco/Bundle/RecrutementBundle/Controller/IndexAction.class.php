@@ -31,8 +31,7 @@ class IndexAction extends Controller
 	public function execute()
 	{
 		Page::$titre = 'Faites vivre la langue française !';
-		fil_ariane();
-		
+
 		return render_to_response(array(
 			'equipe' => \Doctrine_Core::getTable('Utilisateur')->listerAvatarsEquipe(),
 		));

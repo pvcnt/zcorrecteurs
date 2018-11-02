@@ -32,6 +32,9 @@ class DesisterAction extends Controller
 {
 	public function execute()
 	{
+        include_once(__DIR__.'/../modeles/candidatures.php');
+        include_once(__DIR__.'/../modeles/recrutements.php');
+
         if (!verifier('recrutements_desistement')) {
             throw new AccessDeniedHttpException();
         }

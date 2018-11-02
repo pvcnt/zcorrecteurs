@@ -21,12 +21,8 @@
 
 namespace Zco\Bundle\DicteesBundle;
 
-use Zco\Component\HttpKernel\Bundle\AbstractBundle;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class ZcoDicteesBundle extends AbstractBundle
+class ZcoDicteesBundle extends Bundle
 {
-	public function load()
-	{
-		include(__DIR__.'/modeles/dictees.php');
-	}
 }

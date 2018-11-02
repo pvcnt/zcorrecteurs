@@ -31,6 +31,8 @@ class ListeAction extends Controller
 {
 	public function execute()
 	{
+        include_once(__DIR__.'/../modeles/dictees.php');
+
 		zCorrecteurs::VerifierFormatageUrl(null, false, false, 1);
 
 		Page::$titre = 'Liste des dictées';

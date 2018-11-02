@@ -20,6 +20,7 @@
  */
 
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Zco\Bundle\BlogBundle\Domain\BlogDAO;
 
 /**
  * Contrôleur gérant l'affichage des billets refusés.
@@ -33,16 +34,13 @@ class RefusAction extends BlogActions
         if (!verifier('blog_voir_refus')) {
             throw new AccessDeniedHttpException();
         }
-		Page::$titre = 'Voir les billets refusés';
+		Page::$titre = 'Liste des billets refusés';
 
-		list($ListerBillets, $Auteurs) = ListerBillets(array(
+		list($ListerBillets, $Auteurs) = BlogDAO::ListerBillets(array(
 			'etat' => BLOG_REFUSE,
 			'lecteurs' => false
 		));
 
-		//Inclusion de la vue
-		fil_ariane('Liste des billets refusés');
-		
 		return render_to_response(array(
 			'ListerBillets' => $ListerBillets,
 			'Auteurs' => $Auteurs

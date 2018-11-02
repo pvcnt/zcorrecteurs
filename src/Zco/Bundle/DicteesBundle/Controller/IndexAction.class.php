@@ -30,6 +30,8 @@ class IndexAction extends Controller
 {
 	public function execute()
 	{
+        include_once(__DIR__.'/../modeles/dictees.php');
+
 		zCorrecteurs::VerifierFormatageUrl();
 
 		Page::$titre = 'Accueil des dictées';

@@ -23,8 +23,8 @@ class DetailMessagesAction extends ForumActions
 	public function execute()
 	{
 		//Inclusion des modèles
-		include(dirname(__FILE__).'/../modeles/sujets.php');
-		include(dirname(__FILE__).'/../modeles/membres.php');
+		include(__DIR__.'/../modeles/sujets.php');
+		include(__DIR__.'/../modeles/membres.php');
         include_once(__DIR__.'/../../UserBundle/modeles/utilisateurs.php');
 
 		$InfosUtilisateur = InfosUtilisateur($_GET['id']);

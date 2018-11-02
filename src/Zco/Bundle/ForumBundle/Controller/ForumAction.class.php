@@ -22,6 +22,7 @@
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
 
 /**
  * Contrôleur gérant l'affichage de la liste des sujets d'un forum.
@@ -33,16 +34,16 @@ class ForumAction extends ForumActions
     public function execute()
     {
         // Inclusion des modèles
-        include(dirname(__FILE__) . '/../modeles/forums.php');
-        include(dirname(__FILE__) . '/../modeles/sujets.php');
-        include(dirname(__FILE__) . '/../modeles/categories.php');
-        include(dirname(__FILE__) . '/../modeles/moderation.php');
-        include(dirname(__FILE__) . '/../modeles/membres.php');
+        include(__DIR__ . '/../modeles/forums.php');
+        include(__DIR__ . '/../modeles/sujets.php');
+        include(__DIR__ . '/../modeles/categories.php');
+        include(__DIR__ . '/../modeles/moderation.php');
+        include(__DIR__ . '/../modeles/membres.php');
 
         if (empty($_GET['id']) || !is_numeric($_GET['id'])) {
             throw new NotFoundHttpException();
         } else {
-            $InfosForum = InfosCategorie($_GET['id']);
+            $InfosForum = CategoryDAO::InfosCategorie($_GET['id']);
             if ((!$InfosForum || !verifier('voir_sujets', $_GET['id']))) {
                 throw new NotFoundHttpException();
             } elseif (!empty($_GET['trash']) AND !verifier('corbeille_sujets', $_GET['id'])) {
@@ -330,7 +331,7 @@ class ForumAction extends ForumActions
 
                     if (!empty($_GET['archives'])) {
                         // Forum parent
-                        $tempParent = ListerParents($cat);
+                        $tempParent = CategoryDAO::ListerParents($cat);
                         if (count($tempParent) > 2) {
                             $tempParent = array_pop($tempParent);
                             $ListerUneCategorie[$nbIndex]['parent'] = $tempParent;
@@ -345,7 +346,7 @@ class ForumAction extends ForumActions
             }
 
             // Forum parent
-            $parent = ListerParents($InfosForum);
+            $parent = CategoryDAO::ListerParents($InfosForum);
             if (count($parent) > 2) // Racine + Les Forums
                 $parent = array_pop($parent);
             else

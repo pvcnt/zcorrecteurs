@@ -21,6 +21,7 @@
 
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
 
 /**
  * Contrôleur gérant la création d'un nouveau sujet.
@@ -32,9 +33,9 @@ class NouveauAction extends ForumActions
 	public function execute()
 	{
 		//Inclusion des modèles
-		include(dirname(__FILE__).'/../modeles/sujets.php');
-		include(dirname(__FILE__).'/../modeles/forums.php');
-		include(dirname(__FILE__).'/../modeles/sondages.php');
+		include(__DIR__.'/../modeles/sujets.php');
+		include(__DIR__.'/../modeles/forums.php');
+		include(__DIR__.'/../modeles/sondages.php');
 
 		if (empty($_GET['id']) || !is_numeric($_GET['id']))
 		{
@@ -42,7 +43,7 @@ class NouveauAction extends ForumActions
 		}
 		else
 		{
-			$InfosForum = InfosCategorie($_GET['id']);
+			$InfosForum = CategoryDAO::InfosCategorie($_GET['id']);
 			if (!$InfosForum)
 			{
                 throw new NotFoundHttpException();

@@ -22,6 +22,7 @@
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\BlogBundle\Domain\BlogDAO;
 
 /**
  * Contrôleur gérant la comparaison entre deux versions d'un billet.
@@ -35,8 +36,8 @@ class ComparaisonAction extends BlogActions
 		//Si on envoie les id de deux versions à comparer
 		if(!empty($_GET['id']) && !empty($_GET['id2']) && is_numeric($_GET['id']) && is_numeric($_GET['id2']))
 		{
-			$infos_new = InfosVersion($_GET['id']);
-			$infos_old = InfosVersion($_GET['id2']);
+			$infos_new = BlogDAO::InfosVersion($_GET['id']);
+			$infos_old = BlogDAO::InfosVersion($_GET['id2']);
 
 			if(empty($infos_new) || empty($infos_old))
 				throw new AccessDeniedHttpException();
@@ -52,7 +53,7 @@ class ComparaisonAction extends BlogActions
 
 				if($this->verifier_voir && (verifier('blog_voir_versions') || $this->autorise == true))
 				{
-					$InfosBillet = InfosBillet($_GET['id']);
+					$InfosBillet = BlogDAO::InfosBillet($_GET['id']);
 					$InfosBillet = $InfosBillet[0];
 
 					$texte_new = $infos_new['version_texte'];

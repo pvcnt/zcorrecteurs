@@ -32,9 +32,9 @@ class FusionnerAction extends ForumActions
     public function execute()
     {
         //Inclusion des modèles
-        include(dirname(__FILE__) . '/../modeles/sujets.php');
-        include(dirname(__FILE__) . '/../modeles/forums.php');
-        include(dirname(__FILE__) . '/../modeles/moderation.php');
+        include(__DIR__ . '/../modeles/sujets.php');
+        include(__DIR__ . '/../modeles/forums.php');
+        include(__DIR__ . '/../modeles/moderation.php');
 
         !isset($_POST['titre']) && $_POST['titre'] = null;
         if (empty($_GET['id']) || !is_numeric($_GET['id'])) {

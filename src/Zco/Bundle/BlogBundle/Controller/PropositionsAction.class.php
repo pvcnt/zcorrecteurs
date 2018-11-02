@@ -20,6 +20,7 @@
  */
 
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Zco\Bundle\BlogBundle\Domain\BlogDAO;
 
 /**
  * Contrôleur gérant l'affichage des billets proposés.
@@ -33,15 +34,12 @@ class PropositionsAction extends BlogActions
         if (!verifier('blog_voir_billets_proposes')) {
             throw new AccessDeniedHttpException();
         }
-		Page::$titre .= ' - Voir les billets proposés';
+		Page::$titre = 'Liste des billets proposés';
 
-		list($ListerBillets, $Auteurs) = ListerBillets(array(
+		list($ListerBillets, $Auteurs) = BlogDAO::ListerBillets(array(
 			'etat' => array(BLOG_PROPOSE, BLOG_PREPARATION),
 			'lecteurs' => false,
 		));
-
-		//Inclusion de la vue
-		fil_ariane('Liste des billets proposés');
 
 		return render_to_response(array(
 			'ListerBillets' => $ListerBillets,

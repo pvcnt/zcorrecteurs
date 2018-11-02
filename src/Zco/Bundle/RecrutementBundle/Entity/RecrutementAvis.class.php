@@ -31,5 +31,22 @@
  */
 class RecrutementAvis extends BaseRecrutementAvis
 {
-
+    const VALUES = array(
+        array(
+            'nom' => 'Oui',
+            'couleur' => '#71b047'
+        ),
+        array(
+            'nom' => 'Non',
+            'couleur' => '#ef4e4e'
+        ),
+        array(
+            'nom' => 'Réservé',
+            'couleur' => '#f1a521'
+        ),
+        array(
+            'nom' => 'Sans avis',
+            'couleur' => '#21a5f1'
+        ),
+    );
 }

@@ -21,37 +21,8 @@
 
 namespace Zco\Bundle\RecrutementBundle;
 
-use Zco\Component\Templating\TemplatingEvents;
-use Zco\Component\Templating\Event\FilterVariablesEvent;
-use Zco\Component\HttpKernel\Bundle\AbstractBundle;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class ZcoRecrutementBundle extends AbstractBundle
+class ZcoRecrutementBundle extends Bundle
 {
-	public function load()
-	{
-		include_once(__DIR__.'/modeles/candidatures.php');
-		include_once(__DIR__.'/modeles/recrutements.php');
-
-		$this->container->get('event_dispatcher')->addListener(TemplatingEvents::FILTER_VARIABLES, function(FilterVariablesEvent $event)
-		{
-			$event->set('avisType', array(
-				array(
-					'nom' => 'Oui',
-					'couleur' => '#71b047'
-				),
-				array(
-					'nom' => 'Non',
-					'couleur' => '#ef4e4e'
-				),
-				array(
-					'nom' => 'Réservé',
-					'couleur' => '#f1a521'
-				),
-				array(
-					'nom' => 'Sans avis',
-					'couleur' => '#21a5f1'
-				),
-			));
-		});
-	}	
 }

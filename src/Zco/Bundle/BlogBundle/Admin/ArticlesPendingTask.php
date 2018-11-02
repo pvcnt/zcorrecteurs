@@ -3,6 +3,7 @@
 namespace Zco\Bundle\BlogBundle\Admin;
 
 use Zco\Bundle\AdminBundle\PendingTask;
+use Zco\Bundle\BlogBundle\Domain\BlogDAO;
 
 /**
  * Counts the number of submitted articles.
@@ -13,15 +14,7 @@ final class ArticlesPendingTask implements PendingTask
 {
     public function count(): int
     {
-        $dbh = \Doctrine_Manager::connection()->getDbh();
-        $stmt = $dbh->prepare('SELECT COUNT(1) 
-            FROM zcov2_blog 
-            WHERE blog_etat IN(' . BLOG_PROPOSE . ',' . BLOG_PREPARATION . ')');
-        $stmt->execute();
-        $res = $stmt->fetchColumn();
-        $stmt->closeCursor();
-
-        return (int)$res;
+        return BlogDAO::NombreBilletsProposes();
     }
 
     public function getCredentials(): array

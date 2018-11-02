@@ -130,7 +130,7 @@ class DefaultController extends Controller
         $user = $this->getEditableUser($id);
         $own = $user->getId() == $_SESSION['id'];
         $editEmail = new EditEmail($user);
-        $form = $this->createForm(new EditEmailType(), $editEmail, array('own' => $own));
+        $form = $this->createForm(EditEmailType::class, $editEmail, array('own' => $own));
         $handler = new EditEmailHandler($form, $request);
 
         if ($handler->process($editEmail, $own)) {
@@ -173,7 +173,7 @@ class DefaultController extends Controller
         $user = $this->getEditableUser($id);
         $own = $user->getId() == $_SESSION['id'];
         $editPassword = new EditPassword($user);
-        $form = $this->createForm(new EditPasswordType(), $editPassword);
+        $form = $this->createForm(EditPasswordType::class, $editPassword);
         $handler = new EditPasswordHandler($form, $request);
 
         if ($handler->process($editPassword, $own)) {
@@ -210,24 +210,22 @@ class DefaultController extends Controller
     {
         $user = $this->getEditableUser($id);
         $own = $user->getId() == $_SESSION['id'];
-        $form = $this->createForm(new EditProfileType(), $user);
+        $form = $this->createForm(EditProfileType::class, $user);
 
-        if ('POST' === $request->getMethod()) {
-            $form->submit($request);
-            if ($form->isValid()) {
-                $user->save();
-                if ($own) {
-                    return redirect('Votre profil a bien été modifié.', $this->generateUrl('zco_options_profile'));
-                }
-
-                return redirect(
-                    'Le profil a bien été modifié.',
-                    $this->generateUrl('zco_user_profile', array(
-                        'id' => $user->getId(),
-                        'slug' => rewrite($user->getUsername()),
-                    ))
-                );
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user->save();
+            if ($own) {
+                return redirect('Votre profil a bien été modifié.', $this->generateUrl('zco_options_profile'));
             }
+
+            return redirect(
+                'Le profil a bien été modifié.',
+                $this->generateUrl('zco_user_profile', array(
+                    'id' => $user->getId(),
+                    'slug' => rewrite($user->getUsername()),
+                ))
+            );
         }
 
         \Page::$titre = 'Modifier le profil';
@@ -250,7 +248,7 @@ class DefaultController extends Controller
     {
         $user = $this->getEditableUser($id);
         $own = $user->getId() == $_SESSION['id'];
-        $form = $this->createForm(new EditAbsenceType(), $user);
+        $form = $this->createForm(EditAbsenceType::class, $user);
 
         if ('POST' === $request->getMethod()) {
             //Si on souhaite supprimer la période d'absence.
@@ -272,8 +270,8 @@ class DefaultController extends Controller
             }
 
             //Sinon on souhaite en (re)définir une.
-            $form->submit($request);
-            if ($form->isValid()) {
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
                 $user->save();
                 if ($own) {
                     return redirect('Votre période d\'absence a bien été modifiée.', $this->generateUrl('zco_options_absence'));
@@ -311,30 +309,27 @@ class DefaultController extends Controller
         $own = $user->getId() == $_SESSION['id'];
         $preferences = $user->getPreferences();
 
-        $form = $this->createForm(new EditPreferencesType(), $preferences);
+        $form = $this->createForm(EditPreferencesType::class, $preferences);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $preferences->save();
 
-        if ('POST' === $request->getMethod()) {
-            $form->submit($request);
-            if ($form->isValid()) {
-                $preferences->save();
-
-                if ($own) {
-                    $preferences->apply();
-
-                    return redirect(
-                        'Vos préférences ont bien été modifiés.',
-                        $this->generateUrl('zco_options_preferences')
-                    );
-                }
+            if ($own) {
+                $preferences->apply();
 
                 return redirect(
-                    'Les préférences ont bien été modifiés.',
-                    $this->generateUrl('zco_user_profile', array(
-                        'id' => $user->getId(),
-                        'slug' => rewrite($user->getUsername()),
-                    ))
+                    'Vos préférences ont bien été modifiés.',
+                    $this->generateUrl('zco_options_preferences')
                 );
             }
+
+            return redirect(
+                'Les préférences ont bien été modifiés.',
+                $this->generateUrl('zco_user_profile', array(
+                    'id' => $user->getId(),
+                    'slug' => rewrite($user->getUsername()),
+                ))
+            );
         }
 
         \Page::$titre = 'Modifier les préférences';

@@ -81,7 +81,7 @@ class EventListener implements EventSubscriberInterface
         }
 
         // Ajout de variables au layout.
-        $module = $this->container->get('request')->attributes->get('_module');
+        $module = \Container::request()->attributes->get('_module');
         $searchSection = ($module === 'blog') ? 'blog' : 'forum';
         $event->set('searchSection', $searchSection);
 

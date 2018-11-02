@@ -1,17 +1,11 @@
 <?php if ($compound): ?>
-    <div <?php echo $view['form']->block($form, 'container_attributes') ?>>
-        <?php echo $view['form']->errors($form) ?>
+    <div <?php echo $view['form']->block($form, 'widget_container_attributes') ?>>
+        <?php if (!$form->parent && $errors): ?>
+            <?php echo $view['form']->errors($form) ?>
+        <?php endif ?>
         <?php echo $view['form']->block($form, 'form_rows') ?>
         <?php echo $view['form']->rest($form) ?>
     </div>
 <?php else: ?>
-    <input
-            type="<?php echo isset($type) ? $view->escape($type) : "text" ?>"
-            value="<?php echo $view->escape($value) ?>"
-        <?php echo $view['form']->block($form, 'attributes') ?>
-    />
-
-    <?php if (isset($help)): ?>
-        <p class="help-block"><?php echo $view->escape($help) ?></p>
-    <?php endif ?>
+    <?php echo $view['form']->block($form, 'form_widget_simple')?>
 <?php endif ?>

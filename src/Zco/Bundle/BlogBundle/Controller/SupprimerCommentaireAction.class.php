@@ -22,6 +22,8 @@
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\BlogBundle\Domain\BlogDAO;
+use Zco\Bundle\BlogBundle\Domain\CommentDAO;
 
 /**
  * Contrôleur gérant la suppression d'un commentaire sur un billet du blog.
@@ -34,9 +36,8 @@ class SupprimerCommentaireAction extends BlogActions
     {
         //Si on a bien demandé à supprimer un commentaire
         if (!empty($_GET['id']) && is_numeric($_GET['id'])) {
-            //On récupère des infos sur le commentaire
-            $InfosCommentaire = InfosCommentaire($_GET['id']);
-            $Auteurs = InfosBillet($InfosCommentaire['commentaire_id_billet']);
+            $InfosCommentaire = CommentDAO::InfosCommentaire($_GET['id']);
+            $Auteurs = BlogDAO::InfosBillet($InfosCommentaire['commentaire_id_billet']);
             $InfosBillet = $Auteurs[0];
             $createur = false;
             foreach ($Auteurs as $a) {
@@ -51,7 +52,7 @@ class SupprimerCommentaireAction extends BlogActions
             if (verifier('blog_editer_commentaires') || ($InfosCommentaire['utilisateur_id'] == $_SESSION['id'] && verifier('blog_supprimer_ses_commentaire')) || ($createur == true && $nfosBillet['blog_etat'] != BLOG_VALIDE)) {
                 //Si on veut le supprimer
                 if (isset($_POST['confirmer'])) {
-                    SupprimerCommentaire($_GET['id']);
+                    CommentDAO::SupprimerCommentaire($_GET['id']);
                     return redirect(
                         'Le commentaire a bien été supprimé.',
                         'billet-' . $InfosCommentaire['blog_id'] . '-' . rewrite($InfosCommentaire['version_titre']) . '.html');

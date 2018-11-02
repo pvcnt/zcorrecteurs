@@ -23,6 +23,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
 
 /**
  * Actions pour tout ce qui concerne la gestion des catégories du site.
@@ -42,10 +43,10 @@ class CategoriesActions extends Controller
 		//Si on veut descendre une catégorie
 		if(!empty($_GET['descendre']) && is_numeric($_GET['descendre']))
 		{
-			$InfosCategorie = InfosCategorie($_GET['descendre']);
+			$InfosCategorie = CategoryDAO::InfosCategorie($_GET['descendre']);
 			if(!empty($InfosCategorie))
 			{
-				if(DescendreCategorie($InfosCategorie))
+				if(CategoryDAO::DescendreCategorie($InfosCategorie))
 					return redirect('La catégorie a bien été descendue.', '/categories/');
 				else
 					return redirect('Impossible de descendre cette catégorie car elle est déjà en bas.', '/categories/', MSG_ERROR);
@@ -57,10 +58,10 @@ class CategoriesActions extends Controller
 		//Si on veut monter une catégorie
 		if(!empty($_GET['monter']) && is_numeric($_GET['monter']))
 		{
-			$InfosCategorie = InfosCategorie($_GET['monter']);
+			$InfosCategorie = CategoryDAO::InfosCategorie($_GET['monter']);
 			if(!empty($InfosCategorie))
 			{
-				if(MonterCategorie($InfosCategorie))
+				if(CategoryDAO::MonterCategorie($InfosCategorie))
 					return redirect('La catégorie a bien été montée.', '/categories/');
 				else
 					return redirect(
@@ -76,7 +77,7 @@ class CategoriesActions extends Controller
 		fil_ariane('Liste des catégories');
 		$this->get('zco_core.resource_manager')->requireResource('@ZcoCoreBundle/Resources/public/js/messages.js');
 
-		return render_to_response(array('categories' => ListerCategories()));
+		return render_to_response(array('categories' => CategoryDAO::ListerCategories()));
 	}
 
 	/**
@@ -92,13 +93,13 @@ class CategoriesActions extends Controller
 		//Si on veut ajouter une catégorie
 		if(!empty($_POST['nom']))
 		{
-			AjouterCategorie();
+            CategoryDAO::AjouterCategorie();
 			return redirect('La catégorie a bien été ajoutée.', 'index.html');
 		}
 
 		fil_ariane('Ajouter une catégorie');
 
-		return render_to_response(array('categories' => ListerCategories()));
+		return render_to_response(array('categories' => CategoryDAO::ListerCategories()));
 	}
 
 	/**
@@ -113,24 +114,24 @@ class CategoriesActions extends Controller
 
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))
 		{
-			$InfosCategorie = InfosCategorie($_GET['id']);
+			$InfosCategorie = CategoryDAO::InfosCategorie($_GET['id']);
 			if(empty($InfosCategorie))
 				throw new NotFoundHttpException();
 
 			//Si on veut éditer la catégorie
 			if(!empty($_POST['nom']))
 			{
-				EditerCategorie($_GET['id']);
+                CategoryDAO::EditerCategorie($_GET['id']);
 				return redirect('La catégorie a bien été modifiée.', 'index.html');
 			}
 
 			fil_ariane('Modifier une catégorie');
-			$ListerParents = ListerParents($InfosCategorie);
+			$ListerParents = CategoryDAO::ListerParents($InfosCategorie);
 			if(empty($ListerParents))
 				$ListerParents[0]['cat_id'] = 0;
 				
 			// Récupération des informations du forum et vérification si c'est bien un forum
-			$InfoForum = InfosCategorie(GetIDCategorie('forum'));
+			$InfoForum = CategoryDAO::InfosCategorie(CategoryDAO::GetIDCategorie('forum'));
 			$forum = false;
 			
 			if ($InfosCategorie['cat_droite'] <= $InfoForum['cat_droite'] && $InfosCategorie['cat_gauche'] >= $InfoForum['cat_gauche'] ) {
@@ -159,7 +160,7 @@ class CategoriesActions extends Controller
 
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))
 		{
-			$InfosCategorie = InfosCategorie($_GET['id']);
+			$InfosCategorie = CategoryDAO::InfosCategorie($_GET['id']);
 			if(empty($InfosCategorie))
                 throw new NotFoundHttpException();
 
@@ -173,7 +174,7 @@ class CategoriesActions extends Controller
 			//Si on veut supprimer la catégorie
 			if(isset($_POST['confirmer']))
 			{
-				SupprimerCategorie($_GET['id']);
+                CategoryDAO::SupprimerCategorie($_GET['id']);
 				return redirect('La catégorie a bien été supprimée.', 'index.html');
 			}
 			//Si on annule
@@ -189,44 +190,5 @@ class CategoriesActions extends Controller
 		{
             throw new NotFoundHttpException();
 		}
-	}
-
-	/**
-	 * Page permettant d'afficher la représetation graphique d'un arbre.
-	 * @author mwsaz
-	 */
-	public function executeImage()
-	{
-        if (!verifier('cats_editer')) {
-            throw new AccessDeniedHttpException();
-        }
-		Page::$titre = 'Représentation graphique';
-		fil_ariane(Page::$titre);
-		return render_to_response(array('categories' => ListerCategories()));
-	}
-
-	/**
-	 * Affichage du graphique des catégories.
-	 * @author mwsaz
-	 */
-	public function executeGraphique()
-	{
-        if (!verifier('cats_editer')) {
-            throw new AccessDeniedHttpException();
-        }
-		isset($_POST['id']) && $_GET['id'] = $_POST['id'];
-		isset($_POST['id2']) && $_GET['id2'] = $_POST['id2'];
-		isset($_POST['orientation']) && $_GET['orientation'] = $_POST['orientation'];
-		unset($_POST['id'], $_POST['id2'], $_POST['orientation']);
-
-		include(dirname(__FILE__).'/../modeles/graphique.php');
-
-		$cat = is_numeric($_GET['id']) ? $_GET['id'] : 1;
-		$bornes = !empty($_GET['id2']);
-		$inverser = !empty($_GET['orientation']);
-		AfficherGraphique($cat, $bornes, $inverser);
-
-		//TODO : retourner une Response.
-		exit();
 	}
 }

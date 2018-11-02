@@ -68,19 +68,16 @@ class QuotesController extends Controller
             throw new AccessDeniedHttpException();
         }
 
-        $form = $this->get('form.factory')->create(new QuoteType());
-        //$form->setData($data);
-        if ($request->getMethod() === 'POST') {
-            $form->submit($request);
-            if ($form->isValid()) {
-                /** @var QuoteRepository $repository */
-                $repository = $this->get('zco.repository.quotes');
-                $data = $form->getData();
-                $data['utilisateur_id'] = $_SESSION['id'];
-                $repository->save($data);
+        $form = $this->createForm(QuoteType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var QuoteRepository $repository */
+            $repository = $this->get('zco.repository.quotes');
+            $data = $form->getData();
+            $data['utilisateur_id'] = $_SESSION['id'];
+            $repository->save($data);
 
-                return redirect('La citation a bien été créée.', $this->generateUrl('zco_quote_index'));
-            }
+            return redirect('La citation a bien été créée.', $this->generateUrl('zco_quote_index'));
         }
 
         \Page::$titre = 'Nouvelle citation';
@@ -107,16 +104,14 @@ class QuotesController extends Controller
             throw new NotFoundHttpException();
         }
 
-        $form = $this->get('form.factory')->create(new QuoteType());
+        $form = $this->createForm(QuoteType::class);
         $form->setData($quote);
-        if ($request->getMethod() === 'POST') {
-            $form->submit($request);
-            if ($form->isValid()) {
-                $data = $form->getData();
-                $repository->save($data);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $repository->save($data);
 
-                return redirect('La citation a bien été modifiée.', $this->generateUrl('zco_quote_index'));
-            }
+            return redirect('La citation a bien été modifiée.', $this->generateUrl('zco_quote_index'));
         }
 
         \Page::$titre = 'Modifier une citation';

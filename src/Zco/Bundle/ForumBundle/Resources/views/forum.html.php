@@ -1,4 +1,5 @@
-<?php $view->extend('::layouts/default.html.php') ?>
+<?php use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
+$view->extend('::layouts/default.html.php') ?>
 
 <?php if(!empty($_GET['trash'])) { ?>
 	<h1><?php echo 'Corbeille du forum <em>'.htmlspecialchars($InfosForum['cat_nom']).'</em>'; ?></h1>
@@ -21,7 +22,7 @@
 		<?php } if(verifier('corbeille_sujets', $_GET['id'])){ ?>
 		<li>
 			<?php if(!empty($_GET['trash'])){ ?>
-			<a href="<?php echo FormateURLCategorie($InfosForum['cat_id']); ?>">Sortir</a> de la corbeille.
+			<a href="<?php echo CategoryDAO::FormateURLCategorie($InfosForum['cat_id']); ?>">Sortir</a> de la corbeille.
 			<?php } else{ ?>
 			Accéder à la <a href="?trash=1">corbeille de ce forum</a>.
 			<?php } ?>
@@ -30,7 +31,7 @@
     	<?php if(verifier('voir_archives')) : ?>
 		<li>
 			<?php if(!empty($_GET['archives'])) : ?>
-				<a href="<?php echo FormateURLCategorie($InfosForum['cat_id']); ?>">Sortir</a> des archives.
+				<a href="<?php echo CategoryDAO::FormateURLCategorie($InfosForum['cat_id']); ?>">Sortir</a> des archives.
 			<?php else : ?>
 			<a href="?archives=1">Voir les forums archivés</a>
 			<?php endif; ?>
@@ -360,39 +361,13 @@ else
 <?php
 if($action_etendue_a_plusieurs_messages_actif AND $ListerSujets)
 {
-	include(dirname(__FILE__).'/action_etendue_plusieurs_sujets.html.php');
+	include(__DIR__.'/action_etendue_plusieurs_sujets.html.php');
 	echo '</form>';
-}
+} ?>
 
-if(!empty($_GET['trash'])){ ?>
-<p class="centre"><strong>Retour <a href="index.html?trash=1">à l'accueil de la corbeille</a></strong><br />
-OU<br />
-<strong>Retour <a href="<?php echo FormateURLCategorie($InfosForum['cat_id']); ?>">au forum "<?php echo htmlspecialchars($InfosForum['cat_nom']); ?>"</a> ou <a href="/forum/">à la liste des forums</a></strong></p>
-<?php } else{ ?>
-<p class="centre"><strong>
-Retour
-<?php if(isset($Parent)): ?>
-	<a href="<?php echo FormateURLCategorie($Parent['cat_id']); ?>">au forum <em><?php
-	echo htmlspecialchars($Parent['cat_nom']); ?></em></a>
-	ou
-<?php endif ?>
-à la <a href="index.html">liste des catégories</a></strong></p>
-<?php
-}
+<?php echo $SautRapide ?>
 
-if(!empty($_GET['archives'])) : ?>
-
-<?php if(sizeof($ListerUneCategorie) == 0) : ?>
-	<center>Aucun forum archivé.</center><br/>
-<?php endif; ?>	
-<p class="centre"><strong>Retour <a href="index.html?archives=1">à l'accueil des archives</a></strong><br />
-OU<br />
-<strong>Retour <a href="<?php echo FormateURLCategorie($InfosForum['cat_id']); ?>">au forum "<?php echo htmlspecialchars($InfosForum['cat_nom']); ?>"</a> ou <a href="/forum/">à la liste des forums</a></strong></p>
-	
-<?php endif;
-echo $SautRapide;
-
-if(verifier('creer_sujets', $_GET['id']))
+<?php if(verifier('creer_sujets', $_GET['id']))
 {
 ?>
 <p class="reponse_ajout_sujet">

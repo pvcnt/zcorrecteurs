@@ -23,6 +23,7 @@ namespace Zco\Bundle\SearchBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
 use Zco\Bundle\SearchBundle\Search\Searchable\BlogSearchable;
 use Zco\Bundle\SearchBundle\Search\Searchable\ForumSearchable;
 use Zco\Bundle\SearchBundle\Search\Searchable\TwitterSearchable;
@@ -49,8 +50,8 @@ class DefaultController extends Controller
     public function indexAction($section, $page, Request $request)
     {
         // Configuration pour les trois actions (avant et après la recherche)
-        $CatsForum = ListerEnfants(GetIDCategorie('forum'), true, true);
-        $CatsBlog = ListerEnfants(GetIDCategorie('blog'), true, true);
+        $CatsForum = CategoryDAO::ListerEnfants(CategoryDAO::GetIDCategorie('forum'), true, true);
+        $CatsBlog = CategoryDAO::ListerEnfants(CategoryDAO::GetIDCategorie('blog'), true, true);
         \Page::$titre = 'Recherche';
         $this->get('zco_core.resource_manager')->requireResources(array(
             '@ZcoForumBundle/Resources/public/css/forum.css',

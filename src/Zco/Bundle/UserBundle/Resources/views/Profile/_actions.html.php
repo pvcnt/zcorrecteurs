@@ -67,13 +67,6 @@
         		<?php echo $own ? 'Mes' : 'Ses' ?> billets sur le blog
         	</a>
         </li>
-        <?php if (verifier('recrutements_voir_candidatures')): ?>
-        	<li>
-        		<a href="/recrutement/candidatures-membre-<?php echo $user->getId(); ?>.html">
-        			<?php echo $own ? 'Mes' : 'Ses' ?> candidatures aux recrutements
-        		</a>
-        	</li>
-        <?php endif ?>
     	<?php if ($own): ?>
         	<li>
         		<a href="<?php echo $view['router']->path('zco_quiz_myStats') ?>">

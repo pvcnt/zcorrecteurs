@@ -2,6 +2,7 @@
 
 namespace Zco\Bundle\SearchBundle\Search;
 
+use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
 use Zco\Bundle\SearchBundle\Search\Searchable\SearchableInterface;
 
 class SearchService
@@ -22,7 +23,7 @@ class SearchService
     {
         if ($searchable->doesCheckCredentials()) {
             $viewableCategoryIds = [];
-            foreach (ListerCategories(true) as $cat) {
+            foreach (CategoryDAO::ListerCategories(true) as $cat) {
                 $viewableCategoryIds[] = $cat['cat_id'];
             }
             if ($query->getCategoryIds()) {

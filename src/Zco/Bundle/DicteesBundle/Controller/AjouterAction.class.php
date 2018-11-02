@@ -32,12 +32,14 @@ class AjouterAction extends Controller
 {
 	public function execute()
 	{
+        include_once(__DIR__.'/../modeles/dictees.php');
+
 		if (!verifier('dictees_ajouter')) {
 		    throw new AccessDeniedHttpException();
         }
 		Page::$titre = 'Ajouter une dictée';
 
-		include(dirname(__FILE__).'/../forms/AjouterForm.class.php');
+		include_once(__DIR__.'/../forms/AjouterForm.class.php');
 		$Form = new AjouterForm;
 
 		if($_SERVER['REQUEST_METHOD'] == 'POST')

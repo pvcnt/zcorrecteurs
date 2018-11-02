@@ -23,6 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use \Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\BlogBundle\Domain\BlogDAO;
 
 /**
  * Contrôleur gérant la validation d'un billet.
@@ -54,7 +55,7 @@ class ValiderAction extends BlogActions
 				//Si on veut valider
 				if(isset($_POST['confirmer']))
 				{
-					ValiderBillet($_GET['id'], isset($_POST['conserver_date_pub']));
+                    BlogDAO::ValiderBillet($_GET['id'], isset($_POST['conserver_date_pub']));
 					return redirect('Le billet a bien été validé.', 'gestion.html');
 				}
 				//Si on annule

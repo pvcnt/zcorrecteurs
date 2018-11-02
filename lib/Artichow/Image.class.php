@@ -8,8 +8,8 @@
  */
 
 
-if (is_file(dirname(__FILE__) . "/Artichow.cfg.php")) { // For PHP 4+5 version
-    require_once dirname(__FILE__) . "/Artichow.cfg.php";
+if (is_file(__DIR__ . "/Artichow.cfg.php")) { // For PHP 4+5 version
+    require_once __DIR__ . "/Artichow.cfg.php";
 }
 
 require_once ARTICHOW . "/common.php";

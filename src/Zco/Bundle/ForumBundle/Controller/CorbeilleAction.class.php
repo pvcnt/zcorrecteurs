@@ -33,8 +33,8 @@ class CorbeilleAction extends ForumActions
 	{
 		//On récupère les infos sur le sujet.
 		list($InfosSujet, $InfosForum) = $this->initSujet();
-		include(dirname(__FILE__).'/../modeles/moderation.php');
-		include(dirname(__FILE__).'/../modeles/messages.php');
+		include(__DIR__.'/../modeles/moderation.php');
+		include(__DIR__.'/../modeles/messages.php');
 
 		//Vérification du token.
 		if(empty($_GET['token']) || $_GET['token'] != $_SESSION['token'])

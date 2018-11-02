@@ -119,7 +119,7 @@ class AboutController extends Controller
 		\Page::$titre = 'Demande de contact';
 		
 		$contact = new Contact(!empty($_GET['objet']) ? $_GET['objet'] : null);
-		$form = $this->get('form.factory')->create(new ContactType(), $contact);
+		$form = $this->createForm(ContactType::class, $contact);
 		
 		if ($contact->raison)
 		{
@@ -133,33 +133,30 @@ class AboutController extends Controller
 			\Page::$description = 'Si vous avez une question ou une demande particulière, '
 				.'vous pouvez joindre l\'équipe du site zCorrecteurs.fr de manière personnalisée.';
 		}
-		
-		if ($request->getMethod() == 'POST')
-		{
-			$form->submit($request);
-			if ($form->isValid())
-			{
-				$contact->pseudo = verifier('connecte') ? $_SESSION['pseudo'] : null;
-				$contact->id = verifier('connecte') ? $_SESSION['id'] : null;
 
-				$message = render_to_string('ZcoPagesBundle:Mail:contact.html.php', array(
-					'contact'	=> $contact,
-					'ip'		=> $request->getClientIp(),
-				));
-				
-				send_mail(
-					'contact@zcorrecteurs.fr',
-					'zCorrecteurs',
-					'[Contact - '.$contact->raison.'] '.$contact->sujet,
-					$message,
-					$contact->courriel, $contact->nom ?: $contact->pseudo);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            $contact->pseudo = verifier('connecte') ? $_SESSION['pseudo'] : null;
+            $contact->id = verifier('connecte') ? $_SESSION['id'] : null;
 
-				return redirect(
-					'L\'équipe administrative du site a bien été contactée. Elle vous répondra à l\'adresse mail indiquée.', 
-					$this->generateUrl('zco_about_contact')
-				);
-			}
-		}
+            $message = render_to_string('ZcoPagesBundle:Mail:contact.html.php', array(
+                'contact'	=> $contact,
+                'ip'		=> $request->getClientIp(),
+            ));
+
+            send_mail(
+                $contact->courriel,
+                $contact->nom ?: $contact->pseudo,
+                '[Contact - '.$contact->raison.'] '.$contact->sujet,
+                $message
+            );
+
+            return redirect(
+                'L\'équipe administrative du site a bien été contactée. Elle vous répondra à l\'adresse mail indiquée.',
+                $this->generateUrl('zco_about_contact')
+            );
+        }
 		
 		return render_to_response(
 			'ZcoPagesBundle:About:contact.html.php',

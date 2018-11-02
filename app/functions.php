@@ -21,6 +21,7 @@
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
 use Zco\Component\Templating\TemplatingEvents;
 use Zco\Component\Templating\Event\FilterResourcesEvent;
 use Zco\Component\Templating\Event\FilterVariablesEvent;
@@ -795,12 +796,12 @@ function fil_ariane($id = null, $enfants = array())
         $enfants = $id;
     }
     if (is_null($id) || !is_numeric($id)) {
-        $id = GetIDCategorieCourante();
+        $id = CategoryDAO::GetIDCategorieCourante();
     }
 
-    $ListerParents = ListerParents($id, true);
+    $ListerParents = CategoryDAO::ListerParents($id, true);
     if (empty($ListerParents)) {
-        $ListerParents = ListerParents(GetIDCategorie('informations'), false);
+        $ListerParents = CategoryDAO::ListerParents(CategoryDAO::GetIDCategorie('informations'), false);
     }
 
     $items = array();
@@ -810,9 +811,9 @@ function fil_ariane($id = null, $enfants = array())
     foreach ($ListerParents as $i => $p) {
         if (!empty($p['cat_url']) && ($appendTitle || $i < count($ListerParents) - 1)) {
             if (!preg_match('`\.`', $url))
-                $url .= FormateURLCategorie($p['cat_id']);
+                $url .= CategoryDAO::FormateURLCategorie($p['cat_id']);
             else
-                $url = FormateURLCategorie($p['cat_id']);
+                $url = CategoryDAO::FormateURLCategorie($p['cat_id']);
             $items[] = '<a href="' . $url . '">' . htmlspecialchars($p['cat_nom']) . '</a>';
         } else {
             $items[] = htmlspecialchars($p['cat_nom']);

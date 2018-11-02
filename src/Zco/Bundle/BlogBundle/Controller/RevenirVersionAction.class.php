@@ -23,6 +23,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\BlogBundle\Domain\BlogDAO;
 
 /**
  * Contrôleur gérant le retour à une ancienne version.
@@ -50,7 +51,7 @@ class RevenirVersionAction extends BlogActions
 				if(!empty($_GET['id2']) && is_numeric($_GET['id2']))
 				{
 					$id_version = $_GET['id2'];
-					$InfosVersion = InfosVersion($id_version);
+					$InfosVersion = BlogDAO::InfosVersion($id_version);
 
 					//Si la version est invalide
 					if(($id_version != 0 && empty($InfosVersion)) || (!empty($id_version) && $InfosVersion['version_id_billet'] != $_GET['id']))
@@ -61,7 +62,7 @@ class RevenirVersionAction extends BlogActions
 					//Si on veut revenir à une ancienne version
 					if(isset($_POST['confirmer']) && $id_version != 0)
 					{
-						EditerBillet($_GET['id'], array(
+                        BlogDAO::EditerBillet($_GET['id'], array(
 							'titre' => $InfosVersion['version_titre'],
 							'sous_titre' => $InfosVersion['version_sous_titre'],
 							'intro' => $InfosVersion['version_intro'],

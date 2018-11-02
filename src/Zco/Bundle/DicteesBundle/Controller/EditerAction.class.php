@@ -33,6 +33,8 @@ class EditerAction extends Controller
 {
 	public function execute()
 	{
+        include_once(__DIR__.'/../modeles/dictees.php');
+
 		// Vérification de l'existence de la dictée
 		$Dictee = $_GET['id'] ? Dictee($_GET['id']) : null;
 		if(!$Dictee)
@@ -51,7 +53,7 @@ class EditerAction extends Controller
 		zCorrecteurs::VerifierFormatageUrl($Dictee->titre, true);
 		Page::$titre = 'Modifier une dictée';
 
-		include(dirname(__FILE__).'/../forms/AjouterForm.class.php');
+		include(__DIR__.'/../forms/AjouterForm.class.php');
 		$Form = new AjouterForm;
 
 		$url = '-'.$Dictee->id.'-'.rewrite($Dictee->titre).'.html';

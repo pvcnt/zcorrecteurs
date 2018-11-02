@@ -33,7 +33,7 @@ class SupprimerSujetAction extends ForumActions
 	public function execute()
 	{
 		list($InfosSujet, $InfosForum) = $this->initSujet();
-		include(dirname(__FILE__).'/../modeles/moderation.php');
+		include(__DIR__.'/../modeles/moderation.php');
 
 		if(verifier('suppr_sujets', $InfosSujet['sujet_forum_id']))
 		{

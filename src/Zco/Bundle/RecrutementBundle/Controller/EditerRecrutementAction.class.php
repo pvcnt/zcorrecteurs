@@ -45,22 +45,18 @@ class EditerRecrutementAction extends Controller
             throw new NotFoundHttpException();
         }
 
-        $form = $this->get('form.factory')->create(new RecrutementType(), $recrutement);
-
-        if ($request->getMethod() == 'POST') {
-            $form->submit($request);
-            if ($form->isValid()) {
-                $recrutement->save();
-                return redirect(
-                    'Le recrutement a bien été modifié.',
-                    'recrutement-' . $recrutement['id'] . '-' . rewrite($recrutement['nom']) . '.html'
-                );
-            }
+        $form = $this->createForm(RecrutementType::class, $recrutement);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $recrutement->save();
+            return redirect(
+                'Le recrutement a bien été modifié.',
+                'recrutement-' . $recrutement['id'] . '-' . rewrite($recrutement['nom']) . '.html'
+            );
         }
 
         Page::$titre = htmlspecialchars($recrutement['nom']);
 
-        //Inclusion de la vue
         fil_ariane(array(
             htmlspecialchars($recrutement['nom']) => 'recrutement-' . $recrutement['id'] . '.html',
             'Modifier le recrutement'

@@ -21,6 +21,7 @@
 
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
 
 /**
  * Contrôleur gérant la division d'un sujet.
@@ -32,10 +33,10 @@ class DiviserAction extends ForumActions
     public function execute()
     {
         //Inclusion des modèles
-        include(dirname(__FILE__) . '/../modeles/sujets.php');
-        include(dirname(__FILE__) . '/../modeles/forums.php');
-        include(dirname(__FILE__) . '/../modeles/moderation.php');
-        include(dirname(__FILE__) . '/../modeles/categories.php');
+        include(__DIR__ . '/../modeles/sujets.php');
+        include(__DIR__ . '/../modeles/forums.php');
+        include(__DIR__ . '/../modeles/moderation.php');
+        include(__DIR__ . '/../modeles/categories.php');
 
         if (empty($_GET['id']) || !is_numeric($_GET['id'])) {
             throw new NotFoundHttpException();
@@ -55,7 +56,7 @@ class DiviserAction extends ForumActions
                     return redirect('Vous devez remplir tous les champs nécessaires !', 'diviser-' . $_GET['id'] . '.html', MSG_ERROR);
 
                 //Si le forum n'existe pas
-                $InfosForum = InfosCategorie($_POST['forum']);
+                $InfosForum = CategoryDAO::InfosCategorie($_POST['forum']);
                 if (empty($InfosForum) || !verifier('voir_sujets', $InfosForum['cat_id']))
                     throw new NotFoundHttpException();
 

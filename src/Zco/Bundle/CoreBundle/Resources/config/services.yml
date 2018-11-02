@@ -1,6 +1,7 @@
 services:
     zco_core.registry:
         class:     Zco\Bundle\CoreBundle\Registry
+        public:    true
         arguments: ['@cache']
 
     zco_core.form.type.zform:
@@ -10,12 +11,15 @@ services:
 
     imagine:
         class: Imagine\Gd\Imagine
+        public: true
 
     cache:
         class: Doctrine\Common\Cache\ApcuCache
+        public: true
 
     zco_core.resource_manager:
         class: Zco\Bundle\CoreBundle\Javelin\ResourceManager
+        public: true
         arguments:
         - '@zco_core.assetic.asset_manager'
         - '@zco_core.resource_map'
@@ -39,6 +43,7 @@ services:
 
     zco_core.javelin:
         class: Zco\Bundle\CoreBundle\Javelin\Javelin
+        public: true
         arguments: ['@zco_core.resource_manager']
 
     swiftmailer.transport.sendgrid:

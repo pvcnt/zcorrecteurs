@@ -87,22 +87,3 @@ Vous êtes dans la corbeille !
 		</div>
 	</fieldset>
 </form>
-
-<p class="centre">
-	<strong>Retour
-	<?php
-	if(!empty($_GET['trash']))
-	{
-	?>
-	<a href="<?php echo FormateURLCategorie($_GET['id']); ?>?trash=1">à la corbeille du forum "<?php echo htmlspecialchars($InfosForum['cat_nom']); ?>"</a>
-	<?php
-	}
-	else
-	{
-	?>
-	<a href="<?php echo FormateURLCategorie($_GET['id']); ?>">au forum "<?php echo htmlspecialchars($InfosForum['cat_nom']); ?>"</a>
-	<?php
-	}
-	?>
-	ou <a href="index.html">à la liste des forums</a></strong>
-</p>

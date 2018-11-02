@@ -33,6 +33,8 @@ class ProposerAction extends Controller
 {
 	public function execute()
 	{
+        include_once(__DIR__.'/../modeles/dictees.php');
+
         if (!verifier('connecte')) {
             throw new AccessDeniedHttpException();
         }

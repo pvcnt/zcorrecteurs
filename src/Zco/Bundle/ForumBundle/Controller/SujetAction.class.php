@@ -32,11 +32,11 @@ class SujetAction extends ForumActions
 	public function execute()
 	{
 		//Inclusion des modèles
-		include(dirname(__FILE__).'/../modeles/forums.php');
-		include(dirname(__FILE__).'/../modeles/messages.php');
-		include(dirname(__FILE__).'/../modeles/moderation.php');
-		include(dirname(__FILE__).'/../modeles/categories.php');
-		include(dirname(__FILE__).'/../modeles/sondages.php');
+		include(__DIR__.'/../modeles/forums.php');
+		include(__DIR__.'/../modeles/messages.php');
+		include(__DIR__.'/../modeles/moderation.php');
+		include(__DIR__.'/../modeles/categories.php');
+		include(__DIR__.'/../modeles/sondages.php');
 
 		//On récupère les infos sur le sujet
 		list($InfosSujet, $InfosForum) = $this->initSujet();

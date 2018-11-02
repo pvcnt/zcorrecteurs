@@ -19,6 +19,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Zco\Bundle\BlogBundle\Domain\BlogDAO;
+use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
+
 /**
  * Contrôleur se chargeant de divers paramétrages communs à toutes les pages
  * concernant un billet particulier. Pour être opérationnel, l'id du billet
@@ -30,12 +33,12 @@
 //--- On récupère les infos sur le billet et les auteurs ---
 if(!isset($InfosBillet) || !isset($Auteurs))
 {
-	$Auteurs = InfosBillet($_GET['id']);
+	$Auteurs = BlogDAO::InfosBillet($_GET['id']);
 	if(empty($Auteurs))
 		return redirect('Ce billet n\'existe pas.', '/blog/', MSG_ERROR);
 	$InfosBillet = $Auteurs[0];
 }
-$InfosCategorie = InfosCategorie($InfosBillet['blog_id_categorie']);
+$InfosCategorie = CategoryDAO::InfosCategorie($InfosBillet['blog_id_categorie']);
 
 //--- Définition du statut par rapport au billet ---
 $autorise = false;

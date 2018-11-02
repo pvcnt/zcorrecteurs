@@ -22,6 +22,7 @@
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\BlogBundle\Domain\CommentDAO;
 
 /**
  * Contrôleur gérant l'ajout d'un commentaire sur un billet du blog.
@@ -52,7 +53,7 @@ class AjouterCommentaireAction extends BlogActions
 				//Si on a envoyé quelque chose
 				if(!empty($_POST['texte']))
 				{
-					$id = AjouterCommentaire($_GET['id'], $_SESSION['id'], $_POST['texte']);
+					$id = CommentDAO::AjouterCommentaire($_GET['id'], $_SESSION['id'], $_POST['texte']);
 					
 					return redirect('Le commentaire a bien été ajouté.', 'billet-'.$_GET['id'].'-'.$id.'-'.rewrite($this->InfosBillet['version_titre']).'.html');
 				}
@@ -60,7 +61,7 @@ class AjouterCommentaireAction extends BlogActions
 				//Si on veut citer un message
 				if(!empty($_GET['id2']) && is_numeric($_GET['id2']))
 				{
-					$InfosCommentaire = InfosCommentaire($_GET['id2']);
+					$InfosCommentaire = CommentDAO::InfosCommentaire($_GET['id2']);
 					$this->texte_zform = '<citation nom="'.htmlspecialchars($InfosCommentaire['utilisateur_pseudo']).'">' .
 										$InfosCommentaire['commentaire_texte'].'' .
 									'</citation>';
@@ -82,7 +83,7 @@ class AjouterCommentaireAction extends BlogActions
 				    '@ZcoForumBundle/Resources/public/css/forum.css'
 				);
 				
-				$this->ListerCommentaires = ListerCommentairesBillet($_GET['id'], -1);
+				$this->ListerCommentaires = CommentDAO::ListerCommentairesBillet($_GET['id'], -1);
 				return render_to_response($this->getVars());
 			}
 			else

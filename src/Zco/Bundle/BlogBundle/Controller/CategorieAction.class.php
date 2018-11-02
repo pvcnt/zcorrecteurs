@@ -21,6 +21,8 @@
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Zco\Bundle\BlogBundle\Domain\BlogDAO;
+use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
 
 /**
  * Contrôleur gérant l'affichage des billets d'une catégorie.
@@ -33,24 +35,24 @@ class CategorieAction extends BlogActions
 	{
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))
 		{
-			$InfosCategorie = InfosCategorie($_GET['id']);
+			$InfosCategorie = CategoryDAO::InfosCategorie($_GET['id']);
 			if(empty($InfosCategorie))
                 throw new NotFoundHttpException();
 
 			zCorrecteurs::VerifierFormatageUrl($InfosCategorie['cat_nom'], true, false, 1);
-			$NombreDeBillet = CompterListerBilletsEnLigne($_GET['id']);
+			$NombreDeBillet = BlogDAO::CompterListerBilletsEnLigne($_GET['id']);
 			$nbBilletsParPage = 15;
 			$NombreDePage = ceil($NombreDeBillet / $nbBilletsParPage);
 			$page = (!empty($_GET['p']) && is_numeric($_GET['p'])) ? $_GET['p'] : 1;
-			list($ListerBillets, $BilletsAuteurs) = ListerBillets(array(
+			list($ListerBillets, $BilletsAuteurs) = BlogDAO::ListerBillets(array(
 				'id_categorie' => $_GET['id'],
 				'lecteurs' => false,
 				'etat' => BLOG_VALIDE,
 				'futur' => false,
 			), $page);
 			$ListePage = liste_pages($page, $NombreDePage, $NombreDeBillet, $nbBilletsParPage, '/blog/categorie-'.$_GET['id'].'-p%s-'.rewrite($InfosCategorie['cat_nom']).'.html');
-			$ListerParents = ListerParents($InfosCategorie);
-			$Categories = ListerEnfants($ListerParents[1]);
+			$ListerParents = CategoryDAO::ListerParents($InfosCategorie);
+			$Categories = CategoryDAO::ListerEnfants($ListerParents[1]);
 
 			//Inclusion de la vue
 			fil_ariane($_GET['id'], 'Liste des billets de la catégorie');
