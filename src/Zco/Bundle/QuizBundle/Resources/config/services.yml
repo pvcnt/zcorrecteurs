@@ -7,11 +7,14 @@ services:
 
   zco_quiz.stats:
     class: Zco\Bundle\QuizBundle\Service\StatsService
+    public: true
 
   zco_quiz.manager.quiz:
       class: Zco\Bundle\QuizBundle\Entity\QuizManager
+      public: true
       arguments: ['@zco_doctrine1.connection', '@cache']
 
   zco_quiz.manager.score:
         class: Zco\Bundle\QuizBundle\Entity\QuizScoreManager
+        public: true
         arguments: ['@zco_doctrine1.connection']

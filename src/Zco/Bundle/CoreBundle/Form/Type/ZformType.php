@@ -22,6 +22,7 @@
 namespace Zco\Bundle\CoreBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilder;
 
 /**
@@ -34,11 +35,6 @@ class ZformType extends AbstractType
 {
 	public function getParent()
 	{
-		return 'textarea';
-	}
-	
-	public function getName()
-	{
-		return 'zform';
+		return TextareaType::class;
 	}
 }

@@ -61,7 +61,7 @@ final class Container
 
     public static function request(): Request
     {
-        return self::instance()->get('request');
+        return self::instance()->get('request_stack')->getCurrentRequest();
     }
 
     public static function cache(): CacheProvider

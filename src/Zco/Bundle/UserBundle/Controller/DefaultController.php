@@ -234,29 +234,26 @@ class DefaultController extends Controller
 
         $newUsername = new \UserNewUsername();
         $newUsername->setUser($user);
-        $form = $this->get('form.factory')->create(new NewUsernameType(), $newUsername);
+        $form = $this->createForm(NewUsernameType::class, $newUsername);
 
-        //Si l'utilisateur veut s'inscrire
-        if ($request->getMethod() === 'POST') {
-            $form->submit($request);
-            if ($form->isValid()) {
-                if ($newUsername->isAutoValidated()) {
-                    $newUsername->setAdmin($this->get('zco_user.user')->getEntity());
-                    $newUsername->save();
-                    $user->getUsername($newUsername->getNewUsername());
-                    $user->save();
-
-                    return redirect('Le pseudonyme a bien été changé.',
-                        $this->generateUrl('zco_user_profile', ['id' => $user->getId(), 'slug' => rewrite($user->getUsername())])
-                    );
-                }
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($newUsername->isAutoValidated()) {
+                $newUsername->setAdmin($this->get('zco_user.user')->getEntity());
                 $newUsername->save();
+                $user->getUsername($newUsername->getNewUsername());
+                $user->save();
 
-                return redirect(
-                    'Votre demande de changement de pseudonyme a été enregistrée.',
-                    $this->generateUrl('zco_options_index')
+                return redirect('Le pseudonyme a bien été changé.',
+                    $this->generateUrl('zco_user_profile', ['id' => $user->getId(), 'slug' => rewrite($user->getUsername())])
                 );
             }
+            $newUsername->save();
+
+            return redirect(
+                'Votre demande de changement de pseudonyme a été enregistrée.',
+                $this->generateUrl('zco_options_index')
+            );
         }
 
         \Page::$titre = 'Demander un changement de pseudo';

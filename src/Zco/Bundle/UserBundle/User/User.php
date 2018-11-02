@@ -26,8 +26,6 @@ use Zco\Bundle\UserBundle\Exception\LoginException;
 use Zco\Bundle\UserBundle\Exception\ValueException;
 use Zco\Bundle\UserBundle\Event\LoginEvent;
 use Zco\Bundle\UserBundle\Event\FilterLoginEvent;
-use Zco\Bundle\UserBundle\Event\FormLoginEvent;
-use Zco\Bundle\UserBundle\Event\EnvLoginEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -36,7 +34,7 @@ use Symfony\Component\HttpFoundation\Request;
  * cycle de vie d'un visiteur (connexion, déconnexion) et d'accès aux informations
  * principales. Délègue une partie des fonctionnalités à des observateurs.
  *
- * @author vincent1870 <vincent@zcorrecteurs.fr>é
+ * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
 class User
 {
@@ -156,30 +154,16 @@ class User
 	 * du mot de passe est aussi faite ici.
 	 *
 	 * @param  array $data Les données reçues du formulaire
-	 * @param  Request $request La requête correspondante
 	 * @return \Utilisateur L'entité désirant se connecter
 	 * @throws LoginException Si les informations fournies ne sont pas valides
 	 */
-	public function attemptFormLogin(array $data, Request $request)
+	public function attemptFormLogin(array $data)
 	{
-		$event = new FormLoginEvent($request, $data);
-		$this->dispatcher->dispatch(UserEvents::FORM_LOGIN, $event);
-
-		//1) Le login a été annulé, on arrête tout.
-		if ($event->isAborted())
-		{
-			throw new LoginException($event->getErrorMessage());
-		}
-
-		//2) Aucun utilisateur n'a été reconnu, il n'existe vraisemblablement pas.
-		if (!($user = $event->getUser()))
-		{
+        $user = \Doctrine_Core::getTable('Utilisateur')->getOneByPseudo($data['pseudo']);
+		if (!$user)  {
 			throw new LoginException('Mauvais couple pseudo/mot de passe.');
 		}
-
-		//3) L'utilisateur existe mais le mot de passe est mauvais.
-		if (!$this->checkPassword($data['password'], $user))
-		{
+		if (!$this->checkPassword($data['password'], $user)) {
 			throw new LoginException('Mauvais couple pseudo/mot de passe.');
 		}
 
@@ -208,46 +192,27 @@ class User
 	 */
 	public function attemptEnvLogin(Request $request)
 	{
-		if (!empty($_SESSION['id']) && !empty($_SESSION['state']) && $_SESSION['id'] > 0 && $_SESSION['state'] > 0)
-		{
-			$userId = (int) $_SESSION['id'];
-			$state  = (int) $_SESSION['state'];
-		}
-		else
-		{
-			$userId = null;
-			$state  = self::AUTHENTICATED_ANONYMOUSLY;
-		}
-
-		$event = new EnvLoginEvent($request, $userId, $state);
-		$this->dispatcher->dispatch(UserEvents::ENV_LOGIN, $event);
-
-		//1) Le login a été annulé, on arrête tout.
-		if ($event->isAborted())
-		{
+		if (!empty($_SESSION['id']) && !empty($_SESSION['state']) && $_SESSION['id'] > 0
+            && $_SESSION['state'] > self::AUTHENTICATED_ANONYMOUSLY) {
+            // Already logged in.
 			return false;
 		}
 
-		//2) Un utilisateur a été identifié d'après l'environnement, c'est lui
-		//que l'on va tenter de connecter.
-		if ($user = $event->getUser())
-		{
-			$this->pendingState = $event->getState();
+        if (!$request->cookies->has('user_id') || !$request->cookies->has('violon')) {
+            // Required cookies are absent.
+            return false;
+        }
 
-			return $user;
+        $userId = $request->cookies->get('user_id');
+        $user = \Doctrine_Core::getTable('Utilisateur')->getById($userId);
+        if ($user && $request->cookies->get('violon') === self::generateRememberKey($user)) {
+            $this->entityId = $userId;
+            $this->entity = $user;
+            $this->state = User::AUTHENTICATED_REMEMBERED;
+
+            return true;
 		}
 
-		//3) On n'a pas annulé le processus et pas retourné d'autre utilisateur,
-		//on poursuit donc avec l'utilisateur détecté le cas échéant.
-		if ($state > self::AUTHENTICATED_ANONYMOUSLY)
-		{
-			$this->entityId = $userId;
-			$this->state    = $state;
-
-			return true;
-		}
-
-		//4) Impossible de connecter l'utilisateur depuis l'environnement.
 		return false;
 	}
 
@@ -373,6 +338,20 @@ class User
 
 		return $this->entity;
 	}
+
+    /**
+     * Génère une clé qui sera stockée dans les cookies du visiteur afin de
+     * se souvenir de lui lors de sa prochaine visite et prouver son identité.
+     *
+     * @param  \Utilisateur $user
+     * @return string
+     */
+    public static function generateRememberKey(\Utilisateur $user)
+    {
+        $browser = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
+
+        return sha1($browser . $user->getUsername() . $user->getPassword() . 'ezgnmlwxsainymktiwuv');
+    }
 
 	/**
 	 * Recharge l'entité Doctrine associée au compte de l'utilisateur courant

@@ -57,17 +57,13 @@ class EditEmailHandler
 	public function process(EditEmail $editEmail, $own)
 	{
 		$this->form->setData($editEmail);
-		
-		if ($this->request->getMethod() === 'POST')
-		{
-			$this->form->submit($this->request);
-			if ($this->form->isValid())
-			{
-				$this->onSuccess($editEmail, $own);
+        $this->form->handleRequest($this->request);
+        if ($this->form->isSubmitted() && $this->form->isValid())
+        {
+            $this->onSuccess($editEmail, $own);
 
-				return true;
-			}
-		}
+            return true;
+        }
 
 		return false;
 	}

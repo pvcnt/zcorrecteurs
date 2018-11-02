@@ -57,17 +57,13 @@ class EditPasswordHandler
 	public function process(EditPassword $editPassword, $own)
 	{
 		$this->form->setData($editPassword);
-		
-		if ($this->request->getMethod() === 'POST')
-		{
-			$this->form->submit($this->request);
-			if ($this->form->isValid())
-			{
-				$this->onSuccess($editPassword, $own);
+        $this->form->handleRequest($this->request);
+        if ($this->form->isSubmitted() && $this->form->isValid())
+        {
+            $this->onSuccess($editPassword, $own);
 
-				return true;
-			}
-		}
+            return true;
+        }
 
 		return false;
 	}

@@ -48,7 +48,7 @@ class EventListener implements EventSubscriberInterface
     static public function getSubscribedEvents()
     {
         return array(
-            KernelEvents::REQUEST => array('onKernelRequest', 127),
+            KernelEvents::REQUEST => ['onKernelRequest', 127],
             PagesEvents::SITEMAP => 'onFilterSitemap',
             CoreEvents::DAILY_CRON => 'onDailyCron',
         );
@@ -67,48 +67,49 @@ class EventListener implements EventSubscriberInterface
             return;
         }
 
-        session_start();
+        if (session_status() === PHP_SESSION_NONE) {
+            // TODO: investiguer pourquoi kernel.request semble être déclenché deux fois.
 
-        //Définit certaines variables importantes de session si ce n'est pas
-        //encore le cas.
-        if (empty($_SESSION['token'])) {
-            $_SESSION['token'] = md5(uniqid(rand(), true));
-        }
-        if (!isset($_SESSION['erreur'])) {
-            $_SESSION['erreur'] = array();
-        }
-        if (!isset($_SESSION['message'])) {
-            $_SESSION['message'] = array();
-        }
-
-        $user = $this->container->get('zco_user.user');
-
-        // Mise à jour temps réel des groupes associés au compte de
-        // l'utilisateur actuellement connecté.
-        if ($user->isAuthenticated() && isset($_SESSION['refresh_droits'])) {
-            $forceRefresh = $this->container->get('cache')->fetch('dernier_refresh_droits');
-            if ($forceRefresh !== false && $forceRefresh >= $_SESSION['refresh_droits']) {
-                $user->reloadGroups();
+            session_start();
+            if (empty($_SESSION['token'])) {
+                $_SESSION['token'] = md5(uniqid(rand(), true));
             }
-        }
-
-        //Tentative de connexion depuis l'environnement courant. Normalement seul
-        //->login() peut générer une LoginException, mais on préfère encadrer le
-        //tout par un try{ } en cas d'observateur mal écrit.
-        try {
-            if (($userEntity = $user->attemptEnvLogin($event->getRequest())) instanceof \Utilisateur) {
-                $user->login($event->getRequest(), $userEntity);
+            if (!isset($_SESSION['erreur'])) {
+                $_SESSION['erreur'] = array();
             }
-        } catch (LoginException $e) {
-            //Ne rien faire, la connexion par l'environnement a simplement échoué.
-        }
+            if (!isset($_SESSION['message'])) {
+                $_SESSION['message'] = array();
+            }
 
-        //Si le membre n'est toujours pas connecté on lui attribue de force certains
-        // attributs l'identifiant comme un visiteur.
-        if (!isset($_SESSION['groupe']) || !isset($_SESSION['id'])) {
-            $_SESSION['groupe'] = InfosGroupe(\Groupe::ANONYMOUS)['groupe_id'];
-            $_SESSION['id'] = -1;
-            $_SESSION['refresh_droits'] = time();
+            $user = $this->container->get('zco_user.user');
+
+            // Mise à jour temps réel des groupes associés au compte de
+            // l'utilisateur actuellement connecté.
+            if ($user->isAuthenticated() && isset($_SESSION['refresh_droits'])) {
+                $forceRefresh = $this->container->get('cache')->fetch('dernier_refresh_droits');
+                if ($forceRefresh !== false && $forceRefresh >= $_SESSION['refresh_droits']) {
+                    $user->reloadGroups();
+                }
+            }
+
+            // Tentative de connexion depuis l'environnement courant. Normalement seul
+            // ->login() peut générer une LoginException, mais on préfère encadrer le
+            // tout par un try{ } en cas d'observateur mal écrit.
+            try {
+                if (($userEntity = $user->attemptEnvLogin($event->getRequest())) instanceof \Utilisateur) {
+                    $user->login($event->getRequest(), $userEntity);
+                }
+            } catch (LoginException $e) {
+                // Ne rien faire, la connexion par l'environnement a simplement échoué.
+            }
+
+            // Si le membre n'est toujours pas connecté on lui attribue de force certains
+            // attributs l'identifiant comme un visiteur.
+            if (!isset($_SESSION['groupe']) || !isset($_SESSION['id'])) {
+                $_SESSION['groupe'] = InfosGroupe(\Groupe::ANONYMOUS)['groupe_id'];
+                $_SESSION['id'] = -1;
+                $_SESSION['refresh_droits'] = time();
+            }
         }
 
         // Check for IP ban.

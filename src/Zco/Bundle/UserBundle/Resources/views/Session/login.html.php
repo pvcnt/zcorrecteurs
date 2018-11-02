@@ -6,7 +6,7 @@
 
 <p>En vous connectant, vous pourrez rédiger des messages sur le forum, proposer des billets et bien plus encore !</p>
 
-<form method="post" action="<?php echo $view['router']->path('zco_user_session_login') ?>" class="form-horizontal" <?php echo $view['form']->enctype($form) ?>>
+<form method="post" action="<?php echo $view['router']->path('zco_user_session_login') ?>" class="form-horizontal">
     <?php echo $view['form']->row($form['pseudo']); ?>
     <?php echo $view['form']->row($form['password']); ?>
     <?php echo $view['form']->row($form['remember']); ?>

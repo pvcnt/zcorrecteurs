@@ -1,8 +1,8 @@
 parameters:
-  database.host:      localhost
-  database.base:      zcorrecteurs
-  database.username:  root
-  database.password:  ''
+  database.host:      "%env(DATABASE_HOST)%"
+  database.base:      "%env(DATABASE_BASE)%"
+  database.username:  "%env(DATABASE_USER)%"
+  database.password:  "%env(DATABASE_PASSWORD)%"
 
   secret: dDj85§fd+dedS9-sE4
   cache_default_lifetime: 600
@@ -11,4 +11,4 @@ parameters:
   sphinx_host: localhost
   sphinx_port: 5000
 
-  sendgrid_apikey: ''
+  sendgrid_apikey: "%env(SENDGRID_APIKEY)%"

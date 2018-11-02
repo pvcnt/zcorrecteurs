@@ -14,7 +14,7 @@
 		)
 	) ?>
 <?php else: ?>
-    <div <?php echo $view['form']->block($form, 'container_attributes') ?>>
+    <div <?php echo $view['form']->block($form, 'widget_container_attributes') ?>>
         <?php echo str_replace(array('{{ year }}', '{{ month }}', '{{ day }}'), array(
             $view['form']->widget($form['year']),
             $view['form']->widget($form['month']),

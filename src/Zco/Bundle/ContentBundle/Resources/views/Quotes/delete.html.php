@@ -11,6 +11,6 @@
 
     <div class="form-actions">
         <input type="submit" class="btn btn-primary" value="Oui" />
-        <a href="<?php echo $view['router']->generate('zco_quote_index') ?>" class="btn">Non</a>
+        <a href="<?php echo $view['router']->path('zco_quote_index') ?>" class="btn">Non</a>
     </div>
 </form>

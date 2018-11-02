@@ -68,7 +68,7 @@ class EventListener implements EventSubscriberInterface
 	 */
 	public function onTemplatingFilterVariables(FilterVariablesEvent $event)
 	{
-		if ($this->container->get('request')->attributes->get('_module') !== 'blog')
+		if (\Container::request()->attributes->get('_module') !== 'blog')
 		{
 			return;
 		}

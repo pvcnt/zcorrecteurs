@@ -23,9 +23,7 @@ namespace Zco\Bundle\UserBundle\EventListener;
 
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Zco\Bundle\UserBundle\Event\EnvLoginEvent;
 use Zco\Bundle\UserBundle\Event\FilterLoginEvent;
-use Zco\Bundle\UserBundle\Event\FormLoginEvent;
 use Zco\Bundle\UserBundle\Event\LoginEvent;
 use Zco\Bundle\UserBundle\User\User;
 use Zco\Bundle\UserBundle\UserEvents;
@@ -46,47 +44,9 @@ class LoginListener implements EventSubscriberInterface
     static public function getSubscribedEvents()
     {
         return array(
-            UserEvents::FORM_LOGIN => 'onFormLogin',
-            UserEvents::ENV_LOGIN => 'onEnvLogin',
             UserEvents::PRE_LOGIN => 'onPreLogin',
             UserEvents::POST_LOGIN => 'onPostLogin',
         );
-    }
-
-    /**
-     * Tente de connecter l'utilisateur grâce aux informations stockées dans
-     * ses cookies (présents s'il a choisi la connexion automatique).
-     *
-     * @param EnvLoginEvent $event
-     */
-    public function onEnvLogin(EnvLoginEvent $event)
-    {
-        if ($event->getState() > User::AUTHENTICATED_ANONYMOUSLY) {
-            return;
-        }
-
-        $request = $event->getRequest();
-        if (!$request->cookies->has('user_id') || !$request->cookies->has('violon')) {
-            return;
-        }
-
-        $user = \Doctrine_Core::getTable('Utilisateur')->getById($event->getRequest()->cookies->get('user_id'));
-        if ($user && $request->cookies->get('violon') === $this->generateRememberKey($user)) {
-            $event->setUser($user, User::AUTHENTICATED_REMEMBERED);
-        }
-    }
-
-    /**
-     * Tente de connecter l'utilisateur suite à une soumission de formulaire.
-     *
-     * @param FormLoginEvent $event
-     */
-    public function onFormLogin(FormLoginEvent $event)
-    {
-        $data = $event->getData();
-        if (($user = \Doctrine_Core::getTable('Utilisateur')->getOneByPseudo($data['pseudo'])) !== false) {
-            $event->setUser($user);
-        }
     }
 
     /**
@@ -112,7 +72,7 @@ class LoginListener implements EventSubscriberInterface
     {
         // Dépose les cookies nécessaires à une future connexion automatique après une connexion réalisée avec succès.
         if ($event->isRemember()) {
-            setcookie('violon', $this->generateRememberKey($event->getUser()), strtotime("+1 year"), '/');
+            setcookie('violon', User::generateRememberKey($event->getUser()), strtotime("+1 year"), '/');
             setcookie('user_id', $event->getUser()->getId(), strtotime("+1 year"), '/');
         }
 
@@ -132,19 +92,5 @@ class LoginListener implements EventSubscriberInterface
         $stmt->bindValue(':pays', $countryName);
         $stmt->execute();
         $stmt->closeCursor();
-    }
-
-    /**
-     * Génère une clé qui sera stockée dans les cookies du visiteur afin de
-     * se souvenir de lui lors de sa prochaine visite et prouver son identité.
-     *
-     * @param  \Utilisateur $user
-     * @return string
-     */
-    private function generateRememberKey(\Utilisateur $user)
-    {
-        $browser = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
-
-        return sha1($browser . $user->getUsername() . $user->getPassword() . 'ezgnmlwxsainymktiwuv');
     }
 }

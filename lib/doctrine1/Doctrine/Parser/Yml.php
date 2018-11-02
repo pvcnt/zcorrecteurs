@@ -72,12 +72,7 @@ class Doctrine_Parser_Yml extends Doctrine_Parser
     public function loadData($path)
     {
         try {
-          /*
-           * I still use the doLoad method even if sfYaml can load yml from a file
-           * since this way Doctrine can handle file on it own.
-           */
           $contents = $this->doLoad($path);
-
           $array = Yaml::parse($contents);
 
           return $array;

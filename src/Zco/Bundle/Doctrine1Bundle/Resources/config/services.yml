@@ -2,6 +2,7 @@ services:
     zco_doctrine1.connection:
         class: Doctrine_Connection
         factory: [Doctrine_Manager, connection]
+        public: true
         arguments: ['mysql://%database.host%/%database.base%', '%database.username%', '%database.password%']
         calls:
           - [addListener, ['@zco_doctrine1.audit_listener']]

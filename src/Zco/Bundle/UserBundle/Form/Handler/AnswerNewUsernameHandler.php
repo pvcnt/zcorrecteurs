@@ -50,23 +50,19 @@ class AnswerNewUsernameHandler
 	/**
 	 * Procède à la soumission du formulaire.
 	 *
-	 * @param  UserNewUsername $query L'entité liée au formulaire
+	 * @param  \UserNewUsername $query L'entité liée au formulaire
 	 * @return boolean Le formulaire a-t-il été traité correctement ?
 	 */
 	public function process(\UserNewUsername $query)
 	{
 		$this->form->setData($query);
-		
-		if ($this->request->getMethod() === 'POST')
-		{
-			$this->form->submit($this->request);
-			if ($this->form->isValid())
-			{
-				$this->onSuccess($query);
-				
-				return true;
-			}
-		}
+        $this->form->handleRequest($this->request);
+        if ($this->form->isSubmitted() && $this->form->isValid())
+        {
+            $this->onSuccess($query);
+
+            return true;
+        }
 
 		return false;
 	}

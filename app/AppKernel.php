@@ -68,7 +68,6 @@ class AppKernel extends Kernel
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
             $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
-            $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
         }
 
         return $bundles;
@@ -80,14 +79,6 @@ class AppKernel extends Kernel
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
         $loader->load(__DIR__ . '/config/config_' . $this->getEnvironment() . '.yml');
-
-        // Environment variables should overwrite default parameters.
-        // See: https://github.com/symfony/symfony/issues/7555#issuecomment-15856713
-        // TODO: remove this when we migrate to Symfony 3.2
-        $envParameters = $this->getEnvParameters();
-        $loader->load(function (ContainerBuilder $container) use ($envParameters) {
-            $container->getParameterBag()->add($envParameters);
-        });
     }
 
     /**
@@ -106,21 +97,6 @@ class AppKernel extends Kernel
     {
         // We use Symfony 3 directory structure, and allow to overwrite this directory by environment variable.
         return getenv('SYMFONY_LOG_DIR') ?: dirname(__DIR__) . '../var/logs';
-    }
-
-    protected function getEnvParameters()
-    {
-        // We override the default implementation to take into account $_ENV and not only $_SERVER, because
-        // apparently Apache forwards environment variables into $_ENV and not $_SERVER. $_SERVER only contains
-        // variable manually set with Apache's SetEnv directive.
-        $parameters = array();
-        foreach (array_merge($_ENV, $_SERVER) as $key => $value) {
-            if (0 === strpos($key, 'SYMFONY__')) {
-                $parameters[strtolower(str_replace('__', '.', substr($key, 9)))] = $value;
-            }
-        }
-
-        return $parameters;
     }
 
     /**

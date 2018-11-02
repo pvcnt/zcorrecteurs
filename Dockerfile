@@ -26,19 +26,17 @@ RUN apk update && \
   apk upgrade && \
   apk add \
 	apache2 \
-	bash \
-	php7-apache2 \
-	curl \
-	ca-certificates \
 	openssl \
-	openssh \
+    openssh \
+    tzdata \
+    openntpd \
+    bash \
+	php7-apache2 \
 	php7 \
 	php7-phar \
 	php7-json \
 	php7-iconv \
 	php7-openssl \
-	tzdata \
-	openntpd \
 	php7-xdebug \
 	php7-mbstring \
 	php7-dom \
@@ -52,7 +50,8 @@ RUN apk update && \
 	php7-session \
 	php7-simplexml \
 	php7-xsl \
-	php7-fileinfo
+	php7-fileinfo \
+	php7-tokenizer
 
 RUN cp /usr/bin/php7 /usr/bin/php && rm -f /var/cache/apk/*
 

@@ -67,15 +67,11 @@ class CreateUserHandler
 			$user = new \Utilisateur;
 		}
 		$this->form->setData($user);
-		
-		if ($this->request->getMethod() === 'POST')
-		{
-			$this->form->submit($this->request);
-			if ($this->form->isValid())
-			{
-				return $this->onSuccess($user);
-			}
-		}
+        $this->form->handleRequest($this->request);
+        if ($this->form->isSubmitted() && $this->form->isValid())
+        {
+            return $this->onSuccess($user);
+        }
 
 		return false;
 	}
@@ -102,8 +98,7 @@ class CreateUserHandler
 			'id'	 => $user->getId(),
 			'hash'   => $user->getRegistrationHash(),
 		));
-		send_mail($user->getEmail(), $user->getUsername(), 
-			'[zCorrecteurs.fr] Confirmation de votre inscription', $message);
+		send_mail($user->getEmail(), $user->getUsername(), '[zCorrecteurs.fr] Confirmation de votre inscription', $message);
 		
 		return true;
 	}

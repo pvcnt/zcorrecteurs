@@ -55,9 +55,10 @@ class EventListener implements EventSubscriberInterface
 	 */
 	public function onTemplatingFilterResources(FilterResourcesEvent $event)
 	{
+	    $request = \Container::request();
 		if (
-		    $this->container->get('request')->attributes->has('_module') && 
-		    $this->container->get('request')->attributes->get('_module') === 'forum'
+		    $request->attributes->has('_module') &&
+		    $request->attributes->get('_module') === 'forum'
 		)
 		{
 			$event->requireResource('@ZcoForumBundle/Resources/public/css/forum.css');
