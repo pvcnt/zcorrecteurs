@@ -26,13 +26,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Zco\Bundle\AdminBundle\Menu\MenuFactory;
 use Zco\Bundle\AdminBundle\Menu\MenuRenderer;
-use Zco\Bundle\AdminBundle\Menu\MenuItem;
-use Zco\Bundle\BlogBundle\Admin\ArticlesPendingTask;
-use Zco\Bundle\DicteesBundle\Admin\DictationsPendingTask;
-use Zco\Bundle\ForumBundle\Admin\ForumAlertsPendingTask;
-use Zco\Bundle\MpBundle\Admin\PmAlertsPendingTask;
-use Zco\Bundle\RecrutementBundle\Admin\ApplicationsPendingTask;
-use Zco\Bundle\UserBundle\Admin\NewUsernamePendingTask;
 
 /**
  * Contrôleur gérant l'accueil de l'administration pour les membres de l'équipe.

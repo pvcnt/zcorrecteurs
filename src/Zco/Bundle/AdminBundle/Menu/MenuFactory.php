@@ -23,6 +23,12 @@ namespace Zco\Bundle\AdminBundle\Menu;
 
 use Symfony\Component\Routing\RouterInterface;
 use Zco\Bundle\AdminBundle\Admin;
+use Zco\Bundle\BlogBundle\Admin\ArticlesPendingTask;
+use Zco\Bundle\DicteesBundle\Admin\DictationsPendingTask;
+use Zco\Bundle\ForumBundle\Admin\ForumAlertsPendingTask;
+use Zco\Bundle\MpBundle\Admin\PmAlertsPendingTask;
+use Zco\Bundle\RecrutementBundle\Admin\ApplicationsPendingTask;
+use Zco\Bundle\UserBundle\Admin\NewUsernamePendingTask;
 
 final class MenuFactory
 {
@@ -115,11 +121,6 @@ final class MenuFactory
         if (verifier('groupes_changer_membre')) {
             $menu->getChild('Groupes')->addChild('Changer un membre de groupe', array(
                 'uri' => '/groupes/changer-membre-groupe.html',
-            ));
-        }
-        if (verifier('groupes_changer_membre')) {
-            $menu->getChild('Journaux')->addChild('Historique des changements de groupe', array(
-                'uri' => '/groupes/historique-groupes.html',
             ));
         }
         if (verifier('mp_alertes')) {
