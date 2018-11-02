@@ -24,7 +24,7 @@ namespace Zco\Bundle\AdminBundle\Menu;
 /**
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-final class AdminRenderer
+final class MenuRenderer
 {
     public function render(MenuItem $item)
     {
