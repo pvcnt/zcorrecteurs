@@ -20,6 +20,7 @@
  */
 
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Zco\Bundle\BlogBundle\Domain\BlogDAO;
 
 /**
  * Contrôleur gérant l'affichage de Mes billets.
@@ -37,11 +38,8 @@ class MesBilletsAction extends BlogActions
 
 		$params = array('id_utilisateur' => $_SESSION['id']);
 		if(!empty($_GET['id'])) $params['etat'] = $_GET['id'];
-		list($ListerBillets, $BilletsAuteurs) = ListerBillets($params);
+		list($ListerBillets, $BilletsAuteurs) = BlogDAO::ListerBillets($params);
 
-		//Inclusion de la vue
-		fil_ariane('Mes billets');
-		
 		return render_to_response(array(
 			'ListerBillets' => $ListerBillets,
 			'BilletsAuteurs' => $BilletsAuteurs,

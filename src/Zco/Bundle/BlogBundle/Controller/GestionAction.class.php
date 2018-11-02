@@ -20,6 +20,7 @@
  */
 
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Zco\Bundle\BlogBundle\Domain\BlogDAO;
 
 /**
  * Contrôleur gérant l'affichage des billets en ligne (côté admin).
@@ -33,12 +34,12 @@ class GestionAction extends BlogActions
         if (!verifier('blog_editer_valide') && !verifier('blog_supprimer')) {
             throw new AccessDeniedHttpException();
         }
-		Page::$titre .= ' - Liste des billets en ligne';
+		Page::$titre = 'Liste des billets en ligne';
 
 		$nbBilletsParPage = 30;
 		$page = !empty($_GET['p']) && is_numeric($_GET['p']) ? $_GET['p'] : 1;
-		$CompterBillets = CompterListerBilletsEnLigne();
-		list($ListerBillets, $Auteurs) = ListerBillets(array(
+		$CompterBillets = BlogDAO::CompterListerBilletsEnLigne();
+		list($ListerBillets, $Auteurs) = BlogDAO::ListerBillets(array(
 			'etat' => BLOG_VALIDE,
 			'lecteurs' => false
 		), $page);
@@ -48,9 +49,6 @@ class GestionAction extends BlogActions
 		if(verifier('blog_devalider')) $colspan++;
 		if(verifier('blog_editer_valide')) $colspan++;
 
-		//Inclusion de la vue
-		fil_ariane('Liste des billets en ligne');
-		
 		return render_to_response(array(
 			'ListerBillets' => $ListerBillets,
 			'Auteurs' => $Auteurs,

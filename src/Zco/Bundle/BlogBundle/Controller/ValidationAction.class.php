@@ -22,6 +22,7 @@
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\BlogBundle\Domain\BlogDAO;
 
 /**
  * Contrôleur gérant l'affichage de l'historique de validation.
@@ -48,7 +49,7 @@ class ValidationAction extends BlogActions
 			if($this->verifier_voir && ($this->autorise == true || verifier('blog_voir_historique')))
 			{
 
-				$this->Historique = HistoriqueValidation($_GET['id']);
+				$this->Historique = BlogDAO::HistoriqueValidation($_GET['id']);
 
 				//Inclusion de la vue
 				fil_ariane($this->InfosBillet['cat_id'], array(

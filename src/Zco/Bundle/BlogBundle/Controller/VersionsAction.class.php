@@ -19,6 +19,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpFoundation\Response;
+use Zco\Bundle\BlogBundle\Domain\BlogDAO;
+
 /**
  * Contrôleur gérant l'affichage des versions d'un billet.
  *
@@ -43,7 +46,7 @@ class VersionsAction extends BlogActions
 			//Si on a bien le droit de voir ce billet
 			if($this->verifier_voir && (verifier('blog_voir_versions') || $this->autorise == true))
 			{
-				$this->ListerVersions = ListerVersions($_GET['id']);
+				$this->ListerVersions = BlogDAO::ListerVersions($_GET['id']);
 
 				//Inclusion de la vue
 				fil_ariane($this->InfosBillet['cat_id'], array(

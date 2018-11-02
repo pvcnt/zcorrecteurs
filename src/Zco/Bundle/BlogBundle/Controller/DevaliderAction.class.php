@@ -23,6 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\BlogBundle\Domain\BlogDAO;
 
 /**
  * Contrôleur gérant la dévalidation d'un billet.
@@ -33,8 +34,6 @@ class DevaliderAction extends BlogActions
 {
 	public function execute()
 	{
-		zCorrecteurs::VerifierFormatageUrl(null, true);
-
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))
 		{
 			//On récupère des infos sur le billet
@@ -48,7 +47,7 @@ class DevaliderAction extends BlogActions
 				//Si on veut bien dévalider
 				if(isset($_POST['confirmer']))
 				{
-					EditerBillet($_GET['id'], array('etat' => BLOG_BROUILLON));
+                    BlogDAO::EditerBillet($_GET['id'], array('etat' => BLOG_BROUILLON));
 					return redirect('Le billet a bien été dévalidé.', 'brouillons.html');
 				}
 				//Si on annule

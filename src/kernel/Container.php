@@ -19,21 +19,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Doctrine\Common\Cache\CacheProvider;
+use Imagine\Image\ImagineInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Request;
+
 /**
  * Simple class to provide a singleton on the dependency injection layer.
  * Provides quick access over services and parameters over all the application.
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-
-use Doctrine\Common\Cache\CacheProvider;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\Request;
-
 final class Container
 {
-    protected static $instance;
+    private static $instance;
 
     /**
      * Defines the instance of the container. This is not a very
@@ -57,6 +57,11 @@ final class Container
     public static function get($service, $invalidBehavior = ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE)
     {
         return self::instance()->get($service, $invalidBehavior);
+    }
+
+    public static function imagine(): ImagineInterface
+    {
+        return self::instance()->get('imagine');
     }
 
     public static function request(): Request

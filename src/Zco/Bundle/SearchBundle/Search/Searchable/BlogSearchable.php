@@ -21,6 +21,8 @@
 
 namespace Zco\Bundle\SearchBundle\Search\Searchable;
 
+use Zco\Bundle\BlogBundle\Domain\BlogDAO;
+
 /**
  * Recherche sur le blog.
  *
@@ -35,12 +37,11 @@ class BlogSearchable implements SearchableInterface
 
     public function transformResults(array $matches)
     {
-        include_once(__DIR__ . '/../../../BlogBundle/modeles/blog.php');
         $ids = array_map(function ($m) {
             return $m['id'];
         }, $matches);
 
-        return ListerBillets(array('id' => $ids));
+        return BlogDAO::ListerBillets(array('id' => $ids));
     }
 
     public function doesCheckCredentials()

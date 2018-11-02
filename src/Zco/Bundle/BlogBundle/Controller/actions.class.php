@@ -20,18 +20,11 @@
  */
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Zco\Bundle\BlogBundle\Domain\BlogDAO;
 
 class BlogActions extends Controller
 {
     protected $_vars = array();
-
-    public function __construct()
-    {
-        include_once(__DIR__.'/../modeles/blog.php');
-        include_once(__DIR__.'/../modeles/commentaires.php');
-        include_once(__DIR__.'/../modeles/versions.php');
-        include_once(__DIR__.'/../modeles/validation.php');
-    }
 
     public function getVars()
 	{
@@ -68,7 +61,7 @@ class BlogActions extends Controller
 		//--- On récupère les infos sur le billet et les auteurs ---
 		if(!isset($this->InfosBillet) || !isset($this->Auteurs))
 		{
-			$Auteurs = InfosBillet($_GET['id']);
+			$Auteurs = BlogDAO::InfosBillet($_GET['id']);
 			if(empty($Auteurs))
 				return redirect('Ce billet n\'existe pas.', '/blog/', MSG_ERROR);
 			$this->Auteurs = $Auteurs;

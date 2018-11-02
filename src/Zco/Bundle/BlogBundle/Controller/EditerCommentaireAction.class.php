@@ -21,6 +21,7 @@
 
 use \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use \Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\BlogBundle\Domain\CommentDAO;
 
 /**
  * Contrôleur gérant l'édition d'un commentaire sur un billet du blog.
@@ -35,8 +36,8 @@ class EditerCommentaireAction extends BlogActions
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))
 		{
 			//On récupère des infos sur le commentaire
-			$InfosCommentaire = InfosCommentaire($_GET['id']);
-			$ListerCommentaires = ListerCommentairesBillet($InfosCommentaire['blog_id'], -1);
+			$InfosCommentaire = CommentDAO::InfosCommentaire($_GET['id']);
+			$ListerCommentaires = CommentDAO::ListerCommentairesBillet($InfosCommentaire['blog_id'], -1);
 
 			Page::$titre = htmlspecialchars($InfosCommentaire['version_titre']).' - Modifier un commentaire';
 
@@ -54,7 +55,7 @@ class EditerCommentaireAction extends BlogActions
 				//Si on a envoyé quelque chose
 				if(!empty($_POST['submit']))
 				{
-					EditerCommentaire($_GET['id'], $_SESSION['id'], $_POST['texte']);
+                    CommentDAO::EditerCommentaire($_GET['id'], $_SESSION['id'], $_POST['texte']);
 					
 					return redirect(
 					    'Le commentaire a bien été édité.',

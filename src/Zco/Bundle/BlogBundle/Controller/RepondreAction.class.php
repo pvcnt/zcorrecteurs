@@ -22,6 +22,7 @@
 use Symfony\Component\HttpFoundation\Response;
 use \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use \Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\BlogBundle\Domain\BlogDAO;
 
 /**
  * Contrôleur gérant la validation d'un billet.
@@ -46,12 +47,12 @@ class RepondreAction extends BlogActions
 				if(!empty($_POST['texte']) && !empty($_POST['decision']))
 				{
 					//Validation
-					AjouterHistoriqueValidation($_GET['id'], $_SESSION['id'],
+                    BlogDAO::AjouterHistoriqueValidation($_GET['id'], $_SESSION['id'],
 					$this->InfosBillet['blog_id_version_courante'], $_POST['texte'], $_POST['decision']);
 
 					//Mise à jour du billet
 					$etat = $_POST['decision'] == DECISION_VALIDER ? BLOG_PREPARATION : BLOG_REFUSE;
-					EditerBillet($_GET['id'], array('etat' => $etat, 'date_validation' => 'NOW()'));
+                    BlogDAO::EditerBillet($_GET['id'], array('etat' => $etat, 'date_validation' => 'NOW()'));
 
 					//Envoi du mail
 					foreach($this->Auteurs as $a)
@@ -89,8 +90,8 @@ class RepondreAction extends BlogActions
 				}
 
 				//Infos sur le commentaire
-				$this->InfosValidation = InfosValidationVersion($this->InfosBillet['blog_id_version_courante']);
-				$this->ListerTags = ListerTagsBillet($_GET['id']);
+				$this->InfosValidation = BlogDAO::InfosValidationVersion($this->InfosBillet['blog_id_version_courante']);
+				$this->ListerTags = BlogDAO::ListerTagsBillet($_GET['id']);
 
 				//Inclusion de la vue
 				fil_ariane($this->InfosBillet['cat_id'], array(

@@ -23,6 +23,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\BlogBundle\Domain\BlogDAO;
 
 /**
  * Contôleur gérant la suppression d'un billet.
@@ -45,7 +46,7 @@ class SupprimerAction extends BlogActions
 				//Si on veut bien le supprimer
 				if(isset($_POST['confirmer']))
 				{
-					SupprimerBillet($_GET['id']);
+                    BlogDAO::SupprimerBillet($_GET['id']);
 
 					if($this->autorise == true)
 						return redirect('Le billet a bien été supprimé.', 'mes-billets.html');

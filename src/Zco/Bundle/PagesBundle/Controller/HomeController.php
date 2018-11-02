@@ -23,6 +23,7 @@ namespace Zco\Bundle\PagesBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Zco\Bundle\BlogBundle\Domain\BlogDAO;
 
 /**
  * Affichage de la page d'accueil du site.
@@ -39,7 +40,6 @@ class HomeController extends Controller
         \Page::$titre = 'zCorrecteurs.fr - Les réponses à toutes vos questions concernant la langue française !';
 
         // Inclusion des modèles.
-        include_once(BASEPATH . '/src/Zco/Bundle/BlogBundle/modeles/blog.php');
         include_once(BASEPATH . '/src/Zco/Bundle/ForumBundle/modeles/statistiques_accueil.php');
         include_once(BASEPATH . '/src/Zco/Bundle/RecrutementBundle/modeles/recrutements.php');
         include_once(BASEPATH . '/src/Zco/Bundle/DicteesBundle/modeles/statistiques-accueil.php');
@@ -70,20 +70,20 @@ class HomeController extends Controller
             $vars['SujetSemaine'] = $registry->get('accueil_sujet');
         } elseif ($vars['quel_bloc'] == 'billet') {
             $vars['BilletSemaine'] = $registry->get('accueil_billet');
-            $vars['BilletSemaine'] = InfosBillet($vars['BilletSemaine']['billet_id']);
+            $vars['BilletSemaine'] = BlogDAO::InfosBillet($vars['BilletSemaine']['billet_id']);
             $vars['BilletAuteurs'] = $vars['BilletSemaine'];
             $vars['BilletSemaine'] = $vars['BilletSemaine'][0];
         } elseif ($vars['quel_bloc'] == 'billet_hasard') {
             if ($billet = $cache->fetch('billet_hasard')) {
-                $vars['BilletHasard'] = InfosBillet($billet);
+                $vars['BilletHasard'] = BlogDAO::InfosBillet($billet);
                 $vars['BilletAuteurs'] = $vars['BilletHasard'];
                 $vars['BilletHasard'] = $vars['BilletHasard'][0];
             } else {
                 if (!$categories = $registry->get('categories_billet_hasard'))
                     $categories = array();
-                $rand = BilletAleatoire($categories);
+                $rand = BlogDAO::BilletAleatoire($categories);
                 $cache->save('billet_hasard', $rand, TEMPS_BILLET_HASARD * 60);
-                $vars['BilletHasard'] = InfosBillet($rand);
+                $vars['BilletHasard'] = BlogDAO::InfosBillet($rand);
                 $vars['BilletAuteurs'] = $vars['BilletHasard'];
                 $vars['BilletHasard'] = $vars['BilletHasard'][0];
             }
@@ -93,7 +93,7 @@ class HomeController extends Controller
         }
 
         // Blog
-        list($vars['ListerBillets'], $vars['BilletsAuteurs']) = ListerBillets(array(
+        list($vars['ListerBillets'], $vars['BilletsAuteurs']) = BlogDAO::ListerBillets(array(
             'etat' => BLOG_VALIDE,
             'lecteurs' => false,
             'futur' => false,
@@ -246,15 +246,12 @@ class HomeController extends Controller
         }
 
         //--- Cas du blog mis en valeur ---
-        //Inclusion des modèles
-        include(BASEPATH . '/src/Zco/Bundle/BlogBundle/modeles/blog.php');
-
         $infos_billet = $registry->get('accueil_billet');
         if (empty($infos_billet)) $infos_billet = array();
         $image_billet = array_key_exists('image', $infos_billet) ? $infos_billet['image'] : '';
 
         if (!empty($_POST['billet'])) {
-            $choix_billet = ChercherBillets($_POST['billet']);
+            $choix_billet = BlogDAO::ChercherBillets($_POST['billet']);
             if (count($choix_billet) == 1) {
                 $billet = array(
                     'billet_id' => $choix_billet[0]['blog_id'],
@@ -266,7 +263,7 @@ class HomeController extends Controller
             }
         }
         if (!empty($_GET['billet'])) {
-            $billet = InfosBillet($_GET['billet']);
+            $billet = BlogDAO::InfosBillet($_GET['billet']);
             if (!empty($billet)) {
                 $billet = array(
                     'billet_id' => $billet[0]['blog_id'],

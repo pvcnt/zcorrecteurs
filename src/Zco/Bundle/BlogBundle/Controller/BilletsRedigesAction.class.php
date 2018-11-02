@@ -20,6 +20,7 @@
  */
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\BlogBundle\Domain\BlogDAO;
 
 /**
  * Contrôleur gérant l'affichage de tous les billets validés d'un membre.
@@ -41,7 +42,7 @@ class BilletsRedigesAction extends BlogActions
 
 			Page::$titre = 'Liste des billets rédigés par '.htmlspecialchars($InfosUtilisateur['utilisateur_pseudo']);
 
-			list($ListerBillets, $BilletsAuteurs) = ListerBillets(array(
+			list($ListerBillets, $BilletsAuteurs) = BlogDAO::ListerBillets(array(
 				'id_utilisateur' => $_GET['id'],
 				'etat' => BLOG_VALIDE,
 				'lecteurs' => false,

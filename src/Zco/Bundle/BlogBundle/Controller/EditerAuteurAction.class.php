@@ -22,6 +22,7 @@
 use Symfony\Component\HttpFoundation\Response;
 use \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use \Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\BlogBundle\Domain\BlogDAO;
 
 /**
  * Contrôleur gérant l'édition d'un auteur.
@@ -58,7 +59,7 @@ class EditerAuteurAction extends BlogActions
 						$InfosUtilisateur = InfosUtilisateur($_POST['pseudo']);
 						if(!empty($InfosUtilisateur))
 						{
-							EditerAuteur($_GET['id2'], $_GET['id'], $InfosUtilisateur['utilisateur_id'], $_POST['statut']);
+                            BlogDAO::EditerAuteur($_GET['id2'], $_GET['id'], $InfosUtilisateur['utilisateur_id'], $_POST['statut']);
 							return redirect('L\'auteur a bien été modifié.', 'admin-billet-'.$_GET['id'].'.html');
 						}
 						else

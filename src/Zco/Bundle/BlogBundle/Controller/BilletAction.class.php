@@ -23,6 +23,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Zco\Bundle\BlogBundle\Domain\BlogDAO;
+use Zco\Bundle\BlogBundle\Domain\CommentDAO;
 
 /**
  * Contrôleur gérant l'affichage d'un billet du blog et
@@ -49,14 +51,14 @@ class BilletAction extends BlogActions
             //Si le billet est un article virtuel.
             if(!is_null($this->InfosBillet['blog_url_redirection']) && !empty($this->InfosBillet['blog_url_redirection']))
             {
-                $this->InfosBillet['blog_etat'] == BLOG_VALIDE && BlogIncrementerVues($_GET['id']);
+                $this->InfosBillet['blog_etat'] == BLOG_VALIDE && BlogDAO::BlogIncrementerVues($_GET['id']);
                 return new RedirectResponse(htmlspecialchars($this->InfosBillet['blog_url_redirection']), 301);
             }
 
             //Si on veut voir un commentaire en particulier
             if(!empty($_GET['id2']) && is_numeric($_GET['id2']))
             {
-                $page = TrouverPageCommentaire($_GET['id2'], $_GET['id']);
+                $page = CommentDAO::TrouverPageCommentaire($_GET['id2'], $_GET['id']);
                 if($page !== false)
                 {
                     $page = ($page > 1) ? '-p'.$page : '';
@@ -69,7 +71,7 @@ class BilletAction extends BlogActions
             //--- Si on veut fermer les commentaires ---
             if(isset($_GET['fermer']) && $_GET['fermer'] == 1 && verifier('blog_choisir_comms'))
             {
-                EditerBillet($_GET['id'], array('commentaires' => COMMENTAIRES_NONE));
+                BlogDAO::EditerBillet($_GET['id'], array('commentaires' => COMMENTAIRES_NONE));
                 return redirect(
                     'Les commentaires ont bien été fermés.',
                     'billet-'.$_GET['id'].'-'.rewrite($this->InfosBillet['version_titre']).'.html'
@@ -79,7 +81,7 @@ class BilletAction extends BlogActions
             //--- Si on veut ouvrir les commentaires ---
             if(isset($_GET['fermer']) && $_GET['fermer'] == 0 && verifier('blog_choisir_comms'))
             {
-                EditerBillet($_GET['id'], array('commentaires' => COMMENTAIRES_OK));
+                BlogDAO::EditerBillet($_GET['id'], array('commentaires' => COMMENTAIRES_OK));
                 return redirect(
                     'Les commentaires ont bien été ouverts.',
                     'billet-'.$_GET['id'].'-'.rewrite($this->InfosBillet['version_titre']).'.html'
@@ -104,15 +106,15 @@ class BilletAction extends BlogActions
                         Page::$description .= ' - Page '.$page;
                     }
 
-                    $this->ListerCommentaires = ListerCommentairesBillet($_GET['id'], $page);
-                    $this->CompterCommentaires = CompterCommentairesBillet($_GET['id']);
+                    $this->ListerCommentaires = CommentDAO::ListerCommentairesBillet($_GET['id'], $page);
+                    $this->CompterCommentaires = CommentDAO::CompterCommentairesBillet($_GET['id']);
                     $nbCommentairesParPage = 15;
                     $NombrePages = ceil($this->CompterCommentaires / $nbCommentairesParPage);
                     $this->ListePages = liste_pages($page, $NombrePages, $this->CompterCommentaires, $nbCommentairesParPage, 'billet-'.$_GET['id'].'-p%s-'.rewrite($this->InfosBillet['version_titre']).'.html#commentaires');
 
                     //On marque les commentaires comme lus s'il y en a
                     if(!empty($this->ListerCommentaires) && verifier('connecte'))
-                        MarquerCommentairesLus($this->InfosBillet, $page, $this->ListerCommentaires);
+                        CommentDAO::MarquerCommentairesLus($this->InfosBillet, $this->ListerCommentaires);
                 }
             }
             else
@@ -126,9 +128,9 @@ class BilletAction extends BlogActions
             else
                 $this->voir_moderation = false;
 
-            $this->ListerBilletsLies = ListerBilletsLies($_GET['id']);
-            $this->ListerTags = ListerTagsBillet($_GET['id']);
-            $this->InfosBillet['blog_etat'] == BLOG_VALIDE && BlogIncrementerVues($_GET['id']);
+            $this->ListerBilletsLies = BlogDAO::ListerBilletsLies($_GET['id']);
+            $this->ListerTags = BlogDAO::ListerTagsBillet($_GET['id']);
+            $this->InfosBillet['blog_etat'] == BLOG_VALIDE && BlogDAO::BlogIncrementerVues($_GET['id']);
 
             //Inclusion de la vue
             fil_ariane($this->InfosBillet['cat_id'], array(

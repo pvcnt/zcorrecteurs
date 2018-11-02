@@ -22,6 +22,7 @@
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\BlogBundle\Domain\BlogDAO;
 use Zco\Bundle\ContentBundle\Domain\TagRepository;
 
 /**
@@ -46,7 +47,7 @@ class AdminBilletAction extends BlogActions
 				throw new AccessDeniedHttpException();
 
 			$Tags = array();
-			foreach(ListerTagsBillet($_GET['id']) as $tag)
+			foreach(BlogDAO::ListerTagsBillet($_GET['id']) as $tag)
 				$Tags[$tag['id']] = mb_strtolower(htmlspecialchars($tag['nom']));
 			$this->setRef('Tags', $Tags);
 
@@ -58,12 +59,12 @@ class AdminBilletAction extends BlogActions
 				foreach($TagsExtraits as $tag)
 				{
 					if(!array_key_exists($tag, $Tags))
-						AjouterTagBillet($_GET['id'], $tag);
+                        BlogDAO::AjouterTagBillet($_GET['id'], $tag);
 				}
 				foreach($Tags as $cle => $tag)
 				{
 					if(!in_array($cle, $TagsExtraits))
-						SupprimerTagBillet($_GET['id'], $cle);
+                        BlogDAO::SupprimerTagBillet($_GET['id'], $cle);
 				}
 				return redirect('Les mots clés ont bien été modifiés.', 'admin-billet-'.$_GET['id'].'.html');
 			}
@@ -75,7 +76,7 @@ class AdminBilletAction extends BlogActions
 				$InfosUtilisateur = InfosUtilisateur($_POST['pseudo']);
 				if(!empty($InfosUtilisateur))
 				{
-					AjouterAuteur($_GET['id'], $InfosUtilisateur['utilisateur_id'], $_POST['statut']);
+                    BlogDAO::AjouterAuteur($_GET['id'], $InfosUtilisateur['utilisateur_id'], $_POST['statut']);
 					return redirect('L\'auteur a bien été ajouté.', 'admin-billet-'.$_GET['id'].'.html');
 				}
 				else
@@ -87,7 +88,7 @@ class AdminBilletAction extends BlogActions
 			//--- Si on veut changer de logo ---
 			if(!empty($_POST['image']) && $this->verifier_editer)
 			{
-				$urlimage = AjouterBilletImage($_GET['id'], $_POST['image']);
+				$urlimage = BlogDAO::AjouterBilletImage($_GET['id'], $_POST['image']);
 
 				if($urlimage[0] === false)
 				{
@@ -101,14 +102,14 @@ class AdminBilletAction extends BlogActions
 						exit('unknown code');
 				}
 
-				EditerBillet($_GET['id'], array('image' => $urlimage[1]));
+                BlogDAO::EditerBillet($_GET['id'], array('image' => $urlimage[1]));
 				return redirect('Le logo de ce billet a bien été changé.', 'admin-billet-'.$_GET['id'].'.html');
 			}
 
 			//--- Si on veut changer le type de commentaires ---
 			if(isset($_POST['commentaires']) && is_numeric($_POST['commentaires']) && verifier('blog_choisir_comms'))
 			{
-				EditerBillet($_GET['id'], array(
+                BlogDAO::EditerBillet($_GET['id'], array(
 					'commentaires' => $_POST['commentaires'],
 					'lien_topic' => $_POST['lien']
 				));
@@ -121,7 +122,7 @@ class AdminBilletAction extends BlogActions
 				if(empty($_POST['redirection']) || $_POST['redirection'] == 'http://')
 					$_POST['redirection'] = null;
 
-				EditerBillet($_GET['id'], array(
+                BlogDAO::EditerBillet($_GET['id'], array(
 					'url_redirection' => $_POST['redirection']
 				));
 				return redirect('La nouvelle adresse de l\'article virtuel a bien été mémorisée.', 'admin-billet-'.$_GET['id'].'.html');
@@ -130,7 +131,7 @@ class AdminBilletAction extends BlogActions
 			//--- Si on veut changer la date de publication ---
 			if(isset($_POST['changer_date']) && verifier('blog_valider'))
 			{
-				EditerBillet($_GET['id'], array(
+                BlogDAO::EditerBillet($_GET['id'], array(
 					'date_publication' => $_POST['date_pub']
 				));
 				return redirect('La date de publication de ce billet a bien été changée.', 'admin-billet-'.$_GET['id'].'.html');

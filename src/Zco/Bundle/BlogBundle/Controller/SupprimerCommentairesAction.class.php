@@ -23,6 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\BlogBundle\Domain\CommentDAO;
 
 /**
  * Contrôleur gérant la suppression de tous les commentaires d'un billet.
@@ -48,7 +49,7 @@ class SupprimerCommentairesAction extends BlogActions
 			//Si on veut le supprimer
 			if(isset($_POST['confirmer']))
 			{
-				SupprimerCommentairesBillet($_GET['id']);
+                CommentDAO::SupprimerCommentairesBillet($_GET['id']);
 				return redirect(
 				    'Tous les commentaires ont bien été supprimés.',
                     'billet-'.$this->InfosBillet['blog_id'].'-'.rewrite($this->InfosBillet['version_titre']).'.html'

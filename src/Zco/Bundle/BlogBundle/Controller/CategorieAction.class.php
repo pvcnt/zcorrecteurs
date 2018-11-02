@@ -21,6 +21,7 @@
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Zco\Bundle\BlogBundle\Domain\BlogDAO;
 
 /**
  * Contrôleur gérant l'affichage des billets d'une catégorie.
@@ -38,11 +39,11 @@ class CategorieAction extends BlogActions
                 throw new NotFoundHttpException();
 
 			zCorrecteurs::VerifierFormatageUrl($InfosCategorie['cat_nom'], true, false, 1);
-			$NombreDeBillet = CompterListerBilletsEnLigne($_GET['id']);
+			$NombreDeBillet = BlogDAO::CompterListerBilletsEnLigne($_GET['id']);
 			$nbBilletsParPage = 15;
 			$NombreDePage = ceil($NombreDeBillet / $nbBilletsParPage);
 			$page = (!empty($_GET['p']) && is_numeric($_GET['p'])) ? $_GET['p'] : 1;
-			list($ListerBillets, $BilletsAuteurs) = ListerBillets(array(
+			list($ListerBillets, $BilletsAuteurs) = BlogDAO::ListerBillets(array(
 				'id_categorie' => $_GET['id'],
 				'lecteurs' => false,
 				'etat' => BLOG_VALIDE,

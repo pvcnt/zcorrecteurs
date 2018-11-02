@@ -29,19 +29,6 @@ class FluxAction extends Feed
 	protected $link = URL_SITE;
 	protected $itemAuthorEmail = 'contact@zcorrecteurs.fr';
 
-	public function execute()
-	{
-		zCorrecteurs::VerifierFormatageUrl(null, true);
-
-		include_once(__DIR__.'/../modeles/blog.php');
-		AjouterVisiteFlux(
-			ip2long(Container::request()->getClientIp()),
-			!empty($_GET['id']) && is_numeric($_GET['id']) ? $_GET['id'] : GetIDCategorie('blog'),
-			isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : null);
-
-		return parent::execute();
-	}
-
 	protected function getTitle($object)
 	{
 		if(!is_null($object))

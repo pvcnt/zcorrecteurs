@@ -20,6 +20,7 @@
  */
 
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Zco\Bundle\BlogBundle\Domain\BlogDAO;
 
 /**
  * Contrôleur gérant l'affichage des billets en cours de rédaction.
@@ -35,7 +36,7 @@ class BrouillonsAction extends BlogActions
         }
 		Page::$titre .= ' - Voir les billets en cours de rédaction';
 
-		list($ListerBillets, $Auteurs) = ListerBillets(array('etat' => BLOG_BROUILLON));
+		list($ListerBillets, $Auteurs) = BlogDAO::ListerBillets(array('etat' => BLOG_BROUILLON));
 
 		//Inclusion de la vue
 		fil_ariane('Liste des billets en cours de rédaction');
