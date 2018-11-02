@@ -22,6 +22,7 @@
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\GroupesBundle\Domain\GroupDAO;
 
 /**
  * Contrôleur gérant la réponse à une candidature (test, acceptation ou refus).
@@ -63,7 +64,7 @@ class RepondreAction extends Controller
 						{
 							$_POST['id'] = $InfosCandidature['utilisateur_id'];
 							$_POST['groupe'] = $InfosCandidature['recrutement_id_groupe'];
-							ChangerGroupeUtilisateur();
+                            GroupDAO::ChangerGroupeUtilisateur();
 							$this->get('cache')->save('dernier_refresh_droits', time(), 0);
 						}
 

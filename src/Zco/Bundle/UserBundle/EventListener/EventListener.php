@@ -29,6 +29,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Zco\Bundle\CoreBundle\CoreEvents;
 use Zco\Bundle\CoreBundle\Event\CronEvent;
+use Zco\Bundle\GroupesBundle\Domain\GroupDAO;
 use Zco\Bundle\PagesBundle\Event\FilterSitemapEvent;
 use Zco\Bundle\PagesBundle\PagesEvents;
 use Zco\Bundle\UserBundle\Exception\LoginException;
@@ -106,7 +107,7 @@ class EventListener implements EventSubscriberInterface
             // Si le membre n'est toujours pas connecté on lui attribue de force certains
             // attributs l'identifiant comme un visiteur.
             if (!isset($_SESSION['groupe']) || !isset($_SESSION['id'])) {
-                $_SESSION['groupe'] = InfosGroupe(\Groupe::ANONYMOUS)['groupe_id'];
+                $_SESSION['groupe'] = GroupDAO::InfosGroupe(\Groupe::ANONYMOUS)['groupe_id'];
                 $_SESSION['id'] = -1;
                 $_SESSION['refresh_droits'] = time();
             }

@@ -19,6 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Zco\Bundle\GroupesBundle\Domain\GroupDAO;
+
 /**
  * Requêtes sur la table des utilisateurs.
  *
@@ -289,7 +291,7 @@ class UtilisateurTable extends Doctrine_Table
 		//Affectation de données par défaut indispensables avant enregistrement.
 		if ($user->getGroupId() === null)
 		{
-			$user->setGroupId(InfosGroupe(\Groupe::DEFAULT)['groupe_id']);
+			$user->setGroupId(GroupDAO::InfosGroupe(\Groupe::DEFAULT)['groupe_id']);
 		}
 		if ($user->getRegistrationDate() === null)
 		{

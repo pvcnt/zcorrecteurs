@@ -26,6 +26,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Zco\Bundle\GroupesBundle\Domain\GroupDAO;
 
 /**
  * Création d'un compte utilisateur.
@@ -76,7 +77,7 @@ You can create an invalid user (will not be able to log in):
         }
         if ($input->getOption('admin'))
         {
-            $user->setGroupId(InfosGroupe(\Groupe::ADMIN)['groupe_id']);
+            $user->setGroupId(GroupDAO::InfosGroupe(\Groupe::ADMIN)['groupe_id']);
         }
         
         //On valide l'entité fournie conformément aux contraintes placées dessus.

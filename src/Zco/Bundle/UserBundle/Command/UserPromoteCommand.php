@@ -25,6 +25,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Zco\Bundle\GroupesBundle\Domain\GroupDAO;
 
 /**
  * Promotion d'un compte utilisateur administrateur.
@@ -59,7 +60,7 @@ class UserPromoteCommand extends ContainerAwareCommand
 			return -1;
 		}
 
-		$adminGroup = InfosGroupe(\Groupe::ADMIN);
+		$adminGroup = GroupDAO::InfosGroupe(\Groupe::ADMIN);
 		if ($user->getGroupId() == $adminGroup['groupe_id'])
 		{
 			$output->writeln('<ERROR>The user is already an administrator.</ERROR>');

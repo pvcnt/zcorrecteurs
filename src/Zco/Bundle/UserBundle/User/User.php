@@ -21,6 +21,7 @@
 
 namespace Zco\Bundle\UserBundle\User;
 
+use Zco\Bundle\GroupesBundle\Domain\GroupDAO;
 use Zco\Bundle\UserBundle\UserEvents;
 use Zco\Bundle\UserBundle\Exception\LoginException;
 use Zco\Bundle\UserBundle\Exception\ValueException;
@@ -315,7 +316,7 @@ class User
 		}
 		else
 		{
-			$_SESSION['groupe']              = InfosGroupe(\Groupe::ANONYMOUS)['groupe_id'];
+			$_SESSION['groupe']              = GroupDAO::InfosGroupe(\Groupe::ANONYMOUS)['groupe_id'];
 			$_SESSION['groupes_secondaires'] = array();
 		}
 

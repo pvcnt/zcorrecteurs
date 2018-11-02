@@ -22,6 +22,7 @@
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
+use Zco\Bundle\GroupesBundle\Domain\CredentialsDAO;
 use Zco\Component\Templating\TemplatingEvents;
 use Zco\Component\Templating\Event\FilterResourcesEvent;
 use Zco\Component\Templating\Event\FilterVariablesEvent;
@@ -288,8 +289,7 @@ function verifier($droit, $cat = 0, $groupe = null)
 
     //On récupère les droits du groupe et les stocke dans une variable statique pour ne pas les perdre
     if (!isset($liste_droits[$groupe])) {
-        include_once(BASEPATH . '/src/Zco/Bundle/GroupesBundle/modeles/droits.php');
-        $liste_droits[$groupe] = RecupererDroitsGroupe($groupe);
+        $liste_droits[$groupe] = CredentialsDAO::RecupererDroitsGroupe($groupe);
     }
     $droits = $liste_droits[$groupe];
 

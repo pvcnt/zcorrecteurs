@@ -26,6 +26,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\GroupesBundle\Domain\GroupDAO;
 use Zco\Bundle\UserBundle\Form\Type\NewUsernameType;
 
 /**
@@ -143,8 +144,7 @@ class DefaultController extends Controller
             $vars['newPseudo'] = \Doctrine_Core::getTable('UserNewUsername')->getByUserId($user->getId());
         }
         if (verifier('groupes_changer_membre') || $user->isTeam()) {
-            require_once __DIR__ . '/../../GroupesBundle/modeles/groupes.php';
-            $vars['ListerGroupes'] = \ListerChangementGroupeMembre($user->getId());
+            $vars['ListerGroupes'] = GroupDAO::ListerChangementGroupeMembre($user->getId());
             if ($user->isTeam() && count($vars['ListerGroupes'])) {
                 for ($i = count($vars['ListerGroupes']) - 1; $i >= 0; --$i) {
                     if (!$vars['ListerGroupes'][$i]['ancien_groupe_secondaire'] && !$vars['ListerGroupes'][$i]['nouveau_groupe_secondaire']) {

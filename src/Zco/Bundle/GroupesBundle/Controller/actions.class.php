@@ -24,6 +24,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
+use Zco\Bundle\GroupesBundle\Domain\CredentialsDAO;
+use Zco\Bundle\GroupesBundle\Domain\GroupDAO;
 
 /**
  * Contrôleur gérant les actions sur les groupes et les droits.
@@ -32,11 +34,6 @@ use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
  */
 class GroupesActions extends Controller
 {
-	public function __construct()
-	{
-		include_once(__DIR__.'/../modeles/droits.php');
-	}
-
 	/**
 	 * Affiche la liste des groupes.
 	 */
@@ -48,8 +45,8 @@ class GroupesActions extends Controller
 		fil_ariane('Gestion des groupes');
 
 		return render_to_response(array(
-			'ListerGroupes'				=> ListerGroupes(),
-			'ListerGroupesSecondaires'	=> ListerGroupesSecondaires(),
+			'ListerGroupes'				=> GroupDAO::ListerGroupes(),
+			'ListerGroupesSecondaires'	=> GroupDAO::ListerGroupesSecondaires(),
 		));
 	}
 
@@ -66,12 +63,11 @@ class GroupesActions extends Controller
 		//Si on veut ajouter un groupe
 		if(!empty($_POST['nom']))
 		{
-			AjouterGroupe();
+            GroupDAO::AjouterGroupe();
 			return redirect('Le groupe a bien été ajouté.', 'index.html');
 		}
 
-		fil_ariane('Ajouter un groupe');
-        $ListerGroupes = array_filter(ListerGroupes(), function($group) {
+        $ListerGroupes = array_filter(GroupDAO::ListerGroupes(), function($group) {
             return $group['groupe_code'] != \Groupe::ANONYMOUS;
         });
 
@@ -93,15 +89,13 @@ class GroupesActions extends Controller
 			//Si on veut éditer un groupe
 			if(!empty($_POST['nom']))
 			{
-				EditerGroupe($_GET['id']);
+                GroupDAO::EditerGroupe($_GET['id']);
 				return redirect('Le groupe a bien été modifié.', 'index.html');
 			}
 
-			$InfosGroupe = InfosGroupe($_GET['id']);
+			$InfosGroupe = GroupDAO::InfosGroupe($_GET['id']);
 			if(empty($InfosGroupe))
 				throw new NotFoundHttpException();
-
-			fil_ariane('Modifier un groupe');
 
 			return render_to_response(array('InfosGroupe' => $InfosGroupe));
 		}
@@ -124,7 +118,7 @@ class GroupesActions extends Controller
 			//Si on veut supprimer le groupe
 			if(isset($_POST['confirmer']))
 			{
-				SupprimerGroupe($_GET['id']);
+                GroupDAO::SupprimerGroupe($_GET['id']);
 				$this->get('cache')->save('dernier_refresh_droits', time(), 0);
 
 				return redirect('Le groupe a bien été supprimé.', 'index.html');
@@ -135,11 +129,10 @@ class GroupesActions extends Controller
 				return new RedirectResponse('index.html');
 			}
 
-			$InfosGroupe = InfosGroupe($_GET['id']);
+			$InfosGroupe = GroupDAO::InfosGroupe($_GET['id']);
 			if(empty($InfosGroupe))
                 throw new NotFoundHttpException();
 
-			fil_ariane('Supprimer un groupe');
 			return render_to_response(array('InfosGroupe' => $InfosGroupe));
 		}
 		else
@@ -156,8 +149,8 @@ class GroupesActions extends Controller
         }
 		Page::$titre = 'Vérification des droits d\'un groupe';
 
-		$ListerGroupes = ListerGroupes();
-		$ListerDroits = ListerDroits();
+		$ListerGroupes = GroupDAO::ListerGroupes();
+		$ListerDroits = CredentialsDAO::ListerDroits();
 
 		if(isset($_POST['id']))
 		{
@@ -168,14 +161,14 @@ class GroupesActions extends Controller
 		//Infos sur le groupe si besoin
 		if(isset($_GET['id']) && is_numeric($_GET['id']))
 		{
-			$InfosGroupe = InfosGroupe($_GET['id']);
+			$InfosGroupe = GroupDAO::InfosGroupe($_GET['id']);
 			if(empty($InfosGroupe))
 				throw new NotFoundHttpException();
 		}
 
 		//Listage des droits
 		if(!empty($InfosGroupe))
-			$Droits = VerifierDroitsGroupe($_GET['id']);
+			$Droits = CredentialsDAO::VerifierDroitsGroupe($_GET['id']);
 		else
 			$Droits = null;
 
@@ -218,14 +211,14 @@ class GroupesActions extends Controller
 
 			if(!isset($_POST['groupe']))
 			{
-				$ListerGroupes = array_filter(ListerGroupes(), function($group) {
+				$ListerGroupes = array_filter(GroupDAO::ListerGroupes(), function($group) {
 				    return $group['groupe_code'] != \Groupe::ANONYMOUS;
                 });
 			}
 			elseif(!empty($_POST['groupe']) && is_numeric($_POST['groupe']))
 			{
 				$_POST['id'] = $_GET['id'];
-				ChangerGroupeUtilisateur();
+                GroupDAO::ChangerGroupeUtilisateur();
 				$this->get('cache')->save('dernier_refresh_droits', time(), 0);
 
 				return redirect('Le membre a bien été changé de groupe.', 'changer-membre-groupe-'.$_GET['id'].'.html');
@@ -235,7 +228,7 @@ class GroupesActions extends Controller
 
 			if (isset($_POST['changement_groupes_secondaires']))
 			{
-				ModifierGroupesSecondairesUtilisateur(
+                GroupDAO::ModifierGroupesSecondairesUtilisateur(
 					$_GET['id'],
 					isset($_POST['groupes_secondaires']) ? $_POST['groupes_secondaires'] : array()
 				);
@@ -248,8 +241,8 @@ class GroupesActions extends Controller
 					.rewrite($InfosUtilisateur['utilisateur_pseudo']).'.html');
 			}
 
-			$GroupesSecondaires = ListerGroupesSecondairesUtilisateur($InfosUtilisateur['utilisateur_id']);
-			$ListerGroupesSecondaires = ListerGroupesSecondaires();
+			$GroupesSecondaires = GroupDAO::ListerGroupesSecondairesUtilisateur($InfosUtilisateur['utilisateur_id']);
+			$ListerGroupesSecondaires = GroupDAO::ListerGroupesSecondaires();
 			$temp = array();
 			foreach($GroupesSecondaires as $groupe)
 			{
@@ -265,9 +258,6 @@ class GroupesActions extends Controller
 		}
 
 		$pseudo = isset($InfosUtilisateur) ? $InfosUtilisateur['utilisateur_pseudo'] : '';
-
-		//Inclusion de la vue
-		fil_ariane('Changer un membre de groupe');
 
 		return render_to_response(array(
 			'ListerGroupes' => $ListerGroupes,
@@ -288,13 +278,13 @@ class GroupesActions extends Controller
         }
 		Page::$titre = 'Changement des droits d\'un groupe';
 
-		$ListerGroupes = array_merge(ListerGroupes(), ListerGroupesSecondaires());
-		$ListerDroits = ListerDroits();
+		$ListerGroupes = array_merge(GroupDAO::ListerGroupes(), GroupDAO::ListerGroupesSecondaires());
+		$ListerDroits = CredentialsDAO::ListerDroits();
 
 		//Infos sur le groupe si besoin
 		if($_GET['id'] != '' && is_numeric($_GET['id']))
 		{
-			$InfosGroupe = InfosGroupe($_GET['id']);
+			$InfosGroupe = GroupDAO::InfosGroupe($_GET['id']);
 			if(empty($InfosGroupe))
 				throw new NotFoundHttpException();
 		}
@@ -305,7 +295,7 @@ class GroupesActions extends Controller
 		//Infos sur le droit si besoin
 		if(!empty($_GET['id2']) && is_numeric($_GET['id2']))
 		{
-			$InfosDroit = InfosDroit($_GET['id2']);
+			$InfosDroit = CredentialsDAO::InfosDroit($_GET['id2']);
 			if(empty($InfosDroit))
                 throw new NotFoundHttpException();
 		}
@@ -327,7 +317,7 @@ class GroupesActions extends Controller
 				$ListerEnfants = null;
 			}
 
-			$ValeurDroit = RecupererValeurDroit($_GET['id2'], $_GET['id']);
+			$ValeurDroit = CredentialsDAO::RecupererValeurDroit($_GET['id2'], $_GET['id']);
 			if(!$InfosDroit['droit_choix_categorie'] && !empty($ValeurDroit) && $InfosDroit['droit_choix_binaire'])
 				$ValeurDroit = $ValeurDroit[0];
 			elseif(!$InfosDroit['droit_choix_categorie'] && !empty($ValeurDroit) && !$InfosDroit['droit_choix_binaire'])
@@ -356,11 +346,11 @@ class GroupesActions extends Controller
 			//En cas de droit simple (sans sélection de catégorie)
 			if(!$InfosDroit['droit_choix_binaire'] && !$InfosDroit['droit_choix_categorie'])
 			{
-				EditerDroitGroupe($_GET['id'], $InfosDroit['droit_id_categorie'], $_GET['id2'], (int)$_POST['valeur']);
+                CredentialsDAO::EditerDroitGroupe($_GET['id'], $InfosDroit['droit_id_categorie'], $_GET['id2'], (int)$_POST['valeur']);
 			}
 			elseif(!$InfosDroit['droit_choix_categorie'])
 			{
-				EditerDroitGroupe($_GET['id'], $InfosDroit['droit_id_categorie'], $_GET['id2'], isset($_POST['valeur']) ? 1 : 0);
+                CredentialsDAO::EditerDroitGroupe($_GET['id'], $InfosDroit['droit_id_categorie'], $_GET['id2'], isset($_POST['valeur']) ? 1 : 0);
 			}
 			//Sinon droit appliquable par catégorie
 			else
@@ -379,13 +369,13 @@ class GroupesActions extends Controller
 							$valeur = (int)$_POST['valeur'];
 						else
 							$valeur = 1;
-						EditerDroitGroupe($_GET['id'], $e['cat_id'], $_GET['id2'], $valeur);
+                        CredentialsDAO::EditerDroitGroupe($_GET['id'], $e['cat_id'], $_GET['id2'], $valeur);
 					}
 					//Sinon on le retire
 					else
 					{
 						//if(!in_array($e['cat_id'], $done))
-						EditerDroitGroupe($_GET['id'], $e['cat_id'], $_GET['id2'], 0);
+                        CredentialsDAO::EditerDroitGroupe($_GET['id'], $e['cat_id'], $_GET['id2'], 0);
 					}
 				}
 			}
@@ -427,7 +417,7 @@ class GroupesActions extends Controller
 		fil_ariane('Gestion des droits');
 
 		return render_to_response(array(
-			'ListerDroits' => ListerDroits(),
+			'ListerDroits' => CredentialsDAO::ListerDroits(),
 			'ListerCategories' => CategoryDAO::ListerCategories(),
 		));
 	}
@@ -444,14 +434,14 @@ class GroupesActions extends Controller
 
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))
 		{
-			$InfosDroit = InfosDroit($_GET['id']);
+			$InfosDroit = CredentialsDAO::InfosDroit($_GET['id']);
 			if(empty($InfosDroit))
                 throw new NotFoundHttpException();
 
 			//Si on veut supprimer le droit
 			if(isset($_POST['confirmer']))
 			{
-				SupprimerDroit($_GET['id']);
+				CredentialsDAO::SupprimerDroit($_GET['id']);
 
 				return redirect('Le droit a bien été supprimé.', 'gestion-droits.html');
 			}
@@ -482,16 +472,13 @@ class GroupesActions extends Controller
         }
 		Page::$titre = 'Historique des changements de groupe';
 
-		$NombreDeChangements = CompterChangementHistorique();
+		$NombreDeChangements = GroupDAO::CompterChangementHistorique();
 		$NombreDePages = ceil($NombreDeChangements / 20);
 		$_GET['p'] = (!empty($_GET['p']) && is_numeric($_GET['p'])) ? $_GET['p'] : 1;
 		$Debut = ($_GET['p']-1) * 20;
 
 		$TableauPage = liste_pages($_GET['p'], $NombreDePages, $NombreDeChangements, 20, 'historique-groupes-p%s.html', false);
-		$Changements = ListerChangementGroupe($Debut, 20);
-
-		//Inclusion de la vue
-		fil_ariane('Historique des changements de groupe');
+		$Changements = GroupDAO::ListerChangementGroupe($Debut, 20);
 
 		return render_to_response(array(
 			'NombreDeChangements' => $NombreDeChangements,
