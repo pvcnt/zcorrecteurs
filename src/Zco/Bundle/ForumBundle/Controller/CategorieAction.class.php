@@ -19,6 +19,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
+
 /**
  * Contrôleur gérant l'affichage des forums d'une catégorie.
  *
@@ -35,15 +38,15 @@ class CategorieAction extends ForumActions
 		//Si aucune catégorie n'a été spécifiée
 		if(empty($_GET['id']) || !is_numeric($_GET['id']))
 		{
-			throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
+			throw new NotFoundHttpException();
 		}
 		//Si elle n'existe pas on si on n'a pas le droit de la voir
-		$InfosCategorie = InfosCategorie($_GET['id']);
+		$InfosCategorie = CategoryDAO::InfosCategorie($_GET['id']);
 
 		$droit = !empty($_GET['trash']) ? 'corbeille_sujets' : 'voir_sujets';
 		if(empty($InfosCategorie) || !verifier($droit, $_GET['id']))
 		{
-            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
+            throw new NotFoundHttpException();
 		}
 		
 		// Si la catégorie est archivée on redirige l'utilisateur
@@ -89,7 +92,7 @@ class CategorieAction extends ForumActions
 				if (!empty($_GET['archives']))
 				{
 					// Forum parent
-					$parent = ListerParents($cat);
+					$parent = CategoryDAO::ListerParents($cat);
 					if (count($parent) > 2)
 					{
 						$parent = array_pop($parent);

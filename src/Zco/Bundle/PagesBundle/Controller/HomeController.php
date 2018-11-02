@@ -24,6 +24,7 @@ namespace Zco\Bundle\PagesBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Zco\Bundle\BlogBundle\Domain\BlogDAO;
+use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
 
 /**
  * Affichage de la page d'accueil du site.
@@ -180,7 +181,7 @@ class HomeController extends Controller
         if (!empty($_GET['sujet']) && is_numeric($_GET['sujet'])) {
             $sujet = InfosSujet($_GET['sujet']);
             if (!empty($sujet)) {
-                $cat = InfosCategorie($sujet['sujet_forum_id']);
+                $cat = CategoryDAO::InfosCategorie($sujet['sujet_forum_id']);
                 $sujet = array(
                     'sujet_id' => $sujet['sujet_id'],
                     'sujet_titre' => $sujet['sujet_titre'],
@@ -275,7 +276,7 @@ class HomeController extends Controller
             }
         }
 
-        $categories = ListerEnfants(GetIdCategorie('blog'), false);
+        $categories = CategoryDAO::ListerEnfants(CategoryDAO::GetIdCategorie('blog'), false);
         $categories_actuelles = $registry->get('categories_billet_hasard');
 
         if (isset($_POST['categories'])) {

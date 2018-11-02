@@ -1,4 +1,5 @@
-<?php $Categories = ListerEnfants(GetIDCategorieCourante()); ?>
+<?php use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
+$Categories = CategoryDAO::ListerEnfants(CategoryDAO::GetIDCategorieCourante()); ?>
 <div class="UI_box">
     <form method="post" action="/blog/">
 		<label for="cat" class="nofloat">Catégorie : </label>

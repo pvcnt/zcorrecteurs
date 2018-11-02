@@ -21,6 +21,7 @@
 
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
 
 /**
  * Contrôleur gérant la création d'un nouveau sujet.
@@ -42,7 +43,7 @@ class NouveauAction extends ForumActions
 		}
 		else
 		{
-			$InfosForum = InfosCategorie($_GET['id']);
+			$InfosForum = CategoryDAO::InfosCategorie($_GET['id']);
 			if (!$InfosForum)
 			{
                 throw new NotFoundHttpException();

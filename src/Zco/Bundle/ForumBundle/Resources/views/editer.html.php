@@ -88,8 +88,3 @@
 </form>
 
 <?php include(__DIR__.'/revue_sujet.html.php'); ?>
-
-<p class="centre">
-	<strong>Retour <a href="sujet-<?php echo $InfosMessage['sujet_id'].'-'.rewrite($InfosMessage['sujet_titre']); ?>.html">au sujet "<?php echo htmlspecialchars($InfosMessage['sujet_titre']); ?>"</a>
-	ou <a href="<?php echo FormateURLCategorie($InfosMessage['sujet_forum_id']); ?>">au forum "<?php echo htmlspecialchars($InfosForum['cat_nom']); ?>"</a></strong>
-</p>

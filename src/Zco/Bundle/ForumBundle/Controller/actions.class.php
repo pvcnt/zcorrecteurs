@@ -22,6 +22,7 @@
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
 
 class ForumActions extends Controller
 {
@@ -172,7 +173,7 @@ class ForumActions extends Controller
 		else
 		{
 			$InfosSujet = InfosSujet($_GET['id']);
-			$InfosForum = InfosCategorie($InfosSujet['sujet_forum_id']);
+			$InfosForum = CategoryDAO::InfosCategorie($InfosSujet['sujet_forum_id']);
 			if(empty($InfosSujet))
 				throw new NotFoundHttpException();
 		}

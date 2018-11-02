@@ -1,4 +1,5 @@
-<?php $view->extend('::layouts/default.html.php') ?>
+<?php use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
+$view->extend('::layouts/default.html.php') ?>
 
 <h1>Forum</h1>
 
@@ -70,7 +71,7 @@
 					<td colspan="<?php echo $colspan ?>" class="nom_forum">
 						<h2>
 							<a href="<?php
-							echo FormateURLCategorie($valeur['cat_id']);
+							echo CategoryDAO::FormateURLCategorie($valeur['cat_id']);
 							if (!empty($_GET['trash']))
 								echo '?trash=1'; ?>" rel="nofollow"><?php
 							echo htmlspecialchars($valeur['cat_nom']) ?></a>

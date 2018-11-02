@@ -22,6 +22,7 @@
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Zco\Bundle\BlogBundle\Domain\BlogDAO;
+use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
 
 /**
  * Contrôleur gérant l'affichage des billets d'une catégorie.
@@ -34,7 +35,7 @@ class CategorieAction extends BlogActions
 	{
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))
 		{
-			$InfosCategorie = InfosCategorie($_GET['id']);
+			$InfosCategorie = CategoryDAO::InfosCategorie($_GET['id']);
 			if(empty($InfosCategorie))
                 throw new NotFoundHttpException();
 
@@ -50,8 +51,8 @@ class CategorieAction extends BlogActions
 				'futur' => false,
 			), $page);
 			$ListePage = liste_pages($page, $NombreDePage, $NombreDeBillet, $nbBilletsParPage, '/blog/categorie-'.$_GET['id'].'-p%s-'.rewrite($InfosCategorie['cat_nom']).'.html');
-			$ListerParents = ListerParents($InfosCategorie);
-			$Categories = ListerEnfants($ListerParents[1]);
+			$ListerParents = CategoryDAO::ListerParents($InfosCategorie);
+			$Categories = CategoryDAO::ListerEnfants($ListerParents[1]);
 
 			//Inclusion de la vue
 			fil_ariane($_GET['id'], 'Liste des billets de la catégorie');

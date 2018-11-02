@@ -21,6 +21,7 @@
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Zco\Bundle\BlogBundle\Domain\BlogDAO;
+use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
 
 class BlogActions extends Controller
 {
@@ -67,7 +68,7 @@ class BlogActions extends Controller
 			$this->Auteurs = $Auteurs;
 			$this->InfosBillet = $Auteurs[0];
 		}
-		$this->InfosCategorie = InfosCategorie($this->InfosBillet['blog_id_categorie']);
+		$this->InfosCategorie = CategoryDAO::InfosCategorie($this->InfosBillet['blog_id_categorie']);
 
 		//--- Définition du statut par rapport au billet ---
 		$this->autorise = false;

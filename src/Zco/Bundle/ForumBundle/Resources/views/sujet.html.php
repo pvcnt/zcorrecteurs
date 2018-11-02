@@ -418,26 +418,6 @@ if($InfosSujet['sujet_sondage'] > 0)
 	</tbody>
 </table>
 
-<p class="centre">
-<strong>
-<?php
-if($InfosSujet['sujet_corbeille'])
-{
-?>
-Retour <a href="<?php echo FormateURLCategorie($InfosSujet['sujet_forum_id']); ?>?trash=1">à la corbeille du forum <em><?php echo htmlspecialchars($InfosForum['cat_nom']); ?></em></a> ou <a href="index.html?trash=1">à l'accueil de la corbeille</a>
-<?php
-}
-else
-{
-?>
-Retour <a href="<?php echo FormateURLCategorie($InfosSujet['sujet_forum_id']); ?>">au forum <em><?php echo htmlspecialchars($InfosForum['cat_nom']); ?></em></a>
-ou <a href="/forum/">à la liste des forums</a>
-<?php
-}
-?>
-</strong>
-</p>
-
 <?php
 if(verifier('creer_sujets', $InfosSujet['sujet_forum_id']) OR verifier('repondre_sujets', $InfosSujet['sujet_forum_id']))
 {

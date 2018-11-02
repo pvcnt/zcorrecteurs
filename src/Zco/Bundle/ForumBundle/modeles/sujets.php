@@ -19,6 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
+
 /**
  * Modèle concernant tout ce qui est listage du contenu d'un sujet (donc ses messages quoi),
  * et d'autres fonction nécessaires qui sont utilisées dans la page voir_sujet.
@@ -417,7 +419,7 @@ function ChangerFavori($sujet_id, $etat)
 function sujetIsArchive($id)
 {
 	$InfosSujet = InfosSujet($id);
-	$InfosForum = InfosCategorie($InfosSujet['sujet_forum_id']);
+	$InfosForum = CategoryDAO::InfosCategorie($InfosSujet['sujet_forum_id']);
 	
 	return ( $InfosForum['cat_archive'] == 1 ) ? (true) : (false);
 }

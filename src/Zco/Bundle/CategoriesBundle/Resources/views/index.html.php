@@ -3,8 +3,7 @@
 <h1>Catégories</h1>
 
 <p class="gras centre">
-    <a href="ajouter.html">Ajouter une catégorie</a> –
-    <a href="image.html">Graphique des catégories</a>
+    <a href="ajouter.html">Ajouter une catégorie</a>
 </p>
 
 <table class="UI_items" onmouseover="InverserEtat(event);" onmouseout="InverserEtat(event);">

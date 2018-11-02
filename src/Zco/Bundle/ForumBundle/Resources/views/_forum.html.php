@@ -1,8 +1,9 @@
-<?php if ( isset($Parent) && !empty($_GET['archives'])) : ?>
+<?php use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
+if ( isset($Parent) && !empty($_GET['archives'])) : ?>
 <tr class="grosse_cat_trash" id="c<?php echo $Parent['cat_id']; ?>">
 	<td colspan="3" class="nom_forum">
 		<h2>
-			<a href="<?php echo FormateURLCategorie($Parent['cat_id']); if (!empty($_GET['archives'])) echo '?archives=1'; ?>" rel="nofollow">
+			<a href="<?php echo CategoryDAO::FormateURLCategorie($Parent['cat_id']); if (!empty($_GET['archives'])) echo '?archives=1'; ?>" rel="nofollow">
 				<?php echo htmlspecialchars($Parent['cat_nom']) ?>
 			</a>
 		</h2>
@@ -24,7 +25,7 @@
 
 	<td class="nom_forum">
 		<h3>
-			<a href="<?php echo FormateURLCategorie($forum['cat_id']); if (!empty($_GET['trash'])) echo '?trash=1'; ?>">
+			<a href="<?php echo CategoryDAO::FormateURLCategorie($forum['cat_id']); if (!empty($_GET['trash'])) echo '?trash=1'; ?>">
 				<?php echo htmlspecialchars($forum['cat_nom']); ?>
 			</a>
 		</h3>
@@ -40,7 +41,7 @@
 				<?php } else{ ?>
 					<img src="/pix.gif" class="fff anchor" alt="Redirection" title="Ce forum est une redirection" />
 				<?php } ?>
-				<a href="<?php echo FormateURLCategorie($cat['cat_id']); if(!empty($_GET['trash'])) echo '?trash=1'; ?>" title="<?php echo htmlspecialchars($cat['cat_description']); ?>">
+				<a href="<?php echo CategoryDAO::FormateURLCategorie($cat['cat_id']); if(!empty($_GET['trash'])) echo '?trash=1'; ?>" title="<?php echo htmlspecialchars($cat['cat_description']); ?>">
 					<?php echo htmlspecialchars($cat['cat_nom']); ?>
 				</a>
 			<?php } ?>

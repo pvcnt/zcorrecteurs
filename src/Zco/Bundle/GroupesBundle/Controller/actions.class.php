@@ -23,6 +23,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
 
 /**
  * Contrôleur gérant les actions sur les groupes et les droits.
@@ -319,7 +320,7 @@ class GroupesActions extends Controller
 		{
 			if($InfosDroit['droit_choix_categorie'] == 1)
 			{
-				$ListerEnfants = ListerEnfants($InfosDroit, true);
+				$ListerEnfants = CategoryDAO::ListerEnfants($InfosDroit, true);
 			}
 			else
 			{
@@ -427,7 +428,7 @@ class GroupesActions extends Controller
 
 		return render_to_response(array(
 			'ListerDroits' => ListerDroits(),
-			'ListerCategories' => ListerCategories(),
+			'ListerCategories' => CategoryDAO::ListerCategories(),
 		));
 	}
 

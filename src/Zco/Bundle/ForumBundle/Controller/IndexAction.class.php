@@ -20,6 +20,7 @@
  */
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
 
 /**
  * Contrôleur gérant l'accueil des forums (listage des catégories + forums).
@@ -76,7 +77,7 @@ class IndexAction extends ForumActions
 				if (!empty($_GET['archives']))
 				{
 					// Forum parent
-					$parent = ListerParents($cat);
+					$parent = CategoryDAO::ListerParents($cat);
 					if (count($parent) > 2)
 					{
 						$parent = array_pop($parent);

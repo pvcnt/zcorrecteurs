@@ -118,8 +118,3 @@ else
 </form>
 
 <?php include(__DIR__.'/revue_sujet.html.php'); ?>
-
-<p class="centre">
-<strong>Retour <a href="sujet-<?php echo $InfosSujet['sujet_id'].'-'.rewrite($InfosSujet['sujet_titre']); ?>.html">au sujet "<?php echo htmlspecialchars($InfosSujet['sujet_titre']); ?>"</a>
-ou <a href="<?php echo FormateURLCategorie($InfosSujet['sujet_forum_id']).(!empty($_GET['trash']) ? '?trash=1' : ''); ?>"><?php echo htmlspecialchars($InfosForum['cat_nom']); ?></a></strong>
-</p>

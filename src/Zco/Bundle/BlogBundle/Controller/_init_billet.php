@@ -20,6 +20,7 @@
  */
 
 use Zco\Bundle\BlogBundle\Domain\BlogDAO;
+use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
 
 /**
  * Contrôleur se chargeant de divers paramétrages communs à toutes les pages
@@ -37,7 +38,7 @@ if(!isset($InfosBillet) || !isset($Auteurs))
 		return redirect('Ce billet n\'existe pas.', '/blog/', MSG_ERROR);
 	$InfosBillet = $Auteurs[0];
 }
-$InfosCategorie = InfosCategorie($InfosBillet['blog_id_categorie']);
+$InfosCategorie = CategoryDAO::InfosCategorie($InfosBillet['blog_id_categorie']);
 
 //--- Définition du statut par rapport au billet ---
 $autorise = false;

@@ -19,6 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
+
 /**
  * Fichier générant le flux du blog (global ou par catégorie).
  *
@@ -103,7 +105,7 @@ class FluxAction extends Feed
 
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))
 		{
-			$categorie = InfosCategorie($_GET['id']);
+			$categorie = CategoryDAO::InfosCategorie($_GET['id']);
 			return !empty($categorie) ? $categorie : null;
 		}
 		return null;

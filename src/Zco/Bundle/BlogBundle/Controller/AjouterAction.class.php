@@ -21,6 +21,7 @@
 
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Zco\Bundle\BlogBundle\Domain\BlogDAO;
+use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
 
 /**
  * Contrôleur gérant l'ajout d'un billet.
@@ -50,7 +51,7 @@ class AjouterAction extends BlogActions
 		fil_ariane(array('Mes billets' => 'mes-billets.html', 'Ajouter un billet'));
 		
 		return render_to_response(array(
-			'Categories' => ListerEnfants(GetIDCategorieCourante()),
+			'Categories' => CategoryDAO::ListerEnfants(CategoryDAO::GetIDCategorieCourante()),
 			'tabindex_zform' => 5,
 		));
 	}

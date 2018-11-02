@@ -23,8 +23,3 @@ Merci d'indiquer la raison ci-dessous.</p>
 		</div>
 	</fieldset>
 </form>
-
-<p class="centre">
-	<strong>Retour <a href="sujet-<?php echo $_GET['id'].'-'.rewrite($InfosSujet['sujet_titre']); ?>.html">au sujet "<?php echo htmlspecialchars($InfosSujet['sujet_titre']); ?>"</a>
-	ou <a href="<?php echo FormateURLCategorie($InfosSujet['sujet_forum_id']); ?>">au forum "<?php echo htmlspecialchars($InfosForum['cat_nom']); ?>"</a></strong>
-</p>

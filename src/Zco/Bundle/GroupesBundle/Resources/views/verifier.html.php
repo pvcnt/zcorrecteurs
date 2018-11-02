@@ -1,4 +1,5 @@
-<?php $view->extend('::layouts/default.html.php') ?>
+<?php use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
+$view->extend('::layouts/default.html.php') ?>
 
 <h1>Vérifier les droits d'un groupe</h1>
 
@@ -30,7 +31,7 @@
 	<label for="cat">Catégorie : </label>
 	<select name="cat" id="cat" onchange="document.location = '#c' + this.value; this.value = 0;">
 		<option value="0" class="opt_titre" selected="selected">Sélectionnez</option>
-		<?php echo GetListeCategories(); ?>
+		<?php echo CategoryDAO::GetListeCategories(); ?>
 	</select>
 </fieldset>
 

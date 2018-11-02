@@ -1,4 +1,6 @@
-<?php $view->extend('::layouts/default.html.php') ?>
+<?php use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
+
+$view->extend('::layouts/default.html.php') ?>
 
 <h1>Ajouter une catégorie</h1>
 
@@ -29,7 +31,7 @@
 		<label for="parent">Catégorie parente : </label>
 		<select name="parent" id="parent">
 			<?php if(empty($categories)) { ?><option value="0">Aucune</option><?php } ?>
-			<?php echo GetListeCategories(); ?>
+			<?php echo CategoryDAO::GetListeCategories(); ?>
 		</select>
 	</fieldset>
 
@@ -55,7 +57,7 @@
 		<label for="cat">Copier les droits d'une catégorie : </label>
 		<select name="cat" id="cat">
 			<option value="0" selected="selected">N'attribuer aucun droit</option>
-			<?php echo GetListeCategories(); ?>
+			<?php echo CategoryDAO::GetListeCategories(); ?>
 		</select>
 	</fieldset>
 

@@ -1,4 +1,5 @@
-<?php $view->extend('::layouts/default.html.php') ?>
+<?php use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
+$view->extend('::layouts/default.html.php') ?>
 
 <h1>Forum</h1>
 
@@ -46,7 +47,7 @@
 		<?php if ( empty($_GET['archives']) ) : ?>
 		<tr class="grosse_cat<?php if(!empty($_GET['trash'])) echo '_trash'; ?>">
 			<td colspan="<?php echo $colspan; ?>" class="nom_forum">
-				<a href="<?php echo FormateURLCategorie($InfosCategorie['cat_id']); if(!empty($_GET['trash'])) echo '?trash=1'; ?>" rel="nofollow">
+				<a href="<?php echo CategoryDAO::FormateURLCategorie($InfosCategorie['cat_id']); if(!empty($_GET['trash'])) echo '?trash=1'; ?>" rel="nofollow">
 					<?php echo htmlspecialchars($InfosCategorie['cat_nom']); ?>
 				</a>
 			</td>
@@ -65,13 +66,3 @@
 		?>
 	</tbody>
 </table>
-
-<?php if(empty($_GET['trash']) && empty($_GET['archives'])) { ?>
-	<p class="centre"><strong>Retour à la <a href="index.html">liste des catégories</a></strong></p>
-<?php }
-else if (!empty($_GET['archives']) && empty($_GET['trash']) ){ ?>
-	<p class="centre"><strong>Retour à la <a href="index.html?archives=1">liste des catégories archivées</a></strong></p>
-<?php }
-else { ?>
-	<p class="centre"><strong>Retour à la <a href="index.html?trash=1">liste des catégories de la corbeille</a></strong></p>
-<?php } ?>

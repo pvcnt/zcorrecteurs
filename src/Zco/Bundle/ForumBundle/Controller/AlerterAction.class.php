@@ -19,6 +19,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
+
 /**
  * Contrôleur gérant l'alerte des modérateurs sur un sujet.
  *
@@ -34,9 +37,9 @@ class AlerterAction extends ForumActions
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))
 		{
 			$InfosSujet = InfosSujet($_GET['id']);
-			$InfosForum = InfosCategorie($InfosSujet['sujet_forum_id']);
+			$InfosForum = CategoryDAO::InfosCategorie($InfosSujet['sujet_forum_id']);
 			if(empty($InfosSujet))
-				throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
+				throw new NotFoundHttpException();
 
 			Page::$titre .= ' - '.$InfosSujet['sujet_titre'].' - Alerter les modérateurs';
 			

@@ -21,6 +21,7 @@
 
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
 
 /**
  * Contrôleur gérant la réponse à un sujet.
@@ -42,7 +43,7 @@ class RepondreAction extends ForumActions
 		else
 		{
 			$InfosSujet = InfosSujet($_GET['id']);
-			$InfosForum = InfosCategorie($InfosSujet['sujet_forum_id']);
+			$InfosForum = CategoryDAO::InfosCategorie($InfosSujet['sujet_forum_id']);
 			if (!$InfosSujet)
 			{
                 throw new NotFoundHttpException();

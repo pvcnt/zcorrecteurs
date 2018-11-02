@@ -20,6 +20,7 @@
  */
 
 use Zco\Bundle\BlogBundle\Domain\BlogDAO;
+use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
 
 /**
  * Contrôleur gérant l'accueil du blog.
@@ -56,7 +57,7 @@ class IndexAction extends BlogActions
 			'etat' => BLOG_VALIDE,
 			'futur' => false,
 		), $page);
-		$Categories = ListerEnfants(InfosCategorie(GetIDCategorieCourante()));
+		$Categories = CategoryDAO::ListerEnfants(CategoryDAO::InfosCategorie(CategoryDAO::GetIDCategorieCourante()));
 		$ListePage = liste_pages($page, $NombreDePage, $NombreDeBillet, $nbBilletsParPage, 'index-p%s.html');
 
 		//Inclusion de la vue

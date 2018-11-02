@@ -1,4 +1,6 @@
-<?php $view->extend('::layouts/default.html.php') ?>
+<?php use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
+
+$view->extend('::layouts/default.html.php') ?>
 
 <h1>Modifier une catégorie</h1>
 
@@ -31,7 +33,7 @@
 			<option value="0"<?php if($InfosCategorie['cat_niveau'] == 0) echo ' selected="selected"'; ?>>
 				Aucune
 			</option>
-			<?php echo GetListeCategories($ListerParents[count($ListerParents)-1]['cat_id']); ?>
+			<?php echo CategoryDAO::GetListeCategories($ListerParents[count($ListerParents)-1]['cat_id']); ?>
 		</select><br/>
 		<?php if ($isForum) : ?>
 			<label for="archiver">Archiver le forum : </label>

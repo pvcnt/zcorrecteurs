@@ -25,9 +25,4 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class ZcoCategoriesBundle extends Bundle
 {
-	public function boot()
-	{
-		//Inclusion du modèle de base.
-		include_once(__DIR__.'/modeles/categories.php');
-	}
 }

@@ -23,6 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zco\Bundle\BlogBundle\Domain\BlogDAO;
+use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
 
 /**
  * Contrôleur gérant l'édition d'un billet.
@@ -63,7 +64,7 @@ class EditerAction extends BlogActions
 					return redirect('Le billet a bien été édité.', 'admin-billet-'.$_GET['id'].'.html');
 				}
 
-				$this->Categories = ListerEnfants(GetIDCategorieCourante());
+				$this->Categories = CategoryDAO::ListerEnfants(CategoryDAO::GetIDCategorieCourante());
 
 				//Inclusion de la vue
 				fil_ariane($this->InfosBillet['cat_id'], array(

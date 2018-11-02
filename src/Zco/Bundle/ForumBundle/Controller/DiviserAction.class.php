@@ -21,6 +21,7 @@
 
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
 
 /**
  * Contrôleur gérant la division d'un sujet.
@@ -55,7 +56,7 @@ class DiviserAction extends ForumActions
                     return redirect('Vous devez remplir tous les champs nécessaires !', 'diviser-' . $_GET['id'] . '.html', MSG_ERROR);
 
                 //Si le forum n'existe pas
-                $InfosForum = InfosCategorie($_POST['forum']);
+                $InfosForum = CategoryDAO::InfosCategorie($_POST['forum']);
                 if (empty($InfosForum) || !verifier('voir_sujets', $InfosForum['cat_id']))
                     throw new NotFoundHttpException();
 
