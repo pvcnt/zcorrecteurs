@@ -1,0 +1,37 @@
+zco_groups_index:
+  path:   /groupes
+  defaults:  { _controller: ZcoGroupesBundle:Default:index }
+
+zco_groups_new:
+  path:   /groupes/ajouter
+  defaults:  { _controller: ZcoGroupesBundle:Default:new }
+
+zco_groups_assign:
+  path:   /membres/roles/{id}
+  defaults:  { _controller: ZcoGroupesBundle:Default:assign, id: ~ }
+  requirements:
+    id: \d+
+
+zco_groups_edit:
+  path:   /groupes/modifier/{id}
+  defaults:  { _controller: ZcoGroupesBundle:Default:edit }
+  requirements:
+    id: \d+
+
+zco_groups_delete:
+  path:   /groupes/supprimer/{id}
+  defaults:  { _controller: ZcoGroupesBundle:Default:delete }
+  requirements:
+    id: \d+
+
+zco_groups_checkCredentials:
+  path:   /groupes/verifier/{id}
+  defaults:  { _controller: ZcoGroupesBundle:Default:checkCredentials }
+  requirements:
+    id: \d+
+
+zco_groups_changeCredentials:
+  path:   /groupes/droits/{id}
+  defaults:  { _controller: ZcoGroupesBundle:Default:changeCredentials }
+  requirements:
+    id: \d+

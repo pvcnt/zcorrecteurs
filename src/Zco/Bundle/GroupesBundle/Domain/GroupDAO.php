@@ -149,20 +149,20 @@ final class GroupDAO
         return \Doctrine_Manager::connection()->fetchRow($sql, [$id]);
     }
 
-    public static function AjouterGroupe()
+    public static function AjouterGroupe(array $data)
     {
         $dbh = \Doctrine_Manager::connection()->getDbh();
-        $sanction = isset($_POST['sanction']) ? 1 : 0;
-        $team = isset($_POST['team']) ? 1 : 0;
-        $secondaire = isset($_POST['secondaire']) ? 1 : 0;
+        $sanction = isset($data['sanction']) ? 1 : 0;
+        $team = isset($data['team']) ? 1 : 0;
+        $secondaire = isset($data['secondaire']) ? 1 : 0;
 
         $stmt = $dbh->prepare("
 	INSERT INTO zcov2_groupes(groupe_nom, groupe_logo, groupe_logo_feminin, groupe_class, groupe_sanction, groupe_team, groupe_secondaire)
 	VALUES(:nom, :logo, :logof, :class, :sanction, :team, :secondaire)");
-        $stmt->bindParam(':nom', $_POST['nom']);
-        $stmt->bindParam(':logo', $_POST['logo']);
-        $stmt->bindParam(':logof', $_POST['logo_feminin']);
-        $stmt->bindParam(':class', $_POST['class']);
+        $stmt->bindParam(':nom', $data['nom']);
+        $stmt->bindParam(':logo', $data['logo']);
+        $stmt->bindParam(':logof', $data['logo_feminin']);
+        $stmt->bindParam(':class', $data['class']);
         $stmt->bindParam(':sanction', $sanction);
         $stmt->bindParam(':team', $team);
         $stmt->bindParam(':secondaire', $secondaire);
@@ -171,12 +171,12 @@ final class GroupDAO
         $stmt->closeCursor();
 
         //Si on doit copier les droits d'un autre groupe.
-        if(!empty($_POST['groupe']) && is_numeric($_POST['groupe']))
+        if(!empty($data['groupe']) && is_numeric($data['groupe']))
         {
             $stmt = $dbh->prepare("SELECT gd_id_categorie, gd_id_droit, gd_valeur
 			FROM zcov2_groupes_droits
 			WHERE gd_id_groupe = :id");
-            $stmt->bindParam(':id', $_POST['groupe']);
+            $stmt->bindParam(':id', $data['groupe']);
             $stmt->execute();
             $donnees = $stmt->fetchAll();
             $stmt->closeCursor();
@@ -197,22 +197,22 @@ final class GroupDAO
         return $id;
     }
 
-    public static function EditerGroupe($id)
+    public static function EditerGroupe($id, array $data)
     {
         $dbh = \Doctrine_Manager::connection()->getDbh();
-        $sanction = isset($_POST['sanction']) ? 1 : 0;
-        $team = isset($_POST['team']) ? 1 : 0;
-        $secondaire = isset($_POST['secondaire']) ? 1 : 0;
+        $sanction = isset($data['sanction']) ? 1 : 0;
+        $team = isset($data['team']) ? 1 : 0;
+        $secondaire = isset($data['secondaire']) ? 1 : 0;
 
         $stmt = $dbh->prepare("UPDATE zcov2_groupes
 	SET groupe_nom = :nom, groupe_description = :description, groupe_logo = :logo, groupe_logo_feminin = :logof,
 	groupe_class = :class, groupe_sanction = :sanction, groupe_team = :team, groupe_secondaire = :secondaire
 	WHERE groupe_id = :id");
-        $stmt->bindParam(':nom', $_POST['nom']);
-        $stmt->bindParam(':description', $_POST['description']);
-        $stmt->bindParam(':logo', $_POST['logo']);
-        $stmt->bindParam(':logof', $_POST['logo_feminin']);
-        $stmt->bindParam(':class', $_POST['class']);
+        $stmt->bindParam(':nom', $data['nom']);
+        $stmt->bindParam(':description', $data['description']);
+        $stmt->bindParam(':logo', $data['logo']);
+        $stmt->bindParam(':logof', $data['logo_feminin']);
+        $stmt->bindParam(':class', $data['class']);
         $stmt->bindParam(':id', $id);
         $stmt->bindParam(':sanction', $sanction);
         $stmt->bindParam(':team', $team);
@@ -240,7 +240,7 @@ final class GroupDAO
         return true;
     }
 
-    public static function ChangerGroupeUtilisateur()
+    public static function ChangerGroupeUtilisateur($userId, $newGroupId)
     {
         $dbh = \Doctrine_Manager::connection()->getDbh();
 
@@ -248,22 +248,22 @@ final class GroupDAO
         $stmt = $dbh->prepare('SELECT utilisateur_id_groupe '
             .'FROM zcov2_utilisateurs '
             .'WHERE utilisateur_id = :id');
-        $stmt->bindParam(':id', $_POST['id']);
+        $stmt->bindParam(':id', $userId);
         $stmt->execute();
 
         $groupe = $stmt->fetchColumn();
 
         // Si on change bien de groupe, on effectue l'action
-        if($groupe !== false && $_POST['groupe'] != $groupe)
+        if($groupe !== false && $newGroupId != $groupe)
         {
-            self::AjouterGroupeHistorique($_POST['id'], $_POST['groupe']);
-
             $stmt = $dbh->prepare('UPDATE zcov2_utilisateurs '
                 .'SET utilisateur_id_groupe = :groupe '
                 .'WHERE utilisateur_id = :id');
-            $stmt->bindParam(':id', $_POST['id']);
-            $stmt->bindParam(':groupe', $_POST['groupe']);
+            $stmt->bindParam(':id', $userId);
+            $stmt->bindParam(':groupe', $newGroupId);
             $stmt->execute();
+
+            self::AjouterGroupeHistorique($userId, $newGroupId);
         }
     }
 
@@ -314,50 +314,6 @@ final class GroupDAO
 		LEFT JOIN zcov2_utilisateurs ON utilisateur_id = chg_responsable
 	WHERE chg_utilisateur_id = :id");
         $stmt->bindParam(':id', $id);
-        $stmt->execute();
-        return $stmt->fetchAll();
-    }
-
-    /**
-     *	Fonction qui compte le nombre de changement de pseudo dans l'historique
-     *
-     *	@return int
-     **/
-    public static function CompterChangementHistorique()
-    {
-        $dbh = \Doctrine_Manager::connection()->getDbh();
-
-        $stmt = $dbh->prepare("SELECT COUNT(*) as nb FROM zcov2_historique_groupes");
-        $stmt->execute();
-        $retour = $stmt->fetchColumn();
-        $stmt->closeCursor();
-
-        return $retour;
-    }
-
-    /**
-     *	Fonction qui liste les changements de groupe
-     *
-     *	@param integer $debut			Premier élément à récupèrer
-     *	@param integer $nombre		Nombre d'élèment à récupèrer
-     *	@return array
-     **/
-    public static function ListerChangementGroupe($debut, $nombre)
-    {
-        $dbh = \Doctrine_Manager::connection()->getDbh();
-
-        $stmt = $dbh->prepare("
-	SELECT chg_id, IFNULL(Ua.utilisateur_pseudo, 'Anonyme') as pseudo_membre, Ua.utilisateur_id as id_membre, IFNULL(Ub.utilisateur_pseudo, 'Anonyme') as pseudo_responsable, Ub.utilisateur_id as id_responsable,
-	chg_date, Ga.groupe_nom as nom_ancien_groupe, Ga.groupe_class as couleur_ancien_groupe, Gb.groupe_nom as nom_nouveau_groupe, Gb.groupe_class as couleur_nouveau_groupe
-		FROM zcov2_historique_groupes
-		LEFT JOIN zcov2_utilisateurs Ua ON Ua.utilisateur_id = chg_utilisateur_id
-		LEFT JOIN zcov2_utilisateurs Ub ON Ub.utilisateur_id = chg_responsable
-		LEFT JOIN zcov2_groupes Ga ON Ga.groupe_id = chg_ancien_groupe
-		LEFT JOIN zcov2_groupes Gb ON Gb.groupe_id = chg_nouveau_groupe
-	ORDER BY chg_date DESC
-	LIMIT :elem OFFSET :debut");
-        $stmt->bindParam(':elem', $nombre, \PDO::PARAM_INT);
-        $stmt->bindParam(':debut', $debut, \PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll();
     }

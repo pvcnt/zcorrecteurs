@@ -7,10 +7,6 @@
 
 <h1>Liste des groupes « principaux »</h1>
 
-<p>
-	Il y a actuellement <strong><?php echo count($ListerGroupes); ?> groupes principaux</strong> enregistrés.
-</p>
-
 <div class="UI_box gras centre"><a href="ajouter.html">Ajouter un groupe</a></div>
 
 <?php afficher_liste_groupes($view, $ListerGroupes); ?>

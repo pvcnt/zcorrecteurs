@@ -23,19 +23,6 @@ namespace Zco\Bundle\GroupesBundle\Domain;
 
 final class CredentialsDAO
 {
-    public static function SupprimerDroit($id)
-    {
-        $dbh = \Doctrine_Manager::connection()->getDbh();
-
-        $stmt = $dbh->prepare("DELETE FROM zcov2_droits WHERE droit_id = :id");
-        $stmt->bindParam(':id', $id);
-        $stmt->execute();
-
-        $stmt = $dbh->prepare("DELETE FROM zcov2_groupes_droits WHERE gd_id_droit = :id");
-        $stmt->bindParam(':id', $id);
-        $stmt->execute();
-    }
-
     public static function ListerDroits()
     {
         $dbh = \Doctrine_Manager::connection()->getDbh();

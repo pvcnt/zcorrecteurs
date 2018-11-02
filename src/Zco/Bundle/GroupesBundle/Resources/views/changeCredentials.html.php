@@ -5,21 +5,8 @@
 <fieldset>
 	<legend>Choix du groupe et du droit</legend>
 	<form method="get" action="">
-		<label for="id">Groupe : </label>
-		<select name="id" id="id">
-			<?php foreach($ListerGroupes as $g)
-			{
-				$selected = '';
-				if($g['groupe_id'] == $_GET['id'])
-				{
-					$selected = ' selected="selected"';
-				}
-				echo '<option value="'.$g['groupe_id'].'" style="color: '.$g['groupe_class'].'"'.$selected.'>'.htmlspecialchars($g['groupe_nom']).'</option>';
-			}
-			?>
-		</select><br />
-		<label for="id2">Droit : </label>
-		<select name="id2" id="id2">
+		<label for="credential">Droit : </label>
+		<select name="credential" id="credential">
 			<?php
 			$current = 0;
 			$i = 0;

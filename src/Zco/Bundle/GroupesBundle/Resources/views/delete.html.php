@@ -12,7 +12,7 @@
 
 		<p class="centre">
 			<input type="submit" name="confirmer" value="Oui" />
-			<input type="submit" name="annuler" value="Non" />
+			<a href="<?php echo $view['router']->path('zco_groups_index') ?>">Non</a>
 		</p>
 	</fieldset>
 </form>

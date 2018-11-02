@@ -4,6 +4,10 @@ zco_admin:
 zco_content:
   resource: "@ZcoContentBundle/Resources/config/routing.yml"
 
+
+zco_groups:
+  resource: "@ZcoGroupesBundle/Resources/config/routing.yml"
+
 zco_file:
   resource: "@ZcoFileBundle/Resources/config/routing/index.yml"
 

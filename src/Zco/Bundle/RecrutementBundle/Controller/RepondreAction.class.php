@@ -62,9 +62,7 @@ class RepondreAction extends Controller
 						//Changement de groupe si il le faut
 						if(isset($_POST['change_grp']))
 						{
-							$_POST['id'] = $InfosCandidature['utilisateur_id'];
-							$_POST['groupe'] = $InfosCandidature['recrutement_id_groupe'];
-                            GroupDAO::ChangerGroupeUtilisateur();
+                            GroupDAO::ChangerGroupeUtilisateur($InfosCandidature['utilisateur_id'], $InfosCandidature['recrutement_id_groupe']);
 							$this->get('cache')->save('dernier_refresh_droits', time(), 0);
 						}
 
