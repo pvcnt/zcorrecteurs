@@ -19,6 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Zco\Bundle\FileBundle\Entity\GenericEntity;
+
 /**
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
@@ -31,39 +33,20 @@ class FileUsageTable extends Doctrine_Table
             ->where('u.file_id = ?', $id)
             ->leftJoin('u.Thumbnail t')
             ->execute();
-        
+
         $models = array();
-        foreach ($results as $i => $result)
-        {
+        foreach ($results as $i => $result) {
             $models[$result['entity_class']][$result['entity_id']][] = $i;
         }
-        
-        foreach ($models as $class => $map)
-        {
-            $table = \Doctrine_Core::getTable($class);
-            if ($table instanceof GenericEntityTableInterface)
-            {
-                $entities = $table->getEntities(array_unique(array_keys($map)));
-                foreach ($map as $id => $indexes)
-                {
-                    foreach ($indexes as $index)
-                    {
-                        $results[$index]->setEntity($entities[$id]);
-                    }
-                }
-            }
-            else
-            {
-                foreach ($map as $id => $indexes)
-                {
-                    foreach ($indexes as $index)
-                    {
-                        $results[$index]->setEntity(new GenericEntity($id, $class));
-                    }
+
+        foreach ($models as $class => $map) {
+            foreach ($map as $id => $indexes) {
+                foreach ($indexes as $index) {
+                    $results[$index]->setEntity(new GenericEntity($id, $class));
                 }
             }
         }
-        
+
         return $results;
     }
 }

@@ -19,13 +19,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\ParserBundle\Feature;
+namespace Zco\Bundle\ParserBundle\Parser;
 
 use Highlight\Highlighter;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Zco\Bundle\ParserBundle\ParserEvents;
-use Zco\Bundle\ParserBundle\Event\FilterContentEvent;
-use Zco\Bundle\ParserBundle\Event\FilterDomEvent;
 
 /**
  * Composant principal du parseur de zCode, voir zCode.xsl pour la présentation.
@@ -33,7 +29,7 @@ use Zco\Bundle\ParserBundle\Event\FilterDomEvent;
  * @author    mwsaz <mwsaz@zcorrecteurs.fr>
  * @copyright mwsaz <mwksaz@gmail.com> 2010-2012
  */
-class CoreFeature implements EventSubscriberInterface
+class CoreFeature implements ParserFeature
 {
 	/**
 	 * Protocoles acceptés pour les urls (liens, images).
@@ -43,9 +39,9 @@ class CoreFeature implements EventSubscriberInterface
 	private static $protocoles = array(
 		'apt', 'ftp', 'http', 'https',
 	);
-	
+
 	/**
-	 * Liste des balises du zCode (utilisé pour échapper les autres balises, 
+	 * Liste des balises du zCode (utilisé pour échapper les autres balises,
 	 * supposées malicieuses).
 	 *
 	 * @var array
@@ -63,11 +59,11 @@ class CoreFeature implements EventSubscriberInterface
 		'citation', 'secret', 'code', 'minicode', 'touche',
 		'tableau', 'legende', 'ligne', 'entete', 'cellule',
 	);
-	
+
 	/**
 	 * Liste des différents types de codes pour le colorateur syntaxique.
-	 * Le type de code est placé en clé et en valeur un tableau contenant 
-	 * le nom du colorateur à utiliser le nom lisible du langage. Le type 
+	 * Le type de code est placé en clé et en valeur un tableau contenant
+	 * le nom du colorateur à utiliser le nom lisible du langage. Le type
 	 * a été entré directement par l'utilisateur.
 	 *
 	 * @var array
@@ -130,33 +126,22 @@ class CoreFeature implements EventSubscriberInterface
 		'xml' => array('xml', 'XML'),
 		'zcode' => array('xml', 'zCode')
 	);
-    
+
 	private static $codesParses;
 	private static $prefixeAncre;
 	private static $ancres;
 	private static $dom;
-	
-	/**
-	 * {@inheritdoc}
-	 */
-	public static function getSubscribedEvents()
-    {
-        return array(
-            ParserEvents::PRE_PROCESS_TEXT  => array('preProcessText', -128),
-            ParserEvents::PREPARE_XML       => 'prepareXML',
-            ParserEvents::PROCESS_DOM       => 'process',
-            ParserEvents::POST_PROCESS_TEXT => 'postProcessText',
-        );
-    }
-    
+
     /**
      * Remplace les liens automatiques (non-entourés de balises).
      *
-     * @param FilterContentEvent $event
+     * @param string $content
+     * @param array $options
+     * @return string
      */
-    public function preProcessText(FilterContentEvent $event)
+    public function preProcessText(string $content, array $options): string
     {
-		static $protocoles = array();		
+		static $protocoles = array();
 		if (!$protocoles)
 		{
 			foreach (self::$protocoles as $protocole)
@@ -165,31 +150,33 @@ class CoreFeature implements EventSubscriberInterface
 			}
 			$protocoles = implode('|', $protocoles);
 		}
-		
-		$event->setContent(preg_replace(
+
+		return preg_replace(
 			'`(\s|^|>)'
 			.'((?:'.$protocoles.')://[.0-9a-z/~;:@?&=#%_-]+)'
 			.'(\s|$|<)(?![^><]*"[^>]*>)`i',
 			'$1<lien>$2</lien>$3',
-			$event->getContent()
-		));
+			$content
+		);
     }
-    
+
     /**
      * Remplace les sauts de ligne par la balise HTML appropriée.
      * Remplace les codes parsés par leur valeur.
      *
-     * @param FilterContentEvent $event
+     * @param string $content
+     * @param array $options
+     * @return string
      */
-    public function postProcessText(FilterContentEvent $event)
+    public function postProcessText(string $content, array $options): string
     {
-        $text = nl2br(trim($event->getContent()));
+        $text = nl2br(trim($content));
 		$text = preg_replace(
-		    '`(</li>|<ul [a-z]+="[a-zA-Z0-9_]*">)<br />`', 
-		    '$1', 
+		    '`(</li>|<ul [a-z]+="[a-zA-Z0-9_]*">)<br />`',
+		    '$1',
 		    $text
 		);
-        
+
 		if (self::$codesParses) // Balises code
 		{
 		    $codesParses = self::$codesParses;
@@ -200,58 +187,61 @@ class CoreFeature implements EventSubscriberInterface
 				}, $text
 			);
 		}
-		
-		$event->setContent($text);
+
+		return $text;
     }
-    
+
 	/**
 	 * Convertit le zCode en HTML grâce à une feuille de style XSLT.
 	 *
-	 * @param FilterDomEvent $event
+	 * @param \DOMDocument $doc
+     * @param array $options
+     * @return \DOMDocument
 	 */
-	public function process(FilterDomEvent $event)
+	public function processDom(\DOMDocument $doc, array $options): \DOMDocument
 	{
-		$dom = $event->getDom();
-	    self::$dom = $dom;
+	    self::$dom = $doc;
 		self::$codesParses = array(); // Nettoyer les anciens parsages
-		self::$prefixeAncre = $event->getOption('core.anchor_prefix', false);
-		if (self::$prefixeAncre !== false)
+		self::$prefixeAncre = $options['core.anchor_prefix'] ?? false;
+		if (self::$prefixeAncre)
 		{
 			self::$prefixeAncre = (ctype_digit(self::$prefixeAncre) ? 'zc' : '').self::$prefixeAncre.'-';
 		}
 		self::$ancres = array();
-        
+
 		static $xsl = false;  // Le chargement de la feuille de style
 		static $xslt = false; // est ce qui prend le plus de temps...
 		if ($xsl === false || $xslt === false)
 		{
-			$xsl = new \DomDocument;
-			$xsl->load(__DIR__.'/zCode.xsl');
+			$xsl = new \DOMDocument;
+			$xsl->load(__DIR__ . '/zCode.xsl');
 
 			$xslt = new \XSLTProcessor;
 			$xslt->importStylesheet($xsl);
 			$xslt->registerPhpFunctions();
 		}
-		
-		$html = $xslt->transformToXML($dom);
-		
+
+		$html = $xslt->transformToXML($doc);
+
 		//On insère le HTML dans un nouvel arbre DOM rien que pour lui.
 		$html = trim(substr($html, strlen('<?xml version="1.0" encoding="utf-8"?>')));
-		$newDom = new \DomDocument;
+		$newDom = new \DOMDocument;
 		$newDom->loadXML('<zcode>'.$html.'</zcode>');
-		
-		$event->setDom($newDom);
+
+		return $newDom;
 	}
-	
+
 	/**
-	 * Récupère les balises du zCode et les repasse en XML. Évite ainsi 
+	 * Récupère les balises du zCode et les repasse en XML. Évite ainsi
 	 * l'insertion d'une balise HTML au milieu du zCode.
 	 *
-	 * @param FilterContentEvent $event
+	 * @param string $content
+     * @param array $options
+     * @return string
 	 */
-	public function prepareXML(FilterContentEvent $event)
+	public function prepareXML(string $content, array $options): string
 	{
-	    $texte = htmlspecialchars($event->getContent());
+	    $texte = htmlspecialchars($content);
 		static $balises = array();
 		if(!$balises)
 		{
@@ -278,12 +268,14 @@ class CoreFeature implements EventSubscriberInterface
 		}
 		while($remplacements && preg_match($pattern, $texte));
 
-		$code_c = create_function('$m', 'return $m[1].htmlspecialchars($m[2]).$m[3];');
+		$code_c = function($m){
+		    return $m[1].htmlspecialchars($m[2]).$m[3];
+		};
 		$texte = preg_replace_callback(
 			'`(<code(?:(?:\s+[A-Za-z_-]+=".*?")*)>)(.+?)(</code>)`s',
 			$code_c, $texte);
 
-		$event->setContent($texte);
+		return $texte;
 	}
 
 	/**
@@ -295,7 +287,7 @@ class CoreFeature implements EventSubscriberInterface
 	public static function verifierLien($lien)
 	{
 		$protocole = substr($lien, 0, strpos($lien, ':'));
-		
+
 		return $protocole === '' || in_array($protocole, self::$protocoles);
 	}
 
@@ -326,14 +318,14 @@ class CoreFeature implements EventSubscriberInterface
 
 		return self::$prefixeAncre.$t;
 	}
-    
+
 	/**
 	 * Colore un code.
 	 *
 	 * @param \DOMElement $code Code à colorer.
 	 * @return int ID du code coloré.
 	 */
-	public static function colorerCode($code)
+	public static function colorerCode(\DOMElement $code)
 	{
 		// Récupération des attributs
 		$langage = $code[0]->getAttribute('type');
@@ -494,7 +486,7 @@ class CoreFeature implements EventSubscriberInterface
 	{
 		return isset(self::$langages[$langage]) ? ' '.$langage : '';
 	}
-	
+
 	/**
 	 * Renvoie le nom de l'auteur, et un lien vers le message.
 	 *

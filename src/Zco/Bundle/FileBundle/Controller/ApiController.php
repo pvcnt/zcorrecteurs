@@ -140,23 +140,6 @@ class ApiController extends Controller
 		)));
 	}
 	
-	public function saveAction($id)
-	{
-		$file = \Doctrine_Core::getTable('File')->find($id);
-		if (!$file)
-		{
-			throw new NotFoundHttpException(sprintf('Cannot find file #%s.', $id));
-		}
-		/*if ($file['user_id'] != $_SESSION['id'])
-		{
-			throw new AccessDeniedHttpException(sprintf('Not allowed to access file #%s.', $id));
-		}*/
-		
-		$this->get('gaufrette.uploads_filesystem')->write($file->getRelativePath(), file_get_contents($_REQUEST['url']));
-		
-		return new Response(json_encode(array('status' => 'OK')));
-	}
-	
 	/**
 	 * Supprime un fichier donné.
 	 *

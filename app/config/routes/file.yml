@@ -21,14 +21,6 @@ zco_file_file:
   requirements:
     id: \d+
 
-zco_file_api_save:
-  path:   /_api/fichiers/sauvegarder/{id}
-  defaults:  { _controller: ZcoFileBundle:Api:save, _format: json }
-  options:   { expose: true }
-  methods:   [POST]
-  requirements:
-    id: \d+
-
 zco_file_api_edit:
   path:   /_api/fichiers/modifier/{id}
   defaults:  { _controller: ZcoFileBundle:Api:edit, _format: json }

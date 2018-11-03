@@ -89,7 +89,7 @@
 
 
 	<xsl:template match="titre1">
-		<xsl:variable name="ancre" select="php:functionString('\Zco\Bundle\ParserBundle\Feature\CoreFeature::ancre', .)" />
+		<xsl:variable name="ancre" select="php:functionString('\Zco\Bundle\ParserBundle\Parser\CoreFeature::ancre', .)" />
 		<xsl:choose>
 			<xsl:when test="$ancre != ''">
 				<h3 id="{$ancre}">
@@ -105,7 +105,7 @@
 		</xsl:choose>
 	</xsl:template>
 	<xsl:template match="titre2">
-		<xsl:variable name="ancre" select="php:functionString('\Zco\Bundle\ParserBundle\Feature\CoreFeature::ancre', .)" />
+		<xsl:variable name="ancre" select="php:functionString('\Zco\Bundle\ParserBundle\Parser\CoreFeature::ancre', .)" />
 		<xsl:choose>
 			<xsl:when test="$ancre != ''">
 				<h4 id="{$ancre}">
@@ -165,7 +165,7 @@
 	</xsl:template>
 	<xsl:template match="lien">
 		<xsl:choose>
-			<xsl:when test="@url and php:functionString('\Zco\Bundle\ParserBundle\Feature\CoreFeature::verifierLien', @url)">
+			<xsl:when test="@url and php:functionString('\Zco\Bundle\ParserBundle\Parser\CoreFeature::verifierLien', @url)">
 				<xsl:element name="a">
 					<xsl:attribute name="href">
 						<xsl:choose>
@@ -185,7 +185,7 @@
 					<xsl:apply-templates/>
 				</xsl:element>
 			</xsl:when>
-			<xsl:when test="php:functionString('\Zco\Bundle\ParserBundle\Feature\CoreFeature::verifierLien', .)">
+			<xsl:when test="php:functionString('\Zco\Bundle\ParserBundle\Parser\CoreFeature::verifierLien', .)">
 				<xsl:element name="a">
 					<xsl:attribute name="href">
 						<xsl:choose>
@@ -347,7 +347,7 @@
 	<xsl:template match="citation">
 		<span class="citation">
 			<xsl:choose>
-				<xsl:when test="not(@rid) and @lien and php:functionString('\Zco\Bundle\ParserBundle\Feature\CoreFeature::verifierLien', @lien)">
+				<xsl:when test="not(@rid) and @lien and php:functionString('\Zco\Bundle\ParserBundle\Parser\CoreFeature::verifierLien', @lien)">
 					<xsl:element name="a">
 						<xsl:attribute name="href">
 							<xsl:choose>
@@ -364,7 +364,7 @@
 					</xsl:element>
 				</xsl:when>
 				<xsl:when test="@rid">
-					<xsl:variable name="rid" select="php:functionString('\Zco\Bundle\ParserBundle\Feature\CoreFeature::citationRid', @rid)"/>
+					<xsl:variable name="rid" select="php:functionString('\Zco\Bundle\ParserBundle\Parser\CoreFeature::citationRid', @rid)"/>
 					<xsl:choose>
 						<xsl:when test="$rid">
 							<xsl:variable name="sujet" select="substring-before($rid, ':')"/>
@@ -448,7 +448,7 @@
 
 	<xsl:template name="codeTitre">
 		<xsl:text>Code : </xsl:text>
-		<xsl:value-of select="php:functionString('\Zco\Bundle\ParserBundle\Feature\CoreFeature::nomCode', @type)"/>
+		<xsl:value-of select="php:functionString('\Zco\Bundle\ParserBundle\Parser\CoreFeature::nomCode', @type)"/>
 		<xsl:if test="@titre">
 			<xsl:text> - </xsl:text>
 			<xsl:value-of select="@titre"/>
@@ -458,7 +458,7 @@
 		<xsl:element name="span">
 			<xsl:attribute name="class">code</xsl:attribute>
 			<xsl:choose>
-				<xsl:when test="@url and php:functionString('\Zco\Bundle\ParserBundle\Feature\CoreFeature::verifierLien', @url)">
+				<xsl:when test="@url and php:functionString('\Zco\Bundle\ParserBundle\Parser\CoreFeature::verifierLien', @url)">
 					<xsl:element name="a">
 						<xsl:attribute name="href">
 							<xsl:choose>
@@ -480,18 +480,18 @@
 			</xsl:choose>
 		</xsl:element>
 
-		<xsl:variable name="type" select="php:functionString('\Zco\Bundle\ParserBundle\Feature\CoreFeature::typeCode', @type)"/>
+		<xsl:variable name="type" select="php:functionString('\Zco\Bundle\ParserBundle\Parser\CoreFeature::typeCode', @type)"/>
 		<div class="code2{$type}">
 			<xsl:element name="zcode-code">
-				<xsl:value-of select="php:function('\Zco\Bundle\ParserBundle\Feature\CoreFeature::colorerCode', .)"/>
+				<xsl:value-of select="php:function('\Zco\Bundle\ParserBundle\Parser\CoreFeature::colorerCode', .)"/>
 			</xsl:element>
 		</div>
 	</xsl:template>
 	<xsl:template match="minicode">
-		<xsl:variable name="type" select="php:functionString('\Zco\Bundle\ParserBundle\Feature\CoreFeature::typeCode', @type)"/>
+		<xsl:variable name="type" select="php:functionString('\Zco\Bundle\ParserBundle\Parser\CoreFeature::typeCode', @type)"/>
 		<span class="code2{$type}">
 			<xsl:element name="zcode-code">
-				<xsl:value-of select="php:function('\Zco\Bundle\ParserBundle\Feature\CoreFeature::colorerCode', .)"/>
+				<xsl:value-of select="php:function('\Zco\Bundle\ParserBundle\Parser\CoreFeature::colorerCode', .)"/>
 			</xsl:element>
 		</span>
 	</xsl:template>

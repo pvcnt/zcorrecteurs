@@ -19,9 +19,39 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\FileBundle\Model;
+namespace Zco\Bundle\ParserBundle\Parser;
 
-interface GenericEntityTableInterface
+abstract class AbstractFeature implements ParserFeature
 {
-    function getEntities(array $pks);
+    /**
+     * {@inheritdoc}
+     */
+    public function preProcessText(string $content, array $options): string
+    {
+        return $content;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function prepareXml(string $content, array $options): string
+    {
+        return $content;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function processDom(\DOMDocument $doc, array $options): \DOMDocument
+    {
+        return $doc;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function postProcessText(string $content, array $options): string
+    {
+        return $content;
+    }
 }

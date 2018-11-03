@@ -21,10 +21,7 @@
 
 namespace Zco\Bundle\ParserBundle\Parser;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Zco\Bundle\ParserBundle\Event\FilterContentEvent;
-use Zco\Bundle\ParserBundle\Event\FilterDomEvent;
-use Zco\Bundle\ParserBundle\ParserEvents;
+use Zco\Bundle\ParserBundle\Parser\ParserFeature;
 
 /**
  * Parseur générique pour tout langage basé sur un balisage XML. Le parsage 
@@ -35,16 +32,17 @@ use Zco\Bundle\ParserBundle\ParserEvents;
  */
 class zCodeParser implements ParserInterface
 {
-    private $dispatcher;
+    /** @var ParserFeature[] */
+    private $features;
 	
 	/**
 	 * Constructeur.
 	 *
-	 * @param EventDispatcherInterface $dispatcher
+	 * @param iterable $features
 	 */
-	public function __construct(EventDispatcherInterface $dispatcher)
+	public function __construct(iterable $features)
 	{
-	    $this->dispatcher = $dispatcher;
+	    $this->features = $features;
 	}
 
 	/**
@@ -58,48 +56,43 @@ class zCodeParser implements ParserInterface
 			return '';
 		}
 		
-		//Transformation du texte sous sa forme de chaîne de caractères.
+		// Transformation du texte sous sa forme de chaîne de caractères.
 		$text = str_replace("\r\n", "\n", $text);
-		list($continue, $text) = $this->callContentListeners(ParserEvents::PRE_PROCESS_TEXT, $text, $options);
-		if (!$continue)
-		{
-		    return $text;
-		}
+		foreach ($this->features as $feature) {
+		    $text = $feature->preProcessText($text, $options);
+        }
 		
-		//Chargement du texte dans une structure DOM et gestion des erreurs.
+		// Chargement du texte dans une structure DOM et gestion des erreurs.
 		libxml_use_internal_errors(true);
   		libxml_clear_errors();
-		$dom = $this->textToDom($text);
+		$dom = $this->textToDom($text, $options);
 		if($e = libxml_get_errors())
 		{
 			return $this->generateErrorReport($e[0], $text);
 		}
 		
-		//Transformation du texte sous sa forme d'arbre DOM.
-		list($continue, $dom) = $this->callDomListeners(ParserEvents::PROCESS_DOM, $dom, $options);
-		if (!$continue)
-		{
-		    return $this->domToText($dom);
-		}
-		
-		//Rapatriement du texte vers une chaîne de caractères affichable.
+		// Transformation du texte sous sa forme d'arbre DOM.
+        foreach ($this->features as $feature) {
+            $dom = $feature->processDom($dom, $options);
+        }
+
+		// Rapatriement du texte vers une chaîne de caractères affichable.
 		$text = $this->domToText($dom);
 		
-		//Transformation du texte sous sa forme de chaîne de caractères à nouveau.
-		list(, $text) = $this->callContentListeners(ParserEvents::POST_PROCESS_TEXT, $text, $options);
+		// Transformation du texte sous sa forme de chaîne de caractères à nouveau.
+        foreach ($this->features as $feature) {
+            $text = $feature->postProcessText($text, $options);
+        }
 	    
 		return $text;
 	}
-	
-	/**
-	 * Transforme le texte en un arbre DOM.
-	 *
-	 * @param  string $texte Texte à parser
-	 * @return \DomDocument
-	 */
-	private function textToDom($text)
+
+	private function textToDom($text, array $options)
 	{
-	    list(, $text) = $this->callContentListeners(ParserEvents::PREPARE_XML, $text);
+        foreach ($this->features as $feature) {
+            $text = $feature->prepareXml($text, $options);
+        }
+
 		$xml = '<zcode>'."\n".$text."\n".'</zcode>';
 		
   		$dom = new \DomDocument();
@@ -107,13 +100,7 @@ class zCodeParser implements ParserInterface
   		
   		return $dom;
 	}
-	
-	/**
-	 * Transforme un arbre DOM en texte.
-	 *
-	 * @param  \DomDocument $dom L'arbre DOM
-	 * @return string
-	 */
+
 	private function domToText(\DomDocument $dom)
 	{
 	    $nodes = $dom->getElementsByTagName('zcode');
@@ -122,58 +109,7 @@ class zCodeParser implements ParserInterface
 		
 		return $text;
 	}
-	
-	/**
-	 * Appelle le gestionnaire d'événements pour filtrer une chaîne de caractères.
-	 * 
-	 * @param string $name Le nom de l'événement
-	 * @param string $content La chaîne à filtrer
-	 * @param array $options Liste d'options
-	 * @return array Liste avec un booléen indiquant si on poursuit le parsage 
-	 *               et la nouvelle chaîne
-	 */
-	private function callContentListeners($name, $content, array $options = array())
-	{
-		$event = new FilterContentEvent($content, $options);
-		$this->dispatcher->dispatch($name, $event);
-		
-		if ($event->isProcessingStopped())
-		{
-			return array(false, $event->getContent());
-		}
-	    
-	    return array(true, $event->getContent());
-	}
-	
-	/**
-	 * Appelle le gestionnaire d'événements pour filtrer un arbre DOM.
-	 * 
-	 * @param string $name Le nom de l'événement
-	 * @param string $content L'abre DOM à filtrer
-	 * @param array $options Liste d'options
-	 * @return array Liste avec un booléen indiquant si on poursuit le parsage 
-	 *               et le nouvel arbre
-	 */
-	private function callDomListeners($name, \DomDocument $dom, array $options = array())
-	{
-		$event = new FilterDomEvent($dom, $options);
-		$this->dispatcher->dispatch($name, $event);
-		
-		if ($event->isProcessingStopped())
-		{
-			return array(false, $event->getDom());
-		}
-	    
-	    return array(true, $event->getDom());
-	}
-	
-	/**
-	 * Génère un rapport d'erreur suite à une malformation dans le XML.
-	 * 
-	 * @param  \LibXMLError $e L'erreur survenue
-	 * @param  string $xml Le code XML fautif
-	 * @return string Rapport d'erreur en HTML
-	 */
+
 	private function generateErrorReport(\LibXMLError $e, $xml)
 	{
 		$lignes = explode("\n", $xml);

@@ -25,7 +25,7 @@ namespace Zco\Bundle\ParserBundle\Parser;
  * Délègue le parsage à un ou plusieurs autres parseurs.
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
- * 		   Savageman <savageman@zcorrecteurs.fr>
+ * @author Savageman <savageman@zcorrecteurs.fr>
  */
 class DelegatingParser implements ParserInterface
 {
@@ -61,6 +61,7 @@ class DelegatingParser implements ParserInterface
 	 * Modifie le langage à utiliser pour le prochain appel à parse().
 	 *
 	 * @param string $language Langage à utiliser
+     * @return $this
 	 */
 	public function with($language)
 	{
