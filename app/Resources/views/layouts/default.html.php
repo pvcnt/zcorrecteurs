@@ -185,7 +185,7 @@
             <?php if (empty($xhr)): ?>
         </div>
     </div>
-<?php echo $view->render('::layouts/_footer.html.php') ?>
+<?php echo $view->render('::layouts/footer.html.php') ?>
 <?php endif ?>
 
     <?php foreach ($view['vitesse']->javascripts() as $assetUrl): ?>
