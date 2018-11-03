@@ -1,4 +1,4 @@
-<?php $view->extend('ZcoPagesBundle:Donate:layout.html.php') ?>
+<?php $view->extend('::layouts/bootstrap.html.php') ?>
 
 <div style="float: right; width: 340px;">
     <?php echo $view->render('ZcoPagesBundle:Donate:_menu.html.php', array('chequeOuVirement' => true)) ?>
