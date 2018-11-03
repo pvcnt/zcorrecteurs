@@ -174,10 +174,6 @@ class EventListener implements EventSubscriberInterface
 
             unset($_GET['page'], $_GET['act']);
 
-            if ($this->container->has('logger')) {
-                $this->container->get('logger')->info(sprintf('Matched controller "%s::%s::%s".', $bundle->getName(), $class, $method));
-            }
-
             $this->populateDefaultMeta();
         }
     }
