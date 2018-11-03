@@ -46,11 +46,6 @@ services:
     tags:
     - { name: kernel.event_subscriber }
 
-  zco.event_listener.file:
-    class: Zco\Bundle\FileBundle\EventListener\EventListener
-    tags:
-    - { name: kernel.event_subscriber }
-
   zco.event_listener.pm:
     class: Zco\Bundle\MpBundle\EventListener\EventListener
     calls:
