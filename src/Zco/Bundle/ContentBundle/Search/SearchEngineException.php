@@ -1,6 +1,6 @@
 <?php
 
-namespace Zco\Bundle\SearchBundle\Search;
+namespace Zco\Bundle\ContentBundle\Search;
 
 class SearchEngineException extends \RuntimeException
 {

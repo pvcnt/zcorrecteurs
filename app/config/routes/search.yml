@@ -1,3 +1,0 @@
-zco_search_index:
-  path:      /recherche/{section}/{page}
-  defaults:  { _controller: ZcoSearchBundle:Default:index, section: ~, page: 1 }

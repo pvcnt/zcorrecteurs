@@ -131,10 +131,8 @@
 		</p>
 
 		<?php
-			echo $view->render('ZcoSearchBundle::_'.$section.'.html.php',
-				array('Resultats' => $Resultats,
-				      'Pages' => $pages
-			));
+			echo $view->render('ZcoContentBundle:Search:_'.$section.'.html.php',
+				array('Resultats' => $Resultats, 'Pages' => $pages));
 		?>
 	<?php endif ?>
 <?php endif ?>

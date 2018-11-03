@@ -19,28 +19,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\SearchBundle\Search\Searchable;
+namespace Zco\Bundle\ContentBundle\Search\Searchable;
+
+use Zco\Bundle\BlogBundle\Domain\BlogDAO;
 
 /**
- * Interface pour les modèles de recherche.
+ * Recherche sur le blog.
  *
- * @author vincent1870 <vincent@zcorrecteurs.fr>
+ * @author mwsaz <mwsaz@zcorrecteurs.fr>
  */
-interface SearchableInterface
+class BlogSearchable implements SearchableInterface
 {
-    /**
-     * @return string
-     */
-    function getIndex();
+    public function getIndex()
+    {
+        return 'blog_billets';
+    }
 
-    /**
-     * @return bool
-     */
-    function doesCheckCredentials();
+    public function transformResults(array $matches)
+    {
+        $ids = array_map(function ($m) {
+            return $m['id'];
+        }, $matches);
 
-    /**
-     * @param array $results
-     * @return array
-     */
-    function transformResults(array $results);
+        return BlogDAO::ListerBillets(array('id' => $ids));
+    }
+
+    public function doesCheckCredentials()
+    {
+        return true;
+    }
 }

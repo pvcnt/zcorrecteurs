@@ -1,9 +1,9 @@
 <?php
 
-namespace Zco\Bundle\SearchBundle\Search;
+namespace Zco\Bundle\ContentBundle\Search;
 
 use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
-use Zco\Bundle\SearchBundle\Search\Searchable\SearchableInterface;
+use Zco\Bundle\ContentBundle\Search\Searchable\SearchableInterface;
 use Zco\Bundle\UserBundle\Domain\UserDAO;
 
 class SearchService

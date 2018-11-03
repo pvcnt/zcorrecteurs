@@ -19,17 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\SearchBundle\Controller;
+namespace Zco\Bundle\ContentBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
-use Zco\Bundle\SearchBundle\Search\Searchable\BlogSearchable;
-use Zco\Bundle\SearchBundle\Search\Searchable\ForumSearchable;
-use Zco\Bundle\SearchBundle\Search\Searchable\TwitterSearchable;
-use Zco\Bundle\SearchBundle\Search\SearchableInterface;
-use Zco\Bundle\SearchBundle\Search\SearchQuery;
-use Zco\Bundle\SearchBundle\Search\SearchQueryInterface;
+use Zco\Bundle\ContentBundle\Search\Searchable\BlogSearchable;
+use Zco\Bundle\ContentBundle\Search\Searchable\ForumSearchable;
+use Zco\Bundle\ContentBundle\Search\SearchQuery;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 /**
@@ -37,18 +34,19 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
  *
  * @author mwsaz <mwsaz@zcorrecteurs.fr>
  */
-class DefaultController extends Controller
+class SearchController extends Controller
 {
     /**
      * Affichage du formulaire complet de recherche et des résultats.
      *
-     * @param string $section
-     * @param int $page
      * @param Request $request HTTP request.
      * @return Response
      */
-    public function indexAction($section, $page, Request $request)
+    public function indexAction(Request $request)
     {
+        $section = $request->query->get('section', 'forum');
+        $page = $request->query->get('page', 1);
+
         // Configuration pour les trois actions (avant et après la recherche)
         $CatsForum = CategoryDAO::ListerEnfants(CategoryDAO::GetIDCategorie('forum'), true, true);
         $CatsBlog = CategoryDAO::ListerEnfants(CategoryDAO::GetIDCategorie('blog'), true, true);
@@ -62,13 +60,10 @@ class DefaultController extends Controller
         $_flags = array();
 
         // Section du site concernée par la recherche
-        $section = $section ?: 'forum';
         if ('forum' === $section) {
             $searchable = new ForumSearchable();
         } elseif ('blog' === $section) {
             $searchable = new BlogSearchable();
-        } elseif ('twitter' === $section) {
-            $searchable = new TwitterSearchable();
         } else {
             return redirect(
                 'Votre catégorie de recherche est invalide.',
@@ -78,7 +73,7 @@ class DefaultController extends Controller
         }
 
         if (!$request->query->has('recherche')) {
-            return render_to_response('ZcoSearchBundle::index.html.php', compact(
+            return render_to_response('ZcoContentBundle:Search:index.html.php', compact(
                 'CatsForum', 'CatsBlog', '_flags'
             ));
         }
@@ -153,7 +148,7 @@ class DefaultController extends Controller
             $_SESSION['erreur'][] = 'Une erreur est survenue pendant la recherche. Merci de réessayer dans quelques instants.';
         }
 
-        return render_to_response('ZcoSearchBundle::index.html.php', compact(
+        return render_to_response('ZcoContentBundle:Search:index.html.php', compact(
             'CatsForum', 'CatsBlog', '_flags',
             'pages', 'CompterResultats', 'Resultats', 'section'
         ));

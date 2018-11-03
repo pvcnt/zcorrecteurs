@@ -1,12 +1,12 @@
 <?php
 
-namespace Zco\Bundle\SearchBundle\Search\Sphinx;
+namespace Zco\Bundle\ContentBundle\Search\Sphinx;
 
 use Sphinx\SphinxClient;
-use Zco\Bundle\SearchBundle\Search\SearchEngineException;
-use Zco\Bundle\SearchBundle\Search\SearchEngineInterface;
-use Zco\Bundle\SearchBundle\Search\SearchQuery;
-use Zco\Bundle\SearchBundle\Search\SearchResult;
+use Zco\Bundle\ContentBundle\Search\SearchEngineException;
+use Zco\Bundle\ContentBundle\Search\SearchEngineInterface;
+use Zco\Bundle\ContentBundle\Search\SearchQuery;
+use Zco\Bundle\ContentBundle\Search\SearchResult;
 
 final class SphinxSearchEngine implements SearchEngineInterface
 {

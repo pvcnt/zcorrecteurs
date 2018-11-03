@@ -19,10 +19,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\SearchBundle;
+namespace Zco\Bundle\ContentBundle\Search\Searchable;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
-
-class ZcoSearchBundle extends Bundle
+/**
+ * Recherche sur le forum.
+ *
+ * @author mwsaz <mwsaz@zcorrecteurs.fr>
+ */
+class ForumSearchable implements SearchableInterface
 {
+    public function getIndex()
+    {
+        return 'forum_messages';
+    }
+
+    public function transformResults(array $matches)
+    {
+        include_once(__DIR__ . '/../../../ForumBundle/modeles/messages.php');
+        $ids = array_map(function ($m) {
+            return $m['id'];
+        }, $matches);
+
+        return ListerMessagesId($ids);
+    }
+
+    public function doesCheckCredentials()
+    {
+        return true;
+    }
 }

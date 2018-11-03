@@ -23,3 +23,27 @@ zco_quote_delete:
   defaults:  { _controller: ZcoContentBundle:Quotes:delete }
   requirements:
     id: \d+
+
+zco_categories_index:
+  path:   /categories
+  defaults:  { _controller: ZcoContentBundle:Category:index }
+
+zco_categories_new:
+  path:   /categories/ajouter
+  defaults:  { _controller: ZcoContentBundle:Category:new }
+
+zco_categories_edit:
+  path:   /categories/modifier/{id}
+  defaults:  { _controller: ZcoContentBundle:Category:edit }
+  requirements:
+    id: \d+
+
+zco_categories_delete:
+  path:   /categories/supprimer/{id}
+  defaults:  { _controller: ZcoContentBundle:Category:delete }
+  requirements:
+    id: \d+
+
+zco_search_index:
+  path:      /recherche
+  defaults:  { _controller: ZcoContentBundle:Search:index }

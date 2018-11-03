@@ -162,11 +162,11 @@ services:
     arguments: ['@zco_doctrine1.connection']
 
   zco_search.search_engine:
-    class: Zco\Bundle\SearchBundle\Search\Sphinx\SphinxSearchEngine
+    class: Zco\Bundle\ContentBundle\Search\Sphinx\SphinxSearchEngine
     arguments: ['%sphinx_host%', '%sphinx_port%']
 
   zco_search.search_service:
-    class: Zco\Bundle\SearchBundle\Search\SearchService
+    class: Zco\Bundle\ContentBundle\Search\SearchService
     arguments: ['@zco_search.search_engine']
 
   zco_stats.alexa_stats:
