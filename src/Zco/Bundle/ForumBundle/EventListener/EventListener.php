@@ -23,8 +23,6 @@ namespace Zco\Bundle\ForumBundle\EventListener;
 
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Zco\Bundle\PagesBundle\Event\FilterSitemapEvent;
-use Zco\Bundle\PagesBundle\PagesEvents;
 use Zco\Component\Templating\Event\FilterResourcesEvent;
 use Zco\Component\Templating\TemplatingEvents;
 
@@ -37,57 +35,29 @@ class EventListener implements EventSubscriberInterface
 {
     use ContainerAwareTrait;
 
-	/**
-	 * {@inheritdoc}
-	 */
-	static public function getSubscribedEvents()
-	{
-		return array(
-			TemplatingEvents::FILTER_RESOURCES => 'onTemplatingFilterResources',
-			PagesEvents::SITEMAP => 'onFilterSitemap',
-		);
-	}
-	
-	/**
-	 * Ajoute la feuille de style CSS du forum sur toutes les actions du module.
-	 *
-	 * @param FilterResourcesEvent $event
-	 */
-	public function onTemplatingFilterResources(FilterResourcesEvent $event)
-	{
-	    $request = \Container::request();
-		if (
-		    $request->attributes->has('_module') &&
-		    $request->attributes->get('_module') === 'forum'
-		)
-		{
-			$event->requireResource('@ZcoForumBundle/Resources/public/css/forum.css');
-		}
-	}
-	
-	/**
-     * Met à jour le sitemap.
-     *
-     * @param FilterSitemapEvent $event
+    /**
+     * {@inheritdoc}
      */
-	public function onFilterSitemap(FilterSitemapEvent $event)
-	{
-		include_once(__DIR__.'/../modeles/forums.php');
-		include_once(__DIR__.'/../modeles/sujets.php');
-		
-		$event->addLink(URL_SITE.'/forum/', array(
-			'changefreq' => 'daily',
-			'priority'	 => '0.7',
-		));
-		foreach (ListerSujetsId(array(34,45,42,43,44,46,47,91,92,93,94,178)) as $topic)
-		{
-			if ( !sujetIsArchive($topic['sujet_id']) )
-			{
-				$event->addLink(URL_SITE.'/forum/sujet-'.$topic['sujet_id'].'-'.rewrite($topic['sujet_titre']).'.html', array(
-					'changefreq' => 'weekly',
-					'priority'	 => '0.5',
-				));
-			}
-		}
-	}
+    static public function getSubscribedEvents()
+    {
+        return array(
+            TemplatingEvents::FILTER_RESOURCES => 'onTemplatingFilterResources',
+        );
+    }
+
+    /**
+     * Ajoute la feuille de style CSS du forum sur toutes les actions du module.
+     *
+     * @param FilterResourcesEvent $event
+     */
+    public function onTemplatingFilterResources(FilterResourcesEvent $event)
+    {
+        $request = \Container::request();
+        if (
+            $request->attributes->has('_module') &&
+            $request->attributes->get('_module') === 'forum'
+        ) {
+            $event->requireResource('@ZcoForumBundle/Resources/public/css/forum.css');
+        }
+    }
 }

@@ -24,8 +24,6 @@ namespace Zco\Bundle\DicteesBundle\EventListener;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zco\Bundle\DicteesBundle\Domain\Dictation;
-use Zco\Bundle\PagesBundle\Event\FilterSitemapEvent;
-use Zco\Bundle\PagesBundle\PagesEvents;
 use Zco\Component\Templating\Event\FilterVariablesEvent;
 use Zco\Component\Templating\TemplatingEvents;
 
@@ -33,43 +31,22 @@ class EventListener implements EventSubscriberInterface
 {
     use ContainerAwareTrait;
 
-	static public function getSubscribedEvents()
-	{
-		return array(
-			TemplatingEvents::FILTER_VARIABLES => 'onTemplatingFilterVariables',
-			PagesEvents::SITEMAP => 'onFilterSitemap',
-		);
-	}
-		
-	public function onTemplatingFilterVariables(FilterVariablesEvent $event)
-	{
-	    $request = \Container::request();
-		if (!$request->attributes->has('_module') || $request->attributes->get('_module') !== 'dictees') {
-			return;
-		}
+    static public function getSubscribedEvents()
+    {
+        return array(
+            TemplatingEvents::FILTER_VARIABLES => 'onTemplatingFilterVariables',
+        );
+    }
 
-		$event->set('DicteeDifficultes', Dictation::LEVELS);
-		$event->set('DicteeEtats', Dictation::STATUSES);
-		$event->set('DicteeCouleurs', Dictation::COLORS);
-	}
-	
-	/**
-     * Met à jour le sitemap.
-     *
-     * @param FilterSitemapEvent $event
-     */
-	public function onFilterSitemap(FilterSitemapEvent $event)
-	{
-		$event->addLink(URL_SITE.'/dictees/', array(
-			'changefreq' => 'weekly',
-			'priority'	 => '0.6',
-		));
-		foreach (\Doctrine_Core::getTable('Dictee')->getAllId() as $dictee)
-		{
-			$event->addLink(URL_SITE.'/dictees/dictee-'.$dictee['id'].'-'.rewrite($dictee['titre']).'.html', array(
-				'changefreq' => 'monthly',
-				'priority'	 => '0.5',
-			));
-		}
-	}
+    public function onTemplatingFilterVariables(FilterVariablesEvent $event)
+    {
+        $request = \Container::request();
+        if (!$request->attributes->has('_module') || $request->attributes->get('_module') !== 'dictees') {
+            return;
+        }
+
+        $event->set('DicteeDifficultes', Dictation::LEVELS);
+        $event->set('DicteeEtats', Dictation::STATUSES);
+        $event->set('DicteeCouleurs', Dictation::COLORS);
+    }
 }

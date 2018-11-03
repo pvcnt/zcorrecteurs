@@ -20,8 +20,8 @@
 		<?php foreach ($view['vitesse']->javascripts(array('mootools', 'mootools-more')) as $assetUrl): ?>
 		    <script type="text/javascript" src="<?php echo $assetUrl ?>"></script>
 		<?php endforeach ?>
-		
-		<?php echo $view['vitesse']->renderFeeds() ?>
+
+        <link rel="alternate" type="application/atom+xml" title="Derniers billets du blog" href="/blog/flux.html" />
 		
 		<link rel="icon" type="image/png" href="/favicon.png" />
 		<link rel="start" title="zCorrecteurs.fr - Les réponses à toutes vos questions concernant la langue française !" href="/" />

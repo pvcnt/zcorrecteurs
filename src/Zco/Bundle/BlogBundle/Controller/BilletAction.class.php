@@ -141,11 +141,6 @@ class BilletAction extends BlogActions
                 '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
             ));
 
-            $this->get('zco_core.resource_manager')->addFeed(
-                'flux-'.$this->InfosBillet['cat_id'].'-'.rewrite($this->InfosBillet['cat_nom']).'.html',
-                array('title' => 'Derniers billets de cette catégorie')
-            );
-
             return render_to_response($this->getVars());
 		}
 		else

@@ -35,17 +35,7 @@ class FilterResourcesEvent extends Event
 		$this->manager = $manager;
 		$this->javelin = $javelin;
 	}
-	
-	public function addFeeds(array $feeds)
-	{
-		$this->manager->addFeeds($feeds);
-	}
-	
-	public function addFeed($feed, array $options = array())
-	{
-		$this->manager->addFeed($feed, $options);
-	}
-	
+
 	public function requireResources(array $symbols)
 	{
 		$this->manager->requireResources($symbols);

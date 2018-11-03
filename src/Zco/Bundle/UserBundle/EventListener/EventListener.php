@@ -30,8 +30,6 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Zco\Bundle\CoreBundle\CoreEvents;
 use Zco\Bundle\CoreBundle\Event\CronEvent;
 use Zco\Bundle\GroupesBundle\Domain\GroupDAO;
-use Zco\Bundle\PagesBundle\Event\FilterSitemapEvent;
-use Zco\Bundle\PagesBundle\PagesEvents;
 use Zco\Bundle\UserBundle\Exception\LoginException;
 
 /**
@@ -50,7 +48,6 @@ class EventListener implements EventSubscriberInterface
     {
         return array(
             KernelEvents::REQUEST => ['onKernelRequest', 127],
-            PagesEvents::SITEMAP => 'onFilterSitemap',
             CoreEvents::DAILY_CRON => 'onDailyCron',
         );
     }
@@ -152,28 +149,6 @@ class EventListener implements EventSubscriberInterface
                 $event->setResponse(new Response(render_to_string('ZcoUserBundle::banni.html.php', compact('Debut', 'Duree', 'Raison'))));
             }
         }
-    }
-
-    /**
-     * Met à jour le sitemap.
-     *
-     * @param FilterSitemapEvent $event
-     */
-    public function onFilterSitemap(FilterSitemapEvent $event)
-    {
-        $router = $this->container->get('router');
-        $event->addLink($router->generate('zco_user_session_register', array(), true), array(
-            'changefreq' => 'monthly',
-            'priority' => '0.5',
-        ));
-        $event->addLink($router->generate('zco_user_session_login', array(), true), array(
-            'changefreq' => 'monthly',
-            'priority' => '0.5',
-        ));
-        $event->addLink($router->generate('zco_user_index', array(), true), array(
-            'changefreq' => 'daily',
-            'priority' => '0.5',
-        ));
     }
 
     /**

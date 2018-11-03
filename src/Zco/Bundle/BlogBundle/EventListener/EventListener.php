@@ -23,11 +23,6 @@ namespace Zco\Bundle\BlogBundle\EventListener;
 
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Zco\Bundle\BlogBundle\Domain\Author;
-use Zco\Bundle\BlogBundle\Domain\BlogDAO;
-use Zco\Bundle\PagesBundle\Event\FilterSitemapEvent;
-use Zco\Bundle\PagesBundle\PagesEvents;
-use Zco\Component\Templating\Event\FilterResourcesEvent;
 use Zco\Component\Templating\Event\FilterVariablesEvent;
 use Zco\Component\Templating\TemplatingEvents;
 
@@ -40,68 +35,34 @@ class EventListener implements EventSubscriberInterface
 {
     use ContainerAwareTrait;
 
-	/**
-	 * {@inheritdoc}
-	 */
-	static public function getSubscribedEvents()
-	{
-		return array(
-			TemplatingEvents::FILTER_RESOURCES => 'onTemplatingFilterResources',
-			TemplatingEvents::FILTER_VARIABLES => 'onTemplatingFilterVariables',
-			PagesEvents::SITEMAP => 'onFilterSitemap',
-		);
-	}
-	
-	/**
-	 * Référence sur toutes les pages le flux RSS du blog.
-	 *
-	 * @param FilterResourcesEvent $event
-	 */
-	public function onTemplatingFilterResources(FilterResourcesEvent $event)
-	{
-		$event->addFeed('/blog/flux.html', array('title' => 'Derniers billets du blog'));
-	}
-	
-	/**
-	 * Ajoute des variables communes à toutes les pages du module de blog.
-	 *
-	 * @param FilterVariablesEvent $event
-	 */
-	public function onTemplatingFilterVariables(FilterVariablesEvent $event)
-	{
-		if (\Container::request()->attributes->get('_module') !== 'blog')
-		{
-			return;
-		}
-
-		$event->set('BlogStatuts', Author::STATUSES);
-		$event->set('AuteursClass', array(3 => 'gras', 2 => 'normal', 1 => 'italique'));
-		$event->set('Etats', array(
-			BLOG_BROUILLON => 'Brouillon',
-			BLOG_PREPARATION => 'En cours de préparation',
-			BLOG_PROPOSE => 'Proposé',
-			BLOG_REFUSE => 'Refusé',
-			BLOG_VALIDE => 'Validé'
-		));
-	}
-	
-	/**
-     * Met à jour le sitemap.
-     *
-     * @param FilterSitemapEvent $event
+    /**
+     * {@inheritdoc}
      */
-	public function onFilterSitemap(FilterSitemapEvent $event)
-	{
-		$event->addLink(URL_SITE.'/blog/', array(
-			'changefreq' => 'weekly',
-			'priority'	 => '0.6',
-		));
-		foreach (BlogDAO::ListerBilletsId() as $billet)
-		{
-			$event->addLink(URL_SITE.'/blog/billet-'.$billet['blog_id'].'-'.rewrite($billet['version_titre']).'.html', array(
-				'changefreq' => 'weekly',
-				'priority'	 => '0.7',
-			));
-		}
-	}
+    static public function getSubscribedEvents()
+    {
+        return array(
+            TemplatingEvents::FILTER_VARIABLES => 'onTemplatingFilterVariables',
+        );
+    }
+
+    /**
+     * Ajoute des variables communes à toutes les pages du module de blog.
+     *
+     * @param FilterVariablesEvent $event
+     */
+    public function onTemplatingFilterVariables(FilterVariablesEvent $event)
+    {
+        if (\Container::request()->attributes->get('_module') !== 'blog') {
+            return;
+        }
+
+        $event->set('AuteursClass', array(3 => 'gras', 2 => 'normal', 1 => 'italique'));
+        $event->set('Etats', array(
+            BLOG_BROUILLON => 'Brouillon',
+            BLOG_PREPARATION => 'En cours de préparation',
+            BLOG_PROPOSE => 'Proposé',
+            BLOG_REFUSE => 'Refusé',
+            BLOG_VALIDE => 'Validé'
+        ));
+    }
 }

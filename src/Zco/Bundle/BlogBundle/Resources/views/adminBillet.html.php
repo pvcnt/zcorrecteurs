@@ -173,7 +173,7 @@
 						<td class="centre">
 							Ajouté <?php echo dateformat($a['auteur_date'], MINUSCULE); ?>
 						</td>
-						<td><?php echo $BlogStatuts[$a['auteur_statut']]; ?></td>
+						<td><?php echo \Zco\Bundle\BlogBundle\Domain\Author::STATUSES[$a['auteur_statut']]; ?></td>
 						<?php if($createur == true || verifier('blog_toujours_createur')){ ?>
 						<td class="centre">
 							<a href="editer-auteur-<?php echo $_GET['id']; ?>-<?php echo $a['utilisateur_id']; ?>.html" title="Modifier cet auteur">
@@ -201,7 +201,7 @@
 				)) ?>
 
 				<select name="statut" id="statut">
-					<?php foreach($BlogStatuts as $cle=>$valeur){ ?>
+					<?php foreach(\Zco\Bundle\BlogBundle\Domain\Author::STATUSES as $cle=>$valeur){ ?>
 					<option value="<?php echo $cle; ?>"><?php echo htmlspecialchars($valeur); ?></option>
 					<?php } ?>
 				</select>

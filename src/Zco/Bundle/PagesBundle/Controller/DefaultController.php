@@ -24,8 +24,7 @@ namespace Zco\Bundle\PagesBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Zco\Bundle\PagesBundle\Event\FilterSitemapEvent;
-use Zco\Bundle\PagesBundle\PagesEvents;
+use Zco\Bundle\PagesBundle\Sitemap\SitemapFactory;
 
 /**
  * @author vincent1870 <vincent@zcorrecteurs.fr>
@@ -52,37 +51,10 @@ class DefaultController extends Controller
     {
         $cache = $this->get('cache');
         if (($content = $cache->fetch('zco_pages.sitemap')) === false) {
-            $xml = new \DomDocument();
+            $factory = new SitemapFactory($this->get('router'));
+            $sitemap = $factory->createSitemap();
+            $xml = $sitemap->render();
             $xml->formatOutput = true;
-
-            $urlset = $xml->createElement('urlset');
-            $urlset->setAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
-            $urlset->setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
-            $urlset->setAttribute(
-                'xsi:schemaLocation', 'http://www.sitemaps.org/schemas/sitemap/0.9
-				http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd');
-            $urlset = $xml->appendChild($urlset);
-
-            $dispatcher = $this->container->get('event_dispatcher');
-            $event = new FilterSitemapEvent();
-            $dispatcher->dispatch(PagesEvents::SITEMAP, $event);
-
-            foreach ($event->getLinks() as $link => $options) {
-                $url = $xml->createElement('url');
-                $url = $urlset->appendChild($url);
-
-                $loc = $xml->createElement('loc');
-                $loc = $url->appendChild($loc);
-                $loc->appendChild($xml->createTextNode($link));
-
-                $changefreq = $xml->createElement('changefreq');
-                $changefreq = $url->appendChild($changefreq);
-                $changefreq->appendChild($xml->createTextNode($options['changefreq']));
-
-                $priority = $xml->createElement('priority');
-                $priority = $url->appendChild($priority);
-                $priority->appendChild($xml->createTextNode($options['priority']));
-            }
 
             $content = $xml->saveXML();
             $cache->save('zco_pages.sitemap', $content, 3600 * 24);

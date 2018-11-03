@@ -47,7 +47,6 @@ class ResourceManager
 	private $logger;
 	private $writer;
 	
-	private $feeds = array();
 	private $symbols = array();
 	private $resolved = array();
 	private $needsResolve = true;
@@ -126,38 +125,7 @@ class ResourceManager
 		
 		return $this->render($collection, 'js', $javascripts);
 	}
-	
-	public function addFeeds(array $feeds)
-	{
-		foreach ($feeds as $feed => $options)
-		{
-			if (is_numeric($feed))
-			{
-				$feed = $options;
-				$options = array();
-			}
-			
-			$this->addFeed($feed, $options);
-		}
-	}
-		
-	public function addFeed($feed, array $options = array())
-	{
-		$options = array_merge(array('type' => 'application/atom+xml', 'title' => 'Flux'), $options);
-		$this->feeds[$feed] = $options;
-	}
-	
-	public function renderFeeds()
-	{
-		$html = '';
-		foreach ($this->feeds as $feed => $options)
-		{
-			$html .= '<link rel="alternate" type="'.$options['type'].'" title="'.$options['title'].'" href="'.$feed.'" />'."\n\t\t";
-		}
-		
-		return $html;
-	}
-	
+
 	/**
 	 * Effectue le rendu d'une collection de ressources.
 	 *
@@ -280,7 +248,7 @@ class ResourceManager
 		foreach ($symbols as $symbol)
 		{
 			$urls[] = $this->router->generate(
-				'zco_core_asset',
+				'zco_asset',
 				array('hash' => str_replace('_', '.', $symbol))
 			);
 		}

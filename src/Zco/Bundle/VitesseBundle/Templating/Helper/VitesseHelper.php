@@ -49,21 +49,6 @@ class VitesseHelper extends Helper
 	    $this->manager->requireResources($symbols);
 	}
 	
-	public function addFeeds(array $feeds)
-	{
-	    $this->manager->addFeeds($feeds);
-	}
-		
-	public function addFeed($feed, array $options = array())
-	{
-	    $this->manager->addFeed($feed, $options);
-	}
-	
-	public function renderFeeds()
-	{
-	    return $this->manager->renderFeeds();
-	}
-		
 	public function stylesheets(array $stylesheets = array())
 	{
 	    return $this->manager->stylesheets($stylesheets);

@@ -46,12 +46,6 @@ services:
     tags:
     - { name: kernel.event_subscriber }
 
-  zco.event_listener.search:
-    class: Zco\Bundle\SearchBundle\EventListener\EventListener
-    arguments: ['@router']
-    tags:
-    - { name: kernel.event_subscriber }
-
   zco.event_listener.file:
     class: Zco\Bundle\FileBundle\EventListener\EventListener
     tags:
@@ -71,28 +65,8 @@ services:
     tags:
     - { name: kernel.event_subscriber }
 
-  zco.event_listener.quiz:
-    class: Zco\Bundle\QuizBundle\EventListener\EventListener
-    arguments: ['@router', '@zco_quiz.manager.quiz']
-    tags:
-    - { name: kernel.event_subscriber }
-
   zco.event_listener.options:
     class: Zco\Bundle\OptionsBundle\EventListener\EventListener
-    calls:
-    - [setContainer, ["@service_container"]]
-    tags:
-    - { name: kernel.event_subscriber }
-
-  zco.event_listener.pages:
-    class: Zco\Bundle\PagesBundle\EventListener\EventListener
-    calls:
-    - [setContainer, ["@service_container"]]
-    tags:
-    - { name: kernel.event_subscriber }
-
-  zco.event_listener.recrutement:
-    class: Zco\Bundle\RecrutementBundle\EventListener\EventListener
     calls:
     - [setContainer, ["@service_container"]]
     tags:
