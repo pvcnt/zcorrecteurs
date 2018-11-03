@@ -49,9 +49,8 @@ class QuoteType extends AbstractType
             'attr' => ['class' => 'input-xxlarge', 'rows' => 4],
         ]);
         $builder->add('statut', CheckboxType::class, [
-            'label' => 'Activée ?',
+            'label' => 'Activée',
             'required' => false,
-            'attr' => ['help' => 'Indique si la citation est susceptible d\'être affichée dans l\'en-tête du site.'],
         ]);
     }
 }

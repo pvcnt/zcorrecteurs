@@ -22,20 +22,18 @@
 namespace Zco\Bundle\GroupesBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
 use Zco\Bundle\GroupesBundle\Domain\CredentialsDAO;
 use Zco\Bundle\GroupesBundle\Domain\GroupDAO;
+use Zco\Bundle\GroupesBundle\Form\GroupType;
 
 /**
- * Contrôleur gérant les actions sur les groupes et les droits.
- *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class DefaultController extends Controller
+final class DefaultController extends Controller
 {
     /**
      * Affiche la liste des groupes.
@@ -45,7 +43,7 @@ class DefaultController extends Controller
         if (!verifier('groupes_gerer')) {
             throw new AccessDeniedHttpException();
         }
-        \Page::$titre = 'Gestion des groupes';
+        \Page::$titre = 'Groupes';
 
         return render_to_response('ZcoGroupesBundle::index.html.php', [
             'ListerGroupes' => GroupDAO::ListerGroupes(),
@@ -62,19 +60,22 @@ class DefaultController extends Controller
             throw new AccessDeniedHttpException();
         }
 
-        if ($request->isMethod('POST')) {
-            GroupDAO::AjouterGroupe($request->request->all());
+        $form = $this->createForm(GroupType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            GroupDAO::AjouterGroupe($form->getData());
 
             return redirect('Le groupe a bien été ajouté.', $this->generateUrl('zco_groups_index'));
         }
 
-        $ListerGroupes = array_filter(GroupDAO::ListerGroupes(), function ($group) {
-            return $group['groupe_code'] != \Groupe::ANONYMOUS;
-        });
         \Page::$titre = 'Ajouter un groupe';
+        fil_ariane([
+            'Groupes' => $this->generateUrl('zco_groups_index'),
+            'Ajouter un groupe',
+        ]);
 
         return render_to_response('ZcoGroupesBundle::new.html.php', [
-            'ListerGroupes' => $ListerGroupes,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -88,17 +89,31 @@ class DefaultController extends Controller
         }
 
         $InfosGroupe = $this->getGroupOrThrow($id);
-
-        if ($request->isMethod('POST')) {
-            GroupDAO::EditerGroupe($id, $request->request->all());
+        $form = $this->createForm(GroupType::class, [
+            'nom' => $InfosGroupe['groupe_nom'],
+            'logo' => $InfosGroupe['groupe_logo'],
+            'logo_feminin' => $InfosGroupe['groupe_logo_feminin'],
+            'class' => $InfosGroupe['groupe_class'],
+            'sanction' => (bool)$InfosGroupe['groupe_sanction'],
+            'team' => (bool)$InfosGroupe['groupe_team'],
+            'secondaire' => (bool)$InfosGroupe['groupe_secondaire'],
+        ]);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            GroupDAO::EditerGroupe($id, $form->getData());
 
             return redirect('Le groupe a bien été modifié.', $this->generateUrl('zco_groups_index'));
         }
 
-        \Page::$titre = 'Modifier un groupe';
+        \Page::$titre = 'Modifier - ' . htmlspecialchars($InfosGroupe['groupe_nom']);
+        fil_ariane([
+            'Groupes' => $this->generateUrl('zco_groups_index'),
+            htmlspecialchars($InfosGroupe['groupe_nom']),
+        ]);
 
         return render_to_response('ZcoGroupesBundle::edit.html.php', [
             'InfosGroupe' => $InfosGroupe,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -120,7 +135,12 @@ class DefaultController extends Controller
             return redirect('Le groupe a bien été supprimé.', $this->generateUrl('zco_groups_index'));
         }
 
-        \Page::$titre = 'Supprimer un groupe';
+        \Page::$titre = 'Supprimer - ' . htmlspecialchars($InfosGroupe['groupe_nom']);
+        fil_ariane([
+            'Groupes' => $this->generateUrl('zco_groups_index'),
+            htmlspecialchars($InfosGroupe['groupe_nom']) => $this->generateUrl('zco_groups_edit', ['id' => $InfosGroupe['groupe_id']]),
+            'Supprimer',
+        ]);
 
         return render_to_response('ZcoGroupesBundle::delete.html.php', [
             'InfosGroupe' => $InfosGroupe,
@@ -132,14 +152,19 @@ class DefaultController extends Controller
      */
     public function checkCredentialsAction($id)
     {
-        if (!verifier('groupes_changer_droits')) {
+        if (!verifier('groupes_gerer')) {
             throw new AccessDeniedHttpException();
         }
 
         $InfosGroupe = $this->getGroupOrThrow($id);
         $Droits = CredentialsDAO::VerifierDroitsGroupe($id);
 
-        \Page::$titre = 'Vérification des droits d\'un groupe';
+        \Page::$titre = 'Vérifier les droits - ' . htmlspecialchars($InfosGroupe['groupe_nom']);
+        fil_ariane([
+            'Groupes' => $this->generateUrl('zco_groups_index'),
+            htmlspecialchars($InfosGroupe['groupe_nom']) => $this->generateUrl('zco_groups_edit', ['id' => $InfosGroupe['groupe_id']]),
+            'Vérifier les droits',
+        ]);
 
         return render_to_response('ZcoGroupesBundle::checkCredentials.html.php', [
             'InfosGroupe' => $InfosGroupe,
@@ -155,68 +180,54 @@ class DefaultController extends Controller
         if (!verifier('groupes_changer_membre')) {
             throw new AccessDeniedHttpException();
         }
-        \Page::$titre = 'Changer un membre de groupe';
 
-        include_once(__DIR__ . '/../../UserBundle/modeles/utilisateurs.php');
-        if (null !== $id) {
-            $InfosUtilisateur = InfosUtilisateur($id);
-            if (!$InfosUtilisateur) {
-                throw new NotFoundHttpException();
-            }
-        } elseif ($request->request->has('pseudo')) {
-            $InfosUtilisateur = InfosUtilisateur($request->request->get('pseudo'));
-            if (!$InfosUtilisateur) {
-                $_SESSION['erreur'][] = 'Ce membre n\'existe pas.';
-                unset($InfosUtilisateur);
-            }
-        }
-
-        if (isset($InfosUtilisateur)) {
-            if (isset($_POST['groupe'])) {
-                $this->getGroupOrThrow($_POST['groupe']);
+        $InfosUtilisateur = $this->getUserOrThrow($id);
+        if ($request->isMethod('POST')) {
+            $this->getGroupOrThrow($_POST['groupe']);
+            $noop = true;
+            if ($_POST['groupe'] != $InfosUtilisateur['utilisateur_id_groupe']) {
                 GroupDAO::ChangerGroupeUtilisateur($InfosUtilisateur['utilisateur_id'], $_POST['groupe']);
-                $this->get('cache')->save('dernier_refresh_droits', time(), 0);
-
-                return redirect(
-                    'Le membre a bien été changé de groupe.',
-                    $this->generateUrl('zco_groups_assign', ['id' => $InfosUtilisateur['utilisateur_id']])
-                );
+                $noop = false;
             }
-            if (isset($_POST['changement_groupes_secondaires'])) {
+            if (isset($_POST['groupes_secondaires'])) {
                 GroupDAO::ModifierGroupesSecondairesUtilisateur(
-                    $_GET['id'],
-                    isset($_POST['groupes_secondaires']) ? $_POST['groupes_secondaires'] : array()
+                    $InfosUtilisateur['utilisateur_id'],
+                    $_POST['groupes_secondaires']
                 );
-                $this->get('cache')->save('dernier_refresh_droits', time(), 0);
-
+                $noop = false;
+            }
+            if ($noop) {
                 return redirect(
-                    'Le membre a bien été changé de groupe.',
+                    'Le groupe de ce membre n\'a pas été changé.',
                     $this->generateUrl('zco_groups_assign', ['id' => $InfosUtilisateur['utilisateur_id']])
                 );
             }
 
-            $ListerGroupes = array_filter(GroupDAO::ListerGroupes(), function ($group) {
-                return $group['groupe_code'] != \Groupe::ANONYMOUS;
-            });
-            $GroupesSecondaires = GroupDAO::ListerGroupesSecondairesUtilisateur($InfosUtilisateur['utilisateur_id']);
-            $ListerGroupesSecondaires = GroupDAO::ListerGroupesSecondaires();
-            $temp = array();
-            foreach ($GroupesSecondaires as $groupe) {
-                $temp[] = $groupe['groupe_id'];
-            }
-            $GroupesSecondaires = $temp;
-        } else {
-            $ListerGroupes = null;
-            $InfosUtilisateur = null;
-            $GroupesSecondaires = null;
+            $this->get('cache')->save('dernier_refresh_droits', time(), 0);
+
+            return redirect(
+                'Le membre a bien été changé de groupe.',
+                $this->generateUrl('zco_groups_assign', ['id' => $InfosUtilisateur['utilisateur_id']])
+            );
         }
 
-        $pseudo = isset($InfosUtilisateur) ? $InfosUtilisateur['utilisateur_pseudo'] : '';
+        \Page::$titre = 'Changer de groupe - ' . htmlspecialchars($InfosUtilisateur['utilisateur_pseudo']);
+        fil_ariane([
+            'Membres' => $this->generateUrl('zco_user_index'),
+            htmlspecialchars($InfosUtilisateur['utilisateur_pseudo']) => $this->generateUrl('zco_user_profile', ['id' => $InfosUtilisateur['utilisateur_id'], 'slug' => rewrite($InfosUtilisateur['utilisateur_pseudo'])]),
+            'Modifier les droits',
+        ]);
+
+        $ListerGroupes = array_filter(GroupDAO::ListerGroupes(), function ($group) {
+            return $group['groupe_code'] != \Groupe::ANONYMOUS;
+        });
+        $GroupesSecondaires = GroupDAO::ListerGroupesSecondairesUtilisateur($InfosUtilisateur['utilisateur_id']);
+        $GroupesSecondaires = array_column($GroupesSecondaires, 'groupe_id');
+        $ListerGroupesSecondaires = GroupDAO::ListerGroupesSecondaires();
 
         return render_to_response('ZcoGroupesBundle::assign.html.php', [
             'ListerGroupes' => $ListerGroupes,
-            'ListerGroupesSecondaires' => $ListerGroupesSecondaires ?? null,
-            'pseudo' => $pseudo,
+            'ListerGroupesSecondaires' => $ListerGroupesSecondaires,
             'InfosUtilisateur' => $InfosUtilisateur,
             'GroupesSecondaires' => $GroupesSecondaires,
         ]);
@@ -227,7 +238,7 @@ class DefaultController extends Controller
      */
     public function changeCredentialsAction($id, Request $request)
     {
-        if (!verifier('groupes_changer_droits')) {
+        if (!verifier('groupes_gerer')) {
             throw new AccessDeniedHttpException();
         }
 
@@ -252,7 +263,7 @@ class DefaultController extends Controller
                 $ListerEnfants = CategoryDAO::ListerEnfants($InfosDroit, true);
             }
 
-            $ValeurDroit = CredentialsDAO::RecupererValeurDroit($_GET['id2'], $InfosGroupe['groupe_id']);
+            $ValeurDroit = CredentialsDAO::RecupererValeurDroit($InfosDroit['droit_id'], $InfosGroupe['groupe_id']);
             if (!$InfosDroit['droit_choix_categorie'] && !empty($ValeurDroit) && $InfosDroit['droit_choix_binaire']) {
                 $ValeurDroit = $ValeurDroit[0];
             } elseif (!$InfosDroit['droit_choix_categorie'] && !empty($ValeurDroit) && !$InfosDroit['droit_choix_binaire']) {
@@ -271,27 +282,40 @@ class DefaultController extends Controller
             $ValeurNumerique = null;
         }
 
-        //Si on veut modifier
-        if (isset($_POST['modifier']) && !empty($InfosDroit) && !empty($InfosGroupe)) {
-            //En cas de droit simple (sans sélection de catégorie)
-            if (!$InfosDroit['droit_choix_binaire'] && !$InfosDroit['droit_choix_categorie']) {
-                CredentialsDAO::EditerDroitGroupe($InfosGroupe['groupe_id'], $InfosDroit['droit_id_categorie'], $_GET['id2'], (int)$_POST['valeur']);
-            } elseif (!$InfosDroit['droit_choix_categorie']) {
-                CredentialsDAO::EditerDroitGroupe($InfosGroupe['groupe_id'], $InfosDroit['droit_id_categorie'], $_GET['id2'], isset($_POST['valeur']) ? 1 : 0);
+        // Si on veut modifier
+        if ($request->isMethod('POST') && !empty($InfosDroit) && !empty($InfosGroupe)) {
+            // En cas de droit simple (sans sélection de catégorie)
+            if (!$InfosDroit['droit_choix_categorie']) {
+                $value = $InfosDroit['droit_choix_binaire']
+                    ? $request->request->has('valeur') ? 1 : 0
+                    : (int)$request->request->get('valeur');
+                CredentialsDAO::EditerDroitGroupe(
+                    $InfosGroupe['groupe_id'],
+                    $InfosDroit['droit_id_categorie'],
+                    $InfosDroit['droit_id'],
+                    $value
+                );
             } else {
-                //Sinon droit appliquable par catégorie
-                if (empty($_POST['cat'])) {
-                    $_POST['cat'] = array();
-                }
-
+                // Sinon droit appliquable par catégorie.
+                $categories = $request->request->get('cat', []);
                 foreach ($ListerEnfants as $e) {
-                    if (in_array($e['cat_id'], $_POST['cat'])) {
-                        //Si on doit ajouter le droit
-                        $valeur = $InfosDroit['droit_choix_binaire'] ? 1 : (int)$_POST['valeur'];
-                        CredentialsDAO::EditerDroitGroupe($InfosGroupe['groupe_id'], $e['cat_id'], $_GET['id2'], $valeur);
+                    if (in_array($e['cat_id'], $categories)) {
+                        // Si on doit ajouter le droit.
+                        $value = $InfosDroit['droit_choix_binaire'] ? 1 : (int)$request->request->get('valeur');
+                        CredentialsDAO::EditerDroitGroupe(
+                            $InfosGroupe['groupe_id'],
+                            $e['cat_id'],
+                            $InfosDroit['droit_id'],
+                            $value
+                        );
                     } else {
-                        //Sinon on le retire.
-                        CredentialsDAO::EditerDroitGroupe($InfosGroupe['groupe_id'], $e['cat_id'], $_GET['id2'], 0);
+                        // Sinon on le retire.
+                        CredentialsDAO::EditerDroitGroupe(
+                            $InfosGroupe['groupe_id'],
+                            $e['cat_id'],
+                            $InfosDroit['droit_id'],
+                            0
+                        );
                     }
                 }
             }
@@ -301,14 +325,16 @@ class DefaultController extends Controller
 
             return redirect(
                 'Le droit de ce groupe a bien été mis à jour.',
-                'droits-' . $_GET['id'] . '-' . $_GET['id2'] . '.html'
+                $this->generateUrl('zco_groups_changeCredentials', ['id' => $InfosGroupe['groupe_id'], 'credential' => $InfosDroit['droit_id']])
             );
         }
 
-        \Page::$titre = 'Changement des droits d\'un groupe';
-        $this->get('zco_core.resource_manager')->requireResource(
-            '@ZcoCoreBundle/Resources/public/css/zcode.css'
-        );
+        \Page::$titre = 'Modifier les droits - ' . htmlspecialchars($InfosGroupe['groupe_nom']);
+        fil_ariane([
+            'Groupes' => $this->generateUrl('zco_groups_index'),
+            htmlspecialchars($InfosGroupe['groupe_nom']) => $this->generateUrl('zco_groups_edit', ['id' => $InfosGroupe['groupe_id']]),
+            'Modifier les droits',
+        ]);
 
         return render_to_response('ZcoGroupesBundle::changeCredentials.html.php', [
             'InfosGroupe' => $InfosGroupe,
@@ -329,5 +355,16 @@ class DefaultController extends Controller
         }
 
         return $group;
+    }
+
+    private function getUserOrThrow($id)
+    {
+        include_once(__DIR__ . '/../../UserBundle/modeles/utilisateurs.php');
+        $user = InfosUtilisateur($id);
+        if (!$user) {
+            throw new NotFoundHttpException();
+        }
+
+        return $user;
     }
 }

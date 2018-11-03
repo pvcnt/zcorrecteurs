@@ -46,7 +46,6 @@ recrutements_voir_commentaire
 recrutements_voir_prives
 code
 groupes_gerer
-groupes_changer_droits
 groupes_changer_membre
 cats_editer
 voir_sujets

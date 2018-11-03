@@ -1,6 +1,6 @@
-<?php $view->extend('::layouts/default.html.php') ?>
+<?php $view->extend('::layouts/bootstrap.html.php') ?>
 
-<h1>Vérifier les droits d'un groupe</h1>
+<h1><?php echo htmlspecialchars($InfosGroupe['groupe_nom']) ?></h1>
 
 <?php
 $cat = null;
@@ -15,7 +15,7 @@ foreach($Droits as $d)
 		{
 			if($nb != 0) echo '</div>';
 			if($d['cat_niveau'] <= 1 && $nb) echo '<hr style="width: 45%;" />';
-			echo '<div class="UI_box" style="width: 45%; margin-left: '.($d['cat_niveau'] > 0 ? 50 * ($d['cat_niveau'] - 1) : 0).'px;"><h2>'.htmlspecialchars($d['cat_nom']).'</h2>';
+			echo '<div class="box" style="width: 45%; margin-left: '.($d['cat_niveau'] > 0 ? 50 * ($d['cat_niveau'] - 1) : 0).'px;"><h2>'.htmlspecialchars($d['cat_nom']).'</h2>';
 			$cat = $d['cat_id'];
 			$nb++;
 		}
@@ -27,8 +27,8 @@ foreach($Droits as $d)
 				continue;
 			}
 ?>
-<a href="<?php echo $view['router']->path('zco_groups_changeCredentials', ['id' => $_GET['id'], 'credential' => $d['droit_id']]) ?>" title="&Eacute;diter ce droit"><img src="/img/editer.png" alt="&Eacute;diter" /></a>
-<span class="<?php if($d['droit_choix_binaire']) echo ($d['gd_valeur']) ? 'vertf' : 'rouge'; ?>">
+<a href="<?php echo $view['router']->path('zco_groups_changeCredentials', ['id' => $InfosGroupe['groupe_id'], 'credential' => $d['droit_id']]) ?>" title="&Eacute;diter ce droit"><img src="/img/editer.png" alt="&Eacute;diter" /></a>
+<span style="color:<?php if($d['droit_choix_binaire']) echo ($d['gd_valeur']) ? 'green' : 'red'; ?>;">
 	<?php echo htmlspecialchars($d['droit_description']); ?>
 </span>
 <?php if(!$d['droit_choix_binaire']) echo ' : <strong>'.$d['gd_valeur'].'</strong>'; ?>

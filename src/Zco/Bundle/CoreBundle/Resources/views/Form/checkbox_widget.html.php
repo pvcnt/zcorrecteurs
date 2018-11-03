@@ -5,5 +5,5 @@
 />
 
 <?php if (isset($help)): ?>
-    <span class="help_text"><?php echo $view->escape($help) ?></span>
+    <span class="help-block"><?php echo $view->escape($help) ?></span>
 <?php endif ?>

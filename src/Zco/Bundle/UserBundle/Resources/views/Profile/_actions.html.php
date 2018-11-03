@@ -86,7 +86,7 @@
     <ul class="dropdown-menu">
 		<?php if (verifier('groupes_changer_membre')): ?>
 		<li>
-			<a href="/groupes/changer-membre-groupe-<?php echo $user->getId() ?>.html">
+			<a href="<?php echo $view['router']->path('zco_groups_assign', ['id' => $user->getId()]) ?>">
 				Changer de groupe
 			</a>
 		</li>

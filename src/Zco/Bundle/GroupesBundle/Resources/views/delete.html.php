@@ -1,18 +1,17 @@
-<?php $view->extend('::layouts/default.html.php') ?>
+<?php $view->extend('::layouts/bootstrap.html.php') ?>
 
-<h1>Supprimer un groupe</h1>
+<h1><?php echo htmlspecialchars($InfosGroupe['groupe_nom']) ?></h1>
 
 <form method="post" action="">
-	<fieldset>
-		<legend>Supprimer un groupe</legend>
-		<p>
-			Êtes-vous sûr de vouloir supprimer le groupe <strong><?php echo stripslashes($InfosGroupe['groupe_nom']); ?></strong> ?
-			Les <?php echo $InfosGroupe['groupe_effectifs']; ?> membres appartenant à ce groupe seront affectés au groupe par défaut.
-		</p>
+    <p>
+        Êtes-vous sûr de vouloir supprimer le groupe
+        <strong><?php echo htmlspecialchars($InfosGroupe['groupe_nom']) ?></strong> ?
+        Les <?php echo $InfosGroupe['groupe_effectifs']; ?> membres appartenant à ce groupe
+        seront affectés au groupe par défaut.
+    </p>
 
-		<p class="centre">
-			<input type="submit" name="confirmer" value="Oui" />
-			<a href="<?php echo $view['router']->path('zco_groups_index') ?>">Non</a>
-		</p>
-	</fieldset>
+    <div class="form-actions">
+        <input type="submit" class="btn btn-primary" value="Oui"/>
+        <a href="<?php echo $view['router']->path('zco_groups_index') ?>" class="btn">Non</a>
+    </div>
 </form>

@@ -1,65 +1,47 @@
-<?php $view->extend('::layouts/default.html.php') ?>
+<?php $view->extend('::layouts/bootstrap.html.php') ?>
 
-<h1>Changer un membre de groupe</h1>
+<h1><?php echo htmlspecialchars($InfosUtilisateur['utilisateur_pseudo']) ?></h1>
 
-<fieldset>
-	<legend>Sélectionner le membre</legend>
-	<form method="post" action="">
-		<label for="pseudo">Pseudo : </label>
-		<input type="text" name="pseudo" id="pseudo" value="<?php echo $pseudo; ?>" />
-		<input type="submit" value="Envoyer" />
-		
-		<?php $view['javelin']->initBehavior('autocomplete', array(
-		    'id' => 'pseudo', 
-		    'callback' => $view['router']->path('zco_user_api_searchUsername'),
-		)) ?>
-	</form>
-</fieldset>
+<form method="post" action="" class="form-horizontal">
+    <div class="control-group">
+        <label for="groupe" class="control-label">Groupe principal</label>
+        <div class="controls">
+            <select id="groupe" name="groupe">
+                <?php foreach ($ListerGroupes as $g) {
+                    if ($g['groupe_id'] == $InfosUtilisateur['utilisateur_id_groupe'])
+                        $selected = ' selected="selected"';
+                    else
+                        $selected = '';
+                    echo '<option value="' . $g['groupe_id'] . '" style="color: ' . $g['groupe_class'] . ';"' . $selected . '>' . htmlspecialchars($g['groupe_nom']) . ' (' . $g['groupe_effectifs'] . ')</option>';
+                }
+                ?>
+            </select>
+        </div>
+    </div>
 
-<?php if(!empty($ListerGroupes)){ ?>
-<fieldset>
-	<legend>Sélectionner le groupe de destination</legend>
-	<form method="post" action="">
-		<label for="groupe">Groupe principal : </label>
-		<select id="groupe" name="groupe">
-		<?php foreach($ListerGroupes as $g)
-		{
-            if($g['groupe_id'] == $InfosUtilisateur['utilisateur_id_groupe'])
-                $selected = ' selected="selected"';
-            else
-                $selected = '';
-            echo '<option value="'.$g['groupe_id'].'" style="color: '.$g['groupe_class'].';"'.$selected.'>'.htmlspecialchars($g['groupe_nom']).' ('.$g['groupe_effectifs'].')</option>';
-		}
-		?>
-		</select>
+    <?php if (!empty($ListerGroupesSecondaires)) { ?>
+        <div class="control-group">
+            <label for="groupes" class="control-label">Groupes secondaires</label>
+            <div class="controls">
+                <select id="groupes"
+                        name="groupes_secondaires[]"
+                        multiple="multiple"
+                        size="<?php echo count($ListerGroupesSecondaires) ?>">
+                    <?php
+                    foreach ($ListerGroupesSecondaires as $g) {
+                        if (in_array($g['groupe_id'], $GroupesSecondaires))
+                            $selected = ' selected="selected"';
+                        else
+                            $selected = '';
+                        echo '<option value="' . $g['groupe_id'] . $selected . '>' . htmlspecialchars($g['groupe_nom']) . ' (' . $g['groupe_effectifs'] . ')</option>';
+                    }
+                    ?>
+                </select>
+            </div>
+        </div>
+    <?php } ?>
 
-		<input type="submit" value="Envoyer" />
-	</form>
-</fieldset>
-<?php } ?>
-
-<?php if(!empty($ListerGroupesSecondaires)){ ?>
-<fieldset>
-	<legend>Sélectionner les groupes secondaires</legend>
-	<form method="post" action="">
-		<select id="groupes"
-		        name="groupes_secondaires[]"
-		        multiple="multiple"
-		        size="<?php echo count($ListerGroupesSecondaires) ?>">
-			<?php
-			foreach($ListerGroupesSecondaires as $g)
-			{
-                if(in_array($g['groupe_id'], $GroupesSecondaires))
-                    $selected = ' selected="selected"';
-                else
-                    $selected = '';
-                echo '<option value="'.$g['groupe_id'].'" style="color: '.$g['groupe_class'].';"'.$selected.'>'.htmlspecialchars($g['groupe_nom']).' ('.$g['groupe_effectifs'].')</option>';
-			}
-			?>
-		</select>
-
-		<input type="hidden" name="changement_groupes_secondaires" value="1" />
-		<p><input type="submit" value="Envoyer" /></p>
-	</form>
-</fieldset>
-<?php } ?>
+    <div class="form-actions">
+        <input type="submit" class="btn btn-primary" value="Enregistrer"/>
+    </div>
+</form>

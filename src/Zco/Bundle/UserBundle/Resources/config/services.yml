@@ -20,6 +20,7 @@ services:
 
     zco_user.manager.ip:
         class: Zco\Bundle\UserBundle\Entity\IpManager
+        public: true
         arguments: ['@zco_doctrine1.connection', '@cache']
 
     zco.admin_task.new_username:

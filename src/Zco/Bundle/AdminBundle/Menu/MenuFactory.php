@@ -104,23 +104,8 @@ final class MenuFactory
             ));
         }
         if (verifier('groupes_gerer')) {
-            $menu->getChild('Groupes')->addChild('Gérer les groupes', array(
-                'uri' => '/groupes/',
-            ));
-        }
-        if (verifier('groupes_changer_droits')) {
-            $menu->getChild('Groupes')->addChild('Éditer les droits d\'un groupe', array(
-                'uri' => '/groupes/droits.html',
-            ));
-        }
-        if (verifier('droits_gerer')) {
-            $menu->getChild('Groupes')->addChild('Gérer les droits', array(
-                'uri' => '/groupes/gestion-droits.html',
-            ));
-        }
-        if (verifier('groupes_changer_membre')) {
-            $menu->getChild('Groupes')->addChild('Changer un membre de groupe', array(
-                'uri' => '/groupes/changer-membre-groupe.html',
+            $menu->getChild('Membres')->addChild('Gérer les groupes', array(
+                'uri' => $this->router->generate('zco_groups_index'),
             ));
         }
         if (verifier('mp_alertes')) {
@@ -202,7 +187,7 @@ final class MenuFactory
             ));
         }
         if (verifier('ips_bannir')) {
-            $menu->getChild('Adresses IP')->addChild('Liste des adresses IP bannies', array(
+            $menu->getChild('Membres')->addChild('Liste des adresses IP bannies', array(
                 'uri' => $this->router->generate('zco_user_ips_index'),
             ));
         }

@@ -113,11 +113,29 @@ label.nofloat input {
     font-style: italic;
 }
 
+.right {
+    text-align: right;
+}
+
+.my8 {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.my16 {
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+.float-right {
+    float: right;
+}
+
 /**
  * Supprime la correction des marges, inutile sur le nouveau design.
  */
 .container .liste_cadratin, .container-fluid .liste_cadratin {
-	margin-left: 0px;
+	margin-left: 0;
 }
 
 /**

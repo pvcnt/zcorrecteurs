@@ -8,7 +8,7 @@ zco_groups_new:
 
 zco_groups_assign:
   path:   /membres/roles/{id}
-  defaults:  { _controller: ZcoGroupesBundle:Default:assign, id: ~ }
+  defaults:  { _controller: ZcoGroupesBundle:Default:assign }
   requirements:
     id: \d+
 
