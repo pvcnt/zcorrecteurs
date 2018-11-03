@@ -82,7 +82,7 @@ if (count($quizList) > 0):
                 <span style="float: right; margin-right: 5px;"><?php echo $quiz['difficulte'] ?></span>
                 <?php echo str_repeat(
                     '<img src="/bundles/zcoquiz/img/etoile.png" alt="' . $quiz['difficulte'] . '" title="' . $quiz['difficulte'] . '" />',
-                    $quiz->getNumericLevel()
+                    $quiz->getNumericLevel() + 1
                 ) ?>
             </td>
         </tr>

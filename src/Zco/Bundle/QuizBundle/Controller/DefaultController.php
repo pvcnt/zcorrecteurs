@@ -73,10 +73,6 @@ class DefaultController extends Controller
         }
         //TODO: check slug.
 
-        \Page::$titre = htmlspecialchars($quiz['nom']);
-        \Page::$description = htmlspecialchars($quiz['description']);
-        fil_ariane($quiz['categorie_id'], array(htmlspecialchars($quiz['nom'])));
-
         if ($request->getMethod() === 'POST') {
             $questions = $repository->findQuestions($quiz['id'], $_POST['rep']);
             $note = $quiz->Soumettre($questions);
@@ -90,6 +86,13 @@ class DefaultController extends Controller
                 ];
             }
 
+            \Page::$titre = htmlspecialchars($quiz['nom']) . ' - Correction';
+            fil_ariane([
+                'Quiz' => $this->generateUrl('zco_quiz_index'),
+                htmlspecialchars($quiz['nom']) => $this->generateUrl('zco_quiz_show', ['id' => $quiz['id'], 'slug' => rewrite($quiz['nom'])]),
+                'Correction',
+            ]);
+
             return render_to_response('ZcoQuizBundle::correction.html.php', [
                 'quiz' => $quiz,
                 'questions' => $questions,
@@ -97,6 +100,13 @@ class DefaultController extends Controller
                 'reponses' => $reponses,
             ]);
         }
+
+        \Page::$titre = htmlspecialchars($quiz['nom']);
+        \Page::$description = htmlspecialchars($quiz['description']);
+        fil_ariane([
+            'Quiz' => $this->generateUrl('zco_quiz_index'),
+            htmlspecialchars($quiz['nom']),
+        ]);
 
         $questions = $repository->findQuestions($quiz['id'], $quiz['aleatoire']);
 
@@ -118,7 +128,12 @@ class DefaultController extends Controller
         $avgNote = $repository->getAverage($_SESSION['id']);
         $nbNotes = $repository->count($_SESSION['id']);
         $lastNotes = $repository->find($_SESSION['id'], 30);
+
         \Page::$titre = 'Mes statistiques d\'utilisation du quiz';
+        fil_ariane([
+            'Quiz' => $this->generateUrl('zco_quiz_index'),
+            'Mes statistiques',
+        ]);
 
         return render_to_response('ZcoQuizBundle::myStats.html.php', [
             'avgNote' => $avgNote,
@@ -153,6 +168,11 @@ class DefaultController extends Controller
             throw new AccessDeniedHttpException();
         }
         \Page::$titre = 'Gestion des quiz';
+        fil_ariane([
+            'Quiz' => $this->generateUrl('zco_quiz_index'),
+            'Gestion des quiz',
+        ]);
+
         $quizList = $this->get('zco_quiz.manager.quiz')->lister(true);
 
         return render_to_response('ZcoQuizBundle::admin.html.php', [
