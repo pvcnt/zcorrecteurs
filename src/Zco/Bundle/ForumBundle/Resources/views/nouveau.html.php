@@ -12,8 +12,6 @@ Vous êtes dans la corbeille !
 }
 ?>
 
-<?php if(!empty($InfosForum['cat_reglement'])) echo '<div class="reglement">'.$view['messages']->parse($InfosForum['cat_reglement']).'</div>'; ?>
-
 <form action="" method="post">
 	<fieldset>
 		<legend>Nouveau sujet</legend>

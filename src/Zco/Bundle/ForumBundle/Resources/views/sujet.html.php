@@ -21,7 +21,6 @@
 	</h2>
 <?php } ?>
 
-<?php if(!empty($InfosSujet['cat_reglement'])) echo '<div class="reglement">'.$view['messages']->parse($InfosSujet['cat_reglement']).'</div>'; ?>
 <?php if(!empty($InfosSujet['sujet_corbeille'])){ ?>
 <div class="UI_errorbox">
 	Ce message a été jeté à la corbeille !

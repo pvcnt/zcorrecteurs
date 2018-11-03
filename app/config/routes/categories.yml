@@ -1,0 +1,19 @@
+zco_categories_index:
+  path:   /categories
+  defaults:  { _controller: ZcoCategoriesBundle:Default:index }
+
+zco_categories_new:
+  path:   /categories/ajouter
+  defaults:  { _controller: ZcoCategoriesBundle:Default:new }
+
+zco_categories_edit:
+  path:   /categories/modifier/{id}
+  defaults:  { _controller: ZcoCategoriesBundle:Default:edit }
+  requirements:
+    id: \d+
+
+zco_categories_delete:
+  path:   /categories/supprimer/{id}
+  defaults:  { _controller: ZcoCategoriesBundle:Default:delete }
+  requirements:
+    id: \d+

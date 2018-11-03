@@ -62,10 +62,6 @@ abstract class BaseCategorie extends Doctrine_Record
              'type' => 'string',
              'length' => '',
              ));
-        $this->hasColumn('cat_keywords as keywords', 'string', 255, array(
-             'type' => 'string',
-             'length' => '255',
-             ));
         $this->hasColumn('cat_url as url', 'string', 100, array(
              'type' => 'string',
              'length' => '100',
@@ -78,30 +74,12 @@ abstract class BaseCategorie extends Doctrine_Record
              'type' => 'integer',
              'length' => '11',
              ));
-        $this->hasColumn('cat_reglement as reglement', 'string', null, array(
-             'type' => 'string',
-             'length' => '',
-             ));
-        $this->hasColumn('cat_map as map', 'string', null, array(
-             'type' => 'string',
-             'length' => '',
-             ));
-        $this->hasColumn('cat_map_type as map_type', 'integer', 1, array(
-             'type' => 'integer',
-             'length' => '1',
-             ));
         $this->hasColumn('cat_image as image', 'boolean', null, array(
              'type' => 'boolean',
              ));
         $this->hasColumn('cat_redirection as redirection', 'string', 255, array(
              'type' => 'string',
              'length' => '255',
-             ));
-        $this->hasColumn('cat_disponible_ciblage as disponible_ciblage', 'boolean', null, array(
-             'type' => 'boolean',
-             ));
-        $this->hasColumn('cat_ciblage_actions as ciblage_actions', 'boolean', null, array(
-             'type' => 'boolean',
              ));
         $this->hasColumn('cat_archive', 'boolean', null, array(
              'type' => 'boolean',

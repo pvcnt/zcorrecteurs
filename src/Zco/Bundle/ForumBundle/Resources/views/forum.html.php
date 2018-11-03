@@ -9,8 +9,6 @@ $view->extend('::layouts/default.html.php') ?>
 
 <h2><?php echo htmlspecialchars($InfosForum['cat_description']); ?></h2>
 
-<?php if(!empty($InfosForum['cat_reglement'])) echo '<div class="reglement">'.$view['messages']->parse($InfosForum['cat_reglement']).'</div>'; ?>
-
 <div class="options_forum">
 	<ul>
 		<?php if(verifier('mettre_sujet_favori')){ ?>

@@ -1,46 +1,44 @@
-<?php $view->extend('::layouts/default.html.php') ?>
+<?php $view->extend('::layouts/bootstrap.html.php') ?>
+
+<div class="float-right">
+    <a href="<?php echo $view['router']->path('zco_categories_new') ?>" class="btn btn-primary">
+        <i class="icon-plus-sign icon-white"></i>
+        Ajouter une catégorie
+    </a>
+</div>
 
 <h1>Catégories</h1>
 
-<p class="gras centre">
-    <a href="ajouter.html">Ajouter une catégorie</a>
-</p>
-
-<table class="UI_items" onmouseover="InverserEtat(event);" onmouseout="InverserEtat(event);">
+<table class="table table-striped table-bordered">
 	<thead>
 		<tr>
-			<th style="width: 60%;">Nom</th>
-			<th style="width: 10%;">Monter</th>
-			<th style="width: 10%;">Descendre</th>
-			<th style="width: 10%;">Éditer</th>
-			<th style="width: 10%;">Supprimer</th>
+			<th>Nom</th>
+			<th>Monter</th>
+			<th>Descendre</th>
+			<th>Éditer</th>
+			<th>Supprimer</th>
 		</tr>
 	</thead>
 
 	<tbody>
-		<?php
-		foreach($categories as $c)
-		{
-			$marqueur = '';
-			for($i = 0 ; $i < $c['cat_niveau'] ; $i++)
-			{
-				$marqueur .= '.....';
-			}
-		?>
+		<?php foreach($categories as $c) { ?>
 		<tr>
-			<td><?php echo $marqueur; ?> <?php echo htmlspecialchars($c['cat_nom']); ?></td>
-			<td class="centre">
-				<a href="?monter=<?php echo $c['cat_id']; ?>"><img src="/img/misc/monter.png" alt="Monter" /></a>
+			<td>
+                <?php echo str_repeat('...', $c['cat_niveau']) ?>
+                <?php echo htmlspecialchars($c['cat_nom']); ?>
+            </td>
+			<td class="center">
+				<a href="<?php echo $view['router']->path('zco_categories_index', ['up' => $c['cat_id']]) ?>"><img src="/img/misc/monter.png" alt="Monter" /></a>
 			</td>
-			<td class="centre">
-				<a href="?descendre=<?php echo $c['cat_id']; ?>"><img src="/img/misc/descendre.png" alt="Descendre" /></a>
+			<td class="center">
+				<a href="<?php echo $view['router']->path('zco_categories_index', ['down' => $c['cat_id']]) ?>"><img src="/img/misc/descendre.png" alt="Descendre" /></a>
 			</td>
-			<td class="centre">
-				<a href="editer-<?php echo $c['cat_id']; ?>.html"><img src="/img/editer.png" alt="Éditer" /></a>
+			<td class="center">
+				<a href="<?php echo $view['router']->path('zco_categories_edit', ['id' => $c['cat_id']]) ?>"><img src="/img/editer.png" alt="Éditer" /></a>
 			</td>
-			<td class="centre">
+			<td class="center">
 				<?php if($c['cat_droite'] - $c['cat_gauche'] == 1){ ?>
-				<a href="supprimer-<?php echo $c['cat_id']; ?>.html"><img src="/img/supprimer.png" alt="Supprimer" /></a>
+				<a href="<?php echo $view['router']->path('zco_categories_delete', ['id' => $c['cat_id']]) ?>"><img src="/img/supprimer.png" alt="Supprimer" /></a>
 				<?php } else echo '-'; ?>
 			</td>
 		</tr>

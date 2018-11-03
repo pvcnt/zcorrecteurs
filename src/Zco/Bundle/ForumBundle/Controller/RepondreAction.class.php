@@ -119,11 +119,6 @@ class RepondreAction extends ForumActions
 				}
 				unset($_SESSION['forum_citations'][$_GET['id']]);
 			}
-			//Si on doit afficher une MAP
-			elseif (!empty($InfosForum['cat_map']) && $InfosForum['cat_map_type'] == MAP_ALL)
-			{
-				!isset($texte_zform) ? $texte_zform = $InfosForum['cat_map'] : $texte_zform .= "\n".$InfosForum['cat_map'];
-			}
 			else
 			{
 				$texte_zform = '';

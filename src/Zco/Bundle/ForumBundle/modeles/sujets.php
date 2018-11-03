@@ -46,7 +46,7 @@ function InfosSujet($lesujet)
 	SELECT sujet_id, sujet_titre, sujet_sous_titre, sujet_premier_message, sujet_dernier_message, sujet_auteur, sujet_ferme, sujet_annonce, sujet_sondage, sujet_resolu, sujet_corbeille, sujet_coup_coeur, " .
 			"sondage_question, sondage_ferme, sujet_forum_id, utilisateur_sexe," .
 			"COALESCE(Ma.utilisateur_pseudo, 'Anonyme') AS sujet_auteur_pseudo, Ma.utilisateur_id_groupe AS sujet_auteur_groupe, " .
-			"COUNT(*) AS nombre_de_messages, cat_reglement, " .
+			"COUNT(*) AS nombre_de_messages, " .
 			"lunonlu_utilisateur_id, lunonlu_message_id, lunonlu_favori, vote_membre_id, " .
 			"Na.message_date AS dernier_message_date, Na.message_auteur AS dernier_message_auteur " .
 			"FROM zcov2_forum_sujets " .

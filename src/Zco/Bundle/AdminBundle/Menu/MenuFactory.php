@@ -53,7 +53,7 @@ final class MenuFactory
         
         if (verifier('cats_editer')) {
             $menu->getChild('Catégories')->addChild('Gérer les catégories', [
-                'uri' => '/categories/',
+                'uri' => $this->router->generate('zco_categories_index'),
             ]);
         }
         if (verifier('dictees_publier')) {

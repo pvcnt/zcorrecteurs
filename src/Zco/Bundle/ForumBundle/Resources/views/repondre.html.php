@@ -10,8 +10,6 @@
 
 <h1><?php echo htmlspecialchars($InfosSujet['sujet_titre']); ?></h1>
 
-<?php if(!empty($InfosSujet['cat_reglement'])) echo '<div class="reglement">'.$view['messages']->parse($InfosSujet['cat_reglement']).'</div>'; ?>
-
 <form action="" method="post">
 	<fieldset>
 		<legend>Ajout d'une réponse</legend>

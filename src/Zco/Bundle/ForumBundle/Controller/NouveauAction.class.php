@@ -80,7 +80,7 @@ class NouveauAction extends ForumActions
 			}
 			else
 			{
-				$texte = $InfosForum['cat_map'];
+				$texte = '';
 			}
 
 			return render_to_response(array(
