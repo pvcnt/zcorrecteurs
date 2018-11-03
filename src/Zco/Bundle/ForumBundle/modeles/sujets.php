@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
+use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
 
 /**
  * Modèle concernant tout ce qui est listage du contenu d'un sujet (donc ses messages quoi),

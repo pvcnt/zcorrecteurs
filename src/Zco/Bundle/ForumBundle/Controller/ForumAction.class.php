@@ -22,7 +22,7 @@
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
+use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
 
 /**
  * Contrôleur gérant l'affichage de la liste des sujets d'un forum.

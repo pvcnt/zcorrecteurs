@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zco\Bundle\BlogBundle\Domain\BlogDAO;
-use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
+use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
 
 /**
  * Contrôleur gérant l'édition d'un billet.

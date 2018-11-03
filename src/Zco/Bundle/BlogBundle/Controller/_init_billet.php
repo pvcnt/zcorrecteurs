@@ -20,7 +20,7 @@
  */
 
 use Zco\Bundle\BlogBundle\Domain\BlogDAO;
-use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
+use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
 
 /**
  * Contrôleur se chargeant de divers paramétrages communs à toutes les pages

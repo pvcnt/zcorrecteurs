@@ -26,7 +26,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
+use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
 use Zco\Bundle\QuizBundle\Chart\GlobalStatsChart;
 use Zco\Bundle\QuizBundle\Chart\MyStatsChart;
 use Zco\Bundle\QuizBundle\Entity\QuizScoreManager;

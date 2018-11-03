@@ -19,21 +19,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\CategoriesBundle\Controller;
+namespace Zco\Bundle\ContentBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
-use Zco\Bundle\CategoriesBundle\Form\CategoryType;
+use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
+use Zco\Bundle\ContentBundle\Form\CategoryType;
 
 /**
  * Actions pour tout ce qui concerne la gestion des catégories du site.
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-final class DefaultController extends Controller
+final class CategoryController extends Controller
 {
     /**
      * Affichage de la liste des catégories.
@@ -80,7 +80,7 @@ final class DefaultController extends Controller
 
         \Page::$titre = 'Catégories';
 
-        return render_to_response('ZcoCategoriesBundle::index.html.php', [
+        return render_to_response('ZcoContentBundle:Category:index.html.php', [
             'categories' => CategoryDAO::ListerCategories(),
         ]);
     }
@@ -109,7 +109,7 @@ final class DefaultController extends Controller
             'Créer une catégorie',
         ]);
 
-        return render_to_response('ZcoCategoriesBundle::new.html.php', [
+        return render_to_response('ZcoContentBundle:Category:new.html.php', [
             'form' => $form->createView(),
         ]);
     }
@@ -151,7 +151,7 @@ final class DefaultController extends Controller
             htmlspecialchars($InfosCategorie['cat_nom']),
         ]);
 
-        return render_to_response('ZcoCategoriesBundle::edit.html.php', [
+        return render_to_response('ZcoContentBundle:Category:edit.html.php', [
             'InfosCategorie' => $InfosCategorie,
             'form' => $form->createView(),
         ]);
@@ -192,7 +192,7 @@ final class DefaultController extends Controller
             'Supprimer',
         ]);
 
-        return render_to_response('ZcoCategoriesBundle::delete.html.php', [
+        return render_to_response('ZcoContentBundle:Category:delete.html.php', [
             'InfosCategorie' => $InfosCategorie,
         ]);
     }

@@ -20,7 +20,7 @@
  */
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
+use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
 
 /**
  * Contrôleur gérant l'accueil des forums (listage des catégories + forums).

@@ -1,4 +1,4 @@
-<?php use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
+<?php use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
 $Categories = CategoryDAO::ListerEnfants(CategoryDAO::GetIDCategorieCourante()); ?>
 <div class="UI_box">
     <form method="post" action="/blog/">

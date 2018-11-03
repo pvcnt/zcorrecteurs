@@ -1,4 +1,4 @@
-<?php use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
+<?php use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
 $view->extend('::layouts/default.html.php') ?>
 
 <h1>Forum</h1>

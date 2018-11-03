@@ -20,7 +20,7 @@
  */
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
+use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
 
 /**
  * Contrôleur gérant l'alerte des modérateurs sur un sujet.

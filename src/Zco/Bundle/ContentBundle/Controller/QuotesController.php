@@ -27,7 +27,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zco\Bundle\ContentBundle\Domain\QuoteRepository;
-use Zco\Bundle\ContentBundle\Form\Type\QuoteType;
+use Zco\Bundle\ContentBundle\Form\QuoteType;
 
 class QuotesController extends Controller
 {

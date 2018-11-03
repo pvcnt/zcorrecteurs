@@ -24,7 +24,7 @@ namespace Zco\Bundle\PagesBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Zco\Bundle\BlogBundle\Domain\BlogDAO;
-use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
+use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
 
 /**
  * Affichage de la page d'accueil du site.

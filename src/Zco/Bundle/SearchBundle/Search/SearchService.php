@@ -2,7 +2,7 @@
 
 namespace Zco\Bundle\SearchBundle\Search;
 
-use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
+use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
 use Zco\Bundle\SearchBundle\Search\Searchable\SearchableInterface;
 use Zco\Bundle\UserBundle\Domain\UserDAO;
 

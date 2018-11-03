@@ -21,7 +21,7 @@
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Zco\Bundle\BlogBundle\Domain\BlogDAO;
-use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
+use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
 
 class BlogActions extends Controller
 {

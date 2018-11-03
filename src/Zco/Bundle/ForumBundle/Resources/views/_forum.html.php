@@ -1,4 +1,4 @@
-<?php use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
+<?php use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
 if ( isset($Parent) && !empty($_GET['archives'])) : ?>
 <tr class="grosse_cat_trash" id="c<?php echo $Parent['cat_id']; ?>">
 	<td colspan="3" class="nom_forum">
