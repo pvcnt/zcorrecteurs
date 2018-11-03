@@ -12,6 +12,12 @@ html {
     min-height: 100%;
 }
 
+.container {
+    max-width: 1200px !important;
+    margin: auto !important;
+    width: 100% !important;
+}
+
 /**
  * Remise en forme des titres pour les rendre plus fins que ceux par défaut 
  * de Bootstrap.

@@ -48,52 +48,20 @@
     </div> <!-- /navbar -->
 <?php endif ?>
 
-<div class="container-fluid<?php if (empty($xhr)): ?> main-container<?php endif ?>">
-    <div class="row-fluid">
+<div class="container<?php if (empty($xhr)): ?> main-container<?php endif ?>">
+    <div class="content">
+        <?php echo $view->render('::layouts/flashes.html.php') ?>
+
         <?php if (empty($xhr)): ?>
-            <div class="span2 sidebar">
-                <div class="bloc communaute first last">
-                    <h4>Communauté</h4>
-                    <ul class="nav nav-list">
-                        <li class="first">
-                            <a href="/recrutement/" style="font-weight: bold;">
-                                Nous rejoindre
-                            </a>
-                        </li>
-                        <li>
-                            <a href="<?php echo $view['router']->path('zco_donate_index') ?>">
-                                Faire un don
-                            </a>
-                        </li>
-                        <li>
-                            <a href="<?php echo $view['router']->path('zco_about_team') ?>">
-                                L'équipe
-                            </a>
-                        </li>
-                        <li>
-                            <a href="<?php echo $view['router']->path('zco_user_index') ?>">
-                                Membres
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+            <div id="postloading-area"></div>
+
+            <ul class="breadcrumb">
+                <li><?php echo implode('<span class="divider">»</span></li><li>', \Page::$fil_ariane) ?></li>
+            </ul>
         <?php endif ?>
 
-        <div class="<?php echo empty($xhr) ? 'span10' : 'span12' ?> content">
-            <?php echo $view->render('::layouts/flashes.html.php') ?>
-
-            <?php if (empty($xhr)): ?>
-                <div id="postloading-area"></div>
-
-                <ul class="breadcrumb">
-                    <li><?php echo implode('<span class="divider">»</span></li><li>', \Page::$fil_ariane) ?></li>
-                </ul>
-            <?php endif ?>
-
-            <?php $view['slots']->output('_content') ?>
-        </div>
-    </div> <!-- /row-fluid -->
+        <?php $view['slots']->output('_content') ?>
+    </div>
 </div> <!-- /container-fluid -->
 
 <?php if (empty($xhr)): ?>

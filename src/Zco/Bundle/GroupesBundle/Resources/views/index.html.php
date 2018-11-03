@@ -1,12 +1,13 @@
 <?php $view->extend('::layouts/bootstrap.html.php') ?>
 
-<h1>Groupes</h1>
-
-<div class="right my16">
+<div class="float-right">
     <a href="<?php echo $view['router']->path('zco_groups_new') ?>" class="btn btn-primary">
+        <i class="icon-plus-sign icon-white"></i>
         Ajouter un groupe
     </a>
 </div>
+
+<h1>Groupes</h1>
 
 <?php echo $view->render('ZcoGroupesBundle::groupsTable.html.php', ['ListerGroupes' => $ListerGroupes]) ?>
 
