@@ -11,6 +11,7 @@
             <a href="<?php echo $view['router']->path('zco_about_index') ?>" title="Pour en savoir plus sur le site et son organisation.">À propos</a>
             | <a href="<?php echo $view['router']->path('zco_about_contact') ?>" title="Si vous avez besoin de contacter les administrateurs de ce site.">Contact</a>
             | <a href="<?php echo $view['router']->path('zco_about_opensource') ?>">Code source</a>
+            | <a href="<?php echo $view['router']->path('zco_donate_index') ?>">Faire un don</a>
             | <a href="<?php echo $view['router']->path('zco_legal_mentions') ?>">Mentions légales</a>
         </p>
 
