@@ -22,8 +22,6 @@
 namespace Zco\Bundle\CoreBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Zco\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterKernelSubscribersPass;
 
 /**
  * Module principal du site (ne peut pas être désactivé). Ne fournit aucune 
@@ -34,13 +32,4 @@ use Zco\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterKernelSubscribers
  */
 class ZcoCoreBundle extends Bundle
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function build(ContainerBuilder $container)
-    {
-        parent::build($container);
-        
-        $container->addCompilerPass(new RegisterKernelSubscribersPass());
-    }
 }

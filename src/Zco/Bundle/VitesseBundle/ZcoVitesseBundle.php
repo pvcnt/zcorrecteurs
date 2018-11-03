@@ -19,17 +19,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\UserBundle\Validator\Constraints;
+namespace Zco\Bundle\VitesseBundle;
 
-use Symfony\Component\Validator\Constraint;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class EmailValidator extends AbstractValidator
+/**
+ * @author vincent1870 <vincent@zcorrecteurs.fr>
+ */
+class ZcoVitesseBundle extends Bundle
 {
-    /**
-     * {@inheritdoc}
-     */
-	public function validate($value, Constraint $constraint)
-	{
-		$this->doValidate($value, 'validateEmail', $constraint);
-	}
 }

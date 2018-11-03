@@ -1,0 +1,3 @@
+zco_asset:
+  path:   /res/{hash}
+  defaults:  { _controller: ZcoVitesseBundle:Default:render }

@@ -21,62 +21,55 @@
 
 namespace Zco\Bundle\UserBundle\Validator\Constraints;
 
-use Zco\Bundle\UserBundle\Exception\ValueException;
-use Zco\Bundle\UserBundle\User\UserSession;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Zco\Bundle\UserBundle\Exception\ValueException;
+use Zco\Bundle\UserBundle\User\UserSession;
 
 /**
- * Validateur abstrait s'occupant de données liées à l'utilisateur et dont 
+ * Validateur abstrait s'occupant de données liées à l'utilisateur et dont
  * la validation est prise en charge par une méthode de la classe User.
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
 abstract class AbstractValidator extends ConstraintValidator
 {
-	private $user;
-	
-	/**
-	 * Constructeur.
-	 *
-	 * @param UserSession $user
-	 */
-	public function __construct(UserSession $user)
-	{
-		$this->user = $user;
-	}
-	
-	/**
-	 * Fonction d'aide validant une valeur par un appel à la méthode appropriée 
-	 * de la classe User.
-	 *
-	 * @param  mixed $value La valeur à valider
-	 * @param  string $method La méthode à utiliser pour valider
-	 * @param  Constraint $constraint La contrainte validée
-	 * @return boolean Valeur validée ?
-	 */
-	protected function doValidate($value, $method, Constraint $constraint)
-	{
-		//Les méthodes renvoie vrai lorsque la validation réussit et une 
-		//exception de type ValueException lorsqu'elle échoue.
-		try
-		{
-			if ($this->user->$method($value))
-			{
-				return true;
-			}
-			
-			//Cas où la validation pourrait renvoyer false sans exception, 
-			//on utilise le message par défaut.
-			$this->context->addViolation($constraint->message);
-		}
-		catch (ValueException $e)
-		{
-			//Si on a une exception, celle-ci transporte généralement le 
-			//message détaillant l'erreur en question.
-			$this->context->addViolation($e->getMessage() ?: $constraint->message);
-		}
-		
-		return false;
-	}
+    private $user;
+
+    /**
+     * Constructeur.
+     *
+     * @param UserSession $user
+     */
+    public function __construct(UserSession $user)
+    {
+        $this->user = $user;
+    }
+
+    /**
+     * Fonction d'aide validant une valeur par un appel à la méthode appropriée
+     * de la classe User.
+     *
+     * @param  mixed $value La valeur à valider
+     * @param  string $method La méthode à utiliser pour valider
+     * @param  Constraint $constraint La contrainte validée
+     */
+    protected function doValidate($value, $method, Constraint $constraint)
+    {
+        //Les méthodes renvoie vrai lorsque la validation réussit et une
+        //exception de type ValueException lorsqu'elle échoue.
+        try {
+            if ($this->user->$method($value)) {
+                return;
+            }
+
+            //Cas où la validation pourrait renvoyer false sans exception,
+            //on utilise le message par défaut.
+            $this->context->addViolation($constraint->message);
+        } catch (ValueException $e) {
+            //Si on a une exception, celle-ci transporte généralement le
+            //message détaillant l'erreur en question.
+            $this->context->addViolation($e->getMessage() ?: $constraint->message);
+        }
+    }
 }

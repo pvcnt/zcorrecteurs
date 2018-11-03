@@ -1,0 +1,41 @@
+services:
+  zco_core.resource_manager:
+    class: Zco\Bundle\VitesseBundle\Javelin\ResourceManager
+    public: true
+    arguments:
+    - '@zco_core.assetic.asset_manager'
+    - '@zco_core.resource_map'
+    - '@router'
+    - '%kernel.root_dir%/../web'
+    - '%zco_core.vitesse.combine_assets%'
+    - '%kernel.debug%'
+    - '@?logger'
+
+  zco_core.resource_map:
+    class: Zco\Bundle\VitesseBundle\Javelin\ResourceMap
+    arguments: ['%zco_core.vitesse.cache_dir%']
+
+  zco_core.assetic.asset_manager:
+    class: Assetic\Factory\LazyAssetManager
+    arguments: ['@zco_core.assetic.factory']
+
+  zco_core.assetic.factory:
+    class: Assetic\Factory\AssetFactory
+    arguments: ['%kernel.root_dir%%/../web', '%kernel.debug%']
+
+  zco_core.javelin:
+    class: Zco\Bundle\VitesseBundle\Javelin\Javelin
+    public: true
+    arguments: ['@zco_core.resource_manager']
+
+  zco_core.templating.helper.vitesse:
+    class: Zco\Bundle\VitesseBundle\Templating\Helper\VitesseHelper
+    arguments: ["@zco_core.resource_manager"]
+    tags:
+    - { name: templating.helper, alias: vitesse }
+
+  zco_core.templating.helper.javelin:
+    class: Zco\Bundle\VitesseBundle\Templating\Helper\JavelinHelper
+    arguments: ["@zco_core.javelin"]
+    tags:
+    - { name: templating.helper, alias: javelin }

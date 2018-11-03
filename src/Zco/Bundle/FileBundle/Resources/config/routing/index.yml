@@ -1,7 +1,0 @@
-zco_file_default:
-    resource: "@ZcoFileBundle/Resources/config/routing/default.yml"
-    prefix:   /fichiers
-
-zco_file_api:
-    resource: "@ZcoFileBundle/Resources/config/routing/api.yml"
-    prefix:   /_api/fichiers

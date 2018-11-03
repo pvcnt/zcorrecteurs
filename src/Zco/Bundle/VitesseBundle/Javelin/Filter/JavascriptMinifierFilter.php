@@ -19,17 +19,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\UserBundle\Validator\Constraints;
+namespace Zco\Bundle\VitesseBundle\Javelin\Filter;
 
-use Symfony\Component\Validator\Constraint;
+use Assetic\Asset\AssetInterface;
+use Assetic\Filter\FilterInterface;
+use Zco\Bundle\VitesseBundle\Javelin\JavascriptMinifier;
 
-class EmailValidator extends AbstractValidator
+/**
+ * Filters assets through JavascriptMinifier.
+ *
+ * @author vincent1870 <vincent@zcorrecteurs.fr>
+ */
+class JavascriptMinifierFilter implements FilterInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-	public function validate($value, Constraint $constraint)
-	{
-		$this->doValidate($value, 'validateEmail', $constraint);
-	}
+    public function filterLoad(AssetInterface $asset)
+    {
+    }
+
+    public function filterDump(AssetInterface $asset)
+    {
+        $asset->setContent(JavascriptMinifier::minify($asset->getContent()));
+    }
 }

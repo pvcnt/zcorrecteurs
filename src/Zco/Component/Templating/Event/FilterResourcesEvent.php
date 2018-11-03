@@ -21,8 +21,8 @@
 
 namespace Zco\Component\Templating\Event;
 
-use Zco\Bundle\CoreBundle\Javelin\ResourceManager;
-use Zco\Bundle\CoreBundle\Javelin\Javelin;
+use Zco\Bundle\VitesseBundle\Javelin\ResourceManager;
+use Zco\Bundle\VitesseBundle\Javelin\Javelin;
 use Symfony\Component\EventDispatcher\Event;
 
 class FilterResourcesEvent extends Event

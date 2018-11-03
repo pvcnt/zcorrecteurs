@@ -1,0 +1,33 @@
+zco_options_index:
+  path:   /options
+  defaults:  { _controller: ZcoOptionsBundle:Default:profile, id: ~ }
+
+zco_options_profile:
+  path:   /options/profil/{id}
+  defaults:  { _controller: ZcoOptionsBundle:Default:profile, id: ~ }
+
+zco_options_password:
+  path:   /options/mot-de-passe/{id}
+  defaults:  { _controller: ZcoOptionsBundle:Default:password, id: ~ }
+
+zco_options_email:
+  path:   /options/courriel/{id}
+  defaults:  { _controller: ZcoOptionsBundle:Default:email, id: ~, hash: ~ }
+  requirements:
+    id: \d+
+
+zco_options_validateEmail:
+  path:   /options/courriel/{hash}
+  defaults:  { _controller: ZcoOptionsBundle:Default:email, id: ~ }
+
+zco_options_avatar:
+  path:   /options/avatar/{id}
+  defaults:  { _controller: ZcoOptionsBundle:Default:avatar, id: ~ }
+
+zco_options_absence:
+  path:   /options/absence/{id}
+  defaults:  { _controller: ZcoOptionsBundle:Default:absence, id: ~ }
+
+zco_options_preferences:
+  path:   /options/preferences/{id}
+  defaults:  { _controller: ZcoOptionsBundle:Default:preferences, id: ~ }

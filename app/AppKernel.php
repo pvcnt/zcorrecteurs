@@ -19,12 +19,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\Routing\RouteCollectionBuilder;
 
-class AppKernel extends Kernel
+final class AppKernel extends Kernel
 {
+    use MicroKernelTrait;
+
+    const CONFIG_EXTS = '.{php,xml,yaml,yml}';
+
     /**
      * {@inheritdoc}
      */
@@ -43,6 +49,7 @@ class AppKernel extends Kernel
 
             // Infrastructure bundles.
             new Zco\Bundle\CoreBundle\ZcoCoreBundle(),
+            new Zco\Bundle\VitesseBundle\ZcoVitesseBundle(),
             new Zco\Bundle\ParserBundle\ZcoParserBundle(),
             new Zco\Bundle\UserBundle\ZcoUserBundle(),
 
@@ -76,9 +83,23 @@ class AppKernel extends Kernel
     /**
      * {@inheritdoc}
      */
-    public function registerContainerConfiguration(LoaderInterface $loader)
+    protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader)
     {
-        $loader->load(__DIR__ . '/config/config_' . $this->getEnvironment() . '.yml');
+        $confDir = __DIR__ . '/config';
+        $loader->load($confDir . '/packages/*' . self::CONFIG_EXTS, 'glob');
+        $loader->load($confDir . '/packages/' . $this->environment . '/**/*' . self::CONFIG_EXTS, 'glob');
+        $loader->load($confDir . '/services' . self::CONFIG_EXTS, 'glob');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function configureRoutes(RouteCollectionBuilder $routes)
+    {
+        $confDir = __DIR__ . '/config';
+        $routes->import($confDir . '/routes/*' . self::CONFIG_EXTS, '/', 'glob');
+        $routes->import($confDir . '/routes/' . $this->environment . '/**/*' . self::CONFIG_EXTS, '/', 'glob');
+        $routes->import($confDir . '/routes' . self::CONFIG_EXTS, '/', 'glob');
     }
 
     /**
@@ -86,8 +107,7 @@ class AppKernel extends Kernel
      */
     public function getCacheDir()
     {
-        // We use Symfony 3 directory structure, and allow to overwrite this directory by environment variable.
-        return (getenv('SYMFONY_CACHE_DIR') ?: dirname(__DIR__) . '../var/cache') . '/' . $this->environment;
+        return (getenv('SYMFONY_CACHE_DIR') ?: $this->getProjectDir() . '/var/cache') . '/' . $this->environment;
     }
 
     /**
@@ -95,8 +115,7 @@ class AppKernel extends Kernel
      */
     public function getLogDir()
     {
-        // We use Symfony 3 directory structure, and allow to overwrite this directory by environment variable.
-        return getenv('SYMFONY_LOG_DIR') ?: dirname(__DIR__) . '../var/logs';
+        return getenv('SYMFONY_LOG_DIR') ?: $this->getProjectDir() . '/var/log';
     }
 
     /**
@@ -104,8 +123,17 @@ class AppKernel extends Kernel
      */
     public function getRootDir()
     {
-        // Default implementation does exactly this... but through reflection. This should be faster.
+        // Default implementation uses reflection, this should be faster.
         return __DIR__;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProjectDir()
+    {
+        // Default implementation uses reflection, this should be faster.
+        return __DIR__ . '/..';
     }
 
     /**

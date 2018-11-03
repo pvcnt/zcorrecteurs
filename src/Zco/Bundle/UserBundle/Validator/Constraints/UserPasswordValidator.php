@@ -38,7 +38,7 @@ class UserPasswordValidator extends ConstraintValidator
     protected $user;
     
     /**
-     * Constructeur.
+     * Constructor.
      *
      * @param UserSession $user
      */
@@ -48,28 +48,16 @@ class UserPasswordValidator extends ConstraintValidator
     }
     
     /**
-     * Vérifie que le mot de passe soit valide.
-     *
-     * @param  mixed value
-     * @param  Constraint $constraint
-     * @return boolean
-     *
-     * @throws UnexpectedTypeException si la valeur n'est pas une chaîne de caractères
+     * {@inheritdoc}
      */
-    public function isValid($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint)
     {
-        if (!is_string($value))
-        {
+        if (!is_string($value)) {
             throw new UnexpectedTypeException($value, 'string');
         }
 
-        if (!$this->user->checkPassword($value))
-        {
-            $this->setMessage($constraint->message);
-
-            return false;
+        if (!$this->user->checkPassword($value)) {
+            $this->context->addViolation($constraint->message);
         }
-
-        return true;
     }
 }

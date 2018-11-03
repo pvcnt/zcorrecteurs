@@ -19,17 +19,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\UserBundle\Validator\Constraints;
+namespace Zco\Bundle\VitesseBundle\DependencyInjection;
 
-use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Config\Definition\Builder\TreeBuilder;
+use Symfony\Component\Config\Definition\ConfigurationInterface;
 
-class EmailValidator extends AbstractValidator
+class Configuration implements ConfigurationInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-	public function validate($value, Constraint $constraint)
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getConfigTreeBuilder()
 	{
-		$this->doValidate($value, 'validateEmail', $constraint);
+		$builder = new TreeBuilder();
+
+		$builder->root('zco_vitesse')
+			->children()
+                ->booleanNode('combine_assets')->defaultTrue()->end()
+			->end()
+		;
+
+		return $builder;
 	}
 }

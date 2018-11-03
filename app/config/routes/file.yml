@@ -1,0 +1,58 @@
+zco_file_index:
+  path:   /fichiers
+  defaults:  { _controller: ZcoFileBundle:Default:index }
+  options:   { expose: true }
+
+zco_file_upload:
+  path:   /fichiers/upload
+  defaults:  { _controller: ZcoFileBundle:Default:upload }
+  options:   { expose: true }
+
+zco_file_folder:
+  path:   /fichiers/dossier/{id}/{entities}
+  defaults:  { _controller: ZcoFileBundle:Default:folder, id: 1, entities: '' }
+  requirements:
+    id: \d+
+
+zco_file_file:
+  path:   /fichiers/fichier/{id}
+  defaults:  { _controller: ZcoFileBundle:Default:file }
+  options:   { expose: true }
+  requirements:
+    id: \d+
+
+zco_file_api_save:
+  path:   /_api/fichiers/sauvegarder/{id}
+  defaults:  { _controller: ZcoFileBundle:Api:save, _format: json }
+  options:   { expose: true }
+  methods:   [POST]
+  requirements:
+    id: \d+
+
+zco_file_api_edit:
+  path:   /_api/fichiers/modifier/{id}
+  defaults:  { _controller: ZcoFileBundle:Api:edit, _format: json }
+  options:   { expose: true }
+  methods:   [POST]
+  requirements:
+    id: \d+
+
+zco_file_api_delete:
+  path:   /_api/fichiers/supprimer/{id}
+  defaults:  { _controller: ZcoFileBundle:Api:delete, _format: json }
+  options:   { expose: true }
+  requirements:
+    id: \d+
+
+zco_file_api_search:
+  path:   /_api/fichiers/recherche/{folder}/{entities}
+  defaults:  { _controller: ZcoFileBundle:Api:search, _format: json, entities: '' }
+  options:   { expose: true }
+  methods:   [POST]
+  requirements:
+    folder: \d+
+
+zco_file_api_usage:
+  path:   /_api/fichiers/usage
+  defaults:  { _controller: ZcoFileBundle:Api:usage, _format: json }
+  options:   { expose: true }

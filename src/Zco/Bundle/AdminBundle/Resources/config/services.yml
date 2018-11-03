@@ -1,5 +1,0 @@
-services:
-  zco.admin:
-    class: Zco\Bundle\AdminBundle\Admin
-    public: true
-    arguments: ['@cache']

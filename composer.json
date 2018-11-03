@@ -14,8 +14,6 @@
       "lib/Artichow",
       "lib/diff",
       "lib/wdiff",
-      "lib/jsmin",
-      "lib/cssmin"
     ],
     "files": [
       "app/functions.php",

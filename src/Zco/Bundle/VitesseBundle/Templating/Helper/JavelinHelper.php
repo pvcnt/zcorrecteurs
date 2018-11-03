@@ -19,17 +19,39 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\UserBundle\Validator\Constraints;
+namespace Zco\Bundle\VitesseBundle\Templating\Helper;
 
-use Symfony\Component\Validator\Constraint;
+use Zco\Bundle\VitesseBundle\Javelin\Javelin;
+use Symfony\Component\Templating\Helper\Helper;
 
-class EmailValidator extends AbstractValidator
+/**
+ * @author vincent1870 <vincent@zcorrecteurs.fr>
+ */
+class JavelinHelper extends Helper
 {
-    /**
-     * {@inheritdoc}
-     */
-	public function validate($value, Constraint $constraint)
+    private $javelin;
+    
+    public function __construct(Javelin $javelin)
+    {
+        $this->javelin = $javelin;
+    }
+	public function initBehavior($behavior, array $config = array())
 	{
-		$this->doValidate($value, 'validateEmail', $constraint);
+	    $this->javelin->initBehavior($behavior, $config);
+	}
+	
+	public function onload($call)
+	{
+	    $this->javelin->onload($call);
+	}
+	
+	public function renderHTMLFooter()
+	{
+	    return $this->javelin->renderHTMLFooter();
+	}
+	
+	public function getName()
+	{
+		return 'javelin';
 	}
 }

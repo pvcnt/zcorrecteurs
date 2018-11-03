@@ -22,7 +22,7 @@
 namespace Zco\Bundle\CoreBundle\Templating\Helper;
 
 use Zco\Bundle\ParserBundle\Parser\ParserInterface;
-use Zco\Bundle\CoreBundle\Javelin\ResourceManager;
+use Zco\Bundle\VitesseBundle\Javelin\ResourceManager;
 use Symfony\Component\Templating\Helper\Helper;
 
 /**

@@ -3,12 +3,12 @@ services:
         class: Doctrine_Connection
         factory: [Doctrine_Manager, connection]
         public: true
-        arguments: ['mysql://%database.host%/%database.base%', '%database.username%', '%database.password%']
+        arguments: ['mysql://%env(DATABASE_HOST)%/%env(DATABASE_BASE)%', '%env(DATABASE_USER)%', '%env(DATABASE_PASSWORD)%']
         calls:
           - [addListener, ['@zco_doctrine1.audit_listener']]
           - [addListener, ['@zco_doctrine1.legacy_listener']]
-          - [setOption, ['username', '%database.username%']]
-          - [setOption, ['password', '%database.password%']]
+          - [setOption, ['username', '%env(DATABASE_USER)%']]
+          - [setOption, ['password', '%env(DATABASE_PASSWORD)%']]
 
     zco_doctrine1.audit_listener:
         class: Zco\Bundle\Doctrine1Bundle\EventListener\QueryAuditListener

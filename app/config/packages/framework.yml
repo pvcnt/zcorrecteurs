@@ -1,0 +1,13 @@
+framework:
+  default_locale:  fr
+  secret:      '%env(APP_SECRET)%'
+  form:        true
+  csrf_protection: true
+  translator:    { fallback: fr }
+  session:
+    storage_id: session.storage.php_bridge
+  templating:
+    engines:     ['php', 'twig']
+    form:
+      resources:
+      - 'ZcoCoreBundle:Form'

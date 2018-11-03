@@ -25,8 +25,11 @@ use Symfony\Component\Validator\Constraint;
 
 class UsernameValidator extends AbstractValidator
 {
+    /**
+     * {@inheritdoc}
+     */
 	public function validate($value, Constraint $constraint)
 	{
-		return $this->doValidate($value, 'validateUsername', $constraint);
+		$this->doValidate($value, 'validateUsername', $constraint);
 	}
 }

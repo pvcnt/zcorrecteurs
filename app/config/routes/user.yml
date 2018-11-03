@@ -1,0 +1,131 @@
+zco_user_index:
+  path:   /membres
+  defaults:  { _controller: ZcoUserBundle:Default:index, page: 1 }
+
+zco_user_indexWithPage:
+  path:   /membres/{page}
+  defaults:  { _controller: ZcoUserBundle:Default:index, page: 1 }
+  requirements:
+    page: \d+
+
+zco_user_profile:
+  path:   /membres/{id}/{slug}
+  defaults:  { _controller: ZcoUserBundle:Default:profile }
+  requirements:
+    id: \d+
+    slug: '[a-z0-9-]+'
+
+zco_user_editTitle:
+  path:   /membres/modifier-titre/{id}
+  defaults:  { _controller: ZcoUserBundle:Default:editTitle }
+  requirements:
+    page: \d+
+
+zco_user_newPseudo:
+  path:   /membres/nouveau-pseudo/{id}
+  defaults:  { _controller: ZcoUserBundle:Default:newPseudo, id: ~ }
+  requirements:
+    id: \d+
+
+zco_user_zformBackups:
+  path:   /membres/sauvegardes-zform/{textarea}
+  defaults:  { _controller: ZcoUserBundle:Default:zformBackups, textarea: ~ }
+  options:   { expose: true }
+
+zco_user_session_logout:
+  path:   /membres/deconnexion
+  defaults:  { _controller: ZcoUserBundle:Session:logout }
+
+zco_user_session_login:
+  path:   /membres/connexion
+  defaults:  { _controller: ZcoUserBundle:Session:login }
+
+zco_user_session_register:
+  path:   /membres/inscription
+  defaults:  { _controller: ZcoUserBundle:Session:register }
+
+zco_user_session_confirm:
+  path:   /membres/inscription/{id}/{hash}
+  defaults:  { _controller: ZcoUserBundle:Session:confirmAccount }
+  requirements:
+    id: \d+
+    hash: '[a-f0-9]{40}'
+
+zco_user_session_newPassword:
+  path:   /membres/connexion/mot-de-passe
+  defaults:  { _controller: ZcoUserBundle:Session:newPassword }
+
+zco_user_admin_validateAccount:
+  path:   /membres/valider/{id}
+  defaults:  { _controller: ZcoUserBundle:Admin:validateAccount, status: true }
+  requirements:
+    id: \d+
+
+zco_user_admin_unvalidateAccount:
+  path:   /membres/devalider/{id}
+  defaults:  { _controller: ZcoUserBundle:Admin:validateAccount, status: false }
+  requirements:
+    id: \d+
+
+zco_user_admin_deleteAccount:
+  path:   /membres/supprimer/{id}
+  defaults:  { _controller: ZcoUserBundle:Admin:deleteAccount }
+  requirements:
+    id: \d+
+
+zco_user_admin_punish:
+  path:   /membres/sanctionner/{id}
+  defaults:  { _controller: ZcoUserBundle:Admin:punish, id: ~ }
+  requirements:
+    id: \d+
+
+zco_user_admin_cancelPunishment:
+  path:   /membres/sanctionner/annuler/{id}
+  defaults:  { _controller: ZcoUserBundle:Admin:cancelPunishment }
+  requirements:
+    id: \d+
+
+zco_user_admin_searchEmail:
+  path:   /membres/rechercher-email
+  defaults:  { _controller: ZcoUserBundle:Admin:searchEmail }
+
+zco_user_admin_invalidAccounts:
+  path:   /membres/comptes-non-valides
+  defaults:  { _controller: ZcoUserBundle:Admin:invalidAccounts }
+
+zco_user_admin_newPseudoQueries:
+  path:   /membres/nouveau-pseudo/en-attente
+  defaults:  { _controller: ZcoUserBundle:Admin:newPseudoQueries }
+
+zco_user_admin_newPseudoAnswer:
+  path:   /membres/nouveau-pseudo/repondre/{id}
+  defaults:  { _controller: ZcoUserBundle:Admin:newPseudoAnswer }
+  requirements:
+    id: \d+
+
+zco_user_api_searchUsername:
+  path:   /_api/membres/chercher-pseudo
+  defaults:  { _controller: ZcoUserBundle:Api:searchUsername }
+  options:   { expose: true }
+
+zco_user_api_validateUsername:
+  path:   /_api/membres/valider-pseudo
+  defaults:  { _controller: ZcoUserBundle:Api:validateUsername }
+  options:   { expose: true }
+
+zco_user_api_saveZform:
+  path:   /_api/membres/save-zform
+  defaults:  { _controller: ZcoUserBundle:Api:saveZform }
+  options:   { expose: true }
+
+zco_user_ips_index:
+  path:   /ips
+  defaults:  { _controller: ZcoUserBundle:Ips:index }
+
+zco_user_ips_ban:
+  path:   /ips/bannir
+  defaults:  { _controller: ZcoUserBundle:Ips:ban }
+
+zco_user_ips_locate:
+  path:   /ips/localiser
+  defaults:  { _controller: ZcoUserBundle:Ips:locate }
