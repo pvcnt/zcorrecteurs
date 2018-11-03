@@ -29,6 +29,7 @@ use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
 use Zco\Bundle\GroupesBundle\Domain\CredentialsDAO;
 use Zco\Bundle\GroupesBundle\Domain\GroupDAO;
 use Zco\Bundle\GroupesBundle\Form\GroupType;
+use Zco\Bundle\UserBundle\Domain\UserDAO;
 
 /**
  * @author vincent1870 <vincent@zcorrecteurs.fr>
@@ -359,8 +360,7 @@ final class DefaultController extends Controller
 
     private function getUserOrThrow($id)
     {
-        include_once(__DIR__ . '/../../UserBundle/modeles/utilisateurs.php');
-        $user = InfosUtilisateur($id);
+        $user = UserDAO::InfosUtilisateur($id);
         if (!$user) {
             throw new NotFoundHttpException();
         }

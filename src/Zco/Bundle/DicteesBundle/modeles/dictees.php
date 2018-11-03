@@ -22,6 +22,7 @@
 use Symfony\Component\HttpFoundation\Response;
 use Zco\Bundle\ContentBundle\Domain\TagRepository;
 use Zco\Bundle\CoreBundle\Paginator\Paginator;
+use Zco\Bundle\UserBundle\Domain\UserDAO;
 
 /**
  * Gestion des dictées.
@@ -243,8 +244,7 @@ function RepondreDictee(Dictee $Dictee, RepondreForm &$Form)
         'texte' => $data['commentaire'],
     ));
 
-    include_once(__DIR__.'/../../UserBundle/modeles/utilisateurs.php');
-    AjouterMPAuto($titre,
+    UserDAO::AjouterMPAuto($titre,
         $Dictee->titre,
         $Dictee->utilisateur_id,
         $message);

@@ -1,5 +1,7 @@
 <?php
 
+use Zco\Bundle\UserBundle\Domain\UserDAO;
+
 /**
  * zCorrecteurs.fr est le logiciel qui fait fonctionner www.zcorrecteurs.fr
  *
@@ -22,12 +24,10 @@ class DetailMessagesAction extends ForumActions
 {
 	public function execute()
 	{
-		//Inclusion des modèles
 		include(__DIR__.'/../modeles/sujets.php');
 		include(__DIR__.'/../modeles/membres.php');
-        include_once(__DIR__.'/../../UserBundle/modeles/utilisateurs.php');
 
-		$InfosUtilisateur = InfosUtilisateur($_GET['id']);
+		$InfosUtilisateur = UserDAO::InfosUtilisateur($_GET['id']);
 		if(empty($InfosUtilisateur))
 			throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
 

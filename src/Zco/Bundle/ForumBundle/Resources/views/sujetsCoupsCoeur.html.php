@@ -1,4 +1,3 @@
-<?php include_once(__DIR__.'/../../../UserBundle/modeles/utilisateurs.php') ?>
 <?php $view->extend('::layouts/default.html.php') ?>
 
 <h1>Gérer les sujets en coups de c&oelig;ur</h1>
@@ -19,7 +18,7 @@
 	<tbody>
 		<?php
 		foreach($ListerSujets as $cle => $valeur){
-			$Auteur = InfosUtilisateur($valeur['sujet_auteur']);
+			$Auteur = Zco\Bundle\UserBundle\Domain\UserDAO::InfosUtilisateur($valeur['sujet_auteur']);
 		?>
 		<tr>
 			<td>

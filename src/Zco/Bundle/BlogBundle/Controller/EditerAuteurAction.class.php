@@ -23,6 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 use \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use \Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zco\Bundle\BlogBundle\Domain\BlogDAO;
+use Zco\Bundle\UserBundle\Domain\UserDAO;
 
 /**
  * Contrôleur gérant l'édition d'un auteur.
@@ -33,8 +34,6 @@ class EditerAuteurAction extends BlogActions
 {
 	public function execute()
 	{
-        include_once(__DIR__.'/../../UserBundle/modeles/utilisateurs.php');
-
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))
 		{
 			$ret = $this->initBillet();
@@ -56,7 +55,7 @@ class EditerAuteurAction extends BlogActions
 					//Si on veut éditer l'auteur
 					if(!empty($_POST['pseudo']) && !empty($_POST['statut']) && is_numeric($_POST['statut']))
 					{
-						$InfosUtilisateur = InfosUtilisateur($_POST['pseudo']);
+						$InfosUtilisateur = UserDAO::InfosUtilisateur($_POST['pseudo']);
 						if(!empty($InfosUtilisateur))
 						{
                             BlogDAO::EditerAuteur($_GET['id2'], $_GET['id'], $InfosUtilisateur['utilisateur_id'], $_POST['statut']);
@@ -68,7 +67,7 @@ class EditerAuteurAction extends BlogActions
 						}
 					}
 
-					$InfosUtilisateur = InfosUtilisateur($_GET['id2']);
+					$InfosUtilisateur = UserDAO::InfosUtilisateur($_GET['id2']);
 					foreach($this->Auteurs as $a)
 					{
 						if($a['utilisateur_id'] == $_GET['id2'])

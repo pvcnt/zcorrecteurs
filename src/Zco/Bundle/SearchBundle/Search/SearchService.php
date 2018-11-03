@@ -4,6 +4,7 @@ namespace Zco\Bundle\SearchBundle\Search;
 
 use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
 use Zco\Bundle\SearchBundle\Search\Searchable\SearchableInterface;
+use Zco\Bundle\UserBundle\Domain\UserDAO;
 
 class SearchService
 {
@@ -35,8 +36,7 @@ class SearchService
         }
 
         if ($query->getAuthor()) {
-            include_once(__DIR__.'/../../UserBundle/modeles/utilisateurs.php');
-            $user = InfosUtilisateur($query->getAuthor());
+            $user = UserDAO::InfosUtilisateur($query->getAuthor());
             $query->setAuthor($user ? (int)$user['utilisateur_id'] : -1);
         }
 

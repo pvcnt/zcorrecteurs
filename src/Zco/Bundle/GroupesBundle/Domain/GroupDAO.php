@@ -21,6 +21,8 @@
 
 namespace Zco\Bundle\GroupesBundle\Domain;
 
+use Zco\Bundle\UserBundle\Domain\UserDAO;
+
 final class GroupDAO
 {
     public static function ListerGroupes()
@@ -211,8 +213,7 @@ final class GroupDAO
 
     private static function AjouterGroupeHistorique($id, $groupe)
     {
-        include_once(__DIR__ . '/../../UserBundle/modeles/utilisateurs.php');
-        $InfoMembre = InfosUtilisateur($id);
+        $InfoMembre = UserDAO::InfosUtilisateur($id);
         self::AjouterGroupeHistoriqueUtilisateur($id, $groupe, $InfoMembre['utilisateur_id_groupe']);
     }
 

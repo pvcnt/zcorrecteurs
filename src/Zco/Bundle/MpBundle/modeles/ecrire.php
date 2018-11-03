@@ -1,5 +1,7 @@
 <?php
 
+use Zco\Bundle\UserBundle\Domain\UserDAO;
+
 /**
  * zCorrecteurs.fr est le logiciel qui fait fonctionner www.zcorrecteurs.fr
  *
@@ -181,8 +183,7 @@ function RevueMP()
 
 function NotifierParticipant($mp, $participant, $titre)
 {
-    include_once(__DIR__.'/../../UserBundle/modeles/utilisateurs.php');
-	$infosParticipant = InfosUtilisateur($participant);
+	$infosParticipant = UserDAO::InfosUtilisateur($participant);
 	if($infosParticipant['preference_activer_email_mp'])
 	{
 		$objet = '[zCorrecteurs.fr] Nouveau message privé';

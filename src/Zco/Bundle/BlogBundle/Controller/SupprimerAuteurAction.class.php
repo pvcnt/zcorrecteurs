@@ -24,6 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zco\Bundle\BlogBundle\Domain\BlogDAO;
+use Zco\Bundle\UserBundle\Domain\UserDAO;
 
 /**
  * Contrôleur gérant la suppression d'un auteur.
@@ -66,8 +67,7 @@ class SupprimerAuteurAction extends BlogActions
                             'auteurs-'.$_GET['id'].'.html',
                             MSG_ERROR
                         );
-                    include_once(__DIR__.'/../../UserBundle/modeles/utilisateurs.php');
-					$InfosUtilisateur = InfosUtilisateur($_GET['id2']);
+					$InfosUtilisateur = UserDAO::InfosUtilisateur($_GET['id2']);
 					$this->setRef('InfosUtilisateur', $InfosUtilisateur);
 
 					//Si on veut supprimer l'auteur

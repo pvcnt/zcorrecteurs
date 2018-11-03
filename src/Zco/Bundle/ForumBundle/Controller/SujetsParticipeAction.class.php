@@ -20,6 +20,7 @@
  */
 
 use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
+use Zco\Bundle\UserBundle\Domain\UserDAO;
 
 /**
  * Controleur pour le listage des sujets dans auxquels un membre a
@@ -31,12 +32,10 @@ class SujetsParticipeAction extends ForumActions
 {
 	public function execute()
 	{
-		// Inclusion des modèles
 		include(__DIR__.'/../modeles/membres.php');
 		include(__DIR__.'/../modeles/forums.php');
-        include_once(__DIR__.'/../../UserBundle/modeles/utilisateurs.php');
 
-		$InfosUtilisateur = InfosUtilisateur($_GET['id']);
+		$InfosUtilisateur = UserDAO::InfosUtilisateur($_GET['id']);
 		if(empty($InfosUtilisateur))
 			throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
 

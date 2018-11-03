@@ -21,6 +21,7 @@
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zco\Bundle\BlogBundle\Domain\BlogDAO;
+use Zco\Bundle\UserBundle\Domain\UserDAO;
 
 /**
  * Contrôleur gérant l'affichage de tous les billets validés d'un membre.
@@ -35,8 +36,7 @@ class BilletsRedigesAction extends BlogActions
 
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))
 		{
-            include_once(__DIR__.'/../../UserBundle/modeles/utilisateurs.php');
-			$InfosUtilisateur = InfosUtilisateur($_GET['id']);
+			$InfosUtilisateur = UserDAO::InfosUtilisateur($_GET['id']);
 			if(empty($InfosUtilisateur))
 				throw new NotFoundHttpException();
 

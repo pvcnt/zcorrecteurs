@@ -24,6 +24,7 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zco\Bundle\BlogBundle\Domain\BlogDAO;
 use Zco\Bundle\ContentBundle\Domain\TagRepository;
+use Zco\Bundle\UserBundle\Domain\UserDAO;
 
 /**
  * Contrôleur gérant la page de modification du billet.
@@ -72,8 +73,7 @@ class AdminBilletAction extends BlogActions
 			//--- Si on veut ajouteur un auteur ---
 			if(isset($_POST['ajouter_auteur']) && ($this->createur == true || verifier('blog_toujours_createur')))
 			{
-                include_once(__DIR__.'/../../UserBundle/modeles/utilisateurs.php');
-				$InfosUtilisateur = InfosUtilisateur($_POST['pseudo']);
+				$InfosUtilisateur = UserDAO::InfosUtilisateur($_POST['pseudo']);
 				if(!empty($InfosUtilisateur))
 				{
                     BlogDAO::AjouterAuteur($_GET['id'], $InfosUtilisateur['utilisateur_id'], $_POST['statut']);

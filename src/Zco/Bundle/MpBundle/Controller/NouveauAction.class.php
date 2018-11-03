@@ -21,6 +21,7 @@
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Zco\Bundle\UserBundle\Domain\UserDAO;
 
 /**
  * Contrôleur gérant l'ajout d'un nouveau MP.
@@ -55,8 +56,7 @@ class NouveauAction extends Controller
             if (empty($_POST['titre']) OR (empty($_POST['pseudo']) AND empty($_POST['destinataires'])) OR empty($_POST['texte'])) {
                 if (!empty($_GET['id']) AND is_numeric($_GET['id'])) {
                     if ($_GET['id'] != $_SESSION['id']) {
-                        include_once(__DIR__.'/../../UserBundle/modeles/utilisateurs.php');
-                        $Pseudo = InfosUtilisateur($_GET['id']);
+                        $Pseudo = UserDAO::InfosUtilisateur($_GET['id']);
                         if (!$Pseudo['utilisateur_id'])
                             return redirect('Ce membre n\'existe pas ou il participe déjà au MP.', '', MSG_ERROR);
                         $_POST['destinataires'] = $Pseudo['utilisateur_pseudo'] . "\n";
