@@ -1,37 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-    <meta http-equiv="Content-Language" content="fr"/>
-    <meta name="language" content="fr"/>
-    <meta http-equiv="content-language" content="fr"/>
-    <meta name="description" content="<?php echo Page::$description; ?>"/>
-    <meta name="robots" content="<?php echo Page::$robots; ?>"/>
-    <?php $view['slots']->output('meta') ?>
-
-    <title><?php echo str_replace(array(' '), ' ', Page::$titre); ?></title>
-
     <?php $view['vitesse']->requireResource('@ZcoCoreBundle/Resources/public/css/global.css') ?>
     <?php $view['vitesse']->requireResource('@ZcoCoreBundle/Resources/public/js/global.js') ?>
 
-    <?php foreach ($view['vitesse']->stylesheets() as $assetUrl): ?>
-        <link rel="stylesheet" href="<?php echo $assetUrl ?>" media="screen" type="text/css"/>
-    <?php endforeach ?>
-    <!--[if IE]>
-    <?php foreach ($view['vitesse']->stylesheets(array('@ZcoCoreBundle/Resources/public/css/ie.css')) as $assetUrl): ?>
-    <link rel="stylesheet" href="<?php echo $assetUrl ?>" media="screen" type="text/css"/>
-    <?php endforeach ?>
-    <![endif]-->
-
-    <?php foreach ($view['vitesse']->javascripts(array('mootools', 'mootools-more')) as $assetUrl): ?>
-        <script type="text/javascript" src="<?php echo $assetUrl ?>"></script>
-    <?php endforeach ?>
-
-    <link rel="alternate" type="application/atom+xml" title="Derniers billets du blog" href="/blog/flux.html" />
-
-    <link rel="icon" type="image/png" href="/favicon.png"/>
-    <link rel="start" title="zCorrecteurs.fr - Les réponses à toutes vos questions concernant la langue française !"
-          href="/"/>
+    <?php echo $view->render('::layouts/head.html.php') ?>
 </head>
 
 <body>
@@ -57,7 +30,7 @@
                 </a>
             </div>
 
-            <?php echo $randomQuoteHtml ?>
+            <?php echo $app->randomQuoteHtml() ?>
         </div>
     </div>
 
@@ -93,7 +66,7 @@
                 <li>
                     <a href="<?php echo $view['router']->path('zco_admin_index') ?>">
                         Admin
-                        <?php if ($adminCount > 0): ?>(<?php echo $adminCount ?>)<?php endif ?>
+                        <?php if ($app->adminCount() > 0): ?>(<?php echo $app->adminCount() ?>)<?php endif ?>
                     </a>
                 </li>
             <?php endif ?>
@@ -111,7 +84,7 @@
             <form class="navbar-search form-search"
                   id="search"
                   method="get"
-                  action="<?php echo $view['router']->path('zco_search_index', ['section' => $searchSection]) ?>">
+                  action="<?php echo $view['router']->path('zco_search_index', ['section' => $app->searchSection()]) ?>">
                 <input type="text"
                        name="recherche"
                        id="recherche"
@@ -203,7 +176,7 @@
                 <div id="postloading-area"></div>
 
                 <p class="arianne">
-                    Vous êtes ici : <?php echo implode(' &gt; ', \Page::$fil_ariane) ?>
+                    Vous êtes ici : <?php echo implode(' &gt; ', \Page::breadcrumb()) ?>
                 </p>
             <?php endif ?>
 

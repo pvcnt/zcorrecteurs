@@ -26,9 +26,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
-use Zco\Component\Templating\Event\FilterResourcesEvent;
-use Zco\Component\Templating\Event\FilterVariablesEvent;
-use Zco\Component\Templating\TemplatingEvents;
 
 /**
  * Subscriber principal du module central du site.
@@ -47,51 +44,9 @@ class EventListener implements EventSubscriberInterface
     static public function getSubscribedEvents()
     {
         return array(
-            TemplatingEvents::FILTER_RESOURCES => 'onTemplatingFilterResources',
-            TemplatingEvents::FILTER_VARIABLES => 'onTemplatingFilterVariables',
             KernelEvents::REQUEST => array('onKernelRequest', 33),
             /* Le RouterListener par défaut a une priorité de 32, on se place juste avant */
         );
-    }
-
-    /**
-     * Initialise des comportements de base communs à toutes les pages du site.
-     *
-     * @param FilterResourcesEvent $event
-     */
-    public function onTemplatingFilterResources(FilterResourcesEvent $event)
-    {
-        // Exposition des routes pour y avoir accès depuis un code Javascript.
-        $event->requireResource('@FOSJsRoutingBundle/Resources/public/js/router.js');
-
-        // Statistiques Google Analytics.
-        if ($this->container->getParameter('kernel.environment') === 'prod') {
-            $event->initBehavior('google-analytics', array(
-                'account' => $this->container->getParameter('analytics_account'),
-            ));
-        }
-    }
-
-    /**
-     * Opère à quelques ultimes changements concernant les variables globales
-     * avant le rendu de la vue.
-     *
-     * @param FilterVariablesEvent $event
-     */
-    public function onTemplatingFilterVariables(FilterVariablesEvent $event)
-    {
-        // Génération d'un fil d'Ariane par défaut si aucun n'a été créé.
-        if (empty(\Page::$fil_ariane) && !empty(\Page::$titre)) {
-            fil_ariane(\Page::$titre);
-        }
-
-        // Ajout de variables au layout.
-        $module = \Container::request()->attributes->get('_module');
-        $searchSection = ($module === 'blog') ? 'blog' : 'forum';
-        $event->set('searchSection', $searchSection);
-
-        $adminCount = $this->container->get(\Zco\Bundle\AdminBundle\Admin::class)->count();
-        $event->set('adminCount', $adminCount);
     }
 
     /**

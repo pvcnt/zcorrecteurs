@@ -105,4 +105,14 @@ class Page
 	 * @var array
 	 */
 	public static $fil_ariane = array();
+
+	public static function breadcrumb()
+    {
+        // Génération d'un fil d'Ariane par défaut si aucun n'a été créé.
+        if (empty(self::$fil_ariane) && !empty(self::$titre)) {
+            fil_ariane(self::$titre);
+        }
+
+        return self::$fil_ariane;
+    }
 }

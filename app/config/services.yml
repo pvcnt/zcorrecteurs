@@ -85,13 +85,6 @@ services:
     tags:
     - { name: zco.admin_task }
 
-  zco.event_listener.content:
-    class: Zco\Bundle\ContentBundle\EventListener\EventListener
-    calls:
-    - [setContainer, ['@service_container']]
-    tags:
-    - { name: kernel.event_subscriber }
-
   zco.repository.quotes:
     class: Zco\Bundle\ContentBundle\Domain\QuoteRepository
     public: true
@@ -258,6 +251,10 @@ services:
     class: Zco\Bundle\UserBundle\Admin\NewUsernamePendingTask
     tags:
     - { name: zco.admin_task }
+
+  templating.globals:
+    class: Zco\Bundle\CoreBundle\Templating\GlobalVariables
+    arguments: ['@service_container']
 
 parameters:
   analytics_account: ''

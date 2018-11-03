@@ -24,5 +24,4 @@ namespace Zco\Component\Templating;
 final class TemplatingEvents
 {
 	const FILTER_VARIABLES = 'templating.filter_variables';
-	const FILTER_RESOURCES = 'templating.filter_resources';
 }

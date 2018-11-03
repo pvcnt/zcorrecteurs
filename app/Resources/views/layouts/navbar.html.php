@@ -29,8 +29,8 @@
                 <li>
                     <a href="<?php echo $view['router']->path('zco_admin_index') ?>">
                         Admin
-                        <?php if ($adminCount > 0): ?>
-                            <span class="badge"><?php echo $adminCount ?></span>
+                        <?php if ($app->adminCount() > 0): ?>
+                            <span class="badge"><?php echo $app->adminCount() ?></span>
                         <?php endif ?>
                     </a>
                 </li>
@@ -81,7 +81,7 @@
         <form class="navbar-search pull-right form-search"
               id="search"
               method="get"
-              action="<?php echo $view['router']->path('zco_search_index', ['section' => $searchSection]) ?>">
+              action="<?php echo $view['router']->path('zco_search_index', ['section' => $app->searchSection()]) ?>">
             <input type="text" name="recherche" id="recherche" class="search search-query pull-left"
                    placeholder="Rechercher…"/>
             <input type="submit" class="submit" value="Rechercher" style="display:none"/>

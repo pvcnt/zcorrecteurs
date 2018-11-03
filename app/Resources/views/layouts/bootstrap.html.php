@@ -1,29 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta http-equiv="Content-Language" content="fr"/>
-    <meta name="description" content="<?php echo Page::$description; ?>"/>
-    <meta name="robots" content="<?php echo Page::$robots; ?>"/>
-
-    <title><?php echo str_replace(array(' '), ' ', Page::$titre); ?></title>
-
     <?php $view['vitesse']->requireResource('@ZcoCoreBundle/Resources/public/css/design.css') ?>
     <?php $view['vitesse']->requireResource('@ZcoCoreBundle/Resources/public/js/design.js') ?>
 
-    <?php foreach ($view['vitesse']->stylesheets() as $assetUrl): ?>
-        <link rel="stylesheet" href="<?php echo $assetUrl ?>" media="screen" type="text/css"/>
-    <?php endforeach ?>
-
-    <?php foreach ($view['vitesse']->javascripts(array('mootools', 'mootools-more')) as $assetUrl): ?>
-        <script type="text/javascript" src="<?php echo $assetUrl ?>"></script>
-    <?php endforeach ?>
-
-    <link rel="alternate" type="application/atom+xml" title="Derniers billets du blog" href="/blog/flux.html" />
-
-    <link rel="icon" type="image/png" href="/favicon.png"/>
-    <link rel="start" title="zCorrecteurs.fr - Les réponses à toutes vos questions concernant la langue française !"
-          href="/"/>
+    <?php echo $view->render('::layouts/head.html.php') ?>
 </head>
 
 <body>
@@ -40,11 +21,11 @@
             </a>
         </div>
 
-        <?php echo $randomQuoteHtml ?>
+        <?php echo $app->randomQuoteHtml() ?>
     </div> <!-- /header -->
 
     <div class="navbar navbar-inverse">
-        <?php echo $view->render('::layouts/_navbar.html.php', ['adminCount' => $adminCount, 'searchSection' => $searchSection]) ?>
+        <?php echo $view->render('::layouts/navbar.html.php') ?>
     </div> <!-- /navbar -->
 <?php endif ?>
 
@@ -56,7 +37,7 @@
             <div id="postloading-area"></div>
 
             <ul class="breadcrumb">
-                <li><?php echo implode('<span class="divider">»</span></li><li>', \Page::$fil_ariane) ?></li>
+                <li><?php echo implode('<span class="divider">»</span></li><li>', \Page::breadcrumb()) ?></li>
             </ul>
         <?php endif ?>
 

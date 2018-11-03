@@ -24,7 +24,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
 use Zco\Bundle\GroupesBundle\Domain\CredentialsDAO;
 use Zco\Component\Templating\TemplatingEvents;
-use Zco\Component\Templating\Event\FilterResourcesEvent;
 use Zco\Component\Templating\Event\FilterVariablesEvent;
 use Zco\Util\Inflector;
 
@@ -599,13 +598,6 @@ function render_to_response($template = array(), array $vars = array(), array $h
     $event = new FilterVariablesEvent($vars);
     $dispatcher->dispatch(TemplatingEvents::FILTER_VARIABLES, $event);
     $vars = $event->getAll();
-
-    //Register resources.
-    $event = new FilterResourcesEvent(
-        \Container::get('zco_core.resource_manager'),
-        \Container::get('zco_core.javelin')
-    );
-    $dispatcher->dispatch(TemplatingEvents::FILTER_RESOURCES, $event);
 
     //Template rendering.
     $engine = \Container::get('templating');
