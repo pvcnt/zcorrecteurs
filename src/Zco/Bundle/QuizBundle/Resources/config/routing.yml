@@ -19,62 +19,62 @@ zco_quiz_myStatsChart:
 
 zco_quiz_admin:
   path: /quiz/admin
-  defaults:  { _controller: ZcoQuizBundle:Admin:index }
+  defaults:  { _controller: ZcoQuizBundle:Default:admin }
 
 zco_quiz_newQuiz:
   path: /quiz/ajouter
-  defaults:  { _controller: ZcoQuizBundle:Admin:newQuiz }
+  defaults:  { _controller: ZcoQuizBundle:Default:newQuiz }
 
 zco_quiz_editQuiz:
   path: /quiz/modifier/{id}
-  defaults:  { _controller: ZcoQuizBundle:Admin:editQuiz }
+  defaults:  { _controller: ZcoQuizBundle:Default:editQuiz }
   requirements:
     id: \d+
 
 zco_quiz_publishQuiz:
   path: /quiz/publier/{id}/{status}
-  defaults:  { _controller: ZcoQuizBundle:Admin:publishQuiz }
+  defaults:  { _controller: ZcoQuizBundle:Default:publishQuiz }
   requirements:
     id: \d+
 
 zco_quiz_deleteQuiz:
   path: /quiz/supprimer/{id}
-  defaults:  { _controller: ZcoQuizBundle:Admin:deleteQuiz }
+  defaults:  { _controller: ZcoQuizBundle:Default:deleteQuiz }
   requirements:
     id: \d+
 
 zco_quiz_newQuestion:
   path: /quiz/question/ajouter/{quizId}
-  defaults:  { _controller: ZcoQuizBundle:Admin:newQuestion }
+  defaults:  { _controller: ZcoQuizBundle:Default:newQuestion }
   requirements:
     quizId: \d+
 
 zco_quiz_editQuestion:
   path: /quiz/question/modifier/{id}
-  defaults:  { _controller: ZcoQuizBundle:Admin:editQuestion }
+  defaults:  { _controller: ZcoQuizBundle:Default:editQuestion }
   requirements:
     id: \d+
 
 zco_quiz_moveQuestion:
   path: /quiz/question/deplacer/{id}
-  defaults:  { _controller: ZcoQuizBundle:Admin:moveQuestion }
+  defaults:  { _controller: ZcoQuizBundle:Default:moveQuestion }
   requirements:
     id: \d+
 
 zco_quiz_deleteQuestion:
   path: /quiz/question/supprimer/{id}
-  defaults:  { _controller: ZcoQuizBundle:Admin:deleteQuestion }
+  defaults:  { _controller: ZcoQuizBundle:Default:deleteQuestion }
   requirements:
     id: \d+
 
 zco_quiz_stats:
   path: /quiz/stats/{quizId}
-  defaults:  { _controller: ZcoQuizBundle:Admin:stats, quizId: ~ }
+  defaults:  { _controller: ZcoQuizBundle:Default:stats, quizId: ~ }
 
 zco_quiz_statsChart:
   path: /quiz/stats/{quizId}.png
-  defaults:  { _controller: ZcoQuizBundle:Admin:statsChart, quizId: ~ }
+  defaults:  { _controller: ZcoQuizBundle:Default:statsChart, quizId: ~ }
 
 zco_quiz_popularity:
   path: /quiz/popularite
-  defaults:  { _controller: ZcoQuizBundle:Admin:popularity }
+  defaults:  { _controller: ZcoQuizBundle:Default:popularity }
