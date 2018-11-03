@@ -5,7 +5,7 @@ use Zco\Bundle\UserBundle\Domain\UserDAO;
 /**
  * zCorrecteurs.fr est le logiciel qui fait fonctionner www.zcorrecteurs.fr
  *
- * Copyright (C) 2012 Corrigraphie
+ * Copyright (C) 2012-2018 Corrigraphie
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
