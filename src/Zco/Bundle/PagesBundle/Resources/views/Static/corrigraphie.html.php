@@ -1,6 +1,6 @@
 <?php $view->extend('::layouts/bootstrap.html.php') ?>
 
-<?php echo $view->render('ZcoPagesBundle:About:_tabs.html.php', array('currentTab' => 'corrigraphie')) ?>
+<?php echo $view->render('ZcoPagesBundle:Static:aboutTabs.html.php', array('currentTab' => 'corrigraphie')) ?>
 
 <div class="row">
 	<div class="span8">

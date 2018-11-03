@@ -123,7 +123,7 @@ class HomeController extends Controller
             '@ZcoDicteesBundle/Resources/public/css/dictees.css'
         ]);
 
-        return render_to_response('ZcoPagesBundle:Home:index.html.php', $vars);
+        return $this->render('ZcoPagesBundle:Home:index.html.php', $vars);
     }
 
     /**
@@ -330,7 +330,7 @@ class HomeController extends Controller
 
         fil_ariane('Modifier les annonces');
 
-        return render_to_response('ZcoPagesBundle:Home:config.html.php', compact(
+        return $this->render('ZcoPagesBundle:Home:config.html.php', compact(
             'bloc_accueil',
             'texte_zform',
             'choix_quiz',

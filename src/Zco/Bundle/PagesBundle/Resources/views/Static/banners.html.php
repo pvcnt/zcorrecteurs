@@ -1,6 +1,6 @@
 <?php $view->extend('::layouts/bootstrap.html.php') ?>
 
-<?php echo $view->render('ZcoPagesBundle:About:_tabs.html.php', array('currentTab' => 'banners')) ?>
+<?php echo $view->render('ZcoPagesBundle:Static:aboutTabs.html.php', array('currentTab' => 'banners')) ?>
 
 <h1>Nous aider à promouvoir le site.</h1>
 

@@ -42,7 +42,7 @@ class ContactType extends AbstractType
 			'label' => 'Adresse courriel', 
 		));
 		$builder->add('raison', ChoiceType::class, array(
-			'empty_value' => 'Choisissez une raison', 
+			'placeholder' => 'Choisissez une raison',
 			'choices' => Contact::getChoices(),
 		));
 		$builder->add('sujet', TextType::class, array(

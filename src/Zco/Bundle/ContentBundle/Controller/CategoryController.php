@@ -80,7 +80,7 @@ final class CategoryController extends Controller
 
         \Page::$titre = 'Catégories';
 
-        return render_to_response('ZcoContentBundle:Category:index.html.php', [
+        return $this->render('ZcoContentBundle:Category:index.html.php', [
             'categories' => CategoryDAO::ListerCategories(),
         ]);
     }
@@ -109,7 +109,7 @@ final class CategoryController extends Controller
             'Créer une catégorie',
         ]);
 
-        return render_to_response('ZcoContentBundle:Category:new.html.php', [
+        return $this->render('ZcoContentBundle:Category:new.html.php', [
             'form' => $form->createView(),
         ]);
     }
@@ -151,7 +151,7 @@ final class CategoryController extends Controller
             htmlspecialchars($InfosCategorie['cat_nom']),
         ]);
 
-        return render_to_response('ZcoContentBundle:Category:edit.html.php', [
+        return $this->render('ZcoContentBundle:Category:edit.html.php', [
             'InfosCategorie' => $InfosCategorie,
             'form' => $form->createView(),
         ]);
@@ -192,7 +192,7 @@ final class CategoryController extends Controller
             'Supprimer',
         ]);
 
-        return render_to_response('ZcoContentBundle:Category:delete.html.php', [
+        return $this->render('ZcoContentBundle:Category:delete.html.php', [
             'InfosCategorie' => $InfosCategorie,
         ]);
     }

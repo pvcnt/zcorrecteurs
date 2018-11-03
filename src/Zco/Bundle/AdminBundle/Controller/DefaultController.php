@@ -53,7 +53,7 @@ class DefaultController extends Controller
         $menu = $menuFactory->createMenu();
         $renderer = new MenuRenderer();
 
-        return render_to_response('ZcoAdminBundle::index.html.php', [
+        return $this->render('ZcoAdminBundle::index.html.php', [
             'admin' => $renderer->render($menu),
         ]);
     }

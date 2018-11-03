@@ -55,7 +55,7 @@ class QuotesController extends Controller
             '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
         ]);
 
-        return render_to_response('ZcoContentBundle:Quotes:index.html.php', [
+        return $this->render('ZcoContentBundle:Quotes:index.html.php', [
             'quotes' => $quotes,
             'totalCount' => $totalCount,
             'pages' => $pages,
@@ -86,7 +86,7 @@ class QuotesController extends Controller
             'Nouvelle citation',
         ]);
 
-        return render_to_response('ZcoContentBundle:Quotes:new.html.php', [
+        return $this->render('ZcoContentBundle:Quotes:new.html.php', [
             'form' => $form->createView(),
         ]);
     }
@@ -120,7 +120,7 @@ class QuotesController extends Controller
             'Modifier une citation',
         ]);
 
-        return render_to_response('ZcoContentBundle:Quotes:edit.html.php', [
+        return $this->render('ZcoContentBundle:Quotes:edit.html.php', [
             'form' => $form->createView(),
         ]);
     }
@@ -150,7 +150,7 @@ class QuotesController extends Controller
             'Modifier une citation',
         ]);
 
-        return render_to_response('ZcoContentBundle:Quotes:delete.html.php', [
+        return $this->render('ZcoContentBundle:Quotes:delete.html.php', [
             'quote' => $quote,
         ]);
     }

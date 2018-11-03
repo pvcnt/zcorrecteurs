@@ -73,7 +73,7 @@ class SearchController extends Controller
         }
 
         if (!$request->query->has('recherche')) {
-            return render_to_response('ZcoContentBundle:Search:index.html.php', compact(
+            return $this->render('ZcoContentBundle:Search:index.html.php', compact(
                 'CatsForum', 'CatsBlog', '_flags'
             ));
         }
@@ -148,7 +148,7 @@ class SearchController extends Controller
             $_SESSION['erreur'][] = 'Une erreur est survenue pendant la recherche. Merci de réessayer dans quelques instants.';
         }
 
-        return render_to_response('ZcoContentBundle:Search:index.html.php', compact(
+        return $this->render('ZcoContentBundle:Search:index.html.php', compact(
             'CatsForum', 'CatsBlog', '_flags',
             'pages', 'CompterResultats', 'Resultats', 'section'
         ));

@@ -50,7 +50,7 @@ class DefaultController extends Controller
         $pinnedQuiz = $registry->get('bloc_accueil') === 'quiz' ? $registry->get('accueil_quiz', null) : null;
         $quizList = $this->get('zco_quiz.manager.quiz')->lister();
 
-        return render_to_response('ZcoQuizBundle::index.html.php', [
+        return $this->render('ZcoQuizBundle::index.html.php', [
             'quizList' => $quizList,
             'pinnedQuiz' => $pinnedQuiz,
         ]);
@@ -93,7 +93,7 @@ class DefaultController extends Controller
                 'Correction',
             ]);
 
-            return render_to_response('ZcoQuizBundle::correction.html.php', [
+            return $this->render('ZcoQuizBundle::correction.html.php', [
                 'quiz' => $quiz,
                 'questions' => $questions,
                 'note' => $note,
@@ -110,7 +110,7 @@ class DefaultController extends Controller
 
         $questions = $repository->findQuestions($quiz['id'], $quiz['aleatoire']);
 
-        return render_to_response('ZcoQuizBundle::show.html.php', [
+        return $this->render('ZcoQuizBundle::show.html.php', [
             'quiz' => $quiz,
             'questions' => $questions,
         ]);
@@ -135,7 +135,7 @@ class DefaultController extends Controller
             'Mes statistiques',
         ]);
 
-        return render_to_response('ZcoQuizBundle::myStats.html.php', [
+        return $this->render('ZcoQuizBundle::myStats.html.php', [
             'avgNote' => $avgNote,
             'nbNotes' => $nbNotes,
             'lastNotes' => $lastNotes,
@@ -175,7 +175,7 @@ class DefaultController extends Controller
 
         $quizList = $this->get('zco_quiz.manager.quiz')->lister(true);
 
-        return render_to_response('ZcoQuizBundle::admin.html.php', [
+        return $this->render('ZcoQuizBundle::admin.html.php', [
             'quizList' => $quizList,
         ]);
     }
@@ -231,7 +231,7 @@ class DefaultController extends Controller
             'Ajouter une question'
         ));
 
-        return render_to_response('ZcoQuizBundle::newQuestion.html.php', [
+        return $this->render('ZcoQuizBundle::newQuestion.html.php', [
             'quiz' => $quiz,
         ]);
     }
@@ -267,7 +267,7 @@ class DefaultController extends Controller
         $categories = CategoryDAO::ListerEnfants(CategoryDAO::GetIDCategorie('quiz'));
         \Page::$titre = 'Ajouter un quiz';
 
-        return render_to_response('ZcoQuizBundle::newQuiz.html.php', [
+        return $this->render('ZcoQuizBundle::newQuiz.html.php', [
             'categories' => $categories,
             'levels' => \Quiz::LEVELS,
         ]);
@@ -311,7 +311,7 @@ class DefaultController extends Controller
             'Modifier une question'
         ));
 
-        return render_to_response('ZcoQuizBundle::editQuestion.html.php', [
+        return $this->render('ZcoQuizBundle::editQuestion.html.php', [
             'question' => $question,
         ]);
     }
@@ -352,7 +352,7 @@ class DefaultController extends Controller
         \Page::$titre = 'Modifier le quiz';
         fil_ariane(htmlspecialchars($quiz['nom']));
 
-        return render_to_response('ZcoQuizBundle::editQuiz.html.php', [
+        return $this->render('ZcoQuizBundle::editQuiz.html.php', [
             'quiz' => $quiz,
             'questions' => $questions,
             'categories' => $categories,
@@ -388,7 +388,7 @@ class DefaultController extends Controller
             'Supprimer une question'
         ));
 
-        return render_to_response('ZcoQuizBundle::deleteQuestion.html.php', [
+        return $this->render('ZcoQuizBundle::deleteQuestion.html.php', [
             'question' => $question,
         ]);
     }
@@ -422,7 +422,7 @@ class DefaultController extends Controller
             'Supprimer le quiz'
         ));
 
-        return render_to_response('ZcoQuizBundle::deleteQuiz.html.php', array('quiz' => $quiz));
+        return $this->render('ZcoQuizBundle::deleteQuiz.html.php', array('quiz' => $quiz));
     }
 
     /**
@@ -484,7 +484,7 @@ class DefaultController extends Controller
         $quizList = $repository->lister(true);
         \Page::$titre = 'Déplacer une question';
 
-        return render_to_response('ZcoQuizBundle::moveQuestion.html.php', [
+        return $this->render('ZcoQuizBundle::moveQuestion.html.php', [
             'question' => $question,
             'quizList' => $quizList,
             'oldQuiz' => $oldQuiz
@@ -507,7 +507,7 @@ class DefaultController extends Controller
         \Page::$titre = 'Popularité des quiz';
         $quizList = $this->get('zco_quiz.manager.quiz')->getByPopularity();
 
-        return render_to_response('ZcoQuizBundle::popularity.html.php', [
+        return $this->render('ZcoQuizBundle::popularity.html.php', [
             'quizList' => $quizList,
         ]);
     }
@@ -553,7 +553,7 @@ class DefaultController extends Controller
         $quizList = $this->get('zco_quiz.manager.quiz')->lister();
         \Page::$titre = 'Statistiques d\'utilisation des quiz';
 
-        return render_to_response('ZcoQuizBundle::stats.html.php', [
+        return $this->render('ZcoQuizBundle::stats.html.php', [
             'annee' => $year,
             'mois' => $month,
             'jour' => $day,

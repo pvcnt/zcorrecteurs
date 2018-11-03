@@ -8,61 +8,61 @@ zco_home_config:
 
 zco_about_index:
   path:   /apropos
-  defaults:  { _controller: ZcoPagesBundle:About:index }
+  defaults:  { _controller: ZcoPagesBundle:Static:index }
 
 zco_about_banners:
   path:   /apropos/bannieres
-  defaults:  { _controller: ZcoPagesBundle:About:banners }
+  defaults:  { _controller: ZcoPagesBundle:Static:banners }
 
 zco_about_team:
   path:   /apropos/equipe
-  defaults:  { _controller: ZcoPagesBundle:About:team }
+  defaults:  { _controller: ZcoPagesBundle:Static:team }
 
 zco_about_corrigraphie:
   path:   /apropos/association-corrigraphie
-  defaults:  { _controller: ZcoPagesBundle:About:corrigraphie }
+  defaults:  { _controller: ZcoPagesBundle:Static:corrigraphie }
 
 zco_about_opensource:
   path:   /apropos/logiciel-libre
-  defaults:  { _controller: ZcoPagesBundle:About:openSource }
+  defaults:  { _controller: ZcoPagesBundle:Static:openSource }
 
 zco_about_contact:
   path:   /apropos/contact
-  defaults:  { _controller: ZcoPagesBundle:About:contact }
+  defaults:  { _controller: ZcoPagesBundle:Static:contact }
 
 zco_donate_index:
   path:  /dons
-  defaults:  { _controller: ZcoPagesBundle:Donate:index }
+  defaults:  { _controller: ZcoPagesBundle:Static:donate }
 
 zco_donate_otherWays:
   path:  /dons/cheque-ou-virement
-  defaults:  { _controller: ZcoPagesBundle:Donate:otherWays }
+  defaults:  { _controller: ZcoPagesBundle:Static:donateOtherWays }
 
 zco_donate_fiscalDeduction:
   path:  /dons/deduction-fiscale
-  defaults:  { _controller: ZcoPagesBundle:Donate:fiscalDeduction }
+  defaults:  { _controller: ZcoPagesBundle:Static:donateFiscalDeduction }
 
 zco_donate_thanks:
   path:  /dons/merci
-  defaults:  { _controller: ZcoPagesBundle:Donate:thanks }
+  defaults:  { _controller: ZcoPagesBundle:Static:donateThanks }
 
 zco_legal_mentions:
   path:   /legal/mentions
-  defaults:  { _controller: ZcoPagesBundle:Legal:mentions }
+  defaults:  { _controller: ZcoPagesBundle:Static:mentions }
 
 zco_legal_privacy:
   path:   /legal/confidentialite
-  defaults:  { _controller: ZcoPagesBundle:Legal:privacy }
+  defaults:  { _controller: ZcoPagesBundle:Static:privacy }
 
 zco_legal_rules:
   path:   /legal/reglement
-  defaults:  { _controller: ZcoPagesBundle:Legal:rules }
+  defaults:  { _controller: ZcoPagesBundle:Static:rules }
 
 zco_error:
   path:   /_erreur/{code}
   requirements:
     code: \d+
-  defaults:  { _controller: ZcoPagesBundle:Error:index }
+  defaults:  { _controller: ZcoPagesBundle:Static:error }
 
 zco_sitemap:
   path:   /sitemap.xml

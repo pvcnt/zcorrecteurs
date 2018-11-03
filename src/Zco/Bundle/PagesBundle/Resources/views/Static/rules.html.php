@@ -1,6 +1,6 @@
 <?php $view->extend('::layouts/bootstrap.html.php') ?>
 
-<?php echo $view->render('ZcoPagesBundle:Legal:_tabs.html.php', array('currentTab' => 'rules')) ?>
+<?php echo $view->render('ZcoPagesBundle:Static:legalTabs.html.php', array('currentTab' => 'rules')) ?>
 
 <h1>Règlement</h1>
 

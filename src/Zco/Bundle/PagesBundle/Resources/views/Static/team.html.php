@@ -1,6 +1,6 @@
 <?php $view->extend('::layouts/bootstrap.html.php') ?>
 
-<?php echo $view->render('ZcoPagesBundle:About:_tabs.html.php', array('currentTab' => 'team')) ?>
+<?php echo $view->render('ZcoPagesBundle:Static:aboutTabs.html.php', array('currentTab' => 'team')) ?>
 
 <h1>Ceux sans qui rien ne serait possible. <a href="/recrutement/">Rejoignez-nous &rarr;</a></h1>
 

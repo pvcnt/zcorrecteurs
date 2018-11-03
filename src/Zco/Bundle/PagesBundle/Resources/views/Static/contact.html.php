@@ -1,6 +1,6 @@
 <?php $view->extend('::layouts/bootstrap.html.php') ?>
 
-<?php echo $view->render('ZcoPagesBundle:About:_tabs.html.php', array('currentTab' => 'contact')) ?>
+<?php echo $view->render('ZcoPagesBundle:Static:aboutTabs.html.php', array('currentTab' => 'contact')) ?>
 
 <p class="good">
 	Si vous avez besoin de joindre <a href="<?php echo $view['router']->path('zco_about_team') ?>">l’équipe du site</a>

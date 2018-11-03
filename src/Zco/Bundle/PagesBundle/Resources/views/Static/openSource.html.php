@@ -1,6 +1,6 @@
 <?php $view->extend('::layouts/bootstrap.html.php') ?>
 
-<?php echo $view->render('ZcoPagesBundle:About:_tabs.html.php', array('currentTab' => 'opensource')) ?>
+<?php echo $view->render('ZcoPagesBundle:Static:aboutTabs.html.php', array('currentTab' => 'opensource')) ?>
 
 <h1>Ce site est un logiciel libre. <a href="http://developpeurs.zcorrecteurs.fr">En savoir plus &rarr;</a></h1>
 
