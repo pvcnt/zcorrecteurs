@@ -121,7 +121,7 @@ final class MenuFactory
                 'uri' => $this->router->generate('zco_home_config'),
             ));
         }
-        if (verifier('quiz_ajouter') || verifier('quiz_editer') || verifier('quiz_supprimer')) {
+        if (verifier('quiz_ajouter')) {
             $menu->getChild('Quiz')->addChild('Gérer les quiz', array(
                 'uri' => $this->router->generate('zco_quiz_admin'),
             ));
@@ -174,6 +174,9 @@ final class MenuFactory
         if (verifier('rechercher_mail')) {
             $menu->getChild('Membres')->addChild('Rechercher une adresse mail', array(
                 'uri' => $this->router->generate('zco_user_admin_searchEmail'),
+            ));
+            $menu->getChild('Membres')->addChild('Voir tous les membres', array(
+                'uri' => $this->router->generate('zco_user_index'),
             ));
         }
         if (verifier('gerer_comptes_valides')) {

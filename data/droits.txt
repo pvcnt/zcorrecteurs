@@ -79,9 +79,6 @@ editer_ses_sujets
 indiquer_messages_aide
 indiquer_ses_messages_aide
 quiz_ajouter
-quiz_editer_siens
-quiz_editer
-quiz_supprimer
 voir
 membres_editer_propre_titre
 membres_editer_titre
