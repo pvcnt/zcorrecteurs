@@ -82,7 +82,7 @@ class EventListener implements EventSubscriberInterface
                 $_SESSION['message'] = array();
             }
 
-            $user = $this->container->get('zco_user.user');
+            $user = $this->container->get('UserSession');
 
             // Mise à jour temps réel des groupes associés au compte de
             // l'utilisateur actuellement connecté.

@@ -14,7 +14,7 @@ services:
             - { name: kernel.event_subscriber }
 
     zco_user.user:
-        class:     Zco\Bundle\UserBundle\User\User
+        class:     Zco\Bundle\UserBundle\User\UserSession
         public:    true
         arguments: ["@event_dispatcher"]
 

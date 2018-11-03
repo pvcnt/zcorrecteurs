@@ -239,7 +239,7 @@ class DefaultController extends Controller
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($newUsername->isAutoValidated()) {
-                $newUsername->setAdmin($this->get('zco_user.user')->getEntity());
+                $newUsername->setAdmin($this->get('UserSession')->getEntity());
                 $newUsername->save();
                 $user->getUsername($newUsername->getNewUsername());
                 $user->save();

@@ -25,7 +25,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zco\Bundle\UserBundle\Event\FilterLoginEvent;
 use Zco\Bundle\UserBundle\Event\LoginEvent;
-use Zco\Bundle\UserBundle\User\User;
+use Zco\Bundle\UserBundle\User\UserSession;
 use Zco\Bundle\UserBundle\UserEvents;
 
 /**
@@ -72,7 +72,7 @@ class LoginListener implements EventSubscriberInterface
     {
         // Dépose les cookies nécessaires à une future connexion automatique après une connexion réalisée avec succès.
         if ($event->isRemember()) {
-            setcookie('violon', User::generateRememberKey($event->getUser()), strtotime("+1 year"), '/');
+            setcookie('violon', UserSession::generateRememberKey($event->getUser()), strtotime("+1 year"), '/');
             setcookie('user_id', $event->getUser()->getId(), strtotime("+1 year"), '/');
         }
 

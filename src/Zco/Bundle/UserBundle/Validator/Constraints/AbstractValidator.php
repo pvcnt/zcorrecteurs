@@ -22,7 +22,7 @@
 namespace Zco\Bundle\UserBundle\Validator\Constraints;
 
 use Zco\Bundle\UserBundle\Exception\ValueException;
-use Zco\Bundle\UserBundle\User\User;
+use Zco\Bundle\UserBundle\User\UserSession;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -39,9 +39,9 @@ abstract class AbstractValidator extends ConstraintValidator
 	/**
 	 * Constructeur.
 	 *
-	 * @param User $user
+	 * @param UserSession $user
 	 */
-	public function __construct(User $user)
+	public function __construct(UserSession $user)
 	{
 		$this->user = $user;
 	}

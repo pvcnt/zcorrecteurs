@@ -79,7 +79,7 @@ final class EmailAddress
 
         $domain = substr($value, $pos + 1);
         foreach ($banList as $pattern) {
-            if (preg_match('/^'.$pattern.'$/', $domain))  {
+            if (preg_match('/' . $pattern . '/', $domain)) {
                 return false;
             }
         }

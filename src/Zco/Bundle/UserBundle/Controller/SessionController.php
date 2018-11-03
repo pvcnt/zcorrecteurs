@@ -52,13 +52,13 @@ class SessionController extends Controller
 	 */
 	public function loginAction(Request $request)
 	{
-		if ($this->get('zco_user.user')->isAuthenticated())
+		if ($this->get('UserSession')->isAuthenticated())
 		{
 			throw new AccessDeniedHttpException('Vous êtes déjà connecté.');
 		}
 		
 		$form    = $this->createForm(FormLoginType::class);
-		$handler = new FormLoginHandler($form, $request, $this->get('zco_user.user'));
+		$handler = new FormLoginHandler($form, $request, $this->get('UserSession'));
 		
 		if ($handler->process())
 		{
@@ -94,11 +94,11 @@ class SessionController extends Controller
 	 */
 	public function logoutAction(Request $request)
 	{
-		if ($this->get('zco_user.user')->isAuthenticated()
+		if ($this->get('UserSession')->isAuthenticated()
 			&& $request->query->has('token') && !empty($_SESSION['token']) 
 			&& $request->query->get('token') == $_SESSION['token'])
 		{
-			$this->get('zco_user.user')->logout();
+			$this->get('UserSession')->logout();
 			
 			return redirect('Vous êtes maintenant déconnecté de votre compte. À bientôt !', '/');
 		}
@@ -183,7 +183,7 @@ class SessionController extends Controller
 	 */
 	public function registerAction(Request $request)
 	{
-		if ($this->get('zco_user.user')->isAuthenticated())
+		if ($this->get('UserSession')->isAuthenticated())
 		{
 			throw new AccessDeniedHttpException('Vous êtes déjà inscrit et connecté.');
 		}

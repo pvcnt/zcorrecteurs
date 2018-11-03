@@ -22,7 +22,7 @@
 namespace Zco\Bundle\UserBundle\Form\Handler;
 
 use Symfony\Component\Form\FormInterface;
-use Zco\Bundle\UserBundle\User\User;
+use Zco\Bundle\UserBundle\User\UserSession;
 use Zco\Bundle\UserBundle\Exception\LoginException;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
@@ -45,9 +45,9 @@ class FormLoginHandler
 	 *
 	 * @param FormInterface $form
 	 * @param Request $request
-	 * @param User $user
+	 * @param UserSession $user
 	 */
-	public function __construct(FormInterface $form, Request $request, User $user)
+	public function __construct(FormInterface $form, Request $request, UserSession $user)
 	{
 		$this->form 	= $form;
 		$this->request 	= $request;

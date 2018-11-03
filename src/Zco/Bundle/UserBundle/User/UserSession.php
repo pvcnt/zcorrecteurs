@@ -3,7 +3,7 @@
 /**
  * zCorrecteurs.fr est le logiciel qui fait fonctionner www.zcorrecteurs.fr
  *
- * Copyright (C) 2012 Corrigraphie
+ * Copyright (C) 2012-2018 Corrigraphie
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -38,7 +38,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class User
+class UserSession
 {
 	const AUTHENTICATED_ANONYMOUSLY = 0;
 	const AUTHENTICATED_REMEMBERED = 1;
@@ -207,7 +207,7 @@ class User
         if ($user && $request->cookies->get('violon') === self::generateRememberKey($user)) {
             $this->entityId = $userId;
             $this->entity = $user;
-            $this->state = User::AUTHENTICATED_REMEMBERED;
+            $this->state = UserSession::AUTHENTICATED_REMEMBERED;
 
             return true;
 		}
