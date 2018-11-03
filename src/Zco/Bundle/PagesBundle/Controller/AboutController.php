@@ -140,7 +140,7 @@ class AboutController extends Controller
             $contact->pseudo = verifier('connecte') ? $_SESSION['pseudo'] : null;
             $contact->id = verifier('connecte') ? $_SESSION['id'] : null;
 
-            $message = render_to_string('ZcoPagesBundle:Mail:contact.html.php', array(
+            $message = $this->renderView('ZcoPagesBundle:Mail:contact.html.php', array(
                 'contact'	=> $contact,
                 'ip'		=> $request->getClientIp(),
             ));

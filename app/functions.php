@@ -591,7 +591,7 @@ function render_to_response($template = array(), array $vars = array(), array $h
         $action = Container::request()->attributes->get('_action');
         $template = $bundle . '::' . lcfirst(Inflector::camelize($action)) . '.html.php';
     }
-    
+
     $engine = \Container::get('templating');
 
     return new Response($engine->render($template, $vars), 200, $headers);
@@ -599,16 +599,7 @@ function render_to_response($template = array(), array $vars = array(), array $h
 
 function render_to_string($template = array(), array $vars = array())
 {
-    //First parameter can be omitted.
-    if (is_array($template) && $vars == array()) {
-        $vars = $template;
-        $bundle = Container::request()->attributes->get('_bundle');
-        $action = Container::request()->attributes->get('_action');
-        $template = $bundle . '::' . lcfirst(Inflector::camelize($action)) . '.html.php';
-    }
-
-    $engine = \Container::get('templating');
-    return $engine->render($template, $vars);
+    return \Container::get('templating')->render($template, $vars);
 }
 
 /**

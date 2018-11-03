@@ -68,7 +68,7 @@ class RepondreAction extends Controller
 						}
 
 						//Envoi du MP
-						$message = render_to_string('::mp_auto/recrutements_acceptation.html.php', array(
+						$message = $this->renderView('::mp_auto/recrutements_acceptation.html.php', array(
 							'pseudo'       => $InfosCandidature['utilisateur_pseudo'],
 							'raison'       => $_POST['comm'],
 							'pseudo_admin' => $_SESSION['pseudo'],
@@ -84,7 +84,7 @@ class RepondreAction extends Controller
 					else
 					{
 						//Envoi du MP
-						$message = render_to_string('::mp_auto/recrutements_refus.html.php', array(
+						$message = $this->renderView('::mp_auto/recrutements_refus.html.php', array(
 							'pseudo'       => $InfosCandidature['utilisateur_pseudo'],
 							'raison'       => $_POST['comm'],
 							'pseudo_admin' => $_SESSION['pseudo'],
@@ -129,7 +129,7 @@ class RepondreAction extends Controller
 					}
 
 					//Envoi du MP
-					$message = render_to_string('::mp_auto/recrutements_test.html.php', array(
+					$message = $this->renderView('::mp_auto/recrutements_test.html.php', array(
 						'pseudo'       => $InfosCandidature['utilisateur_pseudo'],
 						'pseudo_admin' => $_SESSION['pseudo'],
 						'id_admin'     => $_SESSION['id'],

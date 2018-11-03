@@ -60,7 +60,7 @@ class RepondreAction extends BlogActions
 						//Validation
 						if($_POST['decision'] == DECISION_VALIDER)
 						{
-							$message = render_to_string('::mail_auto/blog_validation.html.php', array(
+							$message = $this->renderView('::mail_auto/blog_validation.html.php', array(
 								'pseudo'       => $a['utilisateur_pseudo'],
 								'raison'       => $_POST['texte'],
 								'pseudo_admin' => $_SESSION['pseudo'],
@@ -72,7 +72,7 @@ class RepondreAction extends BlogActions
 						//Refus
 						else
 						{
-							$message = render_to_string('::mail_auto/blog_refus.html.php', array(
+							$message = $this->renderView('::mail_auto/blog_refus.html.php', array(
 								'pseudo'       => $a['utilisateur_pseudo'],
 								'raison'       => $_POST['texte'],
 								'pseudo_admin' => $_SESSION['pseudo'],

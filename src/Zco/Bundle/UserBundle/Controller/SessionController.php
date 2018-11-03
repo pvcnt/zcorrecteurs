@@ -134,7 +134,7 @@ class SessionController extends Controller
 			$infos = \Doctrine_Core::getTable('Utilisateur')->generateNewPassword($request->request->get('email'));
 			if (false !== $infos)
 			{
-				$message = render_to_string('ZcoUserBundle:Mail:newPassword.html.php', array(
+				$message = $this->renderView('ZcoUserBundle:Mail:newPassword.html.php', array(
 					'mdp'  => $infos[0],
 					'hash' => $infos[1],
 				));
