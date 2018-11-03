@@ -29,10 +29,7 @@ use Doctrine\Common\Cache\Cache;
 final class Admin
 {
     private $cache;
-
-    /**
-     * @var PendingTask[]
-     */
+    /** @var PendingTask[] */
     private $tasks = [];
     private $values = [];
 
@@ -40,15 +37,14 @@ final class Admin
      * Constructor.
      *
      * @param Cache $cache
+     * @param iterable $tasks
      */
-    public function __construct(Cache $cache)
+    public function __construct(Cache $cache, iterable $tasks)
     {
         $this->cache = $cache;
-    }
-
-    public function addTask(PendingTask $task)
-    {
-        $this->tasks[get_class($task)] = $task;
+        foreach ($tasks as $task) {
+            $this->tasks[get_class($task)] = $task;
+        }
     }
 
     public function get(string $id)

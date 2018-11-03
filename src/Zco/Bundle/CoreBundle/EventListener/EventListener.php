@@ -90,7 +90,7 @@ class EventListener implements EventSubscriberInterface
         $searchSection = ($module === 'blog') ? 'blog' : 'forum';
         $event->set('searchSection', $searchSection);
 
-        $adminCount = $this->container->get('zco.admin')->count();
+        $adminCount = $this->container->get(\Zco\Bundle\AdminBundle\Admin::class)->count();
         $event->set('adminCount', $adminCount);
     }
 

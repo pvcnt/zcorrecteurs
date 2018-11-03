@@ -15,10 +15,9 @@ services:
   #  resource: '../src/Zco/Controller'
   #  tags: ['controller.service_arguments']
 
-  zco.admin:
-    class: Zco\Bundle\AdminBundle\Admin
+  Zco\Bundle\AdminBundle\Admin:
     public: true
-    arguments: ['@cache']
+    arguments: ['@cache', !tagged zco.admin_task]
 
   zco.event_listener.blog:
     class: Zco\Bundle\BlogBundle\EventListener\EventListener

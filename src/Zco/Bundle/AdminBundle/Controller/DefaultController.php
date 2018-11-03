@@ -21,7 +21,6 @@
 
 namespace Zco\Bundle\AdminBundle\Controller;
 
-use Page;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Zco\Bundle\AdminBundle\Menu\MenuFactory;
@@ -45,11 +44,12 @@ class DefaultController extends Controller
             throw new AccessDeniedHttpException();
         }
 
-        Page::$titre = 'Accueil de l\'administration';
+        \Page::$titre = 'Accueil de l\'administration';
 
-        $this->get('zco.admin')->refreshAll();
+        $admin = $this->get(\Zco\Bundle\AdminBundle\Admin::class);
+        $admin->refreshAll();
 
-        $menuFactory = new MenuFactory($this->get('router'), $this->container->get('zco.admin'));
+        $menuFactory = new MenuFactory($this->get('router'), $admin);
         $menu = $menuFactory->createMenu();
         $renderer = new MenuRenderer();
 

@@ -37,7 +37,7 @@ class MarquerAlertesResoluesAction extends Controller
         }
         include(BASEPATH . '/src/Zco/Bundle/MpBundle/modeles/alertes.php');
         ResoudreAlertes();
-        $this->get('zco.admin')->refresh(PmAlertsPendingTask::class);
+        $this->get(\Zco\Bundle\AdminBundle\Admin::class)->refresh(PmAlertsPendingTask::class);
 
         return redirect('Les alertes ont bien été marquées comme résolues.', '/admin/index.html');
     }
