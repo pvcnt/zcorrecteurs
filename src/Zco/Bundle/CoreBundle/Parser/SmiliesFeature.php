@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\ParserBundle\Parser;
+namespace Zco\Bundle\CoreBundle\Parser;
 
 /**
  * Composant de remplacement des smilies.

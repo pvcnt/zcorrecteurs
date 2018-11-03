@@ -19,9 +19,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\ParserBundle\Parser;
+namespace Zco\Bundle\CoreBundle\Parser;
 
-use Zco\Bundle\ParserBundle\Parser\ParserFeature;
+use Zco\Bundle\CoreBundle\Parser\ParserFeature;
 
 /**
  * Parseur générique pour tout langage basé sur un balisage XML. Le parsage 

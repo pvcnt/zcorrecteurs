@@ -1,5 +1,5 @@
 zco_parser_api_parse:
   path:   /api/parse
   options:   { expose: true }
-  defaults:  { _controller: ZcoParserBundle:Default:parse }
+  defaults:  { _controller: ZcoCoreBundle:Default:parse }
   methods:   [POST]

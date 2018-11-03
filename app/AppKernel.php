@@ -50,7 +50,6 @@ final class AppKernel extends Kernel
             // Infrastructure bundles.
             new Zco\Bundle\CoreBundle\ZcoCoreBundle(),
             new Zco\Bundle\VitesseBundle\ZcoVitesseBundle(),
-            new Zco\Bundle\ParserBundle\ZcoParserBundle(),
             new Zco\Bundle\UserBundle\ZcoUserBundle(),
 
             // Module bundles.

@@ -19,21 +19,39 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\ParserBundle\Parser;
+namespace Zco\Bundle\CoreBundle\Parser;
 
-/**
- * Interface devant être implémentée par tous les parseurs.
- *
- * @author vincent1870 <vincent@zcorrecteurs.fr>
- */
-interface ParserInterface
+abstract class AbstractFeature implements ParserFeature
 {
-	/**
-	 * Transforme un texte en code HTML.
-	 *
-	 * @param  string $data Le texte à parser
-	 * @param  array $options Liste d'options
-	 * @return string Code HTML
-	 */
-	function parse($data, array $options = array());
+    /**
+     * {@inheritdoc}
+     */
+    public function preProcessText(string $content, array $options): string
+    {
+        return $content;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function prepareXml(string $content, array $options): string
+    {
+        return $content;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function processDom(\DOMDocument $doc, array $options): \DOMDocument
+    {
+        return $doc;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function postProcessText(string $content, array $options): string
+    {
+        return $content;
+    }
 }

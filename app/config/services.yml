@@ -152,18 +152,18 @@ services:
     arguments: ["@gaufrette.uploads_filesystem", "@imagine", "@event_dispatcher"]
 
   zco_parser.parser:
-    class: Zco\Bundle\ParserBundle\Parser\zCodeParser
+    class: Zco\Bundle\CoreBundle\Parser\zCodeParser
     arguments: [!tagged zco.parser_feature]
 
-  Zco\Bundle\ParserBundle\Parser\CoreFeature:
+  Zco\Bundle\CoreBundle\Parser\CoreFeature:
     tags:
     - { name: zco.parser_feature }
 
-  Zco\Bundle\ParserBundle\Parser\SmiliesFeature:
+  Zco\Bundle\CoreBundle\Parser\SmiliesFeature:
     tags:
     - { name: zco.parser_feature }
 
-  Zco\Bundle\ParserBundle\Parser\FilesFeature:
+  Zco\Bundle\CoreBundle\Parser\FilesFeature:
     arguments: ["@gaufrette.uploads_filesystem", "@imagine"]
     tags:
     - { name: zco.parser_feature }

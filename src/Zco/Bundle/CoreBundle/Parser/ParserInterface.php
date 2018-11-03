@@ -19,16 +19,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\ParserBundle;
-
-use Symfony\Component\HttpKernel\Bundle\Bundle;
+namespace Zco\Bundle\CoreBundle\Parser;
 
 /**
- * Contient toutes les fonctionnalités liées au parsage des textes saisis par 
- * les utilisateurs.
- * 
+ * Interface devant être implémentée par tous les parseurs.
+ *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class ZcoParserBundle extends Bundle
+interface ParserInterface
 {
+	/**
+	 * Transforme un texte en code HTML.
+	 *
+	 * @param  string $data Le texte à parser
+	 * @param  array $options Liste d'options
+	 * @return string Code HTML
+	 */
+	function parse($data, array $options = array());
 }
