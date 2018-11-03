@@ -1,7 +1,10 @@
 <?php $view->extend('::layouts/bootstrap.html.php') ?>
 <?php $view['vitesse']->requireResource('@ZcoCoreBundle/Resources/public/css/zcode.css') ?>
 
-<h1><?php echo htmlspecialchars($InfosGroupe['groupe_nom']) ?></h1>
+<h1>
+    <?php echo htmlspecialchars($InfosGroupe['groupe_nom']) ?>
+    <small>Changer les droits</small>
+</h1>
 
 <form method="get" action="" class="form-inline">
     <label for="credential">Droit</label>

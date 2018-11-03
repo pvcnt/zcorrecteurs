@@ -31,10 +31,10 @@
 				<?php } else echo '-'; ?>
 			</td>
             <td class="center">
-                <a href="<?php echo $view['router']->path('zco_groups_checkCredentials', ['id' => $g['groupe_id']]) ?>"><img src="/bundles/zcogroupes/img/verifier.png" alt="Vérifier" /></a>
+                <a href="<?php echo $view['router']->path('zco_groups_checkCredentials', ['id' => $g['groupe_id']]) ?>"><img src="/img/verifier.png" alt="Vérifier" /></a>
             </td>
             <td class="center">
-                <a href="<?php echo $view['router']->path('zco_groups_changeCredentials', ['id' => $g['groupe_id']]) ?>"><img src="/bundles/zcogroupes/img/droits.png" alt="Droits" /></a>
+                <a href="<?php echo $view['router']->path('zco_groups_changeCredentials', ['id' => $g['groupe_id']]) ?>"><img src="/img/droits.png" alt="Droits" /></a>
             </td>
 			<td class="center">
 				<?php if($g['groupe_code'] != \Groupe::ANONYMOUS){ ?>

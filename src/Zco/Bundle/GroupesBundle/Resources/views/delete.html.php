@@ -1,6 +1,6 @@
 <?php $view->extend('::layouts/bootstrap.html.php') ?>
 
-<h1><?php echo htmlspecialchars($InfosGroupe['groupe_nom']) ?></h1>
+<h1><?php echo htmlspecialchars($InfosGroupe['groupe_nom']) ?>  <small>Supprimer le groupe</small></h1>
 
 <form method="post" action="">
     <p>

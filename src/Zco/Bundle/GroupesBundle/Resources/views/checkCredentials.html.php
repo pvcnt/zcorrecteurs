@@ -1,6 +1,9 @@
 <?php $view->extend('::layouts/bootstrap.html.php') ?>
 
-<h1><?php echo htmlspecialchars($InfosGroupe['groupe_nom']) ?></h1>
+<h1>
+    <?php echo htmlspecialchars($InfosGroupe['groupe_nom']) ?>
+    <small>Vérifier les droits</small>
+</h1>
 
 <?php
 $cat = null;
