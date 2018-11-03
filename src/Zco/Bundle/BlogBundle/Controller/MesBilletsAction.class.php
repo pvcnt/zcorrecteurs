@@ -40,9 +40,17 @@ class MesBilletsAction extends BlogActions
 		if(!empty($_GET['id'])) $params['etat'] = $_GET['id'];
 		list($ListerBillets, $BilletsAuteurs) = BlogDAO::ListerBillets($params);
 
-		return render_to_response(array(
+		return render_to_response('ZcoBlogBundle::mesBillets.html.php', [
 			'ListerBillets' => $ListerBillets,
 			'BilletsAuteurs' => $BilletsAuteurs,
-		));
+            'AuteursClass' => [3 => 'gras', 2 => 'normal', 1 => 'italique'],
+            'Etats' => [
+                BLOG_BROUILLON => 'Brouillon',
+                BLOG_PREPARATION => 'En cours de préparation',
+                BLOG_PROPOSE => 'Proposé',
+                BLOG_REFUSE => 'Refusé',
+                BLOG_VALIDE => 'Validé'
+            ],
+		]);
 	}
 }

@@ -43,7 +43,8 @@ class PropositionsAction extends BlogActions
 
 		return render_to_response(array(
 			'ListerBillets' => $ListerBillets,
-			'Auteurs' => $Auteurs
+			'Auteurs' => $Auteurs,
+            'AuteursClass' => [3 => 'gras', 2 => 'normal', 1 => 'italique'],
 		));
 	}
 }

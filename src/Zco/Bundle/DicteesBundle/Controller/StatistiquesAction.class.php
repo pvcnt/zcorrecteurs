@@ -20,6 +20,7 @@
  */
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Zco\Bundle\DicteesBundle\Domain\Dictation;
 
 /**
  * Statistiques sur un membre.
@@ -54,12 +55,14 @@ class StatistiquesAction extends Controller
 		Page::$titre = 'Mes statistiques';
 		fil_ariane(Page::$titre);
 
-		return render_to_response(array(
+		return render_to_response('ZcoDicteesBundle::statistiques.html.php', [
 			'participations' => $_POST['participations'],
 			'DernieresNotes' => DernieresNotes(
 				$_POST['participations']
 			),
-			'MesStatistiques'=> MesStatistiques()
-		));
+			'MesStatistiques'=> MesStatistiques(),
+            'DicteeCouleurs' => Dictation::COLORS,
+            'DicteeDifficultes' => Dictation::LEVELS,
+		]);
 	}
 }

@@ -23,8 +23,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Zco\Bundle\CategoriesBundle\Domain\CategoryDAO;
 use Zco\Bundle\GroupesBundle\Domain\CredentialsDAO;
-use Zco\Component\Templating\TemplatingEvents;
-use Zco\Component\Templating\Event\FilterVariablesEvent;
 use Zco\Util\Inflector;
 
 /**
@@ -593,13 +591,7 @@ function render_to_response($template = array(), array $vars = array(), array $h
         $action = Container::request()->attributes->get('_action');
         $template = $bundle . '::' . lcfirst(Inflector::camelize($action)) . '.html.php';
     }
-
-    $dispatcher = \Container::get('event_dispatcher');
-    $event = new FilterVariablesEvent($vars);
-    $dispatcher->dispatch(TemplatingEvents::FILTER_VARIABLES, $event);
-    $vars = $event->getAll();
-
-    //Template rendering.
+    
     $engine = \Container::get('templating');
 
     return new Response($engine->render($template, $vars), 200, $headers);

@@ -55,6 +55,7 @@ class GestionAction extends BlogActions
 			'CompterBillets' => $CompterBillets,
 			'ListePages' => $ListePages,
 			'colspan' => $colspan,
+            'AuteursClass' => [3 => 'gras', 2 => 'normal', 1 => 'italique'],
 		));
 	}
 }

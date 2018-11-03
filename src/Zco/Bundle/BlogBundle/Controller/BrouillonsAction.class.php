@@ -41,10 +41,11 @@ class BrouillonsAction extends BlogActions
 		//Inclusion de la vue
 		fil_ariane('Liste des billets en cours de rédaction');
 		
-		return render_to_response(array(
+		return render_to_response('ZcoBlogBundle::brouillons.html.php', [
 			'ListerBillets' => $ListerBillets,
 			'Auteurs' => $Auteurs,
-		));
+            'AuteursClass' => [3 => 'gras', 2 => 'normal', 1 => 'italique'],
+		]);
 	}
 }
 

@@ -23,6 +23,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\DicteesBundle\Domain\Dictation;
 
 /**
  * Listage des dictées d'un membre.
@@ -70,8 +71,10 @@ class ProposerAction extends Controller
 		Page::$titre = 'Mes dictées';
 		fil_ariane(Page::$titre);
 		
-		return render_to_response(array(
-			'Dictees' => DicteesUtilisateur()
+		return render_to_response('ZcoDicteesBundle::proposer.html.php', array(
+			'Dictees' => DicteesUtilisateur(),
+            'DicteeEtats' => Dictation::STATUSES,
+            'DicteeDifficultes' => Dictation::LEVELS,
 		));
 	}
 }

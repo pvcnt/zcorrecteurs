@@ -22,6 +22,7 @@
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\DicteesBundle\Domain\Dictation;
 
 /**
  * Lecture d'une dictée.
@@ -70,6 +71,12 @@ class CorrigerAction extends Controller
 		    '@ZcoDicteesBundle/Resources/public/css/dictees.css',
 		));
 
-		return render_to_response(compact('Dictee', 'note', 'diff'));
+		return render_to_response('ZcoDicteesBundle::corriger.html.php', [
+		    'Dictee' => $Dictee,
+            'note' => $note,
+            'diff' => $diff,
+            'DicteeEtats' => Dictation::STATUSES,
+            'DicteeDifficultes' => Dictation::LEVELS,
+        ]);
 	}
 }

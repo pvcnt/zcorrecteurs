@@ -143,6 +143,15 @@ class AdminBilletAction extends BlogActions
 				'Modification du billet'
 			));
 
+			$Etats = array(
+                BLOG_BROUILLON => 'Brouillon',
+                BLOG_PREPARATION => 'En cours de préparation',
+                BLOG_PROPOSE => 'Proposé',
+                BLOG_REFUSE => 'Refusé',
+                BLOG_VALIDE => 'Validé'
+            );
+			$this->setRef('Etats', $Etats);
+
 			return render_to_response($this->getVars());
 		}
 		else

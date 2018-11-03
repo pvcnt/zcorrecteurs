@@ -19,13 +19,6 @@ services:
     public: true
     arguments: ['@cache', !tagged zco.admin_task]
 
-  zco.event_listener.blog:
-    class: Zco\Bundle\BlogBundle\EventListener\EventListener
-    calls:
-    - [setContainer, ["@service_container"]]
-    tags:
-    - { name: kernel.event_subscriber }
-
   zco.event_listener.stats:
     class: Zco\Bundle\StatsBundle\EventListener\EventListener
     arguments: ['@zco_stats.alexa_stats']
@@ -34,13 +27,6 @@ services:
 
   zco.event_listener.core:
     class: Zco\Bundle\CoreBundle\EventListener\EventListener
-    calls:
-    - [setContainer, ["@service_container"]]
-    tags:
-    - { name: kernel.event_subscriber }
-
-  zco.event_listener.dictations:
-    class: Zco\Bundle\DicteesBundle\EventListener\EventListener
     calls:
     - [setContainer, ["@service_container"]]
     tags:

@@ -22,6 +22,7 @@
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\DicteesBundle\Domain\Dictation;
 
 /**
  * Réponse à une soumission.
@@ -67,6 +68,11 @@ class RepondreAction extends Controller
 		    '@ZcoDicteesBundle/Resources/public/css/dictees.css',
 		));
 		
-		return render_to_response(compact('Dictee', 'Form'));
+		return render_to_response('ZcoDicteesBundle::repondre.html.php', [
+		    'Dictee' => $Dictee,
+            'Form' => $Form,
+            'DicteeEtats' => Dictation::STATUSES,
+            'DicteeDifficultes' => Dictation::LEVELS,
+        ]);
 	}
 }

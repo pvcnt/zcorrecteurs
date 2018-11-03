@@ -20,6 +20,7 @@
  */
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Zco\Bundle\DicteesBundle\Domain\Dictation;
 
 /**
  * Accueil des dictées.
@@ -41,11 +42,12 @@ class IndexAction extends Controller
 		    '@ZcoDicteesBundle/Resources/public/css/dictees.css',
 		));
 
-		return render_to_response(array(
+		return render_to_response('ZcoDicteesBundle::index.html.php', [
 			'DicteesAccueil'=> DicteesAccueil(),
 			'DicteeHasard'	=> DicteeHasard(),
 			'DicteesLesPlusJouees' => DicteesLesPlusJouees(),
-			'Statistiques'	=> DicteesStatistiques()
-		));
+			'Statistiques'	=> DicteesStatistiques(),
+            'DicteeDifficultes' => Dictation::LEVELS,
+		]);
 	}
 }

@@ -21,6 +21,7 @@
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Zco\Bundle\DicteesBundle\Domain\Dictation;
 
 /**
  * Dictées proposées.
@@ -39,8 +40,9 @@ class PropositionsAction extends Controller
 		Page::$titre = 'Dictées proposées';
 		fil_ariane('Liste des dictées proposées');
 
-		return render_to_response(array(
-			'Dictees' => DicteesProposees()
-		));
+		return render_to_response('ZcoDicteesBundle::propositions.html.php', [
+			'Dictees' => DicteesProposees(),
+            'DicteeDifficultes' => Dictation::LEVELS,
+		]);
 	}
 }
