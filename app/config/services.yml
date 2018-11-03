@@ -51,13 +51,6 @@ services:
     tags:
     - { name: kernel.event_subscriber }
 
-  zco.event_listener.forum:
-    class: Zco\Bundle\ForumBundle\EventListener\EventListener
-    calls:
-    - [setContainer, ["@service_container"]]
-    tags:
-    - { name: kernel.event_subscriber }
-
   zco.event_listener.pm:
     class: Zco\Bundle\MpBundle\EventListener\EventListener
     calls:

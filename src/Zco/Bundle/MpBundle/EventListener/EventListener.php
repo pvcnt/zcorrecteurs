@@ -38,7 +38,6 @@ class EventListener implements EventSubscriberInterface
     }
 
     /**
-     * Enregistre le compteur de tâches d'administration.
      * Met à jour les compteurs de MP pour le membre connecté.
      *
      * @param GetResponseEvent $event

@@ -28,8 +28,7 @@ class ForumActions extends Controller
 {
 	public function __construct()
 	{
-	    $resourceManager = \Container::get('zco_core.resource_manager');
-		$resourceManager->requireResource(
+	    \Container::get('zco_core.resource_manager')->requireResource(
 		    '@ZcoForumBundle/Resources/public/css/forum.css'
 		);
 	}
