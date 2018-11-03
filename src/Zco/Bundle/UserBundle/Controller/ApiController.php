@@ -75,7 +75,7 @@ class ApiController extends Controller
             $retval = array('status' => 'ERROR');
         } else {
             try {
-                $this->get('UserSession')->validateUserName($request->request->get('pseudo'));
+                $this->get('zco_user.user')->validateUserName($request->request->get('pseudo'));
                 $retval = array('result' => 'OK', 'message' => 'Le pseudo demandé est disponible.');
             } catch (ValueException $e) {
                 $retval = array('result' => 'ERROR', 'message' => ($e->getMessage() ?: 'Le pseudo demandé est invalide.'));
