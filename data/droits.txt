@@ -95,7 +95,6 @@ recrutements_desistement
 recrutements_ecrire_shoutbox
 recrutements_voir_shoutbox
 recrutements_avis
-bannir_mails
 dictees_ajouter
 dictees_publier
 dictees_editer

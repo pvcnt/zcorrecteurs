@@ -176,11 +176,6 @@ final class MenuFactory
                 'uri' => $this->router->generate('zco_user_admin_searchEmail'),
             ));
         }
-        if (verifier('bannir_mails')) {
-            $menu->getChild('Membres')->addChild('Voir les adresses mails bannies', array(
-                'uri' => $this->router->generate('zco_user_admin_bannedEmails'),
-            ));
-        }
         if (verifier('gerer_comptes_valides')) {
             $menu->getChild('Membres')->addChild('Afficher les comptes non validés', array(
                 'uri' => $this->router->generate('zco_user_admin_invalidAccounts'),

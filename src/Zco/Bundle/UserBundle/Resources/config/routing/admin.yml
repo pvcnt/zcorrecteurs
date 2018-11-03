@@ -36,18 +36,6 @@ zco_user_admin_invalidAccounts:
     path:   /comptes-non-valides
     defaults:  { _controller: ZcoUserBundle:Admin:invalidAccounts }
 
-zco_user_admin_bannedEmails:
-    path:   /courriels-bannis
-    defaults:  { _controller: ZcoUserBundle:Admin:bannedEmails }
-
-zco_user_admin_newBannedEmail:
-    path:   /courriels-bannis/nouveau
-    defaults:  { _controller: ZcoUserBundle:Admin:newBannedEmail }
-
-zco_user_admin_deleteBannedEmail:
-    path:   /courriels-bannis/supprimer/{id}
-    defaults:  { _controller: ZcoUserBundle:Admin:bannedEmails }
-
 zco_user_admin_newPseudoQueries:
     path:   /nouveau-pseudo/en-attente
     defaults:  { _controller: ZcoUserBundle:Admin:newPseudoQueries }

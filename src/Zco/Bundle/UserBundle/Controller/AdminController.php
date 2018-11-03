@@ -29,7 +29,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zco\Bundle\UserBundle\Form\Handler\AnswerNewUsernameHandler;
 use Zco\Bundle\UserBundle\Form\Handler\PunishmentHandler;
 use Zco\Bundle\UserBundle\Form\Type\AnswerNewUsernameType;
-use Zco\Bundle\UserBundle\Form\Type\BannedEmailType;
 use Zco\Bundle\UserBundle\Form\Type\PunishmentType;
 
 /**
@@ -99,68 +98,6 @@ class AdminController extends Controller
         return render_to_response('ZcoUserBundle:Admin:searchEmail.html.php', array(
             'users' => $users,
             'email' => $email,
-        ));
-    }
-
-    /**
-     * Bannit une nouvelle plage d'adresses mails.
-     *
-     * @param  Request $request
-     * @return Response
-     */
-    public function newBannedEmailAction(Request $request)
-    {
-        if (!verifier('bannir_mails')) {
-            throw new AccessDeniedHttpException;
-        }
-
-        $email = new \BannedEmail;
-        $email->setUserId($_SESSION['id']);
-        $form = $this->createForm(BannedEmailType::class, $email);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $email->save();
-
-            return redirect(
-                'La plage spécifiée a bien été bannie.',
-                $this->get('router')->generate('zco_user_admin_bannedEmails')
-            );
-        }
-
-        \Page::$titre = 'Bannir une plage d\'adresses courriel';
-        fil_ariane(array(
-            'Adresses courriel bannies' => $this->get('router')->generate('zco_user_admin_bannedEmails'),
-            'Nouvelle plage',
-        ));
-
-        return render_to_response('ZcoUserBundle:Admin:newBannedEmail.html.php',
-            array('form' => $form->createView())
-        );
-    }
-
-    /**
-     * Liste les plages d'adresses mails bannies et permet d'en débannir.
-     *
-     * @param  integer|null $id Identifiant d'une place d'adresses à débannir.
-     * @return Response
-     */
-    public function bannedEmailsAction($id = null)
-    {
-        if (!verifier('bannir_mails')) {
-            throw new AccessDeniedHttpException;
-        }
-
-        if ($id && $email = \Doctrine_Core::getTable('BannedEmail')->find($id)) {
-            $email->delete();
-
-            return redirect('La plage spécifiée a bien été débannie.',
-                $this->get('router')->generate('zco_user_admin_bannedEmails'));
-        }
-
-        \Page::$titre = 'Adresses courriel bannies';
-
-        return render_to_response('ZcoUserBundle:Admin:bannedEmails.html.php', array(
-            'emails' => \Doctrine_Core::getTable('BannedEmail')->getAll(),
         ));
     }
 

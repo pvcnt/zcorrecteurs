@@ -45,7 +45,6 @@
  * @property boolean $display_signature
  * @property Groupe $Groupe
  * @property UserPreference $Preferences
- * @property Doctrine_Collection $BannedEmail
  * @property Doctrine_Collection $SecondaryGroups
  * @property Doctrine_Collection $Tentative
  * @property Doctrine_Collection $UserNewUsername
@@ -247,10 +246,6 @@ abstract class BaseUtilisateur extends Doctrine_Record
         $this->hasOne('UserPreference as Preferences', array(
              'local' => 'id',
              'foreign' => 'user_id'));
-
-        $this->hasMany('BannedEmail', array(
-             'local' => 'utilisateur_id',
-             'foreign' => 'utilisateur_id'));
 
         $this->hasMany('SecondaryGroup as SecondaryGroups', array(
              'local' => 'id',

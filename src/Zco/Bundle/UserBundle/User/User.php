@@ -22,6 +22,7 @@
 namespace Zco\Bundle\UserBundle\User;
 
 use Zco\Bundle\GroupesBundle\Domain\GroupDAO;
+use Zco\Bundle\UserBundle\Domain\EmailAddress;
 use Zco\Bundle\UserBundle\UserEvents;
 use Zco\Bundle\UserBundle\Exception\LoginException;
 use Zco\Bundle\UserBundle\Exception\ValueException;
@@ -132,17 +133,14 @@ class User
 	 */
 	public function validateEmail($email)
 	{
-        if (\Doctrine_Core::getTable('BannedEmail')->isBanned($email)) {
+        if (!EmailAddress::isValid($email)) {
+            throw new ValueException('Cette adresse courriel est invalide.');
+        }
+        if (!EmailAddress::isAllowed($email)) {
             throw new ValueException('Cette adresse courriel n\'est pas autorisée.');
         }
-
-		if (\Doctrine_Core::getTable('Utilisateur')->countByEmail($email) > 0)
-		{
-			throw new ValueException('L\'adresse courriel est déjà utilisée.');
-		}
-		if (!preg_match('`^[a-z0-9+._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$`', $email))
-		{
-			throw new ValueException('L\'adresse courriel est invalide.');
+		if (\Doctrine_Core::getTable('Utilisateur')->countByEmail($email) > 0) {
+			throw new ValueException('Cette adresse courriel est déjà utilisée.');
 		}
 
 		return true;
