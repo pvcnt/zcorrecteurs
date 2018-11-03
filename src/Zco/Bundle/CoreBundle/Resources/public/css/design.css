@@ -423,7 +423,7 @@ table.table-small {
     position: absolute;
     left: 0;
     bottom: 0;
-	height: 140px;
+	height: 120px;
     width: 100%;
     clear: both;
     background: #09bef2 url('../img/footer-bg.png') top left repeat-x;
@@ -438,7 +438,7 @@ table.table-small {
 	width: 150px;
 	text-align: center;
 	position: relative;
-	top: 65px;
+	top: 50px;
 	float: left;
 }
 

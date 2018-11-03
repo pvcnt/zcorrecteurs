@@ -25,7 +25,7 @@ $Categories = CategoryDAO::ListerEnfants(CategoryDAO::GetIDCategorieCourante());
             Nous suivre : 
             <a href="/blog/flux.html"><img src="/pix.gif" class="fff feed" alt="" /> flux RSS du blog</a><?php if (isset($categorieId)){ ?>, <a href="/blog/flux-<?php echo $categorieId ?>.html">de cette catégorie</a><?php } ?> | 
             <a href="https://twitter.com/zCorrecteurs"><img src="/img/oiseau_16px.png" alt="" /> Twitter</a> |
-            <a href="http://www.facebook.com/pages/zCorrecteurs/292782574071649"><img src="/img/facebook.png" alt="" /> Facebook</a>
+            <a href="https://www.facebook.com/pages/zCorrecteurs/292782574071649"><img src="/img/facebook.png" alt="" /> Facebook</a>
         </span>
     </form>
 </div>
