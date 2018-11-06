@@ -21,6 +21,8 @@
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
+use Zco\Bundle\ForumBundle\Domain\AlertDAO;
+use Zco\Bundle\ForumBundle\Domain\TopicDAO;
 
 /**
  * Contrôleur gérant l'alerte des modérateurs sur un sujet.
@@ -31,12 +33,9 @@ class AlerterAction extends ForumActions
 {
 	public function execute()
 	{
-		//Inclusion des modèles
-		include(__DIR__.'/../modeles/sujets.php');
-
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))
 		{
-			$InfosSujet = InfosSujet($_GET['id']);
+			$InfosSujet = TopicDAO::InfosSujet($_GET['id']);
 			$InfosForum = CategoryDAO::InfosCategorie($InfosSujet['sujet_forum_id']);
 			if(empty($InfosSujet))
 				throw new NotFoundHttpException();
@@ -53,7 +52,7 @@ class AlerterAction extends ForumActions
                         MSG_ERROR
                     );
 				//S'il y a déjà une alerte en cours
-				elseif(!\Doctrine_Core::getTable('ForumAlerte')->VerifierAutorisationAlerter($_GET['id']))
+				elseif(!AlertDAO::VerifierAutorisationAlerter($_GET['id']))
 					return redirect(
 					    'Les modérateurs ont déjà été prévenus.',
                         'sujet-'.$InfosSujet['sujet_id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html',
@@ -66,12 +65,12 @@ class AlerterAction extends ForumActions
 					if(empty($_POST['texte']))
 						return redirect('Vous devez remplir tous les champs nécessaires !', 'sujet-'.$InfosSujet['sujet_id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html', MSG_ERROR);
 
-					$alerte = new ForumAlerte;
-					$alerte['sujet_id'] = $_GET['id'];
-					$alerte['resolu'] = false;
-					$alerte['raison'] = $_POST['texte'];
-					$alerte['ip'] = ip2long(\Container::request()->getClientIp());
-					$alerte->save();
+					AlertDAO::EnregistrerNouvelleAlerte([
+					    'utilisateur_id' => $_SESSION['id'],
+					    'sujet_id' => $_GET['id'],
+                        'raison' => $_POST['texte'],
+                        'ip' => ip2long(\Container::request()->getClientIp()),
+                    ]);
 
 					return redirect('Les modérateurs ont bien été alertés.', 'sujet-'.$InfosSujet['sujet_id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html');
 				}

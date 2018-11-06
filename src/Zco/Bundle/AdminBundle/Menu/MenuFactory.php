@@ -93,9 +93,6 @@ final class MenuFactory
             $section->addChild('Statistiques d\'inscription', array(
                 'uri' => $this->router->generate('zco_stats_registration'),
             ));
-            $section->addChild('Statistiques temporelles du forum', [
-                'uri' => '/forum/statistiques-temporelles.html',
-            ]);
             $section->addChild('Statistiques d\'utilisation du quiz', array(
                 'uri' => $this->router->generate('zco_quiz_stats'),
             ));

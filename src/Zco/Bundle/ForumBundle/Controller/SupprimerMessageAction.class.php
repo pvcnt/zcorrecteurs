@@ -22,6 +22,7 @@
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\ForumBundle\Domain\MessageDAO;
 
 /**
  * Contrôleur pour la suppression d'un message.
@@ -32,15 +33,11 @@ class SupprimerMessageAction extends ForumActions
 {
 	public function execute()
 	{
-		//Inclusion des modèles
-		include(__DIR__.'/../modeles/messages.php');
-		include(__DIR__.'/../modeles/moderation.php');
-
 		//Si on n'a pas envoyé de message
 		if(empty($_GET['id']) || !is_numeric($_GET['id']))
 			throw new NotFoundHttpException();
 
-		$InfosMessage = InfosMessage($_GET['id']);
+		$InfosMessage = MessageDAO::InfosMessage($_GET['id']);
 		if(empty($InfosMessage) || !verifier('voir_sujets', $InfosMessage['sujet_forum_id']))
             throw new NotFoundHttpException();
 
@@ -63,7 +60,8 @@ class SupprimerMessageAction extends ForumActions
 			//Si on confirme la suppression
 			if(isset($_POST['confirmer']))
 			{
-				SupprimerMessage($_GET['id'], $InfosMessage['sujet_id'], $InfosMessage['sujet_dernier_message'],  $InfosMessage['sujet_forum_id'], $InfosMessage['sujet_corbeille']);
+				MessageDAO::SupprimerMessage($_GET['id'], $InfosMessage['sujet_id'], $InfosMessage['sujet_dernier_message'],  $InfosMessage['sujet_forum_id'], $InfosMessage['sujet_corbeille']);
+
 				return redirect(
 				    'Le message a bien été supprimé.',
                     'sujet-'.$InfosMessage['sujet_id'].'-'.rewrite($InfosMessage['sujet_titre']).'.html'

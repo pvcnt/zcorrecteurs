@@ -20,6 +20,7 @@
  */
 
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Zco\Bundle\ForumBundle\Domain\TopicDAO;
 
 /**
  * Contrôleur pour le marquage d'un sujet ponctuel comme étant non-lu
@@ -39,14 +40,13 @@ class MarquerSujetNonLuAction extends ForumActions
             throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
         //Inclusion des modèles
-        include(__DIR__ . '/../modeles/sujets.php');
         include(__DIR__ . '/../modeles/membres.php');
 
         //Si on n'a pas envoyé de sujet
         if (empty($_GET['id']) || !is_numeric($_GET['id']))
             throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
 
-        $InfosSujet = InfosSujet($_GET['id']);
+        $InfosSujet = TopicDAO::InfosSujet($_GET['id']);
         if (empty($InfosSujet) || !verifier('voir_sujets', $InfosSujet['sujet_forum_id']))
             throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
 

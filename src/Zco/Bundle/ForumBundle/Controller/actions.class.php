@@ -23,6 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
+use Zco\Bundle\ForumBundle\Domain\TopicDAO;
 
 class ForumActions extends Controller
 {
@@ -160,8 +161,6 @@ class ForumActions extends Controller
 
 	public function initSujet()
 	{
-		include(__DIR__.'/../modeles/sujets.php');
-
 		//Compatibilité
 		if(!isset($_GET['s'])) $_GET['s'] = $_GET['id'];
 		if(empty($_GET['id'])) $_GET['id'] = $_GET['s'];
@@ -171,7 +170,7 @@ class ForumActions extends Controller
 			throw new NotFoundHttpException();
 		else
 		{
-			$InfosSujet = InfosSujet($_GET['id']);
+			$InfosSujet = TopicDAO::InfosSujet($_GET['id']);
 			$InfosForum = CategoryDAO::InfosCategorie($InfosSujet['sujet_forum_id']);
 			if(empty($InfosSujet))
 				throw new NotFoundHttpException();

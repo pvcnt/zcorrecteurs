@@ -21,6 +21,8 @@
 
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\ForumBundle\Domain\MessageDAO;
+use Zco\Bundle\ForumBundle\Domain\TopicDAO;
 
 /**
  * Contrôleur chargé du changement du statut ayant aidé ou non d'une
@@ -32,8 +34,6 @@ class ReponseHelpAction extends ForumActions
 {
     public function execute()
     {
-        include(__DIR__ . '/../modeles/moderation.php');
-        include(__DIR__ . '/../modeles/messages.php');
         list($InfosSujet, $InfosForum) = $this->initSujet();
 
         //Vérification du token.
@@ -47,9 +47,10 @@ class ReponseHelpAction extends ForumActions
         ) {
             if (empty($_GET['id2']) || !is_numeric($_GET['id2']))
                 throw new NotFoundHttpException();
-            if (!VerifierValiditeMessage($_GET['id2']))
+            if (!MessageDAO::VerifierValiditeMessage($_GET['id2'])) {
                 throw new NotFoundHttpException();
-            ChangerHelp($_GET['id2'], $_GET['help_souhaite']);
+            }
+            MessageDAO::ChangerHelp($_GET['id2'], $_GET['help_souhaite']);
 
             return redirect(
                 ($_GET['help_souhaite'] ? 'Le message a bien été marqué comme vous ayant aidé(e).' : 'Le message a bien été marqué comme ne vous ayant pas aidé(e).'),

@@ -21,6 +21,7 @@
 
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\ForumBundle\Domain\MessageDAO;
 
 /**
  * Contrôleur pour le marquage du dernier message lu d'un sujet
@@ -36,14 +37,13 @@ class MarquerDernierMessageLuAction extends ForumActions
             throw new AccessDeniedHttpException();
 
         //Inclusion des modèles
-        include(__DIR__ . '/../modeles/messages.php');
         include(__DIR__ . '/../modeles/membres.php');
 
         //Si on n'a pas envoyé de message
         if (empty($_GET['id']) || !is_numeric($_GET['id']))
             throw new NotFoundHttpException();
 
-        $InfosMessage = InfosMessage($_GET['id']);
+        $InfosMessage = MessageDAO::InfosMessage($_GET['id']);
         if (empty($InfosMessage) || !verifier('voir_sujets', $InfosMessage['sujet_forum_id']))
             throw new NotFoundHttpException();
 

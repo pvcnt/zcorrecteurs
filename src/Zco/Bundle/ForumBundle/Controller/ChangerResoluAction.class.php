@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Symfony\Component\HttpFoundation\Response;
+use Zco\Bundle\ForumBundle\Domain\TopicDAO;
 
 /**
  * Contrôleur chargé du changement du statut résolu d'un sujet.
@@ -32,7 +32,6 @@ class ChangerResoluAction extends ForumActions
 	{
 		//On récupère les infos sur le sujet.
 		list($InfosSujet, $InfosForum) = $this->initSujet();
-		include(__DIR__.'/../modeles/moderation.php');
 
 		//Vérification du token.
 		if(empty($_GET['token']) || $_GET['token'] != $_SESSION['token'])
@@ -48,7 +47,7 @@ class ChangerResoluAction extends ForumActions
 			verifier('resolu_sujets', $InfosSujet['sujet_forum_id'])
 		)
 		{
-			ChangerResoluSujet($_GET['id'], $InfosSujet['sujet_resolu']);
+            TopicDAO::ChangerResoluSujet($_GET['id'], $InfosSujet['sujet_resolu']);
 			return redirect(
 			    ($InfosSujet['sujet_resolu'] ? 'Le sujet a bien été marqué comme non résolu.' : 'Le sujet a bien été marqué comme résolu.'),
                 'sujet-'.$_GET['id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html'

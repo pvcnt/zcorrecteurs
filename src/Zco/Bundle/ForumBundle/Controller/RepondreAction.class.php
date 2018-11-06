@@ -22,6 +22,8 @@
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
+use Zco\Bundle\ForumBundle\Domain\MessageDAO;
+use Zco\Bundle\ForumBundle\Domain\TopicDAO;
 
 /**
  * Contrôleur gérant la réponse à un sujet.
@@ -32,17 +34,13 @@ class RepondreAction extends ForumActions
 {
 	public function execute()
 	{
-		//Inclusion des modèles
-		include(__DIR__.'/../modeles/sujets.php');
-		include(__DIR__.'/../modeles/messages.php');
-
 		if (empty($_GET['id']) || !is_numeric($_GET['id']))
 		{
 			throw new NotFoundHttpException();
 		}
 		else
 		{
-			$InfosSujet = InfosSujet($_GET['id']);
+			$InfosSujet = TopicDAO::InfosSujet($_GET['id']);
 			$InfosForum = CategoryDAO::InfosCategorie($InfosSujet['sujet_forum_id']);
 			if (!$InfosSujet)
 			{
@@ -52,20 +50,20 @@ class RepondreAction extends ForumActions
 			{
 				throw new AccessDeniedHttpException();
 			}
-			
+
 			// Si le forum est archivé
-			if ( $InfosForum['cat_archive'] == 1 ) 
+			if ( $InfosForum['cat_archive'] == 1 )
 			{
 				return redirect('Le forum n\'est plus accessible.', '/forum/', MSG_ERROR);
 			}
 		}
-		
+
 		if (empty($InfosSujet['dernier_message_auteur']))
 		{
 			$InfosSujet['dernier_message_auteur'] = $InfosSujet['sujet_auteur'];
 			$InfosSujet['dernier_message_date'] = $InfosSujet['sujet_date'];
 		}
-		
+
 		$InfosSujet['dernier_message_date'] = strtotime($InfosSujet['dernier_message_date']);
 		$timestamp_actuel = time();
 		if (verifier('anti_up', $InfosSujet['sujet_forum_id']) != 0)
@@ -99,25 +97,11 @@ class RepondreAction extends ForumActions
 			//En cas de citation simple
 			elseif (!empty($_GET['id2']) AND is_numeric($_GET['id2']))
 			{
-				$InfosMessage = InfosMessage($_GET['id2']);
+				$InfosMessage = MessageDAO::InfosMessage($_GET['id2']);
 				if ($InfosMessage)
 				{
 					$texte_zform = '<citation rid="'.$_GET['id2'].'">'.$InfosMessage['message_texte'].'</citation>';
 				}
-			}
-			//En cas de citation multiple
-			elseif (!empty($_SESSION['forum_citations'][$_GET['id']]))
-			{
-				$texte_zform = '';
-				$i = 0;
-				foreach ($_SESSION['forum_citations'][$_GET['id']] as $id_msg)
-				{
-					$infos = InfosMessage($id_msg);
-					$texte_zform .= ($i != 0 ? "\n\n" : '').
-						'<citation rid="'.$id_msg.'">'.htmlspecialchars($infos['message_texte']).'</citation>';
-					$i++;
-				}
-				unset($_SESSION['forum_citations'][$_GET['id']]);
 			}
 			else
 			{
@@ -135,14 +119,14 @@ class RepondreAction extends ForumActions
 			$this->get('zco_core.resource_manager')->requireResources(array(
 			    '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
 			));
-			
+
 			return render_to_response(array(
 				'InfosSujet' => $InfosSujet,
 				'InfosForum' => $InfosForum,
 				'tabindex_zform' => 1,
 				'antigrilled' => false,
 				'texte_zform' => $texte_zform,
-				'RevueSujet' => RevueSujet($_GET['id']),
+				'RevueSujet' => TopicDAO::RevueSujet($_GET['id']),
 			));
 		}
 		else
@@ -162,14 +146,14 @@ class RepondreAction extends ForumActions
 				$this->get('zco_core.resource_manager')->requireResources(array(
 				    '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
 				));
-				
+
 				return render_to_response(array(
 					'InfosSujet' => $InfosSujet,
 					'InfosForum' => $InfosForum,
 					'tabindex_zform' => 1,
 					'antigrilled' => true,
 					'texte_zform' => $_POST['texte'],
-					'RevueSujet' => RevueSujet($_GET['id']),
+					'RevueSujet' => TopicDAO::RevueSujet($_GET['id']),
 				));
 			}
 			else
@@ -196,21 +180,21 @@ class RepondreAction extends ForumActions
 				}
 
 				//On envoie le message à la BDD.
-				$nouveau_message_id = EnregistrerNouveauMessage($_GET['id'], $InfosSujet['sujet_forum_id'], $InfosSujet['sujet_annonce'], $InfosSujet['sujet_ferme'], $InfosSujet['sujet_resolu'], $InfosSujet['sujet_corbeille'], $InfosSujet['sujet_auteur']);
+				$nouveau_message_id = MessageDAO::EnregistrerNouveauMessage($_GET['id'], $InfosSujet['sujet_forum_id'], $InfosSujet['sujet_annonce'], $InfosSujet['sujet_ferme'], $InfosSujet['sujet_resolu'], $InfosSujet['sujet_corbeille'], $InfosSujet['sujet_auteur']);
 
 				//On restaure ou met en corbeille le sujet si besoin
 				if ($changer_corbeille != $InfosSujet['sujet_corbeille'])
 				{
 					if ($changer_corbeille == 1)
 					{
-						Corbeille($_GET['id'], $InfosSujet['sujet_forum_id']);
+                        TopicDAO::Corbeille($_GET['id'], $InfosSujet['sujet_forum_id']);
 					}
 					elseif ($changer_corbeille == 0)
 					{
-						Restaurer($_GET['id'], $InfosSujet['sujet_forum_id']);
+                        TopicDAO::Restaurer($_GET['id'], $InfosSujet['sujet_forum_id']);
 					}
 				}
-				
+
 				return redirect('Le message a bien été ajouté.', 'sujet-'.$_GET['id'].'-'.$nouveau_message_id.'-'.rewrite($InfosSujet['sujet_titre']).'.html');
 			}
 		}

@@ -21,6 +21,8 @@
 
 namespace Zco\Bundle\ContentBundle\Search\Searchable;
 
+use Zco\Bundle\ForumBundle\Domain\MessageDAO;
+
 /**
  * Recherche sur le forum.
  *
@@ -35,12 +37,9 @@ class ForumSearchable implements SearchableInterface
 
     public function transformResults(array $matches)
     {
-        include_once(__DIR__ . '/../../../ForumBundle/modeles/messages.php');
-        $ids = array_map(function ($m) {
-            return $m['id'];
-        }, $matches);
+        $ids = array_column($matches, 'id');
 
-        return ListerMessagesId($ids);
+        return MessageDAO::ListerMessagesId($ids);
     }
 
     public function doesCheckCredentials()

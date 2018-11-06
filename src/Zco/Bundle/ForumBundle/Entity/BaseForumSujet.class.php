@@ -88,10 +88,6 @@ abstract class BaseForumSujet extends Doctrine_Record
              'local' => 'sujet_forum_id',
              'foreign' => 'cat_id'));
 
-        $this->hasMany('ForumAlerte', array(
-             'local' => 'sujet_id',
-             'foreign' => 'sujet_id'));
-
         $this->hasMany('ForumMessage', array(
              'local' => 'sujet_id',
              'foreign' => 'sujet_id'));

@@ -20,6 +20,7 @@
  */
 
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Zco\Bundle\ForumBundle\Domain\TopicDAO;
 
 /**
  * Controleur pour l'affichage des sujets en coups de coeur.
@@ -35,12 +36,9 @@ class SujetsCoupsCoeurAction extends ForumActions
         }
 		Page::$titre = 'Gérer les sujets en coups de cœur';
 
-		//Inclusion du modèle
-		include(__DIR__.'/../modeles/moderation.php');
-
 		if ((isset($_GET['action']) == 'changer_coup_coeur') && intval($_GET['id_sujet']) != null)
 		{
-			ChangerCoupCoeur($_GET['id_sujet'], true);
+            TopicDAO::ChangerCoupCoeur($_GET['id_sujet'], true);
 			return redirect('Le sujet a bien été retiré des coups de c&oelig;ur.', '/forum/sujets-coups-coeur.html');
 		}
 
@@ -48,7 +46,7 @@ class SujetsCoupsCoeurAction extends ForumActions
 		fil_ariane('Gérer les sujets en coups de cœur');
 		
 		return render_to_response(array(
-		    'ListerSujets' => ListerSujetsCoupsCoeur(),
+		    'ListerSujets' => TopicDAO::ListerSujetsCoupsCoeur(),
 		));
 	}
 }

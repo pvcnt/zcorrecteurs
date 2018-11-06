@@ -36,9 +36,7 @@ class SuiviAction extends ForumActions
 
 		//Inclusion des modèles
 		include(__DIR__.'/../modeles/forums.php');
-		include(__DIR__.'/../modeles/sujets.php');
 		include(__DIR__.'/../modeles/categories.php');
-		include(__DIR__.'/../modeles/moderation.php');
 		include(__DIR__.'/../modeles/membres.php');
 
 		$CompterSujets = CompterSujets(NULL);

@@ -23,6 +23,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
+use Zco\Bundle\ForumBundle\Domain\TopicDAO;
 
 /**
  * Contrôleur gérant l'affichage de la liste des sujets d'un forum.
@@ -35,9 +36,7 @@ class ForumAction extends ForumActions
     {
         // Inclusion des modèles
         include(__DIR__ . '/../modeles/forums.php');
-        include(__DIR__ . '/../modeles/sujets.php');
         include(__DIR__ . '/../modeles/categories.php');
-        include(__DIR__ . '/../modeles/moderation.php');
         include(__DIR__ . '/../modeles/membres.php');
 
         if (empty($_GET['id']) || !is_numeric($_GET['id'])) {
@@ -67,7 +66,7 @@ class ForumAction extends ForumActions
                 case 'annonce':
                     if (verifier('epingler_sujets', $_GET['id'])) {
                         foreach ($_POST['sujet'] as $clef => $valeur) {
-                            ChangerTypeSujet($clef, 0, $_GET['id']);
+                            TopicDAO::ChangerTypeSujet($clef, 0, $_GET['id']);
                         }
                         return redirect(
                             'Les opérations multiples ont bien été effectuées.',
@@ -79,7 +78,7 @@ class ForumAction extends ForumActions
                 case 'plus_annonce':
                     if (verifier('epingler_sujets', $_GET['id'])) {
                         foreach ($_POST['sujet'] as $clef => $valeur) {
-                            ChangerTypeSujet($clef, 1, $_GET['id']);
+                            TopicDAO::ChangerTypeSujet($clef, 1, $_GET['id']);
                         }
                         return redirect(
                             'Les opérations multiples ont bien été effectuées.',
@@ -91,7 +90,7 @@ class ForumAction extends ForumActions
                 case 'resolu':
                     if (verifier('resolu_sujets', $_GET['id'])) {
                         foreach ($_POST['sujet'] as $clef => $valeur) {
-                            ChangerResoluSujet($clef, 0, 0, $_GET['id']);
+                            TopicDAO::ChangerResoluSujet($clef, 0, 0, $_GET['id']);
                         }
                         return redirect(
                             'Les opérations multiples ont bien été effectuées.',
@@ -103,7 +102,7 @@ class ForumAction extends ForumActions
                 case 'nonresolu':
                     if (verifier('resolu_sujets', $_GET['id'])) {
                         foreach ($_POST['sujet'] as $clef => $valeur) {
-                            ChangerResoluSujet($clef, 1, 0, $_GET['id']);
+                            TopicDAO::ChangerResoluSujet($clef, 1, 0, $_GET['id']);
                         }
                         return redirect(
                             'Les opérations multiples ont bien été effectuées.',
@@ -115,7 +114,7 @@ class ForumAction extends ForumActions
                 case 'favori':
                     if (verifier('mettre_sujet_favori')) {
                         foreach ($_POST['sujet'] as $clef => $valeur) {
-                            ChangerFavori($clef, 0);
+                            TopicDAO::ChangerFavori($clef, 0);
                         }
                         return redirect(
                             'Les opérations multiples ont bien été effectuées.',
@@ -127,7 +126,7 @@ class ForumAction extends ForumActions
                 case 'nonfavori':
                     if (verifier('mettre_sujet_favori')) {
                         foreach ($_POST['sujet'] as $clef => $valeur) {
-                            ChangerFavori($clef, 1);
+                            TopicDAO::ChangerFavori($clef, 1);
                         }
                         return redirect(
                             'Les opérations multiples ont bien été effectuées.',
@@ -139,7 +138,7 @@ class ForumAction extends ForumActions
                 case 'fermer':
                     if (verifier('fermer_sujets', $_GET['id'])) {
                         foreach ($_POST['sujet'] as $clef => $valeur) {
-                            ChangerStatutSujet($clef, 0, $_GET['id']);
+                            TopicDAO::ChangerStatutSujet($clef, 0);
                         }
                         return redirect(
                             'Les opérations multiples ont bien été effectuées.',
@@ -151,7 +150,7 @@ class ForumAction extends ForumActions
                 case 'ouvrir':
                     if (verifier('fermer_sujets', $_GET['id'])) {
                         foreach ($_POST['sujet'] as $clef => $valeur) {
-                            ChangerStatutSujet($clef, 1, $_GET['id']);
+                            TopicDAO::ChangerStatutSujet($clef, 1);
                         }
                         return redirect(
                             'Les opérations multiples ont bien été effectuées.',
@@ -163,7 +162,7 @@ class ForumAction extends ForumActions
                 case 'deplacer':
                     if (verifier('deplacer_sujets', $_GET['id']) AND !empty($_GET['id']) AND is_numeric($_GET['id']) AND !empty($_POST['forum_cible']) AND is_numeric($_POST['forum_cible']) AND $_GET['id'] !== $_POST['forum_cible']) {
                         foreach ($_POST['sujet'] as $clef => $valeur) {
-                            DeplacerSujet($clef, $_GET['id'], $_POST['forum_cible']);
+                            TopicDAO::DeplacerSujet($clef, $_GET['id'], $_POST['forum_cible']);
                         }
                         return redirect(
                             'Les opérations multiples ont bien été effectuées.',
@@ -175,7 +174,7 @@ class ForumAction extends ForumActions
                 case 'corbeille':
                     if (verifier('corbeille_sujets', $_GET['id'])) {
                         foreach ($_POST['sujet'] as $clef => $valeur) {
-                            Corbeille($clef, $_GET['id']);
+                            TopicDAO::Corbeille($clef, $_GET['id']);
                         }
                         return redirect(
                             'Les opérations multiples ont bien été effectuées.',
@@ -186,7 +185,7 @@ class ForumAction extends ForumActions
 
                 case 'favoris':
                     foreach ($_POST['sujet'] as $clef => &$valeur) {
-                        ChangerFavoris($clef, 1, 0, $_GET['id']);
+                        TopicDAO::ChangerFavori($clef, 1, 0);
                     }
                     return redirect(
                         'Les opérations multiples ont bien été effectuées.',
@@ -197,7 +196,7 @@ class ForumAction extends ForumActions
                 case 'restaurer':
                     if (verifier('corbeille_sujets', $_GET['id'])) {
                         foreach ($_POST['sujet'] as $clef => &$valeur) {
-                            Restaurer($clef, $_GET['id']);
+                            TopicDAO::Restaurer($clef, $_GET['id']);
                         }
                         return redirect(
                             'Les opérations multiples ont bien été effectuées.',
@@ -210,7 +209,7 @@ class ForumAction extends ForumActions
                     if (verifier('suppr_sujets', $_GET['id'])) {
                         if (isset($_POST['confirmer'])) {
                             foreach ($_POST['sujet'] as &$sujet) {
-                                Supprimer($sujet, $_GET['id'], isset($_GET['trash']));
+                                TopicDAO::Supprimer($sujet, $_GET['id'], isset($_GET['trash']));
                             }
                             return redirect(
                                 'Les opérations multiples ont bien été effectuées.',

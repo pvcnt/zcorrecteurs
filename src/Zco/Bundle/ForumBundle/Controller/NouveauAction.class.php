@@ -22,6 +22,7 @@
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
+use Zco\Bundle\ForumBundle\Domain\TopicDAO;
 
 /**
  * Contrôleur gérant la création d'un nouveau sujet.
@@ -33,9 +34,7 @@ class NouveauAction extends ForumActions
 	public function execute()
 	{
 		//Inclusion des modèles
-		include(__DIR__.'/../modeles/sujets.php');
 		include(__DIR__.'/../modeles/forums.php');
-		include(__DIR__.'/../modeles/sondages.php');
 
 		if (empty($_GET['id']) || !is_numeric($_GET['id']))
 		{
@@ -119,8 +118,7 @@ class NouveauAction extends ForumActions
 				$corbeille = 1;
 			}
 
-			//On envoie le sujet à la BDD.
-			$nouveau_sujet_id = EnregistrerNouveauSujet($_GET['id'], $annonce, $ferme, $resolu, $corbeille);
+			$nouveau_sujet_id = TopicDAO::EnregistrerNouveauSujet($_GET['id'], $annonce, $ferme, $resolu, $corbeille);
 
 			return redirect(
 			    'Le sujet a bien été créé.',

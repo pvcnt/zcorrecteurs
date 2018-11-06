@@ -64,20 +64,4 @@ class ForumAlerteTable extends Doctrine_Table
 
 		return $alertes;
 	}
-
-	/**
-	 * Vérifie si un membre a le droit d'alerter les modérateurs
-	 * sur un sujet.
-	 * @param integer $sujet_id			ID du sujet.
-	 * @return boolean
-	 */
-	public function VerifierAutorisationAlerter($sujet_id)
-	{
-		return !(boolean)(Doctrine_Query::create()
-			->select('COUNT(*)')
-			->from('ForumAlerte')
-			->where('sujet_id = ?', $sujet_id)
-			->andWhere('resolu = ?', false)
-			->execute(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR));
-	}
 }

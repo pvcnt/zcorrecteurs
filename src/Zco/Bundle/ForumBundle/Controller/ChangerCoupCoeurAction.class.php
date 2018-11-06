@@ -20,6 +20,7 @@
  */
 
 use Symfony\Component\HttpFoundation\Response;
+use Zco\Bundle\ForumBundle\Domain\TopicDAO;
 
 /**
  * Contrôleur chargé du changement du statut coup de coeur d'un sujet.
@@ -32,7 +33,6 @@ class ChangerCoupCoeurAction extends ForumActions
 	{
 		//On récupère les infos sur le sujet.
 		list($InfosSujet, $InfosForum) = $this->initSujet();
-		include(__DIR__.'/../modeles/moderation.php');
 
 		//Vérification du token.
 		if(empty($_GET['token']) || $_GET['token'] != $_SESSION['token'])
@@ -40,7 +40,7 @@ class ChangerCoupCoeurAction extends ForumActions
 
 		if(verifier('mettre_sujets_coup_coeur'))
 		{
-			ChangerCoupCoeur($_GET['id'], $InfosSujet['sujet_coup_coeur']);
+            TopicDAO::ChangerCoupCoeur($_GET['id'], $InfosSujet['sujet_coup_coeur']);
 			return redirect(
 			    $InfosSujet['sujet_coup_coeur'] ? 'Le sujet a bien été retiré des coups de c&oelig;ur.' : 'Le sujet a bien été mis en coup de c&oelig;ur.',
                 'sujet-'.$_GET['id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html'

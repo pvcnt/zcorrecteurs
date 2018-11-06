@@ -20,6 +20,7 @@
  */
 
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Zco\Bundle\ForumBundle\Domain\TopicDAO;
 
 /**
  * Contrôleur chargé du changement de la mise en corbeille ou de la
@@ -33,8 +34,6 @@ class CorbeilleAction extends ForumActions
 	{
 		//On récupère les infos sur le sujet.
 		list($InfosSujet, $InfosForum) = $this->initSujet();
-		include(__DIR__.'/../modeles/moderation.php');
-		include(__DIR__.'/../modeles/messages.php');
 
 		//Vérification du token.
 		if(empty($_GET['token']) || $_GET['token'] != $_SESSION['token'])
@@ -44,7 +43,8 @@ class CorbeilleAction extends ForumActions
 		{
 			if(verifier('corbeille_sujets', $InfosSujet['sujet_forum_id']))
 			{
-				Corbeille($InfosSujet['sujet_id'], $InfosSujet['sujet_forum_id']);
+                TopicDAO::Corbeille($InfosSujet['sujet_id'], $InfosSujet['sujet_forum_id']);
+
 				return redirect('Le sujet a bien été mis en corbeille.', 'sujet-'.$_GET['id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html');
 			}
 			else
@@ -54,7 +54,8 @@ class CorbeilleAction extends ForumActions
 		{
 			if(verifier('corbeille_sujets', $InfosSujet['sujet_forum_id']))
 			{
-				Restaurer($InfosSujet['sujet_id'], $InfosSujet['sujet_forum_id']);
+                TopicDAO::Restaurer($InfosSujet['sujet_id'], $InfosSujet['sujet_forum_id']);
+
 				return redirect('Le sujet a bien été mis en restauré.', 'sujet-'.$_GET['id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html');
 			}
 			else

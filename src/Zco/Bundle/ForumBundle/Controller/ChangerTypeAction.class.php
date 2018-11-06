@@ -20,6 +20,7 @@
  */
 
 use Symfony\Component\HttpFoundation\Response;
+use Zco\Bundle\ForumBundle\Domain\TopicDAO;
 
 /**
  * Contrôleur chargé du changement du statut annonce d'un sujet.
@@ -32,7 +33,6 @@ class ChangerTypeAction extends ForumActions
 	{
 		//On récupère les infos sur le sujet.
 		list($InfosSujet, $InfosForum) = $this->initSujet();
-		include(__DIR__.'/../modeles/moderation.php');
 
 		//Vérification du token.
 		if(empty($_GET['token']) || $_GET['token'] != $_SESSION['token'])
@@ -40,7 +40,7 @@ class ChangerTypeAction extends ForumActions
 
 		if(verifier('epingler_sujets', $InfosSujet['sujet_forum_id']))
 		{
-			ChangerTypeSujet($_GET['id'], $InfosSujet['sujet_annonce']);
+			TopicDAO::ChangerTypeSujet($_GET['id'], $InfosSujet['sujet_annonce']);
 			return redirect(
 			    ($InfosSujet['sujet_annonce'] ? 'Le sujet a bien été désépinglé.' : 'Le sujet a bien été épinglé.'),
                 'sujet-'.$_GET['id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html'

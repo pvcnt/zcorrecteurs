@@ -22,6 +22,8 @@
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
+use Zco\Bundle\ForumBundle\Domain\MessageDAO;
+use Zco\Bundle\ForumBundle\Domain\TopicDAO;
 
 /**
  * Contrôleur pour l'édition d'un message.
@@ -32,13 +34,9 @@ class EditerAction extends ForumActions
 {
 	public function execute()
 	{
-		//Inclusion du modèle
-		include(__DIR__.'/../modeles/messages.php');
-		include(__DIR__.'/../modeles/sujets.php');
-
 		if (!empty($_GET['id']) && is_numeric($_GET['id']))
 		{
-			$InfosMessage = InfosMessage($_GET['id']);
+			$InfosMessage = MessageDAO::InfosMessage($_GET['id']);
 			if (!$InfosMessage)
 			{
 				throw new NotFoundHttpException();
@@ -57,7 +55,7 @@ class EditerAction extends ForumActions
 			}
 			
 			$InfosForum = CategoryDAO::InfosCategorie($InfosMessage['sujet_forum_id']);
-			$InfosSujet = InfosSujet($InfosMessage['sujet_id']);
+			$InfosSujet = TopicDAO::InfosSujet($InfosMessage['sujet_id']);
 
 			Page::$titre .= ' - Modifier un message';
 			
@@ -78,7 +76,7 @@ class EditerAction extends ForumActions
 					'tabindex_zform' => 1,
 					'sujet_titre' => $InfosMessage['sujet_titre'],
 					'sujet_id' => $InfosMessage['message_sujet_id'],
-					'RevueSujet' => RevueSujet($InfosMessage['message_sujet_id']),
+					'RevueSujet' => TopicDAO::RevueSujet($InfosMessage['message_sujet_id']),
 					'InfosMessage' => $InfosMessage,
 					'InfosForum' => $InfosForum,
 					'InfosSujet' => $InfosSujet
@@ -102,7 +100,7 @@ class EditerAction extends ForumActions
 					$InfosMessage['sujet_annonce'] = isset($_POST['annonce']) ? 1 : 0;
 					$InfosMessage['sujet_ferme'] = isset($_POST['ferme']) ? 1 : 0;
 					$InfosMessage['sujet_resolu'] = isset($_POST['resolu']) ? 1 : 0;
-					EditerMessage($_GET['id'], $InfosMessage['sujet_forum_id'], $InfosMessage['message_sujet_id'], $InfosMessage['sujet_annonce'], $InfosMessage['sujet_ferme'], $InfosMessage['sujet_resolu'], $InfosMessage['sujet_auteur']);
+					MessageDAO::EditerMessage($_GET['id'], $InfosMessage['sujet_forum_id'], $InfosMessage['message_sujet_id'], $InfosMessage['sujet_annonce'], $InfosMessage['sujet_ferme'], $InfosMessage['sujet_resolu'], $InfosMessage['sujet_auteur']);
 
 					return redirect(
 					    'Le message a bien été édité.',

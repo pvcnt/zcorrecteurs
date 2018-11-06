@@ -22,6 +22,7 @@
 namespace Zco\Bundle\ForumBundle\Admin;
 
 use Zco\Bundle\AdminBundle\PendingTask;
+use Zco\Bundle\ForumBundle\Domain\AlertDAO;
 
 /**
  * Counts the number of non-resolved forum alerts.
@@ -32,11 +33,7 @@ final class ForumAlertsPendingTask implements PendingTask
 {
     public function count(): int
     {
-        return \Doctrine_Query::create()
-            ->select('COUNT(1)')
-            ->from('ForumAlerte')
-            ->where('resolu = ?', false)
-            ->execute(array(), \Doctrine_Core::HYDRATE_SINGLE_SCALAR);
+        return AlertDAO::CompterAlertes(false);
     }
 
     public function getCredentials(): array

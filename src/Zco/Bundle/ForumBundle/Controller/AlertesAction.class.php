@@ -20,6 +20,8 @@
  */
 
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Zco\Bundle\ForumBundle\Domain\AlertDAO;
+use Zco\Bundle\ForumBundle\Domain\TopicDAO;
 
 /**
  * Contrôleur se chargeant de la visualisation des alertes sur un sujet.
@@ -31,14 +33,13 @@ class AlertesAction extends ForumActions
 	public function execute()
 	{
 		if (!verifier('voir_alertes')) {
-		    throw new AccessDeniedHttpException();
+            throw new AccessDeniedHttpException();
         }
-		include(__DIR__.'/../modeles/sujets.php');
 
 		//Si un sujet a été envoyé
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))
 		{
-			$InfosSujet = InfosSujet($_GET['id']);
+			$InfosSujet = TopicDAO::InfosSujet($_GET['id']);
 			if(empty($InfosSujet))
 				throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
 
@@ -53,33 +54,23 @@ class AlertesAction extends ForumActions
 		//Si on veut marquer en résolu une alerte
 		if(!empty($_GET['resolu']) && is_numeric($_GET['resolu']))
 		{
-			$alerte = Doctrine_Core::getTable('ForumAlerte')->find($_GET['resolu']);
-			if ($alerte !== false)
-			{
-				$alerte['resolu'] = true;
-				$alerte['admin_id'] = $_SESSION['id'];
-				$alerte->save();
-				return redirect(
-				    'L\'alerte a bien été marquée comme résolue.',
-                    (!empty($InfosSujet) ? 'alertes-'.$_GET['id'].'.html' : 'alertes.html')
-                );
-			}
+		    AlertDAO::AlerteResolue($_GET['resolu'], $_SESSION['id']);
+
+            return redirect(
+                'L\'alerte a bien été marquée comme résolue.',
+                (!empty($InfosSujet) ? 'alertes-'.$_GET['id'].'.html' : 'alertes.html')
+            );
 		}
 
 		//Si on veut marquer en non-résolu une alerte
 		if(!empty($_GET['nonresolu']) && is_numeric($_GET['nonresolu']))
 		{
-		$alerte = \Doctrine_Core::getTable('ForumAlerte')->find($_GET['nonresolu']);
-			if ($alerte !== false)
-			{
-				$alerte['resolu'] = false;
-				$alerte['admin_id'] = null;
-				$alerte->save();
-				return redirect(
-				    'L\'alerte a bien été marquée comme non résolue.',
-                    (!empty($InfosSujet) ? 'alertes-'.$_GET['id'].'.html' : 'alertes.html')
-                );
-			}
+            AlertDAO::AlerteNonResolue($_GET['resolu']);
+
+            return redirect(
+                'L\'alerte a bien été marquée comme non résolue.',
+                (!empty($InfosSujet) ? 'alertes-'.$_GET['id'].'.html' : 'alertes.html')
+            );
 		}
 
 		if(!empty($InfosSujet))
@@ -99,7 +90,7 @@ class AlertesAction extends ForumActions
 			));
 		else
 			fil_ariane('Voir la liste des alertes');
-		
+
 		return render_to_response(array(
 			'InfosSujet' => $InfosSujet,
 			'Alertes' => $Alertes,

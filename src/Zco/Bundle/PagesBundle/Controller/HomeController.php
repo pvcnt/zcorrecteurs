@@ -25,6 +25,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Zco\Bundle\BlogBundle\Domain\BlogDAO;
 use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
+use Zco\Bundle\ForumBundle\Domain\TopicDAO;
 
 /**
  * Affichage de la page d'accueil du site.
@@ -156,7 +157,6 @@ class HomeController extends Controller
 
         //Cas du sujet mis en valeur
         //Inclusion des modèles
-        include(BASEPATH . '/src/Zco/Bundle/ForumBundle/modeles/sujets.php');
         include(BASEPATH . '/src/Zco/Bundle/ForumBundle/modeles/forums.php');
 
         $infos_sujet = $registry->get('accueil_sujet');
@@ -179,7 +179,7 @@ class HomeController extends Controller
             }
         }
         if (!empty($_GET['sujet']) && is_numeric($_GET['sujet'])) {
-            $sujet = InfosSujet($_GET['sujet']);
+            $sujet = TopicDAO::InfosSujet($_GET['sujet']);
             if (!empty($sujet)) {
                 $cat = CategoryDAO::InfosCategorie($sujet['sujet_forum_id']);
                 $sujet = array(

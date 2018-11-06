@@ -22,6 +22,7 @@
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Zco\Bundle\ForumBundle\Domain\AlertDAO;
 
 /**
  * Contrôleur gérant l'affichage de toutes les alertes.
@@ -49,7 +50,7 @@ class AlertesAction extends Controller
             $statut = -1;
             $ajout_url = '';
         }
-        $CompterAlertes = CompterAlertes($statut);
+        $CompterAlertes = AlertDAO::CompterAlertes($statut);
 
         if (!empty($_GET['id']) AND is_numeric($_GET['id'])) {
             $page = TrouverLaPageDeCetteAlerte($_GET['id'], $CompterAlertes);
@@ -58,7 +59,8 @@ class AlertesAction extends Controller
 
         //Si on veut marquer en résolu une alerte
         if (!empty($_GET['resolu']) && is_numeric($_GET['resolu'])) {
-            AlerteResolue($_GET['resolu']);
+            AlertDAO::AlerteResolue($_GET['resolu'], $_SESSION['id']);
+
             return redirect('L\'alerte a bien été résolue.', 'alertes.html');
         }
 

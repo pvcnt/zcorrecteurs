@@ -21,6 +21,8 @@
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Zco\Bundle\ForumBundle\Domain\PollDAO;
+use Zco\Bundle\ForumBundle\Domain\TopicDAO;
 
 /**
  * Contrôleur gérant l'affichage d'un sujet.
@@ -33,10 +35,7 @@ class SujetAction extends ForumActions
 	{
 		//Inclusion des modèles
 		include(__DIR__.'/../modeles/forums.php');
-		include(__DIR__.'/../modeles/messages.php');
-		include(__DIR__.'/../modeles/moderation.php');
 		include(__DIR__.'/../modeles/categories.php');
-		include(__DIR__.'/../modeles/sondages.php');
 
 		//On récupère les infos sur le sujet
 		list($InfosSujet, $InfosForum) = $this->initSujet();
@@ -57,7 +56,7 @@ class SujetAction extends ForumActions
 		//--- Redirection de la mort qui tue pour le référencement. :D ---
 		if(!empty($_GET['id2']) AND is_numeric($_GET['id2']))
 		{
-			$_GET['p'] = TrouverLaPageDeCeMessage($_GET['id'], $_GET['id2']);
+			$_GET['p'] = TopicDAO::TrouverLaPageDeCeMessage($_GET['id'], $_GET['id2']);
 			if($_GET['p'] == 1)
 			{
 				return new RedirectResponse('sujet-'.$_GET['id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html#m'.$_GET['id2'], 301);
@@ -74,7 +73,7 @@ class SujetAction extends ForumActions
 			if(empty($_GET['token']) || $_GET['token'] != $_SESSION['token'])
 				throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
 
-			ChangerFavori($_GET['id'], $InfosSujet['lunonlu_favori']);
+            TopicDAO::ChangerFavori($_GET['id'], $InfosSujet['lunonlu_favori']);
 			return redirect(
 			    ($InfosSujet['lunonlu_favori'] ? 'Le sujet a bien été enlevé de vos favoris.' : 'Le sujet a bien été mis en favori.'),
                 'sujet-'.$_GET['id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html'
@@ -99,9 +98,9 @@ class SujetAction extends ForumActions
 			$nombreDeMessagesAafficher = $nbMessagesParPage;
 		}
 
-		$ListerMessages = ListerMessages($_GET['id'], $debut, $nombreDeMessagesAafficher);
+		$ListerMessages = TopicDAO::ListerMessages($_GET['id'], $debut, $nombreDeMessagesAafficher);
 		$SautRapide = RecupererSautRapide($InfosSujet['sujet_forum_id']);
-                $PremierMessage = ListerMessages($_GET['id'], 0, 1);
+		$PremierMessage = TopicDAO::ListerMessages($_GET['id'], 0, 1);
 
 		//--- Gestion des lus / non-lus ---
 		$InfosLuNonlu = array(
@@ -110,7 +109,7 @@ class SujetAction extends ForumActions
 		);
 		if (verifier('connecte'))
 		{
-			RendreLeSujetLu($_GET['id'], $NombreDePages, $InfosSujet['sujet_dernier_message'], $ListerMessages, $InfosLuNonlu);
+            TopicDAO::RendreLeSujetLu($_GET['id'], $NombreDePages, $InfosSujet['sujet_dernier_message'], $ListerMessages, $InfosLuNonlu);
 		}
 
 		//Pour un meilleur référencement : ajout du début du premier message de la
@@ -142,7 +141,7 @@ class SujetAction extends ForumActions
 		//Si le sujet est un sondage, on récupère les infos du sondage.
 		if($InfosSujet['sujet_sondage'] > 0)
 		{
-			$ListerResultatsSondage = ListerResultatsSondage($InfosSujet['sujet_sondage']);
+			$ListerResultatsSondage = PollDAO::ListerResultatsSondage($InfosSujet['sujet_sondage']);
 
 			//On compte le nombre total de votes
 			$nombre_total_votes = 0;
@@ -158,8 +157,6 @@ class SujetAction extends ForumActions
 		}
 
 		$_SESSION['sujet_dernier_message'][$_GET['id']] = $InfosSujet['sujet_dernier_message'];
-		if(!empty($_SESSION['forum_citations'][$_GET['id']]))
-			unset($_SESSION['forum_citations'][$_GET['id']]);
 
 		//Inclusion des vues
 		fil_ariane($InfosSujet['sujet_forum_id'], array(

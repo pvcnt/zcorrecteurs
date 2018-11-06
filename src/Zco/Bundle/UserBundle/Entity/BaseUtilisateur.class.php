@@ -271,10 +271,6 @@ abstract class BaseUtilisateur extends Doctrine_Record
              'local' => 'utilisateur_id',
              'foreign' => 'utilisateur_id'));
 
-        $this->hasMany('ForumAlerte', array(
-             'local' => 'utilisateur_id',
-             'foreign' => 'utilisateur_id'));
-
         $this->hasMany('ForumMessage', array(
              'local' => 'utilisateur_id',
              'foreign' => 'message_auteur'));

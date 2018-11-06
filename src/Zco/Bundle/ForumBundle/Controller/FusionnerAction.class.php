@@ -21,6 +21,7 @@
 
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\ForumBundle\Domain\TopicDAO;
 
 /**
  * Contrôleur gérant la division d'un sujet.
@@ -32,15 +33,13 @@ class FusionnerAction extends ForumActions
     public function execute()
     {
         //Inclusion des modèles
-        include(__DIR__ . '/../modeles/sujets.php');
         include(__DIR__ . '/../modeles/forums.php');
-        include(__DIR__ . '/../modeles/moderation.php');
 
         !isset($_POST['titre']) && $_POST['titre'] = null;
         if (empty($_GET['id']) || !is_numeric($_GET['id'])) {
             throw new NotFoundHttpException();
         }
-        $InfosSujet = InfosSujet($_GET['id']);
+        $InfosSujet = TopicDAO::InfosSujet($_GET['id']);
         if (!$InfosSujet) {
             throw new NotFoundHttpException();
         }
@@ -58,7 +57,8 @@ class FusionnerAction extends ForumActions
                     );
 
                 //Si tout va bien on fusionner
-                FusionnerSujets($InfosSujet, $InfosSujet['sujet_corbeille']);
+                TopicDAO::FusionnerSujets($InfosSujet, $InfosSujet['sujet_corbeille']);
+
                 return redirect(
                     'Les sujets ont bien été fusionnés.',
                     'sujet-' . $_GET['id'] . '-' . rewrite($InfosSujet['sujet_titre']) . '.html'

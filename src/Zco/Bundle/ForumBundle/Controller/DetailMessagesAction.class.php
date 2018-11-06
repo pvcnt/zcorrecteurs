@@ -24,7 +24,6 @@ class DetailMessagesAction extends ForumActions
 {
 	public function execute()
 	{
-		include(__DIR__.'/../modeles/sujets.php');
 		include(__DIR__.'/../modeles/membres.php');
 
 		$InfosUtilisateur = UserDAO::InfosUtilisateur($_GET['id']);

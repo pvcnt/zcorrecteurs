@@ -21,6 +21,7 @@
 
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\ForumBundle\Domain\TopicDAO;
 
 /**
  * Contrôleur gérant le déplacement d'un sujet.
@@ -32,7 +33,6 @@ class DeplacerAction extends ForumActions
 	public function execute()
 	{
 		list($InfosSujet, $InfosForum) = $this->initSujet();
-		include(__DIR__.'/../modeles/moderation.php');
 
 		if(verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']))
 		{
@@ -57,7 +57,7 @@ class DeplacerAction extends ForumActions
 				throw new AccessDeniedHttpException();
 
 
-			DeplacerSujet($_GET['id'], $InfosSujet['sujet_forum_id'], $_POST['forum_cible']);
+            TopicDAO::DeplacerSujet($_GET['id'], $InfosSujet['sujet_forum_id'], $_POST['forum_cible']);
 			return redirect('Le sujet a bien été déplacé.', 'sujet-'.$_GET['id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html');
 		}
 		else

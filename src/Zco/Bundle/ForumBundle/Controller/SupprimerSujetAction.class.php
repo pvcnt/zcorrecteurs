@@ -22,6 +22,7 @@
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Zco\Bundle\ForumBundle\Domain\TopicDAO;
 
 /**
  * Contrôleur pour la suppression d'un sujet.
@@ -33,13 +34,13 @@ class SupprimerSujetAction extends ForumActions
 	public function execute()
 	{
 		list($InfosSujet, $InfosForum) = $this->initSujet();
-		include(__DIR__.'/../modeles/moderation.php');
 
 		if(verifier('suppr_sujets', $InfosSujet['sujet_forum_id']))
 		{
 			if(isset($_POST['confirmer']))
 			{
-				Supprimer($InfosSujet['sujet_id'], $InfosSujet['sujet_forum_id'], $InfosSujet['sujet_corbeille']);
+                TopicDAO::Supprimer($InfosSujet['sujet_id'], $InfosSujet['sujet_forum_id'], $InfosSujet['sujet_corbeille']);
+
 				return redirect('Le sujet a bien été supprimé.', 'forum-'.$InfosSujet['sujet_forum_id'].'-'.rewrite($InfosForum['cat_nom']).'.html');
 			}
 			elseif(isset($_POST['annuler']))

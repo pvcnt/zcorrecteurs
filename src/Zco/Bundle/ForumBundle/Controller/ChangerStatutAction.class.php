@@ -20,6 +20,7 @@
  */
 
 use Symfony\Component\HttpFoundation\Response;
+use Zco\Bundle\ForumBundle\Domain\TopicDAO;
 
 /**
  * Contrôleur chargé du changement du statut fermé d'un sujet.
@@ -32,7 +33,6 @@ class ChangerStatutAction extends ForumActions
 	{
 		//On récupère les infos sur le sujet.
 		list($InfosSujet, $InfosForum) = $this->initSujet();
-		include(__DIR__.'/../modeles/moderation.php');
 
 		//Vérification du token.
 		if(empty($_GET['token']) || $_GET['token'] != $_SESSION['token'])
@@ -40,7 +40,8 @@ class ChangerStatutAction extends ForumActions
 
 		if(verifier('fermer_sujets', $InfosSujet['sujet_forum_id']))
 		{
-			ChangerStatutSujet($_GET['id'], $InfosSujet['sujet_ferme']);
+            TopicDAO::ChangerStatutSujet($_GET['id'], $InfosSujet['sujet_ferme']);
+
 			return redirect(
 			    ($InfosSujet['sujet_ferme'] ? 'Le sujet a bien été ouvert.' : 'Le sujet a bien été fermé.'),
                 'sujet-'.$_GET['id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html'
