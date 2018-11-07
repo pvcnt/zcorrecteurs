@@ -186,7 +186,7 @@ if(verifier('recrutements_avis'))
 		Le candidat a répondu au questionnaire à choix multiples qui lui était proposé
 		et a obtenu un score de
 		<strong><?php echo $InfosCandidature['candidature_quiz_score'] ?>/20</strong>.
-		<?php $diff = $view->get('humanize')->datediff(
+		<?php $diff = $view['humanize']->datediff(
 				strtotime($InfosCandidature['candidature_quiz_fin']),
 				strtotime($InfosCandidature['candidature_quiz_debut'])); ?>
 		Il lui a fallu <strong><?php echo $diff ?></strong> pour répondre au quiz.

@@ -150,7 +150,7 @@
 			<?php if(verifier('blog_valider')){ ?>
 			<form method="post" action="admin-billet-<?php echo $_GET['id'] ?>.html" id="change_pubdate_form">
 				<label for="date_pub">Choisissez une date de publication :</label>
-				<?php echo $view->get('widget')->dateTimePicker('date_pub', $InfosBillet['blog_date_publication']); ?>
+				<?php echo $view['widget']->dateTimePicker('date_pub', $InfosBillet['blog_date_publication']); ?>
 				<input type="submit" name="changer_date" value="Changer" />
 			</form>
 			

@@ -19,7 +19,7 @@
 
 		<?php if($InfosCandidature['candidature_etat'] == CANDIDATURE_ATTENTE_TEST){ ?>
 		<label for="date_fin">Fin de correction du test : </label>
-		<?php echo $view->get('widget')->dateTimePicker('date_fin', $InfosCandidature['candidature_date_fin_correction']); ?><br /><br />
+		<?php echo $view['widget']->dateTimePicker('date_fin', $InfosCandidature['candidature_date_fin_correction']); ?><br /><br />
 
 		<?php if($InfosCandidature['candidature_test_type'] == TEST_TEXTE){ ?>
 		<label for="texte">Texte à corriger : </label>

@@ -33,40 +33,6 @@ use Symfony\Component\Templating\Helper\Helper;
 class WidgetHelper extends Helper
 {
 	/**
-	 * Retourne le code pour afficher un champ de texte avec un petit calendrier
-	 * Mootools s'affichant au clic pour sélectionner une date facilement.
-	 *
-	 * @param string $name		Nom du widget.
-	 * @param string $value		Valeur du widget.
-	 * @param array $options	Options pour personnaliser directement le widget.
-	 * @param array $attrs		Attributs pour personnaliser directement le widget.
-	 * @return string
-	 */
-	public function datePicker($name, $value = '', array $options = array(), array $attrs = array())
-	{
-		//On gère le décalage des arguments si nécessaire.
-		if (is_array($value))
-		{
-			$options = $value;
-			$value = '';
-		}
-		$attrs['value'] = !empty($value) ? $value : (!empty($attrs['value']) ? $attrs['value'] : '');
-
-		if (!isset($attrs['name']))
-		{
-			$attrs['name'] = $name;
-		}
-
-		if (!isset($attrs['id']))
-		{
-			$attrs['id'] = $name;
-		}
-
-		$widget = new \Widget_DatePicker($options, $attrs);
-		return $widget->render();
-	}
-
-	/**
 	 * Idem que self::timePicker() mais avec une sélection d'heure en plus.
 	 *
 	 * @param string $name		Nom du widget.
@@ -88,27 +54,6 @@ class WidgetHelper extends Helper
 		}
 
 		return $this->datePicker($name, $value, $options, $attrs);
-	}
-
-	/**
-	 * Renvoie le code HTML pour l'affichage d'une barre de progression.
-	 *
-	 * @param float $pourcent		Pourcentage à afficher (nombre de 0 à 1).
-	 * @param integer $height		La taille de la barre en px (15 par défaut).
-	 * @param integer $width		La longueur de la barre en px (400 par défaut).
-	 */
-	public function progressbar($pourcent, $height = 15, $width = 400)
-	{
-		return '<table class="UI_progress">' .
-					'<tr>' .
-						($pourcent != 0 ?
-						'<td class="finished" ' .
-						'style="width: '.($width * round($pourcent, 2)).'px; height: '.$height.'px;"> </td>' : '') .
-						($pourcent != 100 ?
-						'<td class="running" ' .
-						'style="width: '.($width * (round(1-$pourcent, 2))).'px; height: '.$height.'px;"> </td>' : '') .
-					'</tr>' .
-				'</table>';
 	}
 	
 	/**

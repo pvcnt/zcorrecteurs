@@ -33,7 +33,7 @@
 		<div id="test">
 			<br /><hr /><br />
 			<label for="date_fin">Fin de correction du test <noscript>(inutile si acceptation ou refus) </noscript>:</label>
-			<?php echo $view->get('widget')->dateTimePicker('date_fin', $InfosCandidature['recrutement_date_fin_epreuve']); ?><br />
+			<?php echo $view['widget']->dateTimePicker('date_fin', $InfosCandidature['recrutement_date_fin_epreuve']); ?><br />
 
 			<label for="explicatif">Texte explicatif <noscript>(inutile si acceptation ou refus) </noscript>:</label><br />
 			<?php echo $view->render('::zform.html.php', array('id' => 'explicatif')); ?><br />
