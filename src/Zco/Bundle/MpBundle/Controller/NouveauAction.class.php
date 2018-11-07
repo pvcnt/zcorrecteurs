@@ -70,7 +70,7 @@ class NouveauAction extends Controller
                 fil_ariane('Ajouter un nouveau message privé');
                 Page::$titre = 'Ajout d\'un nouveau MP - ' . Page::$titre;
 
-                return render_to_response(array('ListerDossiers' => ListerDossiers()));
+                return $this->render('ZcoMpBundle::nouveau.html.php', array('ListerDossiers' => ListerDossiers()));
             } else {
                 $_POST['faux_participants'] = array();
                 $_POST['participants'] = array();

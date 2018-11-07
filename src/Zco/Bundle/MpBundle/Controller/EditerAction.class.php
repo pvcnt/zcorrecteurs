@@ -84,7 +84,7 @@ class EditerAction extends Controller
         				));
         				
 						Page::$titre = 'Modification d\'un message - '.Page::$titre;
-						return render_to_response(array(
+						return $this->render('ZcoMpBundle::editer.html.php', array(
 							'InfoMessage' => $InfoMessage,
 						));
 					}

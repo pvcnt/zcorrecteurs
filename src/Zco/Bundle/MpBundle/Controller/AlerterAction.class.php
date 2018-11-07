@@ -90,7 +90,9 @@ class AlerterAction extends Controller
             				));
             				
 							Page::$titre = 'Alerter les modérateurs - '.Page::$titre;
-							return render_to_response(array('InfoMP' => $InfoMP));
+							return $this->render('ZcoMpBundle::alerter.html.php', array(
+							    'InfoMP' => $InfoMP,
+                            ));
 						}
 						elseif(trim($_POST['texte']) == '')
 							return redirect(

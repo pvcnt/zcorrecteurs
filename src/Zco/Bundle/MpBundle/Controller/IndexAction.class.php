@@ -140,7 +140,7 @@ class IndexAction extends Controller
 					else
 					{
 						fil_ariane('Supprimer plusieurs MP');
-						return render_to_response('ZcoMpBundle::supprimerMpMassif.html.php');
+						return $this->render('ZcoMpBundle::supprimerMpMassif.html.php');
 					}
 				}
 			}
@@ -191,7 +191,7 @@ class IndexAction extends Controller
 			    '@ZcoCoreBundle/Resources/public/js/messages.js',
 			));
     		
-			return render_to_response(array(
+			return $this->render('ZcoMpBundle::index.html.php', array(
 				'ListerDossiers' => $ListerDossiers,
 				'MPDansDesDossiers' => $MPDansDesDossiers,
 				'MPDansAccueil' => $MPDansAccueil,

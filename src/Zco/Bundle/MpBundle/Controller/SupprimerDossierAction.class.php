@@ -49,7 +49,9 @@ class SupprimerDossierAction extends Controller
                     fil_ariane('Supprimer un dossier');
                     Page::$titre = $DossierExiste['mp_dossier_titre'] . ' - Suppression du dossier - ' . Page::$titre;
 
-                    return render_to_response(array('DossierExiste' => $DossierExiste));
+                    return $this->render('ZcoMpBundle::supprimerDossier.html.php', array(
+                        'DossierExiste' => $DossierExiste,
+                    ));
                 } else {
                     SupprimerDossier();
                     return redirect('Le dossier a bien été supprimé.', 'index.html');

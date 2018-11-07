@@ -46,7 +46,7 @@ class AjouterDossierAction extends Controller
 			fil_ariane('Ajouter un dossier');
 			Page::$titre = 'Ajout d\'un dossier - '.Page::$titre;
 			
-			return render_to_response(array());
+			return $this->render('ZcoMpBundle::ajouterDossier.html.php');
 		}
 		else
 		{

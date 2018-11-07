@@ -121,7 +121,7 @@ class LireAction extends Controller
 				    '@ZcoCoreBundle/Resources/public/js/zform.js',
 				));
 				
-				return render_to_response(array(
+				return $this->render('ZcoMpBundle::lire.html.php', array(
 					'MPTotal' => $_SESSION['MPs'],
 					'InfoMP' => $InfoMP,
 					'autoriser_ecrire' => $autoriser_ecrire,

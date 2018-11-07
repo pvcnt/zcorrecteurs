@@ -52,11 +52,14 @@ class RenommerDossierAction extends Controller
 					fil_ariane('Renommer un dossier');
 					Page::$titre = $DossierExiste['mp_dossier_titre'].' - Renommer un dossier - '.Page::$titre;
 					
-					return render_to_response(array('DossierExiste' => $DossierExiste));
+					return $this->render('ZcoMpBundle::renommerDossier.html.php', array(
+					    'DossierExiste' => $DossierExiste,
+                    ));
 				}
 				else
 				{
 					RenommerDossier(htmlspecialchars($_POST['dossier_nom']));
+
 					return redirect('Le dossier a bien été renommé.', 'index.html');
 				}
 			}

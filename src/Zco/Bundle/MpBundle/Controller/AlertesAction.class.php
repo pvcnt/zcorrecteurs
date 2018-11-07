@@ -78,7 +78,7 @@ class AlertesAction extends Controller
         //Inclusion de la vue
         fil_ariane('Voir les alertes sur les messages privés');
 
-        return render_to_response(array(
+        return $this->render('ZcoMpBundle::alertes.html.php', array(
             'CompterAlertes' => $CompterAlertes,
             'ListerAlertes' => $ListerAlertes,
             'ListePages' => $ListePages,

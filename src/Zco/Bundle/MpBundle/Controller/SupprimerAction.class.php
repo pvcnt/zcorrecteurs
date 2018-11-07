@@ -54,7 +54,7 @@ class SupprimerAction extends Controller
                 } else {
                     fil_ariane(array(htmlspecialchars($InfoMP['mp_titre']) => 'lire-' . $_GET['id'] . '.html', 'Supprimer le message privé'));
                     Page::$titre = $InfoMP['mp_titre'] . ' - Suppression du MP - ' . Page::$titre;
-                    return render_to_response(array('InfoMP' => $InfoMP));
+                    return $this->render('ZcoMpBundle::supprimer.html.php', array('InfoMP' => $InfoMP));
                 }
             } else {
                 throw new NotFoundHttpException();

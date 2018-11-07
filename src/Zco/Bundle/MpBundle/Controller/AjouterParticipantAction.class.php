@@ -37,8 +37,6 @@ class AjouterParticipantAction extends Controller
 		include(__DIR__.'/../modeles/lire.php');
 		include(__DIR__.'/../modeles/participants.php');
 
-		$xhr = (isset($_GET['xhr']) && $_GET['xhr'] == 1);
-
 		if(!empty($_GET['id']))
 		{
 			$InfoMP = InfoMP();
@@ -84,13 +82,14 @@ class AjouterParticipantAction extends Controller
 					if(empty($_POST['pseudo']))
 					{
 						//Inclusion de la vue
-						if (!$xhr)
-							fil_ariane(array(htmlspecialchars($InfoMP['mp_titre'])
-								=> 'lire-'.$_GET['id'].'.html',
-								'Ajouter un participant au message'));
+                        fil_ariane(array(htmlspecialchars($InfoMP['mp_titre'])
+                            => 'lire-'.$_GET['id'].'.html',
+                            'Ajouter un participant au message'));
 						Page::$titre = 'Ajout d\'un participant - '.Page::$titre;
 						
-						return render_to_response(array('InfoMP' => $InfoMP, 'xhr' => $xhr));
+						return $this->render('ZcoMpBundle::ajouterParticipant.html.php', array(
+						    'InfoMP' => $InfoMP,
+                        ));
 					}
 					else
 					{

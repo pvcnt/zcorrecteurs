@@ -85,7 +85,7 @@ class SupprimerParticipantAction extends Controller
                                 'Supprimer un participant du message'
                             ));
                             $InfoParticipant = InfoParticipant();
-                            return render_to_response(array(
+                            return $this->render('ZcoMpBundle::supprimerParticipant.html.php', array(
                                 'InfoParticipant' => $InfoParticipant,
                                 'InfoMP' => $InfoMP,
                             ));

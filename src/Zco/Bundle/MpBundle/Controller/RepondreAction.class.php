@@ -109,7 +109,7 @@ class RepondreAction extends Controller
             				    '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
             				));
 
-							return render_to_response(array(
+							return $this->render('ZcoMpBundle::repondre.html.php', array(
 								'InfoMP' => $InfoMP,
 								'ListerParticipants' => $ListerParticipants,
 								'NombreParticipants' => $NombreParticipants,
