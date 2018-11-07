@@ -51,54 +51,6 @@ class Page
 	public static $description = '';
 
 	/**
-	 * Les keywords de la page.
-	 * @static
-	 * @access public
-	 * @var string
-	 */
-	public static $mots_cles = '';
-
-	/**
-	 * Le layout à utiliser
-	 * @static
-	 * @access public
-	 * @var array
-	 */
-	public static $layout = 'default';
-
-	/**
-	 * La liste des templates à inclure.
-	 * @static
-	 * @access public
-	 * @var array
-	 */
-	public static $templates = array();
-
-	/**
-	 * La liste des templates de config à évaluer.
-	 * @static
-	 * @access public
-	 * @var array
-	 */
-	public static $configs = array();
-
-	/**
-	 * La liste des balises meta.
-	 * @static
-	 * @access public
-	 * @var array
-	 */
-	public static $metas = array();
-
-	/**
-	 * Du contenu à ajouter avant inclusion des templates.
-	 * @static
-	 * @access public
-	 * @var string
-	 */
-	public static $content = '';
-
-	/**
 	 * Le fil d'arianne.
 	 * @static
 	 * @access public
