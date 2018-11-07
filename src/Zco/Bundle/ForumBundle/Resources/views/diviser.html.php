@@ -77,8 +77,8 @@
 				</tr>
 				<tr>
 					<td class="infos_membre">
-						<?php echo $view->get('messages')->afficherAvatar($valeur) ?><br/>
-						<?php echo $view->get('messages')->afficherGroupe($valeur) ?><br/>
+						<?php echo $view['messages']->afficherAvatar($valeur) ?><br/>
+						<?php echo $view['messages']->afficherGroupe($valeur) ?><br/>
 					</td>
 					<td class="message">
 						<div class="msgbox">

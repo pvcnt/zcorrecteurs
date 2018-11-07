@@ -60,19 +60,6 @@ class MessagesHelper extends Helper
 			'<img src="/uploads/avatars/'.htmlspecialchars($u[$av]).'" '
 			.'alt="Avatar" class="avatar" />';
 	}
-	
-	/**
-	 * Retourne un avatar prêt à l'affichage (version Doctrine).
-	 *
-	 * @param  string $u L'utilisateur
-	 * @return string
-	 */
-	public function avatar($u)
-	{
-		return !strlen($u['avatar']) ? null :
-			'<img src="/uploads/avatars/'.htmlspecialchars($u['avatar']).'" '
-			.'alt="Avatar" class="avatar" />';
-	}
 
 	/**
 	 * Logo du groupe, ou nom si aucun.
@@ -91,21 +78,6 @@ class MessagesHelper extends Helper
 		return empty($u[$gl]) ? htmlspecialchars($u[$gn]) :
 			'<img src="'.$u[$gl].'" '
 			.'alt="Groupe : '.htmlspecialchars($u[$gn]).'"/>';
-	}
-	
-	/**
-	 * Logo du groupe, ou nom si aucun (version Doctrine).
-	 *
-	 * @param  string $u L'utilisateur
-	 * @return string
-	 */
-	public function userGroup($u)
-	{
-		$col = 'logo'.($u->getGender() == SEXE_FEMININ ? '_feminin' : '');
-
-		return empty($u->Groupe[$col]) ? htmlspecialchars($u->Groupe['nom']) :
-			'<img src="'.htmlspecialchars($u->Groupe[$col]).'" '
-			.'alt="Groupe : '.htmlspecialchars($u->Groupe['nom']).'"/>';
 	}
 	
 	/**

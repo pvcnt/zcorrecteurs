@@ -411,7 +411,7 @@ class MessageDAO
 
         $stmt = $dbh->prepare("
 	SELECT message_id, message_auteur, utilisateur_id, utilisateur_id_groupe,
-	message_texte, message_date, groupe_class, groupe_nom, groupe_logo,
+	message_texte, message_date, groupe_nom, groupe_logo,
 	message_date, sujet_id, sujet_date, sujet_titre, sujet_resolu, sujet_ferme,
 	COALESCE(utilisateur_pseudo, 'Anonyme') AS utilisateur_pseudo, utilisateur_avatar
 

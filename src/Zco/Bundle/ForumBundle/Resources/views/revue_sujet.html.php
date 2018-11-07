@@ -44,7 +44,7 @@
 					<a href="/membres/profil-<?php echo $valeur['message_auteur']; ?>-<?php echo rewrite($valeur['auteur_message_pseudo']); ?>.html"><img src="/uploads/avatars/<?php echo $valeur['auteur_avatar']; ?>" alt="Avatar" /></a><br />
 					<?php
 					}
-					echo $view->get('messages')->afficherGroupe($valeur) ?><br/>
+					echo $view['messages']->afficherGroupe($valeur) ?><br/>
 				<?php if(!empty($valeur['utilisateur_titre']))
 					echo '<br />'.htmlspecialchars($valeur['utilisateur_titre']); ?>
 				</td>

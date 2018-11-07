@@ -149,8 +149,7 @@ final class BlogDAO
         $where_auteurs[] = "blog_id IN (" . implode(',', $liste_id) . ")";
 
         $stmt = $dbh->prepare("SELECT blog_id, auteur_statut,
-			utilisateur_id, utilisateur_pseudo,
-			groupe_nom, groupe_class
+			utilisateur_id, utilisateur_pseudo, groupe_nom 
 			FROM zcov2_blog_auteurs
 			LEFT JOIN zcov2_utilisateurs ON auteur_id_utilisateur = utilisateur_id
 			LEFT JOIN zcov2_groupes ON utilisateur_id_groupe = groupe_id
@@ -234,7 +233,7 @@ final class BlogDAO
             "auteur_date, auteur_statut, utilisateur_id, utilisateur_pseudo, " .
             "utilisateur_email, blog_url_redirection, blog_lien_nom, blog_lien_url, " .
             "version_id, version_titre, version_sous_titre, version_texte, " .
-            "version_ip, version_intro, cat_id, cat_nom, groupe_class, groupe_nom " .
+            "version_ip, version_intro, cat_id, cat_nom, groupe_nom " .
             "FROM zcov2_blog_auteurs " .
             "LEFT JOIN zcov2_utilisateurs Ma ON auteur_id_utilisateur = utilisateur_id " .
             "LEFT JOIN zcov2_groupes ON utilisateur_id_groupe = groupe_id " .

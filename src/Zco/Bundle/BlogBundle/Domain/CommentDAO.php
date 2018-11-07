@@ -58,7 +58,7 @@ final class CommentDAO
 
             "Mb.utilisateur_id AS id_edite, " .
             "Mb.utilisateur_pseudo AS pseudo_edite, " .
-            "groupe_class, groupe_nom, groupe_logo, groupe_logo_feminin, " .
+            "groupe_nom, groupe_logo, groupe_logo_feminin, " .
             "commentaire_date, commentaire_edite_date " .
 
             "FROM zcov2_blog_commentaires " .

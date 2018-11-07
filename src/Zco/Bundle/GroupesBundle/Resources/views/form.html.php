@@ -4,9 +4,6 @@
     <?php echo $view['form']->row($form['nom']) ?>
     <?php echo $view['form']->row($form['logo']) ?>
     <?php echo $view['form']->row($form['logo_feminin']) ?>
-    <?php echo $view['form']->row($form['class'], [
-        'help' => 'La valeur doit être un code couleur CSS valide.',
-    ]) ?>
     <?php echo $view['form']->row($form['sanction'], [
         'help' => 'Si activé, indique que le groupe est considéré comme une sanction.',
     ]) ?>

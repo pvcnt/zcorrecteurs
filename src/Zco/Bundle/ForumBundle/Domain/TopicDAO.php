@@ -75,7 +75,7 @@ class TopicDAO
 
         $stmt = $dbh->prepare("
 	SELECT DISTINCT message_id, message_auteur, Ma.utilisateur_id_groupe AS auteur_groupe, Ma.utilisateur_sexe,
-	message_texte, message_date, message_ip, message_help, groupe_class, groupe_nom, groupe_logo, groupe_logo_feminin, 
+	message_texte, message_date, message_ip, message_help, groupe_nom, groupe_logo, groupe_logo_feminin, 
 	Ma.utilisateur_nb_sanctions, Ma.utilisateur_forum_messages, Ma.utilisateur_pourcentage, Ma.utilisateur_site_web,
 	Ma.utilisateur_titre, message_date, message_sujet_id, message_edite_auteur, message_edite_date,
 	sujet_date, Ma.utilisateur_citation, Ma.utilisateur_absent, Ma.utilisateur_fin_absence,
@@ -238,7 +238,7 @@ class TopicDAO
         $dbh = \Doctrine_Manager::connection()->getDbh();
 
         $stmt = $dbh->prepare("
-	SELECT message_id, message_auteur, Ma.utilisateur_id_groupe AS auteur_groupe, message_texte, message_date, groupe_class, groupe_nom, groupe_logo,
+	SELECT message_id, message_auteur, Ma.utilisateur_id_groupe AS auteur_groupe, message_texte, message_date, groupe_nom, groupe_logo,
 	message_date, sujet_date, message_edite_date, message_sujet_id, message_edite_auteur,
 	COALESCE(Ma.utilisateur_pseudo, 'Anonyme') AS auteur_message_pseudo, Ma.utilisateur_avatar AS auteur_avatar,
 	COALESCE(Mb.utilisateur_pseudo, 'Anonyme') AS auteur_edition_pseudo, Mb.utilisateur_id AS auteur_edition_id,

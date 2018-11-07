@@ -94,7 +94,6 @@ final class DefaultController extends Controller
             'nom' => $InfosGroupe['groupe_nom'],
             'logo' => $InfosGroupe['groupe_logo'],
             'logo_feminin' => $InfosGroupe['groupe_logo_feminin'],
-            'class' => $InfosGroupe['groupe_class'],
             'sanction' => (bool)$InfosGroupe['groupe_sanction'],
             'team' => (bool)$InfosGroupe['groupe_team'],
             'secondaire' => (bool)$InfosGroupe['groupe_secondaire'],

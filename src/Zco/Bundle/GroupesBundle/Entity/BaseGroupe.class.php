@@ -47,10 +47,6 @@ abstract class BaseGroupe extends Doctrine_Record
              'type' => 'string',
              'length' => '255',
              ));
-        $this->hasColumn('groupe_class as class', 'string', 255, array(
-             'type' => 'string',
-             'length' => '255',
-             ));
         $this->hasColumn('groupe_sanction as sanction', 'boolean', null, array(
              'type' => 'boolean',
              ));

@@ -167,8 +167,8 @@
 			<td class="infos_membre">
 				<?php if(!empty($valeur['utilisateur_citation'])){ echo htmlspecialchars($valeur['utilisateur_citation']) . '<br />' ; } ?>
 
-				<?php echo $view->get('messages')->afficherAvatar($valeur, 'avatar_auteur') ?><br/>
-				<?php echo $view->get('messages')->afficherGroupe($valeur) ?><br/>
+				<?php echo $view['messages']->afficherAvatar($valeur, 'avatar_auteur') ?><br/>
+				<?php echo $view['messages']->afficherGroupe($valeur) ?><br/>
 
 				<?php if(!empty($valeur['utilisateur_titre'])) echo htmlspecialchars($valeur['utilisateur_titre']).'<br />'; ?>
 

@@ -6,7 +6,11 @@
 			<div class="avatar" style="margin-bottom: 5px;">
 				<img src="<?php echo $user->getAvatar() ?>" />
 			</div>
-			<?php echo $view->get('messages')->userGroup($user) ?>
+            <?php
+            $col = 'logo'.($user->getGender() == SEXE_FEMININ ? '_feminin' : '');
+            echo empty($user->Groupe[$col])
+                ? htmlspecialchars($user->Groupe['nom'])
+                : '<img src="'.htmlspecialchars($user->Groupe[$col]).'" alt="Groupe : '.htmlspecialchars($user->Groupe['nom']).'"/>' ?>
 		</div>
 		<div class="span10">
 			<div style="float: right; width: 210px; margin-right: 10px;">

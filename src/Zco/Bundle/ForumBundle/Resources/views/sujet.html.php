@@ -324,7 +324,7 @@ if($InfosSujet['sujet_sondage'] > 0)
 				<?php }	if(verifier('voir_nb_messages')){ ?>
 				Messages : <?php echo $valeur['utilisateur_forum_messages']; ?><br />
 
-				<?php } echo $view->get('messages')->afficherGroupe($valeur).'<br/>';
+				<?php } echo $view['messages']->afficherGroupe($valeur).'<br/>';
 
 				if(!empty($valeur['utilisateur_titre']))
 				{

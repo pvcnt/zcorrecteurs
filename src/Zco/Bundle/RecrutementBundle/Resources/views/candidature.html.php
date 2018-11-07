@@ -312,7 +312,7 @@ in_array($InfosCandidature['candidature_etat'], array(CANDIDATURE_ACCEPTE, CANDI
 					if(!empty($valeur['utilisateur_avatar'])): ?>
 						<a href="/membres/profil-<?php echo $valeur['utilisateur_id']; ?>-<?php echo rewrite($valeur['utilisateur_pseudo']); ?>.html"><img src="/uploads/avatars/<?php echo $valeur['utilisateur_avatar']; ?>" alt="<?php echo htmlspecialchars($valeur['utilisateur_pseudo']); ?>" /></a><br />
 					<?php endif; ?>
-					<?php echo $view->get('messages')->afficherGroupe($valeur) ?><br/>
+					<?php echo $view['messages']->afficherGroupe($valeur) ?><br/>
 
 					<?php if(!empty($valeur['utilisateur_titre']))
 						echo htmlspecialchars($valeur['utilisateur_titre']);

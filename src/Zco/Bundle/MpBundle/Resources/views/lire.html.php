@@ -226,7 +226,7 @@ if($autoriser_ecrire AND ($NombreParticipants > 1 OR $MPTotal < verifier('mp_quo
 				<a href="/membres/profil-<?php echo $valeur['mp_message_auteur_id']; ?>-<?php echo rewrite($valeur['utilisateur_pseudo']); ?>.html"><img src="/uploads/avatars/<?php echo $valeur['utilisateur_avatar']; ?>" alt="<?php echo htmlspecialchars($valeur['utilisateur_pseudo']); ?>" /></a><br />
 				<?php
 				}
-			echo $view->get('messages')->afficherGroupe($valeur) ?><br/>
+			echo $view['messages']->afficherGroupe($valeur) ?><br/>
 			<?php if(!empty($valeur['utilisateur_titre']))
 			{
 				echo htmlspecialchars($valeur['utilisateur_titre']).'<br />';

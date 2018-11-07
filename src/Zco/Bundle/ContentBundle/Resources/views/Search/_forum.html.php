@@ -49,7 +49,7 @@
 				</a><br />
 				<?php } ?>
 
-				<?php echo $view->get('messages')->afficherGroupe($result) ?>
+				<?php echo $view['messages']->afficherGroupe($result) ?>
 			</td>
 
 			<td class="message">
