@@ -15,7 +15,7 @@
 		<?php foreach($ListerGroupes as $g){ ?>
 		<tr>
 			<td>
-                <span style="color: <?php echo htmlspecialchars($g['groupe_class']); ?>;"><?php echo htmlspecialchars($g['groupe_nom']); ?></span>
+                <?php echo htmlspecialchars($g['groupe_nom']); ?>
                 <?php if ($g['groupe_code']): ?>
                     (<?php echo htmlspecialchars($g['groupe_code']); ?>)
                 <?php endif ?>

@@ -72,7 +72,13 @@ function ListerMP($recherche, $page, $NombreDePages, $membre = null)
 	if (!empty($in))
 	{
 		$stmt = $dbh->prepare("
-		SELECT mp_id, mp_titre, mp_sous_titre, mp_date, mp_dernier_message_id, mp_reponses, mp_ferme, A.mp_participant_id, B.utilisateur_pseudo AS mp_participant_pseudo, A.mp_participant_statut, E.groupe_class AS mp_participant_groupe_class, mp_message_date AS mp_dernier_message_date, mp_message_auteur_id AS mp_dernier_message_auteur, D.utilisateur_pseudo AS mp_dernier_message_pseudo, F.groupe_class AS mp_dernier_message_auteur_groupe_class, A.mp_participant_dernier_message_lu AS mp_lunonlu_participant_message_id, C.mp_participant_dernier_message_lu AS mp_lunonlu_actuel_dernier_message_lu
+		SELECT mp_id, mp_titre, mp_sous_titre, mp_date, mp_dernier_message_id, mp_reponses, mp_ferme, 
+		A.mp_participant_id, B.utilisateur_pseudo AS mp_participant_pseudo, 
+		A.mp_participant_statut, mp_message_date AS mp_dernier_message_date, 
+		mp_message_auteur_id AS mp_dernier_message_auteur, 
+		D.utilisateur_pseudo AS mp_dernier_message_pseudo, 
+		A.mp_participant_dernier_message_lu AS mp_lunonlu_participant_message_id, 
+		C.mp_participant_dernier_message_lu AS mp_lunonlu_actuel_dernier_message_lu
 		FROM zcov2_mp_participants A
 		LEFT JOIN zcov2_mp_mp ON A.mp_participant_mp_id = zcov2_mp_mp.mp_id
 		LEFT JOIN zcov2_mp_participants C ON zcov2_mp_mp.mp_id = C.mp_participant_mp_id AND ".$membre." = C.mp_participant_id
@@ -99,7 +105,6 @@ function ListerMP($recherche, $page, $NombreDePages, $membre = null)
 			'mp_participant_mp_id' => $valeur['mp_id'],
 			'mp_participant_id' => $valeur['mp_participant_id'],
 			'utilisateur_pseudo' => $valeur['mp_participant_pseudo'],
-			'groupe_class' => $valeur['mp_participant_groupe_class'],
 			'mp_participant_statut' => $valeur['mp_participant_statut'],
 			'mp_lunonlu_participant_message_id' => $valeur['mp_lunonlu_participant_message_id']);
 			if(in_array($valeur['mp_id'], $ids))

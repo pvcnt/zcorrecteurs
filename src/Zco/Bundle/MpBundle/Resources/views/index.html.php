@@ -175,12 +175,7 @@
 							echo '<strike>';
 						break;
 					}
-					echo '<a href="/membres/profil-'.$part['mp_participant_id'].'-'.rewrite($part['utilisateur_pseudo']).'.html"';
-					if(!empty($part['groupe_class']))
-					{
-						echo ' style="color: '.$part['groupe_class'].';"';
-					}
-					echo '>';
+					echo '<a href="/membres/profil-'.$part['mp_participant_id'].'-'.rewrite($part['utilisateur_pseudo']).'.html">';
 					echo htmlspecialchars($part['utilisateur_pseudo']);
 					echo '</a> ';
 					switch($part['mp_participant_statut'])
@@ -204,10 +199,6 @@
 				<?php
 				echo '<a href="/mp/lire-'.$MP['mp_id'].'-'.$MP['mp_dernier_message_id'].'.html">'.dateformat($MP['mp_dernier_message_date']).'</a><br />';
 				echo '<a href="/membres/profil-'.$MP['mp_dernier_message_auteur'].'-'.rewrite($MP['mp_dernier_message_pseudo']).'.html"';
-				if(!empty($MP['mp_dernier_message_auteur_groupe_class']))
-				{
-					echo ' style="color: '.$MP['mp_dernier_message_auteur_groupe_class'].';"';
-				}
 				echo '>'.htmlspecialchars($MP['mp_dernier_message_pseudo']).'</a>';
 				?>
 				</td>

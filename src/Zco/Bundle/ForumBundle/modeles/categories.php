@@ -62,7 +62,7 @@ function ListerCategoriesForum($InfosCategorie = array(), $LimiterSousCat = fals
 			"cat_niveau, cat_redirection, cat_archive, message_date, UNIX_TIMESTAMP(message_date) AS message_timestamp, message_auteur, utilisateur_id, " .
 			"IFNULL(utilisateur_pseudo, 'Anonyme') AS utilisateur_pseudo, " .
 			"sujet_titre, message_id, message_sujet_id, ".$add." " .
-			"lunonlu_utilisateur_id, lunonlu_sujet_id, lunonlu_message_id, lunonlu_participe, lunonlu_favori, groupe_class " .
+			"lunonlu_utilisateur_id, lunonlu_sujet_id, lunonlu_message_id, lunonlu_participe, lunonlu_favori " .
 			"FROM zcov2_categories " .
 			"LEFT JOIN zcov2_forum_messages ON cat_last_element = message_id " .
 			"LEFT JOIN zcov2_forum_sujets ON message_sujet_id = sujet_id " .
@@ -70,7 +70,6 @@ function ListerCategoriesForum($InfosCategorie = array(), $LimiterSousCat = fals
 			"LEFT JOIN zcov2_forum_lunonlu ON sujet_id = lunonlu_sujet_id AND lunonlu_utilisateur_id = :user_id " .
 			"LEFT JOIN zcov2_groupes_droits ON gd_id_categorie = cat_id AND gd_id_groupe IN ($groupes) " .
 			"LEFT JOIN zcov2_droits ON gd_id_droit = droit_id " .
-			"LEFT JOIN zcov2_groupes ON utilisateur_id_groupe = groupe_id " .
 			"WHERE cat_niveau > 1 ".$add3." AND droit_nom = :droit AND gd_valeur = 1 AND cat_archive = :archives ". $add2 .
 			"GROUP BY cat_id ".
 			"ORDER BY cat_gauche");

@@ -20,8 +20,7 @@
 		<tr class="header_message">
 			<td class="pseudo_membre">
 				<?php if($result['utilisateur_pseudo']){ ?>
-				<a href="/membres/profil-<?php echo $result['utilisateur_id']; ?>-<?php echo rewrite($result['utilisateur_pseudo']); ?>.html"
-					style="color: <?php echo $result['groupe_class']; ?>;" rel="nofollow">
+				<a href="/membres/profil-<?php echo $result['utilisateur_id']; ?>-<?php echo rewrite($result['utilisateur_pseudo']); ?>.html">
 				<?php } echo htmlspecialchars($result['utilisateur_pseudo']); if(!empty($result['utilisateur_id'])) { ?>
 				</a>
 				<?php } ?>

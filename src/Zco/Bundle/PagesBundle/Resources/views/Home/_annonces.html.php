@@ -42,7 +42,7 @@
 		<?php foreach($ListerRecrutements as $r){ ?>
 			<li><a href="/recrutement/recrutement-<?php echo $r['recrutement_id']; ?>-<?php echo rewrite($r['recrutement_nom']); ?>.html">
 				<?php echo htmlspecialchars($r['recrutement_nom']); ?></a>
-				(<span style="color: <?php echo $r['groupe_class']; ?>"><?php echo htmlspecialchars($r['groupe_nom']); ?></span>)
+				(<?php echo htmlspecialchars($r['groupe_nom']); ?>)
 			</li>
 		<?php } ?>
 	</ul>

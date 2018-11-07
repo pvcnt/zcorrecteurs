@@ -12,7 +12,7 @@
                         $selected = ' selected="selected"';
                     else
                         $selected = '';
-                    echo '<option value="' . $g['groupe_id'] . '" style="color: ' . $g['groupe_class'] . ';"' . $selected . '>' . htmlspecialchars($g['groupe_nom']) . ' (' . $g['groupe_effectifs'] . ')</option>';
+                    echo '<option value="' . $g['groupe_id'] . '" ' . $selected . ' >' . htmlspecialchars($g['groupe_nom']) . ' (' . $g['groupe_effectifs'] . ')</option>';
                 }
                 ?>
             </select>

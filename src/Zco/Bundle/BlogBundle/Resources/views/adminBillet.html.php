@@ -167,7 +167,7 @@
 				<tbody>
 					<?php foreach($Auteurs as $a){ ?>
 					<tr>
-						<td style="color: <?php echo $a['groupe_class']; ?>;">
+						<td>
 							<a href="/membres/profil-<?php echo $a['utilisateur_id']; ?>-<?php echo rewrite($a['utilisateur_pseudo']); ?>.html"><?php echo htmlspecialchars($a['utilisateur_pseudo']); ?></a>
 						</td>
 						<td class="centre">

@@ -62,7 +62,7 @@
 				<tr class="header_message">
 					<td class="pseudo_membre">
 						<?php if(!empty($valeur['auteur_groupe'])) {?>
-						<a href="/membres/profil-<?php echo $valeur['message_auteur']; ?>-<?php echo rewrite($valeur['auteur_message_pseudo']); ?>.html" style="color: <?php echo $valeur['groupe_class']; ?>;">
+						<a href="/membres/profil-<?php echo $valeur['message_auteur']; ?>-<?php echo rewrite($valeur['auteur_message_pseudo']); ?>.html">
 						<?php } ?>
 						<?php echo htmlspecialchars($valeur['auteur_message_pseudo']); ?>
 						<?php if(!empty($valeur['auteur_groupe'])) {?>

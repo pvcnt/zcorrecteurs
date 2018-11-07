@@ -80,10 +80,10 @@ function ListerParticipants($mp_id)
 	$dbh = Doctrine_Manager::connection()->getDbh();
 
 	$stmt = $dbh->prepare("
-	SELECT mp_participant_id, mp_participant_mp_dossier_id, mp_participant_statut, utilisateur_pseudo, groupe_class, mp_participant_dernier_message_lu AS mp_lunonlu_message_id
+	SELECT mp_participant_id, mp_participant_mp_dossier_id, mp_participant_statut, utilisateur_pseudo, 
+	mp_participant_dernier_message_lu AS mp_lunonlu_message_id
 	FROM zcov2_mp_participants
 	LEFT JOIN zcov2_utilisateurs ON mp_participant_id = utilisateur_id
-	LEFT JOIN zcov2_groupes ON utilisateur_id_groupe = groupe_id
 	WHERE mp_participant_mp_id = :mp_id
 	ORDER BY mp_participant_statut DESC, utilisateur_pseudo ASC");
 

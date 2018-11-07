@@ -128,7 +128,9 @@
 					</a>
 				</span>
 				<?php } ?>
-                <?php echo $view->get('messages')->colorerPseudo($valeur, 'id_auteur', 'pseudo_auteur') ?><br/>
+                <a href="<?php echo $view['router']->path('zco_user_profile', ['id' => $valeur['id_auteur'], 'slug' => rewrite($valeur['pseudo_auteur'])]) ?>">
+                    <?php echo htmlspecialchars($valeur['pseudo_auteur']) ?>
+                </a>
 			</td>
 
 			<td class="dates">

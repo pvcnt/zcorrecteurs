@@ -23,7 +23,11 @@
 						</a>
 					</span>
 					<?php } ?>
-					<?php if(!empty($valeur['id_auteur'])) echo $view->get('messages')->colorerPseudo($valeur, 'id_auteur', 'pseudo_auteur') ?>
+					<?php if (!empty($valeur['id_auteur'])) { ?>
+                        <a href="<?php echo $view['router']->path('zco_user_profile', ['id' => $valeur['id_auteur'], 'slug' => rewrite($valeur['pseudo_auteur'])]) ?>">
+                            <?php echo htmlspecialchars($valeur['pseudo_auteur']) ?>
+                        </a>
+                    <?php } ?>
 				</td>
 				<td class="dates">
 					<span id="m<?php echo $valeur['commentaire_id'];?>">

@@ -108,12 +108,12 @@ function ListerAlertes($debut, $nb)
 
 	$stmt = $dbh->prepare("
 	SELECT mp_alerte_id, mp_alerte_raison, mp_alerte_ip, mp_alerte_resolu, mp_alerte_modo, 
-	B.groupe_nom as groupe_nom, B.groupe_class as groupe_class, B.groupe_logo as groupe_logo, 
+	B.groupe_nom as groupe_nom, B.groupe_logo as groupe_logo, 
 	mp_alerte_date, mp_titre, mp_id, mp_ferme, A.utilisateur_id as utilisateur_id, A.utilisateur_citation, 
 	COALESCE(A.utilisateur_pseudo, 'Anonyme') AS utilisateur_pseudo, A.utilisateur_pourcentage as utilisateur_pourcentage,
 	A.utilisateur_nb_sanctions as utilisateur_nb_sanctions, A.utilisateur_avatar as utilisateur_avatar, 
 	A.utilisateur_signature as utilisateur_signature, C.utilisateur_id as modo_id, 
-	IFNULL(C.utilisateur_pseudo, 'Inconnu') as modo_pseudo, D.groupe_class as modo_groupe_class
+	IFNULL(C.utilisateur_pseudo, 'Inconnu') as modo_pseudo
 	FROM zcov2_mp_alertes
 	LEFT JOIN zcov2_utilisateurs A ON zcov2_mp_alertes.mp_alerte_auteur = A.utilisateur_id
 	LEFT JOIN zcov2_utilisateurs C ON zcov2_mp_alertes.mp_alerte_modo = C.utilisateur_id

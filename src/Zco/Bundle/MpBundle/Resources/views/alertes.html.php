@@ -58,7 +58,7 @@ if($ListerAlertes)
 ?>
 		<tr class="header_message">
 			<td class="pseudo_membre">
-			<a href="/membres/profil-<?php echo $valeur['utilisateur_id']; ?>-<?php echo rewrite($valeur['utilisateur_pseudo']); ?>.html" style="color: <?php echo $valeur['groupe_class']; ?>;">
+			<a href="/membres/profil-<?php echo $valeur['utilisateur_id']; ?>-<?php echo rewrite($valeur['utilisateur_pseudo']); ?>.html">
 			<?php echo htmlspecialchars($valeur['utilisateur_pseudo']); ?>
 			</a>
 			</td>
@@ -118,12 +118,7 @@ if($ListerAlertes)
 					echo '<br />Réglée par ';
 					if(!empty($valeur['modo_id']))
 					{
-						echo '<a href="/membres/profil-'.$valeur['modo_id'].'-'.rewrite($valeur['modo_pseudo']).'.html"';
-						if(!empty($valeur['modo_groupe_class']))
-						{
-							echo ' style="color:'.$valeur['modo_groupe_class'].';"';
-						}
-						echo '>';
+						echo '<a href="/membres/profil-'.$valeur['modo_id'].'-'.rewrite($valeur['modo_pseudo']).'.html">';
 					}
 					echo htmlspecialchars($valeur['modo_pseudo']);
 					if(!empty($valeur['modo_id']))

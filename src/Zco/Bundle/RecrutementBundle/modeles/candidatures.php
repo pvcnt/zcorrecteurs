@@ -39,8 +39,7 @@ function InfosCandidature($id1, $id2 = null)
 		recrutement_id, recrutement_nom, recrutement_id_groupe, recrutement_redaction,
 		recrutement_date_fin_epreuve, recrutement_etat, u3.utilisateur_id AS id_correcteur,
 		u3.utilisateur_pseudo AS pseudo_correcteur,
-		g1.groupe_nom, g1.groupe_class, g2.groupe_class AS groupe_admin,
-		u2.utilisateur_id AS id_admin, u2.utilisateur_pseudo AS pseudo_admin,
+		g1.groupe_nom, u2.utilisateur_id AS id_admin, u2.utilisateur_pseudo AS pseudo_admin,
 		CASE WHEN candidature_date_fin_correction >= NOW() THEN 1
 		ELSE 0
 		END AS correction_possible
@@ -50,7 +49,6 @@ function InfosCandidature($id1, $id2 = null)
 		LEFT JOIN zcov2_utilisateurs u2 ON candidature_id_admin = u2.utilisateur_id
 		LEFT JOIN zcov2_utilisateurs u3 ON candidature_correcteur = u3.utilisateur_id
 		LEFT JOIN zcov2_groupes g1 ON u1.utilisateur_id_groupe = g1.groupe_id
-		LEFT JOIN zcov2_groupes g2 ON u2.utilisateur_id_groupe = g2.groupe_id
 		WHERE ".$where);
 	if(is_null($id2))
 		$stmt->bindParam(':id', $id1);
@@ -84,9 +82,8 @@ function ListerCandidatures($id, $orderby = 'etat')
 		candidature_correcteur_note, lunonlu_utilisateur_id, lunonlu_commentaire_id, lunonlu_participe,
 		candidature_date_fin_correction, u.utilisateur_id, u.utilisateur_pseudo,
 		candidature_quiz_score,
-		g.groupe_nom, g.groupe_class, u2.utilisateur_id AS id_correcteur,
-		u2.utilisateur_pseudo AS pseudo_correcteur, g2.groupe_nom AS groupe_correcteur,
-		g2.groupe_class AS groupe_class_correcteur,
+		g.groupe_nom, u2.utilisateur_id AS id_correcteur,
+		u2.utilisateur_pseudo AS pseudo_correcteur
 		CASE WHEN candidature_date_fin_correction >= NOW()
 			THEN 1
 			ELSE 0
@@ -117,7 +114,6 @@ function ListerCandidatures($id, $orderby = 'etat')
 		LEFT JOIN zcov2_utilisateurs u ON candidature_id_utilisateur = u.utilisateur_id
 		LEFT JOIN zcov2_utilisateurs u2 ON candidature_correcteur = u2.utilisateur_id
 		LEFT JOIN zcov2_groupes g ON u.utilisateur_id_groupe = g.groupe_id
-		LEFT JOIN zcov2_groupes g2 ON u2.utilisateur_id_groupe = g2.groupe_id
 		WHERE candidature_id_recrutement = :id AND candidature_etat <> ".CANDIDATURE_REDACTION."
 		ORDER BY ".$orderby.", candidature_date");
 	$stmt->bindParam('id', $id);

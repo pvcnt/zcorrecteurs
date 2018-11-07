@@ -65,12 +65,12 @@ if ( isset($Parent) && !empty($_GET['archives'])) : ?>
 				Par ';
 				if(!empty($forum['utilisateur_id']))
 				{
-					echo '<a href="/membres/profil-'.$forum['message_auteur'].'-'.rewrite($forum['utilisateur_pseudo']).'.html" rel="nofollow"><span style="color: '.$forum['groupe_class'].';">';
+					echo '<a href="/membres/profil-'.$forum['message_auteur'].'-'.rewrite($forum['utilisateur_pseudo']).'.html" rel="nofollow">';
 				}
 				echo htmlspecialchars($forum['utilisateur_pseudo']);
 				if(!empty($forum['utilisateur_id']))
 				{
-					echo '</span></a>';
+					echo '</a>';
 				}
 				echo '<br />
 				Dans <a href="sujet-'.$forum['message_sujet_id'].'-'.$forum['message_id'].'-'.rewrite($forum['sujet_titre']).'.html">'.htmlspecialchars($forum['sujet_titre']).'</a></td>';

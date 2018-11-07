@@ -112,7 +112,7 @@ function ListerRecrutements()
 	$stmt = $dbh->prepare("
 	SELECT recrutement_id, recrutement_id_utilisateur, recrutement_id_groupe, recrutement_nom, recrutement_etat, recrutement_texte, recrutement_prive,
 	recrutement_date, recrutement_date_fin_depot, utilisateur_id, utilisateur_pseudo, recrutement_nb_personnes, groupe_id, groupe_nom,
-	groupe_logo, groupe_class, candidature_etat, recrutement_lien,
+	groupe_logo, candidature_etat, recrutement_lien,
 	CASE
 		WHEN recrutement_date_fin_depot IS NULL THEN 1
 		WHEN recrutement_date_fin_depot >= NOW() THEN 1
@@ -138,7 +138,6 @@ function ListerRecrutementsAdmin()
 	$stmt = $dbh->prepare("
 	SELECT recrutement_id, recrutement_id_utilisateur, recrutement_id_groupe, recrutement_nom, recrutement_etat, recrutement_texte, recrutement_prive,
 	recrutement_nb_personnes, recrutement_date, recrutement_date_fin_depot,	utilisateur_id, utilisateur_pseudo, groupe_id, groupe_nom, groupe_logo,
-	groupe_class,
 	(SELECT COUNT(*) FROM zcov2_recrutements_candidatures WHERE candidature_id_recrutement = recrutement_id AND candidature_etat <> ".CANDIDATURE_REDACTION.") AS nb_candidatures
 	FROM zcov2_recrutements
 	LEFT JOIN zcov2_utilisateurs ON recrutement_id_utilisateur = utilisateur_id
@@ -160,8 +159,7 @@ function InfosRecrutement($id)
 		recrutement_prive, recrutement_redaction, recrutement_nb_personnes,
 		recrutement_date, recrutement_nb_lus, recrutement_lien, recrutement_id_quiz,
 		recrutement_date_fin_depot, utilisateur_id, utilisateur_pseudo,
-		g1.groupe_id, g1.groupe_nom, g1.groupe_logo, g1.groupe_class,
-		g2.groupe_nom as groupe_nom_admin, g2.groupe_class AS groupe_class_admin,
+		g1.groupe_id, g1.groupe_nom, g1.groupe_logo,  
 		(SELECT COUNT(*) FROM zcov2_recrutements_candidatures
 			WHERE candidature_id_recrutement = recrutement_id
 			AND candidature_etat <> ".CANDIDATURE_REDACTION.") AS nb_candidatures,
@@ -173,7 +171,6 @@ function InfosRecrutement($id)
 		FROM zcov2_recrutements
 		LEFT JOIN zcov2_utilisateurs ON recrutement_id_utilisateur = utilisateur_id
 		LEFT JOIN zcov2_groupes g1 ON recrutement_id_groupe = g1.groupe_id
-		LEFT JOIN zcov2_groupes g2 ON utilisateur_id_groupe = g2.groupe_id
 		WHERE recrutement_id = :id
 		ORDER BY recrutement_date DESC");
 	$stmt->bindParam(':id', $id);

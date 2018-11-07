@@ -28,13 +28,12 @@ final class GroupDAO
     public static function ListerGroupes()
     {
         $dbh = \Doctrine_Manager::connection()->getDbh();
-
-        $stmt = $dbh->prepare("
-	SELECT groupe_id, groupe_code, groupe_nom, groupe_logo, groupe_logo_feminin, groupe_class, groupe_sanction, groupe_team, groupe_secondaire, (SELECT COUNT(*) FROM zcov2_utilisateurs WHERE utilisateur_id_groupe = groupe_id) AS groupe_effectifs
-	FROM zcov2_groupes
-	WHERE groupe_secondaire = 0
-	ORDER BY groupe_nom");
-
+        $stmt = $dbh->prepare('SELECT groupe_id, groupe_code, groupe_nom, groupe_logo, 
+            groupe_logo_feminin, groupe_sanction, groupe_team, groupe_secondaire, 
+            (SELECT COUNT(*) FROM zcov2_utilisateurs WHERE utilisateur_id_groupe = groupe_id) AS groupe_effectifs
+	        FROM zcov2_groupes
+	        WHERE groupe_secondaire = 0
+	        ORDER BY groupe_nom');
         $stmt->execute();
 
         return $stmt->fetchAll();
@@ -45,7 +44,7 @@ final class GroupDAO
         $dbh = \Doctrine_Manager::connection()->getDbh();
 
         $stmt = $dbh->prepare("
-	SELECT groupe_id, groupe_nom, groupe_logo, groupe_logo_feminin, groupe_class, groupe_sanction, groupe_team, groupe_secondaire, (SELECT COUNT(*) FROM zcov2_groupes_secondaires WHERE zcov2_groupes_secondaires.groupe_id = zcov2_groupes.groupe_id) AS groupe_effectifs
+	SELECT groupe_id, groupe_nom, groupe_logo, groupe_logo_feminin, groupe_sanction, groupe_team, groupe_secondaire, (SELECT COUNT(*) FROM zcov2_groupes_secondaires WHERE zcov2_groupes_secondaires.groupe_id = zcov2_groupes.groupe_id) AS groupe_effectifs
 	FROM zcov2_groupes
 	WHERE groupe_secondaire = 1
 	ORDER BY groupe_nom");
@@ -65,11 +64,11 @@ final class GroupDAO
     {
         $dbh = \Doctrine_Manager::connection()->getDbh();
 
-        $stmt = $dbh->prepare('SELECT gs.groupe_id, g.groupe_nom, g.groupe_class '
-            . 'FROM zcov2_groupes_secondaires gs '
-            . 'LEFT JOIN zcov2_groupes g USING(groupe_id) '
-            . 'LEFT JOIN zcov2_utilisateurs u USING(utilisateur_id) '
-            . 'WHERE utilisateur_id = :id');
+        $stmt = $dbh->prepare('SELECT gs.groupe_id, g.groupe_nom, 
+            FROM zcov2_groupes_secondaires gs 
+            LEFT JOIN zcov2_groupes g USING(groupe_id) 
+            LEFT JOIN zcov2_utilisateurs u USING(utilisateur_id) 
+            WHERE utilisateur_id = :id');
         $stmt->bindParam(':id', $id);
 
         $stmt->execute();
@@ -111,7 +110,7 @@ final class GroupDAO
 
     public static function InfosGroupe($id)
     {
-        $sql = 'SELECT groupe_id, groupe_code, groupe_nom, groupe_logo, groupe_logo_feminin, groupe_class, 
+        $sql = 'SELECT groupe_id, groupe_code, groupe_nom, groupe_logo, groupe_logo_feminin,  
                 groupe_sanction, groupe_team, groupe_secondaire, 
                 (SELECT COUNT(*) FROM zcov2_utilisateurs WHERE utilisateur_id_groupe = groupe_id) AS groupe_effectifs
 	            FROM zcov2_groupes';
@@ -128,12 +127,11 @@ final class GroupDAO
     {
         $dbh = \Doctrine_Manager::connection()->getDbh();
         $stmt = $dbh->prepare('INSERT INTO zcov2_groupes(groupe_nom, groupe_logo, 
-            groupe_logo_feminin, groupe_class, groupe_sanction, groupe_team, groupe_secondaire)
-	        VALUES(:nom, :logo, :logof, :class, :sanction, :team, :secondaire)');
+            groupe_logo_feminin, groupe_sanction, groupe_team, groupe_secondaire)
+	        VALUES(:nom, :logo, :logof, :sanction, :team, :secondaire)');
         $stmt->bindValue(':nom', $data['nom']);
         $stmt->bindValue(':logo', $data['logo'] ?? '');
         $stmt->bindValue(':logof', $data['logo_feminin'] ?? '');
-        $stmt->bindValue(':class', $data['class'] ?? '');
         $stmt->bindValue(':sanction', $data['sanction'] ? 1 : 0);
         $stmt->bindValue(':team', $data['team'] ? 1 : 0);
         $stmt->bindValue(':secondaire', $data['secondaire'] ? 1 : 0);
@@ -149,13 +147,11 @@ final class GroupDAO
         $dbh = \Doctrine_Manager::connection()->getDbh();
         $stmt = $dbh->prepare('UPDATE zcov2_groupes
 	        SET groupe_nom = :nom, groupe_logo = :logo, groupe_logo_feminin = :logof,
-	        groupe_class = :class, groupe_sanction = :sanction, groupe_team = :team, 
-	        groupe_secondaire = :secondaire
+	        groupe_sanction = :sanction, groupe_team = :team, groupe_secondaire = :secondaire
 	        WHERE groupe_id = :id');
         $stmt->bindValue(':nom', $data['nom']);
         $stmt->bindValue(':logo', $data['logo'] ?? '');
         $stmt->bindValue(':logof', $data['logo_feminin'] ?? '');
-        $stmt->bindValue(':class', $data['class'] ?? '');
         $stmt->bindValue(':sanction', $data['sanction'] ? 1 : 0);
         $stmt->bindValue(':team', $data['team'] ? 1 : 0);
         $stmt->bindValue(':secondaire', $data['secondaire'] ? 1 : 0);
@@ -242,8 +238,8 @@ final class GroupDAO
 
         $stmt = $dbh->prepare("
 	SELECT chg_id, chg_date, utilisateur_id, IFNULL(utilisateur_pseudo, 'Anonyme') as pseudo_responsable,
-	Ga.groupe_nom as ancien_groupe, Gb.groupe_nom as nouveau_groupe, Ga.groupe_class as couleur_ancien_groupe, 
-	Gb.groupe_class as couleur_nouveau_groupe, Gb.groupe_secondaire as nouveau_groupe_secondaire,
+	Ga.groupe_nom as ancien_groupe, Gb.groupe_nom as nouveau_groupe,  
+	Gb.groupe_secondaire as nouveau_groupe_secondaire,
 	Ga.groupe_secondaire as ancien_groupe_secondaire
 		FROM zcov2_historique_groupes
 		LEFT JOIN zcov2_groupes Ga ON Ga.groupe_id = chg_ancien_groupe

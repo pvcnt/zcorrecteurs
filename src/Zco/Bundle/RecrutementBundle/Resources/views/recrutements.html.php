@@ -69,7 +69,7 @@
 				<td class="centre">
 					<?php echo dateformat($r['recrutement_date_fin_depot']); ?>
 				</td>
-				<td style="color: <?php echo $r['groupe_class']; ?>;">
+				<td>
 					<?php echo htmlspecialchars($r['groupe_nom']);
 					if($r['recrutement_nb_personnes'] > 0) echo ' ('.$r['recrutement_nb_personnes'].')'; ?>
 				</td>

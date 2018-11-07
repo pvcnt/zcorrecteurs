@@ -31,7 +31,7 @@ function ListerCommentairesShoutbox($id, $page = 1)
 
 	$debut = ($page - 1) * 15;
 
-	$stmt = $db->prepare("SELECT commentaire_id, groupe_class, groupe_logo, groupe_logo_feminin, groupe_nom,
+	$stmt = $db->prepare("SELECT commentaire_id, groupe_logo, groupe_logo_feminin, groupe_nom,
 		commentaire_date, commentaire_texte, utilisateur_id, utilisateur_avatar, utilisateur_sexe,
 		IFNULL(utilisateur_pseudo, 'Anonyme') as utilisateur_pseudo
 		FROM zcov2_recrutements_commentaires

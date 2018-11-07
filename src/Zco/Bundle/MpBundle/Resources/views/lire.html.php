@@ -66,12 +66,7 @@ foreach($ListerParticipants as $valeur)
 	{
 		echo '<a href="supprimer-'.$_GET['id'].'.html"><img src="/bundles/zcomp/img/user_delete.png" alt="Supprimer" title="Me supprimer de la conversation" /></a> ';
 	}
-	echo '<a href="/membres/profil-'.$valeur['mp_participant_id'].'-'.rewrite($valeur['utilisateur_pseudo']).'.html"';
-	if(!empty($valeur['groupe_class']))
-	{
-		echo ' style="color: '.$valeur['groupe_class'].';"';
-	}
-	echo '>';
+	echo '<a href="/membres/profil-'.$valeur['mp_participant_id'].'-'.rewrite($valeur['utilisateur_pseudo']).'.html">';
 	echo htmlspecialchars($valeur['utilisateur_pseudo']);
 	echo '</a> ';
 	switch($valeur['mp_participant_statut'])
@@ -195,7 +190,7 @@ if($autoriser_ecrire AND ($NombreParticipants > 1 OR $MPTotal < verifier('mp_quo
 			{
 				echo dateformat($valeur['utilisateur_fin_absence'], DATE, MINUSCULE);
 			}  ?>" /></a></span><?php } ?>
-			<a href="/membres/profil-<?php echo $valeur['mp_message_auteur_id']; ?>-<?php echo rewrite($valeur['utilisateur_pseudo']); ?>.html" style="color: <?php echo $valeur['groupe_class']; ?>;">
+			<a href="/membres/profil-<?php echo $valeur['mp_message_auteur_id']; ?>-<?php echo rewrite($valeur['utilisateur_pseudo']); ?>.html">
 			<?php echo htmlspecialchars($valeur['utilisateur_pseudo']); ?>
 			</a>
 			</td>

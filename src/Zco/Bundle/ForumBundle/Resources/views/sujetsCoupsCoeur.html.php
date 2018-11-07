@@ -25,7 +25,7 @@
 				<a href="/forum/<?php echo 'sujet-'.$valeur['sujet_id'].'-'.rewrite($valeur['sujet_titre']).'.html'; ?>"><?php echo $valeur['sujet_titre']; ?></a>
 			</td>
 			<td class="centre">
-				<a href="/membres/profil-<?php echo $Auteur['utilisateur_id'] ; ?>-<?php echo rewrite($Auteur['utilisateur_pseudo']); ?>.html" style="color: <?php echo $Auteur['groupe_class']; ?>;"><?php echo htmlspecialchars($Auteur['utilisateur_pseudo']); ?></a>
+				<a href="/membres/profil-<?php echo $Auteur['utilisateur_id'] ; ?>-<?php echo rewrite($Auteur['utilisateur_pseudo']); ?>.html"><?php echo htmlspecialchars($Auteur['utilisateur_pseudo']); ?></a>
 			</td>
 			<td class="centre">
 				<?php echo $valeur['sujet_reponses']; ?>

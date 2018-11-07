@@ -48,38 +48,6 @@ class MessagesHelper extends Helper
     }
 
 	/**
-	 * Retourne un pseudo coloré.
-	 *
-	 * @param  string $u Tableau des informations utilisateur.
-	 * @param  string $id Colonne contenant l'id de l'utilisateur.
-	 * @param  string $psd Colonne contenant le pseudo de l'utilisateur.
-	 * @param  string $col Colonne contenant le couleur du groupe.
-	 * @return string
-	 */
-	public function colorerPseudo($u,
-                                      $id = 'utilisateur_id',
-                                      $psd = 'utilisateur_pseudo',
-                                      $col = 'groupe_class')
-	{
-		return '<a href="/membres/profil-'.$u[$id]
-		      .'-'.rewrite($u[$psd]).'.html" style="color: '.htmlspecialchars($u[$col]).'">'
-		      .htmlspecialchars($u[$psd]).'</a>';
-	}
-	
-	/**
-	 * Retourne un pseudo coloré (version Doctrine).
-	 *
-	 * @param  string $u L'utilisateur
-	 * @return string
-	 */
-	public function pseudo($u)
-	{
-		return '<a href="/membres/profil-'.$u['id']
-		      .'-'.rewrite($u['pseudo']).'.html" style="color: '.htmlspecialchars($u['Groupe']['class']).'">'
-		      .htmlspecialchars($u['pseudo']).'</a>';
-	}
-
-	/**
 	 * Retourne un avatar prêt à l'affichage.
 	 *
 	 * @param  string $u  Tableau des informations utilisateur.

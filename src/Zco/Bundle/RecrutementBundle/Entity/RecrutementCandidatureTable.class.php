@@ -27,7 +27,7 @@ class RecrutementCandidatureTable extends Doctrine_Table
 	{
 		//Récupération des candidatures du membre
 		$query = Doctrine_Query::create()
-			->select('c.candidature_id, c.candidature_id_recrutement, c.candidature_date, c.candidature_etat, r.recrutement_id, r.recrutement_etat, r.recrutement_nom, r.recrutement_prive, r.recrutement_nb_personnes, g.groupe_nom, g.groupe_class')
+			->select('c.candidature_id, c.candidature_id_recrutement, c.candidature_date, c.candidature_etat, r.recrutement_id, r.recrutement_etat, r.recrutement_nom, r.recrutement_prive, r.recrutement_nb_personnes, g.groupe_nom')
 			->from('RecrutementCandidature c')
 			->leftJoin('c.Recrutement r')
 			->leftJoin('r.Groupe g')

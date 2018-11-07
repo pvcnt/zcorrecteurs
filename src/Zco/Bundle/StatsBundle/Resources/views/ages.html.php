@@ -7,8 +7,7 @@
         <option style="font-style: italic" value=""<?php if (!$afficherGroupe) echo ' selected="selected"' ?>>Afficher tous les groupes</option>
         <?php foreach($listeGroupes as $groupe): ?>
             <option value="<?php echo $groupe['groupe_id'] ?>"
-                <?php if($groupe['groupe_class']) echo ' style="color: '.$groupe['groupe_class'] .'"';
-                if($afficherGroupe && $afficherGroupe == $groupe['groupe_id']) echo ' selected="selected"' ?>>
+                <?php if($afficherGroupe && $afficherGroupe == $groupe['groupe_id']) echo ' selected="selected"' ?>>
                 <?php echo htmlspecialchars($groupe['groupe_nom']) ?>
             </option>
         <?php endforeach ?>

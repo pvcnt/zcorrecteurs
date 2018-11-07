@@ -154,14 +154,10 @@ function ListerSujets($PremierMess, $MessaAfficher, $forumID = null)
 			'sujet_ferme, sujet_resolu, message_id, '.
 			'lunonlu_utilisateur_id, lunonlu_sujet_id, lunonlu_message_id, '.
 			'lunonlu_participe, lunonlu_favori, '.
-			'g1.groupe_class AS class_auteur, '.
-			'g2.groupe_class AS class_dernier_message '.
 			'FROM zcov2_forum_sujets '.
 			'LEFT JOIN zcov2_forum_messages ON sujet_dernier_message = message_id '.
 			'LEFT JOIN zcov2_utilisateurs Ma ON sujet_auteur = Ma.utilisateur_id '.
 			'LEFT JOIN zcov2_utilisateurs Mb ON message_auteur = Mb.utilisateur_id '.
-			'LEFT JOIN zcov2_groupes g1 ON Ma.utilisateur_id_groupe = g1.groupe_id '.
-			'LEFT JOIN zcov2_groupes g2 ON Mb.utilisateur_id_groupe = g2.groupe_id '.
 			'LEFT JOIN zcov2_forum_lunonlu ON sujet_id = lunonlu_sujet_id '.
 			'AND '.$lunonlu_user.' = lunonlu_utilisateur_id '.
 			'LEFT JOIN zcov2_groupes_droits ON gd_id_categorie = sujet_forum_id '.
@@ -310,15 +306,12 @@ function ListerSujetsIn($in)
 			"message_auteur AS sujet_dernier_message_auteur_id, " .
 			"sujet_date, message_date, sujet_dernier_message, sujet_sondage, " .
 			"sujet_annonce, sujet_ferme, sujet_resolu, message_id, " .
-			"g1.groupe_class AS class_auteur, g2.groupe_class AS class_dernier_message, " .
 			"cat_id, cat_nom " .
 			"FROM zcov2_forum_sujets " .
 			"LEFT JOIN zcov2_categories ON sujet_forum_id = cat_id " .
 			"LEFT JOIN zcov2_forum_messages ON sujet_dernier_message = message_id " .
 			"LEFT JOIN zcov2_utilisateurs Ma ON sujet_auteur = Ma.utilisateur_id " .
 			"LEFT JOIN zcov2_utilisateurs Mb ON message_auteur = Mb.utilisateur_id " .
-			"LEFT JOIN zcov2_groupes g1 ON Ma.utilisateur_id_groupe = g1.groupe_id " .
-			"LEFT JOIN zcov2_groupes g2 ON Mb.utilisateur_id_groupe = g2.groupe_id " .
 			"WHERE sujet_id IN(".implode(', ', $in).") " .
 			"ORDER BY sujet_annonce DESC, message_date DESC");
 	$stmt->execute();
@@ -339,15 +332,12 @@ function ListerSujetsTitre($titre)
 			"message_auteur AS sujet_dernier_message_auteur_id, " .
 			"sujet_date, message_date, sujet_dernier_message, sujet_sondage, " .
 			"sujet_annonce, sujet_ferme, sujet_resolu, message_id, " .
-			"g1.groupe_class AS class_auteur, g2.groupe_class AS class_dernier_message, " .
 			"cat_id, cat_nom " .
 			"FROM zcov2_forum_sujets " .
 			"LEFT JOIN zcov2_categories ON sujet_forum_id = cat_id " .
 			"LEFT JOIN zcov2_forum_messages ON sujet_dernier_message = message_id " .
 			"LEFT JOIN zcov2_utilisateurs Ma ON sujet_auteur = Ma.utilisateur_id " .
 			"LEFT JOIN zcov2_utilisateurs Mb ON message_auteur = Mb.utilisateur_id " .
-			"LEFT JOIN zcov2_groupes g1 ON Ma.utilisateur_id_groupe = g1.groupe_id " .
-			"LEFT JOIN zcov2_groupes g2 ON Mb.utilisateur_id_groupe = g2.groupe_id " .
 			"WHERE sujet_titre LIKE ".$dbh->quote('%'.$titre.'%')." " .
 			"ORDER BY sujet_annonce DESC, message_date DESC");
 	$stmt->execute();
