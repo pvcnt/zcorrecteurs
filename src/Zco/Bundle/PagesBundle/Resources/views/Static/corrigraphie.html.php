@@ -52,13 +52,14 @@
 			manifestations.
 		</p>
 	
-		<p style="margin-top: 15px; text-align: justify;">
+		<?php /*<p style="margin-top: 15px; text-align: justify;">
 			Une autre façon est bien sûr de rejoindre 
 			<a href="<?php echo $view['router']->path('zco_about_team') ?>">notre équipe</a>
 			et de vous investir activement dans le fonctionnement quotidien du site. Il 
 			s’agit d’une expérience très enrichissante et formatrice au sein d’une équipe 
 			dynamique. Pour en savoir plus, n’hésitez pas à consulter notre 
-			<a href="/recrutement/">espace dédié aux recrutements</a>.
+			<a href="/recrutement/">espace dédié aux recrutements</a>.</p>
+        */?>
 	
 		<p style="margin-top: 15px; text-align: justify;">
 			Nous privilégions une intégration progressive des membres dans l’association. 

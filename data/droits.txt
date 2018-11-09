@@ -36,14 +36,6 @@ ips_analyser
 ips_bannir
 gerer_breve_accueil
 voir_stats_generales
-recrutements_editer
-recrutements_supprimer
-recrutements_supprimer_candidatures
-recrutements_voir_candidatures
-recrutements_voir_tests
-recrutements_repondre
-recrutements_voir_commentaire
-recrutements_voir_prives
 code
 groupes_gerer
 groupes_changer_membre

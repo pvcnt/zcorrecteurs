@@ -133,11 +133,6 @@
             <div class="bloc communaute">
                 <h4>Communauté</h4>
                 <ul class="nav nav-list">
-                    <li class="first">
-                        <a href="/recrutement/" style="font-weight: bold;">
-                            Nous rejoindre
-                        </a>
-                    </li>
                     <li>
                         <a href="<?php echo $view['router']->path('zco_donate_index') ?>">
                             Faire un don

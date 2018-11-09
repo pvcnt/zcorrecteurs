@@ -2,3 +2,11 @@ options_editer_defaut
 lister_blocages
 groupes_changer_droits
 bannir_mails
+recrutements_editer
+recrutements_supprimer
+recrutements_supprimer_candidatures
+recrutements_voir_candidatures
+recrutements_voir_tests
+recrutements_repondre
+recrutements_voir_commentaire
+recrutements_voir_prives

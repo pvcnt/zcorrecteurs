@@ -78,11 +78,6 @@ div.bloc_documents .admin_icone
 	background: url(../img/documents.png) no-repeat;
 }
 
-div.bloc_recrutements .admin_icone
-{
-	background: url(../img/recrutements.png) no-repeat;
-}
-
 div.bloc_membres .admin_icone
 {
 	background: url(../img/membres.png) no-repeat;

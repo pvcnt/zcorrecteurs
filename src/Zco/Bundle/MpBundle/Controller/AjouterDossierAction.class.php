@@ -54,6 +54,7 @@ class AjouterDossierAction extends Controller
 			if(!empty($_POST['dossier_nom']))
 			{
 				AjouterDossier(htmlspecialchars($_POST['dossier_nom']));
+
 				return redirect('Le dossier a bien été ajouté.', 'index.html');
 			}
 		}

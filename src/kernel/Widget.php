@@ -141,7 +141,7 @@ abstract class Widget
 	 */
 	public function setOption($key, $value)
 	{
-		if(!in_array($key, array_keys($this->options)));
+		if(!in_array($key, array_keys($this->options)))
 		{
 			throw new Exception(sprintf('%s ne supporte pas l\'option suivante : %s.', get_class($this), $key));
 		}

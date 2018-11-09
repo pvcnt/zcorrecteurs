@@ -43,7 +43,6 @@ class HomeController extends Controller
 
         // Inclusion des modèles.
         include_once(BASEPATH . '/src/Zco/Bundle/ForumBundle/modeles/statistiques_accueil.php');
-        include_once(BASEPATH . '/src/Zco/Bundle/RecrutementBundle/modeles/recrutements.php');
         include_once(BASEPATH . '/src/Zco/Bundle/DicteesBundle/modeles/statistiques-accueil.php');
 
         // Bloc « à tout faire »
@@ -59,14 +58,7 @@ class HomeController extends Controller
         $vars['Tweets'] = null;
         $vars['Dictee'] = null;
 
-        if ($vars['quel_bloc'] == 'recrutement') {
-            $cacheKey = verifier('recrutements_voir_prives') ? 'liste_recrutements_prives' : 'liste_recrutements_publics';
-            if (($ListerRecrutements = $cache->fetch($cacheKey)) === false) {
-                $ListerRecrutements = ListerRecrutements();
-                $cache->save($cacheKey, $ListerRecrutements, 0);
-            }
-            $vars['ListerRecrutements'] = $ListerRecrutements;
-        } elseif ($vars['quel_bloc'] == 'quiz') {
+        if ($vars['quel_bloc'] == 'quiz') {
             $vars['QuizSemaine'] = $registry->get('accueil_quiz');
         } elseif ($vars['quel_bloc'] == 'sujet') {
             $vars['SujetSemaine'] = $registry->get('accueil_sujet');

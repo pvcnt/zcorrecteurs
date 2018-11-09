@@ -152,19 +152,6 @@ final class SitemapFactory
             ));
         }
 
-        include_once(__DIR__ . '/../../RecrutementBundle/modeles/recrutements.php');
-        $links[] = new SitemapLink(URL_SITE . '/recrutement/', array(
-            'changefreq' => 'monthly',
-            'priority' => '0.4',
-        ));
-        foreach (ListerRecrutementsSitemap() as $recrut) {
-            $url = URL_SITE . '/recrutement/recrutement-' . $recrut['recrutement_id'] . '-' . rewrite($recrut['recrutement_nom']) . '.html';
-            $links[] = new SitemapLink($url, array(
-                'changefreq' => 'monthly',
-                'priority' => '0.3',
-            ));
-        }
-
         $links[] = new SitemapLink($this->generateUrl('zco_search_index'), [
             'changefreq' => 'monthly',
             'priority' => '0.5',

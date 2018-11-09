@@ -27,7 +27,6 @@ use Zco\Bundle\BlogBundle\Admin\ArticlesPendingTask;
 use Zco\Bundle\DicteesBundle\Admin\DictationsPendingTask;
 use Zco\Bundle\ForumBundle\Admin\ForumAlertsPendingTask;
 use Zco\Bundle\MpBundle\Admin\PmAlertsPendingTask;
-use Zco\Bundle\RecrutementBundle\Admin\ApplicationsPendingTask;
 use Zco\Bundle\UserBundle\Admin\NewUsernamePendingTask;
 
 final class MenuFactory
@@ -121,14 +120,6 @@ final class MenuFactory
         if (verifier('quiz_ajouter')) {
             $menu->getChild('Quiz')->addChild('Gérer les quiz', array(
                 'uri' => $this->router->generate('zco_quiz_admin'),
-            ));
-        }
-        if (verifier('recrutements_voir_candidatures')) {
-            $count = $this->admin->get(ApplicationsPendingTask::class);
-            $menu->getChild('Recrutements')->addChild('Voir les candidatures en attente', array(
-                'label' => 'Il y a ' . $count . ' candidature' . pluriel($count) . ' en attente',
-                'uri' => '/recrutement/gestion.html',
-                'count' => $count,
             ));
         }
         if (verifier('blog_voir_billets_proposes')) {

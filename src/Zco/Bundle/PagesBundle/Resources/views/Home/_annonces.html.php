@@ -36,16 +36,6 @@
 		<?php echo htmlspecialchars($SujetSemaine['sujet_sous_titre']); ?>
 		<?php } ?>
 	</div>
-<?php } elseif ($quel_bloc == 'recrutement') { ?>
-	<h2 class="mod_communaute">Recrutements en cours</h2>
-	<ul>
-		<?php foreach($ListerRecrutements as $r){ ?>
-			<li><a href="/recrutement/recrutement-<?php echo $r['recrutement_id']; ?>-<?php echo rewrite($r['recrutement_nom']); ?>.html">
-				<?php echo htmlspecialchars($r['recrutement_nom']); ?></a>
-				(<?php echo htmlspecialchars($r['groupe_nom']); ?>)
-			</li>
-		<?php } ?>
-	</ul>
 <?php } elseif ($quel_bloc == 'billet') { ?>
 	<h2 class="mod_communaute">Billet du moment</h2>
 	<div>

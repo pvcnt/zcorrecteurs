@@ -2,7 +2,7 @@
 
 <?php echo $view->render('ZcoPagesBundle:Static:aboutTabs.html.php', array('currentTab' => 'team')) ?>
 
-<h1>Ceux sans qui rien ne serait possible. <a href="/recrutement/">Rejoignez-nous &rarr;</a></h1>
+<h1>Ceux sans qui rien ne serait possible.</h1>
 
 <p class="intro-text">
 	zCorrecteurs.fr est un projet unique et ambitieux s’appuyant sur une équipe
