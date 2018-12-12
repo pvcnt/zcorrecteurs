@@ -23,6 +23,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
 use Zco\Bundle\GroupesBundle\Domain\CredentialsDAO;
+use Zco\Bundle\UserBundle\Domain\UserDAO;
 use Zco\Util\Inflector;
 
 /**
@@ -458,7 +459,7 @@ function redirect($message = null, $url = '', $type = MSG_OK)
                 $_SESSION['erreur'][] = $message;
             }
         }
-        
+
         return new Symfony\Component\HttpFoundation\RedirectResponse($url);
     }
 }
@@ -471,16 +472,16 @@ function redirect($message = null, $url = '', $type = MSG_OK)
  */
 function preference($nom)
 {
-    $id = verifier('connecte') ? $_SESSION['id'] : 0;
-
     //Si la préférence est déjà en session
     if (isset($_SESSION['prefs'][$nom])) {
         return $_SESSION['prefs'][$nom];
     }
 
     //Sinon on les récupère toutes et on les met en session.
-    if ($preferences = \Doctrine_Core::getTable('UserPreference')->getById($id)) {
-        $preferences->apply();
+    if ($preferences = UserDAO::getPreferences($_SESSION['id'])) {
+        foreach ($preferences as $k => $v) {
+            $_SESSION['prefs'][$k] = $v;
+        }
         if (isset($_SESSION['prefs'][$nom])) {
             return $_SESSION['prefs'][$nom];
         }

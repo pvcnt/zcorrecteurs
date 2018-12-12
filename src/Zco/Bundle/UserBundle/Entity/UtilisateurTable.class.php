@@ -20,6 +20,7 @@
  */
 
 use Zco\Bundle\GroupesBundle\Domain\GroupDAO;
+use Zco\Bundle\UserBundle\Domain\UserDAO;
 
 /**
  * Requêtes sur la table des utilisateurs.
@@ -304,11 +305,10 @@ class UtilisateurTable extends Doctrine_Table
 		$user->save();
 		
 		// Ajout des préférences par défaut.
-        $userPrefs = new \UserPreference();
-        $userPrefs->setUserId($user->getId());
-        $userPrefs->setEmailOnMp(true);
-        $userPrefs->setTimeDifference(3600);
-		$userPrefs->save();
+        UserDAO::savePreferences($user->getId(), [
+            'email_on_mp' => true,
+            'time_difference' => 3600, // GMT+1 (Paris)
+        ]);
 	}
 	
 	/**

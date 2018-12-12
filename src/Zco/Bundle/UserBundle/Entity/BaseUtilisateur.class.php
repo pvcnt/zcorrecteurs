@@ -44,9 +44,7 @@
  * @property string $twitter
  * @property boolean $display_signature
  * @property Groupe $Groupe
- * @property UserPreference $Preferences
  * @property Doctrine_Collection $SecondaryGroups
- * @property Doctrine_Collection $Tentative
  * @property Doctrine_Collection $UserNewUsername
  * @property Doctrine_Collection $UserPunishment
  * @property Doctrine_Collection $ZformBackup
@@ -58,10 +56,6 @@
  * @property Doctrine_Collection $Quiz
  * @property Doctrine_Collection $QuizQuestion
  * @property Doctrine_Collection $QuizScore
- * @property Doctrine_Collection $RecrutementCandidature
- * @property Doctrine_Collection $RecrutementCommentaire
- * @property Doctrine_Collection $RecrutementLuNonLu
- * @property Doctrine_Collection $RecrutementAvis
  * @property Doctrine_Collection $File
  * 
  * @package    ##PACKAGE##
@@ -242,10 +236,6 @@ abstract class BaseUtilisateur extends Doctrine_Record
         $this->hasOne('Groupe', array(
              'local' => 'utilisateur_id_groupe',
              'foreign' => 'groupe_id'));
-
-        $this->hasOne('UserPreference as Preferences', array(
-             'local' => 'id',
-             'foreign' => 'user_id'));
 
         $this->hasMany('SecondaryGroup as SecondaryGroups', array(
              'local' => 'id',

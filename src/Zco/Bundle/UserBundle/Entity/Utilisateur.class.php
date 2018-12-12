@@ -450,11 +450,6 @@ class Utilisateur extends BaseUtilisateur
 		return $this->SecondaryGroups;
 	}
 
-	public function getPreferences()
-	{
-		return $this->Preferences;
-	}
-	
 	public function applyPunishment(\UserPunishment $punishment)
 	{
 		$this->nb_sanctions += 1;

@@ -36,6 +36,7 @@ use Zco\Bundle\OptionsBundle\Form\Type\EditEmailType;
 use Zco\Bundle\OptionsBundle\Form\Type\EditPasswordType;
 use Zco\Bundle\OptionsBundle\Form\Type\EditPreferencesType;
 use Zco\Bundle\OptionsBundle\Form\Type\EditProfileType;
+use Zco\Bundle\UserBundle\Domain\UserDAO;
 
 /**
  * Contrôleur gérant les options membre.
@@ -307,7 +308,7 @@ class DefaultController extends Controller
     {
         $user = $this->getEditableUser($id);
         $own = $user->getId() == $_SESSION['id'];
-        $preferences = $user->getPreferences();
+        $preferences = UserDAO::getPreferences($_SESSION['id']);
 
         $form = $this->createForm(EditPreferencesType::class, $preferences);
         $form->handleRequest($request);
