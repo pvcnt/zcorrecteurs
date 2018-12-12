@@ -181,7 +181,6 @@ class FileTable extends Doctrine_Table
 		return $this->createQuery('f')
 			->select('f.*, t.*, l.*')
 			->leftJoin('f.Thumbnail t')
-			->leftJoin('f.License l')
 			->where('f.id = ?', $id)
 			->limit(1);
 	}

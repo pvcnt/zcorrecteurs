@@ -23,7 +23,6 @@
  * @property Utilisateur $User
  * @property FileThumbnail $Thumbnail
  * @property Doctrine_Collection $Usage
- * @property Doctrine_Collection $FileLicense
  * @property Doctrine_Collection $FileThumbnail
  * 
  * @package    ##PACKAGE##
@@ -42,10 +41,6 @@ abstract class BaseFile extends Doctrine_Record
              'autoincrement' => true,
              ));
         $this->hasColumn('user_id', 'integer', null, array(
-             'type' => 'integer',
-             'notnull' => false,
-             ));
-        $this->hasColumn('license_id', 'integer', null, array(
              'type' => 'integer',
              'notnull' => false,
              ));
@@ -124,10 +119,6 @@ abstract class BaseFile extends Doctrine_Record
              'foreign' => 'id'));
 
         $this->hasMany('FileUsage as Usage', array(
-             'local' => 'id',
-             'foreign' => 'file_id'));
-
-        $this->hasMany('FileLicense', array(
              'local' => 'id',
              'foreign' => 'file_id'));
 

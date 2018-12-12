@@ -91,11 +91,6 @@ class File extends BaseFile
      *
      * @return boolean
      */
-    public function hasLicense()
-    {
-        return (boolean) $this->license_id;
-    }
-    
     /**
      * Retourne le chemin relatif du fichier par rapport à la racine 
      * du système de fichiers associé et la racine du dossier web.

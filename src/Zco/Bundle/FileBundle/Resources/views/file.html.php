@@ -14,12 +14,6 @@
 				</div>
 				<div id="file-accordion-metadata" class="accordion-body <?php echo (!$input && !$textarea) ? 'in' : 'collapse' ?>">
 					<div class="accordion-inner">
-						<?php if ($file['license_id']): ?>
-							<strong>Licence :</strong>
-							<a href="<?php echo htmlspecialchars($file->License['summary_url']) ?>">
-								<?php echo htmlspecialchars($file->License['name']) ?>
-							</a><br />
-						<?php endif ?>
 						<strong>Création :</strong>
 						<?php echo $view['humanize']->dateformat($file['date'], MINUSCULE) ?><br />
 						<strong>Modification :</strong>
@@ -44,23 +38,12 @@
 						<label for="nom">Nom</label>
 						<input type="text" value="<?php echo htmlspecialchars($file['name']) ?>" />
 						
-						<label for="license">Licence</label>
-						<select name="license" id="license">
-							<option value="">Aucune license</option>
-							<?php foreach ($licenses as $license): ?>
-							<option value="<?php echo $license['id'] ?>"<?php if ($file['license_id'] == $license['id']) echo ' selected="selected"' ?>>
-								<?php echo htmlspecialchars($license['name']) ?>
-							</option>
-							<?php endforeach ?>
-						</select><br />
-						
 						<input type="submit" class="btn btn-primary" value="Appliquer les nouvelles propriétés" />
 						
 						<?php $view['javelin']->initBehavior('zco-files-edit', array(
 							'file_id' => $file['id'], 
 							'form_id' => 'file-form',
 							'name_selector' => '#file-name',
-							'pseudo' => $_SESSION['pseudo'],
 						)) ?>
 					</form>
 				</div>

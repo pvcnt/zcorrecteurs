@@ -197,15 +197,6 @@ class FileUploader
         $file['size'] = $uploadedFile->getSize();
         $file['type'] = isset($options['type']) ? (int)$options['type'] : 0;
 
-        //Pour spécifier une licence on doit spécifier le pseudo (conservé comme
-        //trace inaltérable en cas de changement de pseudo ou suppression de compte).
-        if (isset($options['license_id'])) {
-            if (empty($options['pseudo'])) {
-                throw new \InvalidArgumentException('You must specify the "pseudo" when specifying a "license_id".');
-            }
-            $file['license_id'] = $options['license_id'];
-        }
-
         //Une option permet de configurer si le fichier est décompté du quota de l'utilisateur.
         if (isset($options['quota_affected'])) {
             $file['quota_affected'] = (boolean)$options['quota_affected'];
@@ -252,18 +243,6 @@ class FileUploader
 
         //Et on sauvegarde à nouveau le fichier !
         $file->save();
-
-        //Si le fichier a été publié sous une certaine licence on l'enregistre
-        //afin de garder un historique.
-        if ($file->hasLicense()) {
-            $license = new \FileLicense();
-            $license['file_id'] = $file['id'];
-            $license['license_id'] = $file['license_id'];
-            $license['pseudo'] = $options['pseudo'];
-            $license->save();
-
-            $file->License = $license;
-        }
 
         //Et on écrit le fichier original sur le système de fichiers.
         $this->filesystem->write($file->getRelativePath(), file_get_contents($uploadedFile->getPathname()));

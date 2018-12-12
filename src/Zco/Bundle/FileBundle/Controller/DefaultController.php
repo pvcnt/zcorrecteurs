@@ -244,7 +244,6 @@ class DefaultController extends Controller
 			'ZcoFileBundle::file.html.php', array_merge(array(
 				'currentPage'	=> 'file',
 				'file'			=> $file,
-				'licenses'		=> \Doctrine_Core::getTable('License')->findAll(),
 				'timestamp'	   	=> $timestamp,
 			), $vars)
 		);
