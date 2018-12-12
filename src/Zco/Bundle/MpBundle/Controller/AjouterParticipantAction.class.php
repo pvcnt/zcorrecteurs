@@ -49,25 +49,22 @@ class AjouterParticipantAction extends Controller
             }
 
             //Vérification de la limite du nombre de participants
-            if(verifier('mp_nb_participants_max') != -1)
+            $ListerParticipants = ListerParticipants($_GET['id']);
+            $NombreParticipants = 0;
+            foreach($ListerParticipants as $valeur)
             {
-                $ListerParticipants = ListerParticipants($_GET['id']);
-                $NombreParticipants = 0;
-                foreach($ListerParticipants as $valeur)
+                if($valeur['mp_participant_statut'] != MP_STATUT_SUPPRIME)
                 {
-                    if($valeur['mp_participant_statut'] != MP_STATUT_SUPPRIME)
-                    {
-                        $NombreParticipants++;
-                    }
+                    $NombreParticipants++;
                 }
-                if($NombreParticipants >= verifier('mp_nb_participants_max'))
-                {
-                    return redirect(
-                        'Vous ne pouvez pas ajouter de participant à ce MP : la limite a été atteinte ou dépassée.',
-                        'lire-'.$_GET['id'].'.html',
-                        MSG_ERROR
-                    );
-                }
+            }
+            if($NombreParticipants >= PM_MAX_PARTICIPANTS)
+            {
+                return redirect(
+                    'Vous ne pouvez pas ajouter de participant à ce MP : la limite a été atteinte ou dépassée.',
+                    'lire-'.$_GET['id'].'.html',
+                    MSG_ERROR
+                );
             }
 
             if(	isset($InfoMP['mp_id']) && !empty($InfoMP['mp_id']) &&

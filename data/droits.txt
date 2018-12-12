@@ -61,7 +61,6 @@ diviser_sujets
 fusionner_sujets
 voir_nb_messages
 mettre_sujets_coup_coeur
-mp_nb_participants_max
 droits_gerer
 suppr_ses_messages
 editer_ses_sujets

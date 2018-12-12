@@ -30,11 +30,7 @@
 		
 		<br />
 		<label for="destinataires">Destinataires multiples :
-		<?php
-		if(verifier('mp_nb_participants_max') != -1)
-		{
-			echo '<br /><strong>('.(verifier('mp_nb_participants_max') - 1).' participants max.)</strong>';
-		}?>
+		<br /><strong>(<?php echo PM_MAX_PARTICIPANTS - 1 ?> participants max.)</strong>
 		</label>
 		<textarea name="destinataires" id="destinataires" tabindex="4" class="mp_destinataires"><?php if(!empty($_POST['destinataires'])) echo htmlspecialchars($_POST['destinataires']); ?></textarea>
 		<?php $view['vitesse']->requireResource('@ZcoCoreBundle/Resources/public/css/tableaux_messages.css') /* Style du textarea ci-dessus */ ?>

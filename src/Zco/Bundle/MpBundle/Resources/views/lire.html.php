@@ -83,15 +83,12 @@ foreach($ListerParticipants as $valeur)
 </ul>
 <?php
 if(	($InfoMP['mp_participant_statut'] >= MP_STATUT_MASTER || verifier('mp_tous_droits_participants'))
-	&& ($NombreParticipants < verifier('mp_nb_participants_max') || verifier('mp_nb_participants_max') == -1)
+	&& ($NombreParticipants < PM_MAX_PARTICIPANTS)
 	&& !$InfoMP['mp_crypte']
 )
 {
 	echo '<p><a id="ajouter-participant" href="ajouter-participant-'.$_GET['id'].'.html"><img src="/bundles/zcomp/img/user_add.png" alt="Ajouter" /> Ajouter un membre à la conversation</a>';
-	if(!verifier('mp_limite_participants'))
-	{
-		echo ' ('.(verifier('mp_nb_participants_max') == -1 ? 'participants illimités' : verifier('mp_nb_participants_max').' participants max.').')';
-	}
+	echo ' ('.PM_MAX_PARTICIPANTS .' participants max.)';
 	echo '</p>';
 }
 if($NombreParticipants > 1){ ?>

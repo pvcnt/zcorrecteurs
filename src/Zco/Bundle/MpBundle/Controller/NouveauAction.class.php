@@ -109,9 +109,9 @@ class NouveauAction extends Controller
             }
 
             //On vérifie si l'utilisateur dépasse ou non la limite du nombre de participants
-            if (verifier('mp_nb_participants_max') != -1 && $NombreParticipants > verifier('mp_nb_participants_max')) {
+            if ($NombreParticipants > PM_MAX_PARTICIPANTS) {
                 return redirect(
-                    'Le nombre maximum de participants est dépassée.',
+                    'Le nombre maximum de participants est dépassé.',
                     '',
                     MSG_ERROR
                 );
