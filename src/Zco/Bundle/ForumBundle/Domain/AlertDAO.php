@@ -81,7 +81,7 @@ final class AlertDAO
         $stmt = $dbh->prepare("
 	SELECT COUNT(*) AS nb
 	FROM zcov2_forum_alertes
-	WHERE alerte_resolu = ?");
+	WHERE resolu = ?");
         $stmt->execute([$statut]);
         $stmt->execute();
 
@@ -109,8 +109,8 @@ final class AlertDAO
     public static function EnregistrerNouvelleAlerte(array $data)
     {
         $dbh = \Doctrine_Manager::connection()->getDbh();
-        $stmt = $dbh->prepare('INSERT INTO zcov2_forum_alertes (alerte_auteur, 
-          alerte_sujet_id, alerte_date, alerte_raison, alerte_resolu, alerte_ip)
+        $stmt = $dbh->prepare('INSERT INTO zcov2_forum_alertes (auteur, 
+          sujet_id, `date`, raison, resolu, ip)
 	      VALUES (:id_utilisateur, :id_sujet, NOW(), :texte, 0, :ip)');
         $stmt->bindParam(':id_utilisateur', $data['utilisateur_id']);
         $stmt->bindParam(':id_sujet', $data['sujet_id']);
@@ -128,7 +128,7 @@ final class AlertDAO
      */
     public function ListerAlertes($solved = null, $sujet_id = null)
     {
-        $query = Doctrine_Query::create()
+        $query = \Doctrine_Query::create()
             ->select('a.id, a.resolu, a.date, a.raison, a.ip, u1.id, u2.pseudo, '.
                 'u2.id, u2.pseudo, s.id, s.titre, s.ferme, s.corbeille, '.
                 'g1.class, g2.class, s.forum_id')

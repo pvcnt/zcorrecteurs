@@ -13,7 +13,7 @@
       "app/AppCache.php",
       "lib/Artichow",
       "lib/diff",
-      "lib/wdiff",
+      "lib/wdiff"
     ],
     "files": [
       "app/functions.php",
@@ -46,7 +46,8 @@
     "friendsofsymfony/jsrouting-bundle": "^1.6.0",
     "rkmax/sphinx-client": "^1.0.1",
     "scrivo/highlight.php": "^9.0",
-    "sendgrid/sendgrid": "^7.2"
+    "sendgrid/sendgrid": "^7.2",
+    "ramsey/uuid": "^3.8"
   },
   "require-dev": {
     "symfony/phpunit-bridge": "~2.7"

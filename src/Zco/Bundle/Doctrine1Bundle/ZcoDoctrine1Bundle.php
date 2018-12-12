@@ -36,6 +36,7 @@ class ZcoDoctrine1Bundle extends Bundle
     public function boot()
     {
         // Force connection initialization.
+        //TODO: is is still required?
         $this->container->get('zco_doctrine1.connection');
         $manager = \Doctrine_Manager::getInstance();
         $manager->setAttribute(\Doctrine_Core::ATTR_TBLNAME_FORMAT, 'zcov2_%s');

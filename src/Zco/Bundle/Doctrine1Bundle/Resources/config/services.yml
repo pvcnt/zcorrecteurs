@@ -10,6 +10,10 @@ services:
           - [setOption, ['username', '%env(DATABASE_USER)%']]
           - [setOption, ['password', '%env(DATABASE_PASSWORD)%']]
 
+    Doctrine_Connection:
+      alias: '@zco_doctrine1.connection'
+      public: true
+
     zco_doctrine1.audit_listener:
         class: Zco\Bundle\Doctrine1Bundle\EventListener\QueryAuditListener
 
