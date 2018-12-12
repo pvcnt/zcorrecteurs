@@ -116,11 +116,6 @@ services:
     tags:
     - { name: templating.helper, alias: messages }
 
-  zco_core.templating.helper.widget:
-    class: Zco\Bundle\CoreBundle\Templating\Helper\WidgetHelper
-    tags:
-    - { name: templating.helper, alias: widget }
-
   zco_file.uploader:
     class: Zco\Bundle\FileBundle\Util\FileUploader
     arguments: ["@gaufrette.uploads_filesystem", "@imagine", "@event_dispatcher"]
