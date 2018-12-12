@@ -37,37 +37,11 @@
 if(verifier('creer_sujets', $InfosSujet['sujet_forum_id']) OR verifier('repondre_sujets', $InfosSujet['sujet_forum_id'])){ ?>
 <p class="reponse_ajout_sujet">
 	<?php
-	//Début Vérification Anti-UP
-	if(empty($InfosSujet['dernier_message_auteur']))
-	{
-		$InfosSujet['dernier_message_auteur'] = $InfosSujet['sujet_auteur'];
-		$InfosSujet['dernier_message_date'] = $InfosSujet['sujet_date'];
-	}
-	$InfosSujet['dernier_message_date'] = strtotime($InfosSujet['dernier_message_date']);
-	$timestamp_actuel = time();
-	if(verifier('anti_up', $InfosSujet['sujet_forum_id']) != 0)
-		$secondes = verifier('anti_up', $InfosSujet['sujet_forum_id'])*3600 - ($timestamp_actuel-$InfosSujet['dernier_message_date']);
-	else
-		$secondes = 0;
-	$AntiUPActif = (($secondes > 0) AND $InfosSujet['dernier_message_auteur'] == $_SESSION['id']);
-	//Fin Vérification Anti-UP
-
 	//Si le sujet est fermé et que l'on peut répondre aux sujets fermés, on affiche le bouton "fermé" avec un lien ou alors le bouton "anti-UP"
 	if($InfosSujet['sujet_ferme'] AND verifier('repondre_sujets_fermes', $InfosSujet['sujet_forum_id']) AND verifier('repondre_sujets', $InfosSujet['sujet_forum_id']))
-	{
-		if($AntiUPActif)
-		{
-		?>
-		<img src="/bundles/zcoforum/img/antiUP.png" alt="antiUP" title="Vous devez attendre <?php echo verifier('anti_up', $InfosSujet['sujet_forum_id']); ?> heures pour remonter un sujet." />&nbsp;
-		<?php
-		}
-		else
-		{
-		?>
+	{ ?>
 		<a href="<?php echo 'repondre-'.$_GET['id']; ?>.html"><img src="/bundles/zcoforum/img/ferme.png" alt="Répondre" title="Répondre à ce sujet" /></a>&nbsp;
-		<?php
-		}
-	}
+	<?php }
 	//Si le sujet est fermé et que l'on n'est pas admin, on affiche le bouton "fermé", mais sans lien.
 	elseif($InfosSujet['sujet_ferme'] AND !verifier('repondre_sujets_fermes', $InfosSujet['sujet_forum_id']) AND verifier('repondre_sujets', $InfosSujet['sujet_forum_id']))
 	{
@@ -77,22 +51,11 @@ if(verifier('creer_sujets', $InfosSujet['sujet_forum_id']) OR verifier('repondre
 	}
 	//Si le sujet n'est pas fermé, on affiche le bouton "répondre", ou le bouton Anti-UP
 	elseif(verifier('repondre_sujets', $InfosSujet['sujet_forum_id']))
-	{
-		if($AntiUPActif)
-		{
-		?>
-		<img src="/bundles/zcoforum/img/antiUP.png" alt="antiUP" title="Vous devez attendre <?php echo verifier('anti_up', $InfosSujet['sujet_forum_id']); ?> heures pour remonter un sujet." />&nbsp;
-		<?php
-		}
-		else
-		{
-		?>
-		<a href="<?php echo 'repondre-'.$_GET['id']; ?>.html">
-			<img src="/bundles/zcoforum/img/repondre.png" alt="Répondre" title="Répondre à ce sujet" />
-		</a>&nbsp;
-		<?php
-		}
-	}
+	{ ?>
+    <a href="<?php echo 'repondre-'.$_GET['id']; ?>.html">
+        <img src="/bundles/zcoforum/img/repondre.png" alt="Répondre" title="Répondre à ce sujet" />
+    </a>&nbsp;
+	<?php }
 
 	if(verifier('creer_sujets', $InfosSujet['sujet_forum_id']))
 	{
@@ -418,20 +381,9 @@ if(verifier('creer_sujets', $InfosSujet['sujet_forum_id']) OR verifier('repondre
 
 	//Si le sujet est fermé et que l'on peut répondre aux sujets fermés, on affiche le bouton "fermé" avec un lien ou alors le bouton "anti-UP"
 	if($InfosSujet['sujet_ferme'] AND verifier('repondre_sujets_fermes', $InfosSujet['sujet_forum_id']) AND verifier('repondre_sujets', $InfosSujet['sujet_forum_id']))
-	{
-		if($AntiUPActif)
-		{
-		?>
-		<img src="/bundles/zcoforum/img/antiUP.png" alt="antiUP" title="Vous devez attendre <?php echo DUREE_PROTECTION_ANTI_UP; ?> heures pour remonter un sujet." />&nbsp;
-		<?php
-		}
-		else
-		{
-		?>
+	{ ?>
 		<a href="<?php echo 'repondre-'.$_GET['id']; ?>.html"><img src="/bundles/zcoforum/img/ferme.png" alt="Répondre" title="Répondre à ce sujet" /></a>&nbsp;
-		<?php
-		}
-	}
+    <?php }
 	//Si le sujet est fermé et que l'on ne peut pas répondre aux sujets fermés, on affiche le bouton "fermé", mais sans lien.
 	elseif($InfosSujet['sujet_ferme'] AND !verifier('repondre_sujets_fermes', $InfosSujet['sujet_forum_id']) AND verifier('repondre_sujets', $InfosSujet['sujet_forum_id']))
 	{
@@ -441,21 +393,9 @@ if(verifier('creer_sujets', $InfosSujet['sujet_forum_id']) OR verifier('repondre
 	}
 	//Si le sujet n'est pas fermé, on affiche le bouton "répondre", ou le bouton Anti-UP
 	elseif(verifier('repondre_sujets', $InfosSujet['sujet_forum_id']))
-	{
-		if($AntiUPActif)
-		{
-		?>
-		<img src="/bundles/zcoforum/img/antiUP.png" alt="antiUP" title="Vous devez attendre <?php echo verifier('anti_up', $InfosSujet['sujet_forum_id']); ?> heures pour remonter un sujet." />&nbsp;
-		<?php
-		}
-		else
-		{
-		?>
+	{ ?>
 		<a href="<?php echo 'repondre-'.$_GET['id']; ?>.html"><img src="/bundles/zcoforum/img/repondre.png" alt="Répondre" title="Répondre à ce sujet" /></a>&nbsp;
-		<?php
-		}
-	}
-
+    <?php }
 	if(verifier('creer_sujets', $InfosSujet['sujet_forum_id']))
 	{
 	?>
@@ -488,19 +428,13 @@ if(!$InfosSujet['sujet_corbeille'])
 {
 	if($InfosSujet['sujet_ferme'] AND verifier('repondre_sujets_fermes', $InfosSujet['sujet_forum_id']) AND verifier('repondre_sujets', $InfosSujet['sujet_forum_id']))
 	{
-		if(!$AntiUPActif)
-		{
-			$view['vitesse']->requireResource('@ZcoCoreBundle/Resources/public/js/save.js');
-			echo $ReponseRapide;
-		}
+        $view['vitesse']->requireResource('@ZcoCoreBundle/Resources/public/js/save.js');
+        echo $ReponseRapide;
 	}
 	elseif(verifier('repondre_sujets', $InfosSujet['sujet_forum_id']) AND !$InfosSujet['sujet_ferme'])
 	{
-		if(!$AntiUPActif)
-		{
-			$view['vitesse']->requireResource('@ZcoCoreBundle/Resources/public/js/save.js');
-			echo $ReponseRapide;
-		}
+        $view['vitesse']->requireResource('@ZcoCoreBundle/Resources/public/js/save.js');
+        echo $ReponseRapide;
 	}
 }
 

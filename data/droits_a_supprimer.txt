@@ -12,3 +12,5 @@ recrutements_voir_commentaire
 recrutements_voir_prives
 mp_espionner
 mp_quota
+anti_up
+epargne_anti_up

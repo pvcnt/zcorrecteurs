@@ -59,7 +59,6 @@ suppr_messages
 voir_alertes
 diviser_sujets
 fusionner_sujets
-anti_up
 voir_nb_messages
 mettre_sujets_coup_coeur
 mp_nb_participants_max

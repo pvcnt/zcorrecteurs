@@ -64,26 +64,6 @@ class RepondreAction extends ForumActions
 			$InfosSujet['dernier_message_date'] = $InfosSujet['sujet_date'];
 		}
 
-		$InfosSujet['dernier_message_date'] = strtotime($InfosSujet['dernier_message_date']);
-		$timestamp_actuel = time();
-		if (verifier('anti_up', $InfosSujet['sujet_forum_id']) != 0)
-		{
-			$secondes = 3600*verifier('anti_up', $InfosSujet['sujet_forum_id']) - ($timestamp_actuel-$InfosSujet['dernier_message_date']);
-		}
-		else
-		{
-			$secondes = 0;
-		}
-
-		if (!verifier('epargne_anti_up') AND ($secondes > 0) AND $InfosSujet['dernier_message_auteur'] == $_SESSION['id'])
-		{
-			return redirect(
-			    'Vous devez attendre 12 heures pour pouvoir poster deux fois de suite.',
-                '/forum/sujet-'.$_GET['id'].'-'.$InfosSujet['sujet_dernier_message'].'-'.rewrite($InfosSujet['sujet_titre']).'.html',
-                MSG_ERROR
-            );
-		}
-
 		Page::$titre = htmlspecialchars($InfosSujet['sujet_titre']).' - Ajout d\'une réponse';
 
 		//--- Si rien n'a été envoyé ---
