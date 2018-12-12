@@ -158,9 +158,6 @@ class EventListener implements EventSubscriberInterface
      */
     public function onDailyCron(CronEvent $event)
     {
-        //Supprime les sauvegardes de zForm vieilles de plus d'un jour.
-        \Doctrine_Core::getTable('ZformBackup')->purge();
-
         //Supprime les comptes non-validés de plus d'un jour.
         \Doctrine_Core::getTable('Utilisateur')->purge();
 

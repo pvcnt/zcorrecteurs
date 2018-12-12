@@ -281,7 +281,7 @@ class DefaultController extends Controller
         fil_ariane('Voir mes textes sauvegardés');
 
         return render_to_response('ZcoUserBundle::zformBackups.html.php', array(
-            'backups' => \Doctrine_Core::getTable('ZformBackup')->getByUserId($_SESSION['id']),
+            'backups' => $_SESSION['zform_backup'] ?? [],
             'xhr' => $request->query->get('xhr', false),
             'textarea' => $textarea,
         ));

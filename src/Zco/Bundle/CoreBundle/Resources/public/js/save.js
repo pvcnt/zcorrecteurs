@@ -16,11 +16,13 @@ function save_zform(textarea) {
     if ($(textarea).value != saveTxt) {
         saveTxt = $(textarea).value;
         var xhr = new Request({
-            method: 'post', url: Routing.generate('zco_user_api_saveZform'), onSuccess: function (text, xml) {
+            method: 'post',
+            url: Routing.generate('zco_user_api_saveZform'),
+            onSuccess: function (text, xml) {
                 $(textarea).highlight('#b3ffb3');
             }
         });
-        xhr.send('texte=' + encodeURIComponent($(textarea).value) + '&url=' + encodeURIComponent(document.location.pathname));
+        xhr.send('id=' + textarea + '&texte=' + encodeURIComponent($(textarea).value) + '&url=' + encodeURIComponent(document.location.pathname));
     }
     setTimeout('save_zform(\'' + textarea + '\')', longTime);
 }

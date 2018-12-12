@@ -11,7 +11,7 @@ services:
           - [setOption, ['password', '%env(DATABASE_PASSWORD)%']]
 
     Doctrine_Connection:
-      alias: '@zco_doctrine1.connection'
+      alias: zco_doctrine1.connection
       public: true
 
     zco_doctrine1.audit_listener:

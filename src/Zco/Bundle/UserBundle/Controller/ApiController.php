@@ -92,11 +92,24 @@ class ApiController extends Controller
             return new Response('ERROR');
         }
 
-        $backup = new \ZformBackup();
-        $backup->setUrl($request->request->get('url'));
-        $backup->setUserId($_SESSION['id']);
-        $backup->setContent($request->request->get('texte'));
-        $backup->save();
+        if (!isset($_SESSION['zform_backup'])) {
+            $_SESSION['zform_backup'] = [];
+        }
+
+        $key = substr(sha1($request->request->get('url') . $request->request->get('id')), 0, 12);
+        $_SESSION['zform_backup'][$key] = [
+            'url' => $request->request->get('url'),
+            'id' => $request->request->get('id'),
+            'content' => $request->request->get('texte'),
+            'time' => time(),
+        ];
+
+        // Clean old backups (more than 15 minutes).
+        foreach ($_SESSION['zform_backup'] as $key => $form) {
+            if (time() - $form['time'] > 900) {
+                unset($_SESSION['zform_backup'][$key]);
+            }
+        }
 
         return new Response('OK');
     }

@@ -22,23 +22,23 @@
 		</tr>
 	</thead>
 	<tbody>
-		<?php foreach ($backups as $backup): ?>
+		<?php foreach ($backups as $key => $form): ?>
 		<tr>
-			<td><?php echo dateformat($backup->getDate()) ?></td>
+			<td><?php echo dateformat($form['time']) ?></td>
 			<td>
-				<a href="<?php echo htmlspecialchars($backup->getUrl()) ?>">
-					<?php echo htmlspecialchars($backup->getUrl()) ?>
+				<a href="<?php echo htmlspecialchars($form['url']) ?>">
+					<?php echo htmlspecialchars($form['url']) ?>
 				</a>
 			</td>
 			<?php if ($textarea): ?>
 			<td class="center">
-				<a href="#" onclick="parent.document.id('<?php echo $textarea ?>').value=document.id('save_<?php echo $backup->getId() ?>').value; return false;">
+				<a href="#" onclick="parent.document.id('<?php echo $textarea ?>').value=document.id('save_<?php echo $key ?>').value; return false;">
 					<img src="/img/membres/inserer.png" alt="Récupérer le texte" />
 				</a>
 			</td>
 			<?php endif ?>
 			<td>
-				<textarea rows="8" id="save_<?php echo $backup->getId() ?>" style="height: 100px; width: 100%;" onclick="this.select()"><?php echo htmlspecialchars($backup->getContent()) ?></textarea>
+				<textarea rows="8" id="save_<?php echo $key ?>" style="height: 100px; width: 100%;" onclick="this.select()"><?php echo htmlspecialchars($form['content']) ?></textarea>
 			</td>
 		</tr>
 		<?php endforeach ?>
