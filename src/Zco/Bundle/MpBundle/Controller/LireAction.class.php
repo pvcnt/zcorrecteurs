@@ -56,11 +56,6 @@ class LireAction extends Controller
 				}
 
 				$autoriser_ecrire = true;
-				if(empty($InfoMP['mp_participant_mp_id']) AND verifier('mp_espionner'))
-				{
-					$autoriser_ecrire = false;
-				}
-
 				$ListerDossiers = ListerDossiers();
 
 				if($autoriser_ecrire)

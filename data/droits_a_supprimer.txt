@@ -10,3 +10,4 @@ recrutements_voir_tests
 recrutements_repondre
 recrutements_voir_commentaire
 recrutements_voir_prives
+mp_espionner

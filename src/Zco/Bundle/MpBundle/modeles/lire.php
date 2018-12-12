@@ -55,10 +55,6 @@ function InfoMP()
 	{
 		return $retour;
 	}
-	elseif(empty($retour['mp_participant_mp_id']) AND verifier('mp_espionner'))
-	{
-		return $retour;
-	}
 	elseif(!empty($retour['mp_participant_mp_id']))
 	{
 		return $retour;

@@ -43,10 +43,6 @@ class RepondreAction extends Controller
 		{
 			$InfoMP = InfoMP();
 			$autoriser_ecrire = true;
-			if(empty($InfoMP['mp_participant_mp_id']) && verifier('mp_espionner'))
-			{
-				$autoriser_ecrire = false;
-			}
 			if($autoriser_ecrire)
 			{
 				if(isset($InfoMP['mp_id']) && !empty($InfoMP['mp_id']))

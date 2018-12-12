@@ -41,10 +41,6 @@ class MarquerNonLuAction extends Controller
             $InfoMP = InfoMP();
 
             $autoriser_ecrire = true;
-            if (empty($InfoMP['mp_participant_mp_id']) AND verifier('mp_espionner')) {
-                $autoriser_ecrire = false;
-            }
-
             if (isset($InfoMP['mp_id']) AND !empty($InfoMP['mp_id']) AND !empty($InfoMP['mp_participant_mp_id']) AND $autoriser_ecrire) {
                 RendreMPNonLus($_GET['id']);
                 unset($_SESSION['MPsnonLus']);

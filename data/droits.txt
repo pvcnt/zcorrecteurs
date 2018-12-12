@@ -22,7 +22,6 @@ mp_repondre_mp_fermes
 mp_fermer
 mp_tous_droits_participants
 mp_alertes
-mp_espionner
 gerer_comptes_valides
 rechercher_mail
 suppr_comptes

@@ -42,9 +42,6 @@ class StatutMasterAction extends Controller
 
             if (isset($InfoMP['mp_id']) AND !empty($InfoMP['mp_id'])) {
                 $autoriser_ecrire = true;
-                if (empty($InfoMP['mp_participant_mp_id']) AND verifier('mp_espionner')) {
-                    $autoriser_ecrire = false;
-                }
                 if ($autoriser_ecrire) {
                     //Vérification : le participant à "mastoriser" existe-t-il ?
                     $InfoParticipant = InfoParticipant();
