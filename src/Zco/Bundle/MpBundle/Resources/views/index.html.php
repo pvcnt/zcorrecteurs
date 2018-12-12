@@ -47,16 +47,11 @@
 
 <p style="margin-top: 10px; margin-bottom: 10px; vertical-align: middle;">
 <span style="float: right;">
-	<?php if ($_SESSION['MPs'] < verifier('mp_quota') OR verifier('mp_quota') == -1){ ?>
 	<a href="nouveau.html"><img src="/bundles/zcoforum/img/nouveau.png" alt="Nouveau" title="Nouveau MP" /></a>
-	<?php } else{ ?>
-	Vous avez atteint ou dépassé votre quota.
-	<?php } ?>
 </span>
 
 <p>
-	Vous avez <?php echo $_SESSION['MPs'] ?>/<?php echo (verifier('mp_quota') == -1) ? '(illimité)' : verifier('mp_quota') ?>
-	messages.
+	Vous avez <?php echo $_SESSION['MPs'] ?> messages.
 </p>
 
 <form method="post">
@@ -276,17 +271,5 @@ function changer_select(valeur)
 </form>
 <?php } ?>
 <p class="reponse_ajout_sujet">
-<?php
-if($_SESSION['MPs'] < verifier('mp_quota') OR verifier('mp_quota') == -1)
-{
-?>
-
 	<a href="nouveau.html"><img src="/bundles/zcoforum/img/nouveau.png" alt="Nouveau" title="Nouveau MP" /></a>
-<?php
-}
-else
-{
-	echo 'Vous avez atteint ou dépassé votre quota.';
-}
-?>
 </p>

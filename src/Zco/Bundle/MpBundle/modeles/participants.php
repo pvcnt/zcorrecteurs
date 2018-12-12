@@ -109,12 +109,7 @@ function AjouterParticipant()
 	$stmt->execute();
 
 	$result = $stmt->fetch(PDO::FETCH_ASSOC);
-	$result['groupe_mp_quota'] = verifier('mp_quota', 0, $result['utilisateur_id_groupe']);
 	if(empty($result['utilisateur_id']) OR $result['utilisateur_id'] == ID_COMPTE_AUTO)
-	{
-		return false;
-	}
-	elseif($result['nb']+1 > $result['groupe_mp_quota'] AND $result['groupe_mp_quota'] != -1 AND !verifier('mp_tous_droits_participants'))
 	{
 		return false;
 	}

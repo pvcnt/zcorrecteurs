@@ -40,10 +40,10 @@ class MarquerNonLuAction extends Controller
         if (!empty($_GET['id']) AND is_numeric($_GET['id'])) {
             $InfoMP = InfoMP();
 
-            $autoriser_ecrire = true;
-            if (isset($InfoMP['mp_id']) AND !empty($InfoMP['mp_id']) AND !empty($InfoMP['mp_participant_mp_id']) AND $autoriser_ecrire) {
+            if (isset($InfoMP['mp_id']) AND !empty($InfoMP['mp_id']) AND !empty($InfoMP['mp_participant_mp_id'])) {
                 RendreMPNonLus($_GET['id']);
                 unset($_SESSION['MPsnonLus']);
+
                 return redirect('Le MP a été marqué comme non-lu.', 'index.html');
 
             } else {

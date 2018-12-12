@@ -44,36 +44,28 @@ class ChangerStatutAction extends Controller
 
 			if(isset($InfoMP['mp_id']) AND !empty($InfoMP['mp_id']))
 			{
-				$autoriser_ecrire = true;
-				if($autoriser_ecrire)
-				{
-					//Vérification : a-t-on le droit de fermer/ouvrir un MP ?
-					if(verifier('mp_fermer'))
-					{
-						if($_GET['id2'] == 0)
-						{
-							OuvrirMP($_GET['id']);
-							return redirect('Le MP a bien été ouvert.', 'lire-'.$_GET['id'].'.html');
-						}
-						elseif($_GET['id2'] == 1)
-						{
-							FermerMP($_GET['id']);
-							return redirect('Le MP a bien été fermé.', 'lire-'.$_GET['id'].'.html');
-						}
-					}
-					else
-					{
-						return redirect(
-						    'Vous ne pouvez pas changer le statut d\'un MP.',
-                            'lire-'.$_GET['id'].'.html',
-                            MSG_ERROR
-                        );
-					}
-				}
-				else
-				{
-					throw new AccessDeniedHttpException();
-				}
+                //Vérification : a-t-on le droit de fermer/ouvrir un MP ?
+                if(verifier('mp_fermer'))
+                {
+                    if($_GET['id2'] == 0)
+                    {
+                        OuvrirMP($_GET['id']);
+                        return redirect('Le MP a bien été ouvert.', 'lire-'.$_GET['id'].'.html');
+                    }
+                    elseif($_GET['id2'] == 1)
+                    {
+                        FermerMP($_GET['id']);
+                        return redirect('Le MP a bien été fermé.', 'lire-'.$_GET['id'].'.html');
+                    }
+                }
+                else
+                {
+                    return redirect(
+                        'Vous ne pouvez pas changer le statut d\'un MP.',
+                        'lire-'.$_GET['id'].'.html',
+                        MSG_ERROR
+                    );
+                }
 			}
 			else
 			{

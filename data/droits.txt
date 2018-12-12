@@ -64,7 +64,6 @@ voir_nb_messages
 mettre_sujets_coup_coeur
 mp_nb_participants_max
 droits_gerer
-mp_quota
 suppr_ses_messages
 editer_ses_sujets
 indiquer_messages_aide

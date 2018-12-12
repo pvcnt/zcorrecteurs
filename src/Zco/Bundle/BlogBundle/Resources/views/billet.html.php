@@ -141,14 +141,7 @@
 				Ajouté <?php echo dateformat($valeur['commentaire_date'], MINUSCULE); ?>
 				<?php if(verifier('connecte') && ($InfosBillet['blog_commentaires'] == COMMENTAIRES_OK || verifier('blog_poster_commentaires_fermes'))){ ?>
 				<a href="ajouter-commentaire-<?php echo $_GET['id']; ?>-<?php echo $valeur['commentaire_id']; ?>.html"><img src="/bundles/zcoforum/img/citer.png" alt="Citer" title="Citer" /></a>
-				<?php }
-				if(
-					$_SESSION['id'] != $valeur['id_auteur']
-					AND verifier('connecte')
-					AND ($_SESSION['MPs'] < verifier('mp_quota') OR verifier('mp_quota') == -1)
-				)
-				{
-				?>
+				<?php } if ($_SESSION['id'] != $valeur['id_auteur'] AND verifier('connecte')) { ?>
 				<a href="/mp/nouveau-<?php echo $valeur['id_auteur']; ?>.html"><img src="/bundles/zcoforum/img/envoyer_mp.png" alt="MP" title="Envoyer un message privé" /></a>
 				<?php
 				}

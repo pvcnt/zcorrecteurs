@@ -45,68 +45,59 @@ class AlerterAction extends Controller
 
 			if(isset($InfoMP['mp_id']) AND !empty($InfoMP['mp_id']))
 			{
-				$autoriser_ecrire = true;
-				if($autoriser_ecrire)
-				{
-					$ListerParticipants = ListerParticipants($InfoMP['mp_id']);
-					$AlerteDejaPostee = VerifierAlerteDejaPostee();
-					$NombreParticipants = 0;
-					foreach($ListerParticipants as $valeur)
-					{
-						if($valeur['mp_participant_statut'] > MP_STATUT_SUPPRIME)
-						{
-							$NombreParticipants++;
-						}
-					}
-					if($InfoMP['mp_ferme'] AND !verifier('mp_repondre_mp_fermes'))
-					{
-						return redirect('Ce MP est fermé.', 'lire-'.$_GET['id'].'.html', MSG_ERROR);
-					}
-					elseif($NombreParticipants < 2)
-					{
-						return redirect(
-						    'Vous êtes seul dans ce MP ! <img src="/images/smilies/siffle.png" alt=":-°" title=":-°" />',
-                            'lire-'.$_GET['id'].'.html',
+                $ListerParticipants = ListerParticipants($InfoMP['mp_id']);
+                $AlerteDejaPostee = VerifierAlerteDejaPostee();
+                $NombreParticipants = 0;
+                foreach($ListerParticipants as $valeur)
+                {
+                    if($valeur['mp_participant_statut'] > MP_STATUT_SUPPRIME)
+                    {
+                        $NombreParticipants++;
+                    }
+                }
+                if($InfoMP['mp_ferme'] AND !verifier('mp_repondre_mp_fermes'))
+                {
+                    return redirect('Ce MP est fermé.', 'lire-'.$_GET['id'].'.html', MSG_ERROR);
+                }
+                elseif($NombreParticipants < 2)
+                {
+                    return redirect(
+                        'Vous êtes seul dans ce MP ! <img src="/images/smilies/siffle.png" alt=":-°" title=":-°" />',
+                        'lire-'.$_GET['id'].'.html',
+                        MSG_ERROR
+                    );
+                }
+                elseif($AlerteDejaPostee)
+                {
+                    return redirect('Les modérateurs ont déjà été prévenus.', 'lire-'.$_GET['id'].'.html', MSG_ERROR);
+                }
+                else
+                {
+                    if(!isset($_POST['texte']))
+                    {
+                        fil_ariane(array(htmlspecialchars($InfoMP['mp_titre']) => 'lire-'.$_GET['id'].'.html', 'Alerter les modérateurs'));
+                        $this->get('zco_core.resource_manager')->requireResources(array(
+                            '@ZcoForumBundle/Resources/public/css/forum.css',
+                            '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
+                        ));
+
+                        Page::$titre = 'Alerter les modérateurs - '.Page::$titre;
+                        return $this->render('ZcoMpBundle::alerter.html.php', array(
+                            'InfoMP' => $InfoMP,
+                        ));
+                    }
+                    elseif(trim($_POST['texte']) == '')
+                        return redirect(
+                            'Vous devez indiquer une raison.',
+                            'alerter-'.$_GET['id'].'.html',
                             MSG_ERROR
                         );
-					}
-					elseif($AlerteDejaPostee)
-					{
-						return redirect('Les modérateurs ont déjà été prévenus.', 'lire-'.$_GET['id'].'.html', MSG_ERROR);
-					}
-					else
-					{
-						if(!isset($_POST['texte']))
-						{
-							//Inclusion de la vue
-							fil_ariane(array(htmlspecialchars($InfoMP['mp_titre']) => 'lire-'.$_GET['id'].'.html', 'Alerter les modérateurs'));
-							$this->get('zco_core.resource_manager')->requireResources(array(
-            				    '@ZcoForumBundle/Resources/public/css/forum.css',
-            				    '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
-            				));
-            				
-							Page::$titre = 'Alerter les modérateurs - '.Page::$titre;
-							return $this->render('ZcoMpBundle::alerter.html.php', array(
-							    'InfoMP' => $InfoMP,
-                            ));
-						}
-						elseif(trim($_POST['texte']) == '')
-							return redirect(
-							    'Vous devez indiquer une raison.',
-                                'alerter-'.$_GET['id'].'.html',
-                                MSG_ERROR
-                            );
-						else
-						{
-							AjouterAlerte();
-							return redirect('Les modérateurs ont bien été prévenus.', 'lire-'.$_GET['id'].'.html');
-						}
-					}
-				}
-				else
-				{
-					throw new AccessDeniedHttpException();
-				}
+                    else
+                    {
+                        AjouterAlerte();
+                        return redirect('Les modérateurs ont bien été prévenus.', 'lire-'.$_GET['id'].'.html');
+                    }
+                }
 			}
 			else
 			{

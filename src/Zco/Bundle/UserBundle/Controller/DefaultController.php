@@ -157,8 +157,7 @@ class DefaultController extends Controller
                 $vars['lastGroupChange'] = $user->getRegistrationDate();
             }
         }
-        $vars['canSendMp'] = $_SESSION['id'] != $user->getId() && verifier('connecte') && $user->getId() != ID_COMPTE_AUTO
-            && ($_SESSION['MPs'] < verifier('mp_quota') OR verifier('mp_quota') == -1);
+        $vars['canSendMp'] = $_SESSION['id'] != $user->getId() && verifier('connecte') && $user->getId() != ID_COMPTE_AUTO;
         $vars['canSendEmail'] = verifier('rechercher_mail') || $user->isEmailDisplayed();
         $vars['canSeeInfos'] = verifier('membres_voir_ch_pseudos') || verifier('voir_sanctions')
             || verifier('groupes_changer_membre') || verifier('ips_analyser');

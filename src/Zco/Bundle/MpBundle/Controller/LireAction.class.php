@@ -55,17 +55,13 @@ class LireAction extends Controller
 					return new RedirectResponse('lire-'.$_GET['id'].$page.'.html#m'.$_GET['id2']);
 				}
 
-				$autoriser_ecrire = true;
 				$ListerDossiers = ListerDossiers();
 
-				if($autoriser_ecrire)
-				{
-					if(isset($_POST['deplacer_lieu']) AND is_numeric($_POST['deplacer_lieu']) AND $ListerDossiers)
-					{
-						DeplacerMP($_GET['id'], $_POST['deplacer_lieu']);
-						return redirect('Le MP a bien été déplacé.', 'lire-'.$_GET['id'].'.html');
-					}
-				}
+                if(isset($_POST['deplacer_lieu']) AND is_numeric($_POST['deplacer_lieu']) AND $ListerDossiers)
+                {
+                    DeplacerMP($_GET['id'], $_POST['deplacer_lieu']);
+                    return redirect('Le MP a bien été déplacé.', 'lire-'.$_GET['id'].'.html');
+                }
 
 				$page = !empty($_GET['p']) && is_numeric($_GET['p']) ? $_GET['p'] : 1;
 				$_GET['p'] = $page;
@@ -78,12 +74,10 @@ class LireAction extends Controller
 					'mp_lunonlu_utilisateur_id' => $_SESSION['id'],
 					'mp_lunonlu_message_id' =>  $InfoMP['mp_lunonlu_message_id']
 				);
-				if($autoriser_ecrire)
-				{
-					RendreLeMPLu($_GET['id'], ceil(($InfoMP['mp_reponses']+1) / 20), $InfoMP['mp_dernier_message_id'], $ListerMessages, $InfosLuNonlu);
-				}
 
-				if($autoriser_ecrire && !verifier('mp_editer_ses_messages_deja_lus'))
+				RendreLeMPLu($_GET['id'], ceil(($InfoMP['mp_reponses']+1) / 20), $InfoMP['mp_dernier_message_id'], $ListerMessages, $InfosLuNonlu);
+
+				if(!verifier('mp_editer_ses_messages_deja_lus'))
 				{
 					//On va ici déterminer si au moins un des participants a lu un message (pour chaque message). Ceci afin de savoir pour chaque message si on autorise l'édition ou pas. (Dès qu'un message est lu au moins par un participant, hop l'auteur de ce message ne peut plus l'éditer. ;)
 					foreach($ListerMessages as $clef => $valeur)
@@ -119,7 +113,6 @@ class LireAction extends Controller
 				return $this->render('ZcoMpBundle::lire.html.php', array(
 					'MPTotal' => $_SESSION['MPs'],
 					'InfoMP' => $InfoMP,
-					'autoriser_ecrire' => $autoriser_ecrire,
 					'ListerDossiers' => $ListerDossiers,
 					'ListePages' => $ListePages,
 					'ListerParticipants' => $ListerParticipants,

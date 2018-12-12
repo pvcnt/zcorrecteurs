@@ -40,75 +40,69 @@ class AjouterParticipantAction extends Controller
 		if(!empty($_GET['id']))
 		{
 			$InfoMP = InfoMP();
-			if($InfoMP['mp_crypte'])
-				return redirect(
-				    'Il n\'est pas possible d\'ajouter de participants à un MP crypté.',
+			if($InfoMP['mp_crypte']) {
+                return redirect(
+                    'Il n\'est pas possible d\'ajouter de participants à un MP crypté.',
                     'index.html',
                     MSG_ERROR
                 );
-			$autoriser_ecrire = true;
-			if($autoriser_ecrire)
-			{
-				//Vérification de la limite du nombre de participants
-				if(verifier('mp_nb_participants_max') != -1)
-				{
-					$ListerParticipants = ListerParticipants($_GET['id']);
-					$NombreParticipants = 0;
-					foreach($ListerParticipants as $valeur)
-					{
-						if($valeur['mp_participant_statut'] != MP_STATUT_SUPPRIME)
-						{
-							$NombreParticipants++;
-						}
-					}
-					if($NombreParticipants >= verifier('mp_nb_participants_max'))
-					{
-						return redirect(
-						    'Vous ne pouvez pas ajouter de participant à ce MP : la limite a été atteinte ou dépassée.',
+            }
+
+            //Vérification de la limite du nombre de participants
+            if(verifier('mp_nb_participants_max') != -1)
+            {
+                $ListerParticipants = ListerParticipants($_GET['id']);
+                $NombreParticipants = 0;
+                foreach($ListerParticipants as $valeur)
+                {
+                    if($valeur['mp_participant_statut'] != MP_STATUT_SUPPRIME)
+                    {
+                        $NombreParticipants++;
+                    }
+                }
+                if($NombreParticipants >= verifier('mp_nb_participants_max'))
+                {
+                    return redirect(
+                        'Vous ne pouvez pas ajouter de participant à ce MP : la limite a été atteinte ou dépassée.',
+                        'lire-'.$_GET['id'].'.html',
+                        MSG_ERROR
+                    );
+                }
+            }
+
+            if(	isset($InfoMP['mp_id']) && !empty($InfoMP['mp_id']) &&
+                ($InfoMP['mp_participant_statut'] >= MP_STATUT_MASTER || verifier('mp_tous_droits_participants'))
+            )
+            {
+                if(empty($_POST['pseudo']))
+                {
+                    //Inclusion de la vue
+                    fil_ariane(array(htmlspecialchars($InfoMP['mp_titre'])
+                        => 'lire-'.$_GET['id'].'.html',
+                        'Ajouter un participant au message'));
+                    Page::$titre = 'Ajout d\'un participant - '.Page::$titre;
+
+                    return $this->render('ZcoMpBundle::ajouterParticipant.html.php', array(
+                        'InfoMP' => $InfoMP,
+                    ));
+                }
+                else
+                {
+                    if (AjouterParticipant()) {
+                        return redirect('Le participant a bien été ajouté.', 'lire-'.$_GET['id'].'.html');
+                    } else {
+                        return redirect(
+                            'Impossible d\'ajouter ce membre au MP.',
                             'lire-'.$_GET['id'].'.html',
                             MSG_ERROR
                         );
-					}
-				}
-
-				if(	isset($InfoMP['mp_id']) && !empty($InfoMP['mp_id']) &&
-					($InfoMP['mp_participant_statut'] >= MP_STATUT_MASTER || verifier('mp_tous_droits_participants'))
-				)
-				{
-					if(empty($_POST['pseudo']))
-					{
-						//Inclusion de la vue
-                        fil_ariane(array(htmlspecialchars($InfoMP['mp_titre'])
-                            => 'lire-'.$_GET['id'].'.html',
-                            'Ajouter un participant au message'));
-						Page::$titre = 'Ajout d\'un participant - '.Page::$titre;
-						
-						return $this->render('ZcoMpBundle::ajouterParticipant.html.php', array(
-						    'InfoMP' => $InfoMP,
-                        ));
-					}
-					else
-					{
-						if (AjouterParticipant()) {
-							return redirect('Le participant a bien été ajouté.', 'lire-'.$_GET['id'].'.html');
-						} else {
-							return redirect(
-							    'Impossible d\'ajouter ce membre au MP.',
-                                'lire-'.$_GET['id'].'.html',
-                                MSG_ERROR
-                            );
-						}
-					}
-				}
-				else
-				{
-                    throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-				}
-			}
-			else
-			{
-				throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-			}
+                    }
+                }
+            }
+            else
+            {
+                throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+            }
 		}
 		else
 		{

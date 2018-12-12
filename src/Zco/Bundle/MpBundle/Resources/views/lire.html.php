@@ -7,10 +7,6 @@ if(!empty($InfoMP['mp_alerte_id']) AND empty($InfoMP['mp_participant_mp_id']))
 {
 	echo '<p class="rmq attention"><strong>Vous êtes en mode infiltration</strong> : vous ne faites pas partie des participants. Vous pouvez ainsi consulter le MP incognito.<br />Vous pouvez effectuer toutes les actions de votre choix sans être participant (répondre, fermer etc.). Si vous le désirez, il est aussi possible de vous ajouter à la conversation.</p>';
 }
-elseif(!$autoriser_ecrire)
-{
-	exit('oopas');
-}
 ?>
 <p>Participants à la conversation :</p>
 <ul>
@@ -26,7 +22,7 @@ foreach($ListerParticipants as $valeur)
 	switch($valeur['mp_participant_statut'])
 	{
 		case MP_STATUT_NORMAL:
-			if($InfoMP['mp_participant_statut'] == MP_STATUT_OWNER OR (verifier('mp_tous_droits_participants') AND $autoriser_ecrire))
+			if($InfoMP['mp_participant_statut'] == MP_STATUT_OWNER OR verifier('mp_tous_droits_participants'))
 			{
 				echo '<a href="statut-master-'.$_GET['id'].'-'.$valeur['mp_participant_id'].'.html"><img src="/bundles/zcomp/img/monitor_add.png" alt="Rendre maître de conversation" title="Ajouter le statut de maître de conversation" /></a> ';
 				if($valeur['mp_participant_id'] != $_SESSION['id'])
@@ -40,7 +36,7 @@ foreach($ListerParticipants as $valeur)
 			}
 		break;
 		case MP_STATUT_MASTER:
-			if($InfoMP['mp_participant_statut'] == MP_STATUT_OWNER OR (verifier('mp_tous_droits_participants') AND $autoriser_ecrire))
+			if($InfoMP['mp_participant_statut'] == MP_STATUT_OWNER OR verifier('mp_tous_droits_participants'))
 			{
 				if($valeur['mp_participant_id'] != $_SESSION['id'])
 				{
@@ -86,10 +82,8 @@ foreach($ListerParticipants as $valeur)
 ?>
 </ul>
 <?php
-if(	($InfoMP['mp_participant_statut'] >= MP_STATUT_MASTER
-		|| (verifier('mp_tous_droits_participants') && $autoriser_ecrire))
-	&& ($NombreParticipants < verifier('mp_nb_participants_max')
-		|| verifier('mp_nb_participants_max') == -1)
+if(	($InfoMP['mp_participant_statut'] >= MP_STATUT_MASTER || verifier('mp_tous_droits_participants'))
+	&& ($NombreParticipants < verifier('mp_nb_participants_max') || verifier('mp_nb_participants_max') == -1)
 	&& !$InfoMP['mp_crypte']
 )
 {
@@ -100,14 +94,8 @@ if(	($InfoMP['mp_participant_statut'] >= MP_STATUT_MASTER
 	}
 	echo '</p>';
 }
-if($autoriser_ecrire AND ($NombreParticipants > 1 OR $_SESSION['MPs'] < verifier('mp_quota') OR verifier('mp_quota') == -1))
-{
-	echo '<p class="reponse_ajout_sujet">';
-}
-if($NombreParticipants > 1 AND $autoriser_ecrire)
-{
-?>
-
+if($NombreParticipants > 1){ ?>
+<p class="reponse_ajout_sujet">
 	<?php
 	if($InfoMP['mp_ferme'])
 	{
@@ -126,19 +114,13 @@ if($NombreParticipants > 1 AND $autoriser_ecrire)
 	else
 	{
 	?>
-	<a href="repondre-<?php echo $_GET['id']; ?>.html"><img src="/bundles/zcoforum/img/repondre.png" alt="Répondre" title="Répondre au MP" /></a>
-	<?php }
-	echo '&nbsp;';
-}
-if($autoriser_ecrire AND ($MPTotal < verifier('mp_quota') OR verifier('mp_quota') == -1))
-{
-	echo '<a href="nouveau.html"><img src="/bundles/zcoforum/img/nouveau.png" alt="Nouveau" title="Nouveau MP" /></a>';
-}
-if($autoriser_ecrire AND ($NombreParticipants > 1 OR $MPTotal < verifier('mp_quota') OR verifier('mp_quota') == -1))
-{
-	echo '</p>';
-}
-?>
+	<a href="repondre-<?php echo $_GET['id']; ?>.html">
+        <img src="/bundles/zcoforum/img/repondre.png" alt="Répondre" title="Répondre au MP" />
+    </a>&nbsp;
+	<?php } ?>
+    <a href="nouveau.html"><img src="/bundles/zcoforum/img/nouveau.png" alt="Nouveau" title="Nouveau MP" /></a>
+</p>
+<?php } ?>
 <table class="UI_items messages">
 	<thead>
 		<tr>
@@ -197,14 +179,14 @@ if($autoriser_ecrire AND ($NombreParticipants > 1 OR $MPTotal < verifier('mp_quo
 			<td class="dates">
 				<span id="m<?php echo $valeur['mp_message_id'];?>"><a href="lire-<?php echo $_GET['id'].'-'.$valeur['mp_message_id'].'.html'; ?>" rel="nofollow">#</a></span>
 				Posté <?php echo dateformat($valeur['mp_message_date'], MINUSCULE); ?>
-				<?php if($autoriser_ecrire AND ((!$InfoMP['mp_ferme'] OR verifier('mp_repondre_mp_fermes')) AND $NombreParticipants > 1)) { ?>
+				<?php if((!$InfoMP['mp_ferme'] OR verifier('mp_repondre_mp_fermes') AND $NombreParticipants > 1)) { ?>
 				<a href="repondre-<?php echo $_GET['id'].'-'.$valeur['mp_message_id'];?>.html"><img src="/bundles/zcoforum/img/citer.png" alt="Citer" title="Citer" /></a>
 				<?php } ?>
-				<?php if( ($MPTotal < verifier('mp_quota') OR verifier('mp_quota') == -1) AND $_SESSION['id'] != $valeur['mp_message_auteur_id']) { ?>
+				<?php if($_SESSION['id'] != $valeur['mp_message_auteur_id']) { ?>
 				<a href="nouveau-<?php echo $valeur['mp_message_auteur_id']; ?>.html"><img src="/bundles/zcoforum/img/envoyer_mp.png" alt="MP" title="Envoyer un message privé" /></a>
 				<?php }
 
-				if($autoriser_ecrire AND (!isset($valeur['pas_autoriser_edition']) AND $_SESSION['id'] == $valeur['mp_message_auteur_id']))
+				if(!isset($valeur['pas_autoriser_edition']) AND $_SESSION['id'] == $valeur['mp_message_auteur_id'])
 				{
 					if(verifier('mp_repondre_mp_fermes') OR !$InfoMP['mp_ferme'])
 					{
@@ -291,22 +273,10 @@ if($autoriser_ecrire AND ($NombreParticipants > 1 OR $MPTotal < verifier('mp_quo
 	?>
 	</tbody>
 </table>
-<?php if($autoriser_ecrire)
-{
-	echo '<p class="centre"><a href="index.html"><strong>Retour à la liste des MP</strong></a></p>';
-}
-else
-{
-	echo '<p class="centre"><a href="/admin/index.html"><strong>Retour à l\'administration</strong></a></p>';
-}
+<p class="centre"><a href="index.html"><strong>Retour à la liste des MP</strong></a></p>
 
-if($autoriser_ecrire AND ($NombreParticipants > 1 OR $MPTotal < verifier('mp_quota') OR verifier('mp_quota') == -1))
-{
-	echo '<p class="reponse_ajout_sujet">';
-}
-if($autoriser_ecrire AND ($NombreParticipants > 1))
-{
-?>
+<?php if($NombreParticipants > 1 ) { ?>
+<p class="reponse_ajout_sujet">
 
 	<?php
 	if($InfoMP['mp_ferme'])
@@ -329,45 +299,24 @@ if($autoriser_ecrire AND ($NombreParticipants > 1))
 	<a href="repondre-<?php echo $_GET['id']; ?>.html"><img src="/bundles/zcoforum/img/repondre.png" alt="Répondre" title="Répondre au MP" /></a>
 	<?php }
 	echo '&nbsp;';
-}
-if($autoriser_ecrire AND ($MPTotal < verifier('mp_quota') OR verifier('mp_quota') == -1))
-{
-	echo '<a href="nouveau.html"><img src="/bundles/zcoforum/img/nouveau.png" alt="Nouveau" title="Nouveau MP" /></a>';
-}
-if($autoriser_ecrire AND ($NombreParticipants > 1 OR $MPTotal < verifier('mp_quota')))
-{
-	echo '</p>';
-}
+    echo '<a href="nouveau.html"><img src="/bundles/zcoforum/img/nouveau.png" alt="Nouveau" title="Nouveau MP" /></a>';
 
-$ReponseRapide = '
-<div id="reponse_rapide">
-<form action="repondre-'.$_GET['id'].'.html" method="post">
+    if(!$InfoMP['mp_ferme'] || verifier('mp_repondre_mp_fermes')) {
+        echo '<div id="reponse_rapide">
+<form action="repondre-' . $_GET['id'] . '.html" method="post">
 	<fieldset id="rep_rapide">
 		Réponse rapide :<br />
 		<textarea name="texte" id="texte" tabindex="10" cols="40" rows="10" class="zcode_rep_rapide"></textarea>
 		<br />
 		<input type="hidden"
 		       name="dernier_message"
-		       value="'.$InfoMP['mp_dernier_message_id'].'"
+		       value="' . $InfoMP['mp_dernier_message_id'] . '"
 		/>
 		<input type="submit" name="send_reponse_rapide" value="Envoyer" tabindex="20" accesskey="s" /> <input type="submit" name="plus_options" value="Plus d\'options" tabindex="30" />
 	</fieldset>
 </form>
 </div>';
+    }
+} ?>
 
-if($NombreParticipants > 1 AND $autoriser_ecrire)
-{
-	if($InfoMP['mp_ferme'] AND verifier('mp_repondre_mp_fermes'))
-	{
-		echo $ReponseRapide;
-	}
-	elseif(!$InfoMP['mp_ferme'])
-	{
-		echo $ReponseRapide;
-	}
-}
-
-if($autoriser_ecrire)
-{
-	include(__DIR__.'/_options_bas_mp.html.php');
-}
+<?php include(__DIR__.'/_options_bas_mp.html.php') ?>

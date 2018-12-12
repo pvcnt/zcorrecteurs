@@ -236,16 +236,7 @@ if($InfosSujet['sujet_sondage'] > 0)
 				<a href="<?php echo 'repondre-'.$_GET['id'].'-'.$valeur['message_id']; ?>.html">
 					<img src="/pix.gif" class="fff comment" alt="Citer" title="Citer" />
 				</a>
-				<?php
-				}
-				//Envoi d'un MP
-				if(
-					$_SESSION['id'] != $valeur['message_auteur']
-					AND verifier('connecte')
-					AND ($_SESSION['MPs'] < verifier('mp_quota') OR verifier('mp_quota') == -1)
-				)
-				{
-				?>
+				<?php } if($_SESSION['id'] != $valeur['message_auteur'] AND verifier('connecte')) { ?>
 				<a href="/mp/nouveau-<?php echo $valeur['message_auteur']; ?>.html"><img src="/pix.gif" class="fff email" alt="MP" title="Envoyer un message privé" /></a>
 				<?php
 				}

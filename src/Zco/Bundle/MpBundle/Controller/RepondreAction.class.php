@@ -42,113 +42,105 @@ class RepondreAction extends Controller
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))
 		{
 			$InfoMP = InfoMP();
-			$autoriser_ecrire = true;
-			if($autoriser_ecrire)
-			{
-				if(isset($InfoMP['mp_id']) && !empty($InfoMP['mp_id']))
-				{
-					$ListerParticipants = ListerParticipants($InfoMP['mp_id']);
-					$NombreParticipants = 0;
-					foreach($ListerParticipants as $valeur)
-					{
-						if($valeur['mp_participant_statut'] > MP_STATUT_SUPPRIME)
-						{
-							$NombreParticipants++;
-						}
-					}
-					if($InfoMP['mp_ferme'] && !verifier('mp_repondre_mp_fermes'))
-					{
-						return redirect('Ce MP est fermé.', 'lire-'.$_GET['id'].'.html', MSG_ERROR);
-					}
-					elseif($NombreParticipants < 2)
-					{
-						return redirect(
-						    'Vous êtes seul dans ce MP ! <img src="/images/smilies/siffle.png" alt=":-°" title=":-°" />',
-                            'lire-'.$_GET['id'].'.html',
-                            MSG_ERROR
-                        );
-					}
-					else
-					{
-						$nouveauMessage = (isset($_POST['dernier_message']) &&
-							$InfoMP['mp_dernier_message_id'] > $_POST['dernier_message']);
+            if(isset($InfoMP['mp_id']) && !empty($InfoMP['mp_id']))
+            {
+                $ListerParticipants = ListerParticipants($InfoMP['mp_id']);
+                $NombreParticipants = 0;
+                foreach($ListerParticipants as $valeur)
+                {
+                    if($valeur['mp_participant_statut'] > MP_STATUT_SUPPRIME)
+                    {
+                        $NombreParticipants++;
+                    }
+                }
+                if($InfoMP['mp_ferme'] && !verifier('mp_repondre_mp_fermes'))
+                {
+                    return redirect('Ce MP est fermé.', 'lire-'.$_GET['id'].'.html', MSG_ERROR);
+                }
+                elseif($NombreParticipants < 2)
+                {
+                    return redirect(
+                        'Vous êtes seul dans ce MP ! <img src="/images/smilies/siffle.png" alt=":-°" title=":-°" />',
+                        'lire-'.$_GET['id'].'.html',
+                        MSG_ERROR
+                    );
+                }
+                else
+                {
+                    $nouveauMessage = (isset($_POST['dernier_message']) &&
+                        $InfoMP['mp_dernier_message_id'] > $_POST['dernier_message']);
 
-						MarquerMPLu($_GET['id']);
+                    MarquerMPLu($_GET['id']);
 
-						if(isset($_POST['texte']))
-						{
-							$_POST['texte'] = trim($_POST['texte']);
-						}
-						if(empty($_POST['texte']) || (!isset($_POST['send']) && !isset($_POST['send_reponse_rapide'])) || $nouveauMessage)
-						{
-							if(!empty($_GET['id2']) && is_numeric($_GET['id2']))
-							{
-								$InfoMessage = InfoMessage($_GET['id2']);
-								if(isset($InfoMessage['mp_message_id']) && !empty($InfoMessage['mp_message_id']))
-								{
-									if(empty($_POST['texte']))
-									{
-										$_POST['texte'] = '<citation nom="'.$InfoMessage['utilisateur_pseudo'].'">';
-										$_POST['texte'] .= $InfoMessage['mp_message_texte'];
-										$_POST['texte'] .= '</citation>';
-									}
-								}
-							}
-							fil_ariane(array(
-								htmlspecialchars($InfoMP['mp_titre']) => 'lire-'.$_GET['id'].'.html',
-								'Ajout d\'une réponse'
-							));
+                    if(isset($_POST['texte']))
+                    {
+                        $_POST['texte'] = trim($_POST['texte']);
+                    }
+                    if(empty($_POST['texte']) || (!isset($_POST['send']) && !isset($_POST['send_reponse_rapide'])) || $nouveauMessage)
+                    {
+                        if(!empty($_GET['id2']) && is_numeric($_GET['id2']))
+                        {
+                            $InfoMessage = InfoMessage($_GET['id2']);
+                            if(isset($InfoMessage['mp_message_id']) && !empty($InfoMessage['mp_message_id']))
+                            {
+                                if(empty($_POST['texte']))
+                                {
+                                    $_POST['texte'] = '<citation nom="'.$InfoMessage['utilisateur_pseudo'].'">';
+                                    $_POST['texte'] .= $InfoMessage['mp_message_texte'];
+                                    $_POST['texte'] .= '</citation>';
+                                }
+                            }
+                        }
+                        fil_ariane(array(
+                            htmlspecialchars($InfoMP['mp_titre']) => 'lire-'.$_GET['id'].'.html',
+                            'Ajout d\'une réponse'
+                        ));
 
-							Page::$titre = $InfoMP['mp_titre'].' - Ajout d\'une réponse - '.Page::$titre;
-							$this->get('zco_core.resource_manager')->requireResources(array(
-            				    '@ZcoForumBundle/Resources/public/css/forum.css',
-            				    '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
-            				));
+                        Page::$titre = $InfoMP['mp_titre'].' - Ajout d\'une réponse - '.Page::$titre;
+                        $this->get('zco_core.resource_manager')->requireResources(array(
+                            '@ZcoForumBundle/Resources/public/css/forum.css',
+                            '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
+                        ));
 
-							return $this->render('ZcoMpBundle::repondre.html.php', array(
-								'InfoMP' => $InfoMP,
-								'ListerParticipants' => $ListerParticipants,
-								'NombreParticipants' => $NombreParticipants,
-								//'DernieresReponses'  => ListerMessages(1, true),
-								'RevueMP' => RevueMP(),
-								'nouveauMessage' => $nouveauMessage,
-							));
-						}
-						else
-						{
-							//On ajoute la réponse en BDD
-							$NouveauMessageID = AjouterReponse();
-							if($NouveauMessageID === false)
-								return redirect(
-								    'Le destinataire n\'a pas renseigné de clé PGP, le MP ne peut donc pas être crypté.',
-                                    'repondre-'.$_GET['id'].'.html',
-                                    MSG_ERROR
-                                );
+                        return $this->render('ZcoMpBundle::repondre.html.php', array(
+                            'InfoMP' => $InfoMP,
+                            'ListerParticipants' => $ListerParticipants,
+                            'NombreParticipants' => $NombreParticipants,
+                            //'DernieresReponses'  => ListerMessages(1, true),
+                            'RevueMP' => RevueMP(),
+                            'nouveauMessage' => $nouveauMessage,
+                        ));
+                    }
+                    else
+                    {
+                        //On ajoute la réponse en BDD
+                        $NouveauMessageID = AjouterReponse();
+                        if($NouveauMessageID === false)
+                            return redirect(
+                                'Le destinataire n\'a pas renseigné de clé PGP, le MP ne peut donc pas être crypté.',
+                                'repondre-'.$_GET['id'].'.html',
+                                MSG_ERROR
+                            );
 
-							//On vide les caches de tous les participants
-							$current_participant = 0;
-							foreach($ListerParticipants as $valeur)
-							{
-								if($valeur['mp_participant_id'] != $_SESSION['id'] &&
-								   $current_participant != $valeur['mp_participant_id'])
-								{
-									$current_participant = $valeur['mp_participant_id'];
-									$this->get('cache')->save('MPnonLu'.$valeur['mp_participant_id'], true, 3600);
-								}
-							}
-							return redirect('Le message a bien été ajouté.', 'lire-'.$_GET['id'].'-'.$NouveauMessageID.'.html');
-						}
-					}
-				}
-				else
-				{
-                    throw new NotFoundHttpException();
-				}
-			}
-			else
-			{
-				throw new AccessDeniedHttpException();
-			}
+                        //On vide les caches de tous les participants
+                        $current_participant = 0;
+                        foreach($ListerParticipants as $valeur)
+                        {
+                            if($valeur['mp_participant_id'] != $_SESSION['id'] &&
+                               $current_participant != $valeur['mp_participant_id'])
+                            {
+                                $current_participant = $valeur['mp_participant_id'];
+                                $this->get('cache')->save('MPnonLu'.$valeur['mp_participant_id'], true, 3600);
+                            }
+                        }
+                        return redirect('Le message a bien été ajouté.', 'lire-'.$_GET['id'].'-'.$NouveauMessageID.'.html');
+                    }
+                }
+            }
+            else
+            {
+                throw new NotFoundHttpException();
+            }
 		}
 		else
 		{

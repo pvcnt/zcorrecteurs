@@ -40,20 +40,15 @@ class StatutNormalAction extends Controller
             $InfoMP = InfoMP();
 
             if (isset($InfoMP['mp_id']) AND !empty($InfoMP['mp_id'])) {
-                $autoriser_ecrire = true;
-                if ($autoriser_ecrire) {
-                    //Vérification : le participant à "démastoriser" existe-t-il ?
-                    $InfoParticipant = InfoParticipant();
-                    if (empty($InfoParticipant['mp_participant_id']) OR $InfoParticipant['mp_participant_statut'] == MP_STATUT_SUPPRIME) {
-                        return redirect('Le participant n\'existe pas, il ne participe pas à ce MP ou il a été supprimé.', 'lire-' . $_GET['id'] . '.html', MSG_ERROR);
-                    }
-                    //Vérification : a-t-on le droit de rendre ce participant "plus maître de conversation" ?
-                    if ($InfoParticipant['mp_participant_statut'] == MP_STATUT_MASTER AND ($InfoMP['mp_participant_statut'] == MP_STATUT_OWNER OR verifier('mp_tous_droits_participants') OR ($InfoMP['mp_participant_statut'] == MP_STATUT_MASTER AND $_GET['id2'] == $_SESSION['id']))) {
-                        PlusMaitreConversation();
-                        return redirect('Le participant n\'est plus maître de conversation.', 'lire-' . $_GET['id'] . '.html');
-                    } else {
-                        throw new AccessDeniedHttpException();
-                    }
+                //Vérification : le participant à "démastoriser" existe-t-il ?
+                $InfoParticipant = InfoParticipant();
+                if (empty($InfoParticipant['mp_participant_id']) OR $InfoParticipant['mp_participant_statut'] == MP_STATUT_SUPPRIME) {
+                    return redirect('Le participant n\'existe pas, il ne participe pas à ce MP ou il a été supprimé.', 'lire-' . $_GET['id'] . '.html', MSG_ERROR);
+                }
+                //Vérification : a-t-on le droit de rendre ce participant "plus maître de conversation" ?
+                if ($InfoParticipant['mp_participant_statut'] == MP_STATUT_MASTER AND ($InfoMP['mp_participant_statut'] == MP_STATUT_OWNER OR verifier('mp_tous_droits_participants') OR ($InfoMP['mp_participant_statut'] == MP_STATUT_MASTER AND $_GET['id2'] == $_SESSION['id']))) {
+                    PlusMaitreConversation();
+                    return redirect('Le participant n\'est plus maître de conversation.', 'lire-' . $_GET['id'] . '.html');
                 } else {
                     throw new AccessDeniedHttpException();
                 }

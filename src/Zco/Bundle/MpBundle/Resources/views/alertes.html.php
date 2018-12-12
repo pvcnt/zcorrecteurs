@@ -66,17 +66,9 @@ if($ListerAlertes)
 				<span id="a<?php echo $valeur['mp_alerte_id'];?>"><a href="alertes-<?php echo $valeur['mp_alerte_id'];?>.html" rel="nofollow">#</a></span>
 				Postée <?php echo dateformat($valeur['mp_alerte_date']); ?>
 
-				<?php if( ($_SESSION['MPs'] < verifier('mp_quota') OR verifier('mp_quota') == -1) AND $_SESSION['id'] != $valeur['utilisateur_id']) { ?>
+				<?php if($_SESSION['id'] != $valeur['utilisateur_id']) { ?>
 				<a href="nouveau-<?php echo $valeur['utilisateur_id']; ?>.html"><img src="/bundles/zcoforum/img/envoyer_mp.png" alt="MP" title="Envoyer un message privé" /></a>
 				<?php }
-				/*
-				if($valeur['mp_alerte_resolu'])
-				{
-				?>
-				<a href="?nonresolu=<?php echo $valeur['mp_alerte_id']; ?>"><img src="/bundles/zcoforum/img/resolu.png" alt="Plus résolu" title="Marquer cette alerte comme non-résolue" /></a>
-				<?php }
-				*/
-				//else
 				if(!$valeur['mp_alerte_resolu'])
 				{
 				?>
