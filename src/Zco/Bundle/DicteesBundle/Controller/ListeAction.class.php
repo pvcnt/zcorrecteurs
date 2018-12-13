@@ -21,6 +21,7 @@
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\DicteesBundle\Domain\DictationDAO;
 
 /**
  * Liste des dictées.
@@ -31,8 +32,6 @@ class ListeAction extends Controller
 {
 	public function execute()
 	{
-        include_once(__DIR__.'/../modeles/dictees.php');
-
 		zCorrecteurs::VerifierFormatageUrl(null, false, false, 1);
 
 		Page::$titre = 'Liste des dictées';
@@ -43,7 +42,7 @@ class ListeAction extends Controller
 			Page::$titre .= ' - Page '.(int)$_GET['p'];
 		$tri = isset($_GET['tri']) ? $_GET['tri'] : '-creation';
 
-		$paginator = ListerDictees($_GET['p'], $tri);
+		$paginator = DictationDAO::ListerDictees($_GET['p'], $tri);
 		try
 		{
 		    $pager = $paginator->createView($_GET['p']);

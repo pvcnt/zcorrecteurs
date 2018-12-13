@@ -1,7 +1,9 @@
 <div style="float: right; margin-left: 10px;">
 <dl class="dictee-outils">
 
-    <?php if ($Dictee->icone): ?>
+    <?php use Zco\Bundle\DicteesBundle\Domain\DictationDAO;
+
+    if ($Dictee->icone): ?>
 	<div align="center">
 	    <img src="<?php echo htmlspecialchars($Dictee->icone) ?>" height="100" width="100" style="float :center;"/>
 	</div><br />
@@ -30,11 +32,11 @@
 		</dd>
 	<?php endif ?>
 
-	<?php if(DicteeDroit($Dictee, 'editer')): ?>
+	<?php if(DictationDAO::DicteeDroit($Dictee, 'editer')): ?>
 		<dd><a href="editer-<?php echo $Dictee->id ?>.html">
 			<img title="Éditer" alt="Éditer" class="fff pencil" src="/pix.gif"/>
 			Modifier</a></dd>
-	<?php endif; if(DicteeDroit($Dictee, 'supprimer')): ?>
+	<?php endif; if(DictationDAO::DicteeDroit($Dictee, 'supprimer')): ?>
 		<dd><a href="supprimer-<?php echo $Dictee->id ?>.html">
 			<img title="Supprimer" alt="Supprimer" class="fff cross" src="/pix.gif"/>
 			Supprimer</a></dd>

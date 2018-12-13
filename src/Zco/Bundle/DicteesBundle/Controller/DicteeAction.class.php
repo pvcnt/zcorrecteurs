@@ -22,6 +22,7 @@
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zco\Bundle\DicteesBundle\Domain\Dictation;
+use Zco\Bundle\DicteesBundle\Domain\DictationDAO;
 
 /**
  * Lecture d'une dictée.
@@ -32,15 +33,13 @@ class DicteeAction extends Controller
 {
 	public function execute()
 	{
-        include_once(__DIR__.'/../modeles/dictees.php');
-
-		$Dictee = $_GET['id'] ? Dictee($_GET['id']) : null;
+		$Dictee = $_GET['id'] ? DictationDAO::Dictee($_GET['id']) : null;
 		if(!$Dictee)
 			throw new NotFoundHttpException();
 
 		zCorrecteurs::VerifierFormatageUrl($Dictee->titre, true);
 
-		$Tags = DicteeTags($Dictee);
+		$Tags = DictationDAO::DicteeTags($Dictee);
 
 		Page::$titre = htmlspecialchars($Dictee->titre);
 		fil_ariane(Page::$titre);

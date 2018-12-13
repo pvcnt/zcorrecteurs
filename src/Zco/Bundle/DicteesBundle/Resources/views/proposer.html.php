@@ -1,4 +1,6 @@
-<?php $view->extend('::layouts/default.html.php') ?>
+<?php use Zco\Bundle\DicteesBundle\Domain\DictationDAO;
+
+$view->extend('::layouts/default.html.php') ?>
 
 <h1>Mes dictées</h1>
 
@@ -51,12 +53,12 @@
 			<td><?php echo dateformat($Dictee->creation); ?></td>
 			<td><?php echo dateformat($Dictee->edition); ?></td>
 			<td class="centre">
-			<?php if(DicteeDroit($Dictee, 'editer')): ?>
+			<?php if(DictationDAO::DicteeDroit($Dictee, 'editer')): ?>
 				<a href="editer-<?php echo $Dictee->id.'-'.rewrite($Dictee->titre);
 				?>.html" title="Modifier cette dictée">
 					<img title="Éditer" alt="Éditer" class="fff pencil" src="/pix.gif"/>
 				</a>
-			<?php endif; if(DicteeDroit($Dictee, 'supprimer')): ?>
+			<?php endif; if(DictationDAO::DicteeDroit($Dictee, 'supprimer')): ?>
 				<a href="supprimer-<?php echo $Dictee->id.'-'.rewrite($Dictee->titre);
 				?>.html" title="Supprimer cette dictée">
 					<img title="Supprimer" alt="Supprimer" class="fff cross" src="/pix.gif"/>

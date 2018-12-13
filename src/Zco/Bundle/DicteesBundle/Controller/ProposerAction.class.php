@@ -24,6 +24,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zco\Bundle\DicteesBundle\Domain\Dictation;
+use Zco\Bundle\DicteesBundle\Domain\DictationDAO;
 
 /**
  * Listage des dictées d'un membre.
@@ -34,8 +35,6 @@ class ProposerAction extends Controller
 {
 	public function execute()
 	{
-        include_once(__DIR__.'/../modeles/dictees.php');
-
         if (!verifier('connecte')) {
             throw new AccessDeniedHttpException();
         }
@@ -44,7 +43,7 @@ class ProposerAction extends Controller
 		if(!empty($_GET['id']))
 		{
 			// Vérification de l'existence de la dictée
-			$Dictee = $_GET['id'] ? Dictee($_GET['id']) : null;
+			$Dictee = $_GET['id'] ? DictationDAO::Dictee($_GET['id']) : null;
 			if(!$Dictee)
 				throw new NotFoundHttpException();
 			if($Dictee->etat != DICTEE_BROUILLON)
@@ -53,7 +52,7 @@ class ProposerAction extends Controller
 			if(isset($_POST['confirmer']))
 			{
 				if($r = zCorrecteurs::verifierToken()) return $r;
-				ProposerDictee($Dictee);
+                DictationDAO::ProposerDictee($Dictee);
 				return redirect('Votre dictée a été proposée.', 'proposer.html');
 			}
 			if(isset($_POST['annuler']))
@@ -72,7 +71,7 @@ class ProposerAction extends Controller
 		fil_ariane(Page::$titre);
 		
 		return render_to_response('ZcoDicteesBundle::proposer.html.php', array(
-			'Dictees' => DicteesUtilisateur(),
+			'Dictees' => DictationDAO::DicteesUtilisateur(),
             'DicteeEtats' => Dictation::STATUSES,
             'DicteeDifficultes' => Dictation::LEVELS,
 		));

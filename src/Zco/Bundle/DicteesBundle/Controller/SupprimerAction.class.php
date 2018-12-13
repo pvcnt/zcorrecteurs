@@ -23,6 +23,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\DicteesBundle\Domain\DictationDAO;
 
 /**
  * Suppression d'une dictée.
@@ -33,15 +34,13 @@ class SupprimerAction extends Controller
 {
 	public function execute()
 	{
-        include_once(__DIR__.'/../modeles/dictees.php');
-
 		// Vérification de l'existence de la dictée
-		$Dictee = $_GET['id'] ? Dictee($_GET['id']) : null;
+		$Dictee = $_GET['id'] ? DictationDAO::Dictee($_GET['id']) : null;
 		if(!$Dictee)
 			throw new NotFoundHttpException();
 
 		// Vérification du droit
-		if(!DicteeDroit($Dictee, 'supprimer'))
+		if(!DictationDAO::DicteeDroit($Dictee, 'supprimer'))
 			throw new AccessDeniedHttpException();
 
 		zCorrecteurs::VerifierFormatageUrl($Dictee->titre, true);
@@ -53,7 +52,7 @@ class SupprimerAction extends Controller
 		if(isset($_POST['confirmer']))
 		{
 			if($r = zCorrecteurs::verifierToken()) return $r;
-			SupprimerDictee($Dictee);
+            DictationDAO::SupprimerDictee($Dictee);
 			return redirect('La dictée a été supprimée.', 'index.html');
 		}
 		if(isset($_POST['annuler']))

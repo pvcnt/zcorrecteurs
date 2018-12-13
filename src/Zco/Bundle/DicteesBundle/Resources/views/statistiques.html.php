@@ -64,5 +64,5 @@ sur <?php echo $MesStatistiques->participations; ?>
 </table>
 
 <h2>Statistiques en images</h2>
-<p><img src="statistiques-2-<?php echo $participations; ?>.html" alt="Évolution des notes"/></p>
-<p><img src="statistiques-1-1.html" alt="Répartition des notes"/></p>
+<p><img src="graphique-2-<?php echo $participations; ?>.html" alt="Évolution des notes"/></p>
+<p><img src="graphique-1-1.html" alt="Répartition des notes"/></p>

@@ -25,6 +25,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Zco\Bundle\BlogBundle\Domain\BlogDAO;
 use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
+use Zco\Bundle\DicteesBundle\Domain\DictationDAO;
 use Zco\Bundle\ForumBundle\Domain\TopicDAO;
 
 /**
@@ -43,7 +44,6 @@ class HomeController extends Controller
 
         // Inclusion des modèles.
         include_once(BASEPATH . '/src/Zco/Bundle/ForumBundle/modeles/statistiques_accueil.php');
-        include_once(BASEPATH . '/src/Zco/Bundle/DicteesBundle/modeles/statistiques-accueil.php');
 
         // Bloc « à tout faire »
         $vars = array();
@@ -94,9 +94,9 @@ class HomeController extends Controller
         ), -1);
 
         // Dictées
-        $vars['DicteesAccueil'] = array_slice(DicteesAccueil(), 0, 2);
-        $vars['DicteeHasard'] = DicteeHasard();
-        $vars['DicteesLesPlusJouees'] = array_slice(DicteesLesPlusJouees(), 0, 2);
+        $vars['DicteesAccueil'] = array_slice(DictationDAO::DicteesAccueil(), 0, 2);
+        $vars['DicteeHasard'] = DictationDAO::DicteeHasard();
+        $vars['DicteesLesPlusJouees'] = array_slice(DictationDAO::DicteesLesPlusJouees(), 0, 2);
 
         // Quiz
         $quizRepository = $this->get('zco_quiz.manager.quiz');
@@ -296,13 +296,11 @@ class HomeController extends Controller
         }
 
         // Dictée
-        include(BASEPATH . '/src/Zco/Bundle/DicteesBundle/modeles/dictees.php');
-
         $listDictees = array();
         if (isset($_POST['dictee'])) {
-            $listDictees = searchDictees($_POST['dictee']);
+            $listDictees = DictationDAO::searchDictees($_POST['dictee']);
             if (sizeof($listDictees) == 1) {
-                $dictee = Dictee($listDictees[0]['id']);
+                $dictee = DictationDAO::Dictee($listDictees[0]['id']);
                 $registry->set('dictee_en_avant', $dictee);
                 return redirect('Le contenu du bloc à tout faire a bien été changé.', $this->generateUrl('zco_home_config'));
             }
@@ -310,7 +308,7 @@ class HomeController extends Controller
 
         if (!empty($_GET['dictee']) && is_numeric($_GET['dictee'])) {
             settype($_GET['dictee'], 'int');
-            $dictee = Dictee($_GET['dictee']);
+            $dictee = DictationDAO::Dictee($_GET['dictee']);
             $registry->set('dictee_en_avant', $dictee);
             return redirect('Le contenu du bloc à tout faire a bien été changé.', $this->generateUrl('zco_home_config'));
         }

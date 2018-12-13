@@ -19,12 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace Zco\Bundle\DicteesBundle;
+
 /**
  * Calcule la différence entre deux textes avec wdiff.
  *
  * @author mwsaz
  */
-class DicteeDiff
+final class DoubleDiff
 {
     protected $original, $modifie;
     protected $ajoute, $supprime;
@@ -33,10 +35,10 @@ class DicteeDiff
     // Ne prend pas en compte la typographie pour la notation
     public static function doubleDiff($Dictee, $texte)
     {
-        $diff = new DicteeDiff(
+        $diff = new self(
             htmlspecialchars(str_replace('’', "'", $texte)),
             htmlspecialchars(str_replace('’', "'", $Dictee->texte)));
-        $diff2 = new DicteeDiff(
+        $diff2 = new self(
             htmlspecialchars(self::normalize($texte)),
             htmlspecialchars(self::normalize($Dictee->texte)));
         $diff->fautes = $diff2->fautes;

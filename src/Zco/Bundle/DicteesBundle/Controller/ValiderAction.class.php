@@ -22,6 +22,7 @@
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\DicteesBundle\Domain\DictationDAO;
 
 /**
  * Passage d'une dictée en/hors ligne.
@@ -32,17 +33,16 @@ class ValiderAction extends Controller
 {
     public function execute()
     {
-        include_once(__DIR__.'/../modeles/dictees.php');
-
         if (!verifier('dictees_publier')) {
             throw new AccessDeniedHttpException();
         }
         if ($r = zCorrecteurs::verifierToken()) return $r;
-        $Dictee = $_GET['id'] ? Dictee($_GET['id']) : null;
+        $Dictee = $_GET['id'] ? DictationDAO::Dictee($_GET['id']) : null;
         if (!$Dictee)
             throw new NotFoundHttpException();
 
-        ValiderDictee($Dictee, $_GET['id2']);
+        DictationDAO::ValiderDictee($Dictee, $_GET['id2']);
+
         return redirect($_GET['id2'] ? 'La dictée a bien été validée.' : 'La dictée a bien été refusée.',
             'dictee-' . $Dictee->id . '-' . rewrite($Dictee->titre) . '.html');
     }

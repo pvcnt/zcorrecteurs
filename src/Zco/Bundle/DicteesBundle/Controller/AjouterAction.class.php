@@ -22,6 +22,7 @@
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Zco\Bundle\DicteesBundle\Domain\DictationDAO;
 
 /**
  * Ajout d'une dictée.
@@ -32,8 +33,6 @@ class AjouterAction extends Controller
 {
 	public function execute()
 	{
-        include_once(__DIR__.'/../modeles/dictees.php');
-
 		if (!verifier('dictees_ajouter')) {
 		    throw new AccessDeniedHttpException();
         }
@@ -48,7 +47,7 @@ class AjouterAction extends Controller
 			$Form->bind($_POST);
 			if($Form->isValid())
 			{
-				$r = AjouterDictee($Form);
+				$r = DictationDAO::AjouterDictee($Form);
 				if(!$r)
 					return redirect('Une erreur est survenue lors de l\'envoi du fichier audio.', '', MSG_ERROR);
 				elseif($r instanceof Response)

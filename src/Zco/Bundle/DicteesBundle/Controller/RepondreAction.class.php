@@ -23,6 +23,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zco\Bundle\DicteesBundle\Domain\Dictation;
+use Zco\Bundle\DicteesBundle\Domain\DictationDAO;
 
 /**
  * Réponse à une soumission.
@@ -33,13 +34,11 @@ class RepondreAction extends Controller
 {
 	public function execute()
 	{
-        include_once(__DIR__.'/../modeles/dictees.php');
-
         if (!verifier('dictees_publier')) {
             throw new AccessDeniedHttpException();
         }
 		// Vérification de l'existence de la dictée
-		$Dictee = $_GET['id'] ? Dictee($_GET['id']) : null;
+		$Dictee = $_GET['id'] ? DictationDAO::Dictee($_GET['id']) : null;
 		if(!$Dictee)
 			throw new NotFoundHttpException();
 
@@ -58,7 +57,7 @@ class RepondreAction extends Controller
 			$Form->bind($_POST);
 			if($Form->isValid())
 				return redirect(
-				    RepondreDictee($Dictee, $Form) ? 'La proposition a été acceptée.' : 'La proposition a été refusée.',
+                    DictationDAO::RepondreDictee($Dictee, $Form) ? 'La proposition a été acceptée.' : 'La proposition a été refusée.',
                     'propositions.html'
                 );
 		}

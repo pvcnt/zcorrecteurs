@@ -23,6 +23,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\DicteesBundle\Domain\DictationDAO;
 
 /**
  * Modification d'une dictée.
@@ -33,15 +34,13 @@ class EditerAction extends Controller
 {
 	public function execute()
 	{
-        include_once(__DIR__.'/../modeles/dictees.php');
-
 		// Vérification de l'existence de la dictée
-		$Dictee = $_GET['id'] ? Dictee($_GET['id']) : null;
+		$Dictee = $_GET['id'] ? DictationDAO::Dictee($_GET['id']) : null;
 		if(!$Dictee)
 			throw new NotFoundHttpException();
 
 		// Vérification du droit
-		if(!DicteeDroit($Dictee, 'editer'))
+		if(!DictationDAO::DicteeDroit($Dictee, 'editer'))
 			throw new AccessDeniedHttpException();
 
 		if(isset($_SESSION['dictee_data']))
@@ -69,7 +68,7 @@ class EditerAction extends Controller
 			$Form->bind($_POST);
 			if($Form->isValid())
 			{
-				$r = EditerDictee($Dictee, $Form);
+				$r = DictationDAO::EditerDictee($Dictee, $Form);
 				if(!$r)
 				{
 					$_SESSION['dictee_data'] = $_POST;

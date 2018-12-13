@@ -21,6 +21,7 @@
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Zco\Bundle\DicteesBundle\Domain\Dictation;
+use Zco\Bundle\DicteesBundle\Domain\DictationDAO;
 
 /**
  * Accueil des dictées.
@@ -31,8 +32,6 @@ class IndexAction extends Controller
 {
 	public function execute()
 	{
-        include_once(__DIR__.'/../modeles/dictees.php');
-
 		zCorrecteurs::VerifierFormatageUrl();
 
 		Page::$titre = 'Accueil des dictées';
@@ -43,10 +42,10 @@ class IndexAction extends Controller
 		));
 
 		return render_to_response('ZcoDicteesBundle::index.html.php', [
-			'DicteesAccueil'=> DicteesAccueil(),
-			'DicteeHasard'	=> DicteeHasard(),
-			'DicteesLesPlusJouees' => DicteesLesPlusJouees(),
-			'Statistiques'	=> DicteesStatistiques(),
+			'DicteesAccueil'=> DictationDAO::DicteesAccueil(),
+			'DicteeHasard'	=> DictationDAO::DicteeHasard(),
+			'DicteesLesPlusJouees' => DictationDAO::DicteesLesPlusJouees(),
+			'Statistiques'	=> DictationDAO::DicteesStatistiques(),
             'DicteeDifficultes' => Dictation::LEVELS,
 		]);
 	}

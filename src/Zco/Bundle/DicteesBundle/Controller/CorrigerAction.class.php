@@ -23,6 +23,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zco\Bundle\DicteesBundle\Domain\Dictation;
+use Zco\Bundle\DicteesBundle\Domain\DictationDAO;
 
 /**
  * Lecture d'une dictée.
@@ -33,9 +34,7 @@ class CorrigerAction extends Controller
 {
 	public function execute()
 	{
-        include_once(__DIR__.'/../modeles/dictees.php');
-
-		$Dictee = $_GET['id'] ? Dictee($_GET['id']) : null;
+		$Dictee = $_GET['id'] ? DictationDAO::Dictee($_GET['id']) : null;
 		if(!$Dictee)
 			throw new NotFoundHttpException();
 
@@ -57,7 +56,7 @@ class CorrigerAction extends Controller
 
 		if($r = zCorrecteurs::verifierToken()) return $r;
 
-		list($diff, $note) = CorrigerDictee($Dictee, $_POST['texte']);
+		list($diff, $note) = DictationDAO::CorrigerDictee($Dictee, $_POST['texte']);
 		$fautes = $diff->fautes();
 
 		Page::$titre = 'Correction de la dictée';
