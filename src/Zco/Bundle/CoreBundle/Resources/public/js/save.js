@@ -1,7 +1,7 @@
 /**
  * Script servant à sauvegarder le contenu des zForms.
  *
- * @author        vincent1870, dworkin
+ * @author vincent1870, dworkin
  */
 
 var shortTime = 10000;
