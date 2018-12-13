@@ -18,26 +18,6 @@ html {
     width: 100% !important;
 }
 
-/**
- * Remise en forme des titres pour les rendre plus fins que ceux par défaut 
- * de Bootstrap.
- */
-h1 {
-	margin: 18px 0;
-    padding-bottom: 5px;
-	border-bottom: 1px solid #EEE;
-	line-height: 1;
-	margin-bottom: 15px !important;
-	font-size: 25px;
-	letter-spacing: 0.5px;
-	font-weight: normal;
-}
-
-h2 {
-	font-size: 18px;
-	margin-bottom: 5px;
-}
-
 body {
     margin: 0 0 140px;
     font-size: 13px !important;
@@ -45,13 +25,33 @@ body {
 }
 
 /**
+ * Remise en forme des titres pour les rendre plus fins que ceux par défaut 
+ * de Bootstrap.
+ */
+h1 {
+    margin: 18px 0;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #EEE;
+    line-height: 1;
+    margin-bottom: 15px !important;
+    font-size: 25px;
+    letter-spacing: 0.5px;
+    font-weight: normal;
+}
+
+h2 {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+/**
  * Paragraphe mis en forme naturellement : espacement avec les autres, 
  * texte justifié.
  */
 p.good {
-	margin-top: 15px;
-	margin-bottom: 15px;
-	text-align: justify;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    text-align: justify;
 }
 
 /**
@@ -59,7 +59,7 @@ p.good {
  * conserver un espace avec le corps de la page.
  */
 body > .main-container, body > .container {
-	margin-top: 18px;
+    margin-top: 18px;
 }
 
 /**
@@ -67,33 +67,33 @@ body > .main-container, body > .container {
  * fixée en haut de la page.
  */
 .navbar-fixed-top .container {
-	width: auto;
+    width: auto;
 }
 
 .navbar-fixed-top .navbar-inner {
-	padding-left: 20px;
-	padding-right: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
 /**
  * Pas d'arrondis au coin de la barre de navigation.
  */
 .navbar-inner {
-    border-radius: 0px !important;
-    -moz-border-radius: 0px !important;
-	-webkit-border-radius: 0px !important;
+    border-radius: 0 !important;
+    -moz-border-radius: 0 !important;
+    -webkit-border-radius: 0 !important;
 }
 
 /**
  * Style d'un label qu'on force à ne pas flotter à côté de son champ.
  */
 label.nofloat {
-	display: inline;
-	margin: 0;
+    display: inline;
+    margin: 0;
 }
 
 label.nofloat input {
-	display: inline !important;
+    display: inline !important;
 }
 
 /**
@@ -101,7 +101,7 @@ label.nofloat input {
  */
 .cleaner {
     clear: both;
-    height: 0px;
+    height: 0;
 }
 
 /**
@@ -141,7 +141,7 @@ label.nofloat input {
  * Supprime la correction des marges, inutile sur le nouveau design.
  */
 .container .liste_cadratin, .container-fluid .liste_cadratin {
-	margin-left: 0;
+    margin-left: 0;
 }
 
 /**
@@ -153,50 +153,42 @@ div.content {
 
 /* Citation */
 #citation {
-  position:    absolute;
-  top:         1em;
-  right:       1em;
-  margin-left: 660px;
-  padding:     4px 8px;
-  width:       auto;
-  text-align:  right;
-  border:      1px solid #04B7E4;
-  background-color: #8CDBEF;
-  -moz-border-radius: 9px;
-  -webkit-border-radius: 9px;
-  max-height: 60px;
-  overflow: hidden;
+    position: absolute;
+    top: 1em;
+    right: 1em;
+    margin-left: 660px;
+    padding: 4px 8px;
+    width: auto;
+    text-align: right;
+    border: 1px solid #04B7E4;
+    background-color: #8CDBEF;
+    -moz-border-radius: 9px;
+    -webkit-border-radius: 9px;
+    max-height: 60px;
+    overflow: hidden;
 }
 
 #citation:hover {
-  max-height: 1000px;
+    max-height: 1000px;
 }
 
 #citation div {
-  text-align: right;
-  background: url('../img/quote-header.gif') no-repeat right bottom;
-  padding-right: 2em;
-  min-height: 18px;
-}
-
-/* Hack CSS Opera 9 */
-@media all and (-webkit-min-device-pixel-ratio:10000), not all and (-webkit-min-device-pixel-ratio:0)
-{
-#citation {
-  border: 0;
-  background:  url("../img/radius-header-citation.svg");
-}
+    text-align: right;
+    background: url('../img/quote-header.gif') no-repeat right bottom;
+    padding-right: 2em;
+    min-height: 18px;
 }
 
 /**
  * Affinage du fil d'Ariane.
  */
- .breadcrumb {
-  line-height: 14px;
- }
+.breadcrumb {
+    line-height: 14px;
+}
+
 .breadcrumb li, .breadcrumb span {
-  font-size: 12px;
-  line-height: 14px;
+    font-size: 12px;
+    line-height: 14px;
 }
 
 /**
@@ -223,7 +215,7 @@ div.content {
 }
 
 .box.message {
-	min-height: 105px;
+    min-height: 105px;
 }
 
 .box hr {
@@ -237,11 +229,11 @@ div.content {
 }
 
 .box .avatar {
-	max-height: 50px !important;
-	max-width: 50px;
-	margin: 5px;
-	float: right;
-	vertical-align: middle;
+    max-height: 50px !important;
+    max-width: 50px;
+    margin: 5px;
+    float: right;
+    vertical-align: middle;
 }
 
 /**
@@ -249,70 +241,57 @@ div.content {
  * d'éléments graphiques. Il est mis en valeur par une taille plus imposante.
  */
 p.intro-text {
-	margin-top: 15px;
-	font-size: 16px;
-	text-align: justify;
-	line-height: 22px;
-	margin-bottom: 25px;
+    margin-top: 15px;
+    font-size: 16px;
+    text-align: justify;
+    line-height: 22px;
+    margin-bottom: 25px;
 }
 
 p.intro-text.center {
-	text-align: center;
+    text-align: center;
 }
 
 /**
  * En-tête du site.
  */
 #header {
-	background: url('../img/header-title-bg.png') top left repeat-x;
-	height: 96px;
+    background: url('../img/header-title-bg.png') top left repeat-x;
+    height: 96px;
 }
 
 #header a {
-	display: block;
-	text-indent: -5000px;
-	overflow: hidden;
+    display: block;
+    text-indent: -5000px;
+    overflow: hidden;
 }
 
 #header-oreilles {
-	float: left;
+    float: left;
 }
 
 #header-oreilles a {
-	height: 96px;
-	width: 220px;
-	background: url('../img/title-oreilles.png') 30px 7px no-repeat;
+    height: 96px;
+    width: 220px;
+    background: url('../img/title-oreilles.png') 30px 7px no-repeat;
 }
 
 #header-zcorrecteurs {
-	margin-left: 220px;
+    margin-left: 220px;
 }
 
 #header-zcorrecteurs a {
-	height: 96px;
-	width: 428px;
-	background: url('../img/title-zcorrecteurs.png') bottom left no-repeat;
-}
-
-/**
- * Zone de texte redimensionnable.
- */
-.resizable-textarea {
-	background:#EEEEEE url('../img/zform/grippie.png') no-repeat scroll center 2px;
-	border-color:#DDDDDD;
-	border-style:solid;
-	border-width:0pt 1px 1px;
-	cursor:s-resize;
-	height:9px;
-	overflow:hidden;
+    height: 96px;
+    width: 428px;
+    background: url('../img/title-zcorrecteurs.png') bottom left no-repeat;
 }
 
 /**
  * Zone de texte large.
  */
 textarea.textarea, .textarea textarea {
-	width: 90%;
-	height: 200px;
+    width: 90%;
+    height: 200px;
 }
 
 /**
@@ -336,27 +315,27 @@ td.center, th.center {
 }
 
 table.table th {
-	text-align: center;
+    text-align: center;
 }
 
 table.table-bordered th {
-	background-color: #EEE;
+    background-color: #EEE;
 }
 
 table.table-avatar td.avatar {
-	text-align: center;
-	vertical-align: middle;
-	padding: 3px 0;
+    text-align: center;
+    vertical-align: middle;
+    padding: 3px 0;
 }
 
 table.table-avatar td.avatar img {
-	height: 40px;
-	width: 40px;
-	text-align: center;
+    height: 40px;
+    width: 40px;
+    text-align: center;
 }
 
 table.table-avatar td {
-	vertical-align: middle;
+    vertical-align: middle;
 }
 
 table.table-small {
@@ -372,82 +351,37 @@ table.table-small {
 }
 
 /**
- * Style commun aux annonces.
- */
-.annonce {
-    border-radius: 5px;
-    -moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-	padding: 5px;
-	margin-bottom: 5px;
-}
-
-/**
- * Barre de navigation latérale.
- */
-.sidebar .bloc {
-    padding-bottom: 10px;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    border-radius: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #EEE;
-    background-color: whiteSmoke;
-}
-
-.sidebar .bloc h4 {
-    text-align: center;
-    padding-top: 10px;
-    padding-bottom: 10px;
-	border-bottom: 1px solid #EEE;
-}
-
-.sidebar .bloc li {
-    text-indent: 10px;
-}
-
-/* Adaptations pour le bloc contenant le formulaire de connexion rapide */
-.sidebar .bloc li.quick-login-form {
-	margin-top: 10px;
-	text-indent: 0px;
-}
-
-.sidebar li.quick-login-form input {
-	width: 90%;
-}
- 
-/**
  * Pied de page.
  */
 #footer, .footer {
     position: absolute;
     left: 0;
     bottom: 0;
-	height: 120px;
+    height: 120px;
     width: 100%;
     clear: both;
     background: #09bef2 url('../img/footer-bg.png') top left repeat-x;
 }
 
 #footer .left, #footer .right {
-	height: 50px;
+    height: 50px;
 }
 
 #footer .left {
     margin-left: 10px;
-	width: 150px;
-	text-align: center;
-	position: relative;
-	top: 50px;
-	float: left;
+    width: 150px;
+    text-align: center;
+    position: relative;
+    top: 50px;
+    float: left;
 }
 
 #footer .left a, #footer .right a {
-	display: block;
-	text-indent: -5000px;
-	width: 100%;
-	height: 100%;
-	background-repeat: no-repeat;
+    display: block;
+    text-indent: -5000px;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
 }
 
 #footer .left span {
@@ -457,236 +391,56 @@ table.table-small {
 }
 
 #footer .left a {
-	background-image: url('../img/corrigraphie-blanc.png');
+    background-image: url('../img/corrigraphie-blanc.png');
 }
 
 #footer .right {
-	width: 100px;
-	float: right;
+    width: 100px;
+    float: right;
 }
 
 #footer .right a {
-	background-position: bottom right;
-	background-image: url('../img/footer-right-bg.png');
+    background-position: bottom right;
+    background-image: url('../img/footer-right-bg.png');
 }
 
 #footer .right a:hover {
-	background-image: url('../img/footer-right-bg-hover.png');
+    background-image: url('../img/footer-right-bg-hover.png');
 }
 
 #footer .center {
-	width: 520px;
-	padding-top: 30px;
-	margin: 0 auto;
-	text-align: center;
-	color: #fff;
+    width: 520px;
+    padding-top: 30px;
+    margin: 0 auto;
+    text-align: center;
+    color: #fff;
 }
 
 #footer .center p {
-	line-height: 18px;
-	margin-bottom: 5px;
-	font-size: 12px;
+    line-height: 18px;
+    margin-bottom: 5px;
+    font-size: 12px;
 }
 
 #footer .center p a, .footer a {
-	color: #fff;
+    color: #fff;
 }
 
 #footer .center p a:hover, .footer a:hover {
-	background-color: #ff00ea;
-	text-decoration: none;
-	color: white;
+    background-color: #ff00ea;
+    text-decoration: none;
+    color: white;
 }
 
 #footer .center p a#toplink {
-	display: block;
-	height: 20px;
-	width: 120px;
-	margin: 0 auto;
-	margin-top: 5px;
-	margin-bottom: 15px;
+    display: block;
+    height: 20px;
+    width: 120px;
+    margin: 0 auto;
+    margin-top: 5px;
+    margin-bottom: 15px;
 }
 
 #footer .center p.links {
-	font-size: 10px;
-}
-
-/**
- * Des modules prenant toute la page, pour organiser l'information.
- * Sépare l'espace en boites, regroupées dans un tableau.
- *
- * .UI_boxes : tableau regroupant les boites.
- * .UI_boxes.home : modifie légèrement le style pour la page d'accueil.
- */
-table.zco-boxes
-{
-	width: 100%;
-	margin: 0 auto;
-	border-spacing: 7px;
-    border-collapse: separate;
-}
-
-table.zco-boxes td
-{
-	width: 50%;
-	vertical-align: top;
-	border: 1px solid #d6d6d6;
-	background-color: #efefef;
-	border-radius: 9px;
-	-moz-border-radius: 9px;
-	-webkit-border-radius: 9px;
-
-	padding: 5px;
-	margin: 0;
-}
-
-table.zco-boxes h2
-{
-	text-align: right;
-	border-bottom: 2px #25c7f6 solid;
-	font-size: 15px !important;
-    line-height: 25px !important;
-	margin: 0 5px 5px;
-	color: #333;
-}
-
-
-
-
-
-
-
-
-
-
-
-/* Faded out hr */
-hr.soften {
-  height: 1px;
-  margin: 54px 0;
-  background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,.1), rgba(0,0,0,0));
-  background-image:    -moz-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,.1), rgba(0,0,0,0));
-  background-image:     -ms-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,.1), rgba(0,0,0,0));
-  background-image:      -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,.1), rgba(0,0,0,0));
-  border: 0;
-}
-
-
-/* Jumbotrons
--------------------------------------------------- */
-.jumbotron {
-  position: relative;
-}
-.jumbotron h1 {
-  margin-bottom: 9px;
-  font-size: 81px;
-  font-weight: bold;
-  letter-spacing: -1px;
-  line-height: 1;
-}
-.jumbotron p {
-  margin-bottom: 18px;
-  font-weight: 300;
-}
-.jumbotron .btn-large {
-  font-size: 20px;
-  font-weight: normal;
-  padding: 14px 24px;
-  margin-right: 10px;
-  -webkit-border-radius: 6px;
-     -moz-border-radius: 6px;
-          border-radius: 6px;
-}
-.jumbotron .btn-large small {
-  font-size: 14px;
-}
-
-/* Masthead (docs home) */
-.masthead {
-  padding-top: 36px;
-  margin-bottom: 72px;
-}
-.masthead h1,
-.masthead p {
-  text-align: center;
-}
-.masthead h1 {
-  margin-bottom: 18px;
-}
-.masthead p {
-  margin-left: 5%;
-  margin-right: 5%;
-  font-size: 30px;
-  line-height: 36px;
-}
-
-
-/* Specific jumbotrons
-------------------------- */
-/* supporting docs pages */
-.subhead {
-  padding-bottom: 0;
-  margin-bottom: 9px;
-}
-.subhead h1 {
-  font-size: 54px;
-}
-
-/* Subnav */
-.subnav {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  height: 36px;
-  background-color: #eeeeee; /* Old browsers */
-  background-repeat: repeat-x; /* Repeat the gradient */
-  background-image: -moz-linear-gradient(top, #f5f5f5 0%, #eeeeee 100%); /* FF3.6+ */
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f5f5f5), color-stop(100%,#eeeeee)); /* Chrome,Safari4+ */
-  background-image: -webkit-linear-gradient(top, #f5f5f5 0%,#eeeeee 100%); /* Chrome 10+,Safari 5.1+ */
-  background-image: -ms-linear-gradient(top, #f5f5f5 0%,#eeeeee 100%); /* IE10+ */
-  background-image: -o-linear-gradient(top, #f5f5f5 0%,#eeeeee 100%); /* Opera 11.10+ */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f5f5', endColorstr='#eeeeee',GradientType=0 ); /* IE6-9 */
-  background-image: linear-gradient(top, #f5f5f5 0%,#eeeeee 100%); /* W3C */
-  border: 1px solid #e5e5e5;
-}
-.subnav .nav {
-  margin-bottom: 0;
-}
-.subnav .nav > li > a {
-  margin: 0;
-  padding-top:    11px;
-  padding-bottom: 11px;
-  border-left: 1px solid #f5f5f5;
-  border-right: 1px solid #e5e5e5;
-  -webkit-border-radius: 0;
-     -moz-border-radius: 0;
-          border-radius: 0;
-}
-.subnav .nav > .active > a,
-.subnav .nav > .active > a:hover {
-  padding-left: 13px;
-  color: #777;
-  background-color: #e9e9e9;
-  border-right-color: #ddd;
-  border-left: 0;
-  -webkit-box-shadow: inset 0 3px 5px rgba(0,0,0,.05);
-     -moz-box-shadow: inset 0 3px 5px rgba(0,0,0,.05);
-          box-shadow: inset 0 3px 5px rgba(0,0,0,.05);
-}
-.subnav .nav > .active > a .caret,
-.subnav .nav > .active > a:hover .caret {
-  border-top-color: #777;
-}
-.subnav .nav > li:first-child > a,
-.subnav .nav > li:first-child > a:hover {
-  border-left: 0;
-  padding-left: 12px;
-}
-.subnav .nav > li:last-child > a {
-  border-right: 0;
-}
-.subnav .dropdown-menu {
-  -webkit-border-radius: 0 0 4px 4px;
-     -moz-border-radius: 0 0 4px 4px;
-          border-radius: 0 0 4px 4px;
+    font-size: 10px;
 }
