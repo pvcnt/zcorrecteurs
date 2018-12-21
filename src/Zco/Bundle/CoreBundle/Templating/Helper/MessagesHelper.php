@@ -21,9 +21,10 @@
 
 namespace Zco\Bundle\CoreBundle\Templating\Helper;
 
+use Gaufrette\Extras\Resolvable\ResolvableFilesystem;
+use Symfony\Component\Templating\Helper\Helper;
 use Zco\Bundle\CoreBundle\Parser\ParserInterface;
 use Zco\Bundle\VitesseBundle\Javelin\ResourceManager;
-use Symfony\Component\Templating\Helper\Helper;
 
 /**
  * Ensemble de fonctions aidant à l'affichage des messages.
@@ -34,74 +35,88 @@ class MessagesHelper extends Helper
 {
     private $parser;
     private $resourceManager;
-	
-	/**
-	 * Constructeur.
-	 *
-	 * @param ParserInterface $parser
+    private $filesystem;
+
+    /**
+     * Constructeur.
+     *
+     * @param ParserInterface $parser
      * @param ResourceManager $resourceManager
-	 */
-	public function __construct(ParserInterface $parser, ResourceManager $resourceManager)
-	{
-	    $this->parser = $parser;
-	    $this->resourceManager = $resourceManager;
+     * @param ResolvableFilesystem $filesystem
+     */
+    public function __construct(ParserInterface $parser, ResourceManager $resourceManager, ResolvableFilesystem $filesystem)
+    {
+        $this->parser = $parser;
+        $this->resourceManager = $resourceManager;
+        $this->filesystem = $filesystem;
     }
 
-	/**
-	 * Retourne un avatar prêt à l'affichage.
-	 *
-	 * @param  string $u  Tableau des informations utilisateur.
-	 * @param  string $av Colonne contenant l'avatar de l'utilisateur.
-	 * @return string
-	 */
-	public function afficherAvatar($u, $av = 'utilisateur_avatar')
-	{
-		return empty($u[$av]) ? null :
-			'<img src="/uploads/avatars/'.htmlspecialchars($u[$av]).'" '
-			.'alt="Avatar" class="avatar" />';
-	}
+    /**
+     * Retourne un avatar prêt à l'affichage.
+     *
+     * @param  string $arr Tableau des informations utilisateur.
+     * @param  string $key Colonne contenant l'avatar de l'utilisateur.
+     * @return string
+     */
+    public function afficherAvatar($arr, $key = null)
+    {
+        return '<img src="' . $this->avatarUrl($arr, $key) . '" alt="Avatar" class="avatar" />';
+    }
 
-	/**
-	 * Logo du groupe, ou nom si aucun.
-	 *
-	 * @param  string $u Tableau des informations utilisateur.
-	 * @param  string $gn Colonne contenant l'avatar de l'utilisateur.
-	 * @param  string $gl Colonne contenant l'url du logo du groupe.
-	 * @param  string $sx Colonne contenant le sexe de l'utilisateur.
-	 * @return string
-	 */
-	public function afficherGroupe($u, $gn = 'groupe_nom', $gl = 'groupe_logo', $sx = 'utilisateur_sexe')
-	{
-		if(isset($u[$sx]) && $u[$sx] == SEXE_FEMININ)
-			$gl .= '_feminin';
+    public function avatarUrl($arr, $key = null)
+    {
+        if (is_array($arr)) {
+            $key = $key ?? 'utilisateur_avatar';
+            $filename = isset($arr[$key]) ? $arr[$key] : null;
+        } else {
+            $key = $key ?? 'avatar';
+            $filename = isset($arr->$key) ? $arr->$key : null;
+        }
+        if (isset($filename)) {
+            return $this->filesystem->resolve('avatars/' . $filename);
+        }
 
-		return empty($u[$gl]) ? htmlspecialchars($u[$gn]) :
-			'<img src="'.$u[$gl].'" '
-			.'alt="Groupe : '.htmlspecialchars($u[$gn]).'"/>';
-	}
-	
-	/**
-	 * Parse un message écrit dans notre zCode pour l'affichage.
-	 *
-	 * @param  string $texte Le texte à parser
-	 * @param  string|false $prefix Un préfixe à utiliser devant les ancres
-	 * @return string Code HTML prêt à l'affichage
-	 */
-	public function parse($texte, $prefix = false)
-	{
-	    $this->resourceManager->requireResource(
-	        '@ZcoCoreBundle/Resources/public/css/zcode.css'
-	    );
-	    $options = is_array($prefix) ? $prefix : array('core.anchor_prefix' => $prefix);
-	    
-		return $this->parser->parse($texte, $options);
-	}
-	
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getName()
-	{
-		return 'messages';
-	}
+        return '/img/anonymous-80.png';
+    }
+
+    /**
+     * Logo du groupe, ou nom si aucun.
+     *
+     * @param  string $u Tableau des informations utilisateur.
+     * @param  string $gn Colonne contenant l'avatar de l'utilisateur.
+     * @param  string $gl Colonne contenant l'url du logo du groupe.
+     * @param  string $sx Colonne contenant le sexe de l'utilisateur.
+     * @return string
+     */
+    public function afficherGroupe($u, $gn = 'groupe_nom', $gl = 'groupe_logo', $sx = 'utilisateur_sexe')
+    {
+        if (isset($u[$sx]) && $u[$sx] == SEXE_FEMININ)
+            $gl .= '_feminin';
+
+        return empty($u[$gl]) ? htmlspecialchars($u[$gn]) :
+            '<img src="' . $u[$gl] . '" alt="Groupe : ' . htmlspecialchars($u[$gn]) . '"/>';
+    }
+
+    /**
+     * Parse un message écrit dans notre zCode pour l'affichage.
+     *
+     * @param  string $texte Le texte à parser
+     * @param  string|false $prefix Un préfixe à utiliser devant les ancres
+     * @return string Code HTML prêt à l'affichage
+     */
+    public function parse($texte, $prefix = false)
+    {
+        $this->resourceManager->requireResource('@ZcoCoreBundle/Resources/public/css/zcode.css');
+        $options = is_array($prefix) ? $prefix : array('core.anchor_prefix' => $prefix);
+
+        return $this->parser->parse($texte, $options);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'messages';
+    }
 }

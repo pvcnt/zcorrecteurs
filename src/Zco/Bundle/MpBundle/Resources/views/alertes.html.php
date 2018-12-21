@@ -85,7 +85,9 @@ if($ListerAlertes)
 				if(!empty($valeur['utilisateur_avatar']))
 				{
 				?>
-				<a href="/membres/profil-<?php echo $valeur['utilisateur_id']; ?>-<?php echo rewrite($valeur['utilisateur_pseudo']); ?>.html"><img src="/uploads/avatars/<?php echo $valeur['utilisateur_avatar']; ?>" alt="<?php echo htmlspecialchars($valeur['utilisateur_pseudo']); ?>" /></a><br />
+				<a href="/membres/profil-<?php echo $valeur['utilisateur_id']; ?>-<?php echo rewrite($valeur['utilisateur_pseudo']); ?>.html">
+                    <?php echo $view['messages']->afficherAvatar($valeur) ?>
+                </a><br />
 				<?php echo $view['messages']->afficherGroupe($valeur) ?><br/>
 			<?php if(verifier('sanctionner'))
 			{

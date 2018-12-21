@@ -4,7 +4,7 @@
 	<div class="row-fluid">
 		<div class="span2" style="text-align: center;">
 			<div class="avatar" style="margin-bottom: 5px;">
-				<img src="<?php echo $user->getAvatar() ?>" />
+                <?php echo $view['messages']->afficherAvatar($user) ?>
 			</div>
             <?php
             $col = 'logo'.($user->getGender() == SEXE_FEMININ ? '_feminin' : '');

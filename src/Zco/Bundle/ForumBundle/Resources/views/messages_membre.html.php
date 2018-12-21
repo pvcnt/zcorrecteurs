@@ -49,12 +49,8 @@
 
 		<tr>
 			<td class="infos_membre">
-				<?php if ($membre->avatar): ?>
-				<img src="/uploads/avatars/<?php
-				echo htmlspecialchars($membre->avatar) ?>"
-				alt="<?php echo 'Avatar de '.htmlspecialchars($membre->pseudo) ?>" />
-				</a><br />
-				<?php endif ?>
+                <?php echo $view['messages']->afficherAvatar($membre) ?>
+                <br/>
 
 				<?php if ($membre->Groupe->logo): ?>
 					<img src="<?php

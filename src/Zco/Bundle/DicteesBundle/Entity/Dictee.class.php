@@ -36,4 +36,26 @@ class Dictee extends BaseDictee
 		}
 		return implode(', ', $o);
 	}
+
+	public function soundFilename($kind)
+    {
+        switch ($kind) {
+            case 'lecture_lente':
+                return $this->slowPaceSoundFilename();
+            case 'lecture_rapide':
+                return $this->fastPaceSoundFilename();
+            default:
+                throw new \InvalidArgumentException();
+        }
+    }
+
+	public function slowPaceSoundFilename()
+    {
+        return sha1('sdfgurIR}J?F4' . $this->id . '$lecture_lente') . '.' . $this->format;
+    }
+
+    public function fastPaceSoundFilename()
+    {
+        return sha1('sdfgurIR}J?F4' . $this->id . '$lecture_rapide') . '.' . $this->format;
+    }
 }

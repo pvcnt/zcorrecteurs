@@ -112,13 +112,30 @@ services:
 
   zco_core.templating.helper.messages:
     class: Zco\Bundle\CoreBundle\Templating\Helper\MessagesHelper
-    arguments: ["@zco_parser.parser", "@zco_core.resource_manager"]
+    arguments: ["@zco_parser.parser", "@zco_core.resource_manager", '@zco.uploads_filesystem']
     tags:
     - { name: templating.helper, alias: messages }
 
+  zco.gaufrette_adapter:
+    class: Gaufrette\Adapter\Local
+    arguments: ['%kernel.root_dir%/../web/uploads', true]
+
+  zco.gaufrette_filesystem:
+    class: Gaufrette\Filesystem
+    arguments: ['@zco.gaufrette_adapter']
+
+  zco.gaufrette_resolver:
+    class: Gaufrette\Extras\Resolvable\Resolver\StaticUrlResolver
+    arguments: ['/uploads']
+
+  zco.uploads_filesystem:
+    class: Gaufrette\Extras\Resolvable\ResolvableFilesystem
+    public: true
+    arguments: ['@zco.gaufrette_filesystem', '@zco.gaufrette_resolver']
+
   zco_file.uploader:
     class: Zco\Bundle\FileBundle\Util\FileUploader
-    arguments: ["@gaufrette.uploads_filesystem", "@imagine", "@event_dispatcher"]
+    arguments: ["@zco.uploads_filesystem", "@imagine"]
 
   zco_parser.parser:
     class: Zco\Bundle\CoreBundle\Parser\zCodeParser
@@ -133,7 +150,7 @@ services:
     - { name: zco.parser_feature }
 
   Zco\Bundle\CoreBundle\Parser\FilesFeature:
-    arguments: ["@gaufrette.uploads_filesystem", "@imagine"]
+    arguments: ["@zco.uploads_filesystem", "@imagine"]
     tags:
     - { name: zco.parser_feature }
 

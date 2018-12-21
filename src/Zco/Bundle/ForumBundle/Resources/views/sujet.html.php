@@ -7,7 +7,7 @@
 <meta name="twitter:description" content="<?php echo mb_substr(htmlspecialchars(strip_tags(str_replace("\n", ' ', $PremierMessage['message_texte']))), 0, 250) ?>" />
 <meta name="twitter:title" content="<?php echo htmlspecialchars($InfosSujet['sujet_titre']) ?>" />
 <?php if ($PremierMessage['auteur_avatar']): ?>
-    <meta name="twitter:image" content="<?php echo URL_SITE ?>/uploads/avatars/<?php echo htmlspecialchars($PremierMessage['auteur_avatar']); ?>" />
+    <meta name="twitter:image" content="<?php echo $view['messages']->avatarUrl($PremierMessage, 'auteur_avatar') ?>" />
 <?php endif ?>
 <?php $view['slots']->stop() ?>
 
@@ -272,7 +272,9 @@ if($InfosSujet['sujet_sondage'] > 0)
 			<td class="infos_membre">
 				<?php if(!empty($valeur['utilisateur_citation'])){ echo htmlspecialchars($valeur['utilisateur_citation']) . '<br />' ; } ?>
 				<?php if(!empty($valeur['auteur_avatar'])){ ?>
-				<a href="/membres/profil-<?php echo $valeur['message_auteur']; ?>-<?php echo rewrite($valeur['auteur_message_pseudo']); ?>.html" rel="nofollow"><img src="/uploads/avatars/<?php echo $valeur['auteur_avatar']; ?>" alt="<?php echo 'Avatar de '.htmlspecialchars($valeur['auteur_message_pseudo']); ?>" /></a>
+				<a href="/membres/profil-<?php echo $valeur['message_auteur']; ?>-<?php echo rewrite($valeur['auteur_message_pseudo']); ?>.html" rel="nofollow">
+                    <?php echo $view['messages']->afficherAvatar($valeur, 'auteur_avatar') ?>
+                </a>
 				<br />
 
 				<?php }	if(verifier('voir_nb_messages')){ ?>

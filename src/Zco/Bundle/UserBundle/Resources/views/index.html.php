@@ -34,8 +34,7 @@
 		<tr>
 			<td class="avatar">
 				<a href="<?php echo $view['router']->path('zco_user_profile', array('id' => $user->getId(), 'slug' => rewrite($user->getUsername()))) ?>">
-					<img src="<?php echo htmlspecialchars($user->getAvatar()) ?>" 
-						 alt="Avatar de <?php echo htmlspecialchars($user->getUsername()) ?>" />
+                    <?php echo $view['messages']->afficherAvatar($user) ?>
 				</a>
 			</td>
 			<td>

@@ -21,121 +21,117 @@
 
 namespace Zco\Bundle\OptionsBundle\Form\Handler;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Gaufrette\FilesystemInterface;
 use Imagine\Image\Box;
 use Imagine\Image\ImagineInterface;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Gère la soumission du formulaire de changement d'avatar.
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class EditAvatarHandler
+final class EditAvatarHandler
 {
-	const AVATAR_CHANGED = 1;
-	const AVATAR_DELETED = 2;
-	const INTERNAL_ERROR = 3;
-	const WRONG_FORMAT = 4;
+    const AVATAR_CHANGED = 1;
+    const AVATAR_DELETED = 2;
+    const INTERNAL_ERROR = 3;
+    const WRONG_FORMAT = 4;
 
-	protected $request;
-	protected $imagine;
-	
-	/**
-	 * Constructeur.
-	 *
-	 * @param Request $this->request
-	 */
-	public function __construct(Request $request, ImagineInterface $imagine)
-	{
-		$this->request = $request;
-		$this->imagine = $imagine;
-	}
-	
-	/**
-	 * Procède à la soumission du formulaire.
-	 *
-	 * @param  Utilisateur $user L'utiliser à modifier
-	 * @return boolean Le formulaire a-t-il été traité correctement ?
-	 */
-	public function process(\Utilisateur $user)
-	{
-		if ($this->request->getMethod() === 'POST')
-		{
-			return $this->onSuccess($user);
-		}
+    private $request;
+    private $imagine;
+    private $filesystem;
 
-		return false;
-	}
+    /**
+     * Constructeur.
+     *
+     * @param Request $request
+     * @param ImagineInterface $imagine
+     * @param FilesystemInterface $filesystem
+     */
+    public function __construct(Request $request, ImagineInterface $imagine, FilesystemInterface $filesystem)
+    {
+        $this->request = $request;
+        $this->imagine = $imagine;
+        $this->filesystem = $filesystem;
+    }
 
-	/**
-	 * Action à effectuer lorsque le formulaire est valide.
-	 *
-	 * @param Utilisateur $user L'entité liée au formulaire
-	 */
-	protected function onSuccess(\Utilisateur $user)
-	{
-		if ($this->request->request->has('delete'))
-		{
-			unlink(BASEPATH.'/web/'.$user->getAvatar());
-			$user->setAvatar('');
-			$user->save();
+    /**
+     * Procède à la soumission du formulaire.
+     *
+     * @param  \Utilisateur $user L'utiliser à modifier
+     * @return boolean Le formulaire a-t-il été traité correctement ?
+     */
+    public function process(\Utilisateur $user)
+    {
+        if ($this->request->getMethod() === 'POST') {
+            return $this->onSuccess($user);
+        }
 
-			return self::AVATAR_DELETED;
-		}
+        return false;
+    }
 
-		//Upload depuis le disque dur
-		if ($this->request->files->has('avatar') && $this->request->files->get('avatar'))
-		{
-			$file = $this->request->files->get('avatar');
-			if (!$file->isValid())
-			{
-				return self::INTERNAL_ERROR;
-			}
+    /**
+     * Action à effectuer lorsque le formulaire est valide.
+     *
+     * @param \Utilisateur $user L'entité liée au formulaire
+     * @return int|boolean
+     */
+    protected function onSuccess(\Utilisateur $user)
+    {
+        if ($this->request->request->has('delete') && $user->avatar) {
+            $this->filesystem->delete('avatars/' . $user->avatar);
+            $user->setAvatar('');
+            $user->save();
 
-			//Vérification de l'extension et du type mime.
-			$mimetypes = array('image/jpeg', 'image/png', 'image/gif');
-			if (!in_array($file->getMimeType(), $mimetypes))
-			{
-				return self::WRONG_FORMAT;
-			}
+            return self::AVATAR_DELETED;
+        }
 
-			//Si l'utilisateur a déjà un avatar local, on le supprime.
-			if ($user->hasLocalAvatar())
-			{
-				unlink(BASEPATH.'/web/'.$user->getAvatar());
-			}
+        if ($this->request->files->has('avatar')) {
+            /** @var UploadedFile $file */
+            $file = $this->request->files->get('avatar');
+            if (!$file->isValid()) {
+                return self::INTERNAL_ERROR;
+            }
 
-			//Déplacement du fichier temporaire vers le dossier des avatars.
-			$extension = $file->guessExtension();
-			$path = array(BASEPATH.'/web/uploads/avatars', $user->getId().'.'.$extension);
-			try
-			{
-				$file = $file->move($path[0], $path[1]);
-			}
-			catch (FileException $e)
-			{
-				return self::INTERNAL_ERROR;
-			}
+            // Vérification de l'extension et du type mime.
+            $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif'];
+            if (!in_array($file->getMimeType(), $allowedMimeTypes)) {
+                return self::WRONG_FORMAT;
+            }
 
-			//Redimensionnement de l'avatar si nécessaire afin de ne pas dépasser 100x100.
-			$size = getimagesize($path[0].'/'.$path[1]);
-			if ($size[0] > 100 || $size[1] > 100)
-			{
-				$this
-					->imagine
-					->open($path[0].'/'.$path[1])
-					->thumbnail(new Box(100, 100))
-					->save($path[0].'/'.$path[1]);
-			}
-			
-			//On termine en modifiant l'utilisateur pour lui lier son nouvel avatar.
-			$user->setAvatar($path[1]);
-			$user->save();
+            // Si l'utilisateur a déjà un avatar local, on le supprime.
+            if ($user->hasLocalAvatar()) {
+                $this->filesystem->delete('avatars/' . $user->avatar);
+            }
 
-			return self::AVATAR_CHANGED;
-		}
+            // Redimensionnement de l'avatar si nécessaire afin de ne pas dépasser 100x100.
+            $size = getimagesize($file->getPathname());
+            if ($size[0] > 100 || $size[1] > 100) {
+                $this
+                    ->imagine
+                    ->open($file->getPathname())
+                    ->thumbnail(new Box(100, 100))
+                    ->save($file->getPathname());
+            }
 
-		return false;
-	}
+            // Déplacement du fichier temporaire vers le filesystem.
+            $filename = $user->getId() . '.' . $file->guessExtension();
+            try {
+                $this->filesystem->write('avatars/' . $filename, file_get_contents($file->getPathname()));
+            } catch (FileException $e) {
+                return self::INTERNAL_ERROR;
+            }
+
+            //On termine en modifiant l'utilisateur pour lui lier son nouvel avatar.
+            $user->setAvatar($filename);
+            $user->save();
+
+            return self::AVATAR_CHANGED;
+        }
+
+        return false;
+    }
 }

@@ -24,14 +24,12 @@
 		<label class="control-label">Avatar actuel</label>
 		<div class="controls">
 			<div class="avatar" style="float: left;">
-				<img src="<?php echo htmlspecialchars($user->getAvatar()) ?>" alt="Avatar actuel" />
+                <?php echo $view['messages']->afficherAvatar($user) ?>
 			</div>
 			<div style="margin-left: 110px">
 				<p>
 					<?php if ($user->hasLocalAvatar()): ?>
 					<strong>Cet avatar provient de votre ordinateur.</strong>
-					<?php elseif ($user->hasGravatar()): ?>
-					<strong>Cet avatar provient de <a href="http://fr.gravatar.com">Gravatar</a>.</strong>
 					<?php else: ?>
 					<em>Cet avatar est l’image par défaut.</em>
 					<?php endif ?>

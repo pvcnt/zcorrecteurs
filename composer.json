@@ -41,13 +41,14 @@
     "doctrine/cache": "^1.8",
     "doctrine/doctrine-bundle": "^1.6",
     "imagine/imagine": "^0.6.3",
-    "knplabs/knp-gaufrette-bundle": "^0.5",
     "knplabs/knp-paginator-bundle": "^2.5",
     "friendsofsymfony/jsrouting-bundle": "^1.6.0",
     "rkmax/sphinx-client": "^1.0.1",
     "scrivo/highlight.php": "^9.0",
     "sendgrid/sendgrid": "^7.2",
-    "ramsey/uuid": "^3.8"
+    "ramsey/uuid": "^3.8",
+    "knplabs/gaufrette": "^0.7.0",
+    "gaufrette/extras": "^0.1.0"
   },
   "require-dev": {
     "symfony/phpunit-bridge": "~2.7"

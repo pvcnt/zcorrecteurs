@@ -57,7 +57,7 @@ class DefaultController extends Controller
     {
         $user = $this->getEditableUser($id);
         $own = $user->getId() == $_SESSION['id'];
-        $handler = new EditAvatarHandler($request, $this->get('imagine'));
+        $handler = new EditAvatarHandler($request, $this->get('imagine'), $this->get('zco.uploads_filesystem'));
 
         if (($retval = $handler->process($user)) !== false) {
             if (EditAvatarHandler::INTERNAL_ERROR === $retval) {

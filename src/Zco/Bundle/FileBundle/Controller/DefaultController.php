@@ -110,25 +110,24 @@ class DefaultController extends Controller
 		));
 		
 		$_SESSION['fichiers']['last_import'] = array();
-		foreach ($retval['success'] as $item)
+		foreach ($retval->success as $item)
 		{
 			$_SESSION['fichiers']['last_import'][] = $item['id'];
 		}
 		
 		$vars = $this->getVariables($request);
-		
-		$failed = $retval['failed'];
-		if (count($failed) > 0)
+
+		if (count($retval->failed) > 0)
 		{
 			$message = array();
-			foreach ($failed as $item)
+			foreach ($retval->failed as $item)
 			{
 				$message[] = 'Erreur lors de l\'envoi de '.$item['name'].  '('.
 					(isset($item['message']) ? $item['message'] : 'erreur inconnue').').';
 			}
 			
 			return redirect(implode("\n", $message), 
-				count($failed) >= $retval['total'] ? 
+				count($retval->failed) >= $retval->total ?
 					$this->generateUrl('zco_file_folder', array(
 						'id' => \FileTable::FOLDER_LAST_IMPORT,
 						'input'    => $vars['input'], 

@@ -21,9 +21,8 @@
 
 namespace Zco\Bundle\FileBundle\Util;
 
-use Gaufrette\Filesystem;
+use Gaufrette\FilesystemInterface;
 use Imagine\Image\ImagineInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Zco\Bundle\FileBundle\Exception\UploadRejectedException;
@@ -39,7 +38,6 @@ class FileUploader
 {
     private $filesystem;
     private $imagine;
-    private $dispatcher;
 
     private static $allowedMimeTypes = array(
         //.ogg
@@ -96,30 +94,25 @@ class FileUploader
     /**
      * Constructeur.
      *
-     * @param Filesystem $filesystem Le système de fichiers où stocker les fichiers
+     * @param FilesystemInterface $filesystem Le système de fichiers où stocker les fichiers
      * @param ImagineInterface $imagine
-     * @param EventDispatcherInterface $dispatcher
      */
-    public function __construct(Filesystem $filesystem, ImagineInterface $imagine, EventDispatcherInterface $dispatcher)
+    public function __construct(FilesystemInterface $filesystem, ImagineInterface $imagine)
     {
         $this->filesystem = $filesystem;
         $this->imagine = $imagine;
-        $this->dispatcher = $dispatcher;
     }
 
-    public function batchUpload(Request $request, array $options)
+    public function batchUpload(Request $request, array $options): BatchUploadResult
     {
-        $retval = [
-            'failed' => [],
-            'success' => [],
-            'total' => count($request->files->get('file')),
-        ];
+        $result = new BatchUploadResult(count($request->files->get('file')));
+
         foreach ($request->files->get('file') as $uploadedFile) {
             /** @var UploadedFile $uploadedFile */
             //Si le fichier est invalide, il s'agit d'une erreur interne de PHP.
             if (!$uploadedFile->isValid()) {
-                //On tente de déterminer de quelle erreur il s'agit pour faciliter
-                //le rapport des erreurs et le débogage.
+                // On tente de déterminer de quelle erreur il s'agit pour faciliter
+                // le rapport des erreurs et le débogage.
                 switch ($uploadedFile->getError()) {
                     case UPLOAD_ERR_INI_SIZE:
                     case UPLOAD_ERR_FORM_SIZE:
@@ -139,22 +132,19 @@ class FileUploader
                     default:
                         $message = null;
                 }
-                $retval['failed'][] = array(
-                    'name' => $uploadedFile->getClientOriginalName(),
-                    'message' => $message,
-                );
+                $result->addFailed($uploadedFile, $message);
                 continue;
             }
 
             try {
                 $file = $this->upload($uploadedFile, $options);
-                $retval['success'][] = array('name' => $uploadedFile->getClientOriginalName(), 'id' => $file['id']);
+                $result->addSuccess($uploadedFile, $file['id']);
             } catch (UploadRejectedException $e) {
-                $retval['failed'][] = array('name' => $uploadedFile->getClientOriginalName(), 'message' => $e->getMessage());
+                $result->addFailed($uploadedFile, $e->getMessage());
             }
         }
 
-        return $retval;
+        return $result;
     }
 
     /**
@@ -214,9 +204,9 @@ class FileUploader
         //On peut maintenir définir le chemin vers le fichier.
         $file['path'] = 'fichiers/' . $file->getSubDirectory() . '/' . $file['id'] . '.' . $file['extension'];
 
-        //Si le fichier est une image, on lui crée une première miniature. Celle-ci
-        //sera utilisée dans les listes de fichiers, elle est donc systématiquement
-        //créée après l'envoi du fichier.
+        // Si le fichier est une image, on lui crée une première miniature. Celle-ci
+        // sera utilisée dans les listes de fichiers, elle est donc systématiquement
+        // créée après l'envoi du fichier.
         if ($file->isImage()) {
             $thumbnail = $image->thumbnail(new \Imagine\Image\Box(150, 80));
             $size = $thumbnail->getSize();
@@ -233,18 +223,18 @@ class FileUploader
             $thumbnail['path'] = 'fichiers/min/' . $file->getSubdirectory() . '/' . $file['id'] . '.' . $file['extension'] . '/' . $file['id'] . '-' . $size->getWidth() . 'x' . $size->getHeight() . '.' . $file['extension'];
             $thumbnail->save();
 
-            //On associe l'image principale en retour au fichier.
+            // On associe l'image principale en retour au fichier.
             $file['thumbnail_id'] = $thumbnail['id'];
 
-            //On écrit cette miniature sur le système de fichiers.
+            // On écrit cette miniature sur le système de fichiers.
             $this->filesystem->write($thumbnail->getRelativePath(), file_get_contents($path));
             unlink($path);
         }
 
-        //Et on sauvegarde à nouveau le fichier !
+        // Et on sauvegarde à nouveau le fichier !
         $file->save();
 
-        //Et on écrit le fichier original sur le système de fichiers.
+        // Et on écrit le fichier original sur le système de fichiers.
         $this->filesystem->write($file->getRelativePath(), file_get_contents($uploadedFile->getPathname()));
         unlink($uploadedFile->getPathname());
 

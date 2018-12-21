@@ -194,8 +194,8 @@ class DictationDAO
      */
     public static function SupprimerDictee(\Dictee $Dictee)
     {
-        @unlink(BASEPATH . '/web/uploads/dictees/' . self::DicteeSon($Dictee, 'lecture_rapide'));
-        @unlink(BASEPATH . '/web/uploads/dictees/' . self::DicteeSon($Dictee, 'lecture_lente'));
+        @unlink(BASEPATH . '/web/uploads/dictees/' . $Dictee->soundFilename('lecture_rapide'));
+        @unlink(BASEPATH . '/web/uploads/dictees/' . $Dictee->soundFilename('lecture_lente'));
         \Doctrine_Query::create()
             ->delete('Dictee_Participation')
             ->where('dictee_id = ?', $Dictee->id)
@@ -430,23 +430,9 @@ class DictationDAO
             );
         $Dictee->format = substr($ext, 1);
         $path = BASEPATH . '/web/uploads/dictees';
-        $name = self::DicteeSon($Dictee, $field);
+        $name = $Dictee->soundFilename($field);
 
         return \File_Upload::Fichier($_FILES[$field], $path, $name);
-    }
-
-    /**
-     * Renvoie le nom du fichier audio associé.
-     *
-     * @param \Dictee $Dictee Dictee.
-     */
-    public static function DicteeSon(\Dictee $Dictee, $field)
-    {
-        return sha1(
-                'sdfgurIR}J?F4'
-                . $Dictee->id
-                . '$' . $field
-            ) . '.' . $Dictee->format;
     }
 
     /**

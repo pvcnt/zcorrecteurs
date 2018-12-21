@@ -21,7 +21,7 @@
 
 /**
  * FileThumbnail
- * 
+ *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
 class FileThumbnail extends BaseFileThumbnail
@@ -30,7 +30,7 @@ class FileThumbnail extends BaseFileThumbnail
     {
         return $this->path;
     }
-    
+
     /**
      * Retourne le chemin à partir du web pour accéder à l'image.
      *
@@ -38,16 +38,16 @@ class FileThumbnail extends BaseFileThumbnail
      */
     public function getWebPath()
     {
-        return $this->File->getWebBasePath().'/'.$this->getRelativePath();
+        return $this->File->getWebBasePath() . '/' . $this->getRelativePath();
     }
-    
+
     public function getFullname()
     {
-        return $this->File->id.'-'.$this->width.'x'.$this->height.'.'.$this->File->extension;
+        return $this->File->id . '-' . $this->width . 'x' . $this->height . '.' . $this->File->extension;
     }
-    
+
     public function getSubdirectory()
     {
-        return $this->File->getSubdirectory().'/'.$this->File->id.'.'.$this->File->extension;
+        return $this->File->getSubdirectory() . '/' . $this->File->id . '.' . $this->File->extension;
     }
 }

@@ -16,11 +16,7 @@
 		<li class="span2">
 			<div class="thumbnail center" style="height: 165px;">
 				<a href="<?php echo $view['router']->path('zco_user_profile', array('id' => $user->getId(), 'slug' => rewrite($user->getUsername()))) ?>" class="avatar-link" title="Groupe : <?php echo htmlspecialchars($user->getGroup()) ?>">
-					<?php if ($user->hasAvatar()): ?>
-						<img src="<?php echo htmlspecialchars($user->getAvatar()) ?>" alt="Avatar de <?php echo htmlspecialchars($user->getUsername()) ?>" style="vertical-align: middle;" />
-					<?php else: ?>
-						<img src="/bundles/zcocore/img/anonyme.png" alt="Aucun avatar" style="vertical-align: middle;" />
-					<?php endif ?>
+                    <?php echo $view['messages']->afficherAvatar($user) ?>
 				</a>
 				<div class="caption" style="text-align: center;">
 					<a href="<?php echo $view['router']->path('zco_user_profile', array('id' => $user->getId(), 'slug' => rewrite($user->getUsername()))) ?>" title="Groupe : <?php echo htmlspecialchars($user->getGroup()) ?>">
@@ -29,7 +25,7 @@
 				</div>
 			</div>
 		</li>
-	<?php endforeach; ?></tr>
+	<?php endforeach ?>
 </ul>
 
 <p class="good">

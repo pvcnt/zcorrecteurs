@@ -21,7 +21,7 @@
 
 namespace Zco\Bundle\CoreBundle\Parser;
 
-use Gaufrette\Filesystem;
+use Gaufrette\FilesystemInterface;
 use Imagine\Image\Box;
 use Imagine\Image\ImagineInterface;
 
@@ -39,10 +39,10 @@ class FilesFeature extends AbstractFeature
     /**
      * Constructeur.
      *
-     * @param Filesystem $filesystem
+     * @param FilesystemInterface $filesystem
      * @param ImagineInterface $imagine
      */
-    public function __construct(Filesystem $filesystem, ImagineInterface $imagine)
+    public function __construct(FilesystemInterface $filesystem, ImagineInterface $imagine)
     {
         $this->filesystem = $filesystem;
         $this->imagine = $imagine;
