@@ -219,11 +219,6 @@ abstract class BaseUtilisateur extends Doctrine_Record
              'notnull' => true,
              'length' => '128',
              ));
-        $this->hasColumn('utilisateur_display_signature as display_signature', 'boolean', null, array(
-             'type' => 'boolean',
-             'default' => 1,
-             'notnull' => true,
-             ));
 
         $this->option('collate', 'utf8_unicode_ci');
         $this->option('charset', 'utf8');
@@ -273,22 +268,6 @@ abstract class BaseUtilisateur extends Doctrine_Record
              'foreign' => 'utilisateur_id'));
 
         $this->hasMany('QuizScore', array(
-             'local' => 'utilisateur_id',
-             'foreign' => 'utilisateur_id'));
-
-        $this->hasMany('RecrutementCandidature', array(
-             'local' => 'utilisateur_id',
-             'foreign' => 'candidature_id_utilisateur'));
-
-        $this->hasMany('RecrutementCommentaire', array(
-             'local' => 'utilisateur_id',
-             'foreign' => 'utilisateur_id'));
-
-        $this->hasMany('RecrutementLuNonLu', array(
-             'local' => 'utilisateur_id',
-             'foreign' => 'lunonlu_utilisateur_id'));
-
-        $this->hasMany('RecrutementAvis', array(
              'local' => 'utilisateur_id',
              'foreign' => 'utilisateur_id'));
 
