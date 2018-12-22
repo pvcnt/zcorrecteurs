@@ -87,7 +87,7 @@ class FusionnerAction extends ForumActions
                 'Fusionner le sujet'
             ));
 
-            return render_to_response(array(
+            return render_to_response('ZcoForumBundle::fusionner.html.php', array(
                 'InfosSujet' => $InfosSujet,
                 'ListerSujetsSelectionnes' => $ListerSujetsSelectionnes,
                 'ListerSujets' => !empty($ListerSujets) ? $ListerSujets : null,

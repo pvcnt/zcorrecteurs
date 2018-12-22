@@ -53,7 +53,7 @@ class SupprimerSujetAction extends ForumActions
 				htmlspecialchars($InfosSujet['sujet_titre']) => 'sujet-'.$_GET['id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html',
 				'Supprimer le sujet'
 			));
-			return render_to_response(array(
+			return render_to_response('ZcoForumBundle::supprimerSujet.html.php', array(
 				'InfosSujet' => $InfosSujet,
 				'InfosForum' => $InfosForum,
 			));

@@ -63,7 +63,7 @@ class IndexAction extends BlogActions
 		//Inclusion de la vue
 		fil_ariane('Liste des derniers billets');
 		
-		return render_to_response(array(
+		return render_to_response('ZcoBlogBundle::index.html.php', array(
 			'Categories' => $Categories,
 			'NombreDeBillet' => $NombreDeBillet,
 			'ListerBillets' => $ListerBillets,

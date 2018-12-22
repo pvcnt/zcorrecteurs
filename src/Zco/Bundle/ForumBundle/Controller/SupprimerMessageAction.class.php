@@ -80,7 +80,9 @@ class SupprimerMessageAction extends ForumActions
 					htmlspecialchars($InfosMessage['sujet_titre']) => 'sujet-'.$_GET['id'].'-'.rewrite($InfosMessage['sujet_titre']).'.html',
 					'Supprimer un message du sujet'
 				));
-				return render_to_response(array('InfosMessage' => $InfosMessage));
+				return render_to_response('ZcoForumBundle::supprimerMessage.html.php', array(
+				    'InfosMessage' => $InfosMessage,
+                ));
 			}
 			else
 				return redirect(

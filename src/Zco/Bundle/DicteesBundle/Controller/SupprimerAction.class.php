@@ -63,6 +63,6 @@ class SupprimerAction extends Controller
 			'Supprimer'
 		));
 
-		return render_to_response(compact('Dictee', 'url'));
+		return render_to_response('ZcoDicteesBundle::supprimer.html.php', compact('Dictee', 'url'));
 	}
 }

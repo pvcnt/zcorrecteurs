@@ -152,7 +152,7 @@ class AdminBilletAction extends BlogActions
             );
 			$this->setRef('Etats', $Etats);
 
-			return render_to_response($this->getVars());
+			return render_to_response('ZcoBlogBundle::adminBillet.html.php', $this->getVars());
 		}
 		else
 			throw new NotFoundHttpException();

@@ -99,7 +99,7 @@ class DefaultController extends Controller
             \Page::$description .= ' - Page ' . $page;
         }
 
-        return render_to_response('ZcoUserBundle::index.html.php', array(
+        return $this->render('ZcoUserBundle::index.html.php', array(
             'users' => $users,
             'groups' => \Doctrine_Core::getTable('Groupe')->getApplicable(),
             'secondaryGroups' => \Doctrine_Core::getTable('Groupe')->getBySecondary(),
@@ -168,7 +168,7 @@ class DefaultController extends Controller
         \Page::$titre = 'Profil d' . $art . htmlspecialchars($user->getUsername());
         \Page::$description = 'Pour en savoir plus sur la personnalité d' . $art . htmlspecialchars($user->getUsername()) . ' et son activité sur le site';
 
-        return render_to_response('ZcoUserBundle::profile.html.php', $vars);
+        return $this->render('ZcoUserBundle::profile.html.php', $vars);
     }
 
     /**
@@ -198,7 +198,7 @@ class DefaultController extends Controller
         fil_ariane('Modifier le titre');
         \Page::$titre = 'Modifier le titre';
 
-        return render_to_response('ZcoUserBundle::editTitle.html.php', array(
+        return $this->render('ZcoUserBundle::editTitle.html.php', array(
             'user' => $user,
         ));
     }
@@ -258,7 +258,7 @@ class DefaultController extends Controller
         \Page::$titre = 'Demander un changement de pseudo';
         fil_ariane('Demander un changement de pseudo');
 
-        return render_to_response('ZcoUserBundle::newPseudo.html.php', array(
+        return $this->render('ZcoUserBundle::newPseudo.html.php', array(
             'user' => $user,
             'form' => $form->createView(),
         ));
@@ -279,7 +279,7 @@ class DefaultController extends Controller
         \Page::$titre = 'Sauvegardes automatiques de zCode';
         fil_ariane('Voir mes textes sauvegardés');
 
-        return render_to_response('ZcoUserBundle::zformBackups.html.php', array(
+        return $this->render('ZcoUserBundle::zformBackups.html.php', array(
             'backups' => $_SESSION['zform_backup'] ?? [],
             'xhr' => $request->query->get('xhr', false),
             'textarea' => $textarea,

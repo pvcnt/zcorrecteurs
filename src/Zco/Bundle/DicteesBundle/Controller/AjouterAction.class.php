@@ -57,6 +57,6 @@ class AjouterAction extends Controller
 		}
 		fil_ariane('Ajout d\'une dictée');
 		
-		return render_to_response(compact('Form'));
+		return render_to_response('ZcoDicteesBundle::ajouter.html.php', compact('Form'));
 	}
 }

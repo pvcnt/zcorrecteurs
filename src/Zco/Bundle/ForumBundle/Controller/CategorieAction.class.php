@@ -122,7 +122,7 @@ class CategorieAction extends ForumActions
 		    '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css'
 		);
 		
-		return render_to_response(array(
+		return render_to_response('ZcoForumBundle::categorie.html.php', array(
 			'InfosCategorie' => $InfosCategorie,
 			'ListerUneCategorie' => $ListerUneCategorie,
 			'Lu' => $Lu,

@@ -50,7 +50,7 @@ class AjouterAction extends BlogActions
 		}
 		fil_ariane(array('Mes billets' => 'mes-billets.html', 'Ajouter un billet'));
 		
-		return render_to_response(array(
+		return render_to_response('ZcoBlogBundle::ajouter.html.php', array(
 			'Categories' => CategoryDAO::ListerEnfants(CategoryDAO::GetIDCategorieCourante()),
 			'tabindex_zform' => 5,
 		));

@@ -84,7 +84,7 @@ class AjouterCommentaireAction extends BlogActions
 				);
 				
 				$this->ListerCommentaires = CommentDAO::ListerCommentairesBillet($_GET['id'], -1);
-				return render_to_response($this->getVars());
+				return render_to_response('ZcoBlogBundle::ajouterCommentaire.html.php', $this->getVars());
 			}
 			else
 				throw new AccessDeniedHttpException();

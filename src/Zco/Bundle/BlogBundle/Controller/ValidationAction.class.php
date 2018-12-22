@@ -57,7 +57,7 @@ class ValidationAction extends BlogActions
 					'Voir l\'historique de validation'
 				));
 				
-				return render_to_response($this->getVars());
+				return render_to_response('ZcoBlogBundle::validation.html.php', $this->getVars());
 			}
 			else
 				throw new AccessDeniedHttpException();

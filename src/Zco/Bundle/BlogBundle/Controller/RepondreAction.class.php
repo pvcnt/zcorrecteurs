@@ -99,7 +99,7 @@ class RepondreAction extends BlogActions
 					'Répondre à une proposition'
 				));
 				
-				return render_to_response($this->getVars());
+				return render_to_response('ZcoBlogBundle::repondre.html.php', $this->getVars());
 			}
 			else
 			{

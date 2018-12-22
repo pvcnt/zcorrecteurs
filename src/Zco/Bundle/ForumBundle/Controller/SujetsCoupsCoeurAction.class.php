@@ -45,7 +45,7 @@ class SujetsCoupsCoeurAction extends ForumActions
 		//Inclusion de la vue
 		fil_ariane('Gérer les sujets en coups de cœur');
 		
-		return render_to_response(array(
+		return render_to_response('ZcoForumBundle::sujetsCoupsCoeur.html.php', array(
 		    'ListerSujets' => TopicDAO::ListerSujetsCoupsCoeur(),
 		));
 	}

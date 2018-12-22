@@ -73,7 +73,7 @@ class ComparaisonAction extends BlogActions
         			    '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css'
         			);
 
-					return render_to_response(array_merge(
+					return render_to_response('ZcoBlogBundle::comparaison.html.php', array_merge(
 						$this->getVars(),
 						compact('infos_old', 'infos_new')
 					));

@@ -37,7 +37,7 @@ class DetailMessagesAction extends ForumActions
 		//Inclusion de la vue
 		fil_ariane('Détail de l\'activité de '.$InfosUtilisateur['utilisateur_pseudo']);
 		
-		return render_to_response(array(
+		return render_to_response('ZcoForumBundle::detailMessages.html.php', array(
 			'DetailMessages' => MessagesParForum(),
 			'InfosUtilisateur' => $InfosUtilisateur,
 		));

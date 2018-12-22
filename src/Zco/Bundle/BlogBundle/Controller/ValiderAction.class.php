@@ -67,7 +67,7 @@ class ValiderAction extends BlogActions
 					htmlspecialchars($this->InfosBillet['version_titre']) => 'billet-'.$_GET['id'].'-'.rewrite($this->InfosBillet['version_titre']).'.html',
 					'Valider le billet'
 				));
-				return render_to_response($this->getVars());
+				return render_to_response('ZcoBlogBundle::valider.html.php', $this->getVars());
 			}
 			else
 				throw new AccessDeniedHttpException();

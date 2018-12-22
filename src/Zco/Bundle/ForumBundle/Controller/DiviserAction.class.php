@@ -81,7 +81,7 @@ class DiviserAction extends ForumActions
                 'Diviser le sujet'
             ));
 
-            return render_to_response(array(
+            return render_to_response('ZcoForumBundle::diviser.html.php', array(
                 'ListerCategories' => $ListerCategories,
                 'ListerMessages' => $ListerMessages,
                 'InfosSujet' => $InfosSujet,

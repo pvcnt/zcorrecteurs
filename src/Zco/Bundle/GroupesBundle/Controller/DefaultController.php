@@ -46,7 +46,7 @@ final class DefaultController extends Controller
         }
         \Page::$titre = 'Groupes';
 
-        return render_to_response('ZcoGroupesBundle::index.html.php', [
+        return $this->render('ZcoGroupesBundle::index.html.php', [
             'ListerGroupes' => GroupDAO::ListerGroupes(),
             'ListerGroupesSecondaires' => GroupDAO::ListerGroupesSecondaires(),
         ]);
@@ -75,7 +75,7 @@ final class DefaultController extends Controller
             'Créer un groupe',
         ]);
 
-        return render_to_response('ZcoGroupesBundle::new.html.php', [
+        return $this->render('ZcoGroupesBundle::new.html.php', [
             'form' => $form->createView(),
         ]);
     }
@@ -111,7 +111,7 @@ final class DefaultController extends Controller
             htmlspecialchars($InfosGroupe['groupe_nom']),
         ]);
 
-        return render_to_response('ZcoGroupesBundle::edit.html.php', [
+        return $this->render('ZcoGroupesBundle::edit.html.php', [
             'InfosGroupe' => $InfosGroupe,
             'form' => $form->createView(),
         ]);
@@ -142,7 +142,7 @@ final class DefaultController extends Controller
             'Supprimer',
         ]);
 
-        return render_to_response('ZcoGroupesBundle::delete.html.php', [
+        return $this->render('ZcoGroupesBundle::delete.html.php', [
             'InfosGroupe' => $InfosGroupe,
         ]);
     }
@@ -166,7 +166,7 @@ final class DefaultController extends Controller
             'Vérifier les droits',
         ]);
 
-        return render_to_response('ZcoGroupesBundle::checkCredentials.html.php', [
+        return $this->render('ZcoGroupesBundle::checkCredentials.html.php', [
             'InfosGroupe' => $InfosGroupe,
             'Droits' => $Droits,
         ]);
@@ -225,7 +225,7 @@ final class DefaultController extends Controller
         $GroupesSecondaires = array_column($GroupesSecondaires, 'groupe_id');
         $ListerGroupesSecondaires = GroupDAO::ListerGroupesSecondaires();
 
-        return render_to_response('ZcoGroupesBundle::assign.html.php', [
+        return $this->render('ZcoGroupesBundle::assign.html.php', [
             'ListerGroupes' => $ListerGroupes,
             'ListerGroupesSecondaires' => $ListerGroupesSecondaires,
             'InfosUtilisateur' => $InfosUtilisateur,
@@ -336,7 +336,7 @@ final class DefaultController extends Controller
             'Modifier les droits',
         ]);
 
-        return render_to_response('ZcoGroupesBundle::changeCredentials.html.php', [
+        return $this->render('ZcoGroupesBundle::changeCredentials.html.php', [
             'InfosGroupe' => $InfosGroupe,
             'ListerGroupes' => $ListerGroupes,
             'ListerDroits' => $ListerDroits,

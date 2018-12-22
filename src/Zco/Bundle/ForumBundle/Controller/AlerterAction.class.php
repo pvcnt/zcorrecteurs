@@ -77,7 +77,7 @@ class AlerterAction extends ForumActions
 				//Inclusion de la vue
 				fil_ariane($InfosSujet['sujet_forum_id'], array(htmlspecialchars($InfosSujet['sujet_titre']) => 'sujet-'.$_GET['id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html', 'Alerter les modérateurs'));
 				
-				return render_to_response(array(
+				return render_to_response('ZcoForumBundle::alerter.html.php', array(
 					'tabindex_zform' => 1,
 					'InfosSujet' => $InfosSujet,
 					'InfosForum' => $InfosForum,

@@ -81,7 +81,7 @@ class EditerAuteurAction extends BlogActions
 						'Modifier un auteur'
 					));
 					
-					return render_to_response($this->getVars());
+					return render_to_response('ZcoBlogBundle::editerAuteur.html.php', $this->getVars());
 				}
 				else
 					throw new AccessDeniedHttpException();

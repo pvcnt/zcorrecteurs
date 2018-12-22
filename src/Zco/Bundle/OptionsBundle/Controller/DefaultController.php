@@ -106,7 +106,7 @@ class DefaultController extends Controller
 
         \Page::$titre = 'Modifier l\'avatar';
 
-        return render_to_response('ZcoOptionsBundle:Default:avatar.html.php', array(
+        return $this->render('ZcoOptionsBundle:Default:avatar.html.php', array(
             'user' => $user,
             'own' => $own,
         ));
@@ -154,7 +154,7 @@ class DefaultController extends Controller
 
         \Page::$titre = 'Modifier l\'adresse courriel';
 
-        return render_to_response('ZcoOptionsBundle:Default:email.html.php', array(
+        return $this->render('ZcoOptionsBundle:Default:email.html.php', array(
             'form' => $form->createView(),
             'user' => $user,
             'own' => $own,
@@ -192,7 +192,7 @@ class DefaultController extends Controller
 
         \Page::$titre = 'Modifier le mot de passe';
 
-        return render_to_response('ZcoOptionsBundle:Default:password.html.php', array(
+        return $this->render('ZcoOptionsBundle:Default:password.html.php', array(
             'form' => $form->createView(),
             'user' => $user,
             'own' => $own,
@@ -230,7 +230,7 @@ class DefaultController extends Controller
 
         \Page::$titre = 'Modifier le profil';
 
-        return render_to_response('ZcoOptionsBundle:Default:profile.html.php', array(
+        return $this->render('ZcoOptionsBundle:Default:profile.html.php', array(
             'form' => $form->createView(),
             'user' => $user,
             'own' => $own,
@@ -275,7 +275,7 @@ class DefaultController extends Controller
 
         \Page::$titre = 'Modifier les préférences';
 
-        return render_to_response('ZcoOptionsBundle:Default:preferences.html.php', array(
+        return $this->render('ZcoOptionsBundle:Default:preferences.html.php', array(
             'form' => $form->createView(),
             'user' => $user,
             'own' => $own,

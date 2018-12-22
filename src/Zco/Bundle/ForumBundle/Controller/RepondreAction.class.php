@@ -100,7 +100,7 @@ class RepondreAction extends ForumActions
 			    '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
 			));
 
-			return render_to_response(array(
+			return render_to_response('ZcoForumBundle::repondre.html.php', array(
 				'InfosSujet' => $InfosSujet,
 				'InfosForum' => $InfosForum,
 				'tabindex_zform' => 1,
@@ -127,7 +127,7 @@ class RepondreAction extends ForumActions
 				    '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
 				));
 
-				return render_to_response(array(
+				return render_to_response('ZcoForumBundle::repondre.html.php', array(
 					'InfosSujet' => $InfosSujet,
 					'InfosForum' => $InfosForum,
 					'tabindex_zform' => 1,

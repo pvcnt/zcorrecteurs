@@ -81,7 +81,7 @@ class RevenirVersionAction extends BlogActions
 						'Revenir à une ancienne version'
 					));
 
-					return render_to_response(array(
+					return render_to_response('ZcoBlogBundle::revenirVersion.html.php', array(
 						'InfosBillet' => $this->InfosBillet,
 						'id_version' => $id_version,
 					));

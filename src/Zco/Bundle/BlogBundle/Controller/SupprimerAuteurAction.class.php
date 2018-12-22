@@ -87,7 +87,7 @@ class SupprimerAuteurAction extends BlogActions
 						htmlspecialchars($this->InfosBillet['version_titre']) => 'billet-'.$_GET['id'].'-'.rewrite($this->InfosBillet['version_titre']).'.html',
 						'Supprimer un auteur'
 					));
-					return render_to_response(array(
+					return render_to_response('ZcoBlogBundle::supprimerAuteur.html.php', array(
 						'InfosBillet' => $this->InfosBillet,
 						'InfosUtilisateur' => $this->InfosUtilisateur,
 					));

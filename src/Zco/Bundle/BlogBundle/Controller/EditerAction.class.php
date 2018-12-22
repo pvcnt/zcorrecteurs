@@ -72,7 +72,7 @@ class EditerAction extends BlogActions
 					'Modifier le billet'));
 				$this->tabindex_zform = 5;
 				
-				return render_to_response($this->getVars());
+				return render_to_response('ZcoBlogBundle::editer.html.php', $this->getVars());
 			}
 			else
 			{

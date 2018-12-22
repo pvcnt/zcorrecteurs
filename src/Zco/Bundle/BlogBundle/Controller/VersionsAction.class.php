@@ -53,7 +53,7 @@ class VersionsAction extends BlogActions
 					htmlspecialchars($this->InfosBillet['version_titre']) => 'admin-billet-'.$_GET['id'].'.html',
 					'Voir l\'historique des versions'));
 				
-				return render_to_response($this->getVars());
+				return render_to_response('ZcoBlogBundle::versions.html.php', $this->getVars());
 			}
 			else
 				throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;

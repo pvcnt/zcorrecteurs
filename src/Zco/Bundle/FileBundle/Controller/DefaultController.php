@@ -72,7 +72,7 @@ class DefaultController extends Controller
 		//< 50 % : OK, >= 50 % et < 80 % : attention, > 80 % : danger
 		$usageClass = $ratio > 80 ? 'danger' : ($ratio < 50 ? 'success' : 'warning');
 		
-		return render_to_response(
+		return $this->render(
 			'ZcoFileBundle::index.html.php', array_merge(array(
 				'currentPage' => 'index',
 				'usage'	   => $usage,
@@ -184,7 +184,7 @@ class DefaultController extends Controller
 		}
 		\Page::$titre = $folder['name'];
 		
-		return render_to_response(
+		return $this->render(
 			'ZcoFileBundle::folder.html.php', $this->getVariables($request, array(
 				'currentPage'   => 'folder',
 				'currentFolder' => $folder,
@@ -239,7 +239,7 @@ class DefaultController extends Controller
 		\Page::$titre = sprintf('Propriétés du fichier "%s"', $file['name']);
 		$timestamp = time();
 		
-		return render_to_response(
+		return $this->render(
 			'ZcoFileBundle::file.html.php', array_merge(array(
 				'currentPage'	=> 'file',
 				'file'			=> $file,

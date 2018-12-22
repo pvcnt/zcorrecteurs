@@ -52,7 +52,7 @@ class BilletsRedigesAction extends BlogActions
 			//Inclusion de la vue
 			fil_ariane('Voir les billets qu\'un membre a rédigés');
 			
-			return render_to_response(array(
+			return render_to_response('ZcoBlogBundle::billetsRediges.html.php', array(
 				'InfosUtilisateur' => $InfosUtilisateur,
 				'ListerBillets' => $ListerBillets,
 				'BilletsAuteurs' => $BilletsAuteurs,

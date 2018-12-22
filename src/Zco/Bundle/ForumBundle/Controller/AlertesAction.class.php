@@ -91,7 +91,7 @@ class AlertesAction extends ForumActions
 		else
 			fil_ariane('Voir la liste des alertes');
 
-		return render_to_response(array(
+		return render_to_response('ZcoForumBundle::alertes.html.php', array(
 			'InfosSujet' => $InfosSujet,
 			'Alertes' => $Alertes,
 		));

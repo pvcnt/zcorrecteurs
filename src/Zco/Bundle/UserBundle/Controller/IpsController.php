@@ -72,7 +72,7 @@ class IpsController extends Controller
         );
         \Page::$titre = 'Liste des adresses IP bannies';
 
-        return render_to_response('ZcoUserBundle:Ips:index.html.php', [
+        return $this->render('ZcoUserBundle:Ips:index.html.php', [
             'ListerIPs' => $ipList,
         ]);
     }
@@ -109,7 +109,7 @@ class IpsController extends Controller
         $info = implode(', ', array_filter($location['city'] ?? null, $location['country'] ?? null));
         \Page::$titre = 'Géolocaliser une adresse IP';
 
-        return render_to_response('ZcoUserBundle:Ips:locate.html.php', array(
+        return $this->render('ZcoUserBundle:Ips:locate.html.php', array(
             'info' => $info,
             'ip' => $ip,
             'longitude' => str_replace(',', '.', $location['longitude']),
@@ -147,7 +147,7 @@ class IpsController extends Controller
         }
         \Page::$titre = 'Bannir une adresse IP';
 
-        return render_to_response('ZcoUserBundle:Ips:ban.html.php', [
+        return $this->render('ZcoUserBundle:Ips:ban.html.php', [
             'ip' => $ip,
         ]);
     }

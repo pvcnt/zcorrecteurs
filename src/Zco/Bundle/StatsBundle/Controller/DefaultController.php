@@ -43,7 +43,7 @@ class DefaultController extends Controller
         $year = $this->getYearOrCurrent();
         $month = $this->getMonth();
 
-        return render_to_response('ZcoStatsBundle::alexa.html.php', array(
+        return $this->render('ZcoStatsBundle::alexa.html.php', array(
             'Rangs' => $statsService->find($year, $month),
             'Mois' => $month,
             'Annee' => $year,
@@ -130,7 +130,7 @@ class DefaultController extends Controller
         $moyenne['moyenne_ppd'] = round($somme['somme_ppd'] / $nombreEntrees, 1);
         $moyenne['moyenne_ppt'] = round($somme['somme_ppt'] / $nombreEntrees, 1);
 
-        return render_to_response('ZcoStatsBundle::registration.html.php', get_defined_vars());
+        return $this->render('ZcoStatsBundle::registration.html.php', get_defined_vars());
     }
 
     public function registrationChartAction()

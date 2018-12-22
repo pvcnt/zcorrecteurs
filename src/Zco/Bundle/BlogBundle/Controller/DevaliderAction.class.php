@@ -62,7 +62,7 @@ class DevaliderAction extends BlogActions
 					'Dévalider le billet'
 				));
 				
-				return render_to_response($this->getVars());
+				return render_to_response('ZcoBlogBundle::devalider.html.php', $this->getVars());
 			}
 			else
 			{

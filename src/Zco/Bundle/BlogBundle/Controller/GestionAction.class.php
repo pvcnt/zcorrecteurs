@@ -49,7 +49,7 @@ class GestionAction extends BlogActions
 		if(verifier('blog_devalider')) $colspan++;
 		if(verifier('blog_editer_valide')) $colspan++;
 
-		return render_to_response(array(
+		return render_to_response('ZcoBlogBundle::gestion.html.php', array(
 			'ListerBillets' => $ListerBillets,
 			'Auteurs' => $Auteurs,
 			'CompterBillets' => $CompterBillets,

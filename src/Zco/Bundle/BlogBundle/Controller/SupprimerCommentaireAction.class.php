@@ -65,7 +65,7 @@ class SupprimerCommentaireAction extends BlogActions
                     htmlspecialchars($InfosBillet['version_titre']) => 'billet-' . $InfosCommentaire['blog_id'] . '-' . rewrite($InfosBillet['version_titre']) . '.html',
                     'Supprimer un commentaire'
                 ));
-                return render_to_response(array(
+                return render_to_response('ZcoBlogBundle::supprimerCommentaire.html.php', array(
                     'InfosBillet' => $InfosBillet,
                     'InfosCommentaire' => $InfosCommentaire,
                 ));

@@ -66,7 +66,9 @@ class SupprimerCommentairesAction extends BlogActions
 				htmlspecialchars($this->InfosBillet['version_titre']) => 'billet-'.$_GET['id'].'-'.rewrite($this->InfosBillet['version_titre']).'.html',
 				'Supprimer tous les commentaires'
 			));
-			return render_to_response(array('InfosBillet' => $this->InfosBillet));
+			return render_to_response('ZcoBlogBundle::supprimerCommentaires.html.php', array(
+			    'InfosBillet' => $this->InfosBillet,
+            ));
 		}
 		else
 			throw new NotFoundHttpException();

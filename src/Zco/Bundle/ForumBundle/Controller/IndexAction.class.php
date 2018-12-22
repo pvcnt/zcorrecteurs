@@ -111,7 +111,7 @@ class IndexAction extends ForumActions
 			'@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
 		));
 		
-		$response = render_to_response(array(
+		$response = render_to_response('ZcoForumBundle::index.html.php', array(
 			'ListerCategories' => $ListerCategories,
 			'Lu' => $Lu,
 		));

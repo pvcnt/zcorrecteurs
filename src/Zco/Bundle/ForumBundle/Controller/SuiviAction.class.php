@@ -87,7 +87,7 @@ class SuiviAction extends ForumActions
 		));
 		$this->get('zco_core.resource_manager')->requireResource('@ZcoCoreBundle/Resources/public/js/messages.js');
 		
-		return render_to_response(array(
+		return render_to_response('ZcoForumBundle::suivi.html.php', array(
 			'CompterSujets' => $CompterSujets,
 			'ListerSujets' => $ListerSujets,
 			'Tags' => $Tags,

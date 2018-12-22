@@ -67,7 +67,7 @@ class SupprimerAction extends BlogActions
 				fil_ariane($this->InfosBillet['cat_id'], array(
 					htmlspecialchars($this->InfosBillet['version_titre']) => 'admin-billet-'.$_GET['id'].'-'.rewrite($this->InfosBillet['version_titre']).'.html',
 					'Supprimer le billet'));
-				return render_to_response(array('InfosBillet' => $this->InfosBillet));
+				return render_to_response('ZcoBlogBundle::supprimer.html.php', array('InfosBillet' => $this->InfosBillet));
 			}
 			else
 				throw new AccessDeniedHttpException();

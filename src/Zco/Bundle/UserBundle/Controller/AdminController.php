@@ -70,7 +70,7 @@ class AdminController extends Controller
         }
         \Page::$titre = 'Comptes en cours de validation';
 
-        return render_to_response('ZcoUserBundle:Admin:unvalidAccounts.html.php', array(
+        return $this->render('ZcoUserBundle:Admin:unvalidAccounts.html.php', array(
             'users' => \Doctrine_Core::getTable('Utilisateur')->getByNonValid(),
         ));
     }
@@ -95,7 +95,7 @@ class AdminController extends Controller
         }
         \Page::$titre = 'Rechercher une adresse mail';
 
-        return render_to_response('ZcoUserBundle:Admin:searchEmail.html.php', array(
+        return $this->render('ZcoUserBundle:Admin:searchEmail.html.php', array(
             'users' => $users,
             'email' => $email,
         ));
@@ -134,7 +134,7 @@ class AdminController extends Controller
 
         \Page::$titre = 'Sanctionner un membre';
 
-        return render_to_response('ZcoUserBundle:Admin:punish.html.php', array(
+        return $this->render('ZcoUserBundle:Admin:punish.html.php', array(
             'user' => $user,
             'form' => $form->createView(),
         ));
@@ -187,7 +187,7 @@ class AdminController extends Controller
 
         \Page::$titre = 'Supprimer un compte';
 
-        return render_to_response('ZcoUserBundle:Admin:deleteAccount.html.php',
+        return $this->render('ZcoUserBundle:Admin:deleteAccount.html.php',
             array('user' => $user));
     }
 
@@ -201,7 +201,7 @@ class AdminController extends Controller
         }
         \Page::$titre = 'Changements de pseudonymes';
 
-        return render_to_response('ZcoUserBundle:Admin:newPseudoQueries.html.php', array(
+        return $this->render('ZcoUserBundle:Admin:newPseudoQueries.html.php', array(
             'queries' => \Doctrine_Core::getTable('UserNewUsername')->getWaitingQueries(),
         ));
     }
@@ -227,7 +227,7 @@ class AdminController extends Controller
 
         \Page::$titre = 'Répondre à une demande de changement de pseudonyme';
 
-        return render_to_response('ZcoUserBundle:Admin:newPseudoAnswer.html.php', array(
+        return $this->render('ZcoUserBundle:Admin:newPseudoAnswer.html.php', array(
             'query' => $query,
             'form' => $form->createView(),
         ));

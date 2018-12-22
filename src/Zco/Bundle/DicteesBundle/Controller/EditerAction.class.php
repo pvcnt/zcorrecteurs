@@ -86,6 +86,6 @@ class EditerAction extends Controller
 			'Editer'
 		));
 		
-		return render_to_response(compact('Dictee', 'Form'));
+		return render_to_response('ZcoDicteesBundle::editer.html.php', compact('Dictee', 'Form'));
 	}
 }

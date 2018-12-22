@@ -41,7 +41,7 @@ class RefusAction extends BlogActions
 			'lecteurs' => false
 		));
 
-		return render_to_response(array(
+		return render_to_response('ZcoBlogBundle::refus.html.php', array(
 			'ListerBillets' => $ListerBillets,
 			'Auteurs' => $Auteurs,
             'AuteursClass' => [3 => 'gras', 2 => 'normal', 1 => 'italique'],

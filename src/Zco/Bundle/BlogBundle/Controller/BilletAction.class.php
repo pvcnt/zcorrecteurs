@@ -141,7 +141,7 @@ class BilletAction extends BlogActions
                 '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
             ));
 
-            return render_to_response($this->getVars());
+            return render_to_response('ZcoBlogBundle::billet.html.php', $this->getVars());
 		}
 		else
 			throw new NotFoundHttpException();

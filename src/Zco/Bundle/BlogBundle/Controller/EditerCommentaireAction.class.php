@@ -73,7 +73,7 @@ class EditerCommentaireAction extends BlogActions
 				    '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
 				));
 				
-				return render_to_response(compact(
+				return render_to_response('ZcoBlogBundle::editerCommentaire.html.php', compact(
 					'InfosCommentaire',
 					'InfosBillet',
 					'ListerCommentaires'

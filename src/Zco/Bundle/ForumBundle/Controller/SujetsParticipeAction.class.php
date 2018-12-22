@@ -111,7 +111,7 @@ class SujetsParticipeAction extends ForumActions
 		    '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css'
 		);
 		
-		return render_to_response(array(
+		return render_to_response('ZcoForumBundle::sujetsParticipe.html.php', array(
 			'InfosUtilisateur' => $InfosUtilisateur,
 			'InfosCategorie' => $InfosCategorie,
 			'tableau_pages' => $tableau_pages,

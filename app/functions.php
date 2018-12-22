@@ -24,7 +24,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
 use Zco\Bundle\GroupesBundle\Domain\CredentialsDAO;
 use Zco\Bundle\UserBundle\Domain\UserDAO;
-use Zco\Util\Inflector;
 
 /**
  * Réduit le charset pour une URL.
@@ -583,19 +582,9 @@ function array_trim($vars, $index = null)
  * @param array $headers Options pour personnaliser la réponse.
  * @return Response
  */
-function render_to_response($template = array(), array $vars = array(), array $headers = array())
+function render_to_response($template, array $vars = array(), array $headers = array())
 {
-    // DÉPRÉCIÉ : le premier paramètre peut-être omis.
-    if (is_array($template) && $vars == array()) {
-        $vars = $template;
-        $bundle = Container::request()->attributes->get('_bundle');
-        $action = Container::request()->attributes->get('_action');
-        $template = $bundle . '::' . lcfirst(Inflector::camelize($action)) . '.html.php';
-    }
-
-    $engine = \Container::get('templating');
-
-    return new Response($engine->render($template, $vars), 200, $headers);
+    return new Response(\Container::get('templating')->render($template, $vars), 200, $headers);
 }
 
 function render_to_string($template = array(), array $vars = array())

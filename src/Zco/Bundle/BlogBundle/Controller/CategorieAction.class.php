@@ -58,7 +58,7 @@ class CategorieAction extends BlogActions
 			fil_ariane($_GET['id'], 'Liste des billets de la catégorie');
 			Page::$robots = 'noindex,follow';
 
-			return render_to_response(array(
+			return render_to_response('ZcoBlogBundle::categorie.html.php', array(
 				'ListerBillets' => $ListerBillets,
 				'BilletsAuteurs' => $BilletsAuteurs,
 				'ListePage' => $ListePage,

@@ -197,7 +197,7 @@ class SujetAction extends ForumActions
 			$afficher_options = false;
 		}
 		
-		return render_to_response(array(
+		return render_to_response('ZcoForumBundle::sujet.html.php', array(
 			'InfosSujet' => $InfosSujet,
 			'InfosForum' => $InfosForum,
 			'tableau_pages' => $tableau_pages,

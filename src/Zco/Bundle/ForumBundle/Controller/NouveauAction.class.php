@@ -82,7 +82,7 @@ class NouveauAction extends ForumActions
 				$texte = '';
 			}
 
-			return render_to_response(array(
+			return render_to_response('ZcoForumBundle::nouveau.html.php', array(
 				'InfosForum' => $InfosForum,
 				'tabindex_zform' => 4,
 				'texte_zform' => $texte,

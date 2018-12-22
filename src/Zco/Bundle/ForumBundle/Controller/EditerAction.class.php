@@ -72,7 +72,7 @@ class EditerAction extends ForumActions
 				    '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
 				));
 				
-				return render_to_response(array(
+				return render_to_response('ZcoForumBundle::editer.html.php', array(
 					'tabindex_zform' => 1,
 					'sujet_titre' => $InfosMessage['sujet_titre'],
 					'sujet_id' => $InfosMessage['message_sujet_id'],

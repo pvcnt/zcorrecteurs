@@ -367,7 +367,7 @@ class ForumAction extends ForumActions
             ));
             $this->get('zco_core.resource_manager')->requireResource('@ZcoCoreBundle/Resources/public/js/messages.js');
 
-            return render_to_response(array(
+            return render_to_response('ZcoForumBundle::forum.html.php', array(
                 'InfosForum' => $InfosForum,
                 'CompterSujets' => $CompterSujets,
                 'flags' => $flags,

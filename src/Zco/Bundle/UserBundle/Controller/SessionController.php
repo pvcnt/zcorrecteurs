@@ -81,7 +81,7 @@ class SessionController extends Controller
 		\Page::$titre = 'Se connecter sur zCorrecteurs.fr';
 		fil_ariane('Se connecter');
 		
-		return render_to_response('ZcoUserBundle:Session:login.html.php', array(
+		return $this->render('ZcoUserBundle:Session:login.html.php', array(
 			'form' => $form->createView(),
 		));
 	}
@@ -151,7 +151,7 @@ class SessionController extends Controller
 		\Page::$titre = 'Nouveau mot de passe';
 		\Page::$description = 'Si vous avez perdu votre mot de passe, nous pouvons vous en renvoyer un nouveau';
 		
-		return render_to_response('ZcoUserBundle:Session:newPassword.html.php');
+		return $this->render('ZcoUserBundle:Session:newPassword.html.php');
 	}
 	
 	/**
@@ -203,7 +203,7 @@ class SessionController extends Controller
 		\Page::$titre = 'S\'inscrire sur zCorrecteurs.fr';
 		fil_ariane('Créer un nouveau compte');
 		
-		return render_to_response('ZcoUserBundle:Session:register.html.php', array(
+		return $this->render('ZcoUserBundle:Session:register.html.php', array(
 			'form' => $form->createView(),
 		));
 	}
