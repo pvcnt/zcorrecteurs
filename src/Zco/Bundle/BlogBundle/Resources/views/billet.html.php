@@ -118,16 +118,6 @@
 		<?php foreach($ListerCommentaires as $clef => $valeur){ ?>
 		<tr class="header_message">
 			<td class="pseudo_membre">
-				<?php if($valeur['utilisateur_absent']==1) { ?>
-				<span class="commandes_textuelles">
-					<a href="/membres/profil-<?php echo $valeur['id_auteur']; ?>-<?php echo rewrite($valeur['pseudo_auteur']); ?>.html#absence">
-						<img src="/bundles/zcooptions/img/gerer_absence.png" alt="Absent" title="Membre absent. Fin :
-						<?php echo is_null($valeur['utilisateur_fin_absence']) ?
-						'indéterminée' :
-						dateformat($valeur['utilisateur_fin_absence'], DATE, MINUSCULE); ?>" />
-					</a>
-				</span>
-				<?php } ?>
                 <a href="<?php echo $view['router']->path('zco_user_profile', ['id' => $valeur['id_auteur'], 'slug' => rewrite($valeur['pseudo_auteur'])]) ?>">
                     <?php echo htmlspecialchars($valeur['pseudo_auteur']) ?>
                 </a>

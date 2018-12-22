@@ -124,17 +124,6 @@ if($InfosSujet['sujet_sondage'] > 0)
 		?>
 		<tr class="header_message">
 			<td class="pseudo_membre">
-				<?php if($valeur['utilisateur_absent']==1) { ?>
-					<span class="commandes_textuelles"><a href="/membres/profil-<?php echo $valeur['message_auteur']; ?>-<?php echo rewrite($valeur['auteur_message_pseudo']); ?>.html#absence" rel="nofollow"><img src="/bundles/zcooptions/img/gerer_absence.png" alt="Absent" title="Membre absent. Fin : <?php
-					if(is_null($valeur['utilisateur_fin_absence']))
-					{
-						echo 'indéterminée';
-					}
-					else
-					{
-						echo dateformat($valeur['utilisateur_fin_absence'], DATE, MINUSCULE);
-					} ?>" /></a></span>
-				<?php } ?>
 				<?php if(!empty($valeur['auteur_groupe'])) { ?>
 				<a href="/membres/profil-<?php echo $valeur['message_auteur']; ?>-<?php echo rewrite($valeur['auteur_message_pseudo']); ?>.html">
 				<?php } echo htmlspecialchars($valeur['auteur_message_pseudo']); if(!empty($valeur['auteur_groupe'])) { ?>

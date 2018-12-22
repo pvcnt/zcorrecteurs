@@ -36,12 +36,6 @@ services:
     tags:
     - { name: kernel.event_subscriber }
 
-  Zco\Bundle\OptionsBundle\EventListener\EventListener:
-    calls:
-    - [setContainer, ["@service_container"]]
-    tags:
-    - { name: kernel.event_subscriber }
-
   Zco\Bundle\MpBundle\Admin\PmAlertsPendingTask:
     tags:
     - { name: zco.admin_task }

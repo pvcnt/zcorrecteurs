@@ -159,16 +159,6 @@ if($NombreParticipants > 1){ ?>
 		?>
 		<tr class="header_message">
 			<td class="pseudo_membre">
-			<?php if($valeur['utilisateur_absent']==1) { ?>
-			<span class="commandes_textuelles"><a href="/membres/profil-<?php echo $valeur['mp_message_auteur_id']; ?>-<?php echo rewrite($valeur['utilisateur_pseudo']); ?>.html#absence"><img src="/bundles/zcooptions/img/gerer_absence.png" alt="Absent" title="Membre absent. Fin : <?php
-			if(is_null($valeur['utilisateur_fin_absence']))
-			{
-				echo 'indéterminée';
-			}
-			else
-			{
-				echo dateformat($valeur['utilisateur_fin_absence'], DATE, MINUSCULE);
-			}  ?>" /></a></span><?php } ?>
 			<a href="/membres/profil-<?php echo $valeur['mp_message_auteur_id']; ?>-<?php echo rewrite($valeur['utilisateur_pseudo']); ?>.html">
 			<?php echo htmlspecialchars($valeur['utilisateur_pseudo']); ?>
 			</a>

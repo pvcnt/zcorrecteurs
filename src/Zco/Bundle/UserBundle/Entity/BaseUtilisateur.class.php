@@ -34,11 +34,6 @@
  * @property string $biography
  * @property string $hobbies
  * @property string $citation
- * @property boolean $absent
- * @property date $absence_end_date
- * @property string $absence_reason
- * @property string $pgk_key
- * @property date $absence_start_date
  * @property timestamp $utilisateur_derniere_lecture
  * @property integer $sexe
  * @property string $twitter
@@ -184,25 +179,6 @@ abstract class BaseUtilisateur extends Doctrine_Record
         $this->hasColumn('utilisateur_citation as citation', 'string', 30, array(
              'type' => 'string',
              'length' => '30',
-             ));
-        $this->hasColumn('utilisateur_absent as absent', 'boolean', null, array(
-             'type' => 'boolean',
-             ));
-        $this->hasColumn('utilisateur_fin_absence as absence_end_date', 'date', null, array(
-             'type' => 'date',
-             'notnull' => false,
-             ));
-        $this->hasColumn('utilisateur_motif_absence as absence_reason', 'string', null, array(
-             'type' => 'string',
-             'length' => '',
-             ));
-        $this->hasColumn('utilisateur_cle_pgp as pgk_key', 'string', null, array(
-             'type' => 'string',
-             'length' => '',
-             ));
-        $this->hasColumn('utilisateur_debut_absence as absence_start_date', 'date', null, array(
-             'type' => 'date',
-             'notnull' => false,
              ));
         $this->hasColumn('utilisateur_derniere_lecture', 'timestamp', 25, array(
              'type' => 'timestamp',

@@ -124,72 +124,6 @@ class Utilisateur extends BaseUtilisateur
 		return $this->valide = (bool) $valid;
 	}
 
-	public function setAbsent($absent)
-	{
-		$this->absent = (bool) $absent;
-		if (!$absent)
-		{
-			$this->absence_start_date = null;
-			$this->absence_end_date = null;
-			$this->absence_reason = '';
-		}
-	}
-	
-	public function isAbsent()
-	{
-		return (bool) $this->absent;
-	}
-
-	public function hasAbsenceStartDate()
-	{
-		return (bool) $this->absence_start_date;
-	}
-
-	public function setAbsenceStartDate($date)
-	{
-		$this->absence_start_date = $date;
-		$this->absent = (strtotime($date) <= time());
-	}
-
-	public function getAbsenceStartDate()
-	{
-		return $this->absence_start_date;
-	}
-
-	public function setAbsenceEndDate($date)
-	{
-		$this->absence_end_date = $date;
-	}
-	
-	public function getAbsenceEndDate()
-	{
-		return $this->absence_end_date;
-	}
-	
-	public function hasAbsenceReason()
-	{
-		return !empty($this->absence_reason);
-	}
-
-	public function setAbsenceReason($reason)
-	{
-		$this->absence_reason = $reason;
-	}
-	
-	public function getAbsenceReason()
-	{
-		return $this->absence_reason;
-	}
-
-	public function isAbsenceValid(ExecutionContext $context)
-	{
-		if (strtotime($this->absence_start_date) >= strtotime($this->absence_end_date))
-		{
-            $context->setPropertyPath($context->getPropertyPath() . '.absence_start_date');
-            $context->addViolation('La date de début doit être avant la date de fin !', array(), null);
-		}
-	}
-	
 	public function hasCitation()
 	{
 		return !empty($this->citation);
@@ -588,9 +522,5 @@ class Utilisateur extends BaseUtilisateur
 		/*$metadata->addGetterConstraint('nouvel_email', new Constraints\Email(array(
 			'groups' => 'editEmail',
 		)));*/
-		$metadata->addConstraint(new Callback(array(
-			'groups'  => 'absence',
-            'methods' => array('isAbsenceValid'),
-        )));
 	}
 }

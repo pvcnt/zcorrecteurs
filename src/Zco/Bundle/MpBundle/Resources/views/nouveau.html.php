@@ -14,12 +14,6 @@
 		<label for="sous_titre">Sous-titre : </label>
 		<input type="text" name="sous_titre" id="sous_titre" value="<?php if(!empty($_POST['sous_titre'])) echo htmlspecialchars($_POST['sous_titre']); ?>" size="35" tabindex="2" />
 		<br /><br />
-		<?php if(isset($Pseudo) && $Pseudo['utilisateur_absent']==1) { ?>
-            <p class="UI_infobox">
-                Le membre <strong><?php echo htmlspecialchars($Pseudo['utilisateur_pseudo']) ?></strong>
-                auquel vous vous apprêtez à envoyer un MP est marqué comme absent. Il se peut donc qu'il soit long à répondre.
-            </p>
-        <?php } ?>
 		<label for="pseudo">Destinataire : </label>
 		<input name="pseudo" id="pseudo" tabindex="3" size="35" value="<?php if(!empty($_POST['pseudo'])) echo htmlspecialchars($_POST['pseudo']); ?>" /> <input type="button" name="ajouter_destinataire" value="Ajouter à la liste" onclick="this.form.destinataires.value += this.form.pseudo.value+'\n';this.form.pseudo.value = '';this.form.pseudo.focus();" />
 		

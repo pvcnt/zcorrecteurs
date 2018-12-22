@@ -1,18 +1,3 @@
-<?php if ($user->isAbsent()): ?>
-	<div class="alert alert-error">
-		<?php echo htmlspecialchars($user->getUsername()) ?> est actuellement absent 
-		<?php if (!$user->getAbsenceEndDate()): ?>
-		pour une durée indéterminée.
-		<?php else: ?>
-		et revient <strong><?php echo dateformat($user->getAbsenceEndDate(), DATE, MINUSCULE) ?></strong>.
-		<?php endif ?>
-	</div>
-	<?php if ($user->hasAbsenceReason()): ?>
-		<p><?php echo $view['messages']->parse($user->getAbsenceReason()) ?></p>
-		<div class="cleaner">&nbsp;</div>
-		<hr />
-	<?php endif ?>
-<?php endif ?>
 <?php if ($user->hasBiography()): ?>
 	<?php echo $view['messages']->parse($user->getBiography(), array('core.anchor_prefix' => 'bio')) ?>
 	<div class="cleaner">&nbsp;</div>
