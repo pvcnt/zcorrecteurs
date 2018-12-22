@@ -138,8 +138,7 @@ class DefaultController extends Controller
         if (!verifier('voir_stats_generales')) {
             throw new AccessDeniedHttpException();
         }
-        /** @var RegistrationChartService $chartService */
-        $chartService = $this->get('zco_stats.registration_chart');
+        $chartService = $this->get(RegistrationChartService::class);
         $type = (!empty($_GET['type']) && (intval($_GET['type'] - 10) >= 1 && intval($_GET['type'] - 10) <= 3)) ? (int)($_GET['type'] - 10) : 1;
         $annee = $this->getYearOrCurrent();
         $mois = $this->getMonth();

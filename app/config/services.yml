@@ -19,50 +19,42 @@ services:
     public: true
     arguments: ['@cache', !tagged zco.admin_task]
 
-  zco.event_listener.stats:
-    class: Zco\Bundle\StatsBundle\EventListener\EventListener
+  Zco\Bundle\StatsBundle\EventListener\EventListener:
     arguments: ['@zco_stats.alexa_stats']
     tags:
     - { name: kernel.event_subscriber }
 
-  zco.event_listener.core:
-    class: Zco\Bundle\CoreBundle\EventListener\EventListener
+  Zco\Bundle\CoreBundle\EventListener\EventListener:
     calls:
     - [setContainer, ["@service_container"]]
     tags:
     - { name: kernel.event_subscriber }
 
-  zco.event_listener.pm:
-    class: Zco\Bundle\MpBundle\EventListener\EventListener
+  Zco\Bundle\MpBundle\EventListener\EventListener:
     calls:
     - [setContainer, ["@service_container"]]
     tags:
     - { name: kernel.event_subscriber }
 
-  zco.event_listener.options:
-    class: Zco\Bundle\OptionsBundle\EventListener\EventListener
+  Zco\Bundle\OptionsBundle\EventListener\EventListener:
     calls:
     - [setContainer, ["@service_container"]]
     tags:
     - { name: kernel.event_subscriber }
 
-  zco.admin_task.pm_alerts:
-    class: Zco\Bundle\MpBundle\Admin\PmAlertsPendingTask
+  Zco\Bundle\MpBundle\Admin\PmAlertsPendingTask:
     tags:
     - { name: zco.admin_task }
 
-  zco.admin_task.forum_alerts:
-    class: Zco\Bundle\ForumBundle\Admin\ForumAlertsPendingTask
+  Zco\Bundle\ForumBundle\Admin\ForumAlertsPendingTask:
     tags:
     - { name: zco.admin_task }
 
-  zco.admin_task.dictations:
-    class: Zco\Bundle\DicteesBundle\Admin\DictationsPendingTask
+  Zco\Bundle\DicteesBundle\Admin\DictationsPendingTask:
     tags:
     - { name: zco.admin_task }
 
-  zco.admin_task.articles:
-    class: Zco\Bundle\BlogBundle\Admin\ArticlesPendingTask
+  Zco\Bundle\BlogBundle\Admin\ArticlesPendingTask:
     tags:
     - { name: zco.admin_task }
 
@@ -81,8 +73,7 @@ services:
     public:    true
     arguments: ['@cache']
 
-  zco_core.form.type.zform:
-    class: Zco\Bundle\CoreBundle\Form\Type\ZformType
+  Zco\Bundle\CoreBundle\Form\Type\ZformType:
     tags:
     - { name: form.type, alias: zform }
 
@@ -188,43 +179,36 @@ services:
     class: Zco\Bundle\StatsBundle\Service\AlexaChartService
     arguments: ['@zco_stats.alexa_stats']
 
-  zco_stats.registration_chart:
-    class: Zco\Bundle\StatsBundle\Service\RegistrationChartService
+  Zco\Bundle\StatsBundle\Service\RegistrationChartService:
     arguments: ['@zco_stats.user_stats']
 
-  zco_user.validator.username:
-    class: Zco\Bundle\UserBundle\Validator\Constraints\UsernameValidator
+  Zco\Bundle\UserBundle\Validator\Constraints\UsernameValidator:
     arguments: ["@zco_user.user"]
     tags:
     - { name: validator.constraint_validator, alias: zco_user_username }
 
-  zco_user.validator.password:
-    class: Zco\Bundle\UserBundle\Validator\Constraints\PasswordValidator
+  Zco\Bundle\UserBundle\Validator\Constraints\PasswordValidator:
     arguments: ["@zco_user.user"]
     tags:
     - { name: validator.constraint_validator, alias: zco_user_password }
 
-  zco_user.validator.email:
-    class: Zco\Bundle\UserBundle\Validator\Constraints\EmailValidator
+  Zco\Bundle\UserBundle\Validator\Constraints\EmailValidator:
     arguments: ["@zco_user.user"]
     tags:
     - { name: validator.constraint_validator, alias: zco_user_email }
 
-  zco_user.validator.user_email:
-    class: Zco\Bundle\UserBundle\Validator\Constraints\UserPasswordValidator
+  Zco\Bundle\UserBundle\Validator\Constraints\UserPasswordValidator:
     arguments: ["@zco_user.user"]
     tags:
     - { name: validator.constraint_validator, alias: zco_user_userpassword }
 
-  zco_user.event_listener:
-    class: Zco\Bundle\UserBundle\EventListener\EventListener
+  Zco\Bundle\UserBundle\EventListener\EventListener:
     calls:
     - [setContainer, ["@service_container"]]
     tags:
     - { name: kernel.event_subscriber }
 
-  zco_user.login_listener:
-    class: Zco\Bundle\UserBundle\EventListener\LoginListener
+  Zco\Bundle\UserBundle\EventListener\LoginListener:
     calls:
     - [setContainer, ["@service_container"]]
     tags:
@@ -240,8 +224,7 @@ services:
     public: true
     arguments: ['@zco_doctrine1.connection', '@cache']
 
-  zco.admin_task.new_username:
-    class: Zco\Bundle\UserBundle\Admin\NewUsernamePendingTask
+  Zco\Bundle\UserBundle\Admin\NewUsernamePendingTask:
     tags:
     - { name: zco.admin_task }
 
