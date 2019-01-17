@@ -137,7 +137,7 @@ class UtilisateurTable extends Doctrine_Table
 	public function listerEquipe()
 	{
 		return $this->createQuery('u')
-			->select('u.pseudo, u.id, u.avatar, g.id, g.nom, g.class')
+			->select('u.pseudo, u.id, u.avatar')
 			->from('Utilisateur u')
 			->leftJoin('u.Groupe g')
 			->where('g.team = ?', true)
@@ -146,23 +146,10 @@ class UtilisateurTable extends Doctrine_Table
 			->execute();
 	}
 	
-	public function listerAvatarsEquipe()
-	{
-		return $this->createQuery('u')
-			->select('u.pseudo, u.id, u.avatar')
-			->from('Utilisateur u')
-			->leftJoin('u.Groupe g')
-			->where('g.team = ?', true)
-            ->andWhere('g.code <> ?', \Groupe::SENIOR)
-			->andWhere('u.avatar <> ?', '')
-			->orderBy('RAND()')
-			->execute();
-	}
-	
 	public function listerAnciens()
 	{
 		return $this->createQuery('u')
-			->select('u.pseudo, u.id, g.id, g.nom, g.class')
+			->select('u.pseudo, u.id')
 			->from('Utilisateur u')
 			->leftJoin('u.Groupe g')
             ->andWhere('g.code = ?', \Groupe::SENIOR)

@@ -43,7 +43,6 @@
 					'BilletSemaine' => $BilletSemaine,
 					'BilletHasard' => $BilletHasard,
 					'BilletAuteurs' => $BilletAuteurs,
-					'ListerRecrutements' => $ListerRecrutements,
 					'Tweets'   => $Tweets,
 					'Dictee' => $Dictee
 			)) ?>

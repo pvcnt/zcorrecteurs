@@ -492,20 +492,6 @@ class Utilisateur extends BaseUtilisateur
 			->delete('QuizScore')
 			->where('utilisateur_id = ?', $this->getId())
 			->execute();
-
-		$stmt = $dbh->prepare("
-		UPDATE zcov2_recrutements
-		SET recrutement_id_utilisateur = NULL
-		WHERE recrutement_id_utilisateur = :id");
-		$stmt->bindValue(':id', $this->getId());
-		$stmt->execute();
-
-		$stmt = $dbh->prepare("
-		UPDATE zcov2_recrutements_candidatures
-		SET candidature_id_utilisateur = NULL
-		WHERE candidature_id_utilisateur = :id");
-		$stmt->bindValue(':id', $this->getId());
-		$stmt->execute();
 	}
 	
 	public static function loadValidatorMetadata(ClassMetadata $metadata)

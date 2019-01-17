@@ -15,12 +15,12 @@
 	<?php foreach ($equipe as $i => $user): ?>
 		<li class="span2">
 			<div class="thumbnail center" style="height: 165px;">
-				<a href="<?php echo $view['router']->path('zco_user_profile', array('id' => $user->getId(), 'slug' => rewrite($user->getUsername()))) ?>" class="avatar-link" title="Groupe : <?php echo htmlspecialchars($user->getGroup()) ?>">
+				<a href="<?php echo $view['router']->path('zco_user_profile', array('id' => $user->getId(), 'slug' => rewrite($user->getUsername()))) ?>" class="avatar-link">
                     <?php echo $view['messages']->afficherAvatar($user) ?>
 				</a>
-				<div class="caption" style="text-align: center;">
-					<a href="<?php echo $view['router']->path('zco_user_profile', array('id' => $user->getId(), 'slug' => rewrite($user->getUsername()))) ?>" title="Groupe : <?php echo htmlspecialchars($user->getGroup()) ?>">
-						<span style="color: <?php echo $user['Groupe']['class'] ?>;"><?php echo htmlspecialchars($user->getUsername()) ?></span>
+				<div class="caption center">
+					<a href="<?php echo $view['router']->path('zco_user_profile', array('id' => $user->getId(), 'slug' => rewrite($user->getUsername()))) ?>">
+						<?php echo htmlspecialchars($user->getUsername()) ?>
 					</a>
 				</div>
 			</div>
@@ -36,5 +36,3 @@
 		<a href="<?php echo $view['router']->path('zco_user_profile', array('id' => $user->getId(), 'slug' => rewrite($user->getUsername()))) ?>"><?php echo htmlspecialchars($user->getUsername()) ?></a><?php echo $i === count($anciens) - 1 ? '.' : ',' ?>
 	<?php endforeach; ?>
 </p>
-
-<?php $view['javelin']->initBehavior('twipsy', array('selector' => '.avatar-link')) ?>

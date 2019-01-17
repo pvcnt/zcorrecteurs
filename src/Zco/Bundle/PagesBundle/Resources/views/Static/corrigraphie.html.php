@@ -3,7 +3,7 @@
 <?php echo $view->render('ZcoPagesBundle:Static:aboutTabs.html.php', array('currentTab' => 'corrigraphie')) ?>
 
 <div class="row">
-	<div class="span8">
+	<div class="span10">
 		<p style="text-align: justify;">
 			Début 2011, soit quatre ans après la création du site, fut prise la décision de fonder 
 			une association. Cette association, dénommée <a href="http://www.corrigraphie.org">Corrigraphie</a>, 
@@ -25,7 +25,7 @@
 
 	<div class="span4">
 		<a href="http://www.corrigraphie.org">
-			<img src="http://www.corrigraphie.org/sites/default/files/drupal_0.png" />
+			<img src="http://www.corrigraphie.org/sites/default/files/drupal_0.png" alt="Logo de Corrigraphie" />
 		</a>
 	
 		<p style="margin-top: 15px;"><em>Pour en savoir plus :</em></p>
@@ -37,7 +37,7 @@
 </div>
 
 <div class="row">
-	<div class="span6 well">
+	<div class="span7 well">
 		<h2>Devenir bénévole</h2>
 	
 		<p style="text-align: justify;">
@@ -69,7 +69,7 @@
 		</p>
 	</div>
 
-	<div class="span5 well">
+	<div class="span7 well">
 		<h2>Faire un don</h2>
 		<?php echo $this->render('ZcoPagesBundle:Donate:_form.html.php', array('chequeOuVirement' => false)) ?>
 	</div>

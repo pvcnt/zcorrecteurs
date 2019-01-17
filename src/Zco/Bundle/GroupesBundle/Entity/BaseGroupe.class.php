@@ -17,7 +17,6 @@
  * @property Doctrine_Collection $SecondaryGroup
  * @property Doctrine_Collection $Utilisateurs
  * @property Doctrine_Collection $UserPunishment
- * @property Doctrine_Collection $Recrutement
  * 
  * @package    ##PACKAGE##
  * @subpackage ##SUBPACKAGE##
@@ -79,9 +78,5 @@ abstract class BaseGroupe extends Doctrine_Record
         $this->hasMany('UserPunishment', array(
              'local' => 'groupe_id',
              'foreign' => 'to_group_id'));
-
-        $this->hasMany('Recrutement', array(
-             'local' => 'id',
-             'foreign' => 'recrutement_id_groupe'));
     }
 }

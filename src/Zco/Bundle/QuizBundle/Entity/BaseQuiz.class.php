@@ -17,7 +17,6 @@
  * @property Utilisateur $Utilisateur
  * @property Doctrine_Collection $Scores
  * @property Doctrine_Collection $QuizQuestion
- * @property Doctrine_Collection $Recrutement
  * 
  * @package    ##PACKAGE##
  * @subpackage ##SUBPACKAGE##
@@ -88,9 +87,5 @@ abstract class BaseQuiz extends Doctrine_Record
         $this->hasMany('QuizQuestion', array(
              'local' => 'id',
              'foreign' => 'quiz_id'));
-
-        $this->hasMany('Recrutement', array(
-             'local' => 'id',
-             'foreign' => 'recrutement_id_quiz'));
     }
 }

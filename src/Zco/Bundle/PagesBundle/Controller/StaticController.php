@@ -21,8 +21,9 @@
 
 namespace Zco\Bundle\PagesBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Zco\Bundle\CoreBundle\Controller\Controller;
 use Zco\Bundle\PagesBundle\Entity\Contact;
 use Zco\Bundle\PagesBundle\Form\Type\ContactType;
 
@@ -38,9 +39,8 @@ class StaticController extends Controller
      */
     public function indexAction()
     {
-        \Page::$titre = 'À propos des zCorrecteurs';
-        \Page::$description = 'Apprenez-en plus sur le site et son histoire et '
-            . 'découvrez quelques chiffres marquants.';
+        $this->setBreadcrumb(['À propos des zCorrecteurs']);
+        \Page::$description = 'Apprenez-en plus sur le site et son histoire.';
 
         return $this->render('ZcoPagesBundle:Static:about.html.php');
     }
@@ -50,8 +50,9 @@ class StaticController extends Controller
      */
     public function bannersAction()
     {
-        \Page::$titre = 'Aider et promouvoir le site';
-        \Page::$description = 'Découvrez une série de bannières et images que nous mettons à votre disposition si vous souhaitez faire la promotion du site.';
+        $this->setBreadcrumb(['Aidez-nous à promouvoir le site']);
+        \Page::$description = 'Découvrez une série de bannières et images que nous mettons à votre '
+            . 'disposition si vous souhaitez faire la promotion du site.';
 
         return $this->render('ZcoPagesBundle:Static:banners.html.php', array(
             'bannieres' => array(
@@ -71,7 +72,7 @@ class StaticController extends Controller
      */
     public function teamAction()
     {
-        \Page::$titre = 'Notre équipe';
+        $this->setBreadcrumb(['Notre équipe']);
         \Page::$description = 'Ceux qui font vivre le site jour après jour, en '
             . 'corrigeant vos écrits, nourissant le contenu ou maintenant le site '
             . 'en état de marche.';
@@ -87,7 +88,7 @@ class StaticController extends Controller
      */
     public function corrigraphieAction()
     {
-        \Page::$titre = 'L\'association Corrigraphie';
+        $this->setBreadcrumb(['L\'association Corrigraphie']);
         \Page::$description = 'Venez découvrir l\'association qui se cache derrière '
             . 'le site, Corrigraphie, son rôle et ses activités.';
 
@@ -100,9 +101,8 @@ class StaticController extends Controller
      */
     public function openSourceAction()
     {
-        \Page::$titre = 'Logiciel libre';
-        \Page::$description = 'zCorrecteurs.fr utilise de nombreux logiciels '
-            . 'libres et en retour met à disposition son code source sous licence AGPL.';
+        $this->setBreadcrumb(['Logiciel libre']);
+        \Page::$description = 'zCorrecteurs.fr publie son code source sous licence libre.';
 
         return $this->render('ZcoPagesBundle:Static:openSource.html.php');
     }
@@ -111,10 +111,11 @@ class StaticController extends Controller
      * Formulaire de contact de l'équipe administrative du site.
      *
      * @param Request $request
+     * @return Response
      */
     public function contactAction(Request $request)
     {
-        \Page::$titre = 'Demande de contact';
+        $this->setBreadcrumb(['Demande de contact']);
 
         $contact = new Contact(!empty($_GET['objet']) ? $_GET['objet'] : null);
         $form = $this->createForm(ContactType::class, $contact);
@@ -160,7 +161,7 @@ class StaticController extends Controller
 
     public function donateAction()
     {
-        \Page::$titre = 'Faire un don';
+        $this->setBreadcrumb(['Faire un don']);
         \Page::$description = 'Découvrez comment faire un don au site et consultez la liste de ceux qui nous ont déjà aidé !';
 
         return $this->render('ZcoPagesBundle:Donate:index.html.php');
@@ -168,42 +169,51 @@ class StaticController extends Controller
 
     public function donateOtherWaysAction()
     {
-        \Page::$titre = 'Faire un don par chèque ou virement';
+        $this->setBreadcrumb([
+            'Faire un don' => $this->generateUrl('zco_donate_index'),
+            'Donner par chèque ou virement',
+        ]);
 
         return $this->render('ZcoPagesBundle:Donate:otherWays.html.php');
     }
 
     public function donateFiscalDeductionAction()
     {
-        \Page::$titre = 'Déduction fiscale des dons';
+        $this->setBreadcrumb([
+            'Faire un don' => $this->generateUrl('zco_donate_index'),
+            'Déduction fiscale',
+        ]);
 
         return $this->render('ZcoPagesBundle:Donate:fiscalDeduction.html.php');
     }
 
     public function donateThanksAction()
     {
-        \Page::$titre = 'Merci votre soutien';
+        $this->setBreadcrumb([
+            'Faire un don' => $this->generateUrl('zco_donate_index'),
+            'Merci pour votre soutien',
+        ]);
 
         return $this->render('ZcoPagesBundle:Donate:thanks.html.php');
     }
 
     public function mentionsAction()
     {
-        \Page::$titre = 'Mentions légales';
+        $this->setBreadcrumb(['Mentions légales']);
 
         return $this->render('ZcoPagesBundle:Static:mentions.html.php');
     }
 
     public function privacyAction()
     {
-        \Page::$titre = 'Politique de confidentialité';
+        $this->setBreadcrumb(['Politique de confidentialité']);
 
         return $this->render('ZcoPagesBundle:Static:privacy.html.php');
     }
 
     public function rulesAction()
     {
-        \Page::$titre = 'Règlement';
+        $this->setBreadcrumb(['Règlement']);
 
         return $this->render('ZcoPagesBundle:Static:rules.html.php');
     }

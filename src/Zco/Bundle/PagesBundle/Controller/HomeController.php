@@ -49,7 +49,6 @@ class HomeController extends Controller
         $vars = array();
         $vars['quel_bloc'] = $registry->get('bloc_accueil');
         $vars['Informations'] = $registry->get('accueil_informations');
-        $vars['ListerRecrutements'] = null;
         $vars['QuizSemaine'] = null;
         $vars['SujetSemaine'] = null;
         $vars['BilletSemaine'] = null;

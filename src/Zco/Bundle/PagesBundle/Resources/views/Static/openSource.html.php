@@ -2,7 +2,7 @@
 
 <?php echo $view->render('ZcoPagesBundle:Static:aboutTabs.html.php', array('currentTab' => 'opensource')) ?>
 
-<h1>Ce site est un logiciel libre. <a href="http://developpeurs.zcorrecteurs.fr">En savoir plus &rarr;</a></h1>
+<h1>Ce site est un logiciel libre. <a href="http://dev.zcorrecteurs.fr">En savoir plus &rarr;</a></h1>
 
 <p class="good">
 	L’équipe de zCorrecteurs.fr a la particularité de mélanger en son sein 
@@ -25,7 +25,7 @@
 <p class="good">
 	Le code source de ce site est disponible sous licence AGPL, ce qui signifie 
 	que vous pouvez librement le consulter, l’analyser et y contribuer. Il est 
-	publié <a href="https://github.com/zcorrecteurs/zcorrecteurs.fr">sur notre dépôt GitHub</a>.
+	publié <a href="https://github.com/zcorrecteurs">sur notre dépôt GitHub</a>.
 	Toute personne souhaitant aider au développement de ce site peut dorénavant 
 	le faire, que ce soit en nous aidant à corriger des dysfontionnements ou en 
 	développant de nouvelles fonctionnalités demandées par la communauté.
@@ -33,7 +33,7 @@
 
 <p class="well center" style="font-size: 1.1em; padding: 10px; line-height: 1.5em;">
 	Toutes les ressources pour les développeurs sont disponibles sur notre portail dédié<br />
-	<a href="http://developpeurs.zcorrecteurs.fr" class="bold">developpeurs.zcorrecteurs.fr</a>
+	<a href="http://dev.zcorrecteurs.fr" class="bold">dev.zcorrecteurs.fr</a>
 </p>
 
 <h2>Logiciels libres utilisés</h2>
@@ -48,9 +48,7 @@
 <ul>
 	<li><a href="http://www.apache.org/">Apache</a></li>
 	<li><a href="http://twitter.github.com/bootstrap/">Bootstrap</a></li>
-	<li><a href="http://www.debian.org/index.fr.html">Debian</a></li>
 	<li><a href="http://doctrine-project.org/">Doctrine</a></li>
-	<li><a href="http://www.drupal.org/">Drupal</a></li>
 	<li><a href="http://git-scm.com/">Git</a></li>
 	<li><a href="http://jquery.com">jQuery</a></li>
 	<li><a href="http://mootools.net/">Mootools</a></li>

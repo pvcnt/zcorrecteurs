@@ -72,7 +72,7 @@ class MessagesHelper extends Helper
             $key = $key ?? 'avatar';
             $filename = isset($arr->$key) ? $arr->$key : null;
         }
-        if (isset($filename)) {
+        if ($filename) {
             return $this->filesystem->resolve('avatars/' . $filename);
         }
 
