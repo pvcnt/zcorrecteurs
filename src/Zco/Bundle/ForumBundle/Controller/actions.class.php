@@ -23,6 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
+use Zco\Bundle\ForumBundle\Domain\ForumDAO;
 use Zco\Bundle\ForumBundle\Domain\TopicDAO;
 
 class ForumActions extends Controller
@@ -55,12 +56,9 @@ class ForumActions extends Controller
 
 	public function executeAjaxDeplacementMassif()
 	{
-		//Inclusion du modèle
-		include(BASEPATH.'/src/Zco/Bundle/ForumBundle/modeles/categories.php');
-
 		if(verifier('deplacer_sujets', $_GET['f']))
 		{
-			$CategoriesForums = ListerCategoriesForum();
+			$CategoriesForums = ForumDAO::ListerCategoriesForum();
 			if($CategoriesForums)
 			{
 				$ret = '<select name="forum_cible">';
@@ -101,12 +99,9 @@ class ForumActions extends Controller
 
 	public function executeAjaxDeplacerSujet()
 	{
-		//Inclusion du modèle
-		include(BASEPATH.'/src/Zco/Bundle/ForumBundle/modeles/categories.php');
-
 		if(!empty($_POST['fofo_actuel']) AND is_numeric($_POST['fofo_actuel']) AND verifier('deplacer_sujets', $_POST['fofo_actuel']) AND !empty($_POST['id']) AND is_numeric($_POST['id']))
 		{
-			$CategoriesForums = ListerCategoriesForum();
+			$CategoriesForums = ForumDAO::ListerCategoriesForum();
 			if($CategoriesForums)
 			{
 				$ret = '

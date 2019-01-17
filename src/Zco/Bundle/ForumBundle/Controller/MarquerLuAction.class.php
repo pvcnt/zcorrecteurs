@@ -20,6 +20,7 @@
  */
 
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Zco\Bundle\ForumBundle\Domain\ReadMarkerDAO;
 
 /**
  * Contrôleur marquant tous les sujets comme lu.
@@ -28,23 +29,18 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
  */
 class MarquerLuAction extends ForumActions
 {
-	public function execute()
-	{
+    public function execute()
+    {
         if (!verifier('connecte')) {
             throw new AccessDeniedHttpException();
         }
 
-		include(__DIR__.'/../modeles/membres.php');
+        ReadMarkerDAO::MarquerForumsLus($_GET['id'] == 1);
 
-		if($_GET['id'] == 1)
-		{
-			MarquerForumsLus(true);
-			return redirect('Tous les sujets ont été marqués comme lus.', '/forum/');
-		}
-		else if($_GET['id'] == 2)
-		{
-			MarquerForumsLus(false);
-			return redirect('Tous les sujets ont été marqués comme non lus.', '/forum/');
-		}
-	}
+        if ($_GET['id'] == 1) {
+            return redirect('Tous les sujets ont été marqués comme lus.', '/forum/');
+        } else {
+            return redirect('Tous les sujets ont été marqués comme non lus.', '/forum/');
+        }
+    }
 }

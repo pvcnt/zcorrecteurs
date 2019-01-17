@@ -24,6 +24,7 @@ namespace Zco\Bundle\PagesBundle\Sitemap;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Zco\Bundle\BlogBundle\Domain\BlogDAO;
+use Zco\Bundle\ForumBundle\Domain\ForumDAO;
 use Zco\Bundle\ForumBundle\Domain\TopicDAO;
 
 final class SitemapFactory
@@ -68,12 +69,11 @@ final class SitemapFactory
             ));
         }
 
-        include_once(__DIR__ . '/../../ForumBundle/modeles/forums.php');
         $links[] = new SitemapLink(URL_SITE . '/forum/', array(
             'changefreq' => 'daily',
             'priority' => '0.7',
         ));
-        foreach (ListerSujetsId(array(34, 45, 42, 43, 44, 46, 47, 91, 92, 93, 94, 178)) as $topic) {
+        foreach (ForumDAO::ListerSujetsId(array(34, 45, 42, 43, 44, 46, 47, 91, 92, 93, 94, 178)) as $topic) {
             if (!TopicDAO::sujetIsArchive($topic['sujet_id'])) {
                 $url = URL_SITE . '/forum/sujet-' . $topic['sujet_id'] . '-' . rewrite($topic['sujet_titre']) . '.html';
                 $links[] = new SitemapLink($url, array(

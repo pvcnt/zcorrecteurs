@@ -21,6 +21,7 @@
 
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\ForumBundle\Domain\ForumDAO;
 use Zco\Bundle\ForumBundle\Domain\TopicDAO;
 
 /**
@@ -32,9 +33,6 @@ class FusionnerAction extends ForumActions
 {
     public function execute()
     {
-        //Inclusion des modèles
-        include(__DIR__ . '/../modeles/forums.php');
-
         !isset($_POST['titre']) && $_POST['titre'] = null;
         if (empty($_GET['id']) || !is_numeric($_GET['id'])) {
             throw new NotFoundHttpException();
@@ -67,7 +65,7 @@ class FusionnerAction extends ForumActions
 
             //Si chercher des sujets
             if (isset($_POST['search']) && !empty($_POST['titre'])) {
-                $ListerSujets = ListerSujetsTitre($_POST['titre']);
+                $ListerSujets = ForumDAO::ListerSujetsTitre($_POST['titre']);
             }
 
             //On récupère la liste des sujets
@@ -79,7 +77,7 @@ class FusionnerAction extends ForumActions
             if (!in_array($_GET['id'], $in))
                 $in[] = $_GET['id'];
 
-            $ListerSujetsSelectionnes = ListerSujetsIn($in);
+            $ListerSujetsSelectionnes = ForumDAO::ListerSujetsIn($in);
 
             //Inclusion de la vue
             fil_ariane($InfosSujet['sujet_forum_id'], array(

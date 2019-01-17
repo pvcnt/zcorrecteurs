@@ -21,6 +21,7 @@
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Zco\Bundle\ForumBundle\Domain\ForumDAO;
 use Zco\Bundle\ForumBundle\Domain\PollDAO;
 use Zco\Bundle\ForumBundle\Domain\TopicDAO;
 
@@ -33,10 +34,6 @@ class SujetAction extends ForumActions
 {
 	public function execute()
 	{
-		//Inclusion des modèles
-		include(__DIR__.'/../modeles/forums.php');
-		include(__DIR__.'/../modeles/categories.php');
-
 		//On récupère les infos sur le sujet
 		list($InfosSujet, $InfosForum) = $this->initSujet();
 		zCorrecteurs::VerifierFormatageUrl($InfosSujet['sujet_titre'], true, true, 1);
@@ -99,7 +96,7 @@ class SujetAction extends ForumActions
 		}
 
 		$ListerMessages = TopicDAO::ListerMessages($_GET['id'], $debut, $nombreDeMessagesAafficher);
-		$SautRapide = RecupererSautRapide($InfosSujet['sujet_forum_id']);
+		$SautRapide = ForumDAO::RecupererSautRapide($InfosSujet['sujet_forum_id']);
 		$PremierMessage = TopicDAO::ListerMessages($_GET['id'], 0, 1);
 
 		//--- Gestion des lus / non-lus ---

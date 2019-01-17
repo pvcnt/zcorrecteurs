@@ -23,6 +23,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
+use Zco\Bundle\ForumBundle\Domain\ForumDAO;
+use Zco\Bundle\ForumBundle\Domain\ReadMarkerDAO;
 use Zco\Bundle\ForumBundle\Domain\TopicDAO;
 
 /**
@@ -34,11 +36,6 @@ class ForumAction extends ForumActions
 {
     public function execute()
     {
-        // Inclusion des modèles
-        include(__DIR__ . '/../modeles/forums.php');
-        include(__DIR__ . '/../modeles/categories.php');
-        include(__DIR__ . '/../modeles/membres.php');
-
         if (empty($_GET['id']) || !is_numeric($_GET['id'])) {
             throw new NotFoundHttpException();
         } else {
@@ -229,7 +226,7 @@ class ForumAction extends ForumActions
                 case 'nonlu':
                     $lu = $_POST['action'] == 'lu';
                     foreach ($_POST['sujet'] as $sujet => &$on) {
-                        $on && MarquerSujetLu($sujet, $lu);
+                        $on && ReadMarkerDAO::MarquerSujetLu($sujet, $lu);
                     }
                     return redirect(
                         $lu ? 'Les sujets sélectionnés ont été marqués comme lus.' : 'Les sujets sélectionnés ont été marqués comme non lus.',
@@ -239,7 +236,7 @@ class ForumAction extends ForumActions
             }
         } else {
             $nbSujetsParPage = 30;
-            $CompterSujets = CompterSujets($_GET['id']);
+            $CompterSujets = ForumDAO::CompterSujets($_GET['id']);
             $NombreDePages = ceil($CompterSujets / $nbSujetsParPage);
             zCorrecteurs::VerifierFormatageUrl($InfosForum['cat_nom'], true, false, $NombreDePages);
             $_GET['p'] = !empty($_GET['p']) && is_numeric($_GET['p']) ? $_GET['p'] : $NombreDePages;
@@ -266,9 +263,9 @@ class ForumAction extends ForumActions
             $debut = ($NombreDePages - $_GET['p']) * $nbSujetsParPage;
 
             // On récupère les sujets du forum depuis la fonction du modèle.
-            list($ListerSujets, $Tags) = ListerSujets($debut, $nbSujetsParPage, $_GET['id']);
+            list($ListerSujets, $Tags) = ForumDAO::ListerSujets($debut, $nbSujetsParPage, $_GET['id']);
 
-            $derniere_lecture = DerniereLecture($_SESSION['id']);
+            $derniere_lecture = ReadMarkerDAO::DerniereLecture($_SESSION['id']);
 
             $Lu = array();
             $Pages = array();
@@ -286,7 +283,7 @@ class ForumAction extends ForumActions
                         'derniere_lecture_globale' => $derniere_lecture
                     );
 
-                    $Lu[$clef] = LuNonluForum($EnvoiDesInfos);
+                    $Lu[$clef] = ForumDAO::LuNonluForum($EnvoiDesInfos);
 
                     // Liste des pages
                     $nbMessagesParPage = 20;
@@ -295,7 +292,7 @@ class ForumAction extends ForumActions
                 }
             }
 
-            $SautRapide = RecupererSautRapide($_GET['id']);
+            $SautRapide = ForumDAO::RecupererSautRapide($_GET['id']);
             $action_etendue_a_plusieurs_messages_actif =
                 verifier('connecte') ||
                 verifier('fermer_sujets', $_GET['id']) ||
@@ -306,7 +303,7 @@ class ForumAction extends ForumActions
 
             // Listage des forums fils s'il y en a
             if ($InfosForum['cat_droite'] - $InfosForum['cat_gauche'] != 1) {
-                $ListerUneCategorie = ListerCategoriesForum($InfosForum);
+                $ListerUneCategorie = ForumDAO::ListerCategoriesForum($InfosForum);
                 $LuForum = array();
                 $nbIndex = 0;
                 foreach ($ListerUneCategorie as $cat) {
@@ -317,7 +314,7 @@ class ForumAction extends ForumActions
                             'title' => 'Pas de nouvelles réponses, jamais participé'
                         );
                     } else {
-                        $LuForum[$cat['cat_id']] = LuNonluCategorie(array(
+                        $LuForum[$cat['cat_id']] = ForumDAO::LuNonluCategorie(array(
                             'lunonlu_utilisateur_id' => $cat['lunonlu_utilisateur_id'],
                             'lunonlu_sujet_id' => $cat['lunonlu_sujet_id'],
                             'lunonlu_message_id' => $cat['lunonlu_message_id'],

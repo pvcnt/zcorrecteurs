@@ -20,6 +20,7 @@
  */
 
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Zco\Bundle\ForumBundle\Domain\ReadMarkerDAO;
 use Zco\Bundle\ForumBundle\Domain\TopicDAO;
 
 /**
@@ -39,9 +40,6 @@ class MarquerSujetNonLuAction extends ForumActions
         if (empty($_GET['token']) || $_GET['token'] != $_SESSION['token'])
             throw new Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
-        //Inclusion des modèles
-        include(__DIR__ . '/../modeles/membres.php');
-
         //Si on n'a pas envoyé de sujet
         if (empty($_GET['id']) || !is_numeric($_GET['id']))
             throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
@@ -57,7 +55,8 @@ class MarquerSujetNonLuAction extends ForumActions
                 MSG_ERROR
             );
 
-        MarquerSujetLu($_GET['id'], false);
+        ReadMarkerDAO::MarquerSujetLu($_GET['id'], false);
+
         return redirect(
             'Le sujet a bien été marqué comme non-lu.',
             'forum-' . $InfosSujet['sujet_forum_id'] . '.html'

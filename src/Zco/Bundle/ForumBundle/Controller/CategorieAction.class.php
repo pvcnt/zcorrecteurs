@@ -21,6 +21,8 @@
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
+use Zco\Bundle\ForumBundle\Domain\ForumDAO;
+use Zco\Bundle\ForumBundle\Domain\ReadMarkerDAO;
 
 /**
  * Contrôleur gérant l'affichage des forums d'une catégorie.
@@ -31,10 +33,6 @@ class CategorieAction extends ForumActions
 {
 	public function execute()
 	{
-		//Inclusion du modèle
-		include(__DIR__.'/../modeles/categories.php');
-		include(__DIR__.'/../modeles/membres.php');
-
 		//Si aucune catégorie n'a été spécifiée
 		if(empty($_GET['id']) || !is_numeric($_GET['id']))
 		{
@@ -57,13 +55,13 @@ class CategorieAction extends ForumActions
 		zCorrecteurs::VerifierFormatageUrl($InfosCategorie['cat_nom'], true);
 
 		//On récupère la catégorie et ses forums.
-		$ListerUneCategorie = ListerCategoriesForum($InfosCategorie);
+		$ListerUneCategorie = ForumDAO::ListerCategoriesForum($InfosCategorie);
 		Page::$robots = 'noindex,follow';
 
 		//Appel de la fonction lu / non-lu
 		if ($ListerUneCategorie)
 		{
-			$derniere_lecture = DerniereLecture($_SESSION['id']);
+			$derniere_lecture = ReadMarkerDAO::DerniereLecture($_SESSION['id']);
 			$Lu = array();
 			$nbIndex = 0;
 			foreach ($ListerUneCategorie as $cat)
@@ -78,7 +76,7 @@ class CategorieAction extends ForumActions
 				}
 				else
 				{
-					$Lu[$cat['cat_id']] = LuNonluCategorie(array(
+					$Lu[$cat['cat_id']] = ForumDAO::LuNonluCategorie(array(
 						'lunonlu_utilisateur_id'   => $cat['lunonlu_utilisateur_id'],
 						'lunonlu_sujet_id'         => $cat['lunonlu_sujet_id'],
 						'lunonlu_message_id'       => $cat['lunonlu_message_id'],

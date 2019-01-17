@@ -20,6 +20,8 @@
  */
 
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Zco\Bundle\ForumBundle\Domain\ForumDAO;
+use Zco\Bundle\ForumBundle\Domain\ReadMarkerDAO;
 
 /**
  * Affichage des sujets en favoris, en coup de coeur, etc
@@ -34,12 +36,7 @@ class SuiviAction extends ForumActions
             throw new AccessDeniedHttpException();
         }
 
-		//Inclusion des modèles
-		include(__DIR__.'/../modeles/forums.php');
-		include(__DIR__.'/../modeles/categories.php');
-		include(__DIR__.'/../modeles/membres.php');
-
-		$CompterSujets = CompterSujets(NULL);
+		$CompterSujets = ForumDAO::CompterSujets(NULL);
 		$nbSujetsParPage = 30;
 		$NombreDePages = ceil($CompterSujets / $nbSujetsParPage);
 		$_GET['p'] = !empty($_GET['p']) && is_numeric($_GET['p']) ? $_GET['p'] : $NombreDePages;
@@ -52,9 +49,9 @@ class SuiviAction extends ForumActions
 
 		$tableau_pages = liste_pages($_GET['p'], $NombreDePages, $CompterSujets, $nbSujetsParPage, '', true);
 		$debut = ($NombreDePages-$_GET['p']) * $nbSujetsParPage;
-		list($ListerSujets, $Tags) = ListerSujets($debut, $nbSujetsParPage);
+		list($ListerSujets, $Tags) = ForumDAO::ListerSujets($debut, $nbSujetsParPage);
 
-		$derniere_lecture = DerniereLecture($_SESSION['id']);
+		$derniere_lecture = ReadMarkerDAO::DerniereLecture($_SESSION['id']);
 		$Lu = $Pages = array();
 
 		if($ListerSujets)
@@ -71,7 +68,7 @@ class SuiviAction extends ForumActions
 				'date_dernier_message' => $valeur['message_timestamp'],
 				'derniere_lecture_globale' => $derniere_lecture
 				);
-				$Lu[$clef] = LuNonluForum($EnvoiDesInfos);
+				$Lu[$clef] = ForumDAO::LuNonluForum($EnvoiDesInfos);
 
 				// Liste des pages
 				$nbMessagesParPage = 20;

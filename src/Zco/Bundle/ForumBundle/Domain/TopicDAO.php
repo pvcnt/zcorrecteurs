@@ -1334,5 +1334,4 @@ class TopicDAO
             $stmt->closeCursor();
         }
     }
-
 }

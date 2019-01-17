@@ -26,6 +26,7 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Zco\Bundle\BlogBundle\Domain\BlogDAO;
 use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
 use Zco\Bundle\DicteesBundle\Domain\DictationDAO;
+use Zco\Bundle\ForumBundle\Domain\ForumDAO;
 use Zco\Bundle\ForumBundle\Domain\TopicDAO;
 
 /**
@@ -41,9 +42,6 @@ class HomeController extends Controller
         $cache = $this->get('cache');
 
         \Page::$titre = 'zCorrecteurs.fr - Les réponses à toutes vos questions concernant la langue française !';
-
-        // Inclusion des modèles.
-        include_once(BASEPATH . '/src/Zco/Bundle/ForumBundle/modeles/statistiques_accueil.php');
 
         // Bloc « à tout faire »
         $vars = array();
@@ -104,7 +102,7 @@ class HomeController extends Controller
         $vars['QuizHasard'] = $quizRepository->hasard();
 
         // Forum
-        $vars['StatistiquesForum'] = RecupererStatistiquesForum();
+        $vars['StatistiquesForum'] = ForumDAO::RecupererStatistiquesForum();
 
         // Inclusion de la vue
         fil_ariane('Accueil');
@@ -147,15 +145,12 @@ class HomeController extends Controller
         }
 
         //Cas du sujet mis en valeur
-        //Inclusion des modèles
-        include(BASEPATH . '/src/Zco/Bundle/ForumBundle/modeles/forums.php');
-
         $infos_sujet = $registry->get('accueil_sujet');
         if (empty($infos_sujet)) $infos_sujet = array();
         $image_sujet = array_key_exists('image', $infos_sujet) ? $infos_sujet['image'] : '';
 
         if (!empty($_POST['sujet'])) {
-            $choix_sujets = ListerSujetsTitre($_POST['sujet']);
+            $choix_sujets = ForumDAO::ListerSujetsTitre($_POST['sujet']);
             if (count($choix_sujets) == 1) {
                 $sujet = array(
                     'sujet_id' => $choix_sujets[0]['sujet_id'],

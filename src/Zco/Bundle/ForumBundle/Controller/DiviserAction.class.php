@@ -22,6 +22,7 @@
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
+use Zco\Bundle\ForumBundle\Domain\ForumDAO;
 use Zco\Bundle\ForumBundle\Domain\TopicDAO;
 
 /**
@@ -33,10 +34,6 @@ class DiviserAction extends ForumActions
 {
     public function execute()
     {
-        //Inclusion des modèles
-        include(__DIR__ . '/../modeles/forums.php');
-        include(__DIR__ . '/../modeles/categories.php');
-
         if (empty($_GET['id']) || !is_numeric($_GET['id'])) {
             throw new NotFoundHttpException();
         }
@@ -65,7 +62,7 @@ class DiviserAction extends ForumActions
                 return redirect('Le sujet a bien été divisé.', 'sujet-' . $_GET['id'] . '-' . rewrite($InfosSujet['sujet_titre']) . '.html');
             }
 
-            $ListerCategories = ListerCategoriesForum();
+            $ListerCategories = ForumDAO::ListerCategoriesForum();
             $ListerMessages = TopicDAO::ListerMessages($_GET['id'], 0, $InfosSujet['nombre_de_messages']);
 
             if (count($ListerMessages) < 2)

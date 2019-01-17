@@ -22,6 +22,7 @@
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zco\Bundle\ForumBundle\Domain\MessageDAO;
+use Zco\Bundle\ForumBundle\Domain\ReadMarkerDAO;
 
 /**
  * Contrôleur pour le marquage du dernier message lu d'un sujet
@@ -36,9 +37,6 @@ class MarquerDernierMessageLuAction extends ForumActions
         if (empty($_GET['token']) || $_GET['token'] != $_SESSION['token'])
             throw new AccessDeniedHttpException();
 
-        //Inclusion des modèles
-        include(__DIR__ . '/../modeles/membres.php');
-
         //Si on n'a pas envoyé de message
         if (empty($_GET['id']) || !is_numeric($_GET['id']))
             throw new NotFoundHttpException();
@@ -47,12 +45,12 @@ class MarquerDernierMessageLuAction extends ForumActions
         if (empty($InfosMessage) || !verifier('voir_sujets', $InfosMessage['sujet_forum_id']))
             throw new NotFoundHttpException();
 
-        if (!$InfosMessage['lunonlu_utilisateur_id'])
+        if (!$InfosMessage['lunonlu_utilisateur_id']) {
             return redirect('Vous n\'avez jamais lu ce sujet.', 'sujet-' . $InfosMessage['sujet_id'] . '-' . rewrite($InfosMessage['sujet_titre']) . '.html', MSG_ERROR);
+        }
 
-        $titre = @substr($InfosMessage['message_texte'], 0, strpos($InfosMessage['message_texte'], ' ', 20));
+        ReadMarkerDAO::MarquerDernierMessageLu($_GET['id'], $InfosMessage['sujet_id']);
 
-        MarquerDernierMessageLu($_GET['id'], $InfosMessage['sujet_id']);
         return redirect(
             'Le message a bien été marqué comme le dernier lu du sujet',
             'forum-' . $InfosMessage['sujet_forum_id'] . '.html'

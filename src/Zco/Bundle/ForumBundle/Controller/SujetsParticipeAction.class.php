@@ -20,6 +20,8 @@
  */
 
 use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
+use Zco\Bundle\ForumBundle\Domain\ForumDAO;
+use Zco\Bundle\ForumBundle\Domain\ReadMarkerDAO;
 use Zco\Bundle\UserBundle\Domain\UserDAO;
 
 /**
@@ -33,7 +35,6 @@ class SujetsParticipeAction extends ForumActions
 	public function execute()
 	{
 		include(__DIR__.'/../modeles/membres.php');
-		include(__DIR__.'/../modeles/forums.php');
 
 		$InfosUtilisateur = UserDAO::InfosUtilisateur($_GET['id']);
 		if(empty($InfosUtilisateur))
@@ -84,7 +85,7 @@ class SujetsParticipeAction extends ForumActions
 		$Pages = array();
 		if($ListerSujetsParticipe)
 		{
-			$derniere_lecture = DerniereLecture($_SESSION['id']);
+			$derniere_lecture = ReadMarkerDAO::DerniereLecture($_SESSION['id']);
 			foreach($ListerSujetsParticipe as $clef => $valeur)
 			{
 				$EnvoiDesInfos = array(
@@ -96,7 +97,7 @@ class SujetsParticipeAction extends ForumActions
 					'date_dernier_message' => $valeur['message_timestamp'],
 					'derniere_lecture_globale' => $derniere_lecture
 				);
-				$Lu[$clef] = LuNonluForum($EnvoiDesInfos);
+				$Lu[$clef] = ForumDAO::LuNonluForum($EnvoiDesInfos);
 
 				// Liste des pages
 				$nbMessagesParPage = 20;

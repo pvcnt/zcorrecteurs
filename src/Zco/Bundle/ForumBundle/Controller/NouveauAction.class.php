@@ -33,9 +33,6 @@ class NouveauAction extends ForumActions
 {
 	public function execute()
 	{
-		//Inclusion des modèles
-		include(__DIR__.'/../modeles/forums.php');
-
 		if (empty($_GET['id']) || !is_numeric($_GET['id']))
 		{
             throw new NotFoundHttpException();

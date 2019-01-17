@@ -21,6 +21,8 @@
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
+use Zco\Bundle\ForumBundle\Domain\ForumDAO;
+use Zco\Bundle\ForumBundle\Domain\ReadMarkerDAO;
 
 /**
  * Contrôleur gérant l'accueil des forums (listage des catégories + forums).
@@ -38,13 +40,9 @@ class IndexAction extends ForumActions
 		{
 			return new RedirectResponse('/forum/'.htmlspecialchars($_POST['saut_forum']));
 		}
-		
-		//Inclusion du modèle
-		include(__DIR__.'/../modeles/categories.php');
-		include(__DIR__.'/../modeles/membres.php');
 
-		$ListerCategories = ListerCategoriesForum(array());
-		$derniere_lecture = DerniereLecture($_SESSION['id']);
+		$ListerCategories = ForumDAO::ListerCategoriesForum(array());
+		$derniere_lecture = ReadMarkerDAO::DerniereLecture($_SESSION['id']);
 
 		//Appel de la fonction lu / non-lu
 		$Lu = array();
@@ -63,7 +61,7 @@ class IndexAction extends ForumActions
 				}
 				else
 				{
-					$Lu[$cat['cat_id']] = LuNonluCategorie(array(
+					$Lu[$cat['cat_id']] = ForumDAO::LuNonluCategorie(array(
 						'lunonlu_utilisateur_id'   => $cat['lunonlu_utilisateur_id'],
 						'lunonlu_sujet_id'         => $cat['lunonlu_sujet_id'],
 						'lunonlu_message_id'       => $cat['lunonlu_message_id'],

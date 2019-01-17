@@ -6,7 +6,7 @@ namespace Zco\Bundle\ForumBundle\Domain;
 /**
  * @author DJ Fox <djfox@zcorrecteurs.fr>
  */
-class MessageDAO
+final class MessageDAO
 {
     /**
      * Change le statut du message (a aidé ou non).
