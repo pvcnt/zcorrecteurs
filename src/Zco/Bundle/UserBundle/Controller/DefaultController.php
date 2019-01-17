@@ -21,11 +21,12 @@
 
 namespace Zco\Bundle\UserBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\CoreBundle\Controller\Controller;
 use Zco\Bundle\GroupesBundle\Domain\GroupDAO;
 use Zco\Bundle\UserBundle\Form\Type\NewUsernameType;
 
@@ -129,7 +130,11 @@ class DefaultController extends Controller
             throw new NotFoundHttpException('Cet utilisateur n\'existe pas.');
         }
 
-        //zCorrecteurs::VerifierFormatageUrl($user->getUsername(), true);
+        if ($slug !== rewrite($user->getUsername())) {
+            // Redirect for SEO if slug is wrong.
+            return new RedirectResponse($this->generateUrl('zco_user_profile', ['id' => $id, 'slug' => rewrite($user->getUsername())]), 301);
+        }
+
         $vars = array('user' => $user);
 
         $firstChar = remove_accents($user->getUsername());
@@ -164,8 +169,7 @@ class DefaultController extends Controller
         $vars['canAdmin'] = verifier('groupes_changer_membre') || verifier('membres_editer_titre') || verifier('options_editer_profils');
         $vars['own'] = $_SESSION['id'] == $user->getId();
 
-        fil_ariane(htmlspecialchars($user->getUsername()));
-        \Page::$titre = 'Profil d' . $art . htmlspecialchars($user->getUsername());
+        $this->setBreadcrumb(['Profil d' . $art . htmlspecialchars($user->getUsername())]);
         \Page::$description = 'Pour en savoir plus sur la personnalité d' . $art . htmlspecialchars($user->getUsername()) . ' et son activité sur le site';
 
         return $this->render('ZcoUserBundle::profile.html.php', $vars);
