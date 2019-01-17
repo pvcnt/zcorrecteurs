@@ -39,43 +39,7 @@
 	</a>
 </div>
 <?php endif ?>
-<div style="margin-top: 5px;"><div class="btn-group">
-    <a class="btn dropdown-toggle" style="display: inline-block; width: 200px;" data-toggle="dropdown" href="#">
-    	<i class="icon-comment"></i>
-    	<?php echo $own ? 'Mon' : 'Son' ?> activité sur le site
-    	<span class="caret"></span>
-    </a>
-    <ul class="dropdown-menu">
-    	<li>
-    		<a href="/forum/detail-messages-<?php echo $user->getId(); ?>.html">
-    			Détail de <?php echo $own ? 'mon' : 'son' ?> activité sur le forum
-    		</a>
-    	</li>
-        <li>
-        	<a href="/forum/messages-<?php echo $user->getId() ?>-<?php echo rewrite($user->getUsername()) ?>.html">
-        		<?php echo $own ? 'Mes' : 'Ses' ?> messages sur le forum
-        	</a>
-        </li>
-        <li>
-        	<a href="/forum/sujets-participe-<?php echo $user->getId(); ?>.html">
-        		Les sujets auxquels <?php echo $own ? 'j\'ai' : 'il a' ?> participé
-        	</a>
-        </li>
-        <li class="divider"></li>
-        <li>
-        	<a href="/blog/billets-rediges-<?php echo $user->getId(); ?>.html">
-        		<?php echo $own ? 'Mes' : 'Ses' ?> billets sur le blog
-        	</a>
-        </li>
-    	<?php if ($own): ?>
-        	<li>
-        		<a href="<?php echo $view['router']->path('zco_quiz_myStats') ?>">
-        			Mes statistiques de quiz
-        		</a>
-        	</li>
-    	<?php endif ?>
-    </ul>
-</div></div>
+
 <?php if ($canAdmin): ?>
 <div style="margin-top: 5px;"><div class="btn-group">
     <a class="btn dropdown-toggle" style="display: inline-block; width: 200px;" data-toggle="dropdown" href="#">
