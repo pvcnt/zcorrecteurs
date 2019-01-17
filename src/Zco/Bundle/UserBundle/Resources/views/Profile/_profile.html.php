@@ -59,7 +59,7 @@
 	<?php if ($user->isTeam()): ?>
 	<li>
 		<i class="icon-ok"></i>
-		<span class="gris">Membre des «&nbsp;</span><span style="font-weight: bold; color: <?php echo htmlspecialchars($user->getGroup()->getCssClass()) ?>;"><?php echo htmlspecialchars($user->getGroup()) ?></span><span class="gris">&nbsp;» 
+		<span class="gris">Membre des «&nbsp;</span><span style="font-weight: bold;"><?php echo htmlspecialchars($user->getGroup()) ?></span><span class="gris">&nbsp;»
 		depuis <?php echo dateformat($lastGroupChange, MINUSCULE, DATE) ?><?php if ($user->hasTitle()): ?> et « </span>
 		<strong><?php echo htmlspecialchars($user->getTitle()) ?></strong>
 		<span class="gris"> »<?php endif ?>.</span>
@@ -70,7 +70,7 @@
 		<i class="icon-info-sign"></i>
 		<span class="gris">Également membre de </span>
 		<?php foreach ($user->getSecondaryGroups() as $i => $group): ?>
-			«&nbsp;<span style="font-weight: bold; color: <?php echo htmlspecialchars($group->getGroup()->getCssClass()) ?>;"><?php echo htmlspecialchars($group->getGroup()) ?></span>&nbsp;»<?php if ($i != $c - 1): ?>, <?php else: ?>.<?php endif ?>
+			«&nbsp;<span style="font-weight: bold;"><?php echo htmlspecialchars($group->getGroup()) ?></span>&nbsp;»<?php if ($i != $c - 1): ?>, <?php else: ?>.<?php endif ?>
 		<?php endforeach ?>
 	</li>
 	<?php endif ?>

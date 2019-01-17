@@ -51,9 +51,4 @@ class Groupe extends BaseGroupe
 	{
 		return $this->nom;
 	}
-	
-	public function getCssClass()
-	{
-		return $this->class;
-	}
 }

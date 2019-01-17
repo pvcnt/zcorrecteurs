@@ -9,7 +9,6 @@
  * @property string $nom
  * @property string $logo
  * @property string $logo_feminin
- * @property string $class
  * @property boolean $sanction
  * @property boolean $team
  * @property boolean $secondary
