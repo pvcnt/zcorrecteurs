@@ -52,7 +52,6 @@ final class CommentDAO
             "Ma.utilisateur_signature AS signature_auteur, " .
             "Ma.utilisateur_nb_sanctions AS nb_sanctions_auteur, " .
             "Ma.utilisateur_pourcentage AS pourcentage_auteur, " .
-            "Ma.utilisateur_titre, " .
             "Ma.utilisateur_citation, " .
 
             "Mb.utilisateur_id AS id_edite, " .

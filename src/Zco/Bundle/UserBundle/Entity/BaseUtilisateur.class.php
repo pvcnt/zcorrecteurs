@@ -129,10 +129,6 @@ abstract class BaseUtilisateur extends Doctrine_Record
              'type' => 'integer',
              'length' => '11',
              ));
-        $this->hasColumn('utilisateur_titre as title', 'string', 50, array(
-             'type' => 'string',
-             'length' => '50',
-             ));
         $this->hasColumn('utilisateur_adresse as address', 'string', 80, array(
              'type' => 'string',
              'length' => '80',

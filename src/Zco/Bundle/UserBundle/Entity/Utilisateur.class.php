@@ -154,21 +154,6 @@ class Utilisateur extends BaseUtilisateur
 		return $this->biography;
 	}
 	
-	public function hasTitle()
-	{
-		return !empty($this->title);
-	}
-	
-	public function getTitle()
-	{
-		return $this->title;
-	}
-	
-	public function setTitle($title)
-	{
-		$this->title = $title;
-	}
-	
 	public function hasLocalAvatar()
 	{
 		return (boolean) $this->avatar;

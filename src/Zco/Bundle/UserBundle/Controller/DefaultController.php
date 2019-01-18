@@ -166,45 +166,13 @@ class DefaultController extends Controller
         $vars['canSendEmail'] = verifier('rechercher_mail') || $user->isEmailDisplayed();
         $vars['canSeeInfos'] = verifier('membres_voir_ch_pseudos') || verifier('voir_sanctions')
             || verifier('groupes_changer_membre') || verifier('ips_analyser');
-        $vars['canAdmin'] = verifier('groupes_changer_membre') || verifier('membres_editer_titre') || verifier('options_editer_profils');
+        $vars['canAdmin'] = verifier('groupes_changer_membre') || verifier('options_editer_profils');
         $vars['own'] = $_SESSION['id'] == $user->getId();
 
         $this->setBreadcrumb(['Profil d' . $art . htmlspecialchars($user->getUsername())]);
         \Page::$description = 'Pour en savoir plus sur la personnalité d' . $art . htmlspecialchars($user->getUsername()) . ' et son activité sur le site';
 
         return $this->render('ZcoUserBundle::profile.html.php', $vars);
-    }
-
-    /**
-     * Modifie le titre d'un membre.
-     *
-     * @author Vanger
-     * @param Request $request HTTP request.
-     * @param int $id User identifier.
-     * @return Response
-     */
-    public function editTitleAction(Request $request, $id)
-    {
-        if (!($user = \Doctrine_Core::getTable('Utilisateur')->getById($id))) {
-            throw new NotFoundHttpException('Cet utilisateur n\'existe pas.');
-        }
-        if (!(verifier('membres_editer_titre') || ($_SESSION['id'] == $user->getId() && verifier('membres_editer_propre_titre')))) {
-            throw new AccessDeniedHttpException();
-        }
-        if ($request->getMethod() === 'POST' && $request->request->has('user_title')) {
-            $user->setTitle($request->request->get('user_title'));
-            $user->save();
-
-            return redirect('Le titre a bien été modifié.',
-                $this->generateUrl('zco_user_profile', array('id' => $id, 'slug' => rewrite($user->getUsername()))));
-        }
-
-        fil_ariane('Modifier le titre');
-        \Page::$titre = 'Modifier le titre';
-
-        return $this->render('ZcoUserBundle::editTitle.html.php', array(
-            'user' => $user,
-        ));
     }
 
     /**

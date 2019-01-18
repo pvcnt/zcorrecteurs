@@ -153,8 +153,6 @@
 				<?php echo $view['messages']->afficherAvatar($valeur, 'avatar_auteur') ?><br/>
 				<?php echo $view['messages']->afficherGroupe($valeur) ?><br/>
 
-				<?php if(!empty($valeur['utilisateur_titre'])) echo htmlspecialchars($valeur['utilisateur_titre']).'<br />'; ?>
-
 				<?php if(verifier('sanctionner')){ ?>
 				<br />
 				<a href="<?php echo $view['router']->path('zco_user_admin_punish', array('id' => htmlspecialchars($valeur['id_auteur']))) ?>">

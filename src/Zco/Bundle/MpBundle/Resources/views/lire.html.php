@@ -198,11 +198,7 @@ if($NombreParticipants > 1){ ?>
 				<?php
 				}
 			echo $view['messages']->afficherGroupe($valeur) ?><br/>
-			<?php if(!empty($valeur['utilisateur_titre']))
-			{
-				echo htmlspecialchars($valeur['utilisateur_titre']).'<br />';
-			}
-			if(verifier('sanctionner'))
+			<?php if(verifier('sanctionner'))
 			{
 			?>
 			<br /><a href="<?php echo $view['router']->path('zco_user_admin_punish', array('id' => htmlspecialchars($valeur['mp_message_auteur_id']))) ?>">

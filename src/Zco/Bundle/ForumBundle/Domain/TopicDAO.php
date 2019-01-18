@@ -77,7 +77,7 @@ class TopicDAO
 	SELECT DISTINCT message_id, message_auteur, Ma.utilisateur_id_groupe AS auteur_groupe, Ma.utilisateur_sexe,
 	message_texte, message_date, message_ip, message_help, groupe_nom, groupe_logo, groupe_logo_feminin, 
 	Ma.utilisateur_nb_sanctions, Ma.utilisateur_forum_messages, Ma.utilisateur_pourcentage, Ma.utilisateur_site_web,
-	Ma.utilisateur_titre, message_date, message_sujet_id, message_edite_auteur, message_edite_date,
+	message_date, message_sujet_id, message_edite_auteur, message_edite_date,
 	sujet_date, Ma.utilisateur_citation, 
 	COALESCE(Ma.utilisateur_pseudo, 'Anonyme') AS auteur_message_pseudo, Ma.utilisateur_avatar AS auteur_avatar,
 	COALESCE(Mb.utilisateur_pseudo, 'Anonyme') AS auteur_edition_pseudo,
@@ -242,7 +242,7 @@ class TopicDAO
 	message_date, sujet_date, message_edite_date, message_sujet_id, message_edite_auteur,
 	COALESCE(Ma.utilisateur_pseudo, 'Anonyme') AS auteur_message_pseudo, Ma.utilisateur_avatar AS auteur_avatar,
 	COALESCE(Mb.utilisateur_pseudo, 'Anonyme') AS auteur_edition_pseudo, Mb.utilisateur_id AS auteur_edition_id,
-	Ma.utilisateur_signature AS auteur_message_signature, Ma.utilisateur_citation, Ma.utilisateur_titre, sujet_auteur, sujet_premier_message, sujet_dernier_message, sujet_sondage, sujet_annonce, sujet_ferme
+	Ma.utilisateur_signature AS auteur_message_signature, Ma.utilisateur_citation, sujet_auteur, sujet_premier_message, sujet_dernier_message, sujet_sondage, sujet_annonce, sujet_ferme
 
 	FROM zcov2_forum_messages
 	LEFT JOIN zcov2_forum_sujets ON zcov2_forum_messages.message_sujet_id = zcov2_forum_sujets.sujet_id

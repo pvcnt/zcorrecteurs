@@ -15,12 +15,6 @@ zco_user_profile:
     id: \d+
     slug: '[a-z0-9-]+'
 
-zco_user_editTitle:
-  path:   /membres/modifier-titre/{id}
-  defaults:  { _controller: ZcoUserBundle:Default:editTitle }
-  requirements:
-    page: \d+
-
 zco_user_newPseudo:
   path:   /membres/nouveau-pseudo/{id}
   defaults:  { _controller: ZcoUserBundle:Default:newPseudo, id: ~ }

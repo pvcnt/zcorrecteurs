@@ -62,13 +62,6 @@
 			</a>
 		</li>
 		<?php endif ?>
-		<?php if (verifier('membres_editer_titre')): ?>
-	    <li>
-	    	<a href="<?php echo $view['router']->path('zco_user_editTitle', array('id' => $user->getId())) ?>">
-	    		Modifier son titre
-	    	</a>
-	    </li>
-		<?php endif ?>
         <?php if (verifier('sanctionner')): ?>
         <li>
             <a href="<?php echo $view['router']->path('zco_user_admin_punish', array('id' => $user->getId())) ?>">

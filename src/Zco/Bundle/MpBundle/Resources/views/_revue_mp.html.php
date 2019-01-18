@@ -39,11 +39,6 @@
 				<?php
 				}
 			echo $view['messages']->afficherGroupe($valeur) ?><br/>
-			<?php if(!empty($valeur['utilisateur_titre']))
-			{
-				echo htmlspecialchars($valeur['utilisateur_titre']);
-			}
-			?>
 			</td>
 			<td class="message">
 				<div class="msgbox">

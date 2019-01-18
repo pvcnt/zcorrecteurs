@@ -60,9 +60,7 @@
 	<li>
 		<i class="icon-ok"></i>
 		<span class="gris">Membre des «&nbsp;</span><span style="font-weight: bold;"><?php echo htmlspecialchars($user->getGroup()) ?></span><span class="gris">&nbsp;»
-		depuis <?php echo dateformat($lastGroupChange, MINUSCULE, DATE) ?><?php if ($user->hasTitle()): ?> et « </span>
-		<strong><?php echo htmlspecialchars($user->getTitle()) ?></strong>
-		<span class="gris"> »<?php endif ?>.</span>
+		depuis <?php echo dateformat($lastGroupChange, MINUSCULE, DATE) ?>.</span>
 	</li>
 	<?php endif ?>
 	<?php if (verifier('voir_groupes_secondaires') && ($c = count($user->SecondaryGroups))): ?>

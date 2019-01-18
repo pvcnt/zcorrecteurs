@@ -16,3 +16,4 @@ anti_up
 epargne_anti_up
 mp_limite_participants
 mp_nb_participants_max
+membres_editer_titre
