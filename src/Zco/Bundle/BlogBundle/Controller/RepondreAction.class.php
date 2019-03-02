@@ -91,7 +91,6 @@ class RepondreAction extends BlogActions
 
 				//Infos sur le commentaire
 				$this->InfosValidation = BlogDAO::InfosValidationVersion($this->InfosBillet['blog_id_version_courante']);
-				$this->ListerTags = BlogDAO::ListerTagsBillet($_GET['id']);
 
 				//Inclusion de la vue
 				fil_ariane($this->InfosBillet['cat_id'], array(

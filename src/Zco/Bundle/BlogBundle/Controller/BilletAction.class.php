@@ -128,8 +128,6 @@ class BilletAction extends BlogActions
             else
                 $this->voir_moderation = false;
 
-            $this->ListerBilletsLies = BlogDAO::ListerBilletsLies($_GET['id']);
-            $this->ListerTags = BlogDAO::ListerTagsBillet($_GET['id']);
             $this->InfosBillet['blog_etat'] == BLOG_VALIDE && BlogDAO::BlogIncrementerVues($_GET['id']);
 
             //Inclusion de la vue

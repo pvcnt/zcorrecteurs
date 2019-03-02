@@ -16,9 +16,6 @@
 		<label for="sous_titre">Sous-titre : </label>
 		<input type="text" name="sous_titre" id="sous_titre" value="<?php echo htmlspecialchars($InfosMessage['sujet_sous_titre']); ?>" size="35" tabindex="2" /><br />
 
-		<?php /*<label for="tags">Mots-clés : </label>
-		<input type="text" name="tags" id="tags" value="<?php echo implode(array_values($Tags), ', '); ?>" size="35" tabindex="3" />
-		<br />*/ ?><br />
 		<?php } ?>
 
 		<label for="texte">Contenu du message :</label>

@@ -194,29 +194,6 @@ final class BlogDAO
     }
 
     /**
-     * Récupère la liste des billets partageant un tag avec un billet fixé.
-     * @param integer $id L'id du billet de référence.
-     * @return array
-     */
-    public static function ListerBilletsLies($id)
-    {
-        $dbh = \Doctrine_Manager::connection()->getDbh();
-
-        $stmt = $dbh->prepare("SELECT DISTINCT blog_id, version_titre, version_sous_titre " .
-            "FROM zcov2_blog_tags " .
-            "LEFT JOIN zcov2_blog ON id_blog = blog_id " .
-            "LEFT JOIN zcov2_blog_versions ON blog_id_version_courante = version_id " .
-            "WHERE id_tag IN (" .
-            "SELECT id_tag " .
-            "FROM zcov2_blog_tags " .
-            "WHERE id_blog = :id) AND blog_id <> :id " .
-            "LIMIT 5");
-        $stmt->bindParam(':id', $id);
-        $stmt->execute();
-        return $stmt->fetchAll();
-    }
-
-    /**
      * Récupère les infos sur un billet.
      * @param integer $id L'id du billet.
      * @return array
@@ -535,78 +512,6 @@ final class BlogDAO
             "LEFT JOIN zcov2_blog_versions ON blog_id_version_courante = version_id " .
             "WHERE blog_etat = " . BLOG_VALIDE . " " .
             "ORDER BY blog_date_publication DESC");
-        $stmt->execute();
-        return $stmt->fetchAll();
-    }
-
-    /**
-     * Ajout d'une visite sur le flux.
-     * @param integer $ip L'id du visiteur.
-     * @param integer $id_cat L'id de la catégorie.
-     * @param string $navigateur L'user-agent du visiteur.
-     */
-    public static function AjouterVisiteFlux($ip, $id_cat, $navigateur)
-    {
-        $dbh = \Doctrine_Manager::connection()->getDbh();
-
-        $stmt = $dbh->prepare("INSERT INTO zcov2_blog_flux_visites(visite_date, visite_ip, " .
-            "visite_id_categorie, visite_user_agent, visite_nb_vues) " .
-            "VALUES(NOW(), :ip, :id_cat, :navigateur, 1) " .
-            "ON DUPLICATE KEY UPDATE visite_nb_vues = visite_nb_vues + 1");
-        $stmt->bindParam(':ip', $ip);
-        $stmt->bindParam(':id_cat', $id_cat);
-        $stmt->bindParam(':navigateur', $navigateur);
-        $stmt->execute();
-    }
-
-    /**
-     * Ajoute un tag à un billet.
-     * @param integer $id_b L'id du billet.
-     * @param integer $id_t L'id du tag.
-     * @return void
-     */
-    public static function AjouterTagBillet($id_b, $id_t)
-    {
-        $dbh = \Doctrine_Manager::connection()->getDbh();
-
-        $stmt = $dbh->prepare("INSERT INTO zcov2_blog_tags(id_tag, id_blog) " .
-            "VALUES(:id_t, :id_b)");
-        $stmt->bindParam(':id_b', $id_b);
-        $stmt->bindParam(':id_t', $id_t);
-        $stmt->execute();
-    }
-
-    /**
-     * Supprime un tag d'un billet.
-     * @param integer $id_b L'id du billet.
-     * @param integer $id_t L'id du tag.
-     * @return void
-     */
-    public static function SupprimerTagBillet($id_b, $id_t)
-    {
-        $dbh = \Doctrine_Manager::connection()->getDbh();
-
-        $stmt = $dbh->prepare("DELETE FROM zcov2_blog_tags " .
-            "WHERE id_tag = :id_t AND id_blog = :id_b");
-        $stmt->bindParam(':id_b', $id_b);
-        $stmt->bindParam(':id_t', $id_t);
-        $stmt->execute();
-    }
-
-    /**
-     * Récupère la liste des tags associés à un billet.
-     * @param integer $id L'id du billet.
-     * @return array
-     */
-    public static function ListerTagsBillet($id)
-    {
-        $dbh = \Doctrine_Manager::connection()->getDbh();
-
-        $stmt = $dbh->prepare("SELECT id, nom, description " .
-            "FROM zcov2_blog_tags " .
-            "LEFT JOIN zcov2_tags ON id_tag = id " .
-            "WHERE id_blog = :id");
-        $stmt->bindParam(':id', $id);
         $stmt->execute();
         return $stmt->fetchAll();
     }

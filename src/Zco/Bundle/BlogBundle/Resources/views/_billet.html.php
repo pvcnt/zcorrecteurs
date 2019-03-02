@@ -95,13 +95,6 @@
                 Partager sur Twitter
             </a> |
 			<a href="#header">Remonter</a>
-		</span>
-
-		<?php foreach($ListerTags as $tag){ ?>
-		<a href="<?php echo $view['router']->path('zco_content_tag', ['id' => $tag['id'], 'slug' => rewrite($tag['nom'])]) ?>" class="tag">
-			<?php echo htmlspecialchars($tag['nom']); ?>
-		</a>
-		<?php } ?>
-		<?php if(empty($ListerTags)) echo '&nbsp;'; ?>
+		</span>&nbsp;
 	</div>
 </div>

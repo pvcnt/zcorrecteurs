@@ -30,7 +30,6 @@
 		'verifier_supprimer' => $verifier_supprimer,
 		'InfosBillet' => $InfosBillet,
 		'Auteurs' => $Auteurs,
-		'ListerTags' => $ListerTags,
 	)) ?>
 
 <hr />

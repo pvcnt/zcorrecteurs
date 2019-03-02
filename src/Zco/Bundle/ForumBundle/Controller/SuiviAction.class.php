@@ -49,7 +49,7 @@ class SuiviAction extends ForumActions
 
 		$tableau_pages = liste_pages($_GET['p'], $NombreDePages, $CompterSujets, $nbSujetsParPage, '', true);
 		$debut = ($NombreDePages-$_GET['p']) * $nbSujetsParPage;
-		list($ListerSujets, $Tags) = ForumDAO::ListerSujets($debut, $nbSujetsParPage);
+		$ListerSujets = ForumDAO::ListerSujets($debut, $nbSujetsParPage);
 
 		$derniere_lecture = ReadMarkerDAO::DerniereLecture($_SESSION['id']);
 		$Lu = $Pages = array();
@@ -87,7 +87,6 @@ class SuiviAction extends ForumActions
 		return render_to_response('ZcoForumBundle::suivi.html.php', array(
 			'CompterSujets' => $CompterSujets,
 			'ListerSujets' => $ListerSujets,
-			'Tags' => $Tags,
 			'tableau_pages' => $tableau_pages,
 			'Pages' => $Pages,
 			'Lu' => $Lu,

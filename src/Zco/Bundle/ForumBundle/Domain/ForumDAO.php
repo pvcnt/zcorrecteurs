@@ -321,11 +321,8 @@ final class ForumDAO
             'LIMIT ' . $PremierMess . ' , ' . $MessaAfficher);
         $stmt->bindParam(':trash', $trash);
         $stmt->execute();
-        $sujets = $stmt->fetchAll();
 
-        $tags = array();
-
-        return array($sujets, $tags);
+        return $stmt->fetchAll();
     }
 
     // Cette fonction retourne l'image du système lu/non lu.

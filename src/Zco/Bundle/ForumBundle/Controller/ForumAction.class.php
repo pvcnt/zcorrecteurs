@@ -263,7 +263,7 @@ class ForumAction extends ForumActions
             $debut = ($NombreDePages - $_GET['p']) * $nbSujetsParPage;
 
             // On récupère les sujets du forum depuis la fonction du modèle.
-            list($ListerSujets, $Tags) = ForumDAO::ListerSujets($debut, $nbSujetsParPage, $_GET['id']);
+            $ListerSujets = ForumDAO::ListerSujets($debut, $nbSujetsParPage, $_GET['id']);
 
             $derniere_lecture = ReadMarkerDAO::DerniereLecture($_SESSION['id']);
 
@@ -371,7 +371,6 @@ class ForumAction extends ForumActions
                 'Lu' => $Lu,
                 'tableau_pages' => $tableau_pages,
                 'ListerSujets' => $ListerSujets,
-                'Tags' => $Tags,
                 'Pages' => $Pages,
                 'SautRapide' => $SautRapide,
                 'action_etendue_a_plusieurs_messages_actif' => $action_etendue_a_plusieurs_messages_actif,

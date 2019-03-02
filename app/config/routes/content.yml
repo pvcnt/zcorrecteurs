@@ -1,9 +1,3 @@
-zco_content_tag:
-  path:   /tags/{id}/{slug}
-  defaults:  { _controller: ZcoContentBundle:Tags:view, slug: ~ }
-  requirements:
-    id: \d+
-
 zco_quote_index:
   path:   /citations
   defaults:  { _controller: ZcoContentBundle:Quotes:index }

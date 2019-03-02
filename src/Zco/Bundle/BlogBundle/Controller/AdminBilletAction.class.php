@@ -23,7 +23,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zco\Bundle\BlogBundle\Domain\BlogDAO;
-use Zco\Bundle\ContentBundle\Domain\TagRepository;
 use Zco\Bundle\UserBundle\Domain\UserDAO;
 
 /**
@@ -46,29 +45,6 @@ class AdminBilletAction extends BlogActions
 
 			if (!$this->verifier_admin_billet)
 				throw new AccessDeniedHttpException();
-
-			$Tags = array();
-			foreach(BlogDAO::ListerTagsBillet($_GET['id']) as $tag)
-				$Tags[$tag['id']] = mb_strtolower(htmlspecialchars($tag['nom']));
-			$this->setRef('Tags', $Tags);
-
-			//--- Si on veut modifier tous les tags ---
-			if(isset($_POST['tags']) && $this->verifier_editer)
-			{
-				$TagsExtraits = TagRepository::instance()->extract($_POST['tags']);
-
-				foreach($TagsExtraits as $tag)
-				{
-					if(!array_key_exists($tag, $Tags))
-                        BlogDAO::AjouterTagBillet($_GET['id'], $tag);
-				}
-				foreach($Tags as $cle => $tag)
-				{
-					if(!in_array($cle, $TagsExtraits))
-                        BlogDAO::SupprimerTagBillet($_GET['id'], $cle);
-				}
-				return redirect('Les mots clés ont bien été modifiés.', 'admin-billet-'.$_GET['id'].'.html');
-			}
 
 			//--- Si on veut ajouteur un auteur ---
 			if(isset($_POST['ajouter_auteur']) && ($this->createur == true || verifier('blog_toujours_createur')))
