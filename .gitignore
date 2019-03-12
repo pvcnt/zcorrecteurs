@@ -6,6 +6,7 @@
 !/var/.gitkeep
 /vendor/
 /web/compiled/*
+composer.phar
 
 # IDE configuration files.
 .project
