@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ ! -f composer.phar ]; then
+    curl https://getcomposer.org/installer --output composer-installer.php
+    php composer-installer.php
+    rm composer-installer.php
+fi
+
+php composer.phar "$@"
