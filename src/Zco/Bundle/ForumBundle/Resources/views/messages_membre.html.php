@@ -23,9 +23,7 @@
 		<?php foreach ($pager as $message): ?>
 		<tr class="header_message">
 			<td class="pseudo_membre">
-				<a href="/membres/profil-<?php echo $membre->id
-				?>-<?php echo rewrite($membre->pseudo) ?>.html"
-					style="color: <?php echo $membre->Groupe['class'] ?>;">
+				<a href="/membres/profil-<?php echo $membre->id ?>-<?php echo rewrite($membre->pseudo) ?>.html">
 					<?php echo htmlspecialchars($membre->pseudo) ?>
 				</a>
 			</td>

@@ -38,8 +38,7 @@
 				</a>
 			</td>
 			<td>
-				<a href="<?php echo $view['router']->path('zco_user_profile', array('id' => $user->getId(), 'slug' => rewrite($user->getUsername()))) ?>"
-					style="color: <?php echo $user->getGroup()->getCssClass() ?>;">
+				<a href="<?php echo $view['router']->path('zco_user_profile', array('id' => $user->getId(), 'slug' => rewrite($user->getUsername()))) ?>">
 					<?php echo htmlspecialchars($user->getUsername()) ?>
 				</a>
 			</td>
@@ -126,9 +125,7 @@
 				<select name="groupe" id="groupe">
 					<option value="">Tous les groupes</option>
 					<?php foreach ($groups as $group): ?>
-						<option value="<?php echo $group['id'] ?>" 
-							style="color: <?php echo htmlspecialchars($group['class']) ?>;"
-							<?php if ($group == $group['id']) echo ' selected="selected"' ?>>
+						<option value="<?php echo $group['id'] ?>"<?php if ($group == $group['id']) echo ' selected="selected"' ?>>
 							<?php echo htmlspecialchars($group['nom']) ?>
 						</option>
 					<?php endforeach ?>
@@ -142,9 +139,7 @@
 			<div class="controls">
 				<select name="secondaire[]" id="groupes_secondaires" size="<?php echo count($secondaryGroups) ?>" multiple>
 					<?php foreach ($secondaryGroups as $group): ?>
-						<option value="<?php echo $group['id'] ?>" 
-							style="color: <?php echo htmlspecialchars($group['class']) ?>;"
-							<?php if (in_array($group['id'], $secondaryGroup)) echo ' selected="selected"' ?>>
+						<option value="<?php echo $group['id'] ?>"<?php if (in_array($group['id'], $secondaryGroup)) echo ' selected="selected"' ?>>
 							<?php echo htmlspecialchars($group['nom']) ?>
 						</option>
 					<?php endforeach ?>

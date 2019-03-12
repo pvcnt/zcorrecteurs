@@ -57,7 +57,7 @@
 				<a href="sujet-<?php echo $alerte->Sujet['id']; ?>.html"><?php echo htmlspecialchars($alerte->Sujet['titre']); ?></a>
 			</td>
 			<td>
-				<a href="/membres/profil-<?php echo $alerte->Utilisateur['id']; ?>-<?php echo rewrite($alerte->Utilisateur['pseudo']); ?>.html" style="color: <?php echo $alerte->Utilisateur->Groupe['class']; ?>;">
+				<a href="/membres/profil-<?php echo $alerte->Utilisateur['id']; ?>-<?php echo rewrite($alerte->Utilisateur['pseudo']); ?>.html">
 					<?php echo htmlspecialchars($alerte->Utilisateur['pseudo']); ?>
 				</a>
 			</td>
@@ -66,7 +66,7 @@
 				<?php if(!$alerte['resolu']){ ?>
 				Non - <a href="?resolu=<?php echo $alerte['id']; ?>">Résoudre</a>
 				<?php } else{ ?>
-				Par <a href="/membres/profil-<?php echo $alerte->Admin['id']; ?>-<?php echo rewrite($alerte->Admin['pseudo']); ?>.html" style="color: <?php echo $alerte->Admin->Groupe['class']; ?>;">
+				Par <a href="/membres/profil-<?php echo $alerte->Admin['id']; ?>-<?php echo rewrite($alerte->Admin['pseudo']); ?>.html">
 					<?php echo htmlspecialchars($alerte->Admin['pseudo']); ?>
 				</a> -
 				<a href="?nonresolu=<?php echo $alerte['id']; ?>">N'est plus résolue</a>

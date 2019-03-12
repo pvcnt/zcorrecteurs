@@ -294,7 +294,7 @@ else
 
 				<td class="centre">
 					<?php if(!empty($valeur['sujet_auteur_pseudo_existe'])) {?>
-					<a href="/membres/profil-<?php echo $valeur['sujet_auteur']; ?>-<?php echo rewrite($valeur['sujet_auteur_pseudo']); ?>.html" rel="nofollow" style="color: <?php echo $valeur['class_auteur']; ?>;">
+					<a href="/membres/profil-<?php echo $valeur['sujet_auteur']; ?>-<?php echo rewrite($valeur['sujet_auteur_pseudo']); ?>.html" rel="nofollow">
 						<?php } ?>
 						<?php echo htmlspecialchars($valeur['sujet_auteur_pseudo']); ?>
 						<?php if(!empty($valeur['sujet_auteur_pseudo_existe'])) {?>
@@ -309,12 +309,12 @@ else
 					echo '<a href="sujet-'.$valeur['sujet_id'].'-'.$valeur['message_id'].'-'.rewrite($valeur['sujet_titre']).'.html">'.dateformat($valeur['message_date']).'</a><br /> ';
 					if(!empty($valeur['sujet_dernier_message_pseudo_existe']))
 					{
-						echo '<a href="/membres/profil-'.$valeur['sujet_dernier_message_auteur_id'].'-'.rewrite($valeur['sujet_dernier_message_pseudo']).'.html" rel="nofollow"><span style="color: '.$valeur['class_dernier_message'].';">';
+						echo '<a href="/membres/profil-'.$valeur['sujet_dernier_message_auteur_id'].'-'.rewrite($valeur['sujet_dernier_message_pseudo']).'.html">';
 					}
 					echo htmlspecialchars($valeur['sujet_dernier_message_pseudo']);
 					if(!empty($valeur['sujet_dernier_message_pseudo_existe']))
 					{
-						echo '</span></a>';
+						echo '</a>';
 					}
 					?>
 				</td>

@@ -22,6 +22,12 @@ html {
     min-height: 100%;
 }
 
+.container {
+	max-width: 1200px !important;
+	margin: auto !important;
+	width: 100% !important;
+}
+
 a,a img,blockquote,body,caption,div,em,fieldset,font,form,h1,h2,h3,h4,h5,h6,html,img,label,legend,object,p,pre,span,strong {
 	border: 0;
 	font-family: inherit;

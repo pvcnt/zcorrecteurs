@@ -153,7 +153,7 @@ function ListerSujets($PremierMess, $MessaAfficher, $forumID = null)
 			'sujet_dernier_message, sujet_sondage, sujet_annonce, '.
 			'sujet_ferme, sujet_resolu, message_id, '.
 			'lunonlu_utilisateur_id, lunonlu_sujet_id, lunonlu_message_id, '.
-			'lunonlu_participe, lunonlu_favori, '.
+			'lunonlu_participe, lunonlu_favori '.
 			'FROM zcov2_forum_sujets '.
 			'LEFT JOIN zcov2_forum_messages ON sujet_dernier_message = message_id '.
 			'LEFT JOIN zcov2_utilisateurs Ma ON sujet_auteur = Ma.utilisateur_id '.

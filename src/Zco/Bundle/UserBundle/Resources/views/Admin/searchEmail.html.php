@@ -61,9 +61,7 @@
 			</td>
 			<td><?php echo dateformat($user->getRegistrationDate()) ?></td>
 			<td class="center"><?php echo $user->getNbMessages() ?></td>
-			<td class="center" style="color: <?php echo $user->getGroup()->getCssClass() ?>;">
-				<?php echo htmlspecialchars($user->getGroup()->getName()) ?>
-			</td>
+			<td class="center"><?php echo htmlspecialchars($user->getGroup()->getName()) ?></td>
 		</tr>
 		<?php endforeach ?>
 	</tbody>
