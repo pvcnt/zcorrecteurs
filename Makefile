@@ -1,4 +1,4 @@
 .PHONY: build
 
 build:
-	docker build -t zcorrecteurs/monolith-www .
+	docker build -f build/Dockerfile -t zcorrecteurs/monolith-www .
