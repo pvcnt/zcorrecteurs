@@ -1,0 +1,11 @@
+name: Continuous integration
+on: [push, pull_request]
+jobs:
+  build-docker-image:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build the Docker image
+      run: docker build . --file ./build/Dockerfile --tag docker.pkg.github.com/zcorrecteurs/monolith-www/monolith-www:${{ github.sha }}
+    - name: Push the Docker image
+      run: docker pushdocker.pkg.github.com/zcorrecteurs/monolith-www/monolith-www:${{ github.sha }}
