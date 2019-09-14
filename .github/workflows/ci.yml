@@ -5,7 +5,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
+    - name: Login to Docker registry
+      env:
+        DOCKER_USER: ${{ secrets.DOCKER_USER }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      run: echo "$DOCKER_PASSWORD" | docker login docker.pkg.github.com -u "$DOCKER_USER" --password-stdin
     - name: Build the Docker image
-      run: docker build . --file ./build/Dockerfile --tag docker.pkg.github.com/zcorrecteurs/monolith-www/monolith-www:${{ github.sha }}
+      run: docker build . --file ./build/Dockerfile --tag docker.pkg.github.com/zcorrecteurs/zcorrecteurs/server:${{ github.sha }}
     - name: Push the Docker image
-      run: docker push docker.pkg.github.com/zcorrecteurs/monolith-www/monolith-www:${{ github.sha }}
+      run: docker push docker.pkg.github.com/zcorrecteurs/zcorrecteurs/server:${{ github.sha }}
