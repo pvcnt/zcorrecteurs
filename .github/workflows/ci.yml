@@ -8,4 +8,4 @@ jobs:
     - name: Build the Docker image
       run: docker build . --file ./build/Dockerfile --tag docker.pkg.github.com/zcorrecteurs/monolith-www/monolith-www:${{ github.sha }}
     - name: Push the Docker image
-      run: docker pushdocker.pkg.github.com/zcorrecteurs/monolith-www/monolith-www:${{ github.sha }}
+      run: docker push docker.pkg.github.com/zcorrecteurs/monolith-www/monolith-www:${{ github.sha }}
