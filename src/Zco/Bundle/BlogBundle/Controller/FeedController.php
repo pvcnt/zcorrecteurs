@@ -19,6 +19,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace Zco\Bundle\BlogBundle\Controller;
+
+use Zco\Bundle\BlogBundle\Feed\FeedController as BaseFeedController;
 use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
 
 /**
@@ -26,7 +29,7 @@ use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class FluxAction extends Feed
+class FeedController extends BaseFeedController
 {
 	protected $link = URL_SITE;
 	protected $itemAuthorEmail = 'contact@zcorrecteurs.fr';
@@ -49,7 +52,7 @@ class FluxAction extends Feed
 
 	protected function getItems($object)
 	{
-		$dbh = Doctrine_Manager::connection()->getDbh();
+		$dbh = \Doctrine_Manager::connection()->getDbh();
 
 		// Récupération des billets
 		$ordre = 'DESC';

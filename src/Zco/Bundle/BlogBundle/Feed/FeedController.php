@@ -19,6 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace Zco\Bundle\BlogBundle\Feed;
+
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -29,16 +31,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-abstract class Feed extends Controller
+abstract class FeedController extends Controller
 {
 	protected $object;
 	protected $idDescription = 'ID du flux';
 
 	/**
 	 * Constructeur de classe. Récupère l'objet associé au flux.
-	 * @access public
 	 */
-	public function execute()
+	public function indexAction()
 	{
 		$this->object = $this->getObject();
 		
@@ -92,7 +93,7 @@ abstract class Feed extends Controller
 				'updated' => $this->getAttr('updated')
 			);
 			$this->hasAttr('authors') && $params['authors'] = $this->getAttr('authors');
-			$feed = new Feed_Syndication($params);
+			$feed = new Syndication($params);
 
 			foreach($objects as $object)
 			{
@@ -134,7 +135,7 @@ abstract class Feed extends Controller
 		elseif(method_exists($this, 'get'.ucfirst($attr)))
 			return $this->{'get'.ucfirst($attr)}($this->object);
 		else
-			throw new RuntimeException(sprintf('No feed attribute %s found in feed %s.', $attr, get_class($this)));
+			throw new \RuntimeException(sprintf('No feed attribute %s found in feed %s.', $attr, get_class($this)));
 	}
 
 	/**
@@ -161,7 +162,7 @@ abstract class Feed extends Controller
 		elseif(method_exists($this, 'getItem'.ucfirst($attr)))
 			return $this->{'getItem'.ucfirst($attr)}($object);
 		else
-			throw new RuntimeException(sprintf('No item attribute %s found in feed %s.', $attr, get_class($this)));
+			throw new \RuntimeException(sprintf('No item attribute %s found in feed %s.', $attr, get_class($this)));
 	}
 
 	/**

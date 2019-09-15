@@ -19,6 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace Zco\Bundle\BlogBundle\Feed;
+
 /**
  * Classe représentant un flux de syndication en cours de construction. Cette
  * classe est une API de plus bas niveau à laquelle fait appel Feed.
@@ -26,7 +28,7 @@
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  *         mwsaz <mwsaz@zcorrecteurs.fr>
  */
-class Feed_Syndication
+final class Syndication
 {
 	protected $xml;
 	protected $params;
@@ -40,14 +42,14 @@ class Feed_Syndication
 	public function __construct($params)
 	{
 		if (!isset($params['title'], $params['description'], $params['link'], $params['updated']))
-			throw new InvalidArgumentException(sprintf(
+			throw new \InvalidArgumentException(sprintf(
 				'%s constructor must receive at least title, description, '
 				.'updated and link arguments (got %s)',
 				get_class($this), implode(', ', array_keys($params))
 			));
 		$this->params = $params;
 
-		$this->xml = new DomDocument();
+		$this->xml = new \DOMDocument();
 		$this->xml->formatOutput = true;
 
 		$this->root = $this->appendElement($this->xml, 'feed', null, array(
@@ -86,7 +88,7 @@ class Feed_Syndication
 	public function addItem($params)
 	{
 		if(!isset($params['title'], $params['updated'], $params['link']))
-			throw new InvalidArgumentException(sprintf(
+			throw new \InvalidArgumentException(sprintf(
 				'%s addItem method must receive at least title, description, '
 				.'updated and link arguments  (got %s)',
 				get_class($this), implode(', ', array_keys($params))
@@ -133,11 +135,11 @@ class Feed_Syndication
 	/**
 	 * Ajoute un élément à l'arbre XML.
 	 * @access protected
-	 * @param DomElement $item		Le nœud parent.
+	 * @param \DOMNode $item		Le nœud parent.
 	 * @param string $key			Le nom de la balise.
 	 * @param string|null $value	Son contenu (null pour aucun).
 	 * @param array $params			Liste d'attributs du nœud.
-	 * @return DomElement			L'objet qui a été créé.
+	 * @return \DOMNode			L'objet qui a été créé.
 	 */
 	protected function appendElement(&$item, $key, $value = null, $params = array(), $cdata = true)
 	{
