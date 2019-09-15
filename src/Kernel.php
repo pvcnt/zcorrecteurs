@@ -79,7 +79,7 @@ final class Kernel extends HttpKernel
      */
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader)
     {
-        $confDir = __DIR__ . '/config';
+        $confDir = __DIR__ . '/../app/config';
         $loader->load($confDir . '/packages/*' . self::CONFIG_EXTS, 'glob');
         $loader->load($confDir . '/packages/' . $this->environment . '/**/*' . self::CONFIG_EXTS, 'glob');
         $loader->load($confDir . '/services' . self::CONFIG_EXTS, 'glob');
@@ -90,7 +90,7 @@ final class Kernel extends HttpKernel
      */
     protected function configureRoutes(RouteCollectionBuilder $routes)
     {
-        $confDir = __DIR__ . '/config';
+        $confDir = __DIR__ . '/../app/config';
         $routes->import($confDir . '/routes/*' . self::CONFIG_EXTS, '/', 'glob');
         $routes->import($confDir . '/routes/' . $this->environment . '/**/*' . self::CONFIG_EXTS, '/', 'glob');
         $routes->import($confDir . '/routes' . self::CONFIG_EXTS, '/', 'glob');
