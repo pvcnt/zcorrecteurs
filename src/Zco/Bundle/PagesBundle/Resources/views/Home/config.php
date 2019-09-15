@@ -231,7 +231,7 @@
 			<p>
 				La dictée actuellement mise en valeur est :<br/>
 				<strong>
-					<a href="/dictees/dictee-<?php echo $selectDictee->id; ?>-<?php echo rewrite($selectDictee->titre); ?>.html">
+                    <a href="<?php echo $view['router']->path('zco_dictation_show', ['id' => $selectDictee->id, 'slug' => rewrite($selectDictee->titre)]) ?>">
 						<?php echo $selectDictee->titre; ?>
 					</a>
 				</strong>

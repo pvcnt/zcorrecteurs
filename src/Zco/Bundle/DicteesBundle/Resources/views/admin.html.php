@@ -1,14 +1,9 @@
-<?php use Zco\Bundle\DicteesBundle\Domain\DictationDAO;
+<?php $view->extend('::layouts/default.html.php') ?>
 
-$view->extend('::layouts/default.html.php') ?>
-
-<h1>Mes dictées</h1>
+<h1>Gestion des dictées</h1>
 
 <p class="gras centre">
-	<?php if(verifier('connecte')): ?>
-	<a href="ajouter.html">Ajouter une dictée</a> -
-	<?php endif; ?>
-	<a href="statistiques.html">Mes statistiques</a>
+	<a href="<?php echo $view['router']->path('zco_dictations_new') ?>">Ajouter une dictée</a>
 </p>
 
 <?php if(!$nb = count($Dictees)): ?>
@@ -19,12 +14,12 @@ $view->extend('::layouts/default.html.php') ?>
 <table class="UI_items">
 	<thead>
 		<tr class="header_message">
-			<th style="width: 24%;">Titre</th>
-			<th style="width: 12%;">État</th>
-			<th style="width: 10%;">Difficulté</th>
-			<th style="width: 20%;">Création</th>
-			<th style="width: 20%;">Modification</th>
-			<th style="width: 14%;">Actions</th>
+			<th>Titre</th>
+			<th>État</th>
+			<th>Difficulté</th>
+			<th>Création</th>
+			<th>Modification</th>
+			<th>Actions</th>
 		</tr>
 	</thead>
 
@@ -53,21 +48,18 @@ $view->extend('::layouts/default.html.php') ?>
 			<td><?php echo dateformat($Dictee->creation); ?></td>
 			<td><?php echo dateformat($Dictee->edition); ?></td>
 			<td class="centre">
-			<?php if(DictationDAO::DicteeDroit($Dictee, 'editer')): ?>
 				<a href="editer-<?php echo $Dictee->id.'-'.rewrite($Dictee->titre);
 				?>.html" title="Modifier cette dictée">
 					<img title="Éditer" alt="Éditer" class="fff pencil" src="/pix.gif"/>
 				</a>
-			<?php endif; if(DictationDAO::DicteeDroit($Dictee, 'supprimer')): ?>
 				<a href="supprimer-<?php echo $Dictee->id.'-'.rewrite($Dictee->titre);
 				?>.html" title="Supprimer cette dictée">
 					<img title="Supprimer" alt="Supprimer" class="fff cross" src="/pix.gif"/>
 				</a>
-			<?php endif; if($Dictee->etat == DICTEE_BROUILLON): ?>
+			    <?php if($Dictee->etat == DICTEE_BROUILLON): ?>
 				<a href="proposer-<?php echo $Dictee->id; ?>.html" title="Proposer cette dictée">
 					<img alt="Proposer" class="fff folder_go" src="/pix.gif"/>
 				</a>
-			<?php endif; if(verifier('dictees_publier')): ?>
 				<?php if($Dictee->etat == DICTEE_VALIDEE): ?>
 				<a href="valider-<?php echo $Dictee->id; ?>-0.html?token=<?php echo $_SESSION['token'] ?>" title="Dévalider">
 					<img title="Dévalider" alt="Dévalider" class="fff forbidden" src="/pix.gif"/>

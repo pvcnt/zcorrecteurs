@@ -3,7 +3,7 @@
 <?php $view['slots']->start('meta') ?>
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:site" content="zcorrecteurs" />
-<meta name="twitter:url" content="<?php echo URL_SITE ?>/dictees/dictee-<?php echo $Dictee->id ?>-<?php echo rewrite($Dictee->titre) ?>.html" />
+<meta name="twitter:url" content="<a href="<?php echo $view['router']->url('zco_dictation_show', ['id' => $Dictee->id, 'slug' => rewrite($Dictee->titre)]) ?>">" />
 <meta name="twitter:description" content="<?php echo htmlspecialchars(strip_tags($Dictee->description)) ?>" />
 <meta name="twitter:title" content="<?php echo htmlspecialchars($Dictee->titre) ?>" />
 <?php if ($Dictee->icone): ?>
@@ -61,27 +61,3 @@ Cette dictée n'est pas publique, vous ne pouvez donc pas la jouer.
 	<input type="submit" value="Corriger" /></p>
 </form>
 <?php endif ?>
-
-<?php if ($Tags):
-echo '<div style="margin-top: 20px"></div>';
-$tagsParColonne = 1;
-
-echo '<div style="float: left">';
-$nb = 1;
-foreach ($Tags as $Tag)
-{
-	echo sprintf(
-		'<a href="' . $view['router']->path('zco_content_tag', ['id' => $Tag->Tag->id, 'slug' => rewrite($Tag->Tag->nom)]) . '">'
-		.'<img src="/pix.gif" alt="" class="fff tag_blue"/> '
-		.'%s'.str_repeat('&nbsp;', 5).'%s</a>',
-                $Tag->Tag->nom,
-		($nb && !($nb % $tagsParColonne)) ? '</div>'."\n\n".'<div style="float: left">'
-		                                  : '<br/>'."\n"
-	);
-
-	$nb++;
-}
-
-echo '</div>';
-endif ?>
-

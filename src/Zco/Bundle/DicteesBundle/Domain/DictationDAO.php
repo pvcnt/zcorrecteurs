@@ -24,9 +24,7 @@ namespace Zco\Bundle\DicteesBundle\Domain;
 use Symfony\Component\HttpFoundation\Response;
 use Zco\Bundle\AdminBundle\Admin;
 use Zco\Bundle\ContentBundle\Domain\TagRepository;
-use Zco\Bundle\CoreBundle\Paginator\Paginator;
 use Zco\Bundle\DicteesBundle\DoubleDiff;
-use Zco\Bundle\UserBundle\Domain\UserDAO;
 
 /**
  * Gestion des dictées.
@@ -35,27 +33,6 @@ use Zco\Bundle\UserBundle\Domain\UserDAO;
  */
 class DictationDAO
 {
-    private static function TaggerDictee(\Dictee $Dictee, $tags)
-    {
-        if (!is_array($tags)) {
-            $tags = explode(',', $tags);
-        }
-        $repository = TagRepository::instance();
-        foreach ($tags as $tag) {
-            $tag = trim($tag);
-            if (!$tag) {
-                continue;
-            }
-
-            $id = $repository->create(['nom' => $tag]);
-
-            $Dt = new \DicteeTag();
-            $Dt->dictee_id = $Dictee->id;
-            $Dt->tag_id = $id;
-            $Dt->replace();
-        }
-    }
-
     /**
      * Ajoute une dictée.
      *
@@ -67,15 +44,13 @@ class DictationDAO
         $Dictee = new \Dictee;
         $data = $form->getCleanedData();
 
-        if (verifier('dictees_publier') && $data['publique']) {
+        if ($data['publique']) {
             $Dictee->etat = DICTEE_VALIDEE;
             \Container::cache()->delete('dictees_accueil');
         } else    $Dictee->etat = DICTEE_BROUILLON;
 
-        $tags = $data['tags'];
-
         unset($data['publique'], $data['lecture_rapide'], $data['lecture_lente'],
-            $data['MAX_FILE_SIZE'], $data['tags'], $data['icone']);
+            $data['MAX_FILE_SIZE'], $data['icone']);
 
         foreach ($data as $k => &$v)
             $Dictee->$k = $v;
@@ -83,9 +58,6 @@ class DictationDAO
         $Dictee->utilisateur_id = $_SESSION['id'];
         $Dictee->creation = new \Doctrine_Expression('CURRENT_TIMESTAMP');
         $Dictee->save();
-
-        // Ajout des tags
-        self::TaggerDictee($Dictee, $tags);
 
         foreach (array('lecture_rapide', 'lecture_lente') as $l)
             if (isset($_FILES[$l]) && $_FILES[$l]['error'] != 4) {
@@ -128,25 +100,16 @@ class DictationDAO
         $data = $Form->getCleanedData();
         $etat = $Dictee->etat;
 
-        if (verifier('dictees_publier')) {
-            if ($data['publique'])
-                $Dictee->etat = DICTEE_VALIDEE;
-            elseif ($Dictee->etat != DICTEE_PROPOSEE)
-                $Dictee->etat = DICTEE_BROUILLON;
-            if ($Dictee->etat != $etat)
-                \Container::cache()->delete('dictees_accueil');
+        if ($data['publique'])
+            $Dictee->etat = DICTEE_VALIDEE;
+        else {
+            $Dictee->etat = DICTEE_BROUILLON;
         }
-
-        // Tags
-        \Doctrine_Query::create()
-            ->delete()
-            ->from('DicteeTag dt')
-            ->where('dt.dictee_id = ?', $Dictee->id)
-            ->execute();
-        self::TaggerDictee($Dictee, $data['tags']);
+        if ($Dictee->etat != $etat)
+            \Container::cache()->delete('dictees_accueil');
 
         unset($data['publique'], $data['lecture_rapide'], $data['lecture_lente'],
-            $data['MAX_FILE_SIZE'], $data['tags'], $data['icone']);
+            $data['MAX_FILE_SIZE'], $data['icone']);
         foreach ($data as $k => $v) {
             $Dictee->$k = $v;
         }
@@ -222,58 +185,6 @@ class DictationDAO
         \Container::get(Admin::class)->refresh('dictees');
     }
 
-    /**
-     * Approuve / Refuse une proposition et envoie un MP à l'auteur.
-     *
-     * @param Dictee $Dictee Dictée.
-     * @param ReponseForm $Form Formulaire de réponse.
-     */
-    public static function RepondreDictee(\Dictee $Dictee, \RepondreForm $Form)
-    {
-        $data = $Form->getCleanedData();
-        if ($data['accepter']) {
-            $Dictee->validation = new \Doctrine_Expression('CURRENT_TIMESTAMP');
-            $Dictee->etat = DICTEE_VALIDEE;
-            $mp = 'dictee_acceptee';
-            $titre = 'Votre dictée a été acceptée';
-            \Container::cache()->delete('dictees_accueil');
-        } else {
-            $Dictee->etat = DICTEE_BROUILLON;
-            $mp = 'dictee_refusee';
-            $titre = 'Votre dictée a été refusée';
-        }
-
-        $message = render_to_string('ZcoDicteesBundle:Mp:' . $mp . '.html.php', array(
-            'id' => $_SESSION['id'],
-            'pseudo' => $_SESSION['pseudo'],
-            'url' => '/dictees/dictee-' . $Dictee->id . '-' . rewrite($Dictee->titre) . '.html',
-            'texte' => $data['commentaire'],
-        ));
-
-        UserDAO::AjouterMPAuto($titre,
-            $Dictee->titre,
-            $Dictee->utilisateur_id,
-            $message);
-        $Dictee->save();
-
-        self::DicteesEffacerCache();
-
-        return $data['accepter'];
-    }
-
-    /**
-     * Propose une dictée.
-     *
-     * @param Dictee $Dictee Dictée.
-     */
-    public static function ProposerDictee(\Dictee $Dictee)
-    {
-        $Dictee->etat = DICTEE_PROPOSEE;
-        $Dictee->save();
-        \Container::get(Admin::class)->refresh('dictees');
-    }
-
-
     private static function DicteesEffacerCache()
     {
         foreach (array('accueil', 'statistiques', 'plusJouees') as $c)
@@ -296,40 +207,27 @@ class DictationDAO
             ->execute();
         $Dictee = $Dictee ? $Dictee[0] : null;
 
-        if (!$Dictee || !self::DicteeDroit($Dictee, 'voir'))
-            return null;
         return $Dictee;
     }
 
     /**
      * Liste les dictées.
-     *
-     * @param $tri string Colonne selon laquelle trier les dictées.
-     * @return Paginator    Les dictées
      */
-    public static function ListerDictees($page, $tri = null)
+    public static function ListerDictees($published = true)
     {
-        $query = \Doctrine_Query::create()
+        $q = \Doctrine_Query::create()
             ->select('d.*, u.id, u.pseudo')
             ->from('Dictee d')
-            ->leftJoin('d.Utilisateur u')
-            ->where('d.etat = ?', DICTEE_VALIDEE);
-
-        $tri = $tri ?: '-edition';
-        $ordre = 'ASC';
-        if ($tri[0] == '-') {
-            $ordre = 'DESC';
-            $tri = substr($tri, 1);
+            ->leftJoin('d.Utilisateur u');
+        if ($published) {
+            $q->where('d.etat = ?', DICTEE_VALIDEE);
+            $q->orderBy('d.creation DESC');
+        } else {
+            $q->orderBy('etat ASC, edition DESC');
         }
 
-        $triable = array('difficulte', 'participations', 'temps_estime',
-            'note', 'titre', 'creation');
-        if (in_array($tri, $triable))
-            $query->orderBy('d.' . $tri . ' ' . $ordre);
-
-        return new Paginator($query, 30);
+        return $q->execute();
     }
-
 
     /**
      * Cherche les dictées en fonction d'un titre donné.
@@ -348,21 +246,6 @@ class DictationDAO
     }
 
     /**
-     * Liste les dictées proposées
-     *
-     * @return \Doctrine_Collection    Les dictées
-     */
-    public static function DicteesProposees()
-    {
-        return \Doctrine_Query::create()
-            ->from('Dictee d')
-            ->leftJoin('d.Utilisateur u')
-            ->where('d.etat = ?', DICTEE_PROPOSEE)
-            ->orderBy('d.edition ASC')
-            ->execute();
-    }
-
-    /**
      * Liste les dictées d'un utilisateur
      *
      * @return \Doctrine_Collection    Les dictées
@@ -374,35 +257,6 @@ class DictationDAO
             ->addWhere('utilisateur_id = ?', $_SESSION['id'])
             ->orderBy('etat ASC, edition DESC')
             ->execute();
-    }
-
-    /**
-     * Évite la redondance pour les vérifications de droit un peu compliquées.
-     *
-     * @param \Dictee $Dictee Dictee.
-     * @param string $droit Droit à tester.
-     * @return bool                L'utilisateur peut / ne peut pas.
-     */
-    public static function DicteeDroit(\Dictee $Dictee, $droit)
-    {
-        if ($droit === 'voir')
-            return $Dictee->etat == DICTEE_VALIDEE ||
-                $Dictee->utilisateur_id == $_SESSION['id'] ||
-                verifier('dictees_voir_toutes');
-
-        if ($droit === 'editer')
-            return (verifier('dictees_publier') ||
-                    $Dictee->etat == DICTEE_BROUILLON
-                ) && (($Dictee->utilisateur_id == $_SESSION['id'] &&
-                        verifier('dictees_editer')
-                    ) || verifier('dictees_editer_toutes')
-                );
-        if ($droit === 'supprimer')
-            return (verifier('dictees_publier') ||
-                    $Dictee->etat == DICTEE_BROUILLON
-                ) && ($Dictee->utilisateur_id == $_SESSION['id'] ||
-                    verifier('dictees_supprimer_toutes')
-                );
     }
 
     /**
@@ -570,16 +424,5 @@ class DictationDAO
             $cache->save('dictees_hasard', $d ?: false, 120);
         }
         return $d;
-    }
-
-    /**
-     * Renvoie les tags associés à une dictée.
-     *
-     * @param  \Dictee $Dictee Dictee.
-     * @return \Doctrine_Collection   Tags.
-     */
-    public static function DicteeTags(\Dictee $Dictee)
-    {
-        return \Doctrine_Core::getTable('Dictee')->getTags($Dictee);
     }
 }

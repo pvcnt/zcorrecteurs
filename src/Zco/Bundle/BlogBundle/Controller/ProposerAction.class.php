@@ -68,7 +68,7 @@ class ProposerAction extends BlogActions
 					'Proposer le billet à la validation'
 				));
 				
-				return render_to_response('ZcoBlogBundle::proposer.html.php', $this->getVars());
+				return render_to_response('ZcoBlogBundle::admin.html.php', $this->getVars());
 			}
 			else
 				throw new AccessDeniedHttpException();

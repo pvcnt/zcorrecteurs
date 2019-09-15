@@ -3,7 +3,10 @@
 <h1>Dictées</h1>
 
 <p class="gras centre">
-	<a href="liste.html">Liste complète des dictées</a>
+	<a href="<?php echo $view['router']->path('zco_dictation_list') ?>">Liste complète des dictées</a>
+    <?php if (verifier('connecte')): ?>
+        - <a href="<?php echo $view['router']->path('zco_dictation_myStats') ?>">Mes statistiques de réussite</a>
+    <?php endif ?>
 </p>
 
 <table class="UI_boxes" cellspacing="7px">

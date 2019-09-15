@@ -19,3 +19,8 @@ mp_nb_participants_max
 membres_editer_titre
 ips_analyser
 ips_bannir
+dictees_ajouter
+dictees_editer
+dictees_voir_toutes
+dictees_supprimer_toutes
+dictees_editer_toutes

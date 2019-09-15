@@ -26,17 +26,6 @@
  */
 class Dictee extends BaseDictee
 {
-	public function getTags()
-	{
-		$tags = Doctrine_Core::getTable('Dictee')->getTags($this);
-		$o = array();
-		foreach ($tags as $tag)
-		{
-			$o[] = htmlspecialchars($tag->Tag->nom);
-		}
-		return implode(', ', $o);
-	}
-
 	public function soundFilename($kind)
     {
         switch ($kind) {

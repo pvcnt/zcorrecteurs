@@ -57,12 +57,12 @@ final class SitemapFactory
             ]);
         }
 
-        $links[] = new SitemapLink(URL_SITE . '/dictees/', array(
+        $links[] = new SitemapLink($this->generateUrl('zco_dictation_index'), array(
             'changefreq' => 'weekly',
             'priority' => '0.6',
         ));
         foreach (\Doctrine_Core::getTable('Dictee')->getAllId() as $dictee) {
-            $url = URL_SITE . '/dictees/dictee-' . $dictee['id'] . '-' . rewrite($dictee['titre']) . '.html';
+            $url = $this->generateUrl('zco_dictation_show', ['id' => $dictee['id'], 'slug' =>  rewrite($dictee['titre'])]);
             $links[] = new SitemapLink($url, array(
                 'changefreq' => 'monthly',
                 'priority' => '0.5',

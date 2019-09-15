@@ -37,10 +37,6 @@ services:
     tags:
     - { name: zco.admin_task }
 
-  Zco\Bundle\DicteesBundle\Admin\DictationsPendingTask:
-    tags:
-    - { name: zco.admin_task }
-
   Zco\Bundle\BlogBundle\Admin\ArticlesPendingTask:
     tags:
     - { name: zco.admin_task }

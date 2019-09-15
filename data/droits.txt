@@ -78,10 +78,5 @@ recrutements_desistement
 recrutements_ecrire_shoutbox
 recrutements_voir_shoutbox
 recrutements_avis
-dictees_ajouter
 dictees_publier
-dictees_editer
-dictees_voir_toutes
-dictees_supprimer_toutes
-dictees_editer_toutes
 voir_groupes_secondaires

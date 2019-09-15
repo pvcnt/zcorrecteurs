@@ -1,18 +1,19 @@
 <?php $view->extend('::layouts/default.html.php') ?>
 
-<h1>Proposer une dictée</h1>
+<h1>Supprimer une dictée</h1>
 
 <fieldset>
-	<legend>Proposer une dictée</legend>
+	<legend>Supprimer une dictée</legend>
 	<form method="post" action="">
+		<?php if($Dictee->etat == DICTEE_VALIDEE): ?>
+			<p class="rmq attention">Cette dictée est en ligne.</p>
+		<?php endif; ?>
 		<p class="centre">
-			Êtes-vous sûr de vouloir proposer cette dictée,
+			Êtes-vous sûr de vouloir supprimer cette dictée,
 			dont le titre est
 			<strong><a href="<?php echo $url; ?>">
 				<?php echo htmlspecialchars($Dictee->titre); ?>
-			</a></strong> ?<br />
-			En cliquant sur Oui, votre dictée sera envoyée aux administrateurs, et
-			vous recevrez un message privé quand votre dictée aura été examinée.
+			</a></strong> ?
 		</p>
 
 		<p class="centre">

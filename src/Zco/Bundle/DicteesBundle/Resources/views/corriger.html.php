@@ -25,7 +25,7 @@
 <p class="rmq information">Vous avez fait <?php echo $diff->fautes() ?> faute<?php echo pluriel($diff->fautes()) ?>.
 <?php echo $commentaire ?></p>
 
-<p class="italique"><a href="https://twitter.com/share?text=<?php echo urlencode('J\'ai fait '.$diff->fautes().' faute'.pluriel($diff->fautes()).' à cette dictée des @zCorrecteurs. Pourrez-vous faire mieux ? Relevez le défi ici : ') ?>&url=<?php echo URL_SITE ?>/dictees/dictee-<?php echo $Dictee->id ?>-<?php echo rewrite($Dictee->titre) ?>.html">
+<p class="italique"><a href="https://twitter.com/share?text=<?php echo urlencode('J\'ai fait '.$diff->fautes().' faute'.pluriel($diff->fautes()).' à cette dictée des @zCorrecteurs. Pourrez-vous faire mieux ? Relevez le défi ici : ') ?>&url=<a href="<?php echo $view['router']->url('zco_dictation_show', ['id' => $Dictee->id, 'slug' => rewrite($Dictee->titre)]) ?>">">
     <img src="/img/oiseau_16px.png" alt="Twitter" />
     Partager mon résultat sur Twitter
 </a></p>

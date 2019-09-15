@@ -32,11 +32,10 @@
 		</dd>
 	<?php endif ?>
 
-	<?php if(DictationDAO::DicteeDroit($Dictee, 'editer')): ?>
+	<?php if(verifier('dictees_publier')): ?>
 		<dd><a href="editer-<?php echo $Dictee->id ?>.html">
 			<img title="Éditer" alt="Éditer" class="fff pencil" src="/pix.gif"/>
 			Modifier</a></dd>
-	<?php endif; if(DictationDAO::DicteeDroit($Dictee, 'supprimer')): ?>
 		<dd><a href="supprimer-<?php echo $Dictee->id ?>.html">
 			<img title="Supprimer" alt="Supprimer" class="fff cross" src="/pix.gif"/>
 			Supprimer</a></dd>
@@ -69,7 +68,7 @@
 )) ?></p>
 <?php endif ?>
 
-<p class="italique"><a href="https://twitter.com/share?text=<?php echo urlencode('Vous aussi, mesurez-vous à cette dictée des @zCorrecteurs : ') ?>&url=<?php echo URL_SITE ?>/dictees/dictee-<?php echo $Dictee->id ?>-<?php echo rewrite($Dictee->titre) ?>.html">
+<p class="italique"><a href="https://twitter.com/share?text=<?php echo urlencode('Vous aussi, mesurez-vous à cette dictée des @zCorrecteurs : ') ?>&url=<a href="<?php echo $view['router']->url('zco_dictation_show', ['id' => $Dictee->id, 'slug' => rewrite($Dictee->titre)]) ?>">">
     <img src="/img/oiseau_16px.png" alt="Twitter" />
     Partager cette dictée sur Twitter
 </a></p>

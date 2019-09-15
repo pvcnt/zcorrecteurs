@@ -13,7 +13,7 @@
             <li>
                 <a href="<?php echo $view['router']->path('zco_quiz_index') ?>">Quiz</a>
             </li>
-            <li><a href="/dictees/">Dictées</a></li>
+            <li><a href="<?php echo $view['router']->path('zco_dictation_index') ?>">Dictées</a></li>
             <?php if (verifier('connecte')): ?>
                 <li>
                     <a href="/mp/">
@@ -63,9 +63,6 @@
                         </li>
                         <li>
                             <a href="/blog/mes-billets.html">Mes billets</a>
-                        </li>
-                        <li>
-                            <a href="/dictees/proposer.html">Mes dictées</a>
                         </li>
                         <li class="divider">&nbsp;</li>
                         <li class="last">

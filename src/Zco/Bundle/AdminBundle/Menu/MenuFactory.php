@@ -54,14 +54,6 @@ final class MenuFactory
                 'uri' => $this->router->generate('zco_categories_index'),
             ]);
         }
-        if (verifier('dictees_publier')) {
-            $count = $this->admin->get(DictationsPendingTask::class);
-            $menu->getChild('Dictées')->addChild('Voir les dictées proposées', [
-                'label' => 'Il y a ' . $count . ' dictée' . pluriel($count) . ' proposée' . pluriel($count),
-                'uri' => '/dictees/propositions.html',
-                'count' => $count,
-            ]);
-        }
         if (verifier('citations_modifier')) {
             $menu->getChild('Citations')->addChild('Gérer les citations', [
                 'uri' => $this->router->generate('zco_quote_index'),
@@ -111,6 +103,11 @@ final class MenuFactory
         if (verifier('quiz_ajouter')) {
             $menu->getChild('Quiz')->addChild('Gérer les quiz', array(
                 'uri' => $this->router->generate('zco_quiz_admin'),
+            ));
+        }
+        if (verifier('dictees_publier')) {
+            $menu->getChild('Quiz')->addChild('Gérer les dictées', array(
+                'uri' => $this->router->generate('zco_dictation_admin'),
             ));
         }
         if (verifier('blog_voir_billets_proposes')) {

@@ -41,7 +41,7 @@ define('VERSION_ID',               3); //Permet de récupérer une version par s
 
 // États des dictées
 define('DICTEE_BROUILLON',         1);
-define('DICTEE_PROPOSEE',          2);
+// 2 was used for submitted dictations.
 define('DICTEE_VALIDEE',           3);
 
 //Sexe

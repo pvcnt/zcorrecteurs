@@ -25,29 +25,6 @@ use Zco\Bundle\Doctrine1Bundle\Model\NamedDoctrineTableInterface;
  */
 class DicteeTable extends Doctrine_Table implements NamedDoctrineTableInterface
 {
-	public function getTags(Dictee $Dictee)
-	{
-		$dbh = Doctrine_Manager::connection()->getDbh();
-		$q = $dbh->prepare('SELECT t.id, t.nom '
-			.'FROM zcov2_dictees_tags dt '
-			.'LEFT JOIN zcov2_tags t ON t.id = dt.tag_id '
-			.'WHERE dt.dictee_id = ? '
-			.'ORDER BY t.nom ASC');
-		$q->execute(array($Dictee->id));
-
-		$o = array();
-		foreach ($q->fetchAll() as $d)
-		{
-			$out = new StdClass();
-			$out->Tag = new StdClass();
-			foreach ($d as $k => $v)
-				$out->Tag->$k = $v;
-
-			$o[] = $out;
-		}
-		return $o;
-	}
-	
 	/**
 	 * Liste simplement les dictées avec leur id et leur titre
 	 * pour le sitemap.

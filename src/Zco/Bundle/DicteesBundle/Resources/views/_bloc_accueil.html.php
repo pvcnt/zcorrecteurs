@@ -1,4 +1,4 @@
-<p class="centre italique"><a href="/dictees/">Accéder aux dictées</a></p>
+<p class="centre italique"><a href="<?php echo $view['router']->path('zco_dictation_index') ?>">Accéder aux dictées</a></p>
 
 <ul>
 	<li>
@@ -9,8 +9,7 @@
 				<li><em>Aucune dictée trouvée.</em></li>
 			<?php else: foreach($DicteesLesPlusJouees as $dictee): ?>
 				<li>
-					<a href="/dictees/dictee-<?php echo $dictee->id ?>-<?php
-					   echo rewrite($dictee->titre) ?>.html">
+                    <a href="<?php echo $view['router']->path('zco_dictation_show', ['id' => $dictee->id, 'slug' => rewrite($dictee->titre)]) ?>">
 						<?php echo htmlspecialchars($dictee->titre) ?>
 					</a>
 					<?php if($dictee->description): ?>
@@ -32,10 +31,7 @@
 				<li><em>Aucune dictée trouvée.</em></li>
 			<?php else: foreach($DicteesAccueil as $dictee): ?>
 				<li>
-					<a href="/dictees/dictee-<?php echo $dictee->id ?>-<?php
-					   echo rewrite($dictee->titre) ?>.html">
-						<?php echo htmlspecialchars($dictee->titre) ?>
-					</a>
+                    <a href="<?php echo $view['router']->path('zco_dictation_show', ['id' => $dictee->id, 'slug' => rewrite($dictee->titre)]) ?>">
 					<?php if($dictee->description): ?>
 						<span class="dictee-description">
 							—
@@ -55,10 +51,7 @@
 				<li><em>Aucune dictée trouvée.</em></li>
 			<?php else: ?>
 				<li>
-					<a href="/dictees/dictee-<?php echo $DicteeHasard->id ?>-<?php
-					   echo rewrite($DicteeHasard->titre) ?>.html">
-						<?php echo htmlspecialchars($DicteeHasard->titre) ?>
-					</a>
+                    <a href="<?php echo $view['router']->path('zco_dictation_show', ['id' => $dictee->id, 'slug' => rewrite($dictee->titre)]) ?>">
                     <?php if($dictee->description): ?>
                         <span class="dictee-description">
 							—

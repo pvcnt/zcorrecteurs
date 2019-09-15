@@ -58,14 +58,11 @@ class AjouterForm extends Form
 			'temps_estime' => 'Dictée',
 		));
 
-		if(verifier('dictees_publier'))
-		{
-			$this->addWidget('publique', new Widget_Checkbox);
-			$this->setHelpText('publique', 'Cochez cette case pour que la dictée soit rendue publique.');
-			$this->setLabel('publique', 'Mettre en ligne');
-			$this->attachFieldset('publique', 'Dictée');
-			$this->setValidator('publique', new Validator_Boolean);
-		}
+        $this->addWidget('publique', new Widget_Checkbox);
+        $this->setHelpText('publique', 'Cochez cette case pour que la dictée soit rendue publique.');
+        $this->setLabel('publique', 'Mettre en ligne');
+        $this->attachFieldset('publique', 'Dictée');
+        $this->setValidator('publique', new Validator_Boolean);
 
 		$this->attachFieldset('texte', 'Dictée');
 
@@ -101,11 +98,9 @@ class AjouterForm extends Form
 		$this->addWidget('auteur_prenom', new Widget_Input_Text(array(), array('maxlength' => 100)));
 		$this->addWidget('auteur_nom', new Widget_Input_Text(array(), array('maxlength' => 100)));
 		$this->addWidget('source', new Widget_Input_Text(array(), array('size' => 60, 'maxlength' => 255)));
-		$this->addWidget('tags', new Widget_Input_Text(array(), array('size' => 60)));
 		$this->addWidget('MAX_FILE_SIZE', new Widget_Input_Hidden);
 		$this->addWidget('icone', new Widget_Input_File);
 		$this->setHelpText('source', 'Indiquez l\'origine du texte.');
-		$this->setHelpText('tags', 'Liez des mots clés à votre dictée (séparés par des virgules).');
 		$this->setHelpText('icone','Icône pour votre dictée, au format jpg ou png.');
 		$this->addWidget('description', new Widget_zForm);
 		$this->addWidget('indications', new Widget_zForm);
@@ -116,14 +111,12 @@ class AjouterForm extends Form
 
 		$this->setLabel('auteur_prenom', 'Prénom de l\'auteur');
 		$this->setLabel('auteur_nom', 'Nom de l\'auteur');
-		$this->setLabel('tags', 'Mots-clés');
 		$this->setLabel('icone', 'Icône');
 
 		$this->attachFieldset(array(
 			'auteur_prenom' => $fname,
 			'auteur_nom'    => $fname,
 			'source'        => $fname,
-			'tags'          => $fname,
 			'icone'		    => $fname,
 			'description'   => $fname,
 			'indications'   => $fname,

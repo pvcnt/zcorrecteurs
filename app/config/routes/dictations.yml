@@ -1,0 +1,48 @@
+zco_dictation_index:
+  path: /dictees
+  defaults:  { _controller: ZcoDicteesBundle:Default:index }
+
+zco_dictation_list:
+  path: /dictees/liste
+  defaults:  { _controller: ZcoDicteesBundle:Default:list }
+
+zco_dictation_show:
+  path: /dictees/{id}/{slug}
+  defaults:  { _controller: ZcoDicteesBundle:Default:show, slug: ~ }
+  methods:   [GET, POST]
+  requirements:
+    id: \d+
+
+zco_dictation_myStats:
+  path: /dictees/mes-statistiques
+  defaults:  { _controller: ZcoDicteesBundle:Default:myStats }
+
+zco_dictation_myStatsChart:
+  path: /dictees/mes-statistiques.png
+  defaults:  { _controller: ZcoDicteesBundle:Default:myStatsChart }
+
+zco_dictation_admin:
+  path: /dictees/admin
+  defaults:  { _controller: ZcoDicteesBundle:Default:admin }
+
+zco_dictation_new:
+  path: /dictees/ajouter
+  defaults:  { _controller: ZcoDicteesBundle:Default:new }
+
+zco_dictation_edit:
+  path: /dictees/modifier/{id}
+  defaults:  { _controller: ZcoDicteesBundle:Default:edit }
+  requirements:
+    id: \d+
+
+zco_quiz_publishQuiz:
+  path: /dictees/publier/{id}/{status}
+  defaults:  { _controller: ZcoDicteesBundle:Default:publish }
+  requirements:
+    id: \d+
+
+zco_dictation_delete:
+  path: /dictees/supprimer/{id}
+  defaults:  { _controller: ZcoDicteesBundle:Default:delete }
+  requirements:
+    id: \d+
