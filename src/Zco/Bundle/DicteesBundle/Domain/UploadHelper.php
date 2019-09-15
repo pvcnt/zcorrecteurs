@@ -19,13 +19,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace Zco\Bundle\DicteesBundle\Domain;
+
 /**
  * Classe contenant des méthodes statiques pour faciliter les uploads de
  * fichiers. Supporte l'upload depuis le disque dur ou bien depuis une URL.
  *
  * @author Vanger
  */
-class File_Upload
+final class UploadHelper
 {
 	const FILE = 1;
 	const URL = 2;

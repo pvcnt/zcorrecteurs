@@ -100,7 +100,7 @@ class DictationDAO
             $nom = $Dictee->id . $ext;
             $chemin = BASEPATH . '/web/uploads/dictees';
 
-            if (!\File_Upload::Fichier($_FILES['icone'], $chemin, $nom, \File_Upload::FILE | \File_Upload::IMAGE))
+            if (!UploadHelper::Fichier($_FILES['icone'], $chemin, $nom, UploadHelper::FILE | UploadHelper::IMAGE))
                 return redirect(
                     'Une erreur est survenue lors de l\'envoi de l\'icône : le format est peut-être invalide.',
                     'editer-' . $Dictee->id . '-' . rewrite($Dictee->titre) . '.html',
@@ -170,7 +170,7 @@ class DictationDAO
                 @unlink(BASEPATH . '/web' . $Dictee->icone);
 
 
-            if (!\File_Upload::Fichier($_FILES['icone'], $chemin, $nom, \File_Upload::FILE | \File_Upload::IMAGE))
+            if (!UploadHelper::Fichier($_FILES['icone'], $chemin, $nom, UploadHelper::FILE | UploadHelper::IMAGE))
                 return redirect(
                     'Une erreur est survenue lors de l\'envoi de l\'icône : le format est peut-être invalide.',
                     'editer-' . $Dictee->id . '-' . rewrite($Dictee->titre) . '.html',
@@ -432,7 +432,7 @@ class DictationDAO
         $path = BASEPATH . '/web/uploads/dictees';
         $name = $Dictee->soundFilename($field);
 
-        return \File_Upload::Fichier($_FILES[$field], $path, $name);
+        return UploadHelper::Fichier($_FILES[$field], $path, $name);
     }
 
     /**
