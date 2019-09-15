@@ -45,13 +45,6 @@
 			Visualiser le billet<br />
 		</a>
 
-		<?php if(verifier('blog_voir_historique') || $autorise == true){ ?>
-		<a href="validation-<?php echo $_GET['id']; ?>.html">
-			<img src="/bundles/zcoblog/img/validation.png" alt="" />
-			Voir l'historique de validation
-		</a><br />
-		<?php } ?>
-
 		<?php if(verifier('blog_voir_versions') || $redacteur == true){ ?>
 		<a href="versions-<?php echo $_GET['id']; ?>.html">
 			<img src="/bundles/zcoblog/img/versions.png" alt="" />

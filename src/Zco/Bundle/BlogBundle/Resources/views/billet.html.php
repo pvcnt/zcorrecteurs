@@ -218,13 +218,6 @@ Aucun commentaire n'a encore été déposé sur ce billet.
 			<img src="/bundles/zcoforum/img/cadenas.png" alt="" />
 			<a href="?fermer=0">Ouvrir les commentaires</a>
 		</li>
-		<?php } if(verifier('blog_editer_commentaires')){ ?>
-		<li>
-			<img src="/img/supprimer.png" alt="" />
-			<a href="supprimer-commentaires-<?php echo $_GET['id']; ?>.html">
-				Supprimer tous les commentaires de ce billet
-			</a>
-		</li>
 		<?php } ?>
 	</ul>
 </fieldset>

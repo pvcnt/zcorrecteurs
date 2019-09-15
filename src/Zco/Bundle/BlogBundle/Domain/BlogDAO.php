@@ -459,21 +459,6 @@ final class BlogDAO
     }
 
     /**
-     * Compte le nombre de billets proposés.
-     * @return integer
-     */
-    public static function NombreBilletsProposes()
-    {
-        $dbh = \Doctrine_Manager::connection()->getDbh();
-
-        $stmt = $dbh->prepare("SELECT COUNT(*) AS nombre
-		FROM zcov2_blog
-		WHERE blog_etat = " . BLOG_PROPOSE);
-        $stmt->execute();
-        return $stmt->fetchColumn();
-    }
-
-    /**
      * Valide un billet.
      * @param integer $id L'id du billet à valider.
      * @param boolean $conserver_date_pub Doit-on laisser la date de publication indiquée ?
@@ -557,79 +542,6 @@ final class BlogDAO
         $stmt->bindParam(':id', $id);
         $stmt->execute();
         $stmt->closeCursor();
-    }
-
-
-    /**
-     * Infos de validation sur une version.
-     * @param integer $id L'id de la version.
-     * @return array
-     */
-    public static function InfosValidationVersion($id)
-    {
-        $dbh = \Doctrine_Manager::connection()->getDbh();
-
-        $stmt = $dbh->prepare("
-	SELECT valid_commentaire, utilisateur_id, utilisateur_pseudo
-	FROM zcov2_blog_validation
-	LEFT JOIN zcov2_utilisateurs ON valid_id_utilisateur = utilisateur_id
-	WHERE valid_id_version = :id
-	ORDER BY valid_date DESC
-	LIMIT 0, 1");
-        $stmt->bindParam(':id', $id);
-
-        $stmt->execute();
-
-        $return = $stmt->fetch(\PDO::FETCH_ASSOC);
-        $stmt->closeCursor();
-        return $return;
-    }
-
-    /**
-     * Ajoute une entrée dans l'historique de validation.
-     * @param integer $id_billet L'id du billet à proposer.
-     * @param integer $id_version L'id de la version proposée
-     * @return void
-     */
-    public static function AjouterHistoriqueValidation($id_billet, $id_u, $id_version, $texte, $decision)
-    {
-        $dbh = \Doctrine_Manager::connection()->getDbh();
-
-        $stmt = $dbh->prepare("INSERT INTO zcov2_blog_validation(valid_id_billet, " .
-            "valid_id_utilisateur, valid_id_version, valid_date, valid_ip, " .
-            "valid_commentaire, valid_decision) " .
-            "VALUES(:id_billet, :id_utilisateur, :id_version, NOW(), :ip, " .
-            ":commentaire, :decision)");
-        $stmt->bindParam(':id_billet', $id_billet);
-        $stmt->bindParam(':id_utilisateur', $id_u);
-        $stmt->bindParam(':id_version', $id_version);
-        $stmt->bindValue(':ip', ip2long(\Container::request()->getClientIp()));
-        $stmt->bindParam(':commentaire', $texte);
-        $stmt->bindParam(':decision', $decision);
-        $stmt->execute();
-        $stmt->closeCursor();
-    }
-
-    /**
-     * Récupère l'historique de validation d'un billet.
-     * @param integer $id L'id du billet.
-     * @return array
-     */
-    public static function HistoriqueValidation($id)
-    {
-        $dbh = \Doctrine_Manager::connection()->getDbh();
-
-        $stmt = $dbh->prepare("SELECT valid_id, valid_ip, valid_id_version, " .
-            "valid_decision, valid_commentaire, valid_date, utilisateur_id, " .
-            "utilisateur_pseudo " .
-            "FROM zcov2_blog_validation " .
-            "LEFT JOIN zcov2_utilisateurs ON valid_id_utilisateur = utilisateur_id " .
-            "WHERE valid_id_billet = :id " .
-            "ORDER BY valid_date");
-        $stmt->bindParam(':id', $id);
-
-        $stmt->execute();
-        return $stmt->fetchAll();
     }
 
     /**

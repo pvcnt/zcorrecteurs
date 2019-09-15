@@ -221,26 +221,6 @@ final class CommentDAO
     }
 
     /**
-     * Supprime tous les commentaires d'un billet.
-     * @param integer $id L'id du billet.
-     * @return void
-     */
-    public static function SupprimerCommentairesBillet($id)
-    {
-        $dbh = \Doctrine_Manager::connection()->getDbh();
-
-        $stmt = $dbh->prepare("DELETE FROM zcov2_blog_commentaires " .
-            "WHERE commentaire_id_billet = :id");
-        $stmt->bindParam(':id', $id);
-        $stmt->execute();
-
-        $stmt = $dbh->prepare("DELETE FROM zcov2_blog_lunonlu " .
-            "WHERE lunonlu_id_billet = :id");
-        $stmt->bindParam(':id', $id);
-        $stmt->execute();
-    }
-
-    /**
      * Récupère des informations sur un billet.
      *
      * @param integer $id L'id du commentaire.

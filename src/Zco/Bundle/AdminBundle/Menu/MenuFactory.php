@@ -104,29 +104,6 @@ final class MenuFactory
                 'uri' => $this->router->generate('zco_dictation_admin'),
             ));
         }
-        if (verifier('blog_voir_billets_proposes')) {
-            $count = $this->admin->get(ArticlesPendingTask::class);
-            $menu->getChild('Blog')->addChild('Voir les billets proposés', array(
-                'label' => 'Il y a ' . $count . ' billet' . pluriel($count) . ' proposé' . pluriel($count),
-                'uri' => '/blog/propositions.html',
-                'count' => $count,
-            ));
-        }
-        if (verifier('blog_voir_billets_redaction')) {
-            $menu->getChild('Blog')->addChild('Voir les billets en cours de rédaction', array(
-                'uri' => '/blog/brouillons.html',
-            ));
-        }
-        if (verifier('blog_voir_refus')) {
-            $menu->getChild('Blog')->addChild('Voir les billets refusés', array(
-                'uri' => '/blog/refus.html',
-            ));
-        }
-        if (verifier('blog_supprimer') || verifier('blog_editer_valide')) {
-            $menu->getChild('Blog')->addChild('Voir les billets en ligne', array(
-                'uri' => '/blog/gestion.html'
-            ));
-        }
 
         if (verifier('membres_valider_ch_pseudos')) {
             $count = $this->admin->get(NewUsernamePendingTask::class);

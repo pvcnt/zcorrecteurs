@@ -37,10 +37,6 @@ services:
     tags:
     - { name: zco.admin_task }
 
-  Zco\Bundle\BlogBundle\Admin\ArticlesPendingTask:
-    tags:
-    - { name: zco.admin_task }
-
   zco.repository.quotes:
     class: Zco\Bundle\ContentBundle\Domain\QuoteRepository
     public: true
