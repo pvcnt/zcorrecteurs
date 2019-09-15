@@ -23,7 +23,7 @@ namespace Zco\Bundle\PagesBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Zco\Bundle\CoreBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Zco\Bundle\PagesBundle\Entity\Contact;
 use Zco\Bundle\PagesBundle\Form\Type\ContactType;
 
@@ -39,7 +39,7 @@ class StaticController extends Controller
      */
     public function indexAction()
     {
-        $this->setBreadcrumb(['À propos des zCorrecteurs']);
+        (['À propos des zCorrecteurs']);
         \Page::$description = 'Apprenez-en plus sur le site et son histoire.';
 
         return $this->render('ZcoPagesBundle:Static:about.html.php');

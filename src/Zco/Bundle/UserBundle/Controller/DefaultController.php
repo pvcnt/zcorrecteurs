@@ -26,7 +26,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Zco\Bundle\CoreBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Zco\Bundle\GroupesBundle\Domain\GroupDAO;
 use Zco\Bundle\UserBundle\Form\Type\NewUsernameType;
 
@@ -169,7 +169,7 @@ class DefaultController extends Controller
         $vars['canAdmin'] = verifier('groupes_changer_membre') || verifier('options_editer_profils');
         $vars['own'] = $_SESSION['id'] == $user->getId();
 
-        $this->setBreadcrumb(['Profil d' . $art . htmlspecialchars($user->getUsername())]);
+        fil_ariane(['Profil d' . $art . htmlspecialchars($user->getUsername())]);
         \Page::$description = 'Pour en savoir plus sur la personnalité d' . $art . htmlspecialchars($user->getUsername()) . ' et son activité sur le site';
 
         return $this->render('ZcoUserBundle::profile.html.php', $vars);
