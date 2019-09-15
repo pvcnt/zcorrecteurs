@@ -11,12 +11,12 @@
 	<form method="post" action="">
 		<p class="centre">
 			Êtes-vous sûr de vouloir vraiment supprimer ce commentaire de
-			<strong><a href="/membres/profil-<?php echo $InfosCommentaire['utilisateur_id']; ?>-<?php echo rewrite($InfosCommentaire['utilisateur_pseudo']); ?>.html"><?php echo htmlspecialchars($InfosCommentaire['utilisateur_pseudo']); ?></a></strong> ?
+			<strong><a href="<?php echo $view['router']->path('zco_user_profile', ['id' => $InfosCommentaire['utilisateur_id'], 'slug' => rewrite($InfosCommentaire['utilisateur_pseudo'])]) ?>"><?php echo htmlspecialchars($InfosCommentaire['utilisateur_pseudo']); ?></a></strong> ?
 		</p>
 
 		<p class="centre">
 			<input type="submit" name="confirmer" value="Oui" />
-			<input type="submit" name="annuler" value="Non" />
+            <a href="billet-<?php echo $InfosBillet['blog_id'] . '-' . rewrite($InfosBillet['version_titre']) ?>.html'">Non</a>
 		</p>
 	</form>
 </fieldset>

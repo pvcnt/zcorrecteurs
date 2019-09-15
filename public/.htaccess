@@ -64,8 +64,6 @@ RewriteRule ^dictees/dictee-([0-9]+)-([a-zA-Z0-9-]+)\.html$ /dictees/$1/$2 [L,R=
 RewriteRule ^blog/$ /blog [L,R=301]
 RewriteRule ^blog/billet-([0-9]+)\.html$ /blog/$1 [L,R=301]
 RewriteRule ^blog/billet-([0-9]+)-([a-zA-Z0-9-]+)\.html$ /blog/$1/$2 [L,R=301]
-RewriteRule ^blog/categorie-([0-9]+)\.html$ /blog/categorie/$1 [L,R=301]
-RewriteRule ^blog/categorie-([0-9]+)-([a-zA-Z0-9-]+)\.html$ /blog/categorie/$1/$2 [L,R=301]
 
 RewriteRule ^(blog|informations)/fil-rss(?:-([0-9]+))?\.html$ /$1/flux-$2.html [L,R=301]
 RewriteRule ^forum/messages-rss(?:-([0-9]+))?\.html$ /forum/message-flux-$2.html [L,R=301]

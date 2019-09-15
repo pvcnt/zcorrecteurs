@@ -10,12 +10,12 @@
 	Merci à tous ceux qui contribueront à la vie du site ainsi !
 </p>
 
-<p class="gras centre"><a href="ajouter.html">Ajouter un nouveau billet</a></p>
+<p class="gras centre"><a href="<?php echo $view['router']->path('zco_blog_new') ?>">Ajouter un nouveau billet</a></p>
 
 <fieldset>
 	<legend>Filtrer les billets</legend>
 	<form method="get" action="">
-		<select name="id" id="id" onchange="document.location = 'mes-billets-' + this.value + '.html';">
+		<select name="id" id="id" onchange="document.location = '<?php echo $view['router']->path('zco_blog_mine') ?>?etat=' + this.value;">
 			<option value="0"<?php if(empty($_GET['id'])) echo ' selected="selected"'; ?>>Tous</option>
 			<option value="<?php echo BLOG_BROUILLON; ?>"<?php if(!empty($_GET['id']) && $_GET['id'] == BLOG_BROUILLON) echo ' selected="selected"'; ?>>Brouillon</option>
 			<option value="<?php echo BLOG_REFUSE; ?>"<?php if(!empty($_GET['id']) && $_GET['id'] == BLOG_REFUSE) echo ' selected="selected"'; ?>>Refusé</option>

@@ -48,19 +48,13 @@ class SupprimerAction extends BlogActions
 				{
                     BlogDAO::SupprimerBillet($_GET['id']);
 
-					if($this->autorise == true)
-						return redirect('Le billet a bien été supprimé.', 'mes-billets.html');
-					else
-						return redirect('Le billet a bien été supprimé.', 'gestion.html');
+                    return redirect('Le billet a bien été supprimé.', $this->generateUrl('zco_blog_mine'));
 				}
 
 				//Si on annule
 				elseif(isset($_POST['annuler']))
 				{
-					if($this->autorise == true)
-						return new RedirectResponse('mes-billets.html');
-					else
-						return new RedirectResponse('gestion.html');
+				    return new RedirectResponse($this->generateUrl('zco_blog_mine'));
 				}
 
 				//Inclusion de la vue

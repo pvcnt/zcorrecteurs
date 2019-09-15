@@ -120,10 +120,10 @@
 				<a href="ajouter-commentaire-<?php echo $_GET['id']; ?>-<?php echo $valeur['commentaire_id']; ?>.html"><img src="/bundles/zcoforum/img/citer.png" alt="Citer" title="Citer" /></a>
 				<?php }
 				if((($valeur['id_auteur'] == $_SESSION['id'] && verifier('blog_editer_ses_commentaires')) || verifier('blog_editer_commentaires')) && ($InfosBillet['blog_commentaires'] == COMMENTAIRES_OK || verifier('blog_poster_commentaires_fermes'))){ ?>
-				<a href="<?php echo 'editer-commentaire-'.$valeur['commentaire_id']; ?>.html" title="Modifier ce commentaire">
+				<a href="<?php echo $view['router']->path('zco_blog_editComment', ['id' => $valeur['commentaire_id']]) ?>" title="Modifier ce commentaire">
 					<img src="/img/editer.png" alt="Modifier" /></a>
 				<?php } if(verifier('blog_editer_commentaires') || ($createur == true && in_array($InfosBillet['blog_etat'], array(BLOG_REFUSE, BLOG_BROUILLON)))){ ?>
-				<a href="supprimer-commentaire-<?php echo $valeur['commentaire_id']; ?>.html" title="Supprimer ce commentaire">
+				<a href="<?php $view['router']->paht('zco_blog_deleteComment', ['id' => $valeur['commentaire_id']]) ?>" title="Supprimer ce commentaire">
 					<img src="/img/supprimer.png" alt="Supprimer" />
 				</a>
 				<?php } ?>

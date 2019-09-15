@@ -26,7 +26,8 @@
 
 		<p class="categorie">
 			Catégorie :
-			<a href="categorie-<?php echo $InfosBillet['cat_id']; ?>-<?php echo rewrite($InfosBillet['cat_nom']); ?>.html" title="Tous les billets de la catégorie « <?php echo htmlspecialchars($InfosBillet['cat_nom']); ?> »">
+			<a href="<?php echo $view['router']->path('zco_blog_index', ['filtre' => $InfosBillet['cat_id']]) ?>"
+               title="Tous les billets de la catégorie « <?php echo htmlspecialchars($InfosBillet['cat_nom']); ?> »">
 				<?php echo htmlspecialchars($InfosBillet['cat_nom']); ?>
 			</a>
 		</p>

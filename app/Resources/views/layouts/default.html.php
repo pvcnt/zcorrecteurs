@@ -101,7 +101,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="/blog/mes-billets.html">
+                            <a href="<?php echo $view['router']->path('zco_blog_mine') ?>">
                                 Mes billets
                             </a>
                         </li>

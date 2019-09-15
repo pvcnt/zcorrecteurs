@@ -51,7 +51,7 @@
                             <a href="<?php echo $view['router']->path('zco_options_index') ?>">Mes paramètres</a>
                         </li>
                         <li>
-                            <a href="/blog/mes-billets.html">Mes billets</a>
+                            <a href="<?php echo $view['router']->path('zco_blog_mine') ?>">Mes billets</a>
                         </li>
                         <li class="divider">&nbsp;</li>
                         <li class="last">

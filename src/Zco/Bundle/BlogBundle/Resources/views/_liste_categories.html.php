@@ -2,9 +2,10 @@
 $Categories = CategoryDAO::ListerEnfants(CategoryDAO::GetIDCategorieCourante()); ?>
 <div class="UI_box">
     <form method="post" action="<?php echo $view['router']->path('zco_blog_index') ?>">
-		<label for="cat" class="nofloat">Catégorie : </label>
-		<select name="cat" id="cat"
-		onchange="if(this.value == 0) document.location = '/blog/'; else document.location = 'categorie-'+this.value+'.html';">
+		<label for="filtre" class="nofloat">Catégorie : </label>
+		<select name="filtre" id="filtre"
+		onchange="if (this.value == 0) document.location = '<?php echo $view['router']->path('zco_blog_index') ?>';
+		          else document.location = '<?php echo $view['router']->path('zco_blog_index') ?>?filtre=' + this.value;">
 			<option value="0" selected="selected">Tout le blog</option>
 			<?php
 			foreach($Categories as $c)

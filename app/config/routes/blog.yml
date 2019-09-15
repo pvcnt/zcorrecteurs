@@ -5,3 +5,23 @@ zco_blog_index:
 zco_blog_feed:
   path:   /blog/feed.xml
   defaults:  { _controller: ZcoBlogBundle:Feed:index }
+
+zco_blog_new:
+  path:   /blog/ajouter
+  defaults:  { _controller: ZcoBlogBundle:Default:new }
+
+zco_blog_mine:
+  path:   /blog/mes-billets
+  defaults:  { _controller: ZcoBlogBundle:Default:mine }
+
+zco_blog_editComment:
+  path:   /blog/commentaire/{id}/modifier
+  defaults:  { _controller: ZcoBlogBundle:Default:editComment }
+  requirements:
+    id: \d+
+
+zco_blog_deleteComment:
+  path:   /blog/commentaire/{id}/supprimer
+  defaults:  { _controller: ZcoBlogBundle:Default:deleteComment }
+  requirements:
+    id: \d+

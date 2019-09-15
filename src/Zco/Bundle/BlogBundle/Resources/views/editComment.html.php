@@ -1,4 +1,8 @@
 <?php $view->extend('::layouts/default.html.php') ?>
+<?php $view['vitesse']->requireResources([
+    '@ZcoForumBundle/Resources/public/css/forum.css',
+    '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
+]) ?>
 
 <h1><?php echo htmlspecialchars($InfosCommentaire['version_titre']); ?></h1>
 
@@ -25,9 +29,3 @@
 		</div>
 	</fieldset>
 </form>
-
-<?php echo $view->render('ZcoBlogBundle::_revue_commentaires.html.php', array(
-	'ListerCommentaires' => $ListerCommentaires,
-	'MPTotal' => $_SESSION['MPs'],
-	'InfosBillet' => $InfosCommentaire,
-)) ?>
