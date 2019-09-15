@@ -73,7 +73,7 @@ class HomeController extends Controller
                 if (!$categories = $registry->get('categories_billet_hasard'))
                     $categories = array();
                 $rand = BlogDAO::BilletAleatoire($categories);
-                $cache->save('billet_hasard', $rand, TEMPS_BILLET_HASARD * 60);
+                $cache->save('billet_hasard', $rand, 30 * 60); // 30 minutes
                 $vars['BilletHasard'] = BlogDAO::InfosBillet($rand);
                 $vars['BilletAuteurs'] = $vars['BilletHasard'];
                 $vars['BilletHasard'] = $vars['BilletHasard'][0];

@@ -14,7 +14,7 @@
 		</div>
 		<div class="span10">
 			<div style="float: right; width: 210px; margin-right: 10px;">
-				<?php echo $view->render('ZcoUserBundle:Profile:_actions.html.php', compact('user', 'own', 'canSendEmail', 'canSendMp', 'canAdmin')) ?>
+				<?php echo $view->render('ZcoUserBundle:Profile:_actions.html.php', compact('user', 'own', 'canSendEmail', 'canAdmin')) ?>
 			</div>
 
 			<h1 style="margin-top: 0;">

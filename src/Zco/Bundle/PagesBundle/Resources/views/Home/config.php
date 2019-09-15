@@ -199,7 +199,7 @@
 <div id="bloc_billet_hasard">
 	<fieldset>
 		<legend>Paramères des billets au hasard</legend>
-		<p>Un billet est pris au hasard toutes les <?php echo TEMPS_BILLET_HASARD; ?> minutes, dans une sélection de catégories.</p>
+		<p>Un billet est pris au hasard toutes les 30 minutes, dans une sélection de catégories.</p>
 
 		<p class="gras centre"><a href="editer-annonces.html?supprimer_cache">Forcer la régénération du billet au hasard</a></p>
 		<form action="" method="post" class="centre">

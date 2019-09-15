@@ -159,7 +159,6 @@ class DefaultController extends Controller
                 $vars['lastGroupChange'] = $user->getRegistrationDate();
             }
         }
-        $vars['canSendMp'] = $_SESSION['id'] != $user->getId() && verifier('connecte') && $user->getId() != ID_COMPTE_AUTO;
         $vars['canSendEmail'] = verifier('rechercher_mail') || $user->isEmailDisplayed();
         $vars['canSeeInfos'] = verifier('membres_voir_ch_pseudos') || verifier('groupes_changer_membre');
         $vars['canAdmin'] = verifier('groupes_changer_membre') || verifier('options_editer_profils');
