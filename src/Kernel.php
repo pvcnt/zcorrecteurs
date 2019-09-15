@@ -118,7 +118,7 @@ final class Kernel extends HttpKernel
     public function getRootDir()
     {
         // Default implementation uses reflection, this should be faster.
-        return __DIR__;
+        return __DIR__ . '/../app';
     }
 
     /**
