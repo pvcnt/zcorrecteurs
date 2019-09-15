@@ -295,7 +295,7 @@ final class BlogDAO
             $thumbnail = \Container::imagine()
                 ->open($url)
                 ->thumbnail(new \Imagine\Image\Box(100, 100));
-            $path = BASEPATH . '/web/uploads/miniatures/blog/' . $id . '.png';
+            $path = BASEPATH . '/public/uploads/miniatures/blog/' . $id . '.png';
             $thumbnail->save($path);
 
             return array(true, 'uploads/miniatures/blog/' . $id . '.png');

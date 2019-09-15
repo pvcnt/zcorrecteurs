@@ -98,7 +98,7 @@ class DictationDAO
         if (isset($_FILES['icone']) && $_FILES['icone']['error'] != 4) {
             $ext = strtolower(strrchr($_FILES['icone']['name'], '.'));
             $nom = $Dictee->id . $ext;
-            $chemin = BASEPATH . '/web/uploads/dictees';
+            $chemin = BASEPATH . '/public/uploads/dictees';
 
             if (!UploadHelper::Fichier($_FILES['icone'], $chemin, $nom, UploadHelper::FILE | UploadHelper::IMAGE))
                 return redirect(
@@ -164,7 +164,7 @@ class DictationDAO
         if (isset($_FILES['icone']) && $_FILES['icone']['error'] != 4) {
             $ext = strtolower(strrchr($_FILES['icone']['name'], '.'));
             $nom = $Dictee->id . $ext;
-            $chemin = BASEPATH . '/web/uploads/dictees';
+            $chemin = BASEPATH . '/public/uploads/dictees';
 
             if ($Dictee->icone && (strrchr($Dictee->icone, '.') != $ext))
                 @unlink(BASEPATH . '/web' . $Dictee->icone);
@@ -194,8 +194,8 @@ class DictationDAO
      */
     public static function SupprimerDictee(\Dictee $Dictee)
     {
-        @unlink(BASEPATH . '/web/uploads/dictees/' . $Dictee->soundFilename('lecture_rapide'));
-        @unlink(BASEPATH . '/web/uploads/dictees/' . $Dictee->soundFilename('lecture_lente'));
+        @unlink(BASEPATH . '/public/uploads/dictees/' . $Dictee->soundFilename('lecture_rapide'));
+        @unlink(BASEPATH . '/public/uploads/dictees/' . $Dictee->soundFilename('lecture_lente'));
         \Doctrine_Query::create()
             ->delete('Dictee_Participation')
             ->where('dictee_id = ?', $Dictee->id)
@@ -429,7 +429,7 @@ class DictationDAO
                 MSG_ERROR
             );
         $Dictee->format = substr($ext, 1);
-        $path = BASEPATH . '/web/uploads/dictees';
+        $path = BASEPATH . '/public/uploads/dictees';
         $name = $Dictee->soundFilename($field);
 
         return UploadHelper::Fichier($_FILES[$field], $path, $name);

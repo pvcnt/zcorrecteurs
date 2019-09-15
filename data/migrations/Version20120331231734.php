@@ -49,11 +49,11 @@ class Version20120331231734 extends AbstractMigration
             $relativePath = $upload['upload_dossier'] ?
                 'uploads/membres/' . $upload['upload_id_utilisateur'] . '/' . $folderName . '/' . $upload['upload_chemin']
                 : 'uploads/' . $upload['upload_chemin'];
-            if (!is_file(BASEPATH . '/web/' . $relativePath)) {
+            if (!is_file(BASEPATH . '/public/' . $relativePath)) {
                 echo $relativePath . ' not found (#' . $upload['upload_id'] . ')' . "\n";
                 continue;
             }
-            $uploadedFile = new File(BASEPATH . '/web/' . $relativePath);
+            $uploadedFile = new File(BASEPATH . '/public/' . $relativePath);
 
             $mime = explode('/', $uploadedFile->getMimeType(), 2);
 

@@ -2,7 +2,7 @@
 /.gitignore
 /var/
 /vendor/
-/web/bundles/
-/web/compiled/
-/web/uploads/
+/public/bundles/
+/public/compiled/
+/wepublicb/uploads/
 

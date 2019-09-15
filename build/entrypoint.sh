@@ -30,7 +30,7 @@ file_env APP_SECRET
 file_env SENDGRID_APIKEY
 
 # Some directories do need to exist and have the correct permissions.
-directories="${SYMFONY_CACHE_DIR} ${SYMFONY_LOG_DIR} web/bundles web/compiled web/uploads"
+directories="${SYMFONY_CACHE_DIR} ${SYMFONY_LOG_DIR} public/bundles public/compiled public/uploads"
 for directory in ${directories}; do
     mkdir -p ${directory}
 done

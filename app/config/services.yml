@@ -98,7 +98,7 @@ services:
 
   zco.gaufrette_adapter:
     class: Gaufrette\Adapter\Local
-    arguments: ['%kernel.root_dir%/../web/uploads', true]
+    arguments: ['%kernel.root_dir%/../public/uploads', true]
 
   zco.gaufrette_filesystem:
     class: Gaufrette\Filesystem

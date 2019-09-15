@@ -83,7 +83,7 @@ ENTRYPOINT ["/entrypoint.sh"]
 CMD ["httpd", "-D", "FOREGROUND"]
 EXPOSE 80
 
-VOLUME /opt/app/web/uploads
+VOLUME /opt/app/public/uploads
 
 ENV SYMFONY_LOG_DIR=/var/log/symfony \
   SYMFONY_CACHE_DIR=/var/cache/symfony \

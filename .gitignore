@@ -1,11 +1,11 @@
 /app/phpunit.xml
 /app/bootstrap.php.cache
-/web/bundles/
-/web/uploads/
+/public/bundles/
+/public/uploads/
 /var/
 !/var/.gitkeep
 /vendor/
-/web/compiled/*
+/public/compiled/*
 composer.phar
 
 # IDE configuration files.

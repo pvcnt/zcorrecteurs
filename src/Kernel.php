@@ -22,10 +22,10 @@
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\HttpKernel\Kernel as HttpKernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
 
-final class AppKernel extends Kernel
+final class Kernel extends HttpKernel
 {
     use MicroKernelTrait;
 
