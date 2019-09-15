@@ -265,16 +265,7 @@ if($InfosSujet['sujet_sondage'] > 0)
 				<?php }	if(verifier('voir_nb_messages')){ ?>
 				Messages : <?php echo $valeur['utilisateur_forum_messages']; ?><br />
 
-				<?php } echo $view['messages']->afficherGroupe($valeur).'<br/>';
-
-				if(verifier('sanctionner')){ ?>
-				<br /><a href="<?php echo $view['router']->path('zco_user_admin_punish', array('id' => htmlspecialchars($valeur['message_auteur']))) ?>">
-					Sanctionner
-				</a>
-				(<a href="/membres/profil-<?php echo $valeur['message_auteur']; ?>-<?php echo rewrite($valeur['auteur_message_pseudo']); ?>.html#sanctions"><?php echo $valeur['utilisateur_nb_sanctions']; ?></a>)
-				<?php } elseif(verifier('voir_sanctions') && $valeur['utilisateur_nb_sanctions'] > 0){ ?>
-				<br /><a href="/membres/profil-<?php echo $valeur['message_auteur']; ?>-<?php echo rewrite($valeur['auteur_message_pseudo']); ?>.html#sanctions">Sanction(s) : <?php echo $valeur['utilisateur_nb_sanctions']; ?></a>
-				<?php } ?>
+				<?php } echo $view['messages']->afficherGroupe($valeur).'<br/>'; ?>
 			</td>
 			<td class="message<?php if($valeur['message_help']) echo ' bonne_reponse'; ?>">
 				<div class="msgbox">

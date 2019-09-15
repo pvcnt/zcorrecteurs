@@ -48,13 +48,6 @@ class GroupeTable extends Doctrine_Table
 			->where('g.secondary = ?', true);
 	}
 	
-	public function getByPunishmentQuery()
-	{
-		return $this->createQuery()
-			->select('*')
-			->where('sanction = ?', true);
-	}
-	
 	public function findAll($hydrationMode = null)
 	{
 		return $this->createQuery('g')

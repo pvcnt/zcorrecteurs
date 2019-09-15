@@ -345,19 +345,6 @@ class Utilisateur extends BaseUtilisateur
 		return $this->SecondaryGroups;
 	}
 
-	public function applyPunishment(\UserPunishment $punishment)
-	{
-		$this->nb_sanctions += 1;
-		$this->groupe_id = $punishment->getGroupId();
-		$this->save();
-	}
-	
-	public function unapplyPunishment(\UserPunishment $punishment)
-	{
-		$this->groupe_id = $punishment->getOriginalGroupId();
-		$this->save();
-	}
-	
 	public function applyNewUsername(\UserNewUsername $query)
 	{
 		$this->pseudo = $query->getNewUsername();

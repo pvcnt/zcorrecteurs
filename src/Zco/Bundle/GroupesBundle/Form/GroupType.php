@@ -27,10 +27,6 @@ final class GroupType extends AbstractType
             'label' => 'URL du logo féminin',
             'required' => false,
         ]);
-        $builder->add('sanction', CheckboxType::class, [
-            'label' => 'Sanction',
-            'required' => false,
-        ]);
         $builder->add('team', CheckboxType::class, [
             'label' => 'Équipe',
             'required' => false,

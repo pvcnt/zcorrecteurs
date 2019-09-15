@@ -142,9 +142,6 @@ class DefaultController extends Controller
         $art = in_array($firstChar, array('a', 'e', 'i', 'o', 'u', 'y')) ? "'" : 'e ';
         $vars['art'] = $art;
 
-        if (verifier('voir_sanctions')) {
-            $vars['punishments'] = \Doctrine_Core::getTable('UserPunishment')->getByUserId($user->getId());
-        }
         if (verifier('membres_voir_ch_pseudos')) {
             $vars['newPseudo'] = \Doctrine_Core::getTable('UserNewUsername')->getByUserId($user->getId());
         }
@@ -164,8 +161,7 @@ class DefaultController extends Controller
         }
         $vars['canSendMp'] = $_SESSION['id'] != $user->getId() && verifier('connecte') && $user->getId() != ID_COMPTE_AUTO;
         $vars['canSendEmail'] = verifier('rechercher_mail') || $user->isEmailDisplayed();
-        $vars['canSeeInfos'] = verifier('membres_voir_ch_pseudos') || verifier('voir_sanctions')
-            || verifier('groupes_changer_membre');
+        $vars['canSeeInfos'] = verifier('membres_voir_ch_pseudos') || verifier('groupes_changer_membre');
         $vars['canAdmin'] = verifier('groupes_changer_membre') || verifier('options_editer_profils');
         $vars['own'] = $_SESSION['id'] == $user->getId();
 

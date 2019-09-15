@@ -40,7 +40,6 @@
  * @property Groupe $Groupe
  * @property Doctrine_Collection $SecondaryGroups
  * @property Doctrine_Collection $UserNewUsername
- * @property Doctrine_Collection $UserPunishment
  * @property Doctrine_Collection $Dictee
  * @property Doctrine_Collection $Dictee_Participation
  * @property Doctrine_Collection $ForumAlerte
@@ -208,10 +207,6 @@ abstract class BaseUtilisateur extends Doctrine_Record
 
         $this->hasMany('UserNewUsername', array(
              'local' => 'id',
-             'foreign' => 'user_id'));
-
-        $this->hasMany('UserPunishment', array(
-             'local' => 'utilisateur_id',
              'foreign' => 'user_id'));
 
         $this->hasMany('Dictee', array(

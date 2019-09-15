@@ -120,25 +120,5 @@ class EventListener implements EventSubscriberInterface
     {
         //Supprime les comptes non-validés de plus d'un jour.
         \Doctrine_Core::getTable('Utilisateur')->purge();
-
-        //Mise à jour des sanctions. Pour cette action on ne DOIT jamais avoir
-        //la possibilité de l'exécuter plus d'une fois par jour, sans quoi les
-        //sanctions dureront moins de temps que prévu.
-        if ($event->ensureDaily()) {
-            \Doctrine_Core::getTable('UserPunishment')->purge();
-
-            $dbh = \Doctrine_Manager::connection()->getDbh();
-            $stmt = $dbh->prepare("UPDATE zcov2_ips_bannies
-		SET ip_duree_restante = ip_duree_restante - 1
-		WHERE ip_fini = 0 AND ip_duree_restante > 0 AND (ip_date + INTERVAL (ip_duree - ip_duree_restante) DAY < NOW())");
-            $stmt->execute();
-            $stmt->closeCursor();
-
-            $stmt = $dbh->prepare("UPDATE zcov2_ips_bannies
-		SET ip_fini = 1
-		WHERE ip_duree > 0 AND ip_duree_restante = 0");
-            $stmt->execute();
-            $stmt->closeCursor();
-        }
     }
 }

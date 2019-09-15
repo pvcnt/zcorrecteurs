@@ -49,13 +49,6 @@
 			</a>
 		</li>
 		<?php endif ?>
-        <?php if (verifier('sanctionner')): ?>
-        <li>
-            <a href="<?php echo $view['router']->path('zco_user_admin_punish', array('id' => $user->getId())) ?>">
-                Sanctionner
-            </a>
-        </li>
-        <?php endif ?>
         <?php if (verifier('suppr_comptes')): ?>
         <li>
             <a href="<?php echo $view['router']->path('zco_user_admin_deleteAccount', array('id' => $user->getId())) ?>">

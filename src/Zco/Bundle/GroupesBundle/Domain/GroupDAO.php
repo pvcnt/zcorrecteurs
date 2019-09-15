@@ -29,7 +29,7 @@ final class GroupDAO
     {
         $dbh = \Doctrine_Manager::connection()->getDbh();
         $stmt = $dbh->prepare('SELECT groupe_id, groupe_code, groupe_nom, groupe_logo, 
-            groupe_logo_feminin, groupe_sanction, groupe_team, groupe_secondaire, 
+            groupe_logo_feminin, groupe_team, groupe_secondaire, 
             (SELECT COUNT(*) FROM zcov2_utilisateurs WHERE utilisateur_id_groupe = groupe_id) AS groupe_effectifs
 	        FROM zcov2_groupes
 	        WHERE groupe_secondaire = 0
@@ -44,7 +44,7 @@ final class GroupDAO
         $dbh = \Doctrine_Manager::connection()->getDbh();
 
         $stmt = $dbh->prepare("
-	SELECT groupe_id, groupe_nom, groupe_logo, groupe_logo_feminin, groupe_sanction, groupe_team, groupe_secondaire, (SELECT COUNT(*) FROM zcov2_groupes_secondaires WHERE zcov2_groupes_secondaires.groupe_id = zcov2_groupes.groupe_id) AS groupe_effectifs
+	SELECT groupe_id, groupe_nom, groupe_logo, groupe_logo_feminin, groupe_team, groupe_secondaire, (SELECT COUNT(*) FROM zcov2_groupes_secondaires WHERE zcov2_groupes_secondaires.groupe_id = zcov2_groupes.groupe_id) AS groupe_effectifs
 	FROM zcov2_groupes
 	WHERE groupe_secondaire = 1
 	ORDER BY groupe_nom");
@@ -111,7 +111,7 @@ final class GroupDAO
     public static function InfosGroupe($id)
     {
         $sql = 'SELECT groupe_id, groupe_code, groupe_nom, groupe_logo, groupe_logo_feminin,  
-                groupe_sanction, groupe_team, groupe_secondaire, 
+                groupe_team, groupe_secondaire, 
                 (SELECT COUNT(*) FROM zcov2_utilisateurs WHERE utilisateur_id_groupe = groupe_id) AS groupe_effectifs
 	            FROM zcov2_groupes';
         if (is_numeric($id)) {
@@ -127,12 +127,11 @@ final class GroupDAO
     {
         $dbh = \Doctrine_Manager::connection()->getDbh();
         $stmt = $dbh->prepare('INSERT INTO zcov2_groupes(groupe_nom, groupe_logo, 
-            groupe_logo_feminin, groupe_sanction, groupe_team, groupe_secondaire)
-	        VALUES(:nom, :logo, :logof, :sanction, :team, :secondaire)');
+            groupe_logo_feminin, groupe_team, groupe_secondaire)
+	        VALUES(:nom, :logo, :logof, :team, :secondaire)');
         $stmt->bindValue(':nom', $data['nom']);
         $stmt->bindValue(':logo', $data['logo'] ?? '');
         $stmt->bindValue(':logof', $data['logo_feminin'] ?? '');
-        $stmt->bindValue(':sanction', $data['sanction'] ? 1 : 0);
         $stmt->bindValue(':team', $data['team'] ? 1 : 0);
         $stmt->bindValue(':secondaire', $data['secondaire'] ? 1 : 0);
         $stmt->execute();
@@ -147,12 +146,11 @@ final class GroupDAO
         $dbh = \Doctrine_Manager::connection()->getDbh();
         $stmt = $dbh->prepare('UPDATE zcov2_groupes
 	        SET groupe_nom = :nom, groupe_logo = :logo, groupe_logo_feminin = :logof,
-	        groupe_sanction = :sanction, groupe_team = :team, groupe_secondaire = :secondaire
+	        groupe_team = :team, groupe_secondaire = :secondaire
 	        WHERE groupe_id = :id');
         $stmt->bindValue(':nom', $data['nom']);
         $stmt->bindValue(':logo', $data['logo'] ?? '');
         $stmt->bindValue(':logof', $data['logo_feminin'] ?? '');
-        $stmt->bindValue(':sanction', $data['sanction'] ? 1 : 0);
         $stmt->bindValue(':team', $data['team'] ? 1 : 0);
         $stmt->bindValue(':secondaire', $data['secondaire'] ? 1 : 0);
         $stmt->bindParam(':id', $id);

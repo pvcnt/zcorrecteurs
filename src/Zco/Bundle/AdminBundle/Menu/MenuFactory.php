@@ -136,11 +136,6 @@ final class MenuFactory
                 'count' => $count,
             ));
         }
-        if (verifier('sanctionner')) {
-            $menu->getChild('Membres')->addChild('Sanctionner un membre', array(
-                'uri' => $this->router->generate('zco_user_admin_punish'),
-            ));
-        }
         if (verifier('rechercher_mail')) {
             $menu->getChild('Membres')->addChild('Rechercher une adresse mail', array(
                 'uri' => $this->router->generate('zco_user_admin_searchEmail'),

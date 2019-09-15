@@ -9,13 +9,11 @@
  * @property string $nom
  * @property string $logo
  * @property string $logo_feminin
- * @property boolean $sanction
  * @property boolean $team
  * @property boolean $secondary
  * @property string $code
  * @property Doctrine_Collection $SecondaryGroup
  * @property Doctrine_Collection $Utilisateurs
- * @property Doctrine_Collection $UserPunishment
  * 
  * @package    ##PACKAGE##
  * @subpackage ##SUBPACKAGE##
@@ -45,9 +43,6 @@ abstract class BaseGroupe extends Doctrine_Record
              'type' => 'string',
              'length' => '255',
              ));
-        $this->hasColumn('groupe_sanction as sanction', 'boolean', null, array(
-             'type' => 'boolean',
-             ));
         $this->hasColumn('groupe_team as team', 'boolean', null, array(
              'type' => 'boolean',
              ));
@@ -73,9 +68,5 @@ abstract class BaseGroupe extends Doctrine_Record
         $this->hasMany('Utilisateur as Utilisateurs', array(
              'local' => 'groupe_id',
              'foreign' => 'utilisateur_id_groupe'));
-
-        $this->hasMany('UserPunishment', array(
-             'local' => 'groupe_id',
-             'foreign' => 'to_group_id'));
     }
 }

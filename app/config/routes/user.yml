@@ -67,18 +67,6 @@ zco_user_admin_deleteAccount:
   requirements:
     id: \d+
 
-zco_user_admin_punish:
-  path:   /membres/sanctionner/{id}
-  defaults:  { _controller: ZcoUserBundle:Admin:punish, id: ~ }
-  requirements:
-    id: \d+
-
-zco_user_admin_cancelPunishment:
-  path:   /membres/sanctionner/annuler/{id}
-  defaults:  { _controller: ZcoUserBundle:Admin:cancelPunishment }
-  requirements:
-    id: \d+
-
 zco_user_admin_searchEmail:
   path:   /membres/rechercher-email
   defaults:  { _controller: ZcoUserBundle:Admin:searchEmail }

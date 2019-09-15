@@ -27,9 +27,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zco\Bundle\UserBundle\Form\Handler\AnswerNewUsernameHandler;
-use Zco\Bundle\UserBundle\Form\Handler\PunishmentHandler;
 use Zco\Bundle\UserBundle\Form\Type\AnswerNewUsernameType;
-use Zco\Bundle\UserBundle\Form\Type\PunishmentType;
 
 /**
  *
@@ -99,67 +97,6 @@ class AdminController extends Controller
             'users' => $users,
             'email' => $email,
         ));
-    }
-
-    /**
-     * Permet de sanctionner un membre.
-     *
-     * @param  Request $request
-     * @param  integer|null $id
-     * @return Response
-     */
-    public function punishAction(Request $request, $id = null)
-    {
-        if (!verifier('sanctionner')) {
-            throw new AccessDeniedHttpException;
-        }
-
-        $punishment = new \UserPunishment;
-        $punishment->setAdminId($_SESSION['id']);
-        if ($id) {
-            if (!($user = \Doctrine_Core::getTable('Utilisateur')->getById($id))) {
-                throw new NotFoundHttpException('Cet utilisateur n\'existe pas.');
-            }
-            $punishment->setUser($user);
-        } else {
-            $user = null;
-        }
-
-        $form = $this->createForm(PunishmentType::class);
-        $handler = new PunishmentHandler($form, $request, $this->get('cache'));
-        if ($handler->process($punishment)) {
-            return redirect('Le membre a bien été sanctionné.',
-                $this->generateUrl('zco_user_profile', array('id' => $punishment->getUserId(), 'slug' => rewrite($punishment->getUser()->getUsername()))));
-        }
-
-        \Page::$titre = 'Sanctionner un membre';
-
-        return $this->render('ZcoUserBundle:Admin:punish.html.php', array(
-            'user' => $user,
-            'form' => $form->createView(),
-        ));
-    }
-
-    /**
-     * Annule une sanction en cours.
-     *
-     * @param  integer $id Identifiant de la sanction concernée
-     * @return Response
-     */
-    public function cancelPunishmentAction($id)
-    {
-        if (!verifier('sanctionner')) {
-            throw new AccessDeniedHttpException;
-        }
-        if (!($punishment = \Doctrine_Core::getTable('UserPunishment')->getById($id))) {
-            throw new NotFoundHttpException('Cette sanction n\'existe pas.');
-        }
-
-        $punishment->complete();
-        $punishment->getUser()->unapplyPunishment($punishment);
-
-        return redirect('La sanction a bien pris fin.',
-            $this->generateUrl('zco_user_profile', array('id' => $punishment->getUserId(), 'slug' => rewrite($punishment->getUser()->getUsername()))));
     }
 
     /**
