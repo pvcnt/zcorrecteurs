@@ -25,6 +25,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zco\Bundle\UserBundle\Event\FilterLoginEvent;
 use Zco\Bundle\UserBundle\Event\LoginEvent;
+use Zco\Bundle\UserBundle\Service\IpAddressLocator;
 use Zco\Bundle\UserBundle\User\UserSession;
 use Zco\Bundle\UserBundle\UserEvents;
 
@@ -79,7 +80,7 @@ class LoginListener implements EventSubscriberInterface
         // Détection de l'adresse IP et du pays du membre.
         $ip = ip2long($event->getRequest()->getClientIp());
         $dbh = \Doctrine_Manager::connection()->getDbh();
-        $location = $this->container->get('zco_user.manager.ip')->Geolocaliser($ip);
+        $location = $this->container->get(IpAddressLocator::class)->locate($ip);
         $countryName = $location['country'] ?? 'Inconnu';
 
         $stmt = $dbh->prepare('UPDATE zcov2_utilisateurs 

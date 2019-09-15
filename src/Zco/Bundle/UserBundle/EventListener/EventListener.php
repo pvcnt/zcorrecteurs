@@ -109,46 +109,6 @@ class EventListener implements EventSubscriberInterface
                 $_SESSION['refresh_droits'] = time();
             }
         }
-
-        // Check for IP ban.
-        $cache = $this->container->get('cache');
-        $ip = ip2long($event->getRequest()->getClientIp());
-        $ips = $cache->fetch('ips_bannies');
-        if ($ips === false) {
-            $ips = array();
-            $dbh = \Doctrine_Manager::connection()->getDbh();
-            $stmt = $dbh->prepare('SELECT ip_ip FROM zcov2_ips_bannies WHERE ip_fini = 0');
-            $stmt->execute();
-            $retour = $stmt->fetchAll();
-            $stmt->closeCursor();
-            if (!empty($retour)) {
-                foreach ($retour as $cle => $valeur) {
-                    $ips[] = $valeur['ip_ip'];
-                }
-            }
-            $cache->save('ips_bannies', $ips, 0);
-        }
-
-        if (in_array($ip, $ips)) {
-            // We fetch reason and duration of ban.
-            $dbh = \Doctrine_Manager::connection()->getDbh();
-            $stmt = $dbh->prepare('SELECT ip_raison, ip_duree_restante, ip_date 
-                FROM zcov2_ips_bannies
-                WHERE ip_ip = :ip');
-            $stmt->bindParam(':ip', $ip);
-            $stmt->execute();
-            $retour = $stmt->fetch(\PDO::FETCH_ASSOC);
-            $stmt->closeCursor();
-
-            if (!empty($retour)) {
-                $Raison = $retour['ip_raison'];
-                $Duree = $retour['ip_duree_restante'];
-                $Debut = $retour['ip_date'];
-                $_SESSION = array();
-                session_destroy();
-                $event->setResponse(new Response(render_to_string('ZcoUserBundle::banni.html.php', compact('Debut', 'Duree', 'Raison'))));
-            }
-        }
     }
 
     /**
@@ -180,7 +140,5 @@ class EventListener implements EventSubscriberInterface
             $stmt->execute();
             $stmt->closeCursor();
         }
-
-        $this->container->get('cache')->delete('ips_bannies');
     }
 }

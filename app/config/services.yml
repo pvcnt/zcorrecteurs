@@ -186,10 +186,9 @@ services:
     public:    true
     arguments: ["@event_dispatcher"]
 
-  zco_user.manager.ip:
-    class: Zco\Bundle\UserBundle\Entity\IpManager
+  Zco\Bundle\UserBundle\Service\IpAddressLocator:
     public: true
-    arguments: ['@zco_doctrine1.connection', '@cache']
+    arguments: ['@zco_doctrine1.connection']
 
   Zco\Bundle\UserBundle\Admin\NewUsernamePendingTask:
     tags:

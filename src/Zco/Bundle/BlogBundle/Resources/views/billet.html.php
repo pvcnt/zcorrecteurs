@@ -152,13 +152,6 @@
 					Sanction(s) : <?php echo $valeur['nb_sanctions_auteur']; ?>
 				</a>
 				<?php } ?>
-				<?php if(verifier('ips_analyser')){ ?>
-				<br /><br />
-				IP :
-				<a href="<?php echo $view['router']->path('zco_user_ips_locate', ['ip' => long2ip($valeur['commentaire_ip'])]) ?>">
-					<?php echo long2ip($valeur['commentaire_ip']); ?>
-				</a>
-				<?php } ?>
 			</td>
 
 			<td class="message">

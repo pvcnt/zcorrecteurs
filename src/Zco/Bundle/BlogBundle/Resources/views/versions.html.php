@@ -18,9 +18,6 @@
 			<th style="width: 5%;">N<sup>o</sup></th>
 			<th style="width: 15%;">Date</th>
 			<th style="width: 15%;">Pseudo</th>
-			<?php if(verifier('ips_analyser')){ ?>
-			<th style="width: 5%;">IP</th>
-			<?php } ?>
 			<th style="width: 40%;">Modifications</th>
 			<th style="width: 15%;">Comparer</th>
 			<th style="width: 5%;">Revenir</th>
@@ -41,15 +38,6 @@
 					<?php echo htmlspecialchars($v['utilisateur_pseudo']); ?>
 				</a>
 			</td>
-			<?php if(verifier('ips_analyser')){ ?>
-			<td class="centre">
-				<?php if(!empty($v['version_ip'])){ ?>
-                <a href="<?php echo $view['router']->path('zco_user_ips_locate', ['ip' => long2ip($v['version_ip'])]) ?>">
-                    <?php echo long2ip($v['version_ip']); ?>
-				</a>
-				<?php } else echo '-'; ?>
-			</td>
-			<?php } ?>
 			<td>
 				<span class="<?php echo $v['titre']; ?>">
 					<?php echo htmlspecialchars($v['version_titre']); ?>

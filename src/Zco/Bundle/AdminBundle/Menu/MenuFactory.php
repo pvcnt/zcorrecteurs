@@ -163,11 +163,6 @@ final class MenuFactory
                 'uri' => $this->router->generate('zco_user_admin_invalidAccounts'),
             ));
         }
-        if (verifier('ips_bannir')) {
-            $menu->getChild('Membres')->addChild('Liste des adresses IP bannies', array(
-                'uri' => $this->router->generate('zco_user_ips_index'),
-            ));
-        }
 
         return $menu;
     }
