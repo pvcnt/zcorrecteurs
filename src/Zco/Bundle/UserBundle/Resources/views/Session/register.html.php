@@ -29,7 +29,7 @@
 		<div class="span6">
 			<fieldset>
 				<legend>Confirmation anti-spam</legend>
-				<?php echo $view->render('ZcoCaptchaBundle::_image.html.php'); ?>
+				<?php echo $view->render('ZcoContentBundle::_captcha.html.php') ?>
 				<div class="control-group">
 					<label for="captcha" class="control-label">Recopiez le code</label>
 					<div class="controls">

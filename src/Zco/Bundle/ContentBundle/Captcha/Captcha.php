@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\CaptchaBundle\Captcha;
+namespace Zco\Bundle\ContentBundle\Captcha;
 
 /**
  * Génération de captchas ; fortement inspiré de Cryptograph.

@@ -19,10 +19,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\CaptchaBundle;
+namespace Zco\Bundle\ContentBundle\Controller;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Zco\Bundle\ContentBundle\Captcha\Captcha;
+use Symfony\Component\HttpFoundation\Response;
 
-class ZcoCaptchaBundle extends Bundle
+/**
+ * Génération et affichage
+ *
+ * @author mwsaz <mwsaz@zcorrecteurs.fr>
+ */
+class CaptchaController
 {
+    public function indexAction()
+    {
+        $captcha = new Captcha();
+        $captcha->afficher();
+
+        $response = new Response();
+        $response->headers->set('Content-Type', 'image/png');
+        return $response;
+    }
 }

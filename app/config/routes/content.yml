@@ -41,3 +41,7 @@ zco_categories_delete:
 zco_search_index:
   path:      /recherche
   defaults:  { _controller: ZcoContentBundle:Search:index }
+
+zco_captcha:
+  path:      /captcha
+  defaults:  { _controller: ZcoContentBundle:Captcha:index }

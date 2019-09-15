@@ -21,7 +21,7 @@
 
 namespace Zco\Bundle\UserBundle\Form\Handler;
 
-use Zco\Bundle\CaptchaBundle\Captcha\Captcha;
+use Zco\Bundle\ContentBundle\Captcha\Captcha;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;

@@ -7,8 +7,8 @@
 	en obtenir une nouvelle.
 </p>
 <p class="centre center">
-	<img src="/captcha/index-<?php echo mt_rand(0, 100); ?>.html"
-		onclick="this.src='/captcha/index-'+Math.round(Math.random(0)*100)+'.html'"
+	<img src="<?php echo $view['router']->path('zco_captcha') ?>"
+		onclick="this.src='<?php echo $view['router']->path('zco_captcha') ?>?rnd='+Math.round(Math.random(0)*100)"
 		alt="Image de vérification"
 		title="Cliquez pour obtenir une autre image"
 	/>
