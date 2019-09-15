@@ -45,7 +45,7 @@ final class SitemapFactory
     {
         $links = [];
 
-        $links[] = new SitemapLink(URL_SITE . '/blog/', [
+        $links[] = new SitemapLink($this->generateUrl('zco_blog_index'), [
             'changefreq' => 'weekly',
             'priority' => '0.6',
         ]);

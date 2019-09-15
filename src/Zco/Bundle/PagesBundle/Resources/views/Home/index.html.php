@@ -6,7 +6,7 @@
 <table class="UI_boxes home" cellspacing="7px">
 	<tr><td rowspan="2">
 		<span style="float: right; margin-left: 10px;">
-			<a href="/blog/flux.html" title="S'abonner au flux du blog">
+			<a href="<?php echo $view['router']->path('zco_blog_feed') ?>" title="S'abonner au flux du blog">
 				<img src="/pix.gif" class="fff feed" alt="Flux" />
 			</a>
 		</span>

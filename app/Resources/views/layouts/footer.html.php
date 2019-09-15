@@ -14,7 +14,7 @@
         </p>
 
         <p>
-            <a href="/blog/flux.html">Flux RSS</a>
+            <a href="<?php echo $view['router']->path('zco_blog_feed') ?>">Flux RSS</a>
             - <a href="https://twitter.com/zCorrecteurs" title="Tous nos tweets">Twitter</a>
             - <a href="https://www.facebook.com/pages/zCorrecteurs/292782574071649">Facebook</a>
         </p>

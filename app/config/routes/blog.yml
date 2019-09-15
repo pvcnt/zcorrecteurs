@@ -1,3 +1,7 @@
+zco_blog_index:
+  path:   /blog
+  defaults:  { _controller: ZcoBlogBundle:Default:index }
+
 zco_blog_feed:
   path:   /blog/feed.xml
   defaults:  { _controller: ZcoBlogBundle:Feed:index }

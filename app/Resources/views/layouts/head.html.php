@@ -17,7 +17,7 @@
     <script type="text/javascript" src="<?php echo $assetUrl ?>"></script>
 <?php endforeach ?>
 
-<link rel="alternate" type="application/atom+xml" title="Derniers billets du blog" href="/blog/flux.html" />
+<link rel="alternate" type="application/atom+xml" title="Derniers billets du blog" href="<?php echo $view['router']->path('zco_blog_feed') ?>" />
 
 <link rel="icon" type="image/png" href="/favicon.png"/>
 <link rel="start"

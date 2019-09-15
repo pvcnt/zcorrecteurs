@@ -1,7 +1,7 @@
 <?php use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
 $Categories = CategoryDAO::ListerEnfants(CategoryDAO::GetIDCategorieCourante()); ?>
 <div class="UI_box">
-    <form method="post" action="/blog/">
+    <form method="post" action="<?php echo $view['router']->path('zco_blog_index') ?>">
 		<label for="cat" class="nofloat">Catégorie : </label>
 		<select name="cat" id="cat"
 		onchange="if(this.value == 0) document.location = '/blog/'; else document.location = 'categorie-'+this.value+'.html';">
@@ -12,7 +12,7 @@ $Categories = CategoryDAO::ListerEnfants(CategoryDAO::GetIDCategorieCourante());
 				$marqueur = '';
 				for($i = 1 ; $i < $c['cat_niveau'] ; $i++)
 					$marqueur .= '.....';
-				echo '<option value="'.$c['cat_id'].'"'.($_GET['id'] == $c['cat_id'] ? ' selected="selected"' : '').'>'.$marqueur.' '.htmlspecialchars($c['cat_nom']).'</option>';
+				echo '<option value="'.$c['cat_id'].'"'.(isset($_GET['id']) && $_GET['id'] == $c['cat_id'] ? ' selected="selected"' : '').'>'.$marqueur.' '.htmlspecialchars($c['cat_nom']).'</option>';
 			}
 			?>
 		</select>
@@ -23,7 +23,7 @@ $Categories = CategoryDAO::ListerEnfants(CategoryDAO::GetIDCategorieCourante());
     
         <span style="margin-left: 40px;">
             Nous suivre : 
-            <a href="/blog/flux.html"><img src="/pix.gif" class="fff feed" alt="" /> flux RSS du blog</a><?php if (isset($categorieId)){ ?>, <a href="/blog/flux-<?php echo $categorieId ?>.html">de cette catégorie</a><?php } ?> | 
+            <a href="<?php echo $view['router']->path('zco_blog_feed') ?>"><img src="/pix.gif" class="fff feed" alt="" /> flux RSS du blog</a><?php if (isset($categorieId)){ ?>, <a href="/blog/flux-<?php echo $categorieId ?>.html">de cette catégorie</a><?php } ?> |
             <a href="https://twitter.com/zCorrecteurs"><img src="/img/oiseau_16px.png" alt="" /> Twitter</a> |
             <a href="https://www.facebook.com/pages/zCorrecteurs/292782574071649"><img src="/img/facebook.png" alt="" /> Facebook</a>
         </span>

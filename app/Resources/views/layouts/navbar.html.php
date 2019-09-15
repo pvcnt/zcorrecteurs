@@ -5,7 +5,7 @@
                 <a href="<?php echo $view['router']->path('zco_home') ?>">Accueil</a>
             </li>
             <li>
-                <a href="/blog/">Blog</a>
+                <a href="<?php echo $view['router']->path('zco_blog_index') ?>">Blog</a>
             </li>
             <li>
                 <a href="/forum/">Forum</a>
