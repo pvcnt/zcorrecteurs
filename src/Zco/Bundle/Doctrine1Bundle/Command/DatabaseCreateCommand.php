@@ -43,7 +43,7 @@ class DatabaseCreateCommand extends Command
 		$this
 			->setName('doctrine:database:create')
 			->setDescription('Creates the database needed for the given connection')
-			->addArgument('connection', InputArgument::OPTIONAL, 'The connection', 'doctrine');
+			->addArgument('connection', InputArgument::OPTIONAL, 'The connection', 'root');
 	}
 
 	/**
