@@ -39,7 +39,7 @@ class StaticController extends Controller
      */
     public function indexAction()
     {
-        (['À propos des zCorrecteurs']);
+        fil_ariane(['À propos des zCorrecteurs']);
         \Page::$description = 'Apprenez-en plus sur le site et son histoire.';
 
         return $this->render('ZcoPagesBundle:Static:about.html.php');
@@ -50,7 +50,7 @@ class StaticController extends Controller
      */
     public function bannersAction()
     {
-        $this->setBreadcrumb(['Aidez-nous à promouvoir le site']);
+        fil_ariane(['Aidez-nous à promouvoir le site']);
         \Page::$description = 'Découvrez une série de bannières et images que nous mettons à votre '
             . 'disposition si vous souhaitez faire la promotion du site.';
 
@@ -72,7 +72,7 @@ class StaticController extends Controller
      */
     public function teamAction()
     {
-        $this->setBreadcrumb(['Notre équipe']);
+        fil_ariane(['Notre équipe']);
         \Page::$description = 'Ceux qui font vivre le site jour après jour, en '
             . 'corrigeant vos écrits, nourissant le contenu ou maintenant le site '
             . 'en état de marche.';
@@ -88,7 +88,7 @@ class StaticController extends Controller
      */
     public function corrigraphieAction()
     {
-        $this->setBreadcrumb(['L\'association Corrigraphie']);
+        fil_ariane(['L\'association Corrigraphie']);
         \Page::$description = 'Venez découvrir l\'association qui se cache derrière '
             . 'le site, Corrigraphie, son rôle et ses activités.';
 
@@ -101,7 +101,7 @@ class StaticController extends Controller
      */
     public function openSourceAction()
     {
-        $this->setBreadcrumb(['Logiciel libre']);
+        fil_ariane(['Logiciel libre']);
         \Page::$description = 'zCorrecteurs.fr publie son code source sous licence libre.';
 
         return $this->render('ZcoPagesBundle:Static:openSource.html.php');
@@ -115,7 +115,7 @@ class StaticController extends Controller
      */
     public function contactAction(Request $request)
     {
-        $this->setBreadcrumb(['Demande de contact']);
+        fil_ariane(['Demande de contact']);
 
         $contact = new Contact(!empty($_GET['objet']) ? $_GET['objet'] : null);
         $form = $this->createForm(ContactType::class, $contact);
@@ -161,7 +161,7 @@ class StaticController extends Controller
 
     public function donateAction()
     {
-        $this->setBreadcrumb(['Faire un don']);
+        fil_ariane(['Faire un don']);
         \Page::$description = 'Découvrez comment faire un don au site et consultez la liste de ceux qui nous ont déjà aidé !';
 
         return $this->render('ZcoPagesBundle:Donate:index.html.php');
@@ -169,7 +169,7 @@ class StaticController extends Controller
 
     public function donateOtherWaysAction()
     {
-        $this->setBreadcrumb([
+        fil_ariane([
             'Faire un don' => $this->generateUrl('zco_donate_index'),
             'Donner par chèque ou virement',
         ]);
@@ -179,7 +179,7 @@ class StaticController extends Controller
 
     public function donateFiscalDeductionAction()
     {
-        $this->setBreadcrumb([
+        fil_ariane([
             'Faire un don' => $this->generateUrl('zco_donate_index'),
             'Déduction fiscale',
         ]);
@@ -189,7 +189,7 @@ class StaticController extends Controller
 
     public function donateThanksAction()
     {
-        $this->setBreadcrumb([
+        fil_ariane([
             'Faire un don' => $this->generateUrl('zco_donate_index'),
             'Merci pour votre soutien',
         ]);
@@ -199,21 +199,21 @@ class StaticController extends Controller
 
     public function mentionsAction()
     {
-        $this->setBreadcrumb(['Mentions légales']);
+        fil_ariane(['Mentions légales']);
 
         return $this->render('ZcoPagesBundle:Static:mentions.html.php');
     }
 
     public function privacyAction()
     {
-        $this->setBreadcrumb(['Politique de confidentialité']);
+        fil_ariane(['Politique de confidentialité']);
 
         return $this->render('ZcoPagesBundle:Static:privacy.html.php');
     }
 
     public function rulesAction()
     {
-        $this->setBreadcrumb(['Règlement']);
+        fil_ariane(['Règlement']);
 
         return $this->render('ZcoPagesBundle:Static:rules.html.php');
     }
