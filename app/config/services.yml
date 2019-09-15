@@ -15,6 +15,14 @@ services:
   #  resource: '../src/Zco/Controller'
   #  tags: ['controller.service_arguments']
 
+  Zco\Bundle\Doctrine1Bundle\Command\:
+    resource: '../../src/Zco/Bundle/Doctrine1Bundle/Command/*'
+    tags: ['console.command']
+
+  Zco\Bundle\UserBundle\Command\:
+    resource: '../../src/Zco/Bundle/UserBundle/Command/*'
+    tags: ['console.command']
+
   Zco\Bundle\AdminBundle\Admin:
     public: true
     arguments: ['@cache', !tagged zco.admin_task]
