@@ -77,12 +77,6 @@ final class MenuFactory
             $section->addChild('Statistiques générales (GA)', array(
                 'uri' => 'https://www.google.com/analytics/reporting/dashboard?id=6978501&scid=1725896',
             ));
-            $section->addChild('Statistiques Alexa (classement du site)', array(
-                'uri' => $this->router->generate('zco_stats_alexa'),
-            ));
-            $section->addChild('Statistiques d\'inscription', array(
-                'uri' => $this->router->generate('zco_stats_registration'),
-            ));
             $section->addChild('Statistiques d\'utilisation du quiz', array(
                 'uri' => $this->router->generate('zco_quiz_stats'),
             ));
