@@ -36,7 +36,6 @@ class LireAction extends Controller
         if (!verifier('connecte')) {
             throw new AccessDeniedHttpException();
         }
-		zCorrecteurs::VerifierFormatageUrl(null, true, true, 1);
 		include(__DIR__.'/../modeles/lire.php');
 		include(__DIR__.'/../modeles/participants.php');
 		include(__DIR__.'/../modeles/dossiers.php');

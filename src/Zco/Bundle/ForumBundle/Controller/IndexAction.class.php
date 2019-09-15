@@ -33,8 +33,6 @@ class IndexAction extends ForumActions
 {
 	public function execute()
 	{
-		zCorrecteurs::VerifierFormatageUrl();
-
 		//Redirection si demandé
 		if(!empty($_POST['saut_forum']))
 		{

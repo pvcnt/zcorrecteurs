@@ -37,7 +37,7 @@ class DicteeAction extends Controller
 		if(!$Dictee)
 			throw new NotFoundHttpException();
 
-		zCorrecteurs::VerifierFormatageUrl($Dictee->titre, true);
+		//TODO zCorrecteurs::VerifierFormatageUrl($Dictee->titre, true);
 
 		$Tags = DictationDAO::DicteeTags($Dictee);
 

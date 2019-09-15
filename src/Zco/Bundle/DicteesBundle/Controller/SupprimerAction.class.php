@@ -43,7 +43,6 @@ class SupprimerAction extends Controller
 		if(!DictationDAO::DicteeDroit($Dictee, 'supprimer'))
 			throw new AccessDeniedHttpException();
 
-		zCorrecteurs::VerifierFormatageUrl($Dictee->titre, true);
 		Page::$titre = 'Supprimer une dictée';
 
 		$url = 'dictee-'.$Dictee->id.'-'.rewrite($Dictee->titre).'.html';
@@ -51,7 +50,6 @@ class SupprimerAction extends Controller
 		// Suppression / Annulation
 		if(isset($_POST['confirmer']))
 		{
-			if($r = zCorrecteurs::verifierToken()) return $r;
             DictationDAO::SupprimerDictee($Dictee);
 			return redirect('La dictée a été supprimée.', 'index.html');
 		}

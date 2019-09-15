@@ -31,8 +31,6 @@ class IndexAction extends BlogActions
 {
 	public function execute()
 	{
-		zCorrecteurs::VerifierFormatageUrl(null, false, false, 1);
-
 		//Si on veut une redirection
 		if(isset($_POST['saut_rapide']) && isset($_POST['cat']) && is_numeric($_POST['cat']))
 		{

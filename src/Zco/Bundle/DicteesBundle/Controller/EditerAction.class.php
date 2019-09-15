@@ -49,7 +49,6 @@ class EditerAction extends Controller
 			unset($_SESSION['dictee_data']);
 		}
 
-		zCorrecteurs::VerifierFormatageUrl($Dictee->titre, true);
 		Page::$titre = 'Modifier une dictée';
 
 		include(__DIR__.'/../forms/AjouterForm.class.php');
@@ -64,7 +63,6 @@ class EditerAction extends Controller
 
 		if($_SERVER['REQUEST_METHOD'] == 'POST')
 		{
-			if($r = zCorrecteurs::verifierToken()) return $r;
 			$Form->bind($_POST);
 			if($Form->isValid())
 			{

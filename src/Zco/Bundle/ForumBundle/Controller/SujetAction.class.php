@@ -36,7 +36,7 @@ class SujetAction extends ForumActions
 	{
 		//On récupère les infos sur le sujet
 		list($InfosSujet, $InfosForum) = $this->initSujet();
-		zCorrecteurs::VerifierFormatageUrl($InfosSujet['sujet_titre'], true, true, 1);
+		//TODO zCorrecteurs::VerifierFormatageUrl($InfosSujet['sujet_titre'], true, true, 1);
 		
 		// Si le forum est archivé
 		if( $InfosForum['cat_archive'] == 1 && !verifier('voir_archives')) {

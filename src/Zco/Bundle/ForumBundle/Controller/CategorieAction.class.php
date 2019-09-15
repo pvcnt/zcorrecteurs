@@ -52,7 +52,7 @@ class CategorieAction extends ForumActions
 			return redirect('Le forum n\'est plus accessible.', '/forum/', MSG_ERROR);
 		}
 
-		zCorrecteurs::VerifierFormatageUrl($InfosCategorie['cat_nom'], true);
+		//TODO zCorrecteurs::VerifierFormatageUrl($InfosCategorie['cat_nom'], true);
 
 		//On récupère la catégorie et ses forums.
 		$ListerUneCategorie = ForumDAO::ListerCategoriesForum($InfosCategorie);

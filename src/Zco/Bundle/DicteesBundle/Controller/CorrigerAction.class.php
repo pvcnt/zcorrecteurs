@@ -54,8 +54,6 @@ class CorrigerAction extends Controller
                 MSG_ERROR
             );
 
-		if($r = zCorrecteurs::verifierToken()) return $r;
-
 		list($diff, $note) = DictationDAO::CorrigerDictee($Dictee, $_POST['texte']);
 		$fautes = $diff->fautes();
 

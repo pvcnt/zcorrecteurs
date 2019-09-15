@@ -51,7 +51,6 @@ class ProposerAction extends Controller
 
 			if(isset($_POST['confirmer']))
 			{
-				if($r = zCorrecteurs::verifierToken()) return $r;
                 DictationDAO::ProposerDictee($Dictee);
 				return redirect('Votre dictée a été proposée.', 'proposer.html');
 			}

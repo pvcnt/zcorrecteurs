@@ -36,7 +36,6 @@ class ValiderAction extends Controller
         if (!verifier('dictees_publier')) {
             throw new AccessDeniedHttpException();
         }
-        if ($r = zCorrecteurs::verifierToken()) return $r;
         $Dictee = $_GET['id'] ? DictationDAO::Dictee($_GET['id']) : null;
         if (!$Dictee)
             throw new NotFoundHttpException();

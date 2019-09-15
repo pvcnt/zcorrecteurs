@@ -43,7 +43,6 @@ class AjouterAction extends Controller
 
 		if($_SERVER['REQUEST_METHOD'] == 'POST')
 		{
-			if($r = zCorrecteurs::verifierToken()) return $r;
 			$Form->bind($_POST);
 			if($Form->isValid())
 			{

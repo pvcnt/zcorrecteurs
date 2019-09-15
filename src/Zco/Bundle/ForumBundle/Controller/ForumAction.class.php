@@ -238,7 +238,7 @@ class ForumAction extends ForumActions
             $nbSujetsParPage = 30;
             $CompterSujets = ForumDAO::CompterSujets($_GET['id']);
             $NombreDePages = ceil($CompterSujets / $nbSujetsParPage);
-            zCorrecteurs::VerifierFormatageUrl($InfosForum['cat_nom'], true, false, $NombreDePages);
+            //TODO zCorrecteurs::VerifierFormatageUrl($InfosForum['cat_nom'], true, false, $NombreDePages);
             $_GET['p'] = !empty($_GET['p']) && is_numeric($_GET['p']) ? $_GET['p'] : $NombreDePages;
 
             if ($_GET['p'] > $NombreDePages)

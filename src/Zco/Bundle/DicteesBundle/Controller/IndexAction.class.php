@@ -32,8 +32,6 @@ class IndexAction extends Controller
 {
 	public function execute()
 	{
-		zCorrecteurs::VerifierFormatageUrl();
-
 		Page::$titre = 'Accueil des dictées';
 		fil_ariane(Page::$titre);
 		$this->get('zco_core.resource_manager')->requireResources(array(

@@ -46,7 +46,7 @@ class BilletAction extends BlogActions
 			if (!$this->verifier_voir)
 				throw new AccessDeniedHttpException();
 
-			zCorrecteurs::VerifierFormatageUrl($this->InfosBillet['version_titre'], true, true, 1);
+			//TODO zCorrecteurs::VerifierFormatageUrl($this->InfosBillet['version_titre'], true, true, 1);
 
             //Si le billet est un article virtuel.
             if(!is_null($this->InfosBillet['blog_url_redirection']) && !empty($this->InfosBillet['blog_url_redirection']))

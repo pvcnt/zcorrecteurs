@@ -39,7 +39,7 @@ class CategorieAction extends BlogActions
 			if(empty($InfosCategorie))
                 throw new NotFoundHttpException();
 
-			zCorrecteurs::VerifierFormatageUrl($InfosCategorie['cat_nom'], true, false, 1);
+			//TODO zCorrecteurs::VerifierFormatageUrl($InfosCategorie['cat_nom'], true, false, 1);
 			$NombreDeBillet = BlogDAO::CompterListerBilletsEnLigne($_GET['id']);
 			$nbBilletsParPage = 15;
 			$NombreDePage = ceil($NombreDeBillet / $nbBilletsParPage);

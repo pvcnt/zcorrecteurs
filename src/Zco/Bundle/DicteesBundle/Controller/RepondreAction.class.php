@@ -45,7 +45,6 @@ class RepondreAction extends Controller
 		if($Dictee->etat != DICTEE_PROPOSEE)
 			return redirect('Cette dictée n\'est pas proposée.', 'propositions.html', MSG_ERROR);
 
-		zCorrecteurs::VerifierFormatageUrl($Dictee->titre, true);
 		Page::$titre = 'Répondre à une soumission';
 
 		include(__DIR__.'/../forms/RepondreForm.class.php');
@@ -53,7 +52,6 @@ class RepondreAction extends Controller
 
 		if ($_SERVER['REQUEST_METHOD'] == 'POST')
 		{
-			if($r = zCorrecteurs::verifierToken()) return $r;
 			$Form->bind($_POST);
 			if($Form->isValid())
 				return redirect(

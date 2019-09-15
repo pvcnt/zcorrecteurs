@@ -32,8 +32,6 @@ class ListeAction extends Controller
 {
 	public function execute()
 	{
-		zCorrecteurs::VerifierFormatageUrl(null, false, false, 1);
-
 		Page::$titre = 'Liste des dictées';
 		fil_ariane('Liste des dictées');
 

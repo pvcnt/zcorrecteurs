@@ -78,7 +78,6 @@ class IndexAction extends Controller
 		$recherche = !empty($_POST['recherche_mp']) ? $_POST['recherche_mp'] : null;
 		$nbMpParPage = 30;
 		$NombreDePages = ceil($nbMp / $nbMpParPage);
-		zCorrecteurs::VerifierFormatageUrl(null, true, false, $NombreDePages);
 		$page = !empty($_GET['p']) && is_numeric($_GET['p']) ? $_GET['p'] : $NombreDePages;
 		list($ListerMP, $Participants) = ListerMP($recherche, $page, $NombreDePages);
 
