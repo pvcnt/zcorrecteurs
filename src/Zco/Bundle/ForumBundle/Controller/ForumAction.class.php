@@ -259,7 +259,7 @@ class ForumAction extends ForumActions
 
 
             // On récupère la liste des numéros des pages.
-            $tableau_pages = liste_pages($_GET['p'], $NombreDePages, $CompterSujets, $nbSujetsParPage, 'forum-' . $_GET['id'] . '-p%s-' . rewrite($InfosForum['cat_nom']) . '.html' . $flags, true);
+            $tableau_pages = liste_pages($_GET['p'], $NombreDePages, 'forum-' . $_GET['id'] . '-p%s-' . rewrite($InfosForum['cat_nom']) . '.html' . $flags, true);
             $debut = ($NombreDePages - $_GET['p']) * $nbSujetsParPage;
 
             // On récupère les sujets du forum depuis la fonction du modèle.
@@ -288,7 +288,7 @@ class ForumAction extends ForumActions
                     // Liste des pages
                     $nbMessagesParPage = 20;
                     $NombreDePagesSujet = ceil(($valeur['sujet_reponses'] + 1) / $nbMessagesParPage);
-                    $Pages[$clef] = liste_pages(-1, $NombreDePagesSujet, $valeur['sujet_reponses'], $nbMessagesParPage, 'sujet-' . $valeur['sujet_id'] . '-p%s-' . rewrite($valeur['sujet_titre']) . '.html');
+                    $Pages[$clef] = liste_pages(-1, $NombreDePagesSujet, 'sujet-' . $valeur['sujet_id'] . '-p%s-' . rewrite($valeur['sujet_titre']) . '.html');
                 }
             }
 

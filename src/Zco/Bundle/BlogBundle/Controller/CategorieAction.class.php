@@ -50,7 +50,7 @@ class CategorieAction extends BlogActions
 				'etat' => BLOG_VALIDE,
 				'futur' => false,
 			), $page);
-			$ListePage = liste_pages($page, $NombreDePage, $NombreDeBillet, $nbBilletsParPage, '/blog/categorie-'.$_GET['id'].'-p%s-'.rewrite($InfosCategorie['cat_nom']).'.html');
+			$ListePage = liste_pages($page, $NombreDePage, '/blog/categorie-'.$_GET['id'].'-p%s-'.rewrite($InfosCategorie['cat_nom']).'.html');
 			$ListerParents = CategoryDAO::ListerParents($InfosCategorie);
 			$Categories = CategoryDAO::ListerEnfants($ListerParents[1]);
 

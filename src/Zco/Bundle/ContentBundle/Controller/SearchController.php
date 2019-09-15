@@ -142,7 +142,7 @@ class SearchController extends Controller
 
             //TODO: fix pagination here.
             $url = str_replace('91919191', '%s', $this->generateUrl('zco_search_index', array_merge(['section' => $section, 'page' => 91919191], $_flags)));
-            $pages = liste_pages($page, ceil($CompterResultats / $_flags['nb_resultats']), $CompterResultats, $_flags['nb_resultats'], $url);
+            $pages = liste_pages($page, ceil($CompterResultats / $_flags['nb_resultats']), $url);
         } catch (\Exception $e) {
             $this->get('logger')->warn($e->getMessage());
             $_SESSION['erreur'][] = 'Une erreur est survenue pendant la recherche. Merci de réessayer dans quelques instants.';

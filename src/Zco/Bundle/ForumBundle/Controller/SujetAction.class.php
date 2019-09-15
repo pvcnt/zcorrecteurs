@@ -82,7 +82,7 @@ class SujetAction extends ForumActions
 		$NombreDePages = ceil($InfosSujet['nombre_de_messages'] / $nbMessagesParPage);
 		if($_GET['p'] > $NombreDePages)
 			throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
-		$tableau_pages = liste_pages($_GET['p'],$NombreDePages,$InfosSujet['nombre_de_messages'],$nbMessagesParPage,'sujet-'.$_GET['id'].'-p%s-'.rewrite($InfosSujet['sujet_titre']).'.html');
+		$tableau_pages = liste_pages($_GET['p'],$NombreDePages,'sujet-'.$_GET['id'].'-p%s-'.rewrite($InfosSujet['sujet_titre']).'.html');
 		$debut = ($_GET['p'] - 1) * $nbMessagesParPage;
 
 		if($_GET['p'] > 1)

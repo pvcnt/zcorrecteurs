@@ -110,7 +110,7 @@ class BilletAction extends BlogActions
                     $this->CompterCommentaires = CommentDAO::CompterCommentairesBillet($_GET['id']);
                     $nbCommentairesParPage = 15;
                     $NombrePages = ceil($this->CompterCommentaires / $nbCommentairesParPage);
-                    $this->ListePages = liste_pages($page, $NombrePages, $this->CompterCommentaires, $nbCommentairesParPage, 'billet-'.$_GET['id'].'-p%s-'.rewrite($this->InfosBillet['version_titre']).'.html#commentaires');
+                    $this->ListePages = liste_pages($page, $NombrePages, 'billet-'.$_GET['id'].'-p%s-'.rewrite($this->InfosBillet['version_titre']).'.html#commentaires');
 
                     //On marque les commentaires comme lus s'il y en a
                     if(!empty($this->ListerCommentaires) && verifier('connecte'))

@@ -59,7 +59,7 @@ class DefaultController extends Controller
             'futur' => false,
         ), $page);
         $Categories = CategoryDAO::ListerEnfants(CategoryDAO::InfosCategorie(CategoryDAO::GetIDCategorieCourante()));
-        $ListePage = liste_pages($page, $NombreDePage, $NombreDeBillet, $nbBilletsParPage, $this->generateUrl('zco_blog_index') . '?page=%s');
+        $ListePage = liste_pages($page, $NombreDePage, $this->generateUrl('zco_blog_index') . '?page=%s');
 
         fil_ariane('Liste des derniers billets');
 

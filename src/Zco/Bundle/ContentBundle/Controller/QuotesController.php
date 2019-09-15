@@ -48,7 +48,7 @@ class QuotesController extends Controller
         $quotes = $repository->findAll(30, ($page - 1) * 30);
         $totalCount = $repository->countAll();
 
-        $pages = liste_pages($page, ceil($totalCount / 30), 0, 0, $this->generateUrl('zco_quote_index') . '?page=%s');
+        $pages = liste_pages($page, ceil($totalCount / 30), $this->generateUrl('zco_quote_index') . '?page=%s');
 
         \Page::$titre = 'Citations';
         $this->get('zco_core.resource_manager')->requireResources([

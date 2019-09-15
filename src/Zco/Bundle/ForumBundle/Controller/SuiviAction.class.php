@@ -47,7 +47,7 @@ class SuiviAction extends ForumActions
 		else
 			Page::$robots = 'noindex,follow';
 
-		$tableau_pages = liste_pages($_GET['p'], $NombreDePages, $CompterSujets, $nbSujetsParPage, '', true);
+		$tableau_pages = liste_pages($_GET['p'], $NombreDePages, '', true);
 		$debut = ($NombreDePages-$_GET['p']) * $nbSujetsParPage;
 		$ListerSujets = ForumDAO::ListerSujets($debut, $nbSujetsParPage);
 
@@ -73,7 +73,7 @@ class SuiviAction extends ForumActions
 				// Liste des pages
 				$nbMessagesParPage = 20;
 				$NombreDePagesSujet = ceil(($valeur['sujet_reponses']+1) / $nbMessagesParPage);
-				$Pages[$clef] = liste_pages(-1, $NombreDePagesSujet, $valeur['sujet_reponses'], $nbMessagesParPage, 'sujet-'.$valeur['sujet_id'].'-p%s-'.rewrite($valeur['sujet_titre']).'.html');
+				$Pages[$clef] = liste_pages(-1, $NombreDePagesSujet, 'sujet-'.$valeur['sujet_id'].'-p%s-'.rewrite($valeur['sujet_titre']).'.html');
 			}
 		}
 

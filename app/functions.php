@@ -366,14 +366,12 @@ function verifier_array($credentials)
  * @link http://www.siteduzero.com/forum-83-33940-254991.html#r254991
  * @param int $page Page courante.
  * @param int $nb_page Nombre de pages en tout.
- * @param int $nb_mess Nombre de messages.
- * @param int $nb_mess_par_page Nombre de messages par page.
  * @param string $url L'url, avec un %s pour le numéro de la page.
  * @param int $nb Nombre de pages de chaque côté de la page courante.
  * @param bool $reverse Doit-on inverser les pages ?
  * @return array
  */
-function liste_pages($page, $nb_page, $nb_mess, $nb_mess_par_page, $url, $reverse = false, $nb = 3)
+function liste_pages($page, $nb_page, $url, $reverse = false, $nb = 3)
 {
     // Initialisations
     $list_page = array();
