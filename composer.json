@@ -11,8 +11,7 @@
     "classmap": [
       "src/Kernel.php",
       "lib/Artichow",
-      "lib/diff",
-      "lib/wdiff"
+      "lib/diff"
     ],
     "files": [
       "app/functions.php",
