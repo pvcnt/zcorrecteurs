@@ -26,7 +26,6 @@ use Zco\Bundle\AdminBundle\Admin;
 use Zco\Bundle\BlogBundle\Admin\ArticlesPendingTask;
 use Zco\Bundle\DicteesBundle\Admin\DictationsPendingTask;
 use Zco\Bundle\ForumBundle\Admin\ForumAlertsPendingTask;
-use Zco\Bundle\MpBundle\Admin\PmAlertsPendingTask;
 use Zco\Bundle\UserBundle\Admin\NewUsernamePendingTask;
 
 final class MenuFactory
@@ -102,14 +101,6 @@ final class MenuFactory
         if (verifier('groupes_gerer')) {
             $menu->getChild('Membres')->addChild('Gérer les groupes', array(
                 'uri' => $this->router->generate('zco_groups_index'),
-            ));
-        }
-        if (verifier('mp_alertes')) {
-            $count = $this->admin->get(PmAlertsPendingTask::class);
-            $menu->getChild('Messagerie privée')->addChild('Voir les alertes non résolues', array(
-                'label' => 'Il y a ' . $count . ' alerte' . pluriel($count) . ' non résolue' . pluriel($count),
-                'uri' => '/mp/alertes.html' . ($count ? '?solved=0' : ''),
-                'count' => $count,
             ));
         }
         if (verifier('gerer_breve_accueil')) {
