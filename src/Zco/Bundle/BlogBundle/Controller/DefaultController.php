@@ -38,21 +38,13 @@ use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
  */
 class DefaultController extends Controller
 {
+    const PER_PAGE = 15;
+
     public function indexAction(Request $request)
     {
         $page = (int)$request->get('page', 1);
-        //Si on veut une redirection
-        if (isset($_POST['saut_rapide']) && isset($_POST['cat']) && is_numeric($_POST['cat'])) {
-            if ($_POST['cat'] == 0) {
-                return new RedirectResponse($this->generateUrl('zco_blog_index'), 301);
-            } else {
-                return new RedirectResponse('categorie-' . $_POST['cat'] . '.html', 301);
-            }
-        }
-
         $NombreDeBillet = BlogDAO::CompterListerBilletsEnLigne();
-        $nbBilletsParPage = 15;
-        $NombreDePage = ceil($NombreDeBillet / $nbBilletsParPage);
+        $NombreDePage = ceil($NombreDeBillet / self::PER_PAGE);
         if ($page > 1) {
             \Page::$titre .= ' - Page ' . $page;
         }
@@ -70,7 +62,7 @@ class DefaultController extends Controller
             }
             $params['id_categorie'] = (int) $categoryId;
         }
-        [$ListerBillets, $BilletsAuteurs] = BlogDAO::ListerBillets($params, $page);
+        [$ListerBillets, $BilletsAuteurs] = BlogDAO::ListerBillets($params, $page, self::PER_PAGE);
         $Categories = CategoryDAO::ListerEnfants(CategoryDAO::InfosCategorie($categoryId ?: CategoryDAO::GetIDCategorieCourante()));
         $ListePage = liste_pages($page, $NombreDePage, $this->generateUrl('zco_blog_index') . '?page=%s');
 

@@ -83,52 +83,6 @@
 			<?php } ?>
 		</div>
 	</div>
-
-	<?php if(verifier('blog_choisir_comms')){ ?>
-	<div class="box UI_rollbox">
-		<div class="title">Choix des commentaires</div>
-
-		<div class="hidden">
-			<form method="post" id="change_comments_form" action="admin-billet-<?php echo $_GET['id'] ?>.html">
-				<select name="commentaires" id="commentaires"
-				onchange="if(this.value == <?php echo COMMENTAIRES_TOPIC; ?>) $('div_lien').setStyle('display', 'inline'); else $('div_lien').setStyle('display', 'none');">
-					<option value="<?php echo COMMENTAIRES_OK; ?>"<?php if($InfosBillet['blog_commentaires'] == COMMENTAIRES_OK) echo ' selected="selected"'; ?>>Activés</option>
-					<option value="<?php echo COMMENTAIRES_NONE; ?>"<?php if($InfosBillet['blog_commentaires'] == COMMENTAIRES_NONE) echo ' selected="selected"'; ?>>Désactivés</option>
-					<option value="<?php echo COMMENTAIRES_TOPIC; ?>"<?php if($InfosBillet['blog_commentaires'] == COMMENTAIRES_TOPIC) echo ' selected="selected"'; ?>>Sur le forum</option>
-				</select>
-
-				<div id="div_lien" <?php if($InfosBillet['blog_commentaires'] != COMMENTAIRES_TOPIC) echo ' style="display: none;"'; ?>>
-					<input type="text" name="lien" id="lien" value="<?php echo htmlspecialchars($InfosBillet['blog_lien_topic']); ?>" />
-				</div>
-
-				<input type="submit" value="Changer" />
-			</form>
-			
-			<?php $view['javelin']->initBehavior('ajax-form', array('id' => 'change_comments_form')) ?>
-		</div>
-	</div>
-	<?php } ?>
-
-	<?php if($verifier_editer){ ?>
-	<div class="box UI_rollbox">
-		<div class="title">Redirection</div>
-
-		<div class="hidden">
-			<p>
-				Cela vous permet de définir un article virtuel référencé dans
-				le blog, mais redirigeant vers une ressource externe.
-			</p>
-
-			<form method="post" action="admin-billet-<?php echo $_GET['id'] ?>.html" id="change_redirection_form">
-				<input type="text" name="redirection" id="redirection"
-				value="<?php echo !is_null($InfosBillet['blog_url_redirection']) ? htmlspecialchars($InfosBillet['blog_url_redirection']) : 'http://'; ?>" />
-				<input type="submit" value="Changer" />
-			</form>
-			
-			<?php $view['javelin']->initBehavior('ajax-form', array('id' => 'change_redirection_form')) ?>
-		</div>
-	</div>
-	<?php } ?>
 </div>
 
 

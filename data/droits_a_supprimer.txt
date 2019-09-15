@@ -26,3 +26,4 @@ dictees_supprimer_toutes
 dictees_editer_toutes
 voir_sanctions
 sanctionner
+voir_coms_billets_proposes

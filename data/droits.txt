@@ -69,7 +69,6 @@ membres_editer_titre
 citations_modifier
 mettre_sujet_favori
 mp_editer_ses_messages_deja_lus
-voir_coms_billets_proposes
 recrutements_attribuer_copie
 recrutements_desattribuer_copie
 recrutements_desistement

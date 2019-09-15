@@ -80,28 +80,6 @@ class AdminBilletAction extends BlogActions
 				return redirect('Le logo de ce billet a bien été changé.', 'admin-billet-'.$_GET['id'].'.html');
 			}
 
-			//--- Si on veut changer le type de commentaires ---
-			if(isset($_POST['commentaires']) && is_numeric($_POST['commentaires']) && verifier('blog_choisir_comms'))
-			{
-                BlogDAO::EditerBillet($_GET['id'], array(
-					'commentaires' => $_POST['commentaires'],
-					'lien_topic' => $_POST['lien']
-				));
-				return redirect('Le nouveau choix de commentaires a bien été mémorisé.', 'admin-billet-'.$_GET['id'].'.html');
-			}
-
-			//--- Si on veut changer l'url de redirection ---
-			if(isset($_POST['redirection']) && $this->verifier_editer)
-			{
-				if(empty($_POST['redirection']) || $_POST['redirection'] == 'http://')
-					$_POST['redirection'] = null;
-
-                BlogDAO::EditerBillet($_GET['id'], array(
-					'url_redirection' => $_POST['redirection']
-				));
-				return redirect('La nouvelle adresse de l\'article virtuel a bien été mémorisée.', 'admin-billet-'.$_GET['id'].'.html');
-			}
-
 			//--- Si on veut changer la date de publication ---
 			if(isset($_POST['changer_date']) && verifier('blog_valider'))
 			{

@@ -48,7 +48,6 @@
 		'Auteurs' => $Auteurs,
 	)) ?>
 
-<?php if($comms){ ?>
 <br /><hr />
 <h2 id="commentaires">
 	<?php if($InfosBillet['blog_commentaires'] == COMMENTAIRES_OK || !empty($ListerCommentaires)){ ?>
@@ -79,7 +78,6 @@
 	<?php } ?>
 </p>
 
-<?php if($comms == true){ ?>
 <?php if(!empty($ListerCommentaires)){ ?>
 <table class="UI_items messages" id="commentaires">
 	<thead>
@@ -202,18 +200,17 @@ Aucun commentaire n'a encore été déposé sur ce billet.
 	<?php } ?>
 </p>
 <?php } ?>
-<?php } /* Fin de la vérification d'affichage des commentaires */ ?>
 
-<?php if($voir_moderation){ ?>
+<?php if (verifier('blog_choisir_comms') && $InfosBillet['blog_commentaires'] != COMMENTAIRES_TOPIC) { ?>
 <fieldset id="panel_moderation">
 	<legend>Modération massive des commentaires</legend>
 	<ul>
-		<?php if(verifier('blog_choisir_comms') && $InfosBillet['blog_commentaires'] == COMMENTAIRES_OK){ ?>
+		<?php if($InfosBillet['blog_commentaires'] == COMMENTAIRES_OK){ ?>
 		<li>
 			<img src="/bundles/zcoforum/img/cadenas.png" alt="" />
 			<a href="?fermer=1">Fermer les commentaires</a>
 		</li>
-		<?php } elseif(verifier('blog_choisir_comms') && $InfosBillet['blog_commentaires'] == COMMENTAIRES_NONE){ ?>
+		<?php } elseif($InfosBillet['blog_commentaires'] == COMMENTAIRES_NONE){ ?>
 		<li>
 			<img src="/bundles/zcoforum/img/cadenas.png" alt="" />
 			<a href="?fermer=0">Ouvrir les commentaires</a>
@@ -221,5 +218,4 @@ Aucun commentaire n'a encore été déposé sur ce billet.
 		<?php } ?>
 	</ul>
 </fieldset>
-<?php } ?>
 <?php } ?>

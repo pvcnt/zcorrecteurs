@@ -49,9 +49,11 @@ class BilletAction extends BlogActions
 			//TODO zCorrecteurs::VerifierFormatageUrl($this->InfosBillet['version_titre'], true, true, 1);
 
             //Si le billet est un article virtuel.
-            if(!is_null($this->InfosBillet['blog_url_redirection']) && !empty($this->InfosBillet['blog_url_redirection']))
+            if (!is_null($this->InfosBillet['blog_url_redirection']) && !empty($this->InfosBillet['blog_url_redirection']))
             {
-                $this->InfosBillet['blog_etat'] == BLOG_VALIDE && BlogDAO::BlogIncrementerVues($_GET['id']);
+                if ($this->InfosBillet['blog_etat'] == BLOG_VALIDE) {
+                    BlogDAO::BlogIncrementerVues($_GET['id']);
+                }
                 return new RedirectResponse(htmlspecialchars($this->InfosBillet['blog_url_redirection']), 301);
             }
 
@@ -88,45 +90,22 @@ class BilletAction extends BlogActions
                 );
             }
 
-            //--- Si on veut voir les commentaires ---
-            if(!isset($_GET['comms']) || $_GET['comms'] != 0)
+            $page = (!empty($_GET['p']) && is_numeric($_GET['p'])) ? $_GET['p'] : 1;
+            if ($page > 1)
             {
-                if(in_array($this->InfosBillet['blog_etat'], array(BLOG_PROPOSE, BLOG_PREPARATION)) &&
-                !verifier('voir_coms_billets_proposes'))
-                {
-                    $this->comms = false;
-                }
-                else
-                {
-                    $this->comms = true;
-                    $page = (!empty($_GET['p']) && is_numeric($_GET['p'])) ? $_GET['p'] : 1;
-                    if ($page > 1)
-                    {
-                        Page::$titre .= ' - Page '.$page;
-                        Page::$description .= ' - Page '.$page;
-                    }
-
-                    $this->ListerCommentaires = CommentDAO::ListerCommentairesBillet($_GET['id'], $page);
-                    $this->CompterCommentaires = CommentDAO::CompterCommentairesBillet($_GET['id']);
-                    $nbCommentairesParPage = 15;
-                    $NombrePages = ceil($this->CompterCommentaires / $nbCommentairesParPage);
-                    $this->ListePages = liste_pages($page, $NombrePages, 'billet-'.$_GET['id'].'-p%s-'.rewrite($this->InfosBillet['version_titre']).'.html#commentaires');
-
-                    //On marque les commentaires comme lus s'il y en a
-                    if(!empty($this->ListerCommentaires) && verifier('connecte'))
-                        CommentDAO::MarquerCommentairesLus($this->InfosBillet, $this->ListerCommentaires);
-                }
-            }
-            else
-            {
-                $this->comms = false;
+                Page::$titre .= ' - Page '.$page;
+                Page::$description .= ' - Page '.$page;
             }
 
-            //Droit de voir le panel moderation
-            if((verifier('blog_editer_commentaires') || verifier('blog_choisir_comms')) && $this->comms == true)
-                $this->voir_moderation = true;
-            else
-                $this->voir_moderation = false;
+            $this->ListerCommentaires = CommentDAO::ListerCommentairesBillet($_GET['id'], $page);
+            $this->CompterCommentaires = CommentDAO::CompterCommentairesBillet($_GET['id']);
+            $nbCommentairesParPage = 15;
+            $NombrePages = ceil($this->CompterCommentaires / $nbCommentairesParPage);
+            $this->ListePages = liste_pages($page, $NombrePages, 'billet-'.$_GET['id'].'-p%s-'.rewrite($this->InfosBillet['version_titre']).'.html#commentaires');
+
+            //On marque les commentaires comme lus s'il y en a
+            if(!empty($this->ListerCommentaires) && verifier('connecte'))
+                CommentDAO::MarquerCommentairesLus($this->InfosBillet, $this->ListerCommentaires);
 
             $this->InfosBillet['blog_etat'] == BLOG_VALIDE && BlogDAO::BlogIncrementerVues($_GET['id']);
 
