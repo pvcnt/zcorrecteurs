@@ -6,6 +6,7 @@
 !/var/.gitkeep
 /vendor/
 /public/compiled/*
+.env
 composer.phar
 
 # IDE configuration files.

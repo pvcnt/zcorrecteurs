@@ -20,13 +20,16 @@
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Debug\Debug;
+use Symfony\Component\Dotenv\Dotenv;
 
 define('BASEPATH', realpath(__DIR__ . '/..'));
+require __DIR__ . '/../vendor/autoload.php';
 
-$env = getenv('SYMFONY_ENVIRONMENT') ?: 'prod';
-$debug = 'yes' === getenv('SYMFONY_DEBUG') && 'prod' !== $env;
+$dotenv = new Dotenv();
+$dotenv->load(__DIR__ . '/../.env');
 
-require __DIR__.'/../vendor/autoload.php';
+$env = $_ENV['SYMFONY_ENVIRONMENT'] ?? 'prod';
+$debug = isset($_ENV['SYMFONY_DEBUG']) ? 'true' === $_ENV['SYMFONY_DEBUG'] && 'prod' !== $env : false;
 
 if ($debug) {
     Debug::enable();

@@ -4,15 +4,22 @@
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Debug\Debug;
+use Symfony\Component\Dotenv\Dotenv;
 
 set_time_limit(0);
-
 define('BASEPATH', realpath(__DIR__ . '/..'));
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$env = getenv('SYMFONY_ENVIRONMENT') ?: 'prod';
-$debug = 'true' === getenv('SYMFONY_DEBUG') && 'prod' !== $env;
+$dotenv = new Dotenv();
+$dotenv->load(__DIR__ . '/../.env');
+
+$env = $_ENV['SYMFONY_ENVIRONMENT'] ?? 'prod';
+$debug = isset($_ENV['SYMFONY_DEBUG']) ? 'true' === $_ENV['SYMFONY_DEBUG'] && 'prod' !== $env : false;
 
 $input = new ArgvInput();
 $env = $input->getParameterOption(array('--env', '-e'), $env);
