@@ -24,6 +24,7 @@
 
 namespace Zco\Bundle\Doctrine1Bundle\Command;
 
+use Symfony\Component\Console\Question\Question;
 use Zco\Bundle\Doctrine1Bundle\Migrations\Migration;
 use Zco\Bundle\Doctrine1Bundle\Migrations\Configuration\Configuration;
 use Symfony\Component\Console\Input\InputInterface;
@@ -102,7 +103,7 @@ EOT
 			{
 				$output->writeln('	<comment>>></comment> ' . $configuration->formatVersion($executedUnavailableMigration) . ' (<comment>' . $executedUnavailableMigration . '</comment>)');
 			}
-			if (!$force && !$this->getHelper('dialog')->askConfirmation($output, '<question>Are you sure you wish to continue? (y/n)</question>', false))
+			if (!$force && !$this->getHelper('question')->ask($input, $output, new Question('<question>Are you sure you wish to continue? (y/n)</question>', false)))
 			{
 				return 0;
 			}
@@ -125,7 +126,7 @@ EOT
 			}
 			else
 			{
-				if (!$force && !$this->getHelper('dialog')->askConfirmation($output, '<question>WARNING! You are about to execute a database migration that could result in schema changes and data lost. Are you sure you wish to continue? (y/n)</question>', false))
+				if (!$force && !$this->getHelper('question')->ask($input, $output, new Question('<question>WARNING! You are about to execute a database migration that could result in schema changes and data lost. Are you sure you wish to continue? (y/n)</question>', false)))
 				{
 					return 0;
 				}
