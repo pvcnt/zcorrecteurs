@@ -19,11 +19,6 @@ services:
     public: true
     arguments: ['@cache', !tagged zco.admin_task]
 
-  Zco\Bundle\StatsBundle\EventListener\EventListener:
-    arguments: ['@zco_stats.alexa_stats']
-    tags:
-    - { name: kernel.event_subscriber }
-
   Zco\Bundle\CoreBundle\EventListener\EventListener:
     calls:
     - [setContainer, ["@service_container"]]
@@ -160,21 +155,6 @@ services:
   zco_search.search_service:
     class: Zco\Bundle\ContentBundle\Search\SearchService
     arguments: ['@zco_search.search_engine']
-
-  zco_stats.alexa_stats:
-    class: Zco\Bundle\StatsBundle\Service\AlexaStatsService
-    arguments: ['@zco_doctrine1.connection']
-
-  zco_stats.user_stats:
-    class: Zco\Bundle\StatsBundle\Service\UserStatsService
-    arguments: ['@zco_doctrine1.connection']
-
-  zco_stats.alexa_chart:
-    class: Zco\Bundle\StatsBundle\Service\AlexaChartService
-    arguments: ['@zco_stats.alexa_stats']
-
-  Zco\Bundle\StatsBundle\Service\RegistrationChartService:
-    arguments: ['@zco_stats.user_stats']
 
   Zco\Bundle\UserBundle\Validator\Constraints\UsernameValidator:
     arguments: ["@zco_user.user"]
