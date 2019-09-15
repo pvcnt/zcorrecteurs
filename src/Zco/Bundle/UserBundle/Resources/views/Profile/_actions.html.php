@@ -25,19 +25,6 @@
         <?php endif ?>
 	</a>
 </div>
-<div style="margin-top: 5px;">
-	<a class="btn btn-primary<?php if (!$canSendMp): ?> disabled<?php endif ?>" 
-		style="display: inline-block; width: 196px;"
-	    <?php if ($canSendMp): ?>
-	    href="/mp/nouveau-<?php echo $user->getId(); ?>.html"
-		<?php else: ?>
-		href="#" onclick="return false;"
-		<?php endif ?>
-	>
-		<i class="icon-pencil icon-white"></i> 
-		Envoyer un message privé
-	</a>
-</div>
 <?php endif ?>
 
 <?php if ($canAdmin): ?>

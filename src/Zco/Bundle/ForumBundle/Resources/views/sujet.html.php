@@ -188,11 +188,7 @@ if($InfosSujet['sujet_sondage'] > 0)
 				<a href="<?php echo 'repondre-'.$_GET['id'].'-'.$valeur['message_id']; ?>.html">
 					<img src="/pix.gif" class="fff comment" alt="Citer" title="Citer" />
 				</a>
-				<?php } if($_SESSION['id'] != $valeur['message_auteur'] AND verifier('connecte')) { ?>
-				<a href="/mp/nouveau-<?php echo $valeur['message_auteur']; ?>.html"><img src="/pix.gif" class="fff email" alt="MP" title="Envoyer un message privé" /></a>
-				<?php
-				}
-
+				<?php }
 								//Marquer comme dernier message lu
 								if(verifier('connecte') && $InfosSujet['lunonlu_message_id'] != $valeur['message_id'])
 								{

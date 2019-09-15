@@ -93,11 +93,6 @@ div.bloc_uploads .admin_icone
 	background: url(../img/uploads.png) no-repeat;
 }
 
-div.bloc_messagerie_privee .admin_icone
-{
-	background: url(../img/mps.png) no-repeat;
-}
-
 div.bloc_groupes .admin_icone
 {
 	background: url(../img/groupes.png) no-repeat;

@@ -14,17 +14,6 @@
                 <a href="<?php echo $view['router']->path('zco_quiz_index') ?>">Quiz</a>
             </li>
             <li><a href="<?php echo $view['router']->path('zco_dictation_index') ?>">Dictées</a></li>
-            <?php if (verifier('connecte')): ?>
-                <li>
-                    <a href="/mp/">
-                        <?php if ($_SESSION['MPsnonLus'] > 0): ?>
-                            <?php echo $_SESSION['MPsnonLus'] ?> message<?php echo pluriel($_SESSION['MPsnonLus']) ?>
-                        <?php else: ?>
-                            Messagerie
-                        <?php endif ?>
-                    </a>
-                </li>
-            <?php endif ?>
             <?php if (verifier('admin')): ?>
                 <li>
                     <a href="<?php echo $view['router']->path('zco_admin_index') ?>">

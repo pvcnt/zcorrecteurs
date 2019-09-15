@@ -25,10 +25,6 @@
 					</span>
 
 					Ajouté <?php echo dateformat($valeur['commentaire_date'], MINUSCULE); ?>
-
-					<?php if (verifier('connecte') && $_SESSION['id'] != $valeur['id_auteur']) { ?>
-					<a href="/mp/nouveau-<?php echo $valeur['id_auteur']; ?>.html"><img src="/bundles/zcoforum/img/envoyer_mp.png" alt="MP" title="Envoyer un message privé" /></a>
-					<?php } ?>
 				</td>
 			</tr>
 
