@@ -39,10 +39,6 @@ class EditPreferencesType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('email_on_mp', CheckboxType::class, array(
-            'label' => 'M\'avertir par courriel quand je reçois un MP',
-            'required' => false,
-        ));
         $builder->add('time_difference', ChoiceType::class, array(
             'label' => 'Mon fuseau horaire',
             'choices' => array(

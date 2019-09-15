@@ -293,7 +293,6 @@ class UtilisateurTable extends Doctrine_Table
 		
 		// Ajout des préférences par défaut.
         UserDAO::savePreferences($user->getId(), [
-            'email_on_mp' => true,
             'time_difference' => 3600, // GMT+1 (Paris)
         ]);
 	}

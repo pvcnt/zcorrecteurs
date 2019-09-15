@@ -16,13 +16,6 @@
 
 <form action="" method="post" class="form-horizontal">
 	<?php echo $view['form']->errors($form) ?>
-	
-	<div class="control-group">
-		<label class="control-label">Notifications</label>
-		<div class="controls">
-			<?php echo $view['form']->row($form['email_on_mp'], array('style' => 'checkbox')) ?>
-		</div>
-	</div>
     <?php echo $view['form']->row($form['time_difference'], array('widget_attr' => array('class' => 'input-xxlarge'))) ?>
     <?php echo $view['form']->rest($form) ?>
 

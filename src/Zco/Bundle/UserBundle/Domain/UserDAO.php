@@ -144,14 +144,13 @@ final class UserDAO
     public static function getPreferences($userId)
     {
         $conn = \Doctrine_Manager::connection();
-        $row = $conn->fetchRow('select preference_activer_email_mp, preference_decalage
+        $row = $conn->fetchRow('select preference_decalage
             from zcov2_utilisateurs_preferences 
             where preference_id_utilisateur = ?',
             [$userId]
         );
 
         return [
-            'email_on_mp' => $row['preference_activer_email_mp'],
             'time_difference' => $row['preference_decalage'],
         ];
     }
@@ -162,13 +161,13 @@ final class UserDAO
         $count = $conn->exec('update zcov2_utilisateurs_preferences
             set preference_activer_email_mp = ?, preference_decalage = ?
             where preference_id_utilisateur = ?',
-            [$data['email_on_mp'], $data['time_difference'], $userId]
+            [$data['time_difference'], $userId]
         );
         if (0 === $count) {
             $conn->exec('insert into zcov2_utilisateurs_preferences
                 (preference_id_utilisateur, preference_activer_email_mp, preference_decalage)
                 values(?, ?, ?)',
-                [$userId, $data['email_on_mp'], $data['time_difference']]
+                [$userId, $data['time_difference']]
             );
         }
     }
