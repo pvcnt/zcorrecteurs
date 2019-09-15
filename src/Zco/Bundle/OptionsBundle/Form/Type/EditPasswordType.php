@@ -44,9 +44,9 @@ class EditPasswordType extends AbstractType
             'label' => 'Votre mot de passe',
         ));
         $builder->add('new', RepeatedType::class, array(
-            'type' => 'password',
-            'first_name' => 'Nouveau mot de passe',
-            'second_name' => 'Confirmez le mot de passe',
+            'type' => PasswordType::class,
+            'first_options' => ['label' => 'Nouveau mot de passe'],
+            'second_options' => ['label' => 'Confirmez le mot de passe'],
             'invalid_message' => 'Saisissez deux fois le même mot de passe.',
         ));
     }
