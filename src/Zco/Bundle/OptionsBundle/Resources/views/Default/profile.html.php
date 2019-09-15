@@ -38,7 +38,6 @@
 			<div class="controls">
 				<?php echo $view['form']->row($form['email_displayed'], array('style' => 'checkbox')) ?>
 				<?php echo $view['form']->row($form['country_displayed'], array('style' => 'checkbox')) ?>
-				<?php echo $view['form']->row($form['display_signature'], array('style' => 'checkbox')) ?>
 			</div>
 		</div>
 

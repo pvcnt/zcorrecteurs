@@ -37,7 +37,6 @@
  * @property timestamp $utilisateur_derniere_lecture
  * @property integer $sexe
  * @property string $twitter
- * @property boolean $display_signature
  * @property Groupe $Groupe
  * @property Doctrine_Collection $SecondaryGroups
  * @property Doctrine_Collection $UserNewUsername

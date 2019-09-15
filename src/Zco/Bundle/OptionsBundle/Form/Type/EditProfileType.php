@@ -48,10 +48,6 @@ class EditProfileType extends AbstractType
             'label' => 'Autoriser les autres utilisateurs à m\'envoyer un courriel',
             'required' => false,
         ));
-        $builder->add('display_signature', null, array(
-            'label' => 'Afficher ma signature en-dessous de ma présentation personnelle',
-            'required' => false,
-        ));
         $builder->add('country_displayed', null, array(
             'label' => 'Afficher le pays dans lequel je me trouve',
             'required' => false,
