@@ -21,6 +21,8 @@
     http://www.gnu.org/licenses/gpl.html
 */
 
+namespace Zco\Bundle\DicteesBundle;
+
 class SimpleDiff
 {
     const SAME = 0;

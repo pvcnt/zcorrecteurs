@@ -77,7 +77,7 @@ final class DoubleDiff
 
     protected function calculerDiff()
     {
-        $this->wdiff = \SimpleDiff::wdiff($this->original, $this->modifie);
+        $this->wdiff = SimpleDiff::wdiff($this->original, $this->modifie);
         $this->ajoute = $this->supprime = 0;
 
         $corrige = preg_replace_callback('`\\<([+-])([^>]+)\\1\\>`',
