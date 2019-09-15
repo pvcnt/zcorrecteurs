@@ -82,7 +82,7 @@ You can create an invalid user (will not be able to log in):
         
         //On valide l'entité fournie conformément aux contraintes placées dessus.
         $validator = $this->getContainer()->get('validator');
-        $errors    = $validator->validate($user, array('registration'));
+        $errors    = $validator->validate($user, null, ['registration']);
         if (count($errors) > 0)
         {
             throw new \InvalidArgumentException((string) $errors);

@@ -482,13 +482,13 @@ class Utilisateur extends BaseUtilisateur
 	public static function loadValidatorMetadata(ClassMetadata $metadata)
 	{
 		$metadata->addGetterConstraint('username', new Constraints\Username(array(
-			'groups' => 'registration',
+			'groups' => ['registration'],
 		)));
 		$metadata->addGetterConstraint('rawPassword', new Constraints\Password(array(
-			'groups' => array('registration', 'editPassword'),
+			'groups' => ['registration', 'editPassword'],
 		)));
 		$metadata->addGetterConstraint('email', new Constraints\Email(array(
-			'groups' => 'registration',
+			'groups' => ['registration'],
 		)));
 		/*$metadata->addGetterConstraint('nouvel_email', new Constraints\Email(array(
 			'groups' => 'editEmail',

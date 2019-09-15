@@ -63,7 +63,7 @@ class CreateUserType extends AbstractType
     {
         $resolver->setDefaults([
 			'data_class'        => \Utilisateur::class,
-			'validation_groups' => array('registration')
+			'validation_groups' => ['registration'],
 		]);
 	}
 }
