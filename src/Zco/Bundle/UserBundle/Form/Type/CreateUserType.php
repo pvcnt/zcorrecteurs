@@ -23,6 +23,7 @@ namespace Zco\Bundle\UserBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -48,7 +49,7 @@ class CreateUserType extends AbstractType
 			'required' => true,
 		));
 		$builder->add('rawPassword', RepeatedType::class, array(
-			'type'  => 'password',
+			'type'  => PasswordType::class,
 			'first_options' => ['label' => 'Mot de passe'],
 			'second_options' => ['label' => 'Confirmez le mot de passe'],
 			'invalid_message' => 'Saisissez deux fois le même mot de passe.',
