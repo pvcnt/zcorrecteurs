@@ -14,8 +14,8 @@
       "lib/diff"
     ],
     "files": [
-      "app/functions.php",
-      "app/constants.php",
+      "src/functions.php",
+      "src/constants.php",
       "lib/geoip/geoip.php",
       "lib/geoip/geoipcity.php"
     ]
