@@ -3,7 +3,7 @@
 <h1>Gestion des dictées</h1>
 
 <p class="gras centre">
-	<a href="<?php echo $view['router']->path('zco_dictations_new') ?>">Ajouter une dictée</a>
+	<a href="<?php echo $view['router']->path('zco_dictation_new') ?>">Ajouter une dictée</a>
 </p>
 
 <?php if(!$nb = count($Dictees)): ?>
