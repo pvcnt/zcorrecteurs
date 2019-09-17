@@ -22,8 +22,7 @@
 namespace Zco\Bundle\DicteesBundle\Domain;
 
 use Symfony\Component\HttpFoundation\Response;
-use Zco\Bundle\AdminBundle\Admin;
-use Zco\Bundle\ContentBundle\Domain\TagRepository;
+use Zco\Bundle\ContentBundle\Admin\Admin;
 use Zco\Bundle\DicteesBundle\DoubleDiff;
 
 /**

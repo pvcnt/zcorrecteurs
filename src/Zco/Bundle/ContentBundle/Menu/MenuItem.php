@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\AdminBundle\Menu;
+namespace Zco\Bundle\ContentBundle\Menu;
 
 /**
  * @author vincent1870 <vincent@zcorrecteurs.fr>

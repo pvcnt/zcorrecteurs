@@ -28,7 +28,7 @@ final class GlobalVariables extends BaseGlobalVariables
     {
         static $count;
         if (!isset($count)) {
-            $count = $this->container->get(\Zco\Bundle\AdminBundle\Admin::class)->count();
+            $count = $this->container->get(\Zco\Bundle\ContentBundle\Admin\Admin::class)->count();
         }
 
         return $count;

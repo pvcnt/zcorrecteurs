@@ -19,16 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\AdminBundle\Menu;
+namespace Zco\Bundle\ContentBundle\Menu;
 
 use Symfony\Component\Routing\RouterInterface;
-use Zco\Bundle\AdminBundle\Admin;
-use Zco\Bundle\BlogBundle\Admin\ArticlesPendingTask;
-use Zco\Bundle\DicteesBundle\Admin\DictationsPendingTask;
+use Zco\Bundle\ContentBundle\Admin\Admin;
 use Zco\Bundle\ForumBundle\Admin\ForumAlertsPendingTask;
 use Zco\Bundle\UserBundle\Admin\NewUsernamePendingTask;
 
-final class MenuFactory
+final class AdminMenuFactory
 {
     private $router;
     private $admin;

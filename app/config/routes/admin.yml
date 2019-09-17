@@ -1,3 +1,0 @@
-zco_admin_index:
-  path:   /admin
-  defaults:  { _controller: ZcoAdminBundle:Default:index }

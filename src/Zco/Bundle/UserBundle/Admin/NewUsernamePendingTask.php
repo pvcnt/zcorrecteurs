@@ -2,7 +2,7 @@
 
 namespace Zco\Bundle\UserBundle\Admin;
 
-use Zco\Bundle\AdminBundle\PendingTask;
+use Zco\Bundle\ContentBundle\Admin\PendingTask;
 
 /**
  * Counts the number of username change requests.

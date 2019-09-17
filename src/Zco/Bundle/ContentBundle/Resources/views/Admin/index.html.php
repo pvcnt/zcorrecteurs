@@ -4,4 +4,4 @@
 
 <?php echo $admin ?>
 
-<?php $view['vitesse']->requireResource('@ZcoAdminBundle/Resources/public/css/admin.css') ?>
+<?php $view['vitesse']->requireResource('@ZcoContentBundle/Resources/public/css/admin.css') ?>

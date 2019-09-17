@@ -23,7 +23,7 @@ services:
     resource: '../../src/Zco/Bundle/UserBundle/Command/*'
     tags: ['console.command']
 
-  Zco\Bundle\AdminBundle\Admin:
+  Zco\Bundle\ContentBundle\Admin\Admin:
     public: true
     arguments: ['@cache', !tagged zco.admin_task]
 

@@ -21,7 +21,7 @@
 
 namespace Zco\Bundle\ForumBundle\Admin;
 
-use Zco\Bundle\AdminBundle\PendingTask;
+use Zco\Bundle\ContentBundle\Admin\PendingTask;
 use Zco\Bundle\ForumBundle\Domain\AlertDAO;
 
 /**

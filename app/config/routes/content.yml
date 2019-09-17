@@ -45,3 +45,7 @@ zco_search_index:
 zco_captcha:
   path:      /captcha
   defaults:  { _controller: ZcoContentBundle:Captcha:index }
+
+zco_admin_index:
+  path:   /admin
+  defaults:  { _controller: ZcoContentBundle:Admin:index }

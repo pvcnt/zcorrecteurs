@@ -52,7 +52,6 @@ final class Kernel extends HttpKernel
             new Zco\Bundle\UserBundle\ZcoUserBundle(),
 
             // Module bundles.
-            new Zco\Bundle\AdminBundle\ZcoAdminBundle(),
             new Zco\Bundle\PagesBundle\ZcoPagesBundle(),
             new Zco\Bundle\BlogBundle\ZcoBlogBundle(),
             new Zco\Bundle\ContentBundle\ZcoContentBundle(),

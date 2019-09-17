@@ -19,12 +19,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\AdminBundle\Controller;
+namespace Zco\Bundle\ContentBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Zco\Bundle\AdminBundle\Menu\MenuFactory;
-use Zco\Bundle\AdminBundle\Menu\MenuRenderer;
+use Zco\Bundle\ContentBundle\Menu\AdminMenuFactory;
+use Zco\Bundle\ContentBundle\Menu\MenuRenderer;
 
 /**
  * Contrôleur gérant l'accueil de l'administration pour les membres de l'équipe.
@@ -36,7 +36,7 @@ use Zco\Bundle\AdminBundle\Menu\MenuRenderer;
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  * @author mwsaz <mwsaz.fr>
  */
-class DefaultController extends Controller
+class AdminController extends Controller
 {
     public function indexAction()
     {
@@ -46,14 +46,14 @@ class DefaultController extends Controller
 
         \Page::$titre = 'Accueil de l\'administration';
 
-        $admin = $this->get(\Zco\Bundle\AdminBundle\Admin::class);
+        $admin = $this->get(\Zco\Bundle\ContentBundle\Admin\Admin::class);
         $admin->refreshAll();
 
-        $menuFactory = new MenuFactory($this->get('router'), $admin);
+        $menuFactory = new AdminMenuFactory($this->get('router'), $admin);
         $menu = $menuFactory->createMenu();
         $renderer = new MenuRenderer();
 
-        return $this->render('ZcoAdminBundle::index.html.php', [
+        return $this->render('ZcoContentBundle:Admin:index.html.php', [
             'admin' => $renderer->render($menu),
         ]);
     }

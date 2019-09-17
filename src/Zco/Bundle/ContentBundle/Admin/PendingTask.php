@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\AdminBundle;
+namespace Zco\Bundle\ContentBundle\Admin;
 
 /**
  * A pending administrative task that is waiting some action to be resolved.
