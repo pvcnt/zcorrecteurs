@@ -18,6 +18,20 @@ zco_blog_manage:
   requirements:
     id: \d+
 
+zco_blog_editAuthor:
+  path:   /blog/{id}/{slug}/auteur/{authorId}/modifier
+  defaults:  { _controller: ZcoBlogBundle:Default:editAuthor }
+  requirements:
+    id: \d+
+    authorId: \d+
+
+zco_blog_deleteAuthor:
+  path:   /blog/{id}/{slug}/auteur/{authorId}/supprimer
+  defaults:  { _controller: ZcoBlogBundle:Default:deleteAuthor }
+  requirements:
+    id: \d+
+    authorId: \d+
+
 zco_blog_publish:
   path:   /blog/{id}/{slug}/valider
   defaults:  { _controller: ZcoBlogBundle:Default:publish }
@@ -48,6 +62,13 @@ zco_blog_delete:
   requirements:
     id: \d+
 
+zco_blog_compare:
+  path:   /blog/comparaison/{from}/{to}
+  defaults:  { _controller: ZcoBlogBundle:Default:compare }
+  requirements:
+    from: \d+
+    to: \d+
+
 zco_blog_new:
   path:   /blog/ajouter
   defaults:  { _controller: ZcoBlogBundle:Default:new }
@@ -55,6 +76,12 @@ zco_blog_new:
 zco_blog_mine:
   path:   /blog/mes-billets
   defaults:  { _controller: ZcoBlogBundle:Default:mine }
+
+zco_blog_newComment:
+  path:   /blog/{id}/{slug}/commenter
+  defaults:  { _controller: ZcoBlogBundle:Default:newComment }
+  requirements:
+    id: \d+
 
 zco_blog_editComment:
   path:   /blog/commentaire/{id}/modifier

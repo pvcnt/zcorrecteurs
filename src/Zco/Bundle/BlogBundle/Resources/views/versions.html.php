@@ -9,7 +9,7 @@
 
 	Un <span class="vertf">élément vert</span> indique qu'il n'y a pas eu de
 	modification par rapport à la version précédente (au-dessous).<br />
-    
+
 	Un <span class="rouge">élément rouge</span> indique des modifications par
 	rapport à la version précédente (au-dessous).
 </p>
@@ -22,7 +22,6 @@
 			<th style="width: 15%;">Pseudo</th>
 			<th style="width: 40%;">Modifications</th>
 			<th style="width: 15%;">Comparer</th>
-			<th style="width: 5%;">Revenir</th>
 		</tr>
 	</thead>
 
@@ -55,15 +54,8 @@
 			</td>
 			<td class="center">
 				<?php if($v['version_id_fictif'] > 0){ ?>
-				<a href="comparaison-<?php echo $v['version_id']; ?>-<?php echo $v['id_precedent']; ?>.html">
+				<a href="<?php echo $view['router']->path('zco_blog_compare', ['from' => $v['version_id'], 'to' => $v['id_precedent']]) ?>">
 					Comparer avec n<sup>o</sup>&nbsp;<?php echo $v['version_id_fictif'] - 1; ?>
-				</a>
-				<?php } else echo '-'; ?>
-			</td>
-			<td class="center">
-				<?php if($i != 0){ ?>
-				<a href="revenir-version-<?php echo $InfosBillet['blog_id']; ?>-<?php echo $v['version_id']; ?>.html">
-					Revenir
 				</a>
 				<?php } else echo '-'; ?>
 			</td>

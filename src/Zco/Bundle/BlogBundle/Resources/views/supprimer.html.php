@@ -4,7 +4,7 @@
 
 <form method="post" action="">
     <p>
-        Êtes-vous sûr de vouloir supprimer ce billet de <strong><a href="/membres/profil-<?php echo $InfosBillet['utilisateur_id']; ?>-<?php echo rewrite($InfosBillet['utilisateur_pseudo']); ?>.html"><?php echo htmlspecialchars($InfosBillet['utilisateur_pseudo']); ?></a></strong>
+        Êtes-vous sûr de vouloir supprimer ce billet de <strong><?php echo htmlspecialchars($InfosBillet['utilisateur_pseudo']); ?></strong>
         ayant pour titre <strong><?php echo htmlspecialchars($InfosBillet['version_titre']); ?></strong> ?
     </p>
 

@@ -117,11 +117,11 @@
 						<td><?php echo \Zco\Bundle\BlogBundle\Domain\Author::STATUSES[$a['auteur_statut']]; ?></td>
 						<?php if($credentials->isOwner() || verifier('blog_toujours_createur')){ ?>
 						<td class="centre">
-							<a href="editer-auteur-<?php echo $InfosBillet['blog_id'] ?>-<?php echo $a['utilisateur_id']; ?>.html" title="Modifier cet auteur">
+							<a href="<?php echo $view['router']->path('zco_blog_editAuthor', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre']), 'authorId' => $a['utilisateur_id']]) ?>" title="Modifier cet auteur">
 								<img src="/img/editer.png" alt="Modifier" />
 							</a>
 
-							<a href="supprimer-auteur-<?php echo $InfosBillet['blog_id'] ?>-<?php echo $a['utilisateur_id']; ?>.html" title="Retirer cet auteur">
+                            <a href="<?php echo $view['router']->path('zco_blog_deleteAuthor', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre']), 'authorId' => $a['utilisateur_id']]) ?>" title="Retirer cet auteur">
 								<img src="/img/supprimer.png" alt="Retirer" />
 							</a>
 						</td>

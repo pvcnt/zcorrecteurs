@@ -2,7 +2,8 @@
 
 <h1>Éditer un auteur</h1>
 
-<p>Vous pouvez maintenant éditer l'auteur <strong><a href="/membres/profil-<?php echo $InfosUtilisateur['utilisateur_id']; ?>-<?php echo rewrite($InfosUtilisateur['utilisateur_pseudo']); ?>.html"><?php echo htmlspecialchars($InfosUtilisateur['utilisateur_pseudo']); ?></a></strong>, en lui attribuant un nouveau statut, ou en changeant de personne.</p>
+<p>Vous pouvez maintenant éditer l'auteur <strong><?php echo htmlspecialchars($InfosUtilisateur['utilisateur_pseudo']); ?></strong>,
+    en lui attribuant un nouveau statut, ou en changeant de personne.</p>
 
 <fieldset>
 	<legend>Éditer un auteur</legend>

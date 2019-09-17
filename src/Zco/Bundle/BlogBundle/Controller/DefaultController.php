@@ -303,7 +303,6 @@ class DefaultController extends Controller
         if (!$Auteurs) {
             throw new NotFoundHttpException();
         }
-
         $InfosBillet = $Auteurs[0];
         $credentials = new BlogCredentials($Auteurs, $InfosBillet);
         $authorized = verifier('blog_editer_commentaires')
@@ -333,7 +332,60 @@ class DefaultController extends Controller
         ]);
     }
 
-    public function editCommentAction($id)
+    public function newComment($id, Request $request)
+    {
+        if (!verifier('connecte')) {
+            throw new AccessDeniedHttpException();
+        }
+        $Auteurs = BlogDAO::InfosBillet($id);
+        if (!$Auteurs) {
+            throw new NotFoundHttpException();
+        }
+        $InfosBillet = $Auteurs[0];
+        $credentials = new BlogCredentials($Auteurs, $InfosBillet);
+        if (!$credentials->canView()) {
+            throw new AccessDeniedHttpException();
+        }
+
+        if ($request->isMethod('POST')) {
+            $id = CommentDAO::AjouterCommentaire($id, $_SESSION['id'], $_POST['texte']);
+
+            return redirect(
+                'Le commentaire a bien été ajouté.',
+                $this->generateUrl('zco_blog_show', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])])
+            );
+        }
+
+        //Si on veut citer un message.
+        $commentId = $request->get('c');
+        if ($commentId) {
+            $InfosCommentaire = CommentDAO::InfosCommentaire($commentId);
+            $texte_zform = '<citation nom="' . htmlspecialchars($InfosCommentaire['utilisateur_pseudo']) . '">' .
+                $InfosCommentaire['commentaire_texte'] . '' .
+                '</citation>';
+        } else {
+            $texte_zform = '';
+        }
+
+        fil_ariane($InfosBillet['cat_id'], array(
+            htmlspecialchars($InfosBillet['version_titre']) => $this->generateUrl('zco_blog_show', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]),
+            'Ajouter un commentaire'
+        ));
+        $this->get('zco_core.resource_manager')->requireResources([
+            '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
+            '@ZcoForumBundle/Resources/public/css/forum.css',
+        ]);
+        \Page::$titre = htmlspecialchars($InfosBillet['version_titre']) . ' - Ajouter un commentaire';
+
+        return $this->render('ZcoBlogBundle::ajouterCommentaire.html.php', [
+            'InfosBillet' => $InfosBillet,
+            'ListerCommentaires' => CommentDAO::ListerCommentairesBillet($id, -1),
+            'texte_zform' => $texte_zform,
+        ]);
+
+    }
+
+    public function editCommentAction($id, Request $request)
     {
         $InfosCommentaire = CommentDAO::InfosCommentaire($id);
         if (!$InfosCommentaire) {
@@ -347,7 +399,7 @@ class DefaultController extends Controller
             throw new AccessDeniedHttpException();
         }
 
-        if (!empty($_POST['submit'])) {
+        if ($request->isMethod('POST')) {
             // On a envoyé le nouveau commentaire.
             CommentDAO::EditerCommentaire($id, $_SESSION['id'], $_POST['texte']);
 
@@ -365,6 +417,78 @@ class DefaultController extends Controller
 
         return $this->render('ZcoBlogBundle::editComment.html.php', [
             'InfosCommentaire' => $InfosCommentaire,
+        ]);
+    }
+
+    public function editAuthorAction($id, $authorId, Request $request)
+    {
+        $Auteurs = BlogDAO::InfosBillet($id);
+        if (!$Auteurs) {
+            throw new NotFoundHttpException();
+        }
+        $InfosBillet = $Auteurs[0];
+        $credentials = new BlogCredentials($Auteurs, $InfosBillet);
+        if (!$credentials->isOwner() && !verifier('blog_toujours_createur')) {
+            throw new AccessDeniedHttpException;
+        }
+        $url = $this->generateUrl('zco_blog_manage', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]);
+
+        if ($request->isMethod('POST')) {
+            $InfosUtilisateur = UserDAO::InfosUtilisateur($_POST['pseudo']);
+            if (!$InfosUtilisateur) {
+                return redirect('Ce membre n\'existe pas.', 'admin-billet-' . $_GET['id'] . '.html', MSG_ERROR);
+            }
+            BlogDAO::EditerAuteur($authorId, $id, $InfosUtilisateur['utilisateur_id'], $_POST['statut']);
+
+            return redirect('L\'auteur a bien été modifié.', $url);
+        }
+
+        $InfosUtilisateur = UserDAO::InfosUtilisateur($authorId);
+        foreach ($Auteurs as $a) {
+            if ($a['utilisateur_id'] == $authorId)
+                $InfosUtilisateur['auteur_statut'] = $a['auteur_statut'];
+        }
+
+        \Page::$titre = htmlspecialchars($InfosBillet['version_titre']) . ' - Modifier un auteur';
+        fil_ariane($InfosBillet['blog_id_categorie'], [
+            htmlspecialchars($InfosBillet['version_titre']) => $url,
+            'Modifier un auteur'
+        ]);
+
+        return $this->render('ZcoBlogBundle::editerAuteur.html.php', [
+            'InfosBillet' => $InfosBillet,
+            'InfosUtilisateur' => $InfosUtilisateur,
+        ]);
+    }
+
+    public function deleteAuthorAction($id, $authorId, Request $request)
+    {
+        $Auteurs = BlogDAO::InfosBillet($id);
+        if (!$Auteurs) {
+            throw new NotFoundHttpException();
+        }
+        $InfosBillet = $Auteurs[0];
+        $credentials = new BlogCredentials($Auteurs, $InfosBillet);
+        if (!$credentials->isOwner() && !verifier('blog_toujours_createur')) {
+            throw new AccessDeniedHttpException;
+        }
+        $url = $this->generateUrl('zco_blog_manage', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]);
+
+        if ($request->isMethod('POST')) {
+            BlogDAO::SupprimerAuteur($authorId, $id);
+            return redirect('L\'auteur a bien été supprimé.', $url);
+        }
+
+        $InfosUtilisateur = UserDAO::InfosUtilisateur($authorId);
+        \Page::$titre = htmlspecialchars($InfosBillet['version_titre']) . ' - Supprimer un auteur';
+        fil_ariane($InfosBillet['blog_id_categorie'], [
+            htmlspecialchars($InfosBillet['version_titre']) => $url,
+            'Supprimer un auteur'
+        ]);
+
+        return $this->render('ZcoBlogBundle::supprimerAuteur.html.php', [
+            'InfosBillet' => $InfosBillet,
+            'InfosUtilisateur' => $InfosUtilisateur,
         ]);
     }
 
@@ -524,5 +648,74 @@ class DefaultController extends Controller
         return $this->render('ZcoBlogBundle::supprimer.html.php', [
             'InfosBillet' => $InfosBillet,
         ]);
+    }
+
+    public function compareAction($from, $to)
+    {
+        $infos_new = BlogDAO::InfosVersion($from);
+        $infos_old = BlogDAO::InfosVersion($to);
+
+        if (empty($infos_new) || empty($infos_old)) {
+            throw new NotFoundHttpException();
+        }
+        if ($infos_new['version_id_billet'] != $infos_old['version_id_billet']) {
+            throw new NotFoundHttpException();
+        }
+
+        $Auteurs = BlogDAO::InfosBillet($infos_new['version_id_billet']);
+        if (!$Auteurs) {
+            throw new NotFoundHttpException();
+        }
+        $InfosBillet = $Auteurs[0];
+        $credentials = new BlogCredentials($Auteurs, $InfosBillet);
+        if (!$credentials->canView() && !$credentials->isAllowed()) {
+            throw new AccessDeniedHttpException();
+        }
+
+        $texte_new = $infos_new['version_texte'];
+        $texte_old = $infos_old['version_texte'];
+        $intro_new = $infos_new['version_intro'];
+        $intro_old = $infos_old['version_intro'];
+
+        $diff_intro = $this->diff($intro_old, $intro_new);
+        $diff_texte = $this->diff($texte_old, $texte_new);
+
+        fil_ariane($InfosBillet['cat_id'], [
+            htmlspecialchars($InfosBillet['version_titre']) => $this->generateUrl('zco_blog_manage', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]),
+            'Historique des versions' => $this->generateUrl('zco_blog_history', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]),
+            'Comparaison',
+        ]);
+        \Page::$titre = htmlspecialchars($InfosBillet['version_titre']) . ' - Historique des versions';
+        $this->get('zco_core.resource_manager')->requireResource(
+            '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css'
+        );
+
+        return $this->render('ZcoBlogBundle::comparaison.html.php', [
+            'infos_old' => $infos_old,
+            'infos_new' => $infos_new,
+            'diff_intro' => $diff_intro,
+            'diff_texte' => $diff_texte,
+        ]);
+    }
+
+    /**
+     * Réalise un diff entre deux chaines de caractères.
+     *
+     * @param string $old L'ancienne chaine de caractères.
+     * @param string $new La nouvelle chaine de caractères.
+     * @return string
+     */
+    private function diff($old, $new)
+    {
+        include_once(BASEPATH . '/lib/diff/diff.php');
+        include_once(BASEPATH . '/lib/diff/htmlformatter.php');
+
+        $old = explode("\n", strip_tags($old));
+        $new = explode("\n", strip_tags($new));
+
+        $diff = new \Diff($old, $new);
+        $formatter = new \HTMLDiffFormatter();
+
+        return $formatter->format($diff);
     }
 }

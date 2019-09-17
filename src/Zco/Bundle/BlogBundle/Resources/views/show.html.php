@@ -58,7 +58,7 @@
 
 <p class="reponse_ajout_sujet">
 	<?php if(verifier('connecte')){ ?>
-	<a href="ajouter-commentaire-<?php echo $InfosBillet['blog_id']; ?>.html" title="Ajouter un commentaire">
+	<a href="<?php echo $view['router']->path('zco_blog_newComment', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]) ?>" title="Ajouter un commentaire">
 		<img src="/bundles/zcoforum/img/repondre.png" alt="Ajouter un commentaire" />
 	</a>
 	<?php } ?>
@@ -101,7 +101,7 @@
 
 				Ajouté <?php echo dateformat($valeur['commentaire_date'], MINUSCULE); ?>
 				<?php if(verifier('connecte')){ ?>
-				<a href="ajouter-commentaire-<?php echo $InfosBillet['blog_id']; ?>-<?php echo $valeur['commentaire_id']; ?>.html"><img src="/bundles/zcoforum/img/citer.png" alt="Citer" title="Citer" /></a>
+				<a href="<?php echo $view['router']->path('zco_blog_newComment', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre']), 'c' => $valeur['commentaire_id']]) ?>"><img src="/bundles/zcoforum/img/citer.png" alt="Citer" title="Citer" /></a>
 				<?php }
 				if(($valeur['id_auteur'] == $_SESSION['id'] && verifier('blog_editer_ses_commentaires')) || verifier('blog_editer_commentaires')){ ?>
 				<a href="<?php echo $view['router']->path('zco_blog_editComment', ['id' => $valeur['commentaire_id']]) ?>" title="Modifier ce commentaire">
@@ -162,13 +162,17 @@
 
 <?php } else{	?>
 Aucun commentaire n'a encore été déposé sur ce billet.
-<?php if(verifier('connecte')) echo '<a href="ajouter-commentaire-'.$InfosBillet['blog_id'].'.html">Soyez le premier à en déposer un !</a>'; ?>
+<?php if(verifier('connecte')){ ?>
+    <a href="<?php echo $view['router']->path('zco_blog_newComment', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]) ?>">
+        Soyez le premier à en déposer un !
+    </a>
+<?php } ?>
 <?php }	?>
 
 <?php if (count($ListerCommentaires) > 0){ ?>
 <p class="reponse_ajout_sujet">
 	<?php if(verifier('connecte')){ ?>
-	<a href="ajouter-commentaire-<?php echo $InfosBillet['blog_id']; ?>.html" title="Ajouter un commentaire">
+	<a href="<?php echo $view['router']->path('zco_blog_newComment', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]) ?>" title="Ajouter un commentaire">
 		<img src="/bundles/zcoforum/img/repondre.png" alt="Ajouter un commentaire" />
 	</a>
 	<?php } ?>
