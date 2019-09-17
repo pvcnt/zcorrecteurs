@@ -23,7 +23,7 @@
  * @property boolean $disponible_ciblage
  * @property boolean $ciblage_actions
  * @property boolean $cat_archive
- * @property Doctrine_Collection $ForumSujet
+
  * @property Doctrine_Collection $Quiz
  * 
  * @package    ##PACKAGE##
@@ -92,9 +92,6 @@ abstract class BaseCategorie extends Doctrine_Record
     public function setUp()
     {
         parent::setUp();
-        $this->hasMany('ForumSujet', array(
-             'local' => 'cat_id',
-             'foreign' => 'sujet_forum_id'));
 
         $this->hasMany('Quiz', array(
              'local' => 'cat_id',

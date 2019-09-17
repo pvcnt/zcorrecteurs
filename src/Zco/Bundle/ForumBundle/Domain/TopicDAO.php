@@ -38,7 +38,7 @@ class TopicDAO
         $dbh = \Doctrine_Manager::connection()->getDbh();
 
         $stmt = $dbh->prepare("
-	SELECT sujet_id, sujet_titre, sujet_sous_titre, sujet_premier_message, sujet_dernier_message, sujet_auteur, sujet_ferme, sujet_annonce, sujet_sondage, sujet_resolu, sujet_corbeille, sujet_coup_coeur, " .
+	SELECT sujet_id, sujet_titre, sujet_sous_titre, sujet_premier_message, sujet_dernier_message, sujet_auteur, sujet_ferme, sujet_annonce, sujet_sondage, sujet_resolu, sujet_corbeille, " .
             "sondage_question, sondage_ferme, sujet_forum_id, utilisateur_sexe," .
             "COALESCE(Ma.utilisateur_pseudo, 'Anonyme') AS sujet_auteur_pseudo, Ma.utilisateur_id_groupe AS sujet_auteur_groupe, " .
             "COUNT(*) AS nombre_de_messages, " .
@@ -428,46 +428,6 @@ class TopicDAO
             $stmt->bindParam(':sujet_id', $sujet_id);
             $stmt->execute();
         }
-    }
-
-    public static function ChangerCoupCoeur($sujet_id, $type_actuel)
-    {
-        $dbh = \Doctrine_Manager::connection()->getDbh();
-        if ($type_actuel) {
-            //S'il est en coup de coeur, on le retire
-            $stmt = $dbh->prepare("UPDATE zcov2_forum_sujets
-		SET sujet_coup_coeur = 0
-		WHERE sujet_id = :sujet_id");
-            $stmt->bindParam(':sujet_id', $sujet_id);
-
-            $stmt->execute();
-
-        } else {
-            //S'il n'est pas en coup de coeur, on l'y met
-            $stmt = $dbh->prepare("UPDATE zcov2_forum_sujets
-		SET sujet_coup_coeur = 1
-		WHERE sujet_id = :sujet_id");
-            $stmt->bindParam(':sujet_id', $sujet_id);
-
-            $stmt->execute();
-
-        }
-    }
-
-    /**
-     * Retourne la liste des sujets en coup de coeur.
-     * @author Barbatos
-     * @return array
-     */
-    public static function ListerSujetsCoupsCoeur()
-    {
-        $dbh = \Doctrine_Manager::connection()->getDbh();
-
-        $stmt = $dbh->prepare("SELECT sujet_id, sujet_titre, sujet_auteur, sujet_coup_coeur, sujet_reponses
-	FROM zcov2_forum_sujets
-	WHERE sujet_coup_coeur = 1");
-        $stmt->execute();
-        return $stmt->fetchAll();
     }
 
     /**

@@ -31,7 +31,6 @@ groupes_gerer
 groupes_changer_membre
 cats_editer
 voir_sujets
-signaler_sujets
 creer_sujets
 repondre_sujets
 resolu_ses_sujets
@@ -47,11 +46,7 @@ suppr_sujets
 editer_messages_autres
 masquer_avis_edition
 suppr_messages
-voir_alertes
-diviser_sujets
-fusionner_sujets
 voir_nb_messages
-mettre_sujets_coup_coeur
 droits_gerer
 suppr_ses_messages
 editer_ses_sujets

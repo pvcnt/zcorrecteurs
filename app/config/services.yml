@@ -33,10 +33,6 @@ services:
     tags:
     - { name: kernel.event_subscriber }
 
-  Zco\Bundle\ForumBundle\Admin\ForumAlertsPendingTask:
-    tags:
-    - { name: zco.admin_task }
-
   zco.repository.quotes:
     class: Zco\Bundle\ContentBundle\Domain\QuoteRepository
     public: true

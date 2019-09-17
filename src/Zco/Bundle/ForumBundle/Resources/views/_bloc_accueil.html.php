@@ -34,18 +34,5 @@
 		}
 		echo '</ul></li>';
 	}
-
-	if(!empty($StatistiquesForum['topics_coup_coeur']))
-	{
-		echo '<li>Sujets coup de c&oelig;ur<ul class="heart">';
-		foreach($StatistiquesForum['topics_coup_coeur'] as $s)
-		{
-			echo '<li>';
-			if(!empty($s['lunonlu_message_id']) && $s['lunonlu_message_id'] != $s['sujet_dernier_message'])
-				if (verifier('connecte')) echo '<a href="/forum/sujet-'.$s['sujet_id'].'-'.$s['lunonlu_message_id'].'-'.rewrite($s['sujet_titre']).'.html"><img src="/bundles/zcoforum/img/fleche.png" title="Aller au dernier message lu" alt="Dernier message lu" /></a>';
-			echo '<a href="/forum/sujet-'.$s['sujet_id'].'-'.rewrite($s['sujet_titre']).'.html" title="Forum &laquo; '.htmlspecialchars($s['cat_nom']).' &raquo;">'.htmlspecialchars($s['sujet_titre']).'</a></li>';
-		}
-		echo '</ul></li>';
-	}
 	?>
 </ul>

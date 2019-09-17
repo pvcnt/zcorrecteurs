@@ -82,39 +82,12 @@ $view->extend('::layouts/default.html.php') ?>
 		<img src="/bundles/zcoforum/img/nouveau.png" alt="Nouveau sujet" title="Nouveau sujet" />
 	</a>
 </p>
-<?php
-}
-if($action_etendue_a_plusieurs_messages_actif AND $ListerSujets)
-{
-	$colspan = 8;
-}
-else
-{
-	$colspan = 7;
-}
+<?php } ?>
 
-if($action_etendue_a_plusieurs_messages_actif AND $ListerSujets)
-{
-?>
-	<form name="action_etendue" id="action_etendue" action="" method="post">
-<?php
-}
-
-if($action_etendue_a_plusieurs_messages_actif)
-{
-?>
-	<table class="liste_cat" onclick="InverserEtat(event);" onmouseover="InverserEtat(event);" onmouseout="InverserEtat(event);">
-<?php
-}
-else
-{
-?>
 	<table class="liste_cat">
-<?php
-}
-?>	<thead>
+	<thead>
 		<tr>
-			<td colspan="<?php echo $colspan;?>">Page :
+			<td colspan="7">Page :
 			<?php
 			foreach($tableau_pages as $element)
 			{
@@ -131,14 +104,6 @@ else
 			<th class="forum_colonne_createur centre">Créateur</th>
 			<th class="forum_colonne_reponses centre">Réponses</th>
 			<th class="forum_colonne_dernier_msg centre">Dernier message</th>
-			<?php
-				if($action_etendue_a_plusieurs_messages_actif AND $ListerSujets)
-				{
-				?>
-					<th> </th>
-				<?php
-				}
-			?>
 		</tr>
 	</thead>
 
@@ -244,13 +209,6 @@ else
 						<img src="/pix.gif" class="fff accept" title="Résolu" alt="Résolu" />
 						<?php
 					}
-					//Affichage ou non du logo coup de coeur
-					if($valeur['sujet_coup_coeur'])
-					{
-						?>
-						<img src="/pix.gif" class="fff heart" title="Sujet coup de c&oelig;ur" alt="Coup de c&oelig;ur" />
-						<?php
-					}
 					//Affichage ou non du logo favori
 					if($valeur['lunonlu_favori'])
 					{
@@ -318,15 +276,6 @@ else
 					}
 					?>
 				</td>
-
-				<?php
-				if($action_etendue_a_plusieurs_messages_actif)
-				{
-				?>
-					<td class="centre"><input type="checkbox" name="sujet[<?php echo $valeur['sujet_id']; ?>]" id="sujet[<?php echo $valeur['sujet_id']; ?>]" onclick="ColorerLigneOncheck(event)"/></td>
-				<?php
-				}
-				?>
 			</tr>
 		<?php
 		}
@@ -356,12 +305,6 @@ else
 	?>
 	</tbody>
 </table>
-<?php
-if($action_etendue_a_plusieurs_messages_actif AND $ListerSujets)
-{
-	include(__DIR__.'/action_etendue_plusieurs_sujets.html.php');
-	echo '</form>';
-} ?>
 
 <?php echo $SautRapide ?>
 

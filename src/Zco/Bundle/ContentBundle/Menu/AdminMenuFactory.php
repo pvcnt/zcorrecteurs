@@ -57,19 +57,6 @@ final class AdminMenuFactory
                 'uri' => $this->router->generate('zco_quote_index'),
             ]);
         }
-        if (verifier('voir_alertes')) {
-            $count = $this->admin->get(ForumAlertsPendingTask::class);
-            $menu->getChild('Forums')->addChild('Voir les alertes non résolues', [
-                'label' => 'Il y a ' . $count . ' alerte non résolue' . pluriel($count),
-                'uri' => '/forum/alertes.html',
-                'count' => $count,
-            ]);
-        }
-        if (verifier('mettre_sujets_coup_coeur')) {
-            $menu->getChild('Forums')->addChild('Gérer les sujets en coup de cœur', [
-                'uri' => '/forum/sujets-coups-coeur.html',
-            ]);
-        }
         if (verifier('voir_stats_generales')) {
             $section = $menu->getChild('Statistiques générales');
             $section->addChild('Statistiques générales (GA)', array(

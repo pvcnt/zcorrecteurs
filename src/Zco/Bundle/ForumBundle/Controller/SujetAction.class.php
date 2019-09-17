@@ -174,17 +174,12 @@ class SujetAction extends ForumActions
 				)
 				OR verifier('resolu_sujets', $InfosSujet['sujet_forum_id'])
 			)
-			OR verifier('voir_alertes', $InfosSujet['sujet_forum_id'])
-			OR verifier('signaler_sujets', $InfosSujet['sujet_forum_id'])
 			OR verifier('epingler_sujets', $InfosSujet['sujet_forum_id'])
 			OR verifier('fermer_sujets', $InfosSujet['sujet_forum_id'])
 			OR verifier('editer_sujets', $InfosSujet['sujet_forum_id'])
-			OR verifier('mettre_sujets_coup_coeur')
 			OR verifier('deplacer_sujets', $InfosSujet['sujet_forum_id'])
 			OR verifier('corbeille_sujets', $InfosSujet['sujet_forum_id'])
 			OR verifier('suppr_sujets', $InfosSujet['sujet_forum_id'])
-			OR verifier('diviser_sujets', $InfosSujet['sujet_forum_id'])
-			OR verifier('fusionner_sujets', $InfosSujet['sujet_forum_id'])
 		)
 		{
 			$afficher_options = true;

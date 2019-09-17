@@ -140,13 +140,6 @@
 						<img src="/pix.gif" class="fff accept" title="Résolu" alt="Résolu" />
 						<?php
 					}
-					//Affichage ou non du logo coup de coeur
-					if($valeur['sujet_coup_coeur'])
-					{
-						?>
-						<img src="/pix.gif" class="fff heart" title="Sujet coup de c&oelig;ur" alt="Coup de c&oelig;ur" />
-						<?php
-					}
 					//Affichage ou non du logo favori
 					if($valeur['lunonlu_favori'])
 					{

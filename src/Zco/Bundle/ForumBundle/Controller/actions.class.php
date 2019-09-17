@@ -54,49 +54,6 @@ class ForumActions extends Controller
 		return $response;
 	}
 
-	public function executeAjaxDeplacementMassif()
-	{
-		if(verifier('deplacer_sujets', $_GET['f']))
-		{
-			$CategoriesForums = ForumDAO::ListerCategoriesForum();
-			if($CategoriesForums)
-			{
-				$ret = '<select name="forum_cible">';
-				$i=0;
-				foreach($CategoriesForums as $clef => $valeur)
-				{
-					if($valeur['cat_niveau'] == 2 && $_GET['f'] != $valeur['cat_id'])
-					{
-						//Dans ce if on affiche que les catégories
-						if($clef > 1)
-						{
-							$ret .= '</optgroup>';
-						}
-						$categorie_deplacement = $valeur['cat_id'];
-						$ret .= '<optgroup label="'.htmlspecialchars($valeur['cat_nom']).'">';
-					}
-					//Ici on affiche que les forums
-					else
-					{
-						$ret .= '<option value="'.$valeur['cat_id'].'">'.htmlspecialchars($valeur['cat_nom']).'</option>';
-					}
-					$i++;
-				}
-				$ret .= '</optgroup></select>';
-			}
-			else
-			{
-				$ret = 'Ce forum n\'existe pas.';
-			}
-		}
-		else
-		{
-			$ret = 'Vous n\'avez pas les droits requis ou un paramètre a été omis.';
-		}
-        
-		return new Response($ret);
-	}
-
 	public function executeAjaxDeplacerSujet()
 	{
 		if(!empty($_POST['fofo_actuel']) AND is_numeric($_POST['fofo_actuel']) AND verifier('deplacer_sujets', $_POST['fofo_actuel']) AND !empty($_POST['id']) AND is_numeric($_POST['id']))

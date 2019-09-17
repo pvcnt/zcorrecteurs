@@ -85,30 +85,6 @@ if(verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']))
 		}
 		//FIN sujet résolu
 
-		//DÉBUT alerter les modos
-		if(verifier('signaler_sujets', $InfosSujet['sujet_forum_id']))
-		{
-		?>
-			<li>
-				<img src="/pix.gif" class="fff error" alt="Alerter" title="Alerter les modérateurs" />
-				<a href="alerter-<?php echo $_GET['id']; ?>.html">
-					Alerter les modérateurs
-				</a>
-			</li>
-		<?php
-		}
-		//FIN alerter les modos
-
-		//DÉBUT voir les alertes
-		if(verifier('voir_alertes', $InfosSujet['sujet_forum_id']))
-		{
-		?>
-			<li><span><img src="/pix.gif" class="fff error" alt="Alertes" title="Voir les alertes" /></span>
-			<a href="alertes-<?php echo $_GET['id']; ?>.html">Voir la liste des alertes</a></li>
-		<?php
-		}
-		//FIN voir les alertes
-
 		//DÉBUT marquer non-lu
 		if(verifier('connecte'))
 		{
@@ -122,26 +98,6 @@ if(verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']))
 		<?php
 		}
 		//FIN marquer non-lu
-
-		//DÉBUT coup de coeur
-		if(verifier('mettre_sujets_coup_coeur'))
-		{
-		?>
-			<li>
-				<img src="/pix.gif" class="fff heart" alt="" />
-				<?php if($InfosSujet['sujet_coup_coeur']){ ?>
-				<a href="changer-coup-coeur-<?php echo $_GET['id']; ?>.html?token=<?php echo $_SESSION['token']; ?>">
-					Retirer des coups de cœur
-				</a>
-				<?php } else{ ?>
-				<a href="changer-coup-coeur-<?php echo $_GET['id']; ?>.html?token=<?php echo $_SESSION['token']; ?>">
-					Mettre en coup de cœur
-				</a>
-				<?php } ?>
-			</li>
-		<?php
-		}
-		//FIN mettre coup de coeur
 
 		//DÉBUT favori
 		if(verifier('mettre_sujet_favori'))
@@ -166,7 +122,7 @@ if(verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']))
 	</ul>
 </fieldset><br />
 
-<?php if(verifier('epingler_sujets', $InfosSujet['sujet_forum_id']) || verifier('fermer_sujets', $InfosSujet['sujet_forum_id']) || verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']) || verifier('corbeille_sujets', $InfosSujet['sujet_forum_id']) || verifier('suppr_sujets', $InfosSujet['sujet_forum_id']) || verifier('diviser_sujets', $InfosSujet['sujet_forum_id']) || verifier('fusionner_sujets', $InfosSujet['sujet_forum_id'])){ ?>
+<?php if(verifier('epingler_sujets', $InfosSujet['sujet_forum_id']) || verifier('fermer_sujets', $InfosSujet['sujet_forum_id']) || verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']) || verifier('corbeille_sujets', $InfosSujet['sujet_forum_id']) || verifier('suppr_sujets', $InfosSujet['sujet_forum_id'])){ ?>
 <fieldset>
 	<legend>Options de modération</legend>
 	<ul>
@@ -218,28 +174,6 @@ if(verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']))
 			}
 		}
 		//FIN fermer/ouvrir sujet
-
-
-		//DÉBUT diviser sujet
-		if(verifier('diviser_sujets', $InfosSujet['sujet_forum_id']))
-		{
-			?>
-			<li><span><img src="/pix.gif" class="fff arrow_divide" alt="Diviser" title="Diviser le sujet" /></span>
-			<a href="<?php echo 'diviser-'.$_GET['id']; ?>.html">Diviser le sujet</a></li>
-			<?php
-		}
-		//FIN diviser sujet
-
-
-		//DÉBUT fusionner sujet
-		if(verifier('fusionner_sujets', $InfosSujet['sujet_forum_id']))
-		{
-			?>
-			<li><span><img src="/pix.gif" class="fff arrow_merge" alt="Fusionner" title="Fusionner le sujet" /></span>
-			<a href="<?php echo 'fusionner-'.$_GET['id']; ?>.html">Fusionner le sujet</a></li>
-			<?php
-		}
-		//FIN fusionner sujet
 
 		//DÉBUT déplacer sujet
 		if(!$InfosSujet['sujet_corbeille'] AND verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']))

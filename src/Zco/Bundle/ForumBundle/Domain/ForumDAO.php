@@ -219,9 +219,6 @@ final class ForumDAO
             if (isset($_GET['favori'])) {
                 $add .= ' AND lunonlu_favori = ' . ($_GET['favori'] ? 1 : 0);
             }
-            if (isset($_GET['coeur'])) {
-                $add .= ' AND sujet_coup_coeur = ' . ($_GET['coeur'] ? 1 : 0);
-            }
             if (isset($_GET['epingle'])) {
                 $add .= ' AND sujet_annonce = ' . ($_GET['epingle'] ? 1 : 0);
             }
@@ -265,9 +262,6 @@ final class ForumDAO
         if (isset($_GET['favori'])) {
             $add .= ' AND lunonlu_favori = ' . ($_GET['favori'] ? 1 : 0);
         }
-        if (isset($_GET['coeur'])) {
-            $add .= ' AND sujet_coup_coeur = ' . ($_GET['coeur'] ? 1 : 0);
-        }
         if (isset($_GET['epingle'])) {
             $add .= ' AND sujet_annonce = ' . ($_GET['epingle'] ? 1 : 0);
         }
@@ -292,7 +286,7 @@ final class ForumDAO
         array_unshift($groupes, $_SESSION['groupe']);
         $groupes = implode(',', $groupes);
         $stmt = $dbh->prepare('SELECT sujet_id, sujet_titre, sujet_sous_titre, ' .
-            'sujet_coup_coeur, sujet_reponses, sujet_auteur, sujet_forum_id, ' .
+            'sujet_reponses, sujet_auteur, sujet_forum_id, ' .
             'Ma.utilisateur_id_groupe AS sujet_auteur_groupe, ' .
             'Ma.utilisateur_id AS sujet_auteur_pseudo_existe, ' .
             'Mb.utilisateur_id AS sujet_dernier_message_pseudo_existe, ' .
@@ -551,62 +545,8 @@ final class ForumDAO
             $last_topics[$msg['sujet_id']] = $msg;
         unset($messages);
 
-
-        //Topics coup de coeur
-        //--- Récupérations
-        $stmt = $dbh->prepare("SELECT DISTINCT cat_nom, sujet_id, sujet_titre,
-		sujet_dernier_message
-		FROM zcov2_forum_sujets
-		LEFT JOIN zcov2_categories ON sujet_forum_id = cat_id
-		LEFT JOIN zcov2_droits ON droit_nom = 'voir_sujets'
-		LEFT JOIN zcov2_groupes_droits ON gd_id_droit = droit_id AND gd_id_groupe = :id_grp AND gd_id_categorie = cat_id
-		WHERE sujet_corbeille = 0 AND sujet_coup_coeur = 1 AND gd_valeur = 1
-		ORDER BY RAND()
-		LIMIT 2");
-        $stmt->bindParam(':id_grp', $_SESSION['groupe']);
-        $stmt->execute();
-
-        $messages = $stmt->fetchAll();
-        $coup_coeur = array();
-
-        foreach ($messages as $msg)
-            $coup_coeur[$msg['sujet_id']] = $msg;
-        unset($messages);
-
-        // Lu - Non lu pour les requêtes du dessus
-        if (verifier('connecte')) {
-            $sids = array_merge(
-                array_keys($last_posts),
-                array_keys($last_topics),
-                array_keys($coup_coeur));
-
-            if (!empty($sids)) {
-                $stmt = $dbh->prepare('SELECT lunonlu_sujet_id, '
-                    . 'lunonlu_message_id, lunonlu_participe '
-                    . 'FROM zcov2_forum_lunonlu '
-                    . 'WHERE lunonlu_utilisateur_id = :id_user '
-                    . ' AND lunonlu_sujet_id IN('
-                    . implode(', ', $sids)
-                    . ')');
-                $stmt->bindParam(':id_user', $_SESSION['id']);
-                $stmt->execute();
-                while ($d = $stmt->fetch()) {
-                    if (isset($last_posts[$d['lunonlu_sujet_id']]))
-                        $last_posts[$d['lunonlu_sujet_id']] = array_merge(
-                            $last_posts[$d['lunonlu_sujet_id']], $d);
-                    if (isset($last_topics[$d['lunonlu_sujet_id']]))
-                        $last_topics[$d['lunonlu_sujet_id']] = array_merge(
-                            $last_topics[$d['lunonlu_sujet_id']], $d);
-                    if (isset($coup_coeur[$d['lunonlu_sujet_id']]))
-                        $coup_coeur[$d['lunonlu_sujet_id']] = array_merge(
-                            $coup_coeur[$d['lunonlu_sujet_id']], $d);
-                }
-            }
-        }
-
         $retour['last_posts'] = $last_posts;
         $retour['last_topics'] = $last_topics;
-        $retour['topics_coup_coeur'] = $coup_coeur;
 
         return $retour;
     }

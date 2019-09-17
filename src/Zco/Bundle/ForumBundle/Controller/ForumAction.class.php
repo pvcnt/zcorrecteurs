@@ -293,13 +293,6 @@ class ForumAction extends ForumActions
             }
 
             $SautRapide = ForumDAO::RecupererSautRapide($_GET['id']);
-            $action_etendue_a_plusieurs_messages_actif =
-                verifier('connecte') ||
-                verifier('fermer_sujets', $_GET['id']) ||
-                verifier('epingler_sujets', $_GET['id']) ||
-                verifier('resolu_sujets', $_GET['id']) ||
-                verifier('corbeille_sujets', $_GET['id']) ||
-                verifier('suppr_sujets', $_GET['id']);
 
             // Listage des forums fils s'il y en a
             if ($InfosForum['cat_droite'] - $InfosForum['cat_gauche'] != 1) {
@@ -349,7 +342,6 @@ class ForumAction extends ForumActions
                 $parent = null;
 
             // Inclusion de la vue
-            $msgFil = '';
             if (!empty($_GET['trash']) && empty($_GET['archives'])) {
                 $msgFil = 'Liste des sujets dans la corbeille';
             } else if (empty($_GET['trash']) && !empty($_GET['archives'])) {
@@ -373,7 +365,6 @@ class ForumAction extends ForumActions
                 'ListerSujets' => $ListerSujets,
                 'Pages' => $Pages,
                 'SautRapide' => $SautRapide,
-                'action_etendue_a_plusieurs_messages_actif' => $action_etendue_a_plusieurs_messages_actif,
                 'ListerUneCategorie' => isset($ListerUneCategorie) ? $ListerUneCategorie : null,
                 'LuForum' => $LuForum,
                 'Parent' => $parent,

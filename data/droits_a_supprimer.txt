@@ -32,3 +32,8 @@ blog_poster_commentaires_fermes
 blog_choisir_etat
 blog_devalider
 blog_editer_valide
+mettre_sujets_coup_coeur
+fusionner_sujets
+diviser_sujets
+voir_alertes
+signaler_sujets
