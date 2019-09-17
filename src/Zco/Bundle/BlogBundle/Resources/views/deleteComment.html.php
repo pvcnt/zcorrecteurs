@@ -16,7 +16,7 @@
 
 		<p class="centre">
 			<input type="submit" name="confirmer" value="Oui" />
-            <a href="billet-<?php echo $InfosBillet['blog_id'] . '-' . rewrite($InfosBillet['version_titre']) ?>.html'">Non</a>
+            <a href="<?php echo $view['router']->path('zco_blog_show', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]) ?>">Non</a>
 		</p>
 	</form>
 </fieldset>

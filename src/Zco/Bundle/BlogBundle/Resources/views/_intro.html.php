@@ -1,6 +1,6 @@
 <div class="blog">
 	<h2 class="title">
-		<a href="billet-<?php echo $InfosBillet['blog_id']; ?>-<?php echo rewrite($InfosBillet['version_titre']); ?>.html">
+		<a href="<?php echo $view['router']->path('zco_blog_show', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]) ?>">
 			<?php echo htmlspecialchars($InfosBillet['version_titre']); ?>
 		</a>
 	</h2>
@@ -10,15 +10,15 @@
 			<?php if((in_array($InfosBillet['blog_etat'], array(BLOG_BROUILLON, BLOG_REFUSE)) && ($redacteur == true || verifier('blog_editer_brouillons'))) ||
 			($InfosBillet['blog_etat'] == BLOG_PREPARATION && verifier('blog_editer_preparation')) ||
 			($InfosBillet['blog_etat'] == BLOG_VALIDE && verifier('blog_editer_valide'))){ ?>
-			<a href="admin-billet-<?php echo $InfosBillet['blog_id']; ?>.html" title="Modifier le billet">
+			<a href="<?php echo $view['router']->path('zco_blog_manage', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]) ?>" title="Modifier le billet">
 				<img src="/img/editer.png" alt="Modifier" />
 			</a>
-			<?php } if(verifier('blog_devalider') && in_array($InfosBillet['blog_etat'], array(BLOG_VALIDE, BLOG_PREPARATION))){ ?>
-			<a href="devalider-<?php echo $InfosBillet['blog_id']; ?>.html" title="Mettre le billet hors ligne">
+			<?php } if(verifier('blog_valider') && in_array($InfosBillet['blog_etat'], array(BLOG_VALIDE, BLOG_PREPARATION))){ ?>
+			<a href="<?php echo $view['router']->path('zco_blog_unpublish', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]) ?>" title="Mettre le billet hors ligne">
 				<img src="/bundles/zcoblog/img/refuser.png" alt="Dévalider" />
 			</a>
-			<?php } if(verifier('blog_supprimer')){ ?>
-			<a href="supprimer-<?php echo $InfosBillet['blog_id']; ?>.html" title="Supprimer le billet">
+			<?php } if(verifier('blog_editer_valide')){ ?>
+			<a href="<?php echo $view['router']->path('zco_blog_unpublish', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]) ?>" title="Supprimer le billet">
 				<img src="/img/supprimer.png" alt="Supprimer" />
 			</a>
 			<?php } ?>
@@ -39,24 +39,17 @@
 			<?php } ?>
 
 			<?php echo dateformat($InfosBillet['blog_etat'] == BLOG_VALIDE ? $InfosBillet['blog_date_publication'] : $InfosBillet['blog_date'], MINUSCULE); ?>
-
-			<?php if(!empty($InfosBillet['blog_lien_topic']) && $InfosBillet['blog_commentaires'] == COMMENTAIRES_TOPIC){ ?>
-			— <em><a href="<?php echo htmlspecialchars($InfosBillet['blog_lien_topic']); ?>">
-				Continuer la discussion sur le forum
-			</a></em>
-			<?php } elseif($InfosBillet['blog_commentaires'] == COMMENTAIRES_OK){ ?>
 			— <em>
 				<?php if(!empty($InfosBillet['lunonlu_id_commentaire']) && verifier('connecte')){ ?>
-				<a href="billet-<?php echo $InfosBillet['blog_id']; ?>-<?php echo $InfosBillet['lunonlu_id_commentaire']; ?>-<?php echo rewrite($InfosBillet['version_titre']); ?>.html" title="Aller au dernier message lu">
+				<a href="<?php echo $view['router']->path('zco_blog_show', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre']), 'c' => $InfosBillet['lunonlu_id_commentaire']]) ?>" title="Aller au dernier message lu">
 					<img src="/bundles/zcoforum/img/fleche.png" alt="Dernier message lu" />
 				</a>
 				<?php } ?>
 
-				<a href="billet-<?php echo $InfosBillet['blog_id']; ?>-<?php echo rewrite($InfosBillet['version_titre']); ?>.html#commentaires">
+				<a href="<?php echo $view['router']->path('zco_blog_show', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]) ?>#commentaires">
 					<?php echo $InfosBillet['blog_nb_commentaires']; ?> commentaire<?php echo pluriel($InfosBillet['blog_nb_commentaires']); ?>
 				</a>
 			</em>
-			<?php } ?>
 		</p>
 	</div>
 
@@ -71,7 +64,7 @@
 	</div>
 
 	<div class="forum">
-		<a href="billet-<?php echo $InfosBillet['blog_id']; ?>-<?php echo rewrite($InfosBillet['version_titre']); ?>.html">
+		<a href="<?php echo $view['router']->path('zco_blog_show', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]) ?>">
 			Lire la suite…
 		</a> —
 		<a href="#header">Remonter</a>

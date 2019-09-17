@@ -6,6 +6,48 @@ zco_blog_feed:
   path:   /blog/feed.xml
   defaults:  { _controller: ZcoBlogBundle:Feed:index }
 
+zco_blog_show:
+  path:   /blog/{id}/{slug}
+  defaults:  { _controller: ZcoBlogBundle:Default:show }
+  requirements:
+    id: \d+
+
+zco_blog_manage:
+  path:   /blog/{id}/{slug}/gestion
+  defaults:  { _controller: ZcoBlogBundle:Default:manage }
+  requirements:
+    id: \d+
+
+zco_blog_publish:
+  path:   /blog/{id}/{slug}/valider
+  defaults:  { _controller: ZcoBlogBundle:Default:publish }
+  requirements:
+    id: \d+
+
+zco_blog_unpublish:
+  path:   /blog/{id}/{slug}/devalider
+  defaults:  { _controller: ZcoBlogBundle:Default:unpublish }
+  requirements:
+    id: \d+
+
+zco_blog_history:
+  path:   /blog/{id}/{slug}/versions
+  defaults:  { _controller: ZcoBlogBundle:Default:history }
+  requirements:
+    id: \d+
+
+zco_blog_edit:
+  path:   /blog/{id}/{slug}/modifier
+  defaults:  { _controller: ZcoBlogBundle:Default:edit }
+  requirements:
+    id: \d+
+
+zco_blog_delete:
+  path:   /blog/{id}/{slug}/supprimer
+  defaults:  { _controller: ZcoBlogBundle:Default:delete }
+  requirements:
+    id: \d+
+
 zco_blog_new:
   path:   /blog/ajouter
   defaults:  { _controller: ZcoBlogBundle:Default:new }

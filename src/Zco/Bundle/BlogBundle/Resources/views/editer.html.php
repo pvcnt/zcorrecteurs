@@ -52,7 +52,7 @@
 		<legend>Modifier le corps du billet</legend>
 		<label for="intro">Introduction (obligatoire) : </label>
 		<?php echo $view->render('::zform.html.php', array(
-			'upload_id_formulaire' => $_GET['id'], 
+			'upload_id_formulaire' => $InfosBillet['blog_id'],
 			'upload_utiliser_element' => true, 
 			'id' => 'intro', 
 			'texte' => $InfosBillet['version_intro'],

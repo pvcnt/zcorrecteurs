@@ -27,3 +27,8 @@ dictees_editer_toutes
 voir_sanctions
 sanctionner
 voir_coms_billets_proposes
+blog_choisir_comms
+blog_poster_commentaires_fermes
+blog_choisir_etat
+blog_devalider
+blog_editer_valide

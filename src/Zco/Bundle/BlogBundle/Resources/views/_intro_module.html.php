@@ -1,6 +1,6 @@
 <div class="blog" style="min-height: 130px;">
 	<h5 class="title">
-		<a href="/blog/billet-<?php echo $InfosBillet['blog_id']; ?>-<?php echo rewrite($InfosBillet['version_titre']); ?>.html"
+		<a href="<?php echo $view['router']->path('zco_blog_show', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]) ?>"
 			title="Écrit par <?php foreach($Auteurs as $a) { echo htmlspecialchars($a['utilisateur_pseudo']).', '; } echo dateformat($InfosBillet['blog_etat'] == BLOG_VALIDE ? $InfosBillet['blog_date_publication'] : $InfosBillet['blog_date'], MINUSCULE); ?>">
 				<?php echo htmlspecialchars($InfosBillet['version_titre']); ?>
 			</a>
@@ -17,24 +17,17 @@
 	</div>
 
 	<div class="forum">
-		<a href="/blog/billet-<?php echo $InfosBillet['blog_id']; ?>-<?php echo rewrite($InfosBillet['version_titre']); ?>.html">
+		<a href="<?php echo $view['router']->path('zco_blog_show', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]) ?>">
 			Lire la suite…
-		</a>
-
-		<?php if(!empty($InfosBillet['blog_lien_topic']) && $InfosBillet['blog_commentaires'] == COMMENTAIRES_TOPIC){ ?>
-		—	<a href="<?php echo htmlspecialchars($InfosBillet['blog_lien_topic']); ?>">
-				Continuer la discussion sur le forum
-			</a>
-		<?php } elseif($InfosBillet['blog_commentaires'] == COMMENTAIRES_OK){ ?> —
+		</a> —
 		<?php if(!empty($InfosBillet['lunonlu_id_commentaire']) && verifier('connecte')){ ?>
-		<a href="/blog/billet-<?php echo $InfosBillet['blog_id']; ?>-<?php echo $InfosBillet['lunonlu_id_commentaire']; ?>-<?php echo rewrite($InfosBillet['version_titre']); ?>.html#m<?php echo $InfosBillet['lunonlu_id_commentaire']; ?>" title="Aller au dernier message lu">
+		<a href="<?php echo $view['router']->path('zco_blog_show', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre']), 'c' => $InfosBillet['lunonlu_id_commentaire']]) ?>#m<?php echo $InfosBillet['lunonlu_id_commentaire']; ?>"
+           title="Aller au dernier message lu">
 			<img src="/bundles/zcoforum/img/fleche.png" alt="Dernier message lu" />
 		</a>
 		<?php } ?>
-
-		<a href="/blog/billet-<?php echo $InfosBillet['blog_id']; ?>-<?php echo rewrite($InfosBillet['version_titre']); ?>.html#commentaires">
+		<a href="<?php echo $view['router']->path('zco_blog_show', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]) ?>#commentaires">
 			<?php echo $InfosBillet['blog_nb_commentaires']; ?> commentaire<?php echo pluriel($InfosBillet['blog_nb_commentaires']); ?>
 		</a>
-		<?php } ?>
 	</div>
 </div>

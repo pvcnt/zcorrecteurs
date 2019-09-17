@@ -11,7 +11,7 @@
         Depuis 2008, nous vous proposons sans cesse de nouvelles ressources autour de la
         langue française (articles, quiz, dictées…). Tout comme les corrections (mises en place dès 2006),
         ces services sont gérés par des bénévoles encadrés par
-        <a href="/blog/billet-343-zcorrecteurs-fr-donne-naissance-a-une-association.html">l’association Corrigraphie</a>,
+        <a href="/blog/343/zcorrecteurs-fr-donne-naissance-a-une-association">l’association Corrigraphie</a>,
         fondée en 2011.
     </p>
 

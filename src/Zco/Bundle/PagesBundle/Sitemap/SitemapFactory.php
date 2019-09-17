@@ -50,7 +50,7 @@ final class SitemapFactory
             'priority' => '0.6',
         ]);
         foreach (BlogDAO::ListerBilletsId() as $billet) {
-            $url = URL_SITE . '/blog/billet-' . $billet['blog_id'] . '-' . rewrite($billet['version_titre']) . '.html';
+            $url = $this->generateUrl('zco_blog_show', ['id' => $billet['blog_id'], 'slug' => rewrite($billet['version_titre'])]);
             $links[] = new SitemapLink($url, [
                 'changefreq' => 'weekly',
                 'priority' => '0.7',

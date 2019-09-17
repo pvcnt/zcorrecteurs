@@ -8,45 +8,38 @@
 
 <div class="UI_column_menu">
 	<div class="box">
-		<?php if($verifier_editer == true){ ?>
-		<a href="editer-<?php echo $_GET['id']; ?>.html">
+		<?php if($credentials->canEdit()){ ?>
+		<a href="<?php echo $view['router']->path('zco_blog_edit', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]) ?>">
 			<img src="/img/editer.png" alt="" /> Modifier le contenu de ce billet
 		</a><br /><br />
 		<?php } ?>
 
 		<strong>État actuel : <?php echo mb_strtolower($Etats[$InfosBillet['blog_etat']]); ?></strong><br />
 
-		<?php if(in_array($InfosBillet['blog_etat'], array(BLOG_BROUILLON, BLOG_REFUSE)) && $createur == true){ ?>
-		<a href="proposer-<?php echo $_GET['id']; ?>.html" title="Proposer ce billet à la validation">
-			<img src="/bundles/zcoblog/img/proposer.png" alt="" /> Proposer ce billet
-		</a><br />
-		<?php } ?>
-
-		<?php if(((verifier('blog_choisir_etat') && $autorise == true) || verifier('blog_valider')) && !in_array($InfosBillet['blog_etat'], array(BLOG_VALIDE, BLOG_PROPOSE))){ ?>
-		<a href="valider-<?php echo $InfosBillet['blog_id']; ?>.html" title="Valider ce billet">
+		<?php if(verifier('blog_valider') && !in_array($InfosBillet['blog_etat'], array(BLOG_VALIDE, BLOG_PROPOSE))){ ?>
+		<a href="<?php echo $view['router']->path('zco_blog_publish', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]) ?>" title="Valider ce billet">
 			<img src="/bundles/zcoblog/img/valider.png" alt="" /> Valider ce billet
 		</a><br />
-		<?php } elseif(verifier('blog_devalider') && $InfosBillet['blog_etat'] == BLOG_VALIDE){ ?>
-		<a href="devalider-<?php echo $InfosBillet['blog_id']; ?>.html" title="Dévalider ce billet">
+		<?php } elseif(verifier('blog_valider') && $InfosBillet['blog_etat'] == BLOG_VALIDE){ ?>
+		<a href="<?php echo $view['router']->path('zco_blog_unpublish', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]) ?>" title="Dévalider ce billet">
 			<img src="/bundles/zcoblog/img/refuser.png" alt="" /> Dévalider ce billet
 		</a><br />
 		<?php } ?>
 
-		<?php if((in_array($InfosBillet['blog_etat'], array(BLOG_BROUILLON, BLOG_REFUSE)) && $createur == true) ||
-		verifier('blog_supprimer')){ ?>
-		<a href="supprimer-<?php echo $InfosBillet['blog_id']; ?>.html">
+		<?php if((in_array($InfosBillet['blog_etat'], array(BLOG_BROUILLON, BLOG_REFUSE)) && $credentials->isOwner()) || verifier('blog_editer_valide')){ ?>
+		<a href="<?php echo $view['router']->path('zco_blog_unpublish', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]) ?>">
 			<img src="/img/supprimer.png" alt="" /> Supprimer ce billet
 		</a><br />
 		<?php } ?>
 
 		<br />
-		<a href="billet-<?php echo $_GET['id']; ?>-<?php echo rewrite($InfosBillet['version_titre']); ?>.html">
+		<a href="<?php echo $view['router']->path('zco_blog_show', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]) ?>">
 			<img src="/img/misc/zoom.png" alt="" />
 			Visualiser le billet<br />
 		</a>
 
-		<?php if(verifier('blog_voir_versions') || $redacteur == true){ ?>
-		<a href="versions-<?php echo $_GET['id']; ?>.html">
+		<?php if($credentials->isAllowed()){ ?>
+		<a href="<?php echo $view['router']->path('zco_blog_history', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]) ?>">
 			<img src="/bundles/zcoblog/img/versions.png" alt="" />
 			Voir l'historique des modifications
 		</a>
@@ -61,7 +54,7 @@
 		</div>
 
 		<div class="hidden hr">
-			<?php if($verifier_editer){ ?>
+			<?php if($credentials->canEdit()){ ?>
 			<form method="post" action="">
 				<label for="image" class="nofloat">Changer le logo :</label><br />
 				<input type="text" name="image" id="image" value="<?php echo htmlspecialchars($InfosBillet['blog_image']); ?>" />
@@ -95,7 +88,7 @@
 
 		<div class="hidden">
 			<?php if(verifier('blog_valider')){ ?>
-			<form method="post" action="admin-billet-<?php echo $_GET['id'] ?>.html" id="change_pubdate_form">
+			<form method="post" action="<?php echo $view['router']->path('zco_blog_manage', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]) ?>" id="change_pubdate_form">
 				<label for="date_pub">Choisissez une date de publication :</label>
                 <input type="text" name="date_pub" id="date_pub" value="<?php echo $InfosBillet['blog_date_publication'] ?>" />
                 <?php $view['javelin']->initBehavior('datepicker', ['id' => 'date_pub']) ?>
@@ -122,13 +115,13 @@
 							Ajouté <?php echo dateformat($a['auteur_date'], MINUSCULE); ?>
 						</td>
 						<td><?php echo \Zco\Bundle\BlogBundle\Domain\Author::STATUSES[$a['auteur_statut']]; ?></td>
-						<?php if($createur == true || verifier('blog_toujours_createur')){ ?>
+						<?php if($credentials->isOwner() || verifier('blog_toujours_createur')){ ?>
 						<td class="centre">
-							<a href="editer-auteur-<?php echo $_GET['id']; ?>-<?php echo $a['utilisateur_id']; ?>.html" title="Modifier cet auteur">
+							<a href="editer-auteur-<?php echo $InfosBillet['blog_id'] ?>-<?php echo $a['utilisateur_id']; ?>.html" title="Modifier cet auteur">
 								<img src="/img/editer.png" alt="Modifier" />
 							</a>
 
-							<a href="supprimer-auteur-<?php echo $_GET['id']; ?>-<?php echo $a['utilisateur_id']; ?>.html" title="Retirer cet auteur">
+							<a href="supprimer-auteur-<?php echo $InfosBillet['blog_id'] ?>-<?php echo $a['utilisateur_id']; ?>.html" title="Retirer cet auteur">
 								<img src="/img/supprimer.png" alt="Retirer" />
 							</a>
 						</td>
@@ -138,7 +131,7 @@
 				</tbody>
 			</table>
 
-			<?php if($createur == true || verifier('blog_toujours_createur')){ ?>
+			<?php if($credentials->isOwner() || verifier('blog_toujours_createur')){ ?>
 			<form action="" method="post">
 				<label for="pseudo">Ajouter un auteur : </label>
 				<input type="text" name="pseudo" id="pseudo" />
@@ -163,9 +156,9 @@
 	<?php if(is_null($InfosBillet['blog_url_redirection'])){ ?>
 	<div class="UI_box">
 		<p>
-			<?php if($verifier_editer == true){ ?>
+			<?php if($credentials->canEdit()){ ?>
 			<span class="flot_droite">
-				<a href="editer-<?php echo $_GET['id']; ?>.html#intro" title="Modifier l'introduction">
+				<a href="<?php echo $view['router']->path('zco_blog_edit', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]) ?>#intro" title="Modifier l'introduction">
 					<img src="/img/editer.png" alt="Modifier" />
 				</a>
 			</span>
@@ -181,9 +174,9 @@
 		<br />
 
 		<p>
-			<?php if($verifier_editer == true){ ?>
+			<?php if($credentials->canEdit()){ ?>
 			<span class="flot_droite">
-				<a href="editer-<?php echo $_GET['id']; ?>.html#texte" title="Modifier le corps du billet">
+				<a href="<?php echo $view['router']->path('zco_blog_edit', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]) ?>#texte" title="Modifier le corps du billet">
 					<img src="/img/editer.png" alt="Modifier" />
 				</a>
 			</span>

@@ -3,7 +3,7 @@
 <?php $view['slots']->start('meta') ?>
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:site" content="zcorrecteurs" />
-<meta name="twitter:url" content="<?php echo URL_SITE ?>/blog/billet-<?php echo $InfosBillet['blog_id'] ?>-<?php echo rewrite($InfosBillet['version_titre']) ?>.html" />
+<meta name="twitter:url" content="<?php echo $view['router']->url('zco_blog_show', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]) ?>" />
 <meta name="twitter:description" content="<?php echo htmlspecialchars(strip_tags($InfosBillet['version_intro'])) ?>" />
 <meta name="twitter:title" content="<?php echo htmlspecialchars($InfosBillet['version_titre']) ?>" />
 <meta name="twitter:image" content="<?php echo URL_SITE ?>/<?php echo htmlspecialchars($InfosBillet['blog_image']); ?>" />
@@ -41,16 +41,14 @@
 <!-- Billet -->
 <?php echo $view->render('ZcoBlogBundle::_billet.html.php',
 	array(
-		'verifier_editer' => $verifier_editer,
-		'verifier_devalider' => $verifier_devalider,
-		'verifier_supprimer' => $verifier_supprimer,
+		'credentials' => $credentials,
 		'InfosBillet' => $InfosBillet,
 		'Auteurs' => $Auteurs,
 	)) ?>
 
 <br /><hr />
 <h2 id="commentaires">
-	<?php if($InfosBillet['blog_commentaires'] == COMMENTAIRES_OK || !empty($ListerCommentaires)){ ?>
+	<?php if(!empty($ListerCommentaires)){ ?>
 	<?php echo $CompterCommentaires; ?> commentaire<?php echo pluriel($CompterCommentaires); ?>
 	sur ce billet
 	<?php } else{ ?>
@@ -59,22 +57,10 @@
 </h2>
 
 <p class="reponse_ajout_sujet">
-	<?php if($InfosBillet['blog_commentaires'] == COMMENTAIRES_OK && verifier('connecte')){ ?>
-	<a href="ajouter-commentaire-<?php echo $_GET['id']; ?>.html" title="Ajouter un commentaire">
+	<?php if(verifier('connecte')){ ?>
+	<a href="ajouter-commentaire-<?php echo $InfosBillet['blog_id']; ?>.html" title="Ajouter un commentaire">
 		<img src="/bundles/zcoforum/img/repondre.png" alt="Ajouter un commentaire" />
 	</a>
-	<?php } elseif($InfosBillet['blog_commentaires'] == COMMENTAIRES_NONE && !verifier('blog_poster_commentaires_fermes')){ ?>
-	<img src="/bundles/zcoforum/img/ferme.png" alt="Commentaires désactivés" />
-	<?php } elseif($InfosBillet['blog_commentaires'] == COMMENTAIRES_NONE && verifier('blog_poster_commentaires_fermes')){ ?>
-	<a href="ajouter-commentaire-<?php echo $_GET['id']; ?>.html" title="Ajouter un commentaire">
-		<img src="/bundles/zcoforum/img/ferme.png" alt="Ajouter un commentaire" />
-	</a>
-	<?php } elseif($InfosBillet['blog_commentaires'] == COMMENTAIRES_TOPIC){ ?>
-	<em>
-		<a href="<?php echo htmlspecialchars($InfosBillet['blog_lien_topic']); ?>">
-			Continuer la discussion sur le forum
-		</a>
-	</em>
 	<?php } ?>
 </p>
 
@@ -110,17 +96,17 @@
 
 			<td class="dates">
 				<span id="m<?php echo $valeur['commentaire_id'];?>">
-					<a href="billet-<?php echo $_GET['id']; ?>-<?php echo $valeur['commentaire_id']; ?>-<?php echo rewrite($InfosBillet['version_titre']); ?>.html">#</a>
+					<a href="<?php echo $view['router']->path('zco_blog_show', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre']), 'c' => $valeur['commentaire_id']]) ?>">#</a>
 				</span>
 
 				Ajouté <?php echo dateformat($valeur['commentaire_date'], MINUSCULE); ?>
-				<?php if(verifier('connecte') && ($InfosBillet['blog_commentaires'] == COMMENTAIRES_OK || verifier('blog_poster_commentaires_fermes'))){ ?>
-				<a href="ajouter-commentaire-<?php echo $_GET['id']; ?>-<?php echo $valeur['commentaire_id']; ?>.html"><img src="/bundles/zcoforum/img/citer.png" alt="Citer" title="Citer" /></a>
+				<?php if(verifier('connecte')){ ?>
+				<a href="ajouter-commentaire-<?php echo $InfosBillet['blog_id']; ?>-<?php echo $valeur['commentaire_id']; ?>.html"><img src="/bundles/zcoforum/img/citer.png" alt="Citer" title="Citer" /></a>
 				<?php }
-				if((($valeur['id_auteur'] == $_SESSION['id'] && verifier('blog_editer_ses_commentaires')) || verifier('blog_editer_commentaires')) && ($InfosBillet['blog_commentaires'] == COMMENTAIRES_OK || verifier('blog_poster_commentaires_fermes'))){ ?>
+				if(($valeur['id_auteur'] == $_SESSION['id'] && verifier('blog_editer_ses_commentaires')) || verifier('blog_editer_commentaires')){ ?>
 				<a href="<?php echo $view['router']->path('zco_blog_editComment', ['id' => $valeur['commentaire_id']]) ?>" title="Modifier ce commentaire">
 					<img src="/img/editer.png" alt="Modifier" /></a>
-				<?php } if(verifier('blog_editer_commentaires') || ($createur == true && in_array($InfosBillet['blog_etat'], array(BLOG_REFUSE, BLOG_BROUILLON)))){ ?>
+				<?php } if(verifier('blog_editer_commentaires') || ($credentials->isOwner() && in_array($InfosBillet['blog_etat'], array(BLOG_REFUSE, BLOG_BROUILLON)))){ ?>
 				<a href="<?php $view['router']->paht('zco_blog_deleteComment', ['id' => $valeur['commentaire_id']]) ?>" title="Supprimer ce commentaire">
 					<img src="/img/supprimer.png" alt="Supprimer" />
 				</a>
@@ -176,46 +162,15 @@
 
 <?php } else{	?>
 Aucun commentaire n'a encore été déposé sur ce billet.
-<?php if(($InfosBillet['blog_commentaires'] == COMMENTAIRES_OK && verifier('connecte')) || ($InfosBillet['blog_commentaires'] == COMMENTAIRES_NONE && verifier('blog_poster_commentaires_fermes'))) echo '<a href="ajouter-commentaire-'.$_GET['id'].'.html">Soyez le premier à en déposer un !</a>'; ?>
+<?php if(verifier('connecte')) echo '<a href="ajouter-commentaire-'.$InfosBillet['blog_id'].'.html">Soyez le premier à en déposer un !</a>'; ?>
 <?php }	?>
 
 <?php if (count($ListerCommentaires) > 0){ ?>
 <p class="reponse_ajout_sujet">
-	<?php if($InfosBillet['blog_commentaires'] == COMMENTAIRES_OK && verifier('connecte')){ ?>
-	<a href="ajouter-commentaire-<?php echo $_GET['id']; ?>.html" title="Ajouter un commentaire">
+	<?php if(verifier('connecte')){ ?>
+	<a href="ajouter-commentaire-<?php echo $InfosBillet['blog_id']; ?>.html" title="Ajouter un commentaire">
 		<img src="/bundles/zcoforum/img/repondre.png" alt="Ajouter un commentaire" />
 	</a>
-	<?php } elseif($InfosBillet['blog_commentaires'] == COMMENTAIRES_NONE && !verifier('blog_poster_commentaires_fermes')){ ?>
-	<img src="/bundles/zcoforum/img/ferme.png" alt="Commentaires désactivés" />
-	<?php } elseif($InfosBillet['blog_commentaires'] == COMMENTAIRES_NONE && verifier('blog_poster_commentaires_fermes')){ ?>
-	<a href="ajouter-commentaire-<?php echo $_GET['id']; ?>.html" title="Ajouter un commentaire">
-		<img src="/bundles/zcoforum/img/ferme.png" alt="Ajouter un commentaire" />
-	</a>
-	<?php } elseif($InfosBillet['blog_commentaires'] == COMMENTAIRES_TOPIC){ ?>
-	<em>
-		<a href="<?php echo htmlspecialchars($InfosBillet['blog_lien_topic']); ?>">
-			Continuer la discussion sur le forum
-		</a>
-	</em>
 	<?php } ?>
 </p>
-<?php } ?>
-
-<?php if (verifier('blog_choisir_comms') && $InfosBillet['blog_commentaires'] != COMMENTAIRES_TOPIC) { ?>
-<fieldset id="panel_moderation">
-	<legend>Modération massive des commentaires</legend>
-	<ul>
-		<?php if($InfosBillet['blog_commentaires'] == COMMENTAIRES_OK){ ?>
-		<li>
-			<img src="/bundles/zcoforum/img/cadenas.png" alt="" />
-			<a href="?fermer=1">Fermer les commentaires</a>
-		</li>
-		<?php } elseif($InfosBillet['blog_commentaires'] == COMMENTAIRES_NONE){ ?>
-		<li>
-			<img src="/bundles/zcoforum/img/cadenas.png" alt="" />
-			<a href="?fermer=0">Ouvrir les commentaires</a>
-		</li>
-		<?php } ?>
-	</ul>
-</fieldset>
 <?php } ?>

@@ -21,7 +21,7 @@
 				</td>
 				<td class="dates">
 					<span id="m<?php echo $valeur['commentaire_id'];?>">
-						<a href="billet-<?php echo $InfosBillet['blog_id']; ?>-<?php echo $valeur['commentaire_id']; ?>-<?php echo rewrite($InfosBillet['version_titre']); ?>.html">#</a>
+						<a href="<?php echo $view['router']->path('zco_blog_show', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre']), 'c' => $valeur['commentaire_id']]) ?>">#</a>
 					</span>
 
 					Ajouté <?php echo dateformat($valeur['commentaire_date'], MINUSCULE); ?>

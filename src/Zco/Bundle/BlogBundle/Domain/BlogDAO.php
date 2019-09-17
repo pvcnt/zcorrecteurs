@@ -88,7 +88,7 @@ final class BlogDAO
 
         //Envoi de la requête
         $stmt = $dbh->prepare("
-		SELECT blog_id, blog_lien_topic, blog_commentaires,
+		SELECT blog_id, blog_lien_topic,
 			blog_etat, blog_image, blog_date, blog_date_validation,
 			blog_date_edition, blog_url_redirection, blog_lien_nom, blog_lien_url,
 			version_id, version_titre, version_sous_titre, version_texte, version_intro,
@@ -203,7 +203,7 @@ final class BlogDAO
         $dbh = \Doctrine_Manager::connection()->getDbh();
 
         $stmt = $dbh->prepare("SELECT blog_id, blog_id_categorie, blog_lien_topic, " .
-            "blog_commentaires, blog_etat, blog_id_version_courante, blog_nb_vues, " .
+            "blog_etat, blog_id_version_courante, blog_nb_vues, " .
             "blog_image, blog_date_validation, blog_date, blog_date_validation, " .
             "blog_date_edition, blog_date_proposition, blog_date_publication, " .
             "(SELECT COUNT(*) FROM zcov2_blog_commentaires WHERE commentaire_id_billet = blog_id) AS blog_nb_commentaires, " .
@@ -249,13 +249,12 @@ final class BlogDAO
 
         //On ajoute le billet
         $stmt = $dbh->prepare("INSERT INTO zcov2_blog(blog_id_categorie, blog_date, " .
-            "blog_date_edition, blog_etat, blog_commentaires, " .
+            "blog_date_edition, blog_etat, " .
             "blog_id_version_courante, blog_image) " .
-            "VALUES(:id_categorie, NOW(), NOW(), :etat, :comms, :id_version, :image)");
+            "VALUES(:id_categorie, NOW(), NOW(), :etat, :id_version, :image)");
         $stmt->bindParam(':id_categorie', $_POST['categorie']);
         $stmt->bindValue(':image', 'uploads/miniatures/blog/defaut.png');
         $stmt->bindValue(':etat', BLOG_BROUILLON);
-        $stmt->bindValue(':comms', COMMENTAIRES_OK);
         $stmt->bindParam(':id_version', $id_version);
         $stmt->execute();
         $id_blog = $dbh->lastInsertId();

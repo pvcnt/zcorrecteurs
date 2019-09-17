@@ -2,7 +2,7 @@
 
 <h1>Ajouter un billet</h1>
 
-<?php if(verifier('blog_choisir_etat')){ ?>
+<?php if(verifier('blog_valider')){ ?>
 <p>
 	Rédigez dans l'espace ci-dessous votre billet. Donnez-lui un titre et
 	remplissez-en le contenu. N'oubliez pas qu'il ne sera pas publié tout de

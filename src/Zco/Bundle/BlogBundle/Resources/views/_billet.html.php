@@ -1,16 +1,16 @@
 <div class="blog">
 	<div class="info">
 		<span class="moderation">
-			<?php if($verifier_editer){ ?>
-			<a href="admin-billet-<?php echo $InfosBillet['blog_id']; ?>.html" title="Modifier le billet">
+			<?php if($credentials->canEdit()){ ?>
+			<a href="<?php echo $view['router']->path('zco_blog_manage', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]) ?>" title="Modifier le billet">
 				<img src="/img/editer.png" alt="Modifier" />
 			</a>
-			<?php } if($verifier_devalider){ ?>
-			<a href="devalider-<?php echo $InfosBillet['blog_id']; ?>.html" title="Mettre le billet hors ligne">
+			<?php } if($credentials->canUnpublish()){ ?>
+			<a href="<?php echo $view['router']->path('zco_blog_unpublish', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]) ?>" title="Mettre le billet hors ligne">
 				<img src="/bundles/zcoblog/img/refuser.png" alt="Dévalider" />
 			</a>
-			<?php } if($verifier_supprimer){ ?>
-			<a href="supprimer-<?php echo $InfosBillet['blog_id']; ?>.html" title="Supprimer le billet">
+			<?php } if($credentials->canDelete()){ ?>
+			<a href="<?php echo $view['router']->path('zco_blog_unpublish', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]) ?>" title="Supprimer le billet">
 				<img src="/img/supprimer.png" alt="Supprimer" />
 			</a>
 			<?php } ?>
@@ -34,17 +34,10 @@
 			<?php } ?>
 
 			<?php echo dateformat($InfosBillet['blog_etat'] == BLOG_VALIDE ? $InfosBillet['blog_date_publication'] : $InfosBillet['blog_date'], MINUSCULE); ?>
-
-			<?php if(!empty($InfosBillet['blog_lien_topic']) && $InfosBillet['blog_commentaires'] == COMMENTAIRES_TOPIC){ ?>
-			|	<em><a href="<?php echo htmlspecialchars($InfosBillet['blog_lien_topic']); ?>">
-					Continuer la discussion sur le forum
-				</a></em>
-			<?php } elseif($InfosBillet['blog_commentaires'] == COMMENTAIRES_OK){ ?>
-			|	<em><a href="/blog/billet-<?php echo $InfosBillet['blog_id']; ?>-<?php echo rewrite($InfosBillet['version_titre']); ?>.html#commentaires">
+			|	<em><a href="<?php echo $view['router']->path('zco_blog_show', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]) ?>#commentaires">
 					Commenter ce billet
 					(<?php echo $InfosBillet['blog_nb_commentaires']; ?> commentaire<?php echo pluriel($InfosBillet['blog_nb_commentaires']); ?>)
 				</a></em>
-			<?php } ?>
 		</p>
 	</div>
 
@@ -81,16 +74,10 @@
 			<?php if (!empty($InfosBillet['blog_nb_vues'])){ ?>
 			<?php echo $view['humanize']->numberformat($InfosBillet['blog_nb_vues'], 0) ?> visualisation<?php echo pluriel($InfosBillet['blog_nb_vues']) ?> |
 			<?php } ?>
-			<?php if(!empty($InfosBillet['blog_lien_topic']) && $InfosBillet['blog_commentaires'] == COMMENTAIRES_TOPIC){ ?>
-			<a href="<?php echo htmlspecialchars($InfosBillet['blog_lien_topic']); ?>">
-				Continuer la discussion sur le forum
-			</a> |
-			<?php } elseif($InfosBillet['blog_commentaires'] == COMMENTAIRES_OK){ ?>
-			<a href="/blog/billet-<?php echo $InfosBillet['blog_id']; ?>-<?php echo rewrite($InfosBillet['version_titre']); ?>.html#commentaires">
+			<a href="<?php echo $view['router']->path('zco_blog_show', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]) ?>#commentaires">
 				Commenter ce billet
 			</a> |
-			<?php } ?>
-			<a href="https://twitter.com/share?text=<?php echo urlencode('Venez découvrir cet article des @zCorrecteurs : ') ?>&url=<?php echo URL_SITE ?>/blog/billet-<?php echo $InfosBillet['blog_id'] ?>-<?php echo rewrite($InfosBillet['version_titre']) ?>.html" class="italique">
+			<a href="https://twitter.com/share?text=<?php echo urlencode('Venez découvrir cet article des @zCorrecteurs : ') ?>&url=<?php echo $view['router']->url('zco_blog_show', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]) ?>" class="italique">
                 <img src="/img/oiseau_16px.png" alt="Twitter" />
                 Partager sur Twitter
             </a> |

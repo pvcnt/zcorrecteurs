@@ -232,7 +232,7 @@ final class CommentDAO
 
         $stmt = $dbh->prepare("SELECT commentaire_id, commentaire_texte, " .
             "commentaire_ip, utilisateur_id, utilisateur_pseudo, blog_id, " .
-            "version_titre, version_sous_titre, blog_commentaires, blog_id_categorie, " .
+            "version_titre, version_sous_titre, blog_id_categorie, " .
             "commentaire_id_billet " .
             "FROM zcov2_blog_commentaires " .
             "LEFT JOIN zcov2_utilisateurs ON utilisateur_id = commentaire_id_utilisateur " .

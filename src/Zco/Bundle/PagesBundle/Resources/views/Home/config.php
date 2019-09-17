@@ -169,7 +169,7 @@
 		<?php if(!empty($infos_billet) && !empty($infos_billet['billet_nom'])){ ?>
 		<p>
 			Le billet actuellement mis en valeur est
-			<strong><a href="/blog/billet-<?php echo $infos_billet['billet_id']; ?>.html">
+			<strong><a href="<?php echo $view['router']->path('zco_blog_show', ['id' => $infos_billet['blog_id'], 'slug' => rewrite($infos_billet['version_titre'])]) ?>">
 				<?php echo htmlspecialchars($infos_billet['billet_nom']); ?>
 			</a></strong> dans la catégorie « <?php echo htmlspecialchars($infos_billet['cat_nom']); ?> ».
 		</p>

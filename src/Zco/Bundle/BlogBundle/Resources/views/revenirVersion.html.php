@@ -8,7 +8,7 @@
 		<p class="centre">
 			Êtes-vous sûr de vouloir revenir à la version n<sup>o</sup>&nbsp;<?php echo $id_version; ?>
 			du billet intitulé
-			<strong><a href="billet-<?php echo $InfosBillet['blog_id']; ?>.html"><?php echo htmlspecialchars($InfosBillet['version_titre']); ?></a></strong> ?
+			<strong><?php echo htmlspecialchars($InfosBillet['version_titre']) ?></strong> ?
 		</p>
 
 		<p class="centre">

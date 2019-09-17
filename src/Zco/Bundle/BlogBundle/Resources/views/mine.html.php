@@ -1,4 +1,4 @@
-<?php $view->extend('::layouts/default.html.php') ?>
+<?php $view->extend('::layouts/bootstrap.html.php') ?>
 
 <h1>Mes billets</h1>
 
@@ -10,35 +10,31 @@
 	Merci à tous ceux qui contribueront à la vie du site ainsi !
 </p>
 
-<p class="gras centre"><a href="<?php echo $view['router']->path('zco_blog_new') ?>">Ajouter un nouveau billet</a></p>
+<p class="bold center"><a href="<?php echo $view['router']->path('zco_blog_new') ?>">Ajouter un nouveau billet</a></p>
 
-<fieldset>
-	<legend>Filtrer les billets</legend>
-	<form method="get" action="">
-		<select name="id" id="id" onchange="document.location = '<?php echo $view['router']->path('zco_blog_mine') ?>?etat=' + this.value;">
-			<option value="0"<?php if(empty($_GET['id'])) echo ' selected="selected"'; ?>>Tous</option>
-			<option value="<?php echo BLOG_BROUILLON; ?>"<?php if(!empty($_GET['id']) && $_GET['id'] == BLOG_BROUILLON) echo ' selected="selected"'; ?>>Brouillon</option>
-			<option value="<?php echo BLOG_REFUSE; ?>"<?php if(!empty($_GET['id']) && $_GET['id'] == BLOG_REFUSE) echo ' selected="selected"'; ?>>Refusé</option>
-			<option value="<?php echo BLOG_PREPARATION; ?>"<?php if(!empty($_GET['id']) && $_GET['id'] == BLOG_PREPARATION) echo ' selected="selected"'; ?>>En cours de préparation</option>
-			<option value="<?php echo BLOG_PROPOSE; ?>"<?php if(!empty($_GET['id']) && $_GET['id'] == BLOG_PROPOSE) echo ' selected="selected"'; ?>>Proposé</option>
-			<option value="<?php echo BLOG_VALIDE; ?>"<?php if(!empty($_GET['id']) && $_GET['id'] == BLOG_VALIDE) echo ' selected="selected"'; ?>>Validé</option>
-		</select>
-		<noscript><input type="submit" value="Aller" /></noscript>
-	</form>
-</fieldset>
+<form method="get" action="">
+    <select name="id" id="id" onchange="document.location = '<?php echo $view['router']->path('zco_blog_mine') ?>?etat=' + this.value;">
+        <option value=""<?php if(empty($status)) echo ' selected="selected"'; ?>>Tous</option>
+        <option value="<?php echo BLOG_BROUILLON; ?>"<?php if(!empty($status) && $status == BLOG_BROUILLON) echo ' selected="selected"'; ?>>Brouillon</option>
+        <option value="<?php echo BLOG_REFUSE; ?>"<?php if(!empty($status) && $status == BLOG_REFUSE) echo ' selected="selected"'; ?>>Refusé</option>
+        <option value="<?php echo BLOG_PREPARATION; ?>"<?php if(!empty($status) && $status == BLOG_PREPARATION) echo ' selected="selected"'; ?>>En cours de préparation</option>
+        <option value="<?php echo BLOG_PROPOSE; ?>"<?php if(!empty($status) && $status == BLOG_PROPOSE) echo ' selected="selected"'; ?>>Proposé</option>
+        <option value="<?php echo BLOG_VALIDE; ?>"<?php if(!empty($status) && $status == BLOG_VALIDE) echo ' selected="selected"'; ?>>Validé</option>
+    </select>
+    <noscript><input type="submit" value="Aller" /></noscript>
+</form>
 
 <?php if($ListerBillets){ ?>
-<table class="UI_items">
+<table class="table table-striped">
 	<thead>
-		<tr class="header_message">
+		<tr>
 			<th style="width: 30%;">Titre</th>
-			<th style="width: 15%;">Auteur(s)</th>
-			<th style="width: 15%;">Création</th>
-			<th style="width: 15%;">Dernière modification</th>
-			<th style="width: 10%;">État</th>
-			<th style="width: 5%;">Modifier</th>
-			<th style="width: 5%;">Proposer</th>
-			<th style="width: 5%;">Supprimer</th>
+			<th>Auteur(s)</th>
+			<th>Création</th>
+			<th>Dernière modification</th>
+			<th>État</th>
+			<th>Publier</th>
+			<th>Supprimer</th>
 		</tr>
 	</thead>
 
@@ -52,10 +48,10 @@
 		<tr>
 			<td>
 				<?php if(!empty($valeur['lunonlu_id_commentaire']) && verifier('connecte')){ ?>
-				<a href="/blog/billet-<?php echo $valeur['blog_id']; ?>-<?php echo $valeur['lunonlu_id_commentaire']; ?>-<?php echo rewrite($valeur['version_titre']); ?>.html#m<?php echo $valeur['lunonlu_id_commentaire']; ?>" title="Aller au dernier message lu"><img src="/bundles/zcoforum/img/fleche.png" alt="Dernier message lu" /></a>
+				<a href="<?php echo $view['router']->path('zco_blog_show', ['id' => $valeur['blog_id'], 'slug' => rewrite($valeur['version_titre']), 'c' => $valeur['lunonlu_id_commentaire']]) ?>#m<?php echo $valeur['lunonlu_id_commentaire']; ?>" title="Aller au dernier message lu"><img src="/bundles/zcoforum/img/fleche.png" alt="Dernier message lu" /></a>
 				<?php } ?>
 
-				<a href="admin-billet-<?php echo $valeur['blog_id']; ?>-<?php echo rewrite($valeur['version_titre']); ?>.html">
+				<a href="<?php echo $view['router']->path('zco_blog_manage', ['id' => $valeur['blog_id'], 'slug' => rewrite($valeur['version_titre'])]) ?>">
 					<?php echo htmlspecialchars($valeur['version_titre']); ?>
 				</a>
 			</td>
@@ -73,34 +69,25 @@
 				<a href="/membres/profil-<?php echo $a['utilisateur_id']; ?>-<?php echo rewrite($a['utilisateur_pseudo']); ?>.html" class="<?php echo $AuteursClass[$a['auteur_statut']]; ?>"><?php echo htmlspecialchars($a['utilisateur_pseudo']); ?></a><br />
 				<?php } ?>
 			</td>
-			<td class="centre">
+			<td class="center">
 				<?php echo dateformat($valeur['blog_date']); ?>
 			</td>
-			<td class="centre">
+			<td class="center">
 				<?php echo dateformat($valeur['blog_date_edition']); ?>
 			</td>
-			<td class="centre">
+			<td class="center">
 				<?php echo $Etats[$valeur['blog_etat']]; ?>
 			</td>
-			<td class="centre">
-				<?php if((in_array($valeur['blog_etat'], array(BLOG_BROUILLON, BLOG_REFUSE)) && $redacteur == true) || (in_array($valeur['blog_etat'], array(BLOG_BROUILLON, BLOG_REFUSE)) && verifier('blog_editer_brouillons')) || ($valeur['blog_etat'] == BLOG_PREPARATION && verifier('blog_editer_preparation')) ||
-				($valeur['blog_etat'] == BLOG_VALIDE && verifier('blog_editer_valide'))){ ?>
-				<a href="editer-<?php echo $valeur['blog_id']; ?>.html"><img src="/img/editer.png" alt="Modifier" /></a>
-				<?php } else echo '-'; ?>
-			</td>
-			<td class="centre">
-				<?php if(in_array($valeur['blog_etat'], array(BLOG_BROUILLON, BLOG_REFUSE)) && $createur == true){ ?>
-				<a href="proposer-<?php echo $valeur['blog_id']; ?>.html" title="Proposer ce billet à la validation"><img src="/bundles/zcoblog/img/proposer.png" alt="Proposer" /></a>
+			<td class="center">
+				<?php if(verifier('blog_valider') && !in_array($valeur['blog_etat'], array(BLOG_VALIDE, BLOG_PROPOSE))){ ?>
+				<a href="<?php echo $view['router']->path('zco_blog_publish', ['id' => $valeur['blog_id'], 'slug' => rewrite($valeur['version_titre'])]) ?>" title="Valider ce billet"><img src="/bundles/zcoblog/img/valider.png" alt="Valider" /></a>
+				<?php } elseif(verifier('blog_valider') && $valeur['blog_etat'] == BLOG_VALIDE){ ?>
+				<a href="<?php echo $view['router']->path('zco_blog_unpublish', ['id' => $valeur['blog_id'], 'slug' => rewrite($valeur['version_titre'])]) ?>" title="Dévalider ce billet"><img src="/bundles/zcoblog/img/refuser.png" alt="Dévalider" /></a>
 				<?php } ?>
-				<?php if(verifier('blog_choisir_etat') && !in_array($valeur['blog_etat'], array(BLOG_VALIDE, BLOG_PROPOSE))){ ?>
-				<a href="valider-<?php echo $valeur['blog_id']; ?>.html" title="Valider ce billet"><img src="/bundles/zcoblog/img/valider.png" alt="Valider" /></a>
-				<?php } elseif(verifier('blog_devalider') && $valeur['blog_etat'] == BLOG_VALIDE){ ?>
-				<a href="devalider-<?php echo $valeur['blog_id']; ?>.html" title="Dévalider ce billet"><img src="/bundles/zcoblog/img/refuser.png" alt="Dévalider" /></a>
-				<?php } if((!in_array($valeur['blog_etat'], array(BLOG_BROUILLON, BLOG_REFUSE)) || $createur == false) && (!verifier('blog_choisir_etat') || in_array($valeur['blog_etat'], array(BLOG_VALIDE, BLOG_PROPOSE))) && (!verifier('blog_devalider') || $valeur['blog_etat'] != BLOG_VALIDE)) echo '-'; ?>
 			</td>
-			<td class="centre">
-				<?php if((in_array($valeur['blog_etat'], array(BLOG_BROUILLON, BLOG_REFUSE)) && $createur == true) || verifier('blog_supprimer')){ ?>
-				<a href="supprimer-<?php echo $valeur['blog_id']; ?>.html"><img src="/img/supprimer.png" alt="Supprimer" /></a>
+			<td class="center">
+				<?php if((in_array($valeur['blog_etat'], array(BLOG_BROUILLON, BLOG_REFUSE)) && $createur == true) || verifier('blog_editer_valide')){ ?>
+				<a href="<?php echo $view['router']->path('zco_blog_delete', ['id' => $valeur['blog_id'], 'slug' => rewrite($valeur['version_titre'])]) ?>"><img src="/img/supprimer.png" alt="Supprimer" /></a>
 				<?php } else echo '-'; ?>
 			</td>
 		</tr>
