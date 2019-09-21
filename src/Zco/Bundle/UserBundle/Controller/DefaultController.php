@@ -28,7 +28,6 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Zco\Bundle\GroupesBundle\Domain\GroupDAO;
-use Zco\Bundle\UserBundle\Form\Type\NewUsernameType;
 
 /**
  */
@@ -142,9 +141,6 @@ class DefaultController extends Controller
         $art = in_array($firstChar, array('a', 'e', 'i', 'o', 'u', 'y')) ? "'" : 'e ';
         $vars['art'] = $art;
 
-        if (verifier('membres_voir_ch_pseudos')) {
-            $vars['newPseudo'] = \Doctrine_Core::getTable('UserNewUsername')->getByUserId($user->getId());
-        }
         if (verifier('groupes_changer_membre') || $user->isTeam()) {
             $vars['ListerGroupes'] = GroupDAO::ListerChangementGroupeMembre($user->getId());
             if ($user->isTeam() && count($vars['ListerGroupes'])) {
@@ -160,7 +156,7 @@ class DefaultController extends Controller
             }
         }
         $vars['canSendEmail'] = verifier('rechercher_mail') || $user->isEmailDisplayed();
-        $vars['canSeeInfos'] = verifier('membres_voir_ch_pseudos') || verifier('groupes_changer_membre');
+        $vars['canSeeInfos'] = verifier('groupes_changer_membre');
         $vars['canAdmin'] = verifier('groupes_changer_membre') || verifier('options_editer_profils');
         $vars['own'] = $_SESSION['id'] == $user->getId();
 
@@ -168,67 +164,6 @@ class DefaultController extends Controller
         \Page::$description = 'Pour en savoir plus sur la personnalité d' . $art . htmlspecialchars($user->getUsername()) . ' et son activité sur le site';
 
         return $this->render('ZcoUserBundle::profile.html.php', $vars);
-    }
-
-    /**
-     * Demande un changement de pseudo.
-     *
-     * @param Request $request
-     * @param integer|null $id
-     * @return Response
-     */
-    public function newPseudoAction(Request $request, $id = null)
-    {
-        if ($id === null) {
-            $id = $_SESSION['id'];
-        }
-        if (!verifier('connecte')) {
-            throw new AccessDeniedHttpException();
-        }
-        if (!($user = \Doctrine_Core::getTable('Utilisateur')->getById($id))) {
-            throw new NotFoundHttpException();
-        }
-        if (($id != $_SESSION['id']) && !verifier('membres_editer_pseudos')) {
-            throw new AccessDeniedHttpException();
-        }
-        if ($id == $_SESSION['id'] && \Doctrine_Core::getTable('UserNewUsername')->hasWaitingQuery($user->getId())) {
-            return redirect(
-                'Vous avez déjà une demande changement de pseudonyme en attente.',
-                $this->generateUrl('zco_options_index')
-            );
-        }
-
-        $newUsername = new \UserNewUsername();
-        $newUsername->setUser($user);
-        $form = $this->createForm(NewUsernameType::class, $newUsername);
-
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            if ($newUsername->isAutoValidated()) {
-                $newUsername->setAdmin($this->get('zco_user.user')->getEntity());
-                $newUsername->save();
-                $user->getUsername($newUsername->getNewUsername());
-                $user->save();
-
-                return redirect('Le pseudonyme a bien été changé.',
-                    $this->generateUrl('zco_user_profile', ['id' => $user->getId(), 'slug' => rewrite($user->getUsername())])
-                );
-            }
-            $newUsername->save();
-
-            return redirect(
-                'Votre demande de changement de pseudonyme a été enregistrée.',
-                $this->generateUrl('zco_options_index')
-            );
-        }
-
-        \Page::$titre = 'Demander un changement de pseudo';
-        fil_ariane('Demander un changement de pseudo');
-
-        return $this->render('ZcoUserBundle::newPseudo.html.php', array(
-            'user' => $user,
-            'form' => $form->createView(),
-        ));
     }
 
     /**

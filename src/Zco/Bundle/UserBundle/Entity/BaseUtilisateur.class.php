@@ -39,7 +39,6 @@
  * @property string $twitter
  * @property Groupe $Groupe
  * @property Doctrine_Collection $SecondaryGroups
- * @property Doctrine_Collection $UserNewUsername
  * @property Doctrine_Collection $Dictee
  * @property Doctrine_Collection $Dictee_Participation
  * @property Doctrine_Collection $Quiz
@@ -201,10 +200,6 @@ abstract class BaseUtilisateur extends Doctrine_Record
         $this->hasMany('SecondaryGroup as SecondaryGroups', array(
              'local' => 'id',
              'foreign' => 'utilisateur_id'));
-
-        $this->hasMany('UserNewUsername', array(
-             'local' => 'id',
-             'foreign' => 'user_id'));
 
         $this->hasMany('Dictee', array(
              'local' => 'utilisateur_id',

@@ -89,15 +89,6 @@ final class AdminMenuFactory
                 'uri' => $this->router->generate('zco_dictation_admin'),
             ));
         }
-
-        if (verifier('membres_valider_ch_pseudos')) {
-            $count = $this->admin->get(NewUsernamePendingTask::class);
-            $menu->getChild('Membres')->addChild('Voir les changements de pseudo en attente', array(
-                'label' => 'Il y a ' . $count . ' changement' . pluriel($count) . ' de pseudo' . pluriel($count) . ' en attente',
-                'uri' => $this->router->generate('zco_user_admin_newPseudoQueries'),
-                'count' => $count,
-            ));
-        }
         if (verifier('rechercher_mail')) {
             $menu->getChild('Membres')->addChild('Rechercher une adresse mail', array(
                 'uri' => $this->router->generate('zco_user_admin_searchEmail'),

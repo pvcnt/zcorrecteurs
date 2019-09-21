@@ -11,10 +11,6 @@
 	<small>Changez les informations apparaissant sur votre page de profil.</small>
 </h1>
 
-<div class="alert alert-info">
-	<strong>Note :</strong> pour changer votre pseudonyme sur ce site, vous devez
-	<a href="<?php echo $view['router']->path('zco_user_newPseudo') ?>">procéder à une demande de changement de pseudo</a>.
-</div>
 <?php else: ?>
 <h1>Modifier le profil de <?php echo htmlspecialchars($user->getUsername()) ?></h1>
 

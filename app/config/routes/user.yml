@@ -15,12 +15,6 @@ zco_user_profile:
     id: \d+
     slug: '[a-z0-9-]+'
 
-zco_user_newPseudo:
-  path:   /membres/nouveau-pseudo/{id}
-  defaults:  { _controller: ZcoUserBundle:Default:newPseudo, id: ~ }
-  requirements:
-    id: \d+
-
 zco_user_zformBackups:
   path:   /membres/sauvegardes-zform/{textarea}
   defaults:  { _controller: ZcoUserBundle:Default:zformBackups, textarea: ~ }
@@ -74,16 +68,6 @@ zco_user_admin_searchEmail:
 zco_user_admin_invalidAccounts:
   path:   /membres/comptes-non-valides
   defaults:  { _controller: ZcoUserBundle:Admin:invalidAccounts }
-
-zco_user_admin_newPseudoQueries:
-  path:   /membres/nouveau-pseudo/en-attente
-  defaults:  { _controller: ZcoUserBundle:Admin:newPseudoQueries }
-
-zco_user_admin_newPseudoAnswer:
-  path:   /membres/nouveau-pseudo/repondre/{id}
-  defaults:  { _controller: ZcoUserBundle:Admin:newPseudoAnswer }
-  requirements:
-    id: \d+
 
 zco_user_api_searchUsername:
   path:   /_api/membres/chercher-pseudo

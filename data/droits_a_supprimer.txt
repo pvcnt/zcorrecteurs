@@ -37,3 +37,6 @@ fusionner_sujets
 diviser_sujets
 voir_alertes
 signaler_sujets
+mettre_sujet_favori
+membres_voir_ch_pseudos
+membres_valider_ch_pseudos

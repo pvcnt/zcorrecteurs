@@ -345,12 +345,6 @@ class Utilisateur extends BaseUtilisateur
 		return $this->SecondaryGroups;
 	}
 
-	public function applyNewUsername(\UserNewUsername $query)
-	{
-		$this->pseudo = $query->getNewUsername();
-		$this->save();
-	}
-	
 	public function preDelete($event)
 	{
 		$dbh = Doctrine_Manager::connection()->getDbh();

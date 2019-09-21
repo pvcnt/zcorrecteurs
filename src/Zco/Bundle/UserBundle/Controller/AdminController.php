@@ -127,46 +127,4 @@ class AdminController extends Controller
         return $this->render('ZcoUserBundle:Admin:deleteAccount.html.php',
             array('user' => $user));
     }
-
-    /**
-     * Affiche la liste des membres avec un changement de pseudo en attente
-     */
-    public function newPseudoQueriesAction()
-    {
-        if (!verifier('membres_valider_ch_pseudos')) {
-            throw new AccessDeniedHttpException;
-        }
-        \Page::$titre = 'Changements de pseudonymes';
-
-        return $this->render('ZcoUserBundle:Admin:newPseudoQueries.html.php', array(
-            'queries' => \Doctrine_Core::getTable('UserNewUsername')->getWaitingQueries(),
-        ));
-    }
-
-    /**
-     * Répond à un changement de pseudo.
-     */
-    public function newPseudoAnswerAction(Request $request, $id)
-    {
-        if (!verifier('membres_valider_ch_pseudos')) {
-            throw new AccessDeniedHttpException;
-        }
-        if (!($query = \Doctrine_Core::getTable('UserNewUsername')->getById($id))) {
-            throw new NotFoundHttpException('Cette demande n\'existe pas.');
-        }
-
-        $form = $this->createForm(AnswerNewUsernameType::class);
-        $handler = new AnswerNewUsernameHandler($form, $request);
-        if ($handler->process($query)) {
-            return redirect('La réponse a bien été transmise au membre.',
-                $this->generateUrl('zco_user_profile', array('id' => $query->getUserId(), 'slug' => rewrite($query->getUser()->getUsername()))));
-        }
-
-        \Page::$titre = 'Répondre à une demande de changement de pseudonyme';
-
-        return $this->render('ZcoUserBundle:Admin:newPseudoAnswer.html.php', array(
-            'query' => $query,
-            'form' => $form->createView(),
-        ));
-    }
 }

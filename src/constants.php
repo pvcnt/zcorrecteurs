@@ -15,12 +15,6 @@ define('COMMENTAIRES_NONE',        0);
 define('COMMENTAIRES_TOPIC',       1);
 define('COMMENTAIRES_OK',          2);
 
-//États des changements de pseudos
-define('CH_PSEUDO_ACCEPTE',        1);
-define('CH_PSEUDO_REFUSE',         2);
-define('CH_PSEUDO_ATTENTE',        3);
-define('CH_PSEUDO_AUTO',           4);
-
 //Versionnage
 define('VERSION_CURRENT',          1); //Permet de récupérer la version courante
 define('VERSION_BROUILLON',        2); //Permet de récupérer la version en brouillon

@@ -178,10 +178,6 @@ services:
     public: true
     arguments: ['@zco_doctrine1.connection']
 
-  Zco\Bundle\UserBundle\Admin\NewUsernamePendingTask:
-    tags:
-    - { name: zco.admin_task }
-
   templating.globals:
     class: Zco\Bundle\CoreBundle\Templating\GlobalVariables
     arguments: ['@service_container']
