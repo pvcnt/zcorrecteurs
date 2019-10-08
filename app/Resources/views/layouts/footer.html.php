@@ -18,10 +18,5 @@
             - <a href="https://twitter.com/zCorrecteurs" title="Tous nos tweets">Twitter</a>
             - <a href="https://www.facebook.com/pages/zCorrecteurs/292782574071649">Facebook</a>
         </p>
-
-        <p class="links bloc_partenaires">
-            Partenaires :
-            <a href="http://www.convivialiteenflandre.org/" title="Convivialité en Flandre" rel="Le patrimoine artistique de la Flandre belge et française.">Convivialité en Flandre</a>
-        </p>
     </div>
 </div>
