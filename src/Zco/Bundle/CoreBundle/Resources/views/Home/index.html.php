@@ -34,11 +34,6 @@
 	</td>
 
 	<td>
-	</td>
-	</tr>
-
-	<tr>
-	<td>
 		<h2 class="mod_quiz">Quiz</h2>
 		<?php echo $view->render('ZcoQuizBundle::_bloc_accueil.html.php',
 			array(
@@ -57,16 +52,5 @@
             compact('DicteesAccueil', 'DicteeHasard', 'DicteesLesPlusJouees')) ?>
 	</td>
 
-	<td>
-		<h2 class="mod_forum">Forum</h2>
-		<?php if(verifier('voir_sujets')){ ?>
-		<?php echo $view->render('ZcoForumBundle::_bloc_accueil.html.php',
-			array(
-				'StatistiquesForum' => $StatistiquesForum,
-			)) ?>
-		<?php } else{ ?>
-		<p>Vous ne pouvez pas voir le forum.</p>
-		<?php } ?>
-	</td>
 	</tr>
 </table>
