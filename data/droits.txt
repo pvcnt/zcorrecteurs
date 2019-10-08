@@ -22,7 +22,6 @@ rechercher_mail
 suppr_comptes
 membres_editer_pseudos
 options_editer_profils
-gerer_breve_accueil
 voir_stats_generales
 code
 groupes_gerer

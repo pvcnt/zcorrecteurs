@@ -47,7 +47,7 @@ class DefaultController extends Controller
     {
         fil_ariane('Accueil des dictées');
         $this->get('zco_core.resource_manager')->requireResources([
-            '@ZcoPagesBundle/Resources/public/css/home.css',
+            '@ZcoCoreBundle/Resources/public/css/home.css',
             '@ZcoDicteesBundle/Resources/public/css/dictees.css',
         ]);
 

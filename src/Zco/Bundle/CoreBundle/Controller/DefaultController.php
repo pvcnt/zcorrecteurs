@@ -24,6 +24,8 @@ namespace Zco\Bundle\CoreBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Zco\Bundle\CoreBundle\Sitemap\SitemapFactory;
 
 class DefaultController extends Controller
 {
@@ -31,4 +33,39 @@ class DefaultController extends Controller
 	{
 		return new Response($this->get('zco_parser.parser')->parse($request->request->get('texte')));
 	}
+
+    public function robotsAction()
+    {
+        if ('prod' === $this->container->getParameter('kernel.environment')) {
+            $content = 'Sitemap: ' . $this->generateUrl('zco_sitemap', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        } else {
+            $content = 'User-agent: *' . "\n" . 'Disallow: /';
+        }
+
+        return new Response($content, 200, ['Content-type' => 'text/plain']);
+    }
+
+    public function healthAction()
+    {
+        return new Response('OK', 200, ['Content-type' => 'text/plain']);
+    }
+
+    public function sitemapAction()
+    {
+        $cache = $this->get('cache');
+        if (($content = $cache->fetch('zco_pages.sitemap')) === false) {
+            $factory = new SitemapFactory($this->get('router'));
+            $sitemap = $factory->createSitemap();
+            $xml = $sitemap->render();
+            $xml->formatOutput = true;
+
+            $content = $xml->saveXML();
+            $cache->save('zco_pages.sitemap', $content, 3600 * 24);
+        }
+
+        $response = new Response($content);
+        $response->headers->set('Content-type', 'text/xml');
+
+        return $response;
+    }
 }

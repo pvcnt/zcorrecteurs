@@ -767,6 +767,7 @@ function fil_ariane($id = null, $enfants = array())
         $ListerParents = CategoryDAO::ListerParents(CategoryDAO::GetIDCategorie('informations'), false);
     }
     if (!empty($ListerParents)) {
+        \Page::$titre = htmlspecialchars($ListerParents[count($ListerParents) - 1]['cat_description']);
         \Page::$description = htmlspecialchars($ListerParents[count($ListerParents) - 1]['cat_description']);
     }
 
@@ -796,6 +797,9 @@ function fil_ariane($id = null, $enfants = array())
         } else {
             $items[] = $valeur;
         }
+    }
+    if (!empty($enfants)) {
+        \Page::$titre = htmlspecialchars(array_values($enfants)[count($enfants) - 1]);
     }
 
     Page::$fil_ariane = $items;

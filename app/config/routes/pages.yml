@@ -1,77 +1,73 @@
 zco_home:
   path:   /
-  defaults:  { _controller: ZcoPagesBundle:Home:index }
-
-zco_home_config:
-  path:   /admin/accueil
-  defaults:  { _controller: ZcoPagesBundle:Home:config }
+  defaults:  { _controller: ZcoCoreBundle:Home:index }
 
 zco_about_index:
   path:   /apropos
-  defaults:  { _controller: ZcoPagesBundle:Static:index }
+  defaults:  { _controller: ZcoCoreBundle:Static:index }
 
 zco_about_banners:
   path:   /apropos/bannieres
-  defaults:  { _controller: ZcoPagesBundle:Static:banners }
+  defaults:  { _controller: ZcoCoreBundle:Static:banners }
 
 zco_about_team:
   path:   /apropos/equipe
-  defaults:  { _controller: ZcoPagesBundle:Static:team }
+  defaults:  { _controller: ZcoCoreBundle:Static:team }
 
 zco_about_corrigraphie:
   path:   /apropos/association-corrigraphie
-  defaults:  { _controller: ZcoPagesBundle:Static:corrigraphie }
+  defaults:  { _controller: ZcoCoreBundle:Static:corrigraphie }
 
 zco_about_opensource:
   path:   /apropos/logiciel-libre
-  defaults:  { _controller: ZcoPagesBundle:Static:openSource }
+  defaults:  { _controller: ZcoCoreBundle:Static:openSource }
 
 zco_about_contact:
   path:   /apropos/contact
-  defaults:  { _controller: ZcoPagesBundle:Static:contact }
+  defaults:  { _controller: ZcoCoreBundle:Static:contact }
 
 zco_donate_index:
   path:  /dons
-  defaults:  { _controller: ZcoPagesBundle:Static:donate }
+  defaults:  { _controller: ZcoCoreBundle:Static:donate }
 
 zco_donate_otherWays:
   path:  /dons/cheque-ou-virement
-  defaults:  { _controller: ZcoPagesBundle:Static:donateOtherWays }
+  defaults:  { _controller: ZcoCoreBundle:Static:donateOtherWays }
 
 zco_donate_fiscalDeduction:
   path:  /dons/deduction-fiscale
-  defaults:  { _controller: ZcoPagesBundle:Static:donateFiscalDeduction }
+  defaults:  { _controller: ZcoCoreBundle:Static:donateFiscalDeduction }
 
 zco_donate_thanks:
   path:  /dons/merci
-  defaults:  { _controller: ZcoPagesBundle:Static:donateThanks }
+  defaults:  { _controller: ZcoCoreBundle:Static:donateThanks }
 
 zco_legal_mentions:
   path:   /legal/mentions
-  defaults:  { _controller: ZcoPagesBundle:Static:mentions }
+  defaults:  { _controller: ZcoCoreBundle:Static:mentions }
 
 zco_legal_privacy:
   path:   /legal/confidentialite
-  defaults:  { _controller: ZcoPagesBundle:Static:privacy }
+  defaults:  { _controller: ZcoCoreBundle:Static:privacy }
 
 zco_legal_rules:
   path:   /legal/reglement
-  defaults:  { _controller: ZcoPagesBundle:Static:rules }
+  defaults:  { _controller: ZcoCoreBundle:Static:rules }
 
 zco_error:
   path:   /_erreur/{code}
   requirements:
     code: \d+
-  defaults:  { _controller: ZcoPagesBundle:Static:error }
+  defaults:  { _controller: ZcoCoreBundle:Static:error }
 
 zco_sitemap:
   path:   /sitemap.xml
-  defaults:  { _controller: ZcoPagesBundle:Default:sitemap }
+  defaults:  { _controller: ZcoCoreBundle:Default:sitemap }
 
 zco_health:
   path:   /health
-  defaults:  { _controller: ZcoPagesBundle:Default:health }
+  defaults:  { _controller: ZcoCoreBundle:Default:health }
 
 zco_robots:
   path:   /robots.txt
-  defaults:  { _controller: ZcoPagesBundle:Default:robots }
+  defaults:  { _controller: ZcoCoreBundle:Default:robots }

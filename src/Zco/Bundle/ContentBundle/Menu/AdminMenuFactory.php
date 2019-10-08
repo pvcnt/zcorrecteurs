@@ -74,11 +74,6 @@ final class AdminMenuFactory
                 'uri' => $this->router->generate('zco_groups_index'),
             ));
         }
-        if (verifier('gerer_breve_accueil')) {
-            $menu->getChild('Communication')->addChild('Modifier les annonces de la page d\'accueil', array(
-                'uri' => $this->router->generate('zco_home_config'),
-            ));
-        }
         if (verifier('quiz_ajouter')) {
             $menu->getChild('Quiz')->addChild('Gérer les quiz', array(
                 'uri' => $this->router->generate('zco_quiz_admin'),
