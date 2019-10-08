@@ -49,32 +49,20 @@
 }
 
 .grosse_cat h2, .grosse_cat_trash h2 {
-	padding: 0px;
-	margin: 0px;
+	padding: 0;
+	margin: 0;
 	border: none;
 	font-size: 12px;
 	font-style: normal;
 }
 
-.grosse_cat a {
+.grosse_cat h2 {
 	text-decoration: none;
 	color: #fff;
 	font-size: 11px;
 }
 
-.grosse_cat_trash a {
-	text-decoration: none;
-	color: #fff;
-	font-size: 11px;
-}
-
-.grosse_cat_trash a:hover {
-	text-decoration: none;
-	color: #fff;
-	font-size: 11px;
-}
-
-.grosse_cat a:hover {
+.grosse_cat_trash h2 {
 	text-decoration: none;
 	color: #fff;
 	font-size: 11px;

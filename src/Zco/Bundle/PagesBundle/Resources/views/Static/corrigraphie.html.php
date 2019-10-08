@@ -47,7 +47,7 @@
 	
 		<p style="margin-top: 15px; text-align: justify;">
 			La façon la plus simple de contribuer à notre projet est de prendre part 
-			aux discussions sur le <a href="/forum/forum-178-l-association-corrigraphie.html">forum de l’association</a> 
+			aux discussions sur le <a href="<?php echo $view['router']->path('zco_forum_show', ['id' => 178, 'slug' => 'l-association-corrigraphie']) ?>">forum de l’association</a>
 			et d’y proposer des idées. Vous y serez également informés de nos futures 
 			manifestations.
 		</p>

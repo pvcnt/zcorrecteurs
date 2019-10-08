@@ -368,7 +368,7 @@
 					<xsl:choose>
 						<xsl:when test="$rid">
 							<xsl:variable name="sujet" select="substring-before($rid, ':')"/>
-							<a href="/forum/sujet-{$sujet}-{@rid}.html">
+							<a href="/forum/sujet/{$sujet}?c={@rid}">
 								<xsl:call-template name="citationTitre">
 									<xsl:with-param name="rid" select="$rid"/>
 								</xsl:call-template>

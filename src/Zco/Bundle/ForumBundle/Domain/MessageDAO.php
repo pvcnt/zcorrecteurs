@@ -224,7 +224,8 @@ final class MessageDAO
 
         $stmt = $dbh->prepare("
 	SELECT message_id, message_auteur, message_texte, message_sujet_id, sujet_auteur, message_date, utilisateur_pseudo, utilisateur_sexe,
-	sujet_id, sujet_titre, sujet_sous_titre, sujet_premier_message, sujet_dernier_message, sujet_ferme, sujet_resolu, sujet_annonce, sujet_corbeille, sujet_sondage, sondage_question, sujet_forum_id,
+	sujet_id, sujet_titre, sujet_sous_titre, sujet_premier_message, sujet_dernier_message, sujet_ferme, sujet_resolu, sujet_annonce, sujet_corbeille, 
+	sujet_sondage, sondage_question, sujet_forum_id, sujet_auteur,
 	lunonlu_utilisateur_id
         FROM zcov2_forum_messages
 	LEFT JOIN zcov2_forum_sujets ON zcov2_forum_messages.message_sujet_id = zcov2_forum_sujets.sujet_id
@@ -255,7 +256,7 @@ final class MessageDAO
         return false;
     }
 
-    public static function EnregistrerNouveauMessage($id, $forum_id, $annonce, $ferme, $resolu, $corbeille, $sujet_auteur)
+    public static function EnregistrerNouveauMessage($id, $forum_id, $corbeille)
     {
         $dbh = \Doctrine_Manager::connection()->getDbh();
 
@@ -277,23 +278,12 @@ final class MessageDAO
         // pour indiquer que ce post est le dernier du sujet, et pour incrémenter
         // le nombre de réponses, et pour changer (ou pas) le type, le statut du
         // sujet, sa résolution.
-        $verifier_editer_titre = (verifier('editer_sujets', $forum_id) || (verifier('editer_ses_sujets', $forum_id) && $_SESSION['id'] == $sujet_auteur)) && !empty($_POST['titre']);
         $stmt = $dbh->prepare("UPDATE zcov2_forum_sujets " .
             "SET sujet_dernier_message = :sujet_dernier_message, " .
-            "sujet_reponses = sujet_reponses+1, " .
-            "sujet_annonce = :sujet_annonce, sujet_ferme = :sujet_ferme, " .
-            "sujet_resolu = :sujet_resolu " .
-            ($verifier_editer_titre ? ', sujet_titre = :titre, sujet_sous_titre = :sous_titre ' : '') .
+            "sujet_reponses = sujet_reponses+1 " .
             "WHERE sujet_id = :sujet_id");
         $stmt->bindParam(':sujet_dernier_message', $nouveau_message_id);
         $stmt->bindParam(':sujet_id', $id);
-        $stmt->bindParam(':sujet_annonce', $annonce);
-        $stmt->bindParam(':sujet_ferme', $ferme);
-        $stmt->bindParam(':sujet_resolu', $resolu);
-        if ($verifier_editer_titre) {
-            $stmt->bindParam(':titre', $_POST['titre']);
-            $stmt->bindParam(':sous_titre', $_POST['sous_titre']);
-        }
         $stmt->execute();
 
         // Puis on met à jour la table lu / nonlu

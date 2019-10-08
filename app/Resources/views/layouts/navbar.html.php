@@ -8,7 +8,7 @@
                 <a href="<?php echo $view['router']->path('zco_blog_index') ?>">Blog</a>
             </li>
             <li>
-                <a href="/forum/">Forum</a>
+                <a href="<?php echo $view['router']->path('zco_forum_index') ?>">Forum</a>
             </li>
             <li>
                 <a href="<?php echo $view['router']->path('zco_quiz_index') ?>">Quiz</a>

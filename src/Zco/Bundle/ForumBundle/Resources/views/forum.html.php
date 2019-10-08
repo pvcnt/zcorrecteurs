@@ -9,15 +9,10 @@ $view->extend('::layouts/default.html.php') ?>
 
 <h2><?php echo htmlspecialchars($InfosForum['cat_description']); ?></h2>
 
+<?php if(verifier('corbeille_sujets', $InfosForum['cat_id']) || verifier('voir_archives')): ?>
 <div class="options_forum">
 	<ul>
-		<?php if(verifier('mettre_sujet_favori')){ ?>
-		<li>
-			Voir les sujets…
-			<a href="?favori=1">en favoris</a>, <a href="?">tous</a>
-		</li>
-
-		<?php } if(verifier('corbeille_sujets', $_GET['id'])){ ?>
+		<?php if(verifier('corbeille_sujets', $InfosForum['cat_id'])){ ?>
 		<li>
 			<?php if(!empty($_GET['trash'])){ ?>
 			<a href="<?php echo CategoryDAO::FormateURLCategorie($InfosForum['cat_id']); ?>">Sortir</a> de la corbeille.
@@ -37,6 +32,7 @@ $view->extend('::layouts/default.html.php') ?>
 		<?php endif; ?>
 	</ul>
 </div>
+<?php endif ?>
 
 <?php if (!empty($ListerUneCategorie)){ ?>
 <table class="liste_cat">
@@ -76,9 +72,9 @@ $view->extend('::layouts/default.html.php') ?>
 
 <?php echo $SautRapide ?>
 
-<?php if (verifier('creer_sujets', $_GET['id'])){ ?>
+<?php if (verifier('creer_sujets', $InfosForum['cat_id'])){ ?>
 <p class="reponse_ajout_sujet">
-	<a href="nouveau-<?php echo $_GET['id']; ?>.html<?php if(!empty($_GET['trash'])) echo '?trash=1'; ?>">
+    <a href="<?php echo $view['router']->url('zco_forum_newTopic', ['id' => $InfosForum['cat_id'], 'trash' => $_GET['trash'] ?? '0']) ?>">
 		<img src="/bundles/zcoforum/img/nouveau.png" alt="Nouveau sujet" title="Nouveau sujet" />
 	</a>
 </p>
@@ -209,13 +205,6 @@ $view->extend('::layouts/default.html.php') ?>
 						<img src="/pix.gif" class="fff accept" title="Résolu" alt="Résolu" />
 						<?php
 					}
-					//Affichage ou non du logo favori
-					if($valeur['lunonlu_favori'])
-					{
-						?>
-						<img src="/pix.gif" class="fff award_star_gold_1" alt="Favoris" title="Sujet dans mes favoris" />
-						<?php
-					}
 					?>
 				</td>
 				<td title="Sujet commencé <?php echo dateformat($valeur['sujet_date'], MINUSCULE); ?>">
@@ -308,11 +297,11 @@ $view->extend('::layouts/default.html.php') ?>
 
 <?php echo $SautRapide ?>
 
-<?php if(verifier('creer_sujets', $_GET['id']))
+<?php if(verifier('creer_sujets', $InfosForum['cat_id']))
 {
 ?>
 <p class="reponse_ajout_sujet">
-	<a href="nouveau-<?php echo $_GET['id']; ?>.html<?php if(!empty($_GET['trash'])) echo '?trash=1'; ?>">
+    <a href="<?php echo $view['router']->url('zco_forum_newTopic', ['id' => $InfosForum['cat_id'], 'trash' => $_GET['trash'] ?? '0']) ?>">
 		<img src="/bundles/zcoforum/img/nouveau.png" alt="Nouveau sujet" title="Nouveau sujet" />
 	</a>
 </p>

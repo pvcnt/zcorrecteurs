@@ -24,48 +24,13 @@
 <?php if(!empty($InfosSujet['sujet_corbeille'])){ ?>
 <div class="UI_errorbox">
 	Ce message a été jeté à la corbeille !
-	<a href="corbeille-<?php echo $_GET['id']; ?>-0.html?token=<?php echo $_SESSION['token']; ?>">
+	<a href="<?php echo $view['router']->path('zco_forum_trash', ['id' => $InfosSujet['sujet_id'], 'status' => 0, 'token' => $_SESSION['token']]) ?>">
 		Restaurer le sujet
 	</a>
 </div>
 <?php } ?>
 
 <?php echo $SautRapide; ?>
-
-<?php
-//Affichage des boutons pour répondre et créer un nouveau sujet
-if(verifier('creer_sujets', $InfosSujet['sujet_forum_id']) OR verifier('repondre_sujets', $InfosSujet['sujet_forum_id'])){ ?>
-<p class="reponse_ajout_sujet">
-	<?php
-	//Si le sujet est fermé et que l'on peut répondre aux sujets fermés, on affiche le bouton "fermé" avec un lien ou alors le bouton "anti-UP"
-	if($InfosSujet['sujet_ferme'] AND verifier('repondre_sujets_fermes', $InfosSujet['sujet_forum_id']) AND verifier('repondre_sujets', $InfosSujet['sujet_forum_id']))
-	{ ?>
-		<a href="<?php echo 'repondre-'.$_GET['id']; ?>.html"><img src="/bundles/zcoforum/img/ferme.png" alt="Répondre" title="Répondre à ce sujet" /></a>&nbsp;
-	<?php }
-	//Si le sujet est fermé et que l'on n'est pas admin, on affiche le bouton "fermé", mais sans lien.
-	elseif($InfosSujet['sujet_ferme'] AND !verifier('repondre_sujets_fermes', $InfosSujet['sujet_forum_id']) AND verifier('repondre_sujets', $InfosSujet['sujet_forum_id']))
-	{
-	?>
-	<img src="/bundles/zcoforum/img/ferme.png" alt="Fermé" title="Sujet fermé" />
-	<?php
-	}
-	//Si le sujet n'est pas fermé, on affiche le bouton "répondre", ou le bouton Anti-UP
-	elseif(verifier('repondre_sujets', $InfosSujet['sujet_forum_id']))
-	{ ?>
-    <a href="<?php echo 'repondre-'.$_GET['id']; ?>.html">
-        <img src="/bundles/zcoforum/img/repondre.png" alt="Répondre" title="Répondre à ce sujet" />
-    </a>&nbsp;
-	<?php }
-
-	if(verifier('creer_sujets', $InfosSujet['sujet_forum_id']))
-	{
-	?>
-	<a href="nouveau-<?php echo $InfosSujet['sujet_forum_id']; ?>.html<?php if($InfosSujet['sujet_corbeille']) echo '?trash=1'; ?>">
-		<img src="/bundles/zcoforum/img/nouveau.png" alt="Nouveau sujet" title="Nouveau sujet" />
-	</a>
-	<?php } ?>
-</p>
-<?php } ?>
 
 <?php if($InfosSujet['sujet_resolu']){ ?>
 <p class="sujet_resolu">
@@ -185,20 +150,10 @@ if($InfosSujet['sujet_sondage'] > 0)
 				)
 				{
 				?>
-				<a href="<?php echo 'repondre-'.$_GET['id'].'-'.$valeur['message_id']; ?>.html">
+				<a href="<?php echo $view['router']->path('zco_forum_reply', ['id' => $InfosSujet['sujet_id'], 'quote' => $valeur['message_id']]) ?>">
 					<img src="/pix.gif" class="fff comment" alt="Citer" title="Citer" />
 				</a>
 				<?php }
-								//Marquer comme dernier message lu
-								if(verifier('connecte') && $InfosSujet['lunonlu_message_id'] != $valeur['message_id'])
-								{
-								?>
-								<a href="<?php echo 'marquer-dernier-message-lu-'.$valeur['message_id']; ?>.html?token=<?php echo $_SESSION['token']; ?>">
-									<img src="/pix.gif" class="fff lightbulb_off_add" alt="Marquer comme dernier message lu" title="Marquer comme dernier message lu" />
-								</a>
-								<?php
-								}
-
 				//Edition du message
 				if
 				(
@@ -227,7 +182,7 @@ if($InfosSujet['sujet_sondage'] > 0)
 				if($valeur['message_id'] == $InfosSujet['sujet_premier_message'] && verifier('suppr_sujets', $InfosSujet['sujet_forum_id']))
 				{
 				?>
-				<a href="<?php echo 'supprimer-sujet-'.$_GET['id']; ?>.html">
+                <a href="<?php echo $view['router']->path('zco_forum_delete', ['id' => $InfosSujet['sujet_id']]) ?>">
 					<img src="/pix.gif" class="fff cross" alt="Supprimer le sujet" title="Supprimer le sujet" />
 				</a>
 				<?php
@@ -344,49 +299,11 @@ if($InfosSujet['sujet_sondage'] > 0)
 </table>
 
 <?php
-if(verifier('creer_sujets', $InfosSujet['sujet_forum_id']) OR verifier('repondre_sujets', $InfosSujet['sujet_forum_id']))
-{
-?>
-<p class="reponse_ajout_sujet">
-<?php
-}
-
-	//Si le sujet est fermé et que l'on peut répondre aux sujets fermés, on affiche le bouton "fermé" avec un lien ou alors le bouton "anti-UP"
-	if($InfosSujet['sujet_ferme'] AND verifier('repondre_sujets_fermes', $InfosSujet['sujet_forum_id']) AND verifier('repondre_sujets', $InfosSujet['sujet_forum_id']))
-	{ ?>
-		<a href="<?php echo 'repondre-'.$_GET['id']; ?>.html"><img src="/bundles/zcoforum/img/ferme.png" alt="Répondre" title="Répondre à ce sujet" /></a>&nbsp;
-    <?php }
-	//Si le sujet est fermé et que l'on ne peut pas répondre aux sujets fermés, on affiche le bouton "fermé", mais sans lien.
-	elseif($InfosSujet['sujet_ferme'] AND !verifier('repondre_sujets_fermes', $InfosSujet['sujet_forum_id']) AND verifier('repondre_sujets', $InfosSujet['sujet_forum_id']))
-	{
-	?>
-	<img src="/bundles/zcoforum/img/ferme.png" alt="Fermé" title="Sujet fermé" />
-	<?php
-	}
-	//Si le sujet n'est pas fermé, on affiche le bouton "répondre", ou le bouton Anti-UP
-	elseif(verifier('repondre_sujets', $InfosSujet['sujet_forum_id']))
-	{ ?>
-		<a href="<?php echo 'repondre-'.$_GET['id']; ?>.html"><img src="/bundles/zcoforum/img/repondre.png" alt="Répondre" title="Répondre à ce sujet" /></a>&nbsp;
-    <?php }
-	if(verifier('creer_sujets', $InfosSujet['sujet_forum_id']))
-	{
-	?>
-		<a href="nouveau-<?php echo $InfosSujet['sujet_forum_id']; ?>.html<?php if($InfosSujet['sujet_corbeille']) echo '?trash=1' ?>"><img src="/bundles/zcoforum/img/nouveau.png" alt="Nouveau sujet" title="Nouveau sujet" /></a>
-	<?php
-	}
-
-if(verifier('creer_sujets', $InfosSujet['sujet_forum_id']) OR verifier('repondre_sujets', $InfosSujet['sujet_forum_id']))
-{
-?>
-</p>
-<?php
-}
-
 echo $SautRapide;
 
 $ReponseRapide = '
 <div id="reponse_rapide">
-<form action="repondre-'.$_GET['id'].'.html" method="post">
+<form action="' . $view['router']->path('zco_forum_reply', ['id' => $InfosSujet['sujet_id']])  . '" method="post">
 	<fieldset id="rep_rapide">
 		Réponse rapide :<br />
 		<textarea name="texte" id="texte" tabindex="10" cols="40" rows="10" class="zcode_rep_rapide"></textarea>

@@ -34,7 +34,7 @@
 				<?php } ?>
 
 				<strong>
-					<a href="/forum/sujet-<?php echo $result['sujet_id']; ?>-<?php echo $result['message_id']; ?>-<?php echo rewrite($result['sujet_titre']); ?>.html">
+					<a href="<?php echo $view['router']->path('zco_forum_showTopic', ['id' => $result['sujet_id'], 'c' => $result['message_id'], 'slug' => rewrite($result['sujet_titre'])]) ?>">
 						<?php echo htmlspecialchars($result['sujet_titre']); ?>
 					</a>
 				</strong>

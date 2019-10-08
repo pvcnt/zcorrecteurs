@@ -17,7 +17,7 @@ if(verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']))
 			$('deplacer_sujet').innerHTML = '<img src="/img/ajax-loader.gif" alt="" />';
 			setTimeout(function(){
 				xhr = new Request({method: 'post', url: '/forum/ajax-deplacer-sujet.html', onSuccess: afficher_deplacer_sujet});
-			xhr.send('id='+escape("<?php echo $_GET['id']; ?>")+'&fofo_actuel='+escape("<?php echo $InfosSujet['sujet_forum_id']; ?>"));
+			xhr.send('id='+escape("<?php echo $InfosSujet['sujet_id']; ?>")+'&fofo_actuel='+escape("<?php echo $InfosSujet['sujet_forum_id']; ?>"));
 			}, 500);
 		}
 	<?php
@@ -40,7 +40,7 @@ if(verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']))
 			?>
 			<li>
 				<img src="/pix.gif" class="fff accept" alt="" />
-				<a href="<?php echo 'changer-resolu-'.$_GET['id']; ?>.html?token=<?php echo $_SESSION['token']; ?>">
+				<a href="<?php echo $view['router']->path('zco_forum_markSolved', ['id' => $InfosSujet['sujet_id'], 'token' => $_SESSION['token']]) ?>">
 					Ne plus indiquer mon problème comme résolu
 				</a>
 			</li>
@@ -51,7 +51,7 @@ if(verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']))
 			?>
 			<li>
 				<img src="/pix.gif" class="fff accept" alt="" />
-				<a href="<?php echo 'changer-resolu-'.$_GET['id']; ?>.html?token=<?php echo $_SESSION['token']; ?>">
+				<a href="<?php echo $view['router']->path('zco_forum_markSolved', ['id' => $InfosSujet['sujet_id'], 'token' => $_SESSION['token']]) ?>">
 					Indiquer mon problème comme résolu
 				</a>
 			</li>
@@ -65,7 +65,7 @@ if(verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']))
 			?>
 			<li>
 				<img src="/pix.gif" class="fff accept" alt="" />
-				<a href="changer-resolu-<?php echo $_GET['id']; ?>.html?token=<?php echo $_SESSION['token']; ?>">
+				<a href="<?php echo $view['router']->path('zco_forum_markSolved', ['id' => $InfosSujet['sujet_id'], 'token' => $_SESSION['token']]) ?>">
 					Ne plus indiquer le problème de <strong><?php echo htmlspecialchars($InfosSujet['sujet_auteur_pseudo']); ?></strong> comme résolu.
 				</a>
 			</li>
@@ -76,7 +76,7 @@ if(verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']))
 			?>
 			<li>
 				<img src="/pix.gif" class="fff accept" alt="" />
-				<a href="changer-resolu-<?php echo $_GET['id']; ?>.html?token=<?php echo $_SESSION['token']; ?>">
+				<a href="<?php echo $view['router']->path('zco_forum_markSolved', ['id' => $InfosSujet['sujet_id'], 'token' => $_SESSION['token']]) ?>">
 					Indiquer le problème de <strong><?php echo htmlspecialchars($InfosSujet['sujet_auteur_pseudo']); ?></strong> comme résolu.
 				</a>
 			</li>
@@ -84,40 +84,6 @@ if(verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']))
 			}
 		}
 		//FIN sujet résolu
-
-		//DÉBUT marquer non-lu
-		if(verifier('connecte'))
-		{
-		?>
-			<li>
-				<img src="/pix.gif" class="fff lightbulb" alt="" />
-				<a href="marquer-sujet-non-lu-<?php echo $_GET['id']; ?>-<?php  echo rewrite($InfosSujet['sujet_titre']); ?>.html?token=<?php echo $_SESSION['token']; ?>">
-					Marquer le sujet comme non-lu
-				</a>
-			</li>
-		<?php
-		}
-		//FIN marquer non-lu
-
-		//DÉBUT favori
-		if(verifier('mettre_sujet_favori'))
-		{
-		?>
-			<li>
-				<img src="/pix.gif" class="fff award_star_gold_1" alt="" />
-				<?php if($InfosSujet['lunonlu_favori']){ ?>
-				<a href="?changer_favori=1&amp;token=<?php echo $_SESSION['token']; ?>">
-					Retirer des favoris
-				</a>
-				<?php } else { ?>
-				<a href="?changer_favori=1&amp;token=<?php echo $_SESSION['token']; ?>">
-					Mettre en favori
-				</a>
-				<?php } ?>
-			</li>
-		<?php
-		}
-		//FIN favori
         ?>
 	</ul>
 </fieldset><br />
@@ -134,7 +100,7 @@ if(verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']))
 			{
 			?>
 			<li><span><img src="/pix.gif" class="fff flag_yellow" alt="Enlever des annonces" title="Enlever des annonces" /></span>
-			<a href="<?php echo 'changer-type-'.$_GET['id']; ?>.html?token=<?php echo $_SESSION['token']; ?>">
+			<a href="<?php echo $view['router']->path('zco_forum_markPinned', ['id' => $InfosSujet['sujet_id'], 'token' => $_SESSION['token']]) ?>">
 				Enlever des annonces
 			</a></li>
 			<?php
@@ -143,7 +109,7 @@ if(verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']))
 			{
 			?>
 			<li><span><img src="/pix.gif" class="fff flag_red" alt="Transformer en annonce" title="Mettre ce sujet en annonce" /></span>
-			<a href="<?php echo 'changer-type-'.$_GET['id']; ?>.html?token=<?php echo $_SESSION['token']; ?>">
+			<a href="<?php echo $view['router']->path('zco_forum_markPinned', ['id' => $InfosSujet['sujet_id'], 'token' => $_SESSION['token']]) ?>">
 				Mettre le sujet en annonce
 			</a></li>
 			<?php
@@ -158,7 +124,7 @@ if(verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']))
 			{
 			?>
 			<li><span><img src="/pix.gif" class="fff lock_open" alt="Ouvrir" title="Ouvrir le sujet" /></span>
-			<a href="<?php echo 'changer-statut-'.$_GET['id']; ?>.html?token=<?php echo $_SESSION['token']; ?>">
+                <a href="<?php echo $view['router']->path('zco_forum_markClosed', ['id' => $InfosSujet['sujet_id'], 'token' => $_SESSION['token']]) ?>">
 				Ouvrir le sujet
 			</a></li>
 			<?php
@@ -167,7 +133,7 @@ if(verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']))
 			{
 			?>
 			<li><span><img src="/pix.gif" class="fff lock" alt="Fermer" title="Fermer le sujet" /></span>
-			<a href="<?php echo 'changer-statut-'.$_GET['id']; ?>.html?token=<?php echo $_SESSION['token']; ?>">
+                <a href="<?php echo $view['router']->path('zco_forum_markClosed', ['id' => $InfosSujet['sujet_id'], 'token' => $_SESSION['token']]) ?>">
 				Fermer le sujet
 			</a></li>
 			<?php
@@ -197,7 +163,7 @@ if(verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']))
 			?>
 			<li>
 				<img src="/pix.gif" class="fff bin" alt="" />
-				<a href="<?php echo 'corbeille-'.$_GET['id']; ?>-0.html?token=<?php echo $_SESSION['token']; ?>">
+				<a href="<?php echo $view['router']->path('zco_forum_trash', ['id' =>  $InfosSujet['sujet_id'], 'status' => 0, 'token' => $_SESSION['token']]) ?>">
 					Restaurer le sujet
 				</a>
 			</li>
@@ -208,7 +174,7 @@ if(verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']))
 			?>
 			<li>
 				<img src="/pix.gif" class="fff bin" alt="" />
-				<a href="corbeille-<?php echo $_GET['id']; ?>-1.html?token=<?php echo $_SESSION['token']; ?>">
+				<a href="<?php echo $view['router']->path('zco_forum_trash', ['id' => $InfosSujet['sujet_id'], 'status' => 1, 'token' => $_SESSION['token']]) ?>">
 					Mettre le sujet à la corbeille
 				</a>
 			</li>
@@ -223,7 +189,7 @@ if(verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']))
 			?>
 			<li>
 				<img src="/pix.gif" class="fff cross" alt="" />
-				<a href="supprimer-sujet-<?php echo $_GET['id']; ?>.html">
+				<a href="<?php echo $view['router']->path('zco_forum_delete', ['id' => $InfosSujet['sujet_id']]) ?>">
 					Supprimer le sujet
 				</a>
 			</li>

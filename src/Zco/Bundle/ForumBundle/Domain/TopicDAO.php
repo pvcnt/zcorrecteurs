@@ -42,7 +42,7 @@ class TopicDAO
             "sondage_question, sondage_ferme, sujet_forum_id, utilisateur_sexe," .
             "COALESCE(Ma.utilisateur_pseudo, 'Anonyme') AS sujet_auteur_pseudo, Ma.utilisateur_id_groupe AS sujet_auteur_groupe, " .
             "COUNT(*) AS nombre_de_messages, " .
-            "lunonlu_utilisateur_id, lunonlu_message_id, lunonlu_favori, vote_membre_id, " .
+            "lunonlu_utilisateur_id, lunonlu_message_id, vote_membre_id, " .
             "Na.message_date AS dernier_message_date, Na.message_auteur AS dernier_message_auteur " .
             "FROM zcov2_forum_sujets " .
             "LEFT JOIN zcov2_forum_messages ON zcov2_forum_sujets.sujet_id = zcov2_forum_messages.message_sujet_id " .
@@ -341,28 +341,6 @@ class TopicDAO
             $stmt->closeCursor();
         }
         return $nouveau_sujet_id;
-    }
-
-    public static function ChangerFavori($sujet_id, $etat)
-    {
-        $dbh = \Doctrine_Manager::connection()->getDbh();
-        if ($etat == 1) {
-            //Si le sujet est déjà en favori, c'est qu'on veut l'enlever des favoris.
-            $stmt = $dbh->prepare("UPDATE zcov2_forum_lunonlu
-		SET lunonlu_favori = 0
-		WHERE lunonlu_sujet_id = :sujet_id AND lunonlu_utilisateur_id = :utilisateur_id");
-            $stmt->bindParam(':sujet_id', $sujet_id);
-            $stmt->bindParam(':utilisateur_id', $_SESSION['id']);
-            $stmt->execute();
-        } else {
-            //Sinon, on le met en favori.
-            $stmt = $dbh->prepare("UPDATE zcov2_forum_lunonlu
-		SET lunonlu_favori = 1
-		WHERE lunonlu_sujet_id = :sujet_id AND lunonlu_utilisateur_id = :utilisateur_id");
-            $stmt->bindParam(':sujet_id', $sujet_id);
-            $stmt->bindParam(':utilisateur_id', $_SESSION['id']);
-            $stmt->execute();
-        }
     }
 
     /**

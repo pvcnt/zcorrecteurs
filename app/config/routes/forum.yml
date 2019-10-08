@@ -1,0 +1,57 @@
+zco_forum_index:
+  path:   /forum
+  defaults:  { _controller: ZcoForumBundle:Default:index }
+
+zco_forum_show:
+  path:   /forum/categorie/{id}/{slug}
+  defaults:  { _controller: ZcoForumBundle:Default:showForum }
+  requirements:
+    id: \d+
+
+zco_forum_showTopic:
+  path:   /forum/sujet/{id}/{slug}
+  defaults:  { _controller: ZcoForumBundle:Default:showTopic }
+  requirements:
+    id: \d+
+
+zco_forum_newTopic:
+  path:   /forum/nouveau-sujet/{id}
+  defaults:  { _controller: ZcoForumBundle:Default:newTopic }
+  requirements:
+    id: \d+
+
+zco_forum_trash:
+  path:   /forum/corbeille/{id}
+  defaults:  { _controller: ZcoForumBundle:Default:trash }
+  requirements:
+    id: \d+
+
+zco_forum_markSolved:
+  path:   /forum/resolu/{id}
+  defaults:  { _controller: ZcoForumBundle:Default:markSolved }
+  requirements:
+    id: \d+
+
+zco_forum_markPinned:
+  path:   /forum/annonce/{id}
+  defaults:  { _controller: ZcoForumBundle:Default:markPinned }
+  requirements:
+    id: \d+
+
+zco_forum_markClosed:
+  path:   /forum/ferme/{id}
+  defaults:  { _controller: ZcoForumBundle:Default:markClosed }
+  requirements:
+    id: \d+
+
+zco_forum_delete:
+  path:   /forum/supprimer/{id}
+  defaults:  { _controller: ZcoForumBundle:Default:deleteTopic }
+  requirements:
+    id: \d+
+
+zco_forum_reply:
+  path:   /forum/repondre/{id}
+  defaults:  { _controller: ZcoForumBundle:Default:reply }
+  requirements:
+    id: \d+

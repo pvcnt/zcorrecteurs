@@ -41,11 +41,11 @@ RewriteCond %{HTTP_HOST} ^test.zcorrecteurs.fr$
 RewriteRule ^(.*) http://www.zcorrecteurs.fr/$1 [L,R=301]
 
 # Redirections de compatiblité avec les anciennes url
-RewriteRule ^blog/categorie-4-insolite\.html /blog/categorie-25-insolite.html [R=301,L]
-RewriteRule ^blog/categorie-2-orthographe\.html /blog/categorie-24-orthographe.html [R=301,L]
-RewriteRule ^forum/rapports-de-bugs-f3\.html /forum/forum-48-rapports-de-bugs.html [R=301,L]
-RewriteRule ^forum/suggestions-et-commentaires-f8\.html /forum/forum-47-suggestions-et-commentaires.html [R=301,L]
-RewriteRule ^forum/typographie-f42.html /forum/forum-46-typographie.html [R=301,L]
+RewriteRule ^blog/categorie-4-insolite\.html /blog/categorie/25/insolite [R=301,L]
+RewriteRule ^blog/categorie-2-orthographe\.html /blog/categorie/24/orthographe [R=301,L]
+RewriteRule ^forum/rapports-de-bugs-f3\.html /forum/categorie/48/rapports-de-bugs [R=301,L]
+RewriteRule ^forum/suggestions-et-commentaires-f8\.html /forum/categorie/47/suggestions-et-commentaires [R=301,L]
+RewriteRule ^forum/typographie-f42.html /forum/categorie/46/typographie [R=301,L]
 RewriteRule ^equipe\.html /apropos/equipe [R=301,L]
 RewriteRule ^membres\.html /membres/ [R=301,L]
 RewriteRule ^uploads/?$ /fichiers/ [R=301,L]

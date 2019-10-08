@@ -27,7 +27,7 @@
 				<?php } ?>
 				</td>
 				<td class="dates">
-					<a href="sujet-<?php echo $_GET['id'].'-'.$valeur['message_id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html'; ?>">#</a>
+					<a href="<?php echo $view['router']->path('zco_forum_showTopic', ['id'=> $InfosSujet['sujet_id'], 'slug' => rewrite($InfosSujet['sujet_titre']), 'c' => $valeur['message_id']]) ?>">#</a>
 					Posté <?php echo dateformat($valeur['message_date'], MINUSCULE); ?>
 				</td>
 			</tr>

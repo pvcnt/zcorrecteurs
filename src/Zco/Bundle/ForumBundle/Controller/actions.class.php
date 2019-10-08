@@ -110,27 +110,4 @@ class ForumActions extends Controller
 		}
 		return new Response($ret);
 	}
-
-	public function initSujet()
-	{
-		//Compatibilité
-		if(!isset($_GET['s'])) $_GET['s'] = $_GET['id'];
-		if(empty($_GET['id'])) $_GET['id'] = $_GET['s'];
-
-		//--- Récupération des infos sur le sujet ---
-		if(empty($_GET['id']) || !is_numeric($_GET['id']))
-			throw new NotFoundHttpException();
-		else
-		{
-			$InfosSujet = TopicDAO::InfosSujet($_GET['id']);
-			$InfosForum = CategoryDAO::InfosCategorie($InfosSujet['sujet_forum_id']);
-			if(empty($InfosSujet))
-				throw new NotFoundHttpException();
-		}
-
-		//--- Modification des balises méta ---
-		Page::$titre = htmlspecialchars($InfosSujet['sujet_titre']);
-
-		return array($InfosSujet, $InfosForum);
-	}
 }

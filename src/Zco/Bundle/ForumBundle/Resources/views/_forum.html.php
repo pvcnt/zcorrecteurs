@@ -1,12 +1,8 @@
 <?php use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
 if ( isset($Parent) && !empty($_GET['archives'])) : ?>
-<tr class="grosse_cat_trash" id="c<?php echo $Parent['cat_id']; ?>">
+<tr class="grosse_cat_trash">
 	<td colspan="3" class="nom_forum">
-		<h2>
-			<a href="<?php echo CategoryDAO::FormateURLCategorie($Parent['cat_id']); if (!empty($_GET['archives'])) echo '?archives=1'; ?>" rel="nofollow">
-				<?php echo htmlspecialchars($Parent['cat_nom']) ?>
-			</a>
-		</h2>
+		<h2><?php echo htmlspecialchars($Parent['cat_nom']) ?></h2>
 	</td>
 </tr>
 <?php endif; ?>

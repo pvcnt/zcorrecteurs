@@ -69,7 +69,7 @@ final class SitemapFactory
             ));
         }
 
-        $links[] = new SitemapLink(URL_SITE . '/forum/', array(
+        $links[] = new SitemapLink($this->generateUrl('zco_forum_index'), array(
             'changefreq' => 'daily',
             'priority' => '0.7',
         ));

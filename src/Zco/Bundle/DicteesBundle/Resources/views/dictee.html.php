@@ -21,7 +21,7 @@
 	Vous êtes libre d'arrêter ou de reprendre la lecture à tout instant, en cliquant sur le bouton pause.
 </p>
 <p>	Si une partie du fichier audio vous semble peu claire, merci de nous en faire part
-	<a href="/forum/">sur le forum</a>,
+	<a href="<?php echo $view['router']-path('zco_forum_index') ?>>">sur le forum</a>,
 	nous nous efforcerons de fournir une lecture la plus claire possible.<br/>
 	Bonne chance !
 </p>

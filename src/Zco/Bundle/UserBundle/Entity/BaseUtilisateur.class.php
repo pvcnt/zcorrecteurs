@@ -34,7 +34,6 @@
  * @property string $biography
  * @property string $hobbies
  * @property string $citation
- * @property timestamp $utilisateur_derniere_lecture
  * @property integer $sexe
  * @property string $twitter
  * @property Groupe $Groupe
@@ -169,11 +168,6 @@ abstract class BaseUtilisateur extends Doctrine_Record
         $this->hasColumn('utilisateur_citation as citation', 'string', 30, array(
              'type' => 'string',
              'length' => '30',
-             ));
-        $this->hasColumn('utilisateur_derniere_lecture', 'timestamp', 25, array(
-             'type' => 'timestamp',
-             'notnull' => false,
-             'length' => '25',
              ));
         $this->hasColumn('utilisateur_sexe as sexe', 'integer', 1, array(
              'type' => 'integer',

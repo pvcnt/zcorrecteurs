@@ -32,8 +32,6 @@ final class ForumDAO
         $dbh = \Doctrine_Manager::connection()->getDbh();
         if (!empty($_GET['trash']))
             $add = "(SELECT COUNT(*) FROM zcov2_forum_sujets WHERE sujet_corbeille = 1 AND sujet_forum_id = cat_id) AS nb_sujets_corbeille, ";
-        elseif (!empty($_GET['favori']))
-            $add = "AND lunonlu_favori = 1";
         else
             $add = '';
         if (!empty($InfosCategorie))
@@ -61,7 +59,7 @@ final class ForumDAO
             "cat_niveau, cat_redirection, cat_archive, message_date, UNIX_TIMESTAMP(message_date) AS message_timestamp, message_auteur, utilisateur_id, " .
             "IFNULL(utilisateur_pseudo, 'Anonyme') AS utilisateur_pseudo, " .
             "sujet_titre, message_id, message_sujet_id, " . $add . " " .
-            "lunonlu_utilisateur_id, lunonlu_sujet_id, lunonlu_message_id, lunonlu_participe, lunonlu_favori " .
+            "lunonlu_utilisateur_id, lunonlu_sujet_id, lunonlu_message_id, lunonlu_participe " .
             "FROM zcov2_categories " .
             "LEFT JOIN zcov2_forum_messages ON cat_last_element = message_id " .
             "LEFT JOIN zcov2_forum_sujets ON message_sujet_id = sujet_id " .
@@ -100,11 +98,7 @@ final class ForumDAO
     //Cette fonction retourne l'image du système lu/non lu.
     public static function LuNonluCategorie($lu)
     {
-        if ($lu['derniere_lecture_globale'] > $lu['date_dernier_message']) {
-            $dejalu = true;
-        } else {
-            $dejalu = false;
-        }
+        $dejalu = false;
         //Si on a déjà lu au moins une fois ce sujet
         if (!empty($lu['lunonlu_utilisateur_id']) || $dejalu) {
             //Si on pas encore posté dans ce sujet
@@ -201,30 +195,10 @@ final class ForumDAO
         $dbh = \Doctrine_Manager::connection()->getDbh();
 
         // Corbeille
-        if (!empty($_GET['trash']) AND verifier('corbeille_sujets', $_GET['id']))
+        if (!empty($_GET['trash']) AND verifier('corbeille_sujets', $id))
             $trash = 1;
         else
             $trash = 0;
-
-        // S'il n'y a pas d'id, c'est que l'on ne veut pas voir un forum en particulier mais tous les sujets de tous les forums
-        if (empty($id)) {
-            $add = "";
-
-            if (isset($_GET['closed'])) {
-                $add .= ' AND sujet_ferme = ' . ($_GET['closed'] ? 1 : 0);
-            }
-            if (isset($_GET['solved'])) {
-                $add .= ' AND sujet_resolu = ' . ($_GET['solved'] ? 1 : 0);
-            }
-            if (isset($_GET['favori'])) {
-                $add .= ' AND lunonlu_favori = ' . ($_GET['favori'] ? 1 : 0);
-            }
-            if (isset($_GET['epingle'])) {
-                $add .= ' AND sujet_annonce = ' . ($_GET['epingle'] ? 1 : 0);
-            }
-        } else {
-            $add = "sujet_forum_id = " . $id . " AND ";
-        }
 
         $groupes = isset($_SESSION['groupes_secondaires']) ? $_SESSION['groupes_secondaires'] : array();
         array_unshift($groupes, $_SESSION['groupe']);
@@ -236,10 +210,10 @@ final class ForumDAO
             "AND gd_id_groupe IN ($groupes) " .
             'LEFT JOIN zcov2_droits ON gd_id_droit = droit_id ' .
             "WHERE sujet_forum_id = :f AND sujet_corbeille = :trash " .
-            "AND droit_nom = 'voir_sujets'" . $add
+            "AND droit_nom = 'voir_sujets'"
         );
-        $stmt->bindParam(':f', $id);
-        $stmt->bindParam(':trash', $trash);
+        $stmt->bindValue(':f', $id);
+        $stmt->bindValue(':trash', $trash);
 
         $stmt->execute();
 
@@ -259,9 +233,6 @@ final class ForumDAO
         if (isset($_GET['solved'])) {
             $add .= ' AND sujet_resolu = ' . ($_GET['solved'] ? 1 : 0);
         }
-        if (isset($_GET['favori'])) {
-            $add .= ' AND lunonlu_favori = ' . ($_GET['favori'] ? 1 : 0);
-        }
         if (isset($_GET['epingle'])) {
             $add .= ' AND sujet_annonce = ' . ($_GET['epingle'] ? 1 : 0);
         }
@@ -269,7 +240,7 @@ final class ForumDAO
         /* Fin des ajouts */
 
         // Corbeille
-        if (!empty($_GET['trash']) AND verifier('corbeille_sujets', $_GET['id'])) {
+        if (!empty($_GET['trash']) AND verifier('corbeille_sujets', $forumID)) {
             $trash = 1;
         } else {
             $trash = 0;
@@ -297,7 +268,7 @@ final class ForumDAO
             'sujet_dernier_message, sujet_sondage, sujet_annonce, ' .
             'sujet_ferme, sujet_resolu, message_id, ' .
             'lunonlu_utilisateur_id, lunonlu_sujet_id, lunonlu_message_id, ' .
-            'lunonlu_participe, lunonlu_favori ' .
+            'lunonlu_participe ' .
             'FROM zcov2_forum_sujets ' .
             'LEFT JOIN zcov2_forum_messages ON sujet_dernier_message = message_id ' .
             'LEFT JOIN zcov2_utilisateurs Ma ON sujet_auteur = Ma.utilisateur_id ' .
@@ -322,7 +293,7 @@ final class ForumDAO
     // Cette fonction retourne l'image du système lu/non lu.
     public static function LuNonluForum($lu)
     {
-        $dejalu = $lu['derniere_lecture_globale'] > $lu['date_dernier_message'];
+        $dejalu = false;
         $dejavu = !empty($lu['lunonlu_utilisateur_id']);
 
         if ($dejavu || $dejalu) {
