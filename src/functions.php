@@ -766,6 +766,9 @@ function fil_ariane($id = null, $enfants = array())
     if (empty($ListerParents)) {
         $ListerParents = CategoryDAO::ListerParents(CategoryDAO::GetIDCategorie('informations'), false);
     }
+    if (!empty($ListerParents)) {
+        \Page::$description = htmlspecialchars($ListerParents[count($ListerParents) - 1]['cat_description']);
+    }
 
     $items = array();
     $url = '';

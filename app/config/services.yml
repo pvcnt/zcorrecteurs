@@ -27,12 +27,6 @@ services:
     public: true
     arguments: ['@cache', !tagged zco.admin_task]
 
-  Zco\Bundle\CoreBundle\EventListener\EventListener:
-    calls:
-    - [setContainer, ["@service_container"]]
-    tags:
-    - { name: kernel.event_subscriber }
-
   zco.repository.quotes:
     class: Zco\Bundle\ContentBundle\Domain\QuoteRepository
     public: true

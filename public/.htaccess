@@ -73,12 +73,7 @@ RewriteRule ^contact/$ /apropos/contact [L,R=301]
 RewriteRule ^inscription/$ /membres/inscription [L,R=301]
 RewriteRule ^connexion/$ /membres/connexion [L,R=301]
 
-# Règles spécifiques
 RewriteRule ^index\.html$ / [R=301,L]
-
-# Règles de routage principales
-RewriteRule ^([a-zA-Z]+)/(index\.html)?$ index.php?page=$1&index=$2 [QSA,L]
-RewriteRule ^([a-zA-Z-]+)/([a-zA-Z-]+)(?:-([0-9]+))?(?:-([0-9]+))?(?:-p([0-9]+))?(?:-([a-zA-Z0-9-]*))?\.html$ index.php?page=$1&act=$2&id=$3&id2=$4&p=$5&titre=$6 [QSA,L]
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^(.*)$ index.php [QSA,L]
