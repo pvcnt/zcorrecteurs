@@ -51,7 +51,7 @@
 				<a href="<?php echo $view['router']->path('zco_blog_show', ['id' => $valeur['blog_id'], 'slug' => rewrite($valeur['version_titre']), 'c' => $valeur['lunonlu_id_commentaire']]) ?>#m<?php echo $valeur['lunonlu_id_commentaire']; ?>" title="Aller au dernier message lu"><img src="/bundles/zcoforum/img/fleche.png" alt="Dernier message lu" /></a>
 				<?php } ?>
 
-				<a href="<?php echo $view['router']->path('zco_blog_manage', ['id' => $valeur['blog_id'], 'slug' => rewrite($valeur['version_titre'])]) ?>">
+				<a href="<?php echo $view['router']->path('zco_blog_manage', ['id' => $valeur['blog_id']]) ?>">
 					<?php echo htmlspecialchars($valeur['version_titre']); ?>
 				</a>
 			</td>
@@ -80,14 +80,14 @@
 			</td>
 			<td class="center">
 				<?php if(verifier('blog_valider') && !in_array($valeur['blog_etat'], array(BLOG_VALIDE, BLOG_PROPOSE))){ ?>
-				<a href="<?php echo $view['router']->path('zco_blog_publish', ['id' => $valeur['blog_id'], 'slug' => rewrite($valeur['version_titre'])]) ?>" title="Valider ce billet"><img src="/bundles/zcoblog/img/valider.png" alt="Valider" /></a>
+				<a href="<?php echo $view['router']->path('zco_blog_publish', ['id' => $valeur['blog_id']]) ?>" title="Valider ce billet"><img src="/bundles/zcoblog/img/valider.png" alt="Valider" /></a>
 				<?php } elseif(verifier('blog_valider') && $valeur['blog_etat'] == BLOG_VALIDE){ ?>
-				<a href="<?php echo $view['router']->path('zco_blog_unpublish', ['id' => $valeur['blog_id'], 'slug' => rewrite($valeur['version_titre'])]) ?>" title="Dévalider ce billet"><img src="/bundles/zcoblog/img/refuser.png" alt="Dévalider" /></a>
+				<a href="<?php echo $view['router']->path('zco_blog_unpublish', ['id' => $valeur['blog_id']]) ?>" title="Dévalider ce billet"><img src="/bundles/zcoblog/img/refuser.png" alt="Dévalider" /></a>
 				<?php } ?>
 			</td>
 			<td class="center">
 				<?php if((in_array($valeur['blog_etat'], array(BLOG_BROUILLON, BLOG_REFUSE)) && $createur == true) || verifier('blog_editer_valide')){ ?>
-				<a href="<?php echo $view['router']->path('zco_blog_delete', ['id' => $valeur['blog_id'], 'slug' => rewrite($valeur['version_titre'])]) ?>"><img src="/img/supprimer.png" alt="Supprimer" /></a>
+				<a href="<?php echo $view['router']->path('zco_blog_delete', ['id' => $valeur['blog_id']]) ?>"><img src="/img/supprimer.png" alt="Supprimer" /></a>
 				<?php } else echo '-'; ?>
 			</td>
 		</tr>

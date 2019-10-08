@@ -170,7 +170,7 @@ class DefaultController extends Controller
             throw new AccessDeniedHttpException();
         }
 
-        $url = $this->generateUrl('zco_blog_manage', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]);
+        $url = $this->generateUrl('zco_blog_manage', ['id' => $InfosBillet['blog_id']]);
 
         //--- Si on veut ajouteur un auteur ---
         if (isset($_POST['ajouter_auteur']) && ($credentials->isOwner() || verifier('blog_toujours_createur'))) {
@@ -431,12 +431,12 @@ class DefaultController extends Controller
         if (!$credentials->isOwner() && !verifier('blog_toujours_createur')) {
             throw new AccessDeniedHttpException;
         }
-        $url = $this->generateUrl('zco_blog_manage', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]);
+        $url = $this->generateUrl('zco_blog_manage', ['id' => $InfosBillet['blog_id']]);
 
         if ($request->isMethod('POST')) {
             $InfosUtilisateur = UserDAO::InfosUtilisateur($_POST['pseudo']);
             if (!$InfosUtilisateur) {
-                return redirect('Ce membre n\'existe pas.', 'admin-billet-' . $_GET['id'] . '.html', MSG_ERROR);
+                return redirect('Ce membre n\'existe pas.', $url, MSG_ERROR);
             }
             BlogDAO::EditerAuteur($authorId, $id, $InfosUtilisateur['utilisateur_id'], $_POST['statut']);
 
@@ -472,7 +472,7 @@ class DefaultController extends Controller
         if (!$credentials->isOwner() && !verifier('blog_toujours_createur')) {
             throw new AccessDeniedHttpException;
         }
-        $url = $this->generateUrl('zco_blog_manage', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]);
+        $url = $this->generateUrl('zco_blog_manage', ['id' => $InfosBillet['blog_id']]);
 
         if ($request->isMethod('POST')) {
             BlogDAO::SupprimerAuteur($authorId, $id);
@@ -561,7 +561,7 @@ class DefaultController extends Controller
         }
 
         fil_ariane($InfosBillet['cat_id'], [
-            htmlspecialchars($InfosBillet['version_titre']) => $this->generateUrl('zco_blog_manage', ['id' => $id, 'slug' => rewrite($InfosBillet['version_titre'])]),
+            htmlspecialchars($InfosBillet['version_titre']) => $this->generateUrl('zco_blog_manage', ['id' => $id]),
             'Voir l\'historique des versions',
         ]);
         \Page::$titre = htmlspecialchars($InfosBillet['version_titre']) . ' - Historique des versions';
@@ -605,12 +605,12 @@ class DefaultController extends Controller
 
             return redirect(
                 'Le billet a bien été édité.',
-                $this->generateUrl('zco_blog_manage', ['id' => $id, 'slug' => rewrite($InfosBillet['version_titre'])])
+                $this->generateUrl('zco_blog_manage', ['id' => $id])
             );
         }
 
         fil_ariane($InfosBillet['cat_id'], [
-            htmlspecialchars($InfosBillet['version_titre']) => $this->generateUrl('zco_blog_manage', ['id' => $id, 'slug' => rewrite($InfosBillet['version_titre'])]),
+            htmlspecialchars($InfosBillet['version_titre']) => $this->generateUrl('zco_blog_manage', ['id' => $id]),
             'Modifier le billet',
         ]);
         \Page::$titre = htmlspecialchars($InfosBillet['version_titre']) . ' - Modifier le billet';
@@ -640,7 +640,7 @@ class DefaultController extends Controller
         }
 
         fil_ariane($InfosBillet['cat_id'], [
-            htmlspecialchars($InfosBillet['version_titre']) => $this->generateUrl('zco_blog_manage', ['id' => $id, 'slug' => rewrite($InfosBillet['version_titre'])]),
+            htmlspecialchars($InfosBillet['version_titre']) => $this->generateUrl('zco_blog_manage', ['id' => $id]),
             'Supprimer le billet',
         ]);
         \Page::$titre = htmlspecialchars($InfosBillet['version_titre']) . ' - Supprimer le billet';
@@ -681,8 +681,8 @@ class DefaultController extends Controller
         $diff_texte = $this->diff($texte_old, $texte_new);
 
         fil_ariane($InfosBillet['cat_id'], [
-            htmlspecialchars($InfosBillet['version_titre']) => $this->generateUrl('zco_blog_manage', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]),
-            'Historique des versions' => $this->generateUrl('zco_blog_history', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]),
+            htmlspecialchars($InfosBillet['version_titre']) => $this->generateUrl('zco_blog_manage', ['id' => $InfosBillet['blog_id']]),
+            'Historique des versions' => $this->generateUrl('zco_blog_history', ['id' => $InfosBillet['blog_id']]),
             'Comparaison',
         ]);
         \Page::$titre = htmlspecialchars($InfosBillet['version_titre']) . ' - Historique des versions';

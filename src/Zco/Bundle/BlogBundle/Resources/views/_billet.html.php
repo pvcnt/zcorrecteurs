@@ -2,15 +2,15 @@
 	<div class="info">
 		<span class="moderation">
 			<?php if($credentials->canEdit()){ ?>
-			<a href="<?php echo $view['router']->path('zco_blog_manage', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]) ?>" title="Modifier le billet">
+			<a href="<?php echo $view['router']->path('zco_blog_manage', ['id' => $InfosBillet['blog_id']]) ?>" title="Modifier le billet">
 				<img src="/img/editer.png" alt="Modifier" />
 			</a>
 			<?php } if($credentials->canUnpublish()){ ?>
-			<a href="<?php echo $view['router']->path('zco_blog_unpublish', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]) ?>" title="Mettre le billet hors ligne">
+			<a href="<?php echo $view['router']->path('zco_blog_unpublish', ['id' => $InfosBillet['blog_id']]) ?>" title="Mettre le billet hors ligne">
 				<img src="/bundles/zcoblog/img/refuser.png" alt="Dévalider" />
 			</a>
 			<?php } if($credentials->canDelete()){ ?>
-			<a href="<?php echo $view['router']->path('zco_blog_unpublish', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]) ?>" title="Supprimer le billet">
+			<a href="<?php echo $view['router']->path('zco_blog_delete', ['id' => $InfosBillet['blog_id']]) ?>" title="Supprimer le billet">
 				<img src="/img/supprimer.png" alt="Supprimer" />
 			</a>
 			<?php } ?>

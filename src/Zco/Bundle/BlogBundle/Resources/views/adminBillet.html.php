@@ -9,7 +9,7 @@
 <div class="UI_column_menu">
 	<div class="box">
 		<?php if($credentials->canEdit()){ ?>
-		<a href="<?php echo $view['router']->path('zco_blog_edit', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]) ?>">
+		<a href="<?php echo $view['router']->path('zco_blog_edit', ['id' => $InfosBillet['blog_id']]) ?>">
 			<img src="/img/editer.png" alt="" /> Modifier le contenu de ce billet
 		</a><br /><br />
 		<?php } ?>
@@ -17,17 +17,17 @@
 		<strong>État actuel : <?php echo mb_strtolower($Etats[$InfosBillet['blog_etat']]); ?></strong><br />
 
 		<?php if(verifier('blog_valider') && !in_array($InfosBillet['blog_etat'], array(BLOG_VALIDE, BLOG_PROPOSE))){ ?>
-		<a href="<?php echo $view['router']->path('zco_blog_publish', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]) ?>" title="Valider ce billet">
+		<a href="<?php echo $view['router']->path('zco_blog_publish', ['id' => $InfosBillet['blog_id']]) ?>" title="Valider ce billet">
 			<img src="/bundles/zcoblog/img/valider.png" alt="" /> Valider ce billet
 		</a><br />
 		<?php } elseif(verifier('blog_valider') && $InfosBillet['blog_etat'] == BLOG_VALIDE){ ?>
-		<a href="<?php echo $view['router']->path('zco_blog_unpublish', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]) ?>" title="Dévalider ce billet">
+		<a href="<?php echo $view['router']->path('zco_blog_unpublish', ['id' => $InfosBillet['blog_id']]) ?>" title="Dévalider ce billet">
 			<img src="/bundles/zcoblog/img/refuser.png" alt="" /> Dévalider ce billet
 		</a><br />
 		<?php } ?>
 
 		<?php if((in_array($InfosBillet['blog_etat'], array(BLOG_BROUILLON, BLOG_REFUSE)) && $credentials->isOwner()) || verifier('blog_editer_valide')){ ?>
-		<a href="<?php echo $view['router']->path('zco_blog_unpublish', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]) ?>">
+		<a href="<?php echo $view['router']->path('zco_blog_delete', ['id' => $InfosBillet['blog_id']]) ?>">
 			<img src="/img/supprimer.png" alt="" /> Supprimer ce billet
 		</a><br />
 		<?php } ?>
@@ -39,7 +39,7 @@
 		</a>
 
 		<?php if($credentials->isAllowed()){ ?>
-		<a href="<?php echo $view['router']->path('zco_blog_history', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]) ?>">
+		<a href="<?php echo $view['router']->path('zco_blog_history', ['id' => $InfosBillet['blog_id']]) ?>">
 			<img src="/bundles/zcoblog/img/versions.png" alt="" />
 			Voir l'historique des modifications
 		</a>
@@ -117,11 +117,11 @@
 						<td><?php echo \Zco\Bundle\BlogBundle\Domain\Author::STATUSES[$a['auteur_statut']]; ?></td>
 						<?php if($credentials->isOwner() || verifier('blog_toujours_createur')){ ?>
 						<td class="centre">
-							<a href="<?php echo $view['router']->path('zco_blog_editAuthor', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre']), 'authorId' => $a['utilisateur_id']]) ?>" title="Modifier cet auteur">
+							<a href="<?php echo $view['router']->path('zco_blog_editAuthor', ['id' => $InfosBillet['blog_id'], 'authorId' => $a['utilisateur_id']]) ?>" title="Modifier cet auteur">
 								<img src="/img/editer.png" alt="Modifier" />
 							</a>
 
-                            <a href="<?php echo $view['router']->path('zco_blog_deleteAuthor', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre']), 'authorId' => $a['utilisateur_id']]) ?>" title="Retirer cet auteur">
+                            <a href="<?php echo $view['router']->path('zco_blog_deleteAuthor', ['id' => $InfosBillet['blog_id'], 'authorId' => $a['utilisateur_id']]) ?>" title="Retirer cet auteur">
 								<img src="/img/supprimer.png" alt="Retirer" />
 							</a>
 						</td>

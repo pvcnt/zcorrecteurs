@@ -7,6 +7,6 @@
 
     <p class="form-actions center">
         <input type="submit" class="btn btn-primary" value="Oui" />
-        <a class="btn" href="<?php echo $view['router']->path('zco_blog_manage', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]) ?>">Non</a>
+        <a class="btn" href="<?php echo $view['router']->path('zco_blog_manage', ['id' => $InfosBillet['blog_id']]) ?>">Non</a>
     </p>
 </form>

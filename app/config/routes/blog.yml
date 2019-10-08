@@ -13,51 +13,51 @@ zco_blog_show:
     id: \d+
 
 zco_blog_manage:
-  path:   /blog/{id}/{slug}/gestion
+  path:   /blog/gestion/{id}
   defaults:  { _controller: ZcoBlogBundle:Default:manage }
   requirements:
     id: \d+
 
 zco_blog_editAuthor:
-  path:   /blog/{id}/{slug}/auteur/{authorId}/modifier
+  path:   /blog/auteur/{id}/{authorId}/modifier
   defaults:  { _controller: ZcoBlogBundle:Default:editAuthor }
   requirements:
     id: \d+
     authorId: \d+
 
 zco_blog_deleteAuthor:
-  path:   /blog/{id}/{slug}/auteur/{authorId}/supprimer
+  path:   /blog/auteur/{id}/{authorId}/supprimer
   defaults:  { _controller: ZcoBlogBundle:Default:deleteAuthor }
   requirements:
     id: \d+
     authorId: \d+
 
 zco_blog_publish:
-  path:   /blog/{id}/{slug}/valider
+  path:   /blog/valider/{id}
   defaults:  { _controller: ZcoBlogBundle:Default:publish }
   requirements:
     id: \d+
 
 zco_blog_unpublish:
-  path:   /blog/{id}/{slug}/devalider
+  path:   /blog/devalider/{id}
   defaults:  { _controller: ZcoBlogBundle:Default:unpublish }
   requirements:
     id: \d+
 
 zco_blog_history:
-  path:   /blog/{id}/{slug}/versions
+  path:   /blog/versions/{id}
   defaults:  { _controller: ZcoBlogBundle:Default:history }
   requirements:
     id: \d+
 
 zco_blog_edit:
-  path:   /blog/{id}/{slug}/modifier
+  path:   /blog/modifier/{id}
   defaults:  { _controller: ZcoBlogBundle:Default:edit }
   requirements:
     id: \d+
 
 zco_blog_delete:
-  path:   /blog/{id}/{slug}/supprimer
+  path:   /blog/supprimer/{id}
   defaults:  { _controller: ZcoBlogBundle:Default:delete }
   requirements:
     id: \d+
@@ -70,7 +70,7 @@ zco_blog_compare:
     to: \d+
 
 zco_blog_new:
-  path:   /blog/ajouter
+  path:   /blog/nouveau
   defaults:  { _controller: ZcoBlogBundle:Default:new }
 
 zco_blog_mine:
@@ -78,7 +78,7 @@ zco_blog_mine:
   defaults:  { _controller: ZcoBlogBundle:Default:mine }
 
 zco_blog_newComment:
-  path:   /blog/{id}/{slug}/commenter
+  path:   /blog/commenter/{id}
   defaults:  { _controller: ZcoBlogBundle:Default:newComment }
   requirements:
     id: \d+
