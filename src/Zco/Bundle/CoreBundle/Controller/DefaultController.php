@@ -26,6 +26,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Zco\Bundle\CoreBundle\Sitemap\SitemapFactory;
+use Zco\Bundle\CoreBundle\Javelin\Filter\CssRewriteFilter;
 
 class DefaultController extends Controller
 {
@@ -65,6 +66,34 @@ class DefaultController extends Controller
 
         $response = new Response($content);
         $response->headers->set('Content-type', 'text/xml');
+
+        return $response;
+    }
+
+    public function renderAssetAction($hash)
+    {
+        $types = array(
+            'js' => 'javascript',
+            'css' => 'css',
+        );
+
+        $hash = str_replace('.', '_', $hash);
+        $type = substr($hash, strpos($hash, '_') + 1);
+
+        if (!isset($types[$type])) {
+            throw new \InvalidArgumentException(sprintf(
+                'Cannot render resource of unknown type "%s".',
+                $type
+            ));
+        }
+
+        $asset = $this->get('zco_core.assetic.asset_manager')->get($hash);
+        if ($type === 'css') {
+            $asset->ensureFilter(new CssRewriteFilter());
+        }
+
+        $response = new Response($asset->dump());
+        $response->headers->set('Content-Type', 'text/' . $types[$type]);
 
         return $response;
     }

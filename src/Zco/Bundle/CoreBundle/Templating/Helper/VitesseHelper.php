@@ -19,39 +19,48 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\VitesseBundle\Templating\Helper;
+namespace Zco\Bundle\CoreBundle\Templating\Helper;
 
-use Zco\Bundle\VitesseBundle\Javelin\Javelin;
+use Zco\Bundle\CoreBundle\Javelin\ResourceManager;
 use Symfony\Component\Templating\Helper\Helper;
 
 /**
+ * Ensemble de fonctions permettant de demander l'inclusion de ressources
+ * à l'intérieur de la page et ensuite de les inclure effectivement.
+ * 
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class JavelinHelper extends Helper
+class VitesseHelper extends Helper
 {
-    private $javelin;
+    private $manager;
     
-    public function __construct(Javelin $javelin)
-    {
-        $this->javelin = $javelin;
-    }
-	public function initBehavior($behavior, array $config = array())
+	public function __construct(ResourceManager $manager)
 	{
-	    $this->javelin->initBehavior($behavior, $config);
+	    $this->manager = $manager;
 	}
 	
-	public function onload($call)
+	public function requireResource($symbol)
 	{
-	    $this->javelin->onload($call);
+	    $this->manager->requireResource($symbol);
 	}
 	
-	public function renderHTMLFooter()
+	public function requireResources(array $symbols)
 	{
-	    return $this->javelin->renderHTMLFooter();
+	    $this->manager->requireResources($symbols);
 	}
 	
+	public function stylesheets(array $stylesheets = array())
+	{
+	    return $this->manager->stylesheets($stylesheets);
+	}
+	
+	public function javascripts(array $javascripts = array())
+	{
+	    return $this->manager->javascripts($javascripts);
+	}
+		
 	public function getName()
 	{
-		return 'javelin';
+		return 'vitesse';
 	}
 }

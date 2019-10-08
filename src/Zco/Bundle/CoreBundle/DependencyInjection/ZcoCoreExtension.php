@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\VitesseBundle\DependencyInjection;
+namespace Zco\Bundle\CoreBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Resource\FileResource;
@@ -29,13 +29,13 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Zco\Bundle\VitesseBundle\Javelin\DocblockParser;
-use Zco\Bundle\VitesseBundle\Javelin\ResourceGraph;
+use Zco\Bundle\CoreBundle\Javelin\DocblockParser;
+use Zco\Bundle\CoreBundle\Javelin\ResourceGraph;
 
 /**
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class ZcoVitesseExtension extends Extension
+class ZcoCoreExtension extends Extension
 {
     /**
      * {@inheritdoc}

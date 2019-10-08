@@ -15,7 +15,7 @@
  * specific language governing permissions and limitations under the License.
  */
 
-namespace Zco\Bundle\VitesseBundle\Javelin;
+namespace Zco\Bundle\CoreBundle\Javelin;
 
 /**
  * Transforms CSS data

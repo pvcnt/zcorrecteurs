@@ -14,7 +14,7 @@
  * License: choose any of Apache, MIT, GPL, LGPL
  */
 
-namespace Zco\Bundle\VitesseBundle\Javelin;
+namespace Zco\Bundle\CoreBundle\Javelin;
 
 class JavascriptMinifier {
 

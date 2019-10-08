@@ -19,11 +19,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\VitesseBundle\Javelin\Filter;
+namespace Zco\Bundle\CoreBundle\Javelin\Filter;
 
 use Assetic\Asset\AssetInterface;
 use Assetic\Filter\FilterInterface;
-use Zco\Bundle\VitesseBundle\Javelin\CssMin;
+use Zco\Bundle\CoreBundle\Javelin\CssMin;
 
 /**
  * Filters assets through JavascriptMinifier.

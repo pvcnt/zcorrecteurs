@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\VitesseBundle\Javelin;
+namespace Zco\Bundle\CoreBundle\Javelin;
 
 /**
  * Structure de données mémorisant les relations entre les différentes ressources.

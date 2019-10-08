@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-namespace Zco\Bundle\VitesseBundle\Javelin;
+namespace Zco\Bundle\CoreBundle\Javelin;
 
 /**
  * Models a directed graph in a generic way that works well with graphs stored

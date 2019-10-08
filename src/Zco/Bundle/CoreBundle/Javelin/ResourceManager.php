@@ -19,11 +19,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\VitesseBundle\Javelin;
+namespace Zco\Bundle\CoreBundle\Javelin;
 
-use Zco\Bundle\VitesseBundle\Javelin\Filter\CssRewriteFilter;
-use Zco\Bundle\VitesseBundle\Javelin\Filter\JavascriptMinifierFilter;
-use Zco\Bundle\VitesseBundle\Javelin\Filter\CssMinFilter;
+use Zco\Bundle\CoreBundle\Javelin\Filter\CssRewriteFilter;
+use Zco\Bundle\CoreBundle\Javelin\Filter\JavascriptMinifierFilter;
+use Zco\Bundle\CoreBundle\Javelin\Filter\CssMinFilter;
 use Assetic\Asset\AssetCollection;
 use Assetic\AssetManager;
 use Assetic\AssetWriter;

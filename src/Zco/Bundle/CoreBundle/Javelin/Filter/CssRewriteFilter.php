@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\VitesseBundle\Javelin\Filter;
+namespace Zco\Bundle\CoreBundle\Javelin\Filter;
 
 use Assetic\Asset\AssetInterface;
 use Assetic\Filter\BaseCssFilter;

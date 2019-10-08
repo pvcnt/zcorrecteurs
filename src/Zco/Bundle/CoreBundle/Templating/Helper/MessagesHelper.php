@@ -24,7 +24,7 @@ namespace Zco\Bundle\CoreBundle\Templating\Helper;
 use Gaufrette\Extras\Resolvable\ResolvableFilesystem;
 use Symfony\Component\Templating\Helper\Helper;
 use Zco\Bundle\CoreBundle\Parser\ParserInterface;
-use Zco\Bundle\VitesseBundle\Javelin\ResourceManager;
+use Zco\Bundle\CoreBundle\Javelin\ResourceManager;
 
 /**
  * Ensemble de fonctions aidant à l'affichage des messages.

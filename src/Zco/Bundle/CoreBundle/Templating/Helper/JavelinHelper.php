@@ -19,13 +19,39 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\VitesseBundle;
+namespace Zco\Bundle\CoreBundle\Templating\Helper;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Zco\Bundle\CoreBundle\Javelin\Javelin;
+use Symfony\Component\Templating\Helper\Helper;
 
 /**
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class ZcoVitesseBundle extends Bundle
+class JavelinHelper extends Helper
 {
+    private $javelin;
+    
+    public function __construct(Javelin $javelin)
+    {
+        $this->javelin = $javelin;
+    }
+	public function initBehavior($behavior, array $config = array())
+	{
+	    $this->javelin->initBehavior($behavior, $config);
+	}
+	
+	public function onload($call)
+	{
+	    $this->javelin->onload($call);
+	}
+	
+	public function renderHTMLFooter()
+	{
+	    return $this->javelin->renderHTMLFooter();
+	}
+	
+	public function getName()
+	{
+		return 'javelin';
+	}
 }

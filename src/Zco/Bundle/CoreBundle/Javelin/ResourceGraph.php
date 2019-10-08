@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-namespace Zco\Bundle\VitesseBundle\Javelin;
+namespace Zco\Bundle\CoreBundle\Javelin;
 
 final class ResourceGraph extends AbstractDirectedGraph
 {

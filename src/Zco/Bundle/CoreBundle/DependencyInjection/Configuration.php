@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\VitesseBundle\DependencyInjection;
+namespace Zco\Bundle\CoreBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -33,7 +33,7 @@ class Configuration implements ConfigurationInterface
 	{
 		$builder = new TreeBuilder();
 
-		$builder->root('zco_vitesse')
+		$builder->root('zco_core')
 			->children()
                 ->booleanNode('combine_assets')->defaultTrue()->end()
 			->end()
