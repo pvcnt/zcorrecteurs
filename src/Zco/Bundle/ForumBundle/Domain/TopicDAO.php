@@ -149,7 +149,7 @@ class TopicDAO
         return $PageCible;
     }
 
-    public static function RendreLeSujetLu($sujet_id, $nombreDePages, $dernier_message, $ListerMessages, $InfosLuNonlu)
+    public static function RendreLeSujetLu($sujet_id, $page, $nombreDePages, $dernier_message, $ListerMessages, $InfosLuNonlu)
     {
         if (!empty($InfosLuNonlu['lunonlu_utilisateur_id'])) {
             $dejavu = true;
@@ -160,7 +160,7 @@ class TopicDAO
         $dbh = \Doctrine_Manager::connection()->getDbh();
 
         //Si on est sur la page la plus récente, on considère que le sujet entier est lu (jusqu'à son dernier message
-        if ($_GET['p'] == $nombreDePages) {
+        if ($page == $nombreDePages) {
             if (!$dejavu) {
                 //Si c'est la première fois qu'on visite le sujet, on insère un nouvel enregistrement
                 $stmt = $dbh->prepare("INSERT INTO zcov2_forum_lunonlu (lunonlu_utilisateur_id, lunonlu_sujet_id, lunonlu_message_id, lunonlu_participe)

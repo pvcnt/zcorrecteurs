@@ -29,7 +29,7 @@ Vous êtes dans la corbeille !
 		<?php echo $view->render('::zform.html.php', array('upload_utiliser_element' => true, 'texte' => $texte_zform)); ?>
 		
 		<?php
-		if(verifier('corbeille_sujets', $_GET['id']))
+		if(verifier('corbeille_sujets', $InfosForum['cat_id']))
 		{
 			if(!empty($_GET['trash']))
 			{
@@ -41,30 +41,30 @@ Vous êtes dans la corbeille !
 			}
 		}
 		?>
-		<?php if(verifier('epingler_sujets', $_GET['id']) OR verifier('fermer_sujets', $_GET['id']) OR verifier('resolu_sujets', $_GET['id']) OR verifier('corbeille_sujets', $_GET['id']))
+		<?php if(verifier('epingler_sujets', $InfosForum['cat_id']) OR verifier('fermer_sujets', $InfosForum['cat_id']) OR verifier('resolu_sujets', $InfosForum['cat_id']) OR verifier('corbeille_sujets', $InfosForum['cat_id']))
 		{
 		?>
 		<p>
 			<?php
-			if(verifier('epingler_sujets', $_GET['id']))
+			if(verifier('epingler_sujets', $InfosForum['cat_id']))
 			{
 			?>
 			<label for="annonce">Sujet épinglé :</label> <input type="checkbox" name="annonce" id="annonce" /><br />
 			<?php
 			}
-			if(verifier('fermer_sujets', $_GET['id']))
+			if(verifier('fermer_sujets', $InfosForum['cat_id']))
 			{
 			?>
 			<label for="ferme">Sujet fermé :</label> <input type="checkbox" name="ferme" id="ferme" /><br />
 			<?php
 			}
-			if(verifier('resolu_sujets', $_GET['id']))
+			if(verifier('resolu_sujets', $InfosForum['cat_id']))
 			{
 			?>
 			<label for="resolu">Sujet résolu :</label> <input type="checkbox" name="resolu" id="resolu" /><br />
 			<?php
 			}
-			if(verifier('corbeille_sujets', $_GET['id']))
+			if(verifier('corbeille_sujets', $InfosForum['cat_id']))
 			{
 			?>
 			<label for="corbeille">Sujet dans la corbeille :</label> <input type="checkbox" name="corbeille" id="corbeille" <?php echo $checked_corbeille; ?> />

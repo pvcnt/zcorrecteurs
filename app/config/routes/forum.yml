@@ -26,6 +26,12 @@ zco_forum_trash:
   requirements:
     id: \d+
 
+zco_forum_markHelped:
+  path:   /forum/aide/{id}
+  defaults:  { _controller: ZcoForumBundle:Default:markHelped }
+  requirements:
+    id: \d+
+
 zco_forum_markSolved:
   path:   /forum/resolu/{id}
   defaults:  { _controller: ZcoForumBundle:Default:markSolved }
@@ -53,6 +59,7 @@ zco_forum_delete:
 zco_forum_reply:
   path:   /forum/repondre/{id}
   defaults:  { _controller: ZcoForumBundle:Default:reply }
+  methods: [POST]
   requirements:
     id: \d+
 

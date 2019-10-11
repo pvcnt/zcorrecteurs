@@ -15,18 +15,18 @@ $view->extend('::layouts/default.html.php') ?>
 		<?php if(verifier('corbeille_sujets', $InfosForum['cat_id'])){ ?>
 		<li>
 			<?php if(!empty($_GET['trash'])){ ?>
-			<a href="<?php echo CategoryDAO::FormateURLCategorie($InfosForum['cat_id']); ?>">Sortir</a> de la corbeille.
+			<a href="<?php echo $view['router']->path('zco_forum_show', ['id' => $InfosForum['cat_id'], 'slug' => rewrite($InfosForum['cat_nom'])]) ?>">Sortir</a> de la corbeille.
 			<?php } else{ ?>
-			Accéder à la <a href="?trash=1">corbeille de ce forum</a>.
+			Accéder à la <a href="<?php echo $view['router']->path('zco_forum_show', ['id' => $InfosForum['cat_id'], 'slug' => rewrite($InfosForum['cat_nom']), 'trash' => 1]) ?>">corbeille de ce forum</a>.
 			<?php } ?>
 		</li>
 		<?php } ?>
     	<?php if(verifier('voir_archives')) : ?>
 		<li>
 			<?php if(!empty($_GET['archives'])) : ?>
-				<a href="<?php echo CategoryDAO::FormateURLCategorie($InfosForum['cat_id']); ?>">Sortir</a> des archives.
+				<a href="<?php echo $view['router']->path('zco_forum_show', ['id' => $InfosForum['cat_id'], 'slug' => rewrite($InfosForum['cat_nom'])]) ?>">Sortir</a> des archives.
 			<?php else : ?>
-			<a href="?archives=1">Voir les forums archivés</a>
+			<a href="<?php echo $view['router']->path('zco_forum_show', ['id' => $InfosForum['cat_id'], 'slug' => rewrite($InfosForum['cat_nom']), 'archives' => 1]) ?>">Voir les forums archivés</a>
 			<?php endif; ?>
 		</li>
 		<?php endif; ?>
@@ -44,7 +44,9 @@ $view->extend('::layouts/default.html.php') ?>
 			<th>Forums</th>
 			<?php if (empty($_GET['trash'])) { $colspan = 3; ?>
 				<th class="cats_colonne_dernier_msg centre">Dernier message</th>
-			<?php } else{ $colspan = 1; } ?>
+			<?php } else{ $colspan = 2; ?>
+                <th class="centre">Sujets</th>
+            <?php } ?>
 		</tr>
 	</thead>
 
@@ -74,7 +76,7 @@ $view->extend('::layouts/default.html.php') ?>
 
 <?php if (verifier('creer_sujets', $InfosForum['cat_id'])){ ?>
 <p class="reponse_ajout_sujet">
-    <a href="<?php echo $view['router']->url('zco_forum_newTopic', ['id' => $InfosForum['cat_id'], 'trash' => $_GET['trash'] ?? '0']) ?>">
+    <a href="<?php echo $view['router']->url('zco_forum_newTopic', ['id' => $InfosForum['cat_id'], 'trash' => $_GET['trash'] ?? null]) ?>">
 		<img src="/bundles/zcoforum/img/nouveau.png" alt="Nouveau sujet" title="Nouveau sujet" />
 	</a>
 </p>
@@ -83,14 +85,7 @@ $view->extend('::layouts/default.html.php') ?>
 	<table class="liste_cat">
 	<thead>
 		<tr>
-			<td colspan="7">Page :
-			<?php
-			foreach($tableau_pages as $element)
-			{
-				echo $element;
-			}
-			?>
-			</td>
+            <td colspan="7">Page : <?php echo implode($tableau_pages) ?></td>
 		</tr>
 		<tr>
 			<th class="forum_colonne_flag"></th>
@@ -105,14 +100,7 @@ $view->extend('::layouts/default.html.php') ?>
 
 	<tfoot>
 		<tr>
-			<td colspan="<?php echo $colspan;?>">Page :
-			<?php
-			foreach($tableau_pages as $element)
-			{
-				echo $element;
-			}
-			?>
-			</td>
+			<td colspan="7">Page : <?php echo implode($tableau_pages) ?></td>
 		</tr>
 	</tfoot>
 
@@ -146,7 +134,7 @@ $view->extend('::layouts/default.html.php') ?>
 			*/
 			if($on_a_fini_dafficher_les_annonces == 1)
 			{
-				?><tr class="espace_postit"><td colspan="<?php echo $colspan;?>">&nbsp;</td></tr><?php
+				?><tr class="espace_postit"><td colspan="7">&nbsp;</td></tr><?php
 			}
 			//FIN DU CODE : Vérification de si on vient juste de finir d'afficher les annonces en haut.
 			?>
@@ -278,13 +266,13 @@ $view->extend('::layouts/default.html.php') ?>
 			if(!empty($_GET['trash']))
 			{
 			?>
-				<td colspan="<?php echo $colspan;?>" class="centre">La corbeille de ce forum est vide.</td>
+				<td colspan="7" class="centre">La corbeille de ce forum est vide.</td>
 			<?php
 			}
 			else
 			{
 			?>
-				<td colspan="<?php echo $colspan;?>" class="centre">Ce forum ne contient pas de sujet.</td>
+				<td colspan="7" class="centre">Ce forum ne contient pas de sujet.</td>
 			<?php
 			}
 			?>
@@ -301,7 +289,7 @@ $view->extend('::layouts/default.html.php') ?>
 {
 ?>
 <p class="reponse_ajout_sujet">
-    <a href="<?php echo $view['router']->url('zco_forum_newTopic', ['id' => $InfosForum['cat_id'], 'trash' => $_GET['trash'] ?? '0']) ?>">
+    <a href="<?php echo $view['router']->url('zco_forum_newTopic', ['id' => $InfosForum['cat_id'], 'trash' => $_GET['trash'] ?? null]) ?>">
 		<img src="/bundles/zcoforum/img/nouveau.png" alt="Nouveau sujet" title="Nouveau sujet" />
 	</a>
 </p>

@@ -21,7 +21,7 @@ if ( isset($Parent) && !empty($_GET['archives'])) : ?>
 
 	<td class="nom_forum">
 		<h3>
-			<a href="<?php echo CategoryDAO::FormateURLCategorie($forum['cat_id']); if (!empty($_GET['trash'])) echo '?trash=1'; ?>">
+			<a href="<?php echo $view['router']->path('zco_forum_show', ['id' => $forum['cat_id'], 'slug' => rewrite($forum['cat_nom']), 'trash' => !empty($_GET['trash']) ? 1 : null]) ?>">
 				<?php echo htmlspecialchars($forum['cat_nom']); ?>
 			</a>
 		</h3>
@@ -37,7 +37,7 @@ if ( isset($Parent) && !empty($_GET['archives'])) : ?>
 				<?php } else{ ?>
 					<img src="/pix.gif" class="fff anchor" alt="Redirection" title="Ce forum est une redirection" />
 				<?php } ?>
-				<a href="<?php echo CategoryDAO::FormateURLCategorie($cat['cat_id']); if(!empty($_GET['trash'])) echo '?trash=1'; ?>" title="<?php echo htmlspecialchars($cat['cat_description']); ?>">
+				<a href="<?php echo $view['router']->path('zco_forum_show', ['id' => $cat['cat_id'], 'slug' => rewrite($cat['cat_nom']), 'trash' => !empty($_GET['trash']) ? 1 : null]) ?>">
 					<?php echo htmlspecialchars($cat['cat_nom']); ?>
 				</a>
 			<?php } ?>

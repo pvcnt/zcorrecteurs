@@ -99,7 +99,7 @@ if($InfosSujet['sujet_sondage'] > 0)
 				<?php
 				//Indiquer le message comme ayant aidé
 				if (	!( // Pas le premier message du sujet
-						$_GET['p'] == 1 &&
+						$page == 1 &&
 						$numero_message == 1
 						)
 				&& (
@@ -114,15 +114,15 @@ if($InfosSujet['sujet_sondage'] > 0)
 					{
 					?>
 					<span class="commandes_textuelles">
-						<a href="reponse-help-<?php echo $_GET['id']; ?>-<?php echo $valeur['message_id']; ?>.html?help_souhaite=0&amp;token=<?php echo $_SESSION['token']; ?>">
-							<img src="/pix.gif" class="fff delete" alt="Indiquer que cette réponse de m'a pas aidé" class="icone_commande" />
+						<a href="<?php echo $view['router']->path('zco_forum_markHelped', ['id' => $valeur['message_id'], 'status' => 0, 'token' => $_SESSION['token']]) ?>">
+							<img src="/pix.gif" class="fff delete icone_commande" alt="Indiquer que cette réponse de m'a pas aidé" />
 							Cette réponse ne m'a pas aidé
 						</a>
 					</span>
 					<?php } else{ ?>
 					<span class="commandes_textuelles">
-						<a href="reponse-help-<?php echo $_GET['id']; ?>-<?php echo $valeur['message_id']; ?>-1.html?help_souhaite=1&amp;token=<?php echo $_SESSION['token']; ?>">
-							<img src="/pix.gif" class="fff accept" alt="Indiquer que cette réponse m'a aidé" class="icone_commande" />
+						<a href="<?php echo $view['router']->path('zco_forum_markHelped', ['id' => $valeur['message_id'], 'status' => 1, 'token' => $_SESSION['token']]) ?>">
+							<img src="/pix.gif" class="fff accept icone_commande" alt="Indiquer que cette réponse m'a aidé" />
 							Cette réponse m'a aidé
 						</a>
 					</span>
@@ -131,29 +131,9 @@ if($InfosSujet['sujet_sondage'] > 0)
 				}
 				//Date d'envoi du message
 				?>
-				<span id="m<?php echo $valeur['message_id'];?>"><a href="sujet-<?php echo $_GET['id'].'-'.$valeur['message_id'].'-'.rewrite($InfosSujet['sujet_titre']).'.html'; ?>" rel="nofollow">#</a></span>
+				<span id="m<?php echo $valeur['message_id'];?>"><a href="<?php echo $view['router']->path('zco_forum_showTopic', ['id' => $InfosSujet['sujet_id'], 'c' => $valeur['message_id'], 'slug' => rewrite($InfosSujet['sujet_titre'])]) ?>" rel="nofollow">#</a></span>
 				Posté <?php echo dateformat($valeur['message_date'], MINUSCULE); ?>
 				<?php
-				//Citation du message
-				if
-				(
-					(
-						(
-							verifier('repondre_sujets', $InfosSujet['sujet_forum_id']) AND verifier('repondre_sujets_fermes', $InfosSujet['sujet_forum_id']) AND $InfosSujet['sujet_ferme']
-						)
-						OR
-						(
-							verifier('repondre_sujets', $InfosSujet['sujet_forum_id']) AND !$InfosSujet['sujet_ferme']
-						)
-					)
-					AND !$InfosSujet['sujet_corbeille']
-				)
-				{
-				?>
-				<a href="<?php echo $view['router']->path('zco_forum_reply', ['id' => $InfosSujet['sujet_id'], 'quote' => $valeur['message_id']]) ?>">
-					<img src="/pix.gif" class="fff comment" alt="Citer" title="Citer" />
-				</a>
-				<?php }
 				//Edition du message
 				if
 				(
@@ -226,7 +206,7 @@ if($InfosSujet['sujet_sondage'] > 0)
 				<div class="msgbox">
 					<?php
 					//En cas de reprise du dernier message
-					if($numero_message == 1 AND $_GET['p'] > 1 AND $_GET['p'] <= $NombreDePages)
+					if($numero_message == 1 AND $page > 1 AND $page <= $NombreDePages)
 					{
 						echo '<p class="gras centre">Reprise du dernier message de la page précédente :</p><br />';
 					}

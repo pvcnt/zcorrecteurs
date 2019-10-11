@@ -149,10 +149,10 @@ if(verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']))
 			<img src="/pix.gif" class="fff folder_go" alt="" />
 			Déplacer le sujet vers :
 
-            <form action="<?php echo $this->generateUrl('zco_forum_move', ['id' => $_POST['id']]) ?>" method="post">
+            <form action="<?php echo $view['router']->path('zco_forum_move', ['id' => $InfosSujet['sujet_id']]) ?>" method="post">
                 <select name="forum_cible">
                     <?php foreach($CategoriesForums as $i => $valeur) { ?>
-                    <?php if($valeur['cat_niveau'] == 2 && $_POST['fofo_actuel'] != $valeur['cat_id']) { ?>
+                    <?php if($valeur['cat_niveau'] == 2 && $InfosSujet['sujet_forum_id'] != $valeur['cat_id']) { ?>
                         <?php if($i > 1) { ?></optgroup><?php } ?>
                         <optgroup label="<?php echo htmlspecialchars($valeur['cat_nom']) ?>">
                     <?php } else { ?>
@@ -167,7 +167,6 @@ if(verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']))
                 </optgroup></select>
                 <input type="submit" value="Déplacer" />
             </form>
-            ';
 		</li>
 		<?php
 		}

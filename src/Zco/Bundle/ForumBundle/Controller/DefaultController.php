@@ -102,7 +102,7 @@ final class DefaultController extends Controller
         return $response;
     }
 
-    public function flagMessageHelpAction($id, $status, Request $request)
+    public function markHelpedAction($id, Request $request)
     {
         if (!verifier('connecte')) {
             throw new AccessDeniedHttpException();
@@ -122,12 +122,13 @@ final class DefaultController extends Controller
         if ($_SESSION['id'] != $InfosMessage['sujet_auteur'] && !verifier('indiquer_messages_aide', $InfosMessage['sujet_forum_id'])) {
             throw new AccessDeniedHttpException();
         }
-        MessageDAO::ChangerHelp($id, (boolean)$status);
+        $status = (boolean)$request->get('status', false);
+        MessageDAO::ChangerHelp($id, $status);
         $message = $status ? 'Le message a bien été marqué comme vous ayant aidé(e).' : 'Le message a bien été marqué comme ne vous ayant pas aidé(e).';
 
         return redirect(
             $message,
-            'sujet-' . $InfosMessage['sujet_id'] . '-' . $InfosMessage['message_id'] . '-' . rewrite($InfosMessage['sujet_titre']) . '.html'
+            $this->generateUrl('zco_forum_showTopic', ['id' => $InfosMessage['sujet_id'], 'c' => $InfosMessage['message_id'], 'slug' => rewrite($InfosMessage['sujet_titre'])])
         );
     }
 
@@ -256,7 +257,7 @@ final class DefaultController extends Controller
                 // Liste des pages
                 $nbMessagesParPage = 20;
                 $NombreDePagesSujet = ceil(($valeur['sujet_reponses'] + 1) / $nbMessagesParPage);
-                $Pages[$clef] = liste_pages(-1, $NombreDePagesSujet, 'sujet-' . $valeur['sujet_id'] . '-p%s-' . rewrite($valeur['sujet_titre']) . '.html');
+                $Pages[$clef] = liste_pages(-1, $NombreDePagesSujet, $this->generateUrl('zco_forum_showTopic', ['id' => $valeur['sujet_id'], 'slug' => rewrite($valeur['sujet_titre'])]) . '?p=%s');
             }
         }
 
@@ -391,7 +392,7 @@ final class DefaultController extends Controller
             'lunonlu_message_id' => $InfosSujet['lunonlu_message_id']
         ];
         if (verifier('connecte')) {
-            TopicDAO::RendreLeSujetLu($id, $NombreDePages, $InfosSujet['sujet_dernier_message'], $ListerMessages, $InfosLuNonlu);
+            TopicDAO::RendreLeSujetLu($id, $page, $NombreDePages, $InfosSujet['sujet_dernier_message'], $ListerMessages, $InfosLuNonlu);
         }
 
         //Pour un meilleur référencement : ajout du début du premier message de la
@@ -477,6 +478,7 @@ final class DefaultController extends Controller
             'ListerResultatsSondage' => $ListerResultatsSondage,
             'nombre_total_votes' => $nombre_total_votes,
             'NombreDePages' => $NombreDePages,
+            'page' => $page,
             'PremierMessage' => $PremierMessage[0],
             'CategoriesForums' => $CategoriesForums,
         ]);
@@ -513,7 +515,7 @@ final class DefaultController extends Controller
         return redirect('Le sujet a bien été déplacé.', $url);
     }
 
-    public function trashAction($id, $status)
+    public function trashAction($id, Request $request)
     {
         $InfosSujet = $this->getTopic($id);
 
@@ -523,6 +525,7 @@ final class DefaultController extends Controller
         }
 
         $url = $this->generateUrl('zco_forum_showTopic', ['id' => $id, 'slug' => rewrite($InfosSujet['sujet_titre'])]);
+        $status = (boolean)$request->get('status', false);
         if ($status) {
             if (!verifier('corbeille_sujets', $InfosSujet['sujet_forum_id'])) {
                 throw new AccessDeniedHttpException();
