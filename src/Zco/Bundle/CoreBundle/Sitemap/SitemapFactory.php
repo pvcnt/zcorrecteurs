@@ -75,7 +75,7 @@ final class SitemapFactory
         ));
         foreach (ForumDAO::ListerSujetsId(array(34, 45, 42, 43, 44, 46, 47, 91, 92, 93, 94, 178)) as $topic) {
             if (!TopicDAO::sujetIsArchive($topic['sujet_id'])) {
-                $url = URL_SITE . '/forum/sujet-' . $topic['sujet_id'] . '-' . rewrite($topic['sujet_titre']) . '.html';
+                $url = $this->generateUrl('zco_forum_showTopic', ['id' => $topic['sujet_id'], 'slug' => rewrite($topic['sujet_titre'])]);
                 $links[] = new SitemapLink($url, array(
                     'changefreq' => 'weekly',
                     'priority' => '0.5',

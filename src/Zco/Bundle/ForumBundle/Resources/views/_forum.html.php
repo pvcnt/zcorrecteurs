@@ -55,7 +55,7 @@ if ( isset($Parent) && !empty($_GET['archives'])) : ?>
 			{
 				echo '<td class="dernier_msg centre">Aucun message</td>';
 			}
-			else
+			elseif ($forum['message_id'])
 			{
 				echo '<td class="dernier_msg">'.dateformat($forum['message_date']).'<br />
 				Par ';
@@ -69,8 +69,10 @@ if ( isset($Parent) && !empty($_GET['archives'])) : ?>
 					echo '</a>';
 				}
 				echo '<br />
-				Dans <a href="sujet-'.$forum['message_sujet_id'].'-'.$forum['message_id'].'-'.rewrite($forum['sujet_titre']).'.html">'.htmlspecialchars($forum['sujet_titre']).'</a></td>';
-			}
+				Dans <a href="' . $view['router']->path('zco_forum_showTopic', ['id' => $forum['message_sujet_id'], 'c' => $forum['message_id'], 'slug' => rewrite($forum['sujet_titre'])]).'">'.htmlspecialchars($forum['sujet_titre']).'</a></td>';
+			} else {
+			    echo '<td><i>Aucun message</i></td>';
+            }
 		}
 		else
 		{

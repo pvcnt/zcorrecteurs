@@ -140,18 +140,15 @@ $view->extend('::layouts/default.html.php') ?>
 			?>
 			<tr class="sous_cat">
 				<td class="centre">
-					<a href="/forum/
-					<?php
+					<a href="<?php
 					if(!empty($valeur['lunonlu_message_id']))
 					{
-						echo 'sujet-'.$valeur['sujet_id'].'-'.$valeur['lunonlu_message_id'].'-'.rewrite($valeur['sujet_titre']).'.html';
+					    echo $view['router']->path('zco_forum_showTopic', ['id' => $valeur['sujet_id'], 'c' => $valeur['lunonlu_message_id'], 'slug' => rewrite($valeur['sujet_titre'])]);
 					}
 					else
 					{
-						echo 'sujet-'.$valeur['sujet_id'].'-'.rewrite($valeur['sujet_titre']).'.html';
-					}
-					?>
-					">
+                        echo $view['router']->path('zco_forum_showTopic', ['id' => $valeur['sujet_id'], 'slug' => rewrite($valeur['sujet_titre'])]);
+					} ?>">
                     <?php
                         switch($Lu[$clef]['image']) {
                             case 'pas_nouveau_message.png':         $image = 'lightbulb_off'; break;
@@ -199,10 +196,11 @@ $view->extend('::layouts/default.html.php') ?>
 					<?php
 					if($Lu[$clef]['fleche'])
 					{
-						echo '<a href="sujet-'.$valeur['sujet_id'].'-'.$valeur['lunonlu_message_id'].'-'.rewrite($valeur['sujet_titre']).'.html"><img src="/pix.gif" class="fff bullet_go" alt="Aller au dernier message lu" title="Aller au dernier message lu" /></a>';
+						echo '<a href="' . $view['router']->path('zco_forum_showTopic', ['id' => $valeur['sujet_id'], 'c' => $valeur['lunonlu_message_id'], 'slug' => rewrite($valeur['sujet_titre'])]) . '">'
+						    . '<img src="/pix.gif" class="fff bullet_go" alt="Aller au dernier message lu" title="Aller au dernier message lu" /></a>';
 					}
 					?>
-					<a href="<?php echo 'sujet-'.$valeur['sujet_id'].'-'.rewrite($valeur['sujet_titre']); ?>.html"><?php echo htmlspecialchars($valeur['sujet_titre']); ?></a>
+					<a href="<?php echo $view['router']->path('zco_forum_showTopic', ['id' => $valeur['sujet_id'], 'slug' => rewrite($valeur['sujet_titre'])]); ?>"><?php echo htmlspecialchars($valeur['sujet_titre']); ?></a>
 
 					<span class="sous_titre"><br />
 						<?php if(!empty($valeur['sujet_sous_titre'])){ ?>
@@ -241,7 +239,7 @@ $view->extend('::layouts/default.html.php') ?>
 
 				<td class="dernier_msg centre">
 					<?php
-					echo '<a href="sujet-'.$valeur['sujet_id'].'-'.$valeur['message_id'].'-'.rewrite($valeur['sujet_titre']).'.html">'.dateformat($valeur['message_date']).'</a><br /> ';
+					echo '<a href="' . $view['router']->path('zco_forum_showTopic', ['id' => $valeur['sujet_id'], 'c' => $valeur['message_id'], 'slug' => rewrite($valeur['sujet_titre'])]) . '">'.dateformat($valeur['message_date']).'</a><br /> ';
 					if(!empty($valeur['sujet_dernier_message_pseudo_existe']))
 					{
 						echo '<a href="/membres/profil-'.$valeur['sujet_dernier_message_auteur_id'].'-'.rewrite($valeur['sujet_dernier_message_pseudo']).'.html">';

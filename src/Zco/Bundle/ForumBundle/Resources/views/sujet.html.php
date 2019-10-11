@@ -3,7 +3,7 @@
 <?php $view['slots']->start('meta') ?>
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:site" content="zcorrecteurs" />
-<meta name="twitter:url" content="<?php echo URL_SITE ?>/forum/sujet-<?php echo $InfosSujet['sujet_id'] ?>-<?php echo rewrite($InfosSujet['sujet_titre']) ?>.html" />
+<meta name="twitter:url" content="<?php echo $view['router']->url('zco_forum_showTopic', ['id' => $InfosSujet['sujet_id'], 'slug' => rewrite($InfosSujet['sujet_titre'])]) ?>" />
 <meta name="twitter:description" content="<?php echo mb_substr(htmlspecialchars(strip_tags(str_replace("\n", ' ', $PremierMessage['message_texte']))), 0, 250) ?>" />
 <meta name="twitter:title" content="<?php echo htmlspecialchars($InfosSujet['sujet_titre']) ?>" />
 <?php if ($PremierMessage['auteur_avatar']): ?>
