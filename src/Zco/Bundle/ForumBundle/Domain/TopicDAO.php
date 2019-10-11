@@ -54,7 +54,7 @@ class TopicDAO
             "LEFT JOIN zcov2_forum_lunonlu ON zcov2_forum_sujets.sujet_id = zcov2_forum_lunonlu.lunonlu_sujet_id AND " . $userid . " = zcov2_forum_lunonlu.lunonlu_utilisateur_id " .
             "WHERE sujet_id = :s " .
             "GROUP BY sujet_id");
-        $stmt->bindParam(':s', $lesujet);
+        $stmt->bindValue(':s', $lesujet);
 
         $stmt->execute();
 
@@ -93,7 +93,7 @@ class TopicDAO
 	ORDER BY message_date ASC
 	LIMIT " . $MessaAfficher . " OFFSET " . $PremierMess);
 
-        $stmt->bindParam(':s', $id);
+        $stmt->bindValue(':s', $id);
         $stmt->execute();
 
 
@@ -109,7 +109,7 @@ class TopicDAO
 	        FROM zcov2_forum_messages
 	        WHERE message_sujet_id = :s
 	        ORDER BY message_date ASC');
-        $stmt->bindParam(':s', $id);
+        $stmt->bindValue(':s', $id);
 
         $stmt->execute();
         while ($resultat0 = $stmt->fetch(\PDO::FETCH_ASSOC)) {
@@ -165,9 +165,9 @@ class TopicDAO
                 //Si c'est la première fois qu'on visite le sujet, on insère un nouvel enregistrement
                 $stmt = $dbh->prepare("INSERT INTO zcov2_forum_lunonlu (lunonlu_utilisateur_id, lunonlu_sujet_id, lunonlu_message_id, lunonlu_participe)
 			VALUES (:user_id, :sujet_id, :message_id, '0')");
-                $stmt->bindParam(':user_id', $_SESSION['id']);
-                $stmt->bindParam(':sujet_id', $sujet_id);
-                $stmt->bindParam(':message_id', $dernier_message);
+                $stmt->bindValue(':user_id', $_SESSION['id']);
+                $stmt->bindValue(':sujet_id', $sujet_id);
+                $stmt->bindValue(':message_id', $dernier_message);
 
                 $stmt->execute();
 
@@ -178,9 +178,9 @@ class TopicDAO
                     $stmt = $dbh->prepare("UPDATE zcov2_forum_lunonlu
 				SET lunonlu_message_id = :message_id
 				WHERE lunonlu_utilisateur_id = :user_id AND lunonlu_sujet_id = :sujet_id");
-                    $stmt->bindParam(':user_id', $_SESSION['id']);
-                    $stmt->bindParam(':sujet_id', $sujet_id);
-                    $stmt->bindParam(':message_id', $dernier_message);
+                    $stmt->bindValue(':user_id', $_SESSION['id']);
+                    $stmt->bindValue(':sujet_id', $sujet_id);
+                    $stmt->bindValue(':message_id', $dernier_message);
 
                     $stmt->execute();
 
@@ -207,9 +207,9 @@ class TopicDAO
                     //Si c'est la première fois qu'on visite le sujet, on insère un nouvel enregistrement
                     $stmt = $dbh->prepare("INSERT INTO zcov2_forum_lunonlu (lunonlu_utilisateur_id, lunonlu_sujet_id, lunonlu_message_id, lunonlu_participe)
 				VALUES (:user_id, :sujet_id, :message_id, '0')");
-                    $stmt->bindParam(':user_id', $_SESSION['id']);
-                    $stmt->bindParam(':sujet_id', $sujet_id);
-                    $stmt->bindParam(':message_id', $MessageLePlusRecentDansLaPage);
+                    $stmt->bindValue(':user_id', $_SESSION['id']);
+                    $stmt->bindValue(':sujet_id', $sujet_id);
+                    $stmt->bindValue(':message_id', $MessageLePlusRecentDansLaPage);
 
                     $stmt->execute();
 
@@ -220,9 +220,9 @@ class TopicDAO
                     $stmt = $dbh->prepare("UPDATE zcov2_forum_lunonlu
 				SET lunonlu_message_id = :message_id
 				WHERE lunonlu_utilisateur_id = :user_id AND lunonlu_sujet_id = :sujet_id");
-                    $stmt->bindParam(':user_id', $_SESSION['id']);
-                    $stmt->bindParam(':sujet_id', $sujet_id);
-                    $stmt->bindParam(':message_id', $MessageLePlusRecentDansLaPage);
+                    $stmt->bindValue(':user_id', $_SESSION['id']);
+                    $stmt->bindValue(':sujet_id', $sujet_id);
+                    $stmt->bindValue(':message_id', $MessageLePlusRecentDansLaPage);
 
                     $stmt->execute();
 
@@ -253,7 +253,7 @@ class TopicDAO
 	ORDER BY message_date DESC
 	LIMIT 15");
 
-        $stmt->bindParam(':s', $sujet_id);
+        $stmt->bindValue(':s', $sujet_id);
 
         $retour = array();
         if ($stmt->execute() && $retour[0] = $stmt->fetch(\PDO::FETCH_ASSOC)) {
@@ -273,14 +273,14 @@ class TopicDAO
         // Création du sujet.
         $stmt = $dbh->prepare("INSERT INTO zcov2_forum_sujets (sujet_id, sujet_forum_id, sujet_titre, sujet_sous_titre, sujet_auteur, sujet_date, sujet_premier_message, sujet_dernier_message, sujet_sondage, sujet_annonce, sujet_ferme, sujet_resolu, sujet_corbeille)
 	VALUES ('', :sujet_forum_id, :sujet_titre, :sujet_sous_titre, :sujet_auteur, NOW(), '', '', 0, :sujet_annonce, :sujet_ferme, :sujet_resolu, :sujet_corbeille)");
-        $stmt->bindParam(':sujet_forum_id', $id);
-        $stmt->bindParam(':sujet_titre', $_POST['titre']);
-        $stmt->bindParam(':sujet_sous_titre', $_POST['sous_titre']);
-        $stmt->bindParam(':sujet_auteur', $_SESSION['id']);
-        $stmt->bindParam(':sujet_annonce', $annonce);
-        $stmt->bindParam(':sujet_ferme', $ferme);
-        $stmt->bindParam(':sujet_resolu', $resolu);
-        $stmt->bindParam(':sujet_corbeille', $corbeille);
+        $stmt->bindValue(':sujet_forum_id', $id);
+        $stmt->bindValue(':sujet_titre', $_POST['titre']);
+        $stmt->bindValue(':sujet_sous_titre', $_POST['sous_titre']);
+        $stmt->bindValue(':sujet_auteur', $_SESSION['id']);
+        $stmt->bindValue(':sujet_annonce', $annonce);
+        $stmt->bindValue(':sujet_ferme', $ferme);
+        $stmt->bindValue(':sujet_resolu', $resolu);
+        $stmt->bindValue(':sujet_corbeille', $corbeille);
         $stmt->execute();
         $nouveau_sujet_id = $dbh->lastInsertId();
         $stmt->closeCursor();
@@ -288,9 +288,9 @@ class TopicDAO
         // Création du premier message.
         $stmt = $dbh->prepare("INSERT INTO zcov2_forum_messages (message_id, message_auteur, message_texte, message_date, message_sujet_id, message_edite_auteur, message_edite_date, message_ip)
 	VALUES ('', :message_auteur, :message_texte, NOW(), :message_sujet_id, 0, '', :ip)");
-        $stmt->bindParam(':message_auteur', $_SESSION['id']);
-        $stmt->bindParam(':message_texte', $_POST['texte']);
-        $stmt->bindParam(':message_sujet_id', $nouveau_sujet_id);
+        $stmt->bindValue(':message_auteur', $_SESSION['id']);
+        $stmt->bindValue(':message_texte', $_POST['texte']);
+        $stmt->bindValue(':message_sujet_id', $nouveau_sujet_id);
         $stmt->bindValue(':ip', ip2long(\Container::request()->getClientIp()));
         $stmt->execute();
         $nouveau_message_id = $dbh->lastInsertId();
@@ -300,9 +300,9 @@ class TopicDAO
         $stmt = $dbh->prepare("UPDATE zcov2_forum_sujets
 	SET sujet_premier_message = :sujet_premier_message, sujet_dernier_message = :sujet_dernier_message
 	WHERE sujet_id = :nouveau_sujet_id");
-        $stmt->bindParam(':sujet_premier_message', $nouveau_message_id);
-        $stmt->bindParam(':sujet_dernier_message', $nouveau_message_id);
-        $stmt->bindParam(':nouveau_sujet_id', $nouveau_sujet_id);
+        $stmt->bindValue(':sujet_premier_message', $nouveau_message_id);
+        $stmt->bindValue(':sujet_dernier_message', $nouveau_message_id);
+        $stmt->bindValue(':nouveau_sujet_id', $nouveau_sujet_id);
         $stmt->execute();
         $stmt->closeCursor();
 
@@ -311,8 +311,8 @@ class TopicDAO
             $stmt = $dbh->prepare("UPDATE zcov2_categories
 		SET cat_last_element = :forum_dernier_post_id
 		WHERE cat_id = :forum_id");
-            $stmt->bindParam(':forum_dernier_post_id', $nouveau_message_id);
-            $stmt->bindParam(':forum_id', $_GET['id']);
+            $stmt->bindValue(':forum_dernier_post_id', $nouveau_message_id);
+            $stmt->bindValue(':forum_id', $id);
             $stmt->execute();
 
             $stmt->closeCursor();
@@ -321,9 +321,9 @@ class TopicDAO
         //Puis on crée l'enregistrement pour la table lu / nonlu
         $stmt = $dbh->prepare("INSERT INTO zcov2_forum_lunonlu (lunonlu_utilisateur_id, lunonlu_sujet_id, lunonlu_message_id, lunonlu_participe)
 	VALUES (:user_id, :sujet_id, :message_id, '1')");
-        $stmt->bindParam(':user_id', $_SESSION['id']);
-        $stmt->bindParam(':sujet_id', $nouveau_sujet_id);
-        $stmt->bindParam(':message_id', $nouveau_message_id);
+        $stmt->bindValue(':user_id', $_SESSION['id']);
+        $stmt->bindValue(':sujet_id', $nouveau_sujet_id);
+        $stmt->bindValue(':message_id', $nouveau_message_id);
 
         $stmt->execute();
 
@@ -334,7 +334,7 @@ class TopicDAO
             $stmt = $dbh->prepare("UPDATE zcov2_utilisateurs
 		SET utilisateur_forum_messages = utilisateur_forum_messages+1
 		WHERE utilisateur_id = :utilisateur_id");
-            $stmt->bindParam(':utilisateur_id', $_SESSION['id']);
+            $stmt->bindValue(':utilisateur_id', $_SESSION['id']);
             $stmt->execute();
 
 
@@ -371,14 +371,14 @@ class TopicDAO
             $stmt = $dbh->prepare("UPDATE zcov2_forum_sujets
 		SET sujet_resolu = 0
 		WHERE sujet_id = :sujet_id");
-            $stmt->bindParam(':sujet_id', $sujet_id);
+            $stmt->bindValue(':sujet_id', $sujet_id);
             $stmt->execute();
         } else {
             //Si c'est un sujet normal, on le met en résolu.
             $stmt = $dbh->prepare("UPDATE zcov2_forum_sujets
 		SET sujet_resolu = 1
 		WHERE sujet_id = :sujet_id");
-            $stmt->bindParam(':sujet_id', $sujet_id);
+            $stmt->bindValue(':sujet_id', $sujet_id);
             $stmt->execute();
         }
     }
@@ -396,14 +396,14 @@ class TopicDAO
             $stmt = $dbh->prepare("UPDATE zcov2_forum_sujets
 		SET sujet_annonce = 0
 		WHERE sujet_id = :sujet_id");
-            $stmt->bindParam(':sujet_id', $sujet_id);
+            $stmt->bindValue(':sujet_id', $sujet_id);
             $stmt->execute();
         } else {
             //Si c'est un sujet normal, on le met en annonce.
             $stmt = $dbh->prepare("UPDATE zcov2_forum_sujets
 		SET sujet_annonce = 1
 		WHERE sujet_id = :sujet_id");
-            $stmt->bindParam(':sujet_id', $sujet_id);
+            $stmt->bindValue(':sujet_id', $sujet_id);
             $stmt->execute();
         }
     }
@@ -421,14 +421,14 @@ class TopicDAO
             $stmt = $dbh->prepare("UPDATE zcov2_forum_sujets
 		SET sujet_ferme = 0
 		WHERE sujet_id = :sujet_id");
-            $stmt->bindParam(':sujet_id', $sujet_id);
+            $stmt->bindValue(':sujet_id', $sujet_id);
             $stmt->execute();
         } else {
             //Si le sujet est ouvert, on le ferme.
             $stmt = $dbh->prepare("UPDATE zcov2_forum_sujets
 		SET sujet_ferme = 1
 		WHERE sujet_id = :sujet_id");
-            $stmt->bindParam(':sujet_id', $sujet_id);
+            $stmt->bindValue(':sujet_id', $sujet_id);
             $stmt->execute();
         }
     }
@@ -448,8 +448,8 @@ class TopicDAO
         $stmt = $dbh->prepare("UPDATE zcov2_forum_sujets
 	SET sujet_forum_id = :forum_cible
 	WHERE sujet_id = :sujet_id");
-        $stmt->bindParam(':sujet_id', $id_suj);
-        $stmt->bindParam(':forum_cible', $forum_cible);
+        $stmt->bindValue(':sujet_id', $id_suj);
+        $stmt->bindValue(':forum_cible', $forum_cible);
         $stmt->execute();
         $stmt->closeCursor();
 
@@ -461,7 +461,7 @@ class TopicDAO
 	WHERE sujet_forum_id = :forum_source AND sujet_corbeille = 0
 	ORDER BY message_date DESC, message_id DESC
 	LIMIT 0, 1");
-        $stmt->bindParam(':forum_source', $forum_source);
+        $stmt->bindValue(':forum_source', $forum_source);
         $stmt->execute();
         $FofoSource = $stmt->fetch(\PDO::FETCH_ASSOC);
         $stmt->closeCursor();
@@ -474,8 +474,8 @@ class TopicDAO
         $stmt = $dbh->prepare("UPDATE zcov2_categories
 	SET cat_last_element = :forum_dernier_post_id
 	WHERE cat_id = :forum_source");
-        $stmt->bindParam(':forum_dernier_post_id', $FofoSource['message_id']);
-        $stmt->bindParam(':forum_source', $forum_source);
+        $stmt->bindValue(':forum_dernier_post_id', $FofoSource['message_id']);
+        $stmt->bindValue(':forum_source', $forum_source);
         $stmt->execute();
         $stmt->closeCursor();
 
@@ -487,7 +487,7 @@ class TopicDAO
 	WHERE sujet_forum_id = :forum_cible AND sujet_corbeille = 0
 	ORDER BY message_date DESC, message_id DESC
 	LIMIT 0, 1");
-        $stmt->bindParam(':forum_cible', $forum_cible);
+        $stmt->bindValue(':forum_cible', $forum_cible);
         $stmt->execute();
         $FofoCible = $stmt->fetch(\PDO::FETCH_ASSOC);
         $stmt->closeCursor();
@@ -500,8 +500,8 @@ class TopicDAO
         $stmt = $dbh->prepare("UPDATE zcov2_categories
 	SET cat_last_element = :forum_dernier_post_id
 	WHERE cat_id = :forum_cible");
-        $stmt->bindParam(':forum_dernier_post_id', $FofoCible['message_id']);
-        $stmt->bindParam(':forum_cible', $forum_cible);
+        $stmt->bindValue(':forum_dernier_post_id', $FofoCible['message_id']);
+        $stmt->bindValue(':forum_cible', $forum_cible);
         $stmt->execute();
         $stmt->closeCursor();
     }
@@ -520,7 +520,7 @@ class TopicDAO
 
         if (is_null($sujet_sondage)) {
             $stmt = $dbh->prepare("SELECT sujet_sondage FROM zcov2_forum_sujets WHERE sujet_id = :id");
-            $stmt->bindParam(':id', $sujet_id);
+            $stmt->bindValue(':id', $sujet_id);
 
             $stmt->execute();
 
@@ -538,7 +538,7 @@ class TopicDAO
 		WHERE message_sujet_id = :sujet_id
 		GROUP BY message_auteur
 		");
-            $stmt->bindParam(':sujet_id', $sujet_id);
+            $stmt->bindValue(':sujet_id', $sujet_id);
 
             $NombreMessageDesPosteursDansSujet = array();
             if ($stmt->execute() && $NombreMessageDesPosteursDansSujet[0] = $stmt->fetch(\PDO::FETCH_ASSOC)) {
@@ -559,8 +559,8 @@ class TopicDAO
 		");
 
             foreach ($NombreMessageDesPosteursDansSujet as $clef => &$valeur) {
-                $stmt->bindParam(':nombre_a_enlever', $valeur['NombreMessageDesPosteursDansSujet']);
-                $stmt->bindParam(':message_auteur', $valeur['message_auteur']);
+                $stmt->bindValue(':nombre_a_enlever', $valeur['NombreMessageDesPosteursDansSujet']);
+                $stmt->bindValue(':message_auteur', $valeur['message_auteur']);
 
                 $stmt->execute();
             }
@@ -570,21 +570,21 @@ class TopicDAO
         //On supprime le sujet.
         $stmt = $dbh->prepare("DELETE FROM zcov2_forum_sujets
 	WHERE sujet_id = :sujet_id");
-        $stmt->bindParam(':sujet_id', $sujet_id);
+        $stmt->bindValue(':sujet_id', $sujet_id);
         $stmt->execute();
         $stmt->closeCursor();
 
         //On supprime les messages du sujet.
         $stmt = $dbh->prepare("DELETE FROM zcov2_forum_messages
 	WHERE message_sujet_id = :message_sujet_id");
-        $stmt->bindParam(':message_sujet_id', $sujet_id);
+        $stmt->bindValue(':message_sujet_id', $sujet_id);
         $stmt->execute();
         $stmt->closeCursor();
 
         //On supprime les alertes du sujet.
         $stmt = $dbh->prepare("DELETE FROM zcov2_forum_alertes
 	WHERE alerte_sujet_id = :message_sujet_id");
-        $stmt->bindParam(':message_sujet_id', $sujet_id);
+        $stmt->bindValue(':message_sujet_id', $sujet_id);
         $stmt->execute();
         $stmt->closeCursor();
 
@@ -592,21 +592,21 @@ class TopicDAO
         //On supprime le sondage du sujet.
         $stmt = $dbh->prepare("DELETE FROM zcov2_forum_sondages
 	WHERE sondage_id = :sondage_id");
-        $stmt->bindParam(':sondage_id', $sujet_sondage);
+        $stmt->bindValue(':sondage_id', $sujet_sondage);
         $stmt->execute();
         $stmt->closeCursor();
 
         //On supprime les choix du sondage
         $stmt = $dbh->prepare("DELETE FROM zcov2_forum_sondages_choix
 	WHERE choix_sondage_id = :choix_sondage_id");
-        $stmt->bindParam(':choix_sondage_id', $sujet_sondage);
+        $stmt->bindValue(':choix_sondage_id', $sujet_sondage);
         $stmt->execute();
         $stmt->closeCursor();
 
         //On supprime les votes du sondage
         $stmt = $dbh->prepare("DELETE FROM zcov2_forum_sondages_votes
 	WHERE vote_sondage_id = :vote_sondage_id");
-        $stmt->bindParam(':vote_sondage_id', $sujet_sondage);
+        $stmt->bindValue(':vote_sondage_id', $sujet_sondage);
         $stmt->execute();
         $stmt->closeCursor();
         ################ FIN sondage ################
@@ -615,7 +615,7 @@ class TopicDAO
         //Ils ne dérangent pas mais ils ne servent plus à rien. Donc autant les supprimer !
         $stmt = $dbh->prepare("DELETE FROM zcov2_forum_lunonlu
 	WHERE lunonlu_sujet_id = :lunonlu_sujet_id");
-        $stmt->bindParam(':lunonlu_sujet_id', $sujet_id);
+        $stmt->bindValue(':lunonlu_sujet_id', $sujet_id);
         $stmt->execute();
         $stmt->closeCursor();
 
@@ -627,7 +627,7 @@ class TopicDAO
 	WHERE sujet_forum_id = :forum_id AND sujet_corbeille = :zero
 	ORDER BY message_date DESC, message_id DESC
 	LIMIT 0, 1");
-        $stmt->bindParam(':forum_id', $forum_id);
+        $stmt->bindValue(':forum_id', $forum_id);
         $stmt->bindValue(':zero', 0);
         $stmt->execute();
         $Fofo = $stmt->fetch(\PDO::FETCH_ASSOC);
@@ -642,8 +642,8 @@ class TopicDAO
         $stmt = $dbh->prepare("UPDATE zcov2_categories
 	SET cat_last_element = :forum_dernier_post_id
 	WHERE cat_id = :forum_id");
-        $stmt->bindParam(':forum_dernier_post_id', $Fofo['message_id']);
-        $stmt->bindParam(':forum_id', $forum_id);
+        $stmt->bindValue(':forum_dernier_post_id', $Fofo['message_id']);
+        $stmt->bindValue(':forum_id', $forum_id);
         $stmt->execute();
         $stmt->closeCursor();
     }
@@ -657,7 +657,7 @@ class TopicDAO
             $stmt = $dbh->prepare("SELECT message_auteur
 		FROM zcov2_forum_messages
 		WHERE message_id = :message_id");
-            $stmt->bindParam(':message_id', $message_id);
+            $stmt->bindValue(':message_id', $message_id);
 
             $stmt->execute();
             $AuteurMessage = $stmt->fetch(\PDO::FETCH_ASSOC);
@@ -668,7 +668,7 @@ class TopicDAO
             $stmt = $dbh->prepare("UPDATE zcov2_utilisateurs
 		SET utilisateur_forum_messages = utilisateur_forum_messages-1
 		WHERE utilisateur_id = :utilisateur_id");
-            $stmt->bindParam(':utilisateur_id', $AuteurMessage['message_auteur']);
+            $stmt->bindValue(':utilisateur_id', $AuteurMessage['message_auteur']);
             $stmt->execute();
 
             $stmt->closeCursor();
@@ -677,7 +677,7 @@ class TopicDAO
         //On supprime le message.
         $stmt = $dbh->prepare("DELETE FROM zcov2_forum_messages
 	WHERE message_id = :message_id");
-        $stmt->bindParam(':message_id', $message_id);
+        $stmt->bindValue(':message_id', $message_id);
 
         $stmt->execute();
 
@@ -687,7 +687,7 @@ class TopicDAO
         //On récupère juste un tableau ici. Les updates se font en fin de fonction.
         $stmt = $dbh->prepare("SELECT lunonlu_utilisateur_id FROM zcov2_forum_lunonlu
 	WHERE lunonlu_message_id = :lunonlu_message_id");
-        $stmt->bindParam(':lunonlu_message_id', $message_id);
+        $stmt->bindValue(':lunonlu_message_id', $message_id);
 
         $stmt->execute();
         if ($MettreAjourDernierMessageVu[0] = $stmt->fetch(\PDO::FETCH_ASSOC)) {
@@ -705,7 +705,7 @@ class TopicDAO
 		WHERE message_sujet_id = :message_sujet_id
 		ORDER BY message_date DESC, message_id DESC
 		LIMIT 0, 1");
-            $stmt->bindParam(':message_sujet_id', $sujet_id);
+            $stmt->bindValue(':message_sujet_id', $sujet_id);
 
             $stmt->execute();
             $DernierMessSujet = $stmt->fetch(\PDO::FETCH_ASSOC);
@@ -717,8 +717,8 @@ class TopicDAO
 		SET sujet_dernier_message = :sujet_dernier_message,
 		sujet_reponses = sujet_reponses-1
 		WHERE sujet_id = :sujet_id");
-            $stmt->bindParam(':sujet_dernier_message', $DernierMessSujet['message_id']);
-            $stmt->bindParam(':sujet_id', $sujet_id);
+            $stmt->bindValue(':sujet_dernier_message', $DernierMessSujet['message_id']);
+            $stmt->bindValue(':sujet_id', $sujet_id);
 
             $stmt->execute();
 
@@ -732,7 +732,7 @@ class TopicDAO
 		WHERE sujet_forum_id = :forum_id AND sujet_corbeille = :zero
 		ORDER BY message_date DESC, message_id DESC
 		LIMIT 0, 1");
-            $stmt->bindParam(':forum_id', $forum_id);
+            $stmt->bindValue(':forum_id', $forum_id);
             $stmt->bindValue(':zero', 0);
 
             $stmt->execute();
@@ -748,8 +748,8 @@ class TopicDAO
             $stmt = $dbh->prepare("UPDATE zcov2_categories
 		SET cat_last_element = :forum_dernier_post_id
 		WHERE cat_id = :forum_id");
-            $stmt->bindParam(':forum_dernier_post_id', $Fofo['message_id']);
-            $stmt->bindParam(':forum_id', $forum_id);
+            $stmt->bindValue(':forum_dernier_post_id', $Fofo['message_id']);
+            $stmt->bindValue(':forum_id', $forum_id);
 
             $stmt->execute();
 
@@ -759,7 +759,7 @@ class TopicDAO
             $stmt = $dbh->prepare("UPDATE zcov2_forum_sujets
 		SET sujet_reponses = sujet_reponses-1
 		WHERE sujet_id = :sujet_id");
-            $stmt->bindParam(':sujet_id', $sujet_id);
+            $stmt->bindValue(':sujet_id', $sujet_id);
 
             $stmt->execute();
 
@@ -773,7 +773,7 @@ class TopicDAO
 		WHERE message_sujet_id = :message_sujet_id
 		ORDER BY message_date DESC, message_id DESC
 		LIMIT 0, 1");
-            $stmt->bindParam(':message_sujet_id', $sujet_id);
+            $stmt->bindValue(':message_sujet_id', $sujet_id);
 
             $stmt->execute();
             $DernierMessSujet = $stmt->fetch(\PDO::FETCH_ASSOC);
@@ -783,18 +783,18 @@ class TopicDAO
 
         if (!empty($MettreAjourDernierMessageVu[0]['lunonlu_utilisateur_id'])) {
             //Voilà, c'est ici qu'on update le système lu /nonlu (voir deuxième requête de cette fonction => tout en haut).
-            $LeBindParam = '';
+            $LebindValue = '';
             foreach ($MettreAjourDernierMessageVu as $clef => $valeur) {
-                $LeBindParam .= $MettreAjourDernierMessageVu[$clef]['lunonlu_utilisateur_id'] . ',';
+                $LebindValue .= $MettreAjourDernierMessageVu[$clef]['lunonlu_utilisateur_id'] . ',';
             }
-            $LeBindParam = substr($LeBindParam, 0, -1);
+            $LebindValue = substr($LebindValue, 0, -1);
 
             $stmt = $dbh->prepare("UPDATE zcov2_forum_lunonlu
 		SET lunonlu_message_id = :lunonlu_message_id
 		WHERE lunonlu_utilisateur_id IN(:lunonlu_utilisateur_id) AND lunonlu_sujet_id = :lunonlu_sujet_id");
-            $stmt->bindParam(':lunonlu_message_id', $DernierMessSujet['message_id']);
-            $stmt->bindParam(':lunonlu_utilisateur_id', $LeBindParam);
-            $stmt->bindParam(':lunonlu_sujet_id', $sujet_id);
+            $stmt->bindValue(':lunonlu_message_id', $DernierMessSujet['message_id']);
+            $stmt->bindValue(':lunonlu_utilisateur_id', $LebindValue);
+            $stmt->bindValue(':lunonlu_sujet_id', $sujet_id);
 
             $stmt->execute();
 
@@ -822,7 +822,7 @@ class TopicDAO
 	WHERE message_sujet_id = :sujet_id
 	GROUP BY message_auteur
 	");
-        $stmt->bindParam(':sujet_id', $sujet_id);
+        $stmt->bindValue(':sujet_id', $sujet_id);
 
         $NombreMessageDesPosteursDansSujet = array();
         if ($stmt->execute() && $NombreMessageDesPosteursDansSujet[0] = $stmt->fetch(\PDO::FETCH_ASSOC)) {
@@ -841,8 +841,8 @@ class TopicDAO
 	");
 
         foreach ($NombreMessageDesPosteursDansSujet as $clef => &$valeur) {
-            $stmt->bindParam(':nombre_a_enlever', $valeur['NombreMessageDesPosteursDansSujet']);
-            $stmt->bindParam(':message_auteur', $valeur['message_auteur']);
+            $stmt->bindValue(':nombre_a_enlever', $valeur['NombreMessageDesPosteursDansSujet']);
+            $stmt->bindValue(':message_auteur', $valeur['message_auteur']);
             $stmt->execute();
         }
         $stmt->closeCursor();
@@ -851,7 +851,7 @@ class TopicDAO
         $stmt = $dbh->prepare("UPDATE zcov2_forum_sujets
 	SET sujet_corbeille = 1
 	WHERE sujet_id = :sujet_id");
-        $stmt->bindParam(':sujet_id', $sujet_id);
+        $stmt->bindValue(':sujet_id', $sujet_id);
         $stmt->execute();
         $stmt->closeCursor();
 
@@ -864,7 +864,7 @@ class TopicDAO
 	WHERE sujet_forum_id = :forum_id AND sujet_corbeille = 0
 	ORDER BY message_date DESC, message_id DESC
 	LIMIT 0, 1");
-        $stmt->bindParam(':forum_id', $forum_id);
+        $stmt->bindValue(':forum_id', $forum_id);
         $stmt->execute();
         $Fofo = $stmt->fetch(\PDO::FETCH_ASSOC);
         $stmt->closeCursor();
@@ -877,8 +877,8 @@ class TopicDAO
         $stmt = $dbh->prepare("UPDATE zcov2_categories
 	SET cat_last_element = :forum_dernier_post_id
 	WHERE cat_id = :forum_id");
-        $stmt->bindParam(':forum_dernier_post_id', $Fofo['message_id']);
-        $stmt->bindParam(':forum_id', $forum_id);
+        $stmt->bindValue(':forum_dernier_post_id', $Fofo['message_id']);
+        $stmt->bindValue(':forum_id', $forum_id);
         $stmt->execute();
         $stmt->closeCursor();
     }
@@ -903,7 +903,7 @@ class TopicDAO
 	WHERE message_sujet_id = :sujet_id
 	GROUP BY message_auteur
 	");
-        $stmt->bindParam(':sujet_id', $sujet_id);
+        $stmt->bindValue(':sujet_id', $sujet_id);
 
         $NombreMessageDesPosteursDansSujet = array();
         if ($stmt->execute() && $NombreMessageDesPosteursDansSujet[0] = $stmt->fetch(\PDO::FETCH_ASSOC)) {
@@ -922,8 +922,8 @@ class TopicDAO
 	");
 
         foreach ($NombreMessageDesPosteursDansSujet as $clef => &$valeur) {
-            $stmt->bindParam(':nombre_a_ajouter', $valeur['NombreMessageDesPosteursDansSujet']);
-            $stmt->bindParam(':message_auteur', $valeur['message_auteur']);
+            $stmt->bindValue(':nombre_a_ajouter', $valeur['NombreMessageDesPosteursDansSujet']);
+            $stmt->bindValue(':message_auteur', $valeur['message_auteur']);
             $stmt->execute();
         }
         $stmt->closeCursor();
@@ -932,7 +932,7 @@ class TopicDAO
         $stmt = $dbh->prepare("UPDATE zcov2_forum_sujets
 	SET sujet_corbeille = 0
 	WHERE sujet_id = :sujet_id");
-        $stmt->bindParam(':sujet_id', $sujet_id);
+        $stmt->bindValue(':sujet_id', $sujet_id);
         $stmt->execute();
         $stmt->closeCursor();
 
@@ -945,7 +945,7 @@ class TopicDAO
 	WHERE sujet_forum_id = :forum_id AND sujet_corbeille = 0
 	ORDER BY message_date DESC, message_id DESC
 	LIMIT 0, 1");
-        $stmt->bindParam(':forum_id', $forum_id);
+        $stmt->bindValue(':forum_id', $forum_id);
         $stmt->execute();
         $Fofo = $stmt->fetch(\PDO::FETCH_ASSOC);
         $stmt->closeCursor();
@@ -958,318 +958,9 @@ class TopicDAO
         $stmt = $dbh->prepare("UPDATE zcov2_categories
 	SET cat_last_element = :forum_dernier_post_id
 	WHERE cat_id = :forum_id");
-        $stmt->bindParam(':forum_dernier_post_id', $Fofo['message_id']);
-        $stmt->bindParam(':forum_id', $forum_id);
+        $stmt->bindValue(':forum_dernier_post_id', $Fofo['message_id']);
+        $stmt->bindValue(':forum_id', $forum_id);
         $stmt->execute();
         $stmt->closeCursor();
-    }
-
-    public static function DiviserSujet($infos, $corbeille)
-    {
-        $dbh = \Doctrine_Manager::connection()->getDbh();
-
-        //On supprime tous les enregistrements de la tables des lu / non-lus
-        $stmt = $dbh->prepare("DELETE FROM zcov2_forum_lunonlu WHERE lunonlu_sujet_id = :sujet_id");
-        $stmt->bindParam(':sujet_id', $infos['sujet_id']);
-
-        $stmt->execute();
-
-        $stmt->closeCursor();
-
-
-        //On crée le nouveau sujet
-        //--- On récupère ldes infos sur les messages à déplacer
-        $in = array();
-        foreach ($_POST['msg'] as $cle => $valeur)
-            $in[] = $cle;
-
-        $stmt = $dbh->prepare("SELECT message_id, message_auteur
-	FROM zcov2_forum_messages
-	WHERE message_id IN(" . implode(', ', $in) . ")
-	ORDER BY message_date ASC");
-
-        $stmt->execute();
-
-        $messages = $stmt->fetchAll();
-        $stmt->closeCursor();
-
-        //--- Insertion en BDD
-        $stmt = $dbh->prepare("INSERT INTO zcov2_forum_sujets (sujet_forum_id, sujet_titre, sujet_sous_titre, sujet_auteur, sujet_date, sujet_premier_message, sujet_dernier_message, sujet_annonce, sujet_ferme, sujet_resolu, sujet_corbeille, sujet_reponses)
-	VALUES (:sujet_forum_id, :sujet_titre, :sujet_sous_titre, :sujet_auteur, NOW(), :premier_message, :dernier_message, 0, 0, 0, 0, :reponses)");
-        $stmt->bindParam(':sujet_forum_id', $_POST['forum']);
-        $stmt->bindParam(':sujet_titre', $_POST['titre']);
-        $stmt->bindParam(':sujet_sous_titre', $_POST['sous_titre']);
-        $stmt->bindParam(':sujet_auteur', $messages[0]['message_auteur']);
-        $stmt->bindParam(':premier_message', $messages[0]['message_id']);
-        $stmt->bindParam(':dernier_message', $messages[(count($messages) - 1)]['message_id']);
-        $stmt->bindValue(':reponses', (count($messages) - 1));
-
-        $stmt->execute();
-
-
-        //--- On récupère l'id de l'enregistrement qui vient d'être créé (l'id du nouveau sujet).
-        $nouveau_sujet_id = $dbh->lastInsertId();
-        $stmt->closeCursor();
-
-        //-- On déplace les posts
-        $stmt = $dbh->prepare("
-	UPDATE zcov2_forum_messages
-	SET message_sujet_id = :id_sujet
-	WHERE message_id IN(" . implode(', ', $in) . ")");
-        $stmt->bindParam(':id_sujet', $nouveau_sujet_id);
-
-        $stmt->execute();
-
-        $stmt->closeCursor();
-
-        //--- Puis on ajoute des enregistrements de la table lu / nonlu
-        foreach ($messages as $m) {
-            $stmt = $dbh->prepare("INSERT INTO zcov2_forum_lunonlu (lunonlu_utilisateur_id, lunonlu_sujet_id, lunonlu_message_id, lunonlu_participe)
-		VALUES (:user_id, :sujet_id, :message_id, '1')
-		ON DUPLICATE KEY UPDATE lunonlu_message_id = :message_id");
-            $stmt->bindParam(':user_id', $m['message_auteur']);
-            $stmt->bindParam(':sujet_id', $nouveau_sujet_id);
-            $stmt->bindParam(':message_id', $m['message_id']);
-
-            $stmt->execute();
-
-            $stmt->closeCursor();
-        }
-
-        //--- Si on n'est pas dans la corbeille, il faut penser à mettre à jour le dernier message posté du forum
-        if (!$corbeille) {
-            $stmt = $dbh->prepare("UPDATE zcov2_categories
-		SET cat_last_element = :forum_dernier_post_id
-		WHERE cat_id = :forum_id");
-            $stmt->bindParam(':forum_dernier_post_id', $messages[(count($messages) - 1)]['message_id']);
-            $stmt->bindParam(':forum_id', $_POST['forum']);
-
-            $stmt->execute();
-
-            $stmt->closeCursor();
-        }
-
-
-        //Enfin on s'occupe de l'ancien sujet
-        //--- On récupère le premier message du sujet
-        $stmt = $dbh->prepare("SELECT message_id
-	FROM zcov2_forum_messages
-	WHERE message_sujet_id = :message_sujet_id
-	ORDER BY message_date ASC, message_id ASC
-	LIMIT 0, 1");
-        $stmt->bindParam(':message_sujet_id', $infos['sujet_id']);
-
-        $stmt->execute();
-        $PremierMessSujet = $stmt->fetchColumn();
-
-        $stmt->closeCursor();
-
-        //--- On récupère le dernier message du sujet
-        $stmt = $dbh->prepare("SELECT message_id
-	FROM zcov2_forum_messages
-	WHERE message_sujet_id = :message_sujet_id
-	ORDER BY message_date DESC, message_id DESC
-	LIMIT 0, 1");
-        $stmt->bindParam(':message_sujet_id', $infos['sujet_id']);
-
-        $stmt->execute();
-        $DernierMessSujet = $stmt->fetchColumn();
-
-        $stmt->closeCursor();
-
-        //--- On update la table du sujet, pour indiquer le premier et le dernier message du sujet, et pour décrémenter le nombre de réponses
-        $stmt = $dbh->prepare("UPDATE zcov2_forum_sujets
-	SET sujet_premier_message = :premier_message,  sujet_dernier_message = :dernier_message, sujet_reponses = sujet_reponses - :nb
-	WHERE sujet_id = :sujet_id");
-        $stmt->bindParam(':premier_message', $PremierMessSujet);
-        $stmt->bindParam(':dernier_message', $DernierMessSujet);
-        $stmt->bindValue(':nb', count($messages));
-        $stmt->bindParam(':sujet_id', $infos['sujet_id']);
-
-        $stmt->execute();
-
-        $stmt->closeCursor();
-
-        //--- Puis on met à jour les enregistrements de la table lu / nonlu
-        $ListerMessages = self::ListerMessages($infos['sujet_id'], 0, $infos['nombre_de_messages']);
-        foreach ($ListerMessages as $m) {
-            //Si le message ne doit pas être supprimé
-            if (!in_array($m['message_id'], $in)) {
-                $stmt = $dbh->prepare("INSERT INTO zcov2_forum_lunonlu (lunonlu_utilisateur_id, lunonlu_sujet_id, lunonlu_message_id, lunonlu_participe)
-			VALUES (:user_id, :sujet_id, :message_id, '1')
-			ON DUPLICATE KEY UPDATE lunonlu_message_id = :message_id");
-                $stmt->bindParam(':user_id', $m['message_auteur']);
-                $stmt->bindParam(':sujet_id', $infos['sujet_id']);
-                $stmt->bindParam(':message_id', $m['message_id']);
-
-                $stmt->execute();
-
-                $stmt->closeCursor();
-            }
-        }
-
-        if (!$corbeille) {
-            //--- On recherche le dernier message du forum.
-            $stmt = $dbh->prepare("SELECT message_id
-		FROM zcov2_forum_messages
-		LEFT JOIN zcov2_forum_sujets ON zcov2_forum_messages.message_sujet_id = zcov2_forum_sujets.sujet_id
-		LEFT JOIN zcov2_categories ON sujet_forum_id = cat_id
-		WHERE sujet_forum_id = :forum_id AND sujet_corbeille = 0
-		ORDER BY message_date DESC, message_id DESC
-		LIMIT 0, 1");
-            $stmt->bindParam(':forum_id', $infos['forum_id']);
-
-            $stmt->execute();
-            $Fofo = $stmt->fetchColumn();
-
-            $stmt->closeCursor();
-
-            //--- Maintenant qu'on a le dernier message du forum, on update.
-            $stmt = $dbh->prepare("UPDATE zcov2_categories
-		SET cat_last_element = :forum_dernier_post_id
-		WHERE cat_id = :forum_id");
-            $stmt->bindParam(':forum_dernier_post_id', $Fofo);
-            $stmt->bindParam(':forum_id', $infos['forum_id']);
-
-            $stmt->execute();
-
-            $stmt->closeCursor();
-        }
-    }
-
-    public static function FusionnerSujets($infos, $corbeille)
-    {
-        $dbh = \Doctrine_Manager::connection()->getDbh();
-        $in = array();
-
-        foreach ($_POST['sujet'] as $cle => $valeur) {
-            $in[] = $cle;
-        }
-
-        //On récupère des infos sur les sujets
-        $stmt = $dbh->prepare("SELECT sujet_id, sujet_reponses, sujet_forum_id, sujet_corbeille, sujet_sondage
-	FROM zcov2_forum_sujets
-	WHERE sujet_id IN(" . implode(', ', $in) . ")");
-        $stmt->execute();
-        $sujets = $stmt->fetchAll();
-
-        $stmt->closeCursor();
-
-        //On change les messages de sujet
-        $stmt = $dbh->prepare("
-	UPDATE zcov2_forum_messages
-	SET message_sujet_id = :new
-	WHERE message_sujet_id IN(" . implode(', ', $in) . ")");
-        $stmt->bindParam(':new', $infos['sujet_id']);
-
-        $stmt->execute();
-
-        $stmt->closeCursor();
-
-        //On calcule le nombre de messages à ajouter
-        $nb_messages = 0;
-        foreach ($sujets as $s) {
-            if ($s['sujet_id'] != $infos['sujet_id'])
-                $nb_messages += ($s['sujet_reponses'] + 1);
-        }
-
-        //Mise à jour du sujet parent
-        //--- On récupère le premier message du sujet
-        $stmt = $dbh->prepare("SELECT message_id
-	FROM zcov2_forum_messages
-	WHERE message_sujet_id = :message_sujet_id
-	ORDER BY message_date ASC, message_id ASC
-	LIMIT 0, 1");
-        $stmt->bindParam(':message_sujet_id', $infos['sujet_id']);
-
-        $stmt->execute();
-        $PremierMessSujet = $stmt->fetchColumn();
-
-        $stmt->closeCursor();
-
-        //--- On récupère le dernier message du sujet
-        $stmt = $dbh->prepare("SELECT message_id
-	FROM zcov2_forum_messages
-	WHERE message_sujet_id = :message_sujet_id
-	ORDER BY message_date DESC, message_id DESC
-	LIMIT 0, 1");
-        $stmt->bindParam(':message_sujet_id', $infos['sujet_id']);
-
-        $stmt->execute();
-        $DernierMessSujet = $stmt->fetchColumn();
-
-        $stmt->closeCursor();
-
-        //--- On update la table du sujet, pour indiquer le premier et le dernier message du sujet, et pour augmenter le nombre de réponses
-        $stmt = $dbh->prepare("UPDATE zcov2_forum_sujets
-	SET sujet_premier_message = :premier_message,  sujet_dernier_message = :dernier_message, sujet_reponses = sujet_reponses + :nb
-	WHERE sujet_id = :sujet_id");
-        $stmt->bindParam(':premier_message', $PremierMessSujet);
-        $stmt->bindParam(':dernier_message', $DernierMessSujet);
-        $stmt->bindParam(':nb', $nb_messages);
-        $stmt->bindParam(':sujet_id', $infos['sujet_id']);
-
-        $stmt->execute();
-
-        $stmt->closeCursor();
-
-        //On supprime les anciens sujets (les messages ont déjà été déplacés, ils ne seront pas supprimés)
-        foreach ($sujets as $s) {
-            if ($s['sujet_id'] != $infos['sujet_id'])
-                self::Supprimer($s['sujet_id'], $s['sujet_forum_id'], $s['sujet_corbeille'], $s['sujet_sondage']);
-        }
-
-        //Mise à jour pour le forum
-        if (!$corbeille) {
-            //--- On recherche le dernier message du forum.
-            $stmt = $dbh->prepare("SELECT message_id
-		FROM zcov2_forum_messages
-		LEFT JOIN zcov2_forum_sujets ON zcov2_forum_messages.message_sujet_id = zcov2_forum_sujets.sujet_id
-		LEFT JOIN zcov2_categories ON sujet_forum_id = cat_id
-		WHERE sujet_forum_id = :forum_id AND sujet_corbeille = 0
-		ORDER BY message_date DESC, message_id DESC
-		LIMIT 0, 1");
-            $stmt->bindParam(':forum_id', $infos['forum_id']);
-
-            $stmt->execute();
-            $Fofo = $stmt->fetchColumn();
-
-            $stmt->closeCursor();
-
-            //--- Maintenant qu'on a le dernier message du forum, on update.
-            $stmt = $dbh->prepare("UPDATE zcov2_categories
-		SET cat_last_element = :forum_dernier_post_id
-		WHERE cat_id = :forum_id");
-            $stmt->bindParam(':forum_dernier_post_id', $Fofo);
-            $stmt->bindParam(':forum_id', $infos['forum_id']);
-
-            $stmt->execute();
-
-            $stmt->closeCursor();
-        }
-
-        //Mise à jour pour les lus / non-lus
-        $stmt = $dbh->prepare("SELECT message_id, message_auteur
-	FROM zcov2_forum_messages
-	WHERE message_sujet_id = :id");
-        $stmt->bindParam(':id', $infos['sujet_id']);
-
-        $stmt->execute();
-
-        $messages = $stmt->fetchAll();
-        $stmt->closeCursor();
-
-        foreach ($messages as $m) {
-            $stmt = $dbh->prepare("INSERT INTO zcov2_forum_lunonlu (lunonlu_utilisateur_id, lunonlu_sujet_id, lunonlu_message_id, lunonlu_participe)
-		VALUES (:user_id, :sujet_id, :message_id, '1')
-		ON DUPLICATE KEY UPDATE lunonlu_message_id = :message_id");
-            $stmt->bindParam(':user_id', $m['message_auteur']);
-            $stmt->bindParam(':sujet_id', $infos['sujet_id']);
-            $stmt->bindParam(':message_id', $m['message_id']);
-
-            $stmt->execute();
-
-            $stmt->closeCursor();
-        }
     }
 }

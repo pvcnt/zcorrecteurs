@@ -185,39 +185,6 @@ final class MessageDAO
         }
     }
 
-    public static function VerifierValiditeMessage($id)
-    {
-        $dbh = \Doctrine_Manager::connection()->getDbh();
-
-        // Vérification de l'existence du message, et vérification des droits de lecture et d'édition (d'écriture) pour ce message.
-        $stmt = $dbh->prepare("
-	SELECT message_id, message_sujet_id, sujet_ferme, sujet_forum_id
-	FROM zcov2_forum_messages
-	LEFT JOIN zcov2_forum_sujets ON zcov2_forum_messages.message_sujet_id = zcov2_forum_sujets.sujet_id
-	WHERE message_id = :m");
-        $stmt->bindParam(':m', $id);
-
-        $stmt->execute();
-
-        $resultat = $stmt->fetch(\PDO::FETCH_ASSOC);
-        $stmt->closeCursor();
-
-        if (!empty($resultat['message_id']) AND verifier('voir_sujets', $resultat['sujet_forum_id'])) {
-            // Si le message existe et que l'utilisateur a le droit de voir le message, on vérifie si le sujet est fermé.
-            if ($resultat['message_sujet_id'] != $_GET['id']) {
-                return false;
-            } elseif ($resultat['sujet_ferme'] AND verifier('corbeille_sujets', $resultat['forum_id'])) {
-                return true;
-            } elseif ($resultat['sujet_ferme'] AND !verifier('corbeille_sujets', $resultat['forum_id'])) {
-                return false;
-            } elseif (!$resultat['sujet_ferme']) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     public static function InfosMessage($id)
     {
         $dbh = \Doctrine_Manager::connection()->getDbh();
