@@ -28,7 +28,7 @@ zco_forum_trash:
 
 zco_forum_markHelped:
   path:   /forum/aide/{id}
-  defaults:  { _controller: ZcoForumBundle:Default:markHelped }
+  defaults:  { _controller: ZcoForumBundle:Message:markHelped }
   requirements:
     id: \d+
 
@@ -58,7 +58,7 @@ zco_forum_delete:
 
 zco_forum_reply:
   path:   /forum/repondre/{id}
-  defaults:  { _controller: ZcoForumBundle:Default:reply }
+  defaults:  { _controller: ZcoForumBundle:Message:new }
   methods: [POST]
   requirements:
     id: \d+
@@ -72,12 +72,12 @@ zco_forum_move:
 
 zco_forum_edit:
   path:   /forum/modifier/{id}
-  defaults:  { _controller: ZcoForumBundle:Default:edit }
+  defaults:  { _controller: ZcoForumBundle:Message:edit }
   requirements:
     id: \d+
 
 zco_forum_deleteMessage:
   path:   /forum/supprimer-message/{id}
-  defaults:  { _controller: ZcoForumBundle:Default:deleteMessage }
+  defaults:  { _controller: ZcoForumBundle:Message:delete }
   requirements:
     id: \d+
