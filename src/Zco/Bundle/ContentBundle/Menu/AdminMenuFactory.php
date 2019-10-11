@@ -23,8 +23,6 @@ namespace Zco\Bundle\ContentBundle\Menu;
 
 use Symfony\Component\Routing\RouterInterface;
 use Zco\Bundle\ContentBundle\Admin\Admin;
-use Zco\Bundle\ForumBundle\Admin\ForumAlertsPendingTask;
-use Zco\Bundle\UserBundle\Admin\NewUsernamePendingTask;
 
 final class AdminMenuFactory
 {

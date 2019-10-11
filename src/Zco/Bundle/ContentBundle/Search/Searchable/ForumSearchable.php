@@ -21,7 +21,7 @@
 
 namespace Zco\Bundle\ContentBundle\Search\Searchable;
 
-use Zco\Bundle\ForumBundle\Domain\MessageDAO;
+use Zco\Bundle\ContentBundle\Domain\MessageDAO;
 
 /**
  * Recherche sur le forum.
