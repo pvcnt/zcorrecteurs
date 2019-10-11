@@ -173,7 +173,7 @@ if($InfosSujet['sujet_sondage'] > 0)
 				)
 				{
 				?>
-				<a href="<?php echo 'editer-'.$valeur['message_id']; ?>.html">
+				<a href="<?php echo $view['router']->path('zco_forum_edit', ['id' => $valeur['message_id']]) ?>">
 					<img src="/pix.gif" class="fff pencil" alt="Éditer" title="Éditer" />
 				</a>
 				<?php

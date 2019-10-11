@@ -148,8 +148,26 @@ if(verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']))
 		<li>
 			<img src="/pix.gif" class="fff folder_go" alt="" />
 			Déplacer le sujet vers :
-			<input type="button" name="xhr" id="xhr" onclick="deplacer_sujet(this);" value="Afficher" />
-			<div id="deplacer_sujet" style="display:inline;"></div>
+
+            <form action="<?php echo $this->generateUrl('zco_forum_move', ['id' => $_POST['id']]) ?>" method="post">
+                <select name="forum_cible">
+                    <?php foreach($CategoriesForums as $i => $valeur) { ?>
+                    <?php if($valeur['cat_niveau'] == 2 && $_POST['fofo_actuel'] != $valeur['cat_id']) { ?>
+                        <?php if($i > 1) { ?></optgroup><?php } ?>
+                        <optgroup label="<?php echo htmlspecialchars($valeur['cat_nom']) ?>">
+                    <?php } else { ?>
+                        <option value="<?php echo $valeur['cat_id'] ?>"><?php echo htmlspecialchars($valeur['cat_nom']) ?></option>
+                        <?php if (!empty($valeur['sous_forums'])) { ?>
+                            <?php foreach ($valeur['sous_forums'] as $forum) { ?>
+                                <option value="<?php echo $forum['cat_id'] ?>"><?php echo str_pad('', ($forum['cat_niveau']-3)*3, '...').htmlspecialchars($forum['cat_nom']) ?></option>
+                            <?php } ?>
+                        <?php } ?>
+                    <?php } ?>
+                <?php } ?>
+                </optgroup></select>
+                <input type="submit" value="Déplacer" />
+            </form>
+            ';
 		</li>
 		<?php
 		}

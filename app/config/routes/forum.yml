@@ -55,3 +55,22 @@ zco_forum_reply:
   defaults:  { _controller: ZcoForumBundle:Default:reply }
   requirements:
     id: \d+
+
+zco_forum_move:
+  path:   /forum/deplacer/{id}
+  defaults:  { _controller: ZcoForumBundle:Default:move }
+  methods: [POST]
+  requirements:
+    id: \d+
+
+zco_forum_edit:
+  path:   /forum/modifier/{id}
+  defaults:  { _controller: ZcoForumBundle:Default:edit }
+  requirements:
+    id: \d+
+
+zco_forum_deleteMessage:
+  path:   /forum/supprimer-message/{id}
+  defaults:  { _controller: ZcoForumBundle:Default:deleteMessage }
+  requirements:
+    id: \d+

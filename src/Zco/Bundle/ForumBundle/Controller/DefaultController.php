@@ -30,7 +30,6 @@ use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
 use Zco\Bundle\ForumBundle\Domain\ForumDAO;
 use Zco\Bundle\ForumBundle\Domain\MessageDAO;
 use Zco\Bundle\ForumBundle\Domain\PollDAO;
-use Zco\Bundle\ForumBundle\Domain\ReadMarkerDAO;
 use Zco\Bundle\ForumBundle\Domain\TopicDAO;
 
 /**
@@ -91,6 +90,7 @@ final class DefaultController extends Controller
         }
         $this->get('zco_core.resource_manager')->requireResources([
             '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
+            '@ZcoForumBundle/Resources/public/css/forum.css',
         ]);
         $response = $this->render('ZcoForumBundle::index.html.php', [
             'ListerCategories' => $ListerCategories,
@@ -113,7 +113,7 @@ final class DefaultController extends Controller
         }
 
         $InfosMessage = MessageDAO::InfosMessage($id);
-        if (!$InfosMessage || !verifier('voir_sujets', $InfosMessage['sujet_forum_id'])) {
+        if (!$InfosMessage) {
             throw new NotFoundHttpException();
         }
         if ($InfosMessage['sujet_corbeille'] && !verifier('corbeille_sujets', $InfosMessage['sujet_forum_id'])) {
@@ -180,9 +180,10 @@ final class DefaultController extends Controller
         }
 
         fil_ariane($id, 'Créer un nouveau sujet');
-        $this->get('zco_core.resource_manager')->requireResource(
-            '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css'
-        );
+        $this->get('zco_core.resource_manager')->requireResources([
+            '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
+            '@ZcoForumBundle/Resources/public/css/forum.css',
+        ]);
 
         if (isset($_SESSION['forum_message_texte'])) {
             $texte = $_SESSION['forum_message_texte'];
@@ -316,11 +317,12 @@ final class DefaultController extends Controller
             $msgFil = 'Liste des sujets';
         }
         fil_ariane($id, $msgFil);
-        $this->get('zco_core.resource_manager')->requireResources(array(
+        $this->get('zco_core.resource_manager')->requireResources([
             '@ZcoCoreBundle/Resources/public/css/zcode.css',
             '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
-        ));
-        $this->get('zco_core.resource_manager')->requireResource('@ZcoCoreBundle/Resources/public/js/messages.js');
+            '@ZcoForumBundle/Resources/public/css/forum.css',
+            '@ZcoCoreBundle/Resources/public/js/messages.js'
+        ]);
 
         return $this->render('ZcoForumBundle::forum.html.php', [
             'InfosForum' => $InfosForum,
@@ -426,8 +428,6 @@ final class DefaultController extends Controller
             $nombre_total_votes = null;
         }
 
-        $_SESSION['sujet_dernier_message'][$_GET['id']] = $InfosSujet['sujet_dernier_message'];
-
         //Inclusion des vues
         fil_ariane($InfosSujet['sujet_forum_id'], array(
             htmlspecialchars($InfosSujet['sujet_titre']) => $url,
@@ -436,7 +436,14 @@ final class DefaultController extends Controller
         $this->get('zco_core.resource_manager')->requireResources([
             '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
             '@ZcoCoreBundle/Resources/public/js/zform.js',
+            '@ZcoForumBundle/Resources/public/css/forum.css',
         ]);
+
+        if (verifier('deplacer_sujets', $InfosSujet['sujet_forum_id'])) {
+            $CategoriesForums = ForumDAO::ListerCategoriesForum();
+        } else {
+            $CategoriesForums = [];
+        }
 
         //Cette big condition permet de savoir si on affiche ou pas les options de modération.
         if
@@ -471,7 +478,39 @@ final class DefaultController extends Controller
             'nombre_total_votes' => $nombre_total_votes,
             'NombreDePages' => $NombreDePages,
             'PremierMessage' => $PremierMessage[0],
+            'CategoriesForums' => $CategoriesForums,
         ]);
+    }
+
+    public function moveAction($id, Request $request)
+    {
+        $InfosSujet = $this->getTopic($id);
+
+        if ($InfosSujet['sujet_corbeille']) {
+            throw new AccessDeniedHttpException();
+        }
+        if (!verifier('deplacer_sujets', $InfosSujet['sujet_forum_id'])) {
+            throw new AccessDeniedHttpException();
+        }
+        if (!verifier('voir_sujets', $_POST['forum_cible'])) {
+            // Si on n'a pas le droit de voir le forum de destination.
+            throw new NotFoundHttpException();
+        }
+
+        if (empty($_POST['forum_cible']) || !is_numeric($_POST['forum_cible'])) {
+            // Forum cible non envoyé.
+            throw new NotFoundHttpException();
+        }
+
+        $url = $this->generateUrl('zco_forum_showTopic', ['id' => $id, 'slug' => rewrite($InfosSujet['sujet_titre'])]);
+
+        //Si forum source et cible sont identiques.
+        if ($InfosSujet['sujet_forum_id'] == $_POST['forum_cible']) {
+            return redirect('Le forum source doit être différent du forum cible.', $url, MSG_ERROR);
+        }
+
+        TopicDAO::DeplacerSujet($id, $InfosSujet['sujet_forum_id'], $_POST['forum_cible']);
+        return redirect('Le sujet a bien été déplacé.', $url);
     }
 
     public function trashAction($id, $status)
@@ -595,6 +634,107 @@ final class DefaultController extends Controller
         ]);
     }
 
+    public function editAction($id, Request $request)
+    {
+        $InfosMessage = MessageDAO::InfosMessage($id);
+        if (!$InfosMessage) {
+            throw new NotFoundHttpException();
+        }
+        if (!((verifier('editer_ses_messages', $InfosMessage['sujet_forum_id']) AND $InfosMessage['message_auteur'] == $_SESSION['id'])
+            || verifier('editer_messages_autres', $InfosMessage['sujet_forum_id']))) {
+            throw new AccessDeniedHttpException();
+        }
+
+        $InfosForum = CategoryDAO::InfosCategorie($InfosMessage['sujet_forum_id']);
+        $InfosSujet = TopicDAO::InfosSujet($InfosMessage['sujet_id']);
+
+        if ($request->isMethod('POST')) {
+            //Si on a posté quelque chose
+            //On a validé le formulaire. Des vérifications s'imposent.
+            if (empty($_POST['texte'])) {
+                return redirect(
+                    'Vous devez remplir tous les champs nécessaires !',
+                    $this->generateUrl('zco_forum_showTopic', ['id' => $InfosSujet['sujet_id'], 'slug' => rewrite($InfosSujet['sujet_titre'])]),
+                    MSG_ERROR
+                );
+            }
+            $InfosMessage['sujet_annonce'] = isset($_POST['annonce']) ? 1 : 0;
+            $InfosMessage['sujet_ferme'] = isset($_POST['ferme']) ? 1 : 0;
+            $InfosMessage['sujet_resolu'] = isset($_POST['resolu']) ? 1 : 0;
+            MessageDAO::EditerMessage($id, $InfosMessage['sujet_forum_id'], $InfosMessage['message_sujet_id'], $InfosMessage['sujet_annonce'], $InfosMessage['sujet_ferme'], $InfosMessage['sujet_resolu'], $InfosMessage['sujet_auteur']);
+
+            return redirect(
+                'Le message a bien été édité.',
+                $this->generateUrl('zco_forum_showTopic', ['id' => $InfosSujet['sujet_id'], 'c' => $id, 'slug' => rewrite($InfosSujet['sujet_titre'])])
+            );
+        }
+
+        fil_ariane($InfosMessage['sujet_forum_id'], array(
+            htmlspecialchars($InfosMessage['sujet_titre']) => $this->generateUrl('zco_forum_showTopic', ['id' => $InfosSujet['sujet_id'], 'slug' => rewrite($InfosSujet['sujet_titre'])]),
+            'Modifier un message'
+        ));
+        $this->get('zco_core.resource_manager')->requireResources([
+            '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
+            '@ZcoForumBundle/Resources/public/css/forum.css',
+        ]);
+
+        return $this->render('ZcoForumBundle::editer.html.php', array(
+            'tabindex_zform' => 1,
+            'sujet_titre' => $InfosMessage['sujet_titre'],
+            'sujet_id' => $InfosMessage['message_sujet_id'],
+            'RevueSujet' => TopicDAO::RevueSujet($InfosMessage['message_sujet_id']),
+            'InfosMessage' => $InfosMessage,
+            'InfosForum' => $InfosForum,
+            'InfosSujet' => $InfosSujet
+        ));
+    }
+
+    public function deleteMessageAction($id, Request $request)
+    {
+        $InfosMessage = MessageDAO::InfosMessage($id);
+        if (empty($InfosMessage) || !verifier('voir_sujets', $InfosMessage['sujet_forum_id'])) {
+            throw new NotFoundHttpException();
+        }
+
+        $url = $this->generateUrl('zco_forum_showTopic', ['id' => $InfosMessage['sujet_id'], 'slug' => rewrite($InfosMessage['sujet_titre'])]);
+
+        //Si on a le droit de supprimer ce message
+        if (!(
+                verifier('suppr_messages', $InfosMessage['sujet_forum_id'])
+                || (verifier('suppr_ses_messages', $InfosMessage['sujet_forum_id']) && $InfosMessage['message_auteur'] == $_SESSION['id'])
+            ) && !$InfosMessage['sujet_corbeille']
+            && (!$InfosMessage['sujet_ferme'] || verifier('repondre_sujets_fermes', $InfosMessage['sujet_forum_id'])
+            )
+        ) {
+            throw new AccessDeniedHttpException();
+        }
+        //Si on confirme la suppression
+        if ($request->isMethod('POST')) {
+            MessageDAO::SupprimerMessage($id, $InfosMessage['sujet_id'], $InfosMessage['sujet_dernier_message'], $InfosMessage['sujet_forum_id'], $InfosMessage['sujet_corbeille']);
+
+            return redirect('Le message a bien été supprimé.', $url);
+        }
+
+        if ($id == $InfosMessage['sujet_premier_message']) {
+            // Si le message est le premier message
+            return redirect(
+                'La suppression du message a échoué : on ne peut pas supprimer le premier message du sujet.',
+                $url,
+                MSG_ERROR
+            );
+        }
+
+        fil_ariane($InfosMessage['sujet_forum_id'], array(
+            htmlspecialchars($InfosMessage['sujet_titre']) => $url,
+            'Supprimer un message du sujet'
+        ));
+
+        return $this->render('ZcoForumBundle::supprimerMessage.html.php', array(
+            'InfosMessage' => $InfosMessage,
+            'url' => $url,
+        ));
+    }
+
     public function replyAction($id, Request $request)
     {
         $InfosSujet = $this->getTopic($id);
@@ -634,6 +774,9 @@ final class DefaultController extends Controller
     {
         $InfosSujet = TopicDAO::InfosSujet($id);
         if (empty($InfosSujet)) {
+            throw new NotFoundHttpException();
+        }
+        if (!verifier('voir_sujets', $InfosSujet['sujet_forum_id'])) {
             throw new NotFoundHttpException();
         }
         \Page::$titre = htmlspecialchars($InfosSujet['sujet_titre']);
