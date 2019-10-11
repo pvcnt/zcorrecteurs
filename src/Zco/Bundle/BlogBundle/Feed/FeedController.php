@@ -33,41 +33,24 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
  */
 abstract class FeedController extends Controller
 {
-	protected $object;
-	protected $idDescription = 'ID du flux';
+	protected $object = null;
 
 	/**
 	 * Constructeur de classe. Récupère l'objet associé au flux.
 	 */
 	public function indexAction()
 	{
-		$this->object = $this->getObject();
-		
 		$response = new Response($this->renderFeed());
 		$response->headers->set('Content-Type', 'application/atom+xml');
 		return $response;
 	}
 
 	/**
-	 * Renvoie l'objet associé au flux. Cet objet sera passé en paramètre aux
-	 * diverses méthodes de récupération des propriétés. La méthode doit être
-	 * réécrite pour bénéficier de cette fonctionnalité, sinon « null » sera
-	 * envoyé.
-	 * @access protected
-	 * @return mixed
-	 */
-	protected function getObject()
-	{
-		return null;
-	}
-
-	/**
 	 * Méthode de récupération des éléments du flux. Doit être réécrite par
 	 * chaque flux.
 	 * @access protected
-	 * @param mixed $object		L'objet associé au flux, s'il y en a un.
 	 */
-	protected function getItems($object)
+	protected function getItems()
 	{
 	}
 
@@ -77,15 +60,13 @@ abstract class FeedController extends Controller
 	 */
 	public function renderFeed()
 	{
-		$cache_file = 'xml/'.strtolower(get_class($this)).
-			(!empty($_GET['id']) ? '_'.$_GET['id'] : '').
-			(!empty($_GET['id2']) ? '_'.$_GET['id2'] : '').'.xml';
+		$cache_file = 'xml/'.strtolower(get_class($this)).'.xml';
 		$lifetime = isset($this->lifetime) ? $this->lifetime : 3600;
 		$cache = $this->get('cache');
 
 		if(($content = $cache->fetch($cache_file)) === false)
 		{
-			$objects = $this->getItems($this->object);
+			$objects = $this->getItems();
 			$params = array(
 				'title' => $this->getAttr('title'),
 				'description' => $this->getAttr('description'),
@@ -133,7 +114,7 @@ abstract class FeedController extends Controller
 		if(isset($this->$attr))
 			return $this->$attr;
 		elseif(method_exists($this, 'get'.ucfirst($attr)))
-			return $this->{'get'.ucfirst($attr)}($this->object);
+			return $this->{'get'.ucfirst($attr)}();
 		else
 			throw new \RuntimeException(sprintf('No feed attribute %s found in feed %s.', $attr, get_class($this)));
 	}

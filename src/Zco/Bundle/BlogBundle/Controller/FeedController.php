@@ -34,23 +34,17 @@ final class FeedController extends Controller
     protected $link = URL_SITE;
     protected $itemAuthorEmail = 'contact@zcorrecteurs.fr';
 
-    protected function getTitle($object)
+    protected function getTitle()
     {
-        if (!is_null($object))
-            return $object['cat_nom'];
-        else
-            return 'zCorrecteurs.fr';
+       return 'zCorrecteurs.fr';
     }
 
-    protected function getDescription($object)
+    protected function getDescription()
     {
-        if (!is_null($object))
-            return $object['cat_description'];
-        else
-            return 'Des questions sur l\'orthographe ? Envie d\'en savoir plus sur notre belle langue française ? Vous êtes au bon endroit !';
+        return 'Des questions sur l\'orthographe ? Envie d\'en savoir plus sur notre belle langue française ? Vous êtes au bon endroit !';
     }
 
-    protected function getItems($object)
+    protected function getItems()
     {
         $dbh = \Doctrine_Manager::connection()->getDbh();
 
@@ -63,10 +57,8 @@ final class FeedController extends Controller
             . 'LEFT JOIN zcov2_blog_versions ON blog_id_version_courante = version_id '
             . 'WHERE blog_date_publication <= NOW() '
             . 'AND blog_etat = ' . BLOG_VALIDE . ' '
-            . ($object ? 'AND blog_id_categorie=:id ' : '')
             . 'ORDER BY blog_date_publication ' . $ordre . ' '
             . 'LIMIT 0, 5');
-        $object && $stmt->bindParam(':id', $object['cat_id']);
         $stmt->execute();
         $billets_ = $stmt->fetchAll();
         $ids = $billets = array();
@@ -100,16 +92,6 @@ final class FeedController extends Controller
         }
 
         return $billets;
-    }
-
-    protected function getObject()
-    {
-
-        if (!empty($_GET['id']) && is_numeric($_GET['id'])) {
-            $categorie = CategoryDAO::InfosCategorie($_GET['id']);
-            return !empty($categorie) ? $categorie : null;
-        }
-        return null;
     }
 
     protected function getItemTitle($item)
