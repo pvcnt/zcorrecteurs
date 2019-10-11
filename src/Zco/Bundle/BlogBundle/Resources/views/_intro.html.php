@@ -42,7 +42,7 @@
 			— <em>
 				<?php if(!empty($InfosBillet['lunonlu_id_commentaire']) && verifier('connecte')){ ?>
 				<a href="<?php echo $view['router']->path('zco_blog_show', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre']), 'c' => $InfosBillet['lunonlu_id_commentaire']]) ?>" title="Aller au dernier message lu">
-					<img src="/bundles/zcoforum/img/fleche.png" alt="Dernier message lu" />
+					<img src="/bundles/zcocontent/img/fleche.png" alt="Dernier message lu" />
 				</a>
 				<?php } ?>
 

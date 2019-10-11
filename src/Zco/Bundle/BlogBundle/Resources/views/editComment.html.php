@@ -1,6 +1,6 @@
 <?php $view->extend('::layouts/default.html.php') ?>
 <?php $view['vitesse']->requireResources([
-    '@ZcoForumBundle/Resources/public/css/forum.css',
+    '@ZcoContentBundle/Resources/public/css/forum.css',
     '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
 ]) ?>
 

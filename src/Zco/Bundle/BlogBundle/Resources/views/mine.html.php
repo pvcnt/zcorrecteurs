@@ -48,7 +48,7 @@
 		<tr>
 			<td>
 				<?php if(!empty($valeur['lunonlu_id_commentaire']) && verifier('connecte')){ ?>
-				<a href="<?php echo $view['router']->path('zco_blog_show', ['id' => $valeur['blog_id'], 'slug' => rewrite($valeur['version_titre']), 'c' => $valeur['lunonlu_id_commentaire']]) ?>#m<?php echo $valeur['lunonlu_id_commentaire']; ?>" title="Aller au dernier message lu"><img src="/bundles/zcoforum/img/fleche.png" alt="Dernier message lu" /></a>
+				<a href="<?php echo $view['router']->path('zco_blog_show', ['id' => $valeur['blog_id'], 'slug' => rewrite($valeur['version_titre']), 'c' => $valeur['lunonlu_id_commentaire']]) ?>#m<?php echo $valeur['lunonlu_id_commentaire']; ?>" title="Aller au dernier message lu"><img src="/bundles/zcocontent/img/fleche.png" alt="Dernier message lu" /></a>
 				<?php } ?>
 
 				<a href="<?php echo $view['router']->path('zco_blog_manage', ['id' => $valeur['blog_id']]) ?>">

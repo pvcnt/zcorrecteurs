@@ -19,9 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\ForumBundle\Domain;
-
-use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
+namespace Zco\Bundle\ContentBundle\Domain;
 
 /**
  * @author DJ Fox <djfox@zcorrecteurs.fr>

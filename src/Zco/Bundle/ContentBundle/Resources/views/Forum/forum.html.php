@@ -65,7 +65,7 @@ $view->extend('::layouts/default.html.php') ?>
 				$viewVars['Parent'] = $valeur['parent'];
 			}
 			
-			echo $view->render('ZcoForumBundle::_forum.html.php', $viewVars);
+			echo $view->render('ZcoContentBundle:Forum:_forum.html.php', $viewVars);
 		}
 		?>
 	</tbody>
@@ -76,8 +76,8 @@ $view->extend('::layouts/default.html.php') ?>
 
 <?php if (verifier('creer_sujets', $InfosForum['cat_id'])){ ?>
 <p class="reponse_ajout_sujet">
-    <a href="<?php echo $view['router']->url('zco_forum_newTopic', ['id' => $InfosForum['cat_id'], 'trash' => $_GET['trash'] ?? null]) ?>">
-		<img src="/bundles/zcoforum/img/nouveau.png" alt="Nouveau sujet" title="Nouveau sujet" />
+    <a href="<?php echo $view['router']->url('zco_topic_new', ['id' => $InfosForum['cat_id'], 'trash' => $_GET['trash'] ?? null]) ?>">
+		<img src="/bundles/zcocontent/img/nouveau.png" alt="Nouveau sujet" title="Nouveau sujet" />
 	</a>
 </p>
 <?php } ?>
@@ -143,11 +143,11 @@ $view->extend('::layouts/default.html.php') ?>
 					<a href="<?php
 					if(!empty($valeur['lunonlu_message_id']))
 					{
-					    echo $view['router']->path('zco_forum_showTopic', ['id' => $valeur['sujet_id'], 'c' => $valeur['lunonlu_message_id'], 'slug' => rewrite($valeur['sujet_titre'])]);
+					    echo $view['router']->path('zco_topic_show', ['id' => $valeur['sujet_id'], 'c' => $valeur['lunonlu_message_id'], 'slug' => rewrite($valeur['sujet_titre'])]);
 					}
 					else
 					{
-                        echo $view['router']->path('zco_forum_showTopic', ['id' => $valeur['sujet_id'], 'slug' => rewrite($valeur['sujet_titre'])]);
+                        echo $view['router']->path('zco_topic_show', ['id' => $valeur['sujet_id'], 'slug' => rewrite($valeur['sujet_titre'])]);
 					} ?>">
                     <?php
                         switch($Lu[$clef]['image']) {
@@ -196,11 +196,11 @@ $view->extend('::layouts/default.html.php') ?>
 					<?php
 					if($Lu[$clef]['fleche'])
 					{
-						echo '<a href="' . $view['router']->path('zco_forum_showTopic', ['id' => $valeur['sujet_id'], 'c' => $valeur['lunonlu_message_id'], 'slug' => rewrite($valeur['sujet_titre'])]) . '">'
+						echo '<a href="' . $view['router']->path('zco_topic_show', ['id' => $valeur['sujet_id'], 'c' => $valeur['lunonlu_message_id'], 'slug' => rewrite($valeur['sujet_titre'])]) . '">'
 						    . '<img src="/pix.gif" class="fff bullet_go" alt="Aller au dernier message lu" title="Aller au dernier message lu" /></a>';
 					}
 					?>
-					<a href="<?php echo $view['router']->path('zco_forum_showTopic', ['id' => $valeur['sujet_id'], 'slug' => rewrite($valeur['sujet_titre'])]); ?>"><?php echo htmlspecialchars($valeur['sujet_titre']); ?></a>
+					<a href="<?php echo $view['router']->path('zco_topic_show', ['id' => $valeur['sujet_id'], 'slug' => rewrite($valeur['sujet_titre'])]); ?>"><?php echo htmlspecialchars($valeur['sujet_titre']); ?></a>
 
 					<span class="sous_titre"><br />
 						<?php if(!empty($valeur['sujet_sous_titre'])){ ?>
@@ -239,7 +239,7 @@ $view->extend('::layouts/default.html.php') ?>
 
 				<td class="dernier_msg centre">
 					<?php
-					echo '<a href="' . $view['router']->path('zco_forum_showTopic', ['id' => $valeur['sujet_id'], 'c' => $valeur['message_id'], 'slug' => rewrite($valeur['sujet_titre'])]) . '">'.dateformat($valeur['message_date']).'</a><br /> ';
+					echo '<a href="' . $view['router']->path('zco_topic_show', ['id' => $valeur['sujet_id'], 'c' => $valeur['message_id'], 'slug' => rewrite($valeur['sujet_titre'])]) . '">'.dateformat($valeur['message_date']).'</a><br /> ';
 					if(!empty($valeur['sujet_dernier_message_pseudo_existe']))
 					{
 						echo '<a href="/membres/profil-'.$valeur['sujet_dernier_message_auteur_id'].'-'.rewrite($valeur['sujet_dernier_message_pseudo']).'.html">';
@@ -287,8 +287,8 @@ $view->extend('::layouts/default.html.php') ?>
 {
 ?>
 <p class="reponse_ajout_sujet">
-    <a href="<?php echo $view['router']->url('zco_forum_newTopic', ['id' => $InfosForum['cat_id'], 'trash' => $_GET['trash'] ?? null]) ?>">
-		<img src="/bundles/zcoforum/img/nouveau.png" alt="Nouveau sujet" title="Nouveau sujet" />
+    <a href="<?php echo $view['router']->url('zco_topic_new', ['id' => $InfosForum['cat_id'], 'trash' => $_GET['trash'] ?? null]) ?>">
+		<img src="/bundles/zcocontent/img/nouveau.png" alt="Nouveau sujet" title="Nouveau sujet" />
 	</a>
 </p>
 <?php }	?>

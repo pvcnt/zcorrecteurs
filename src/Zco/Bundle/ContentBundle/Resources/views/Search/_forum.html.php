@@ -28,13 +28,13 @@
 			<td class="dates">
 				Posté <?php echo dateformat($result['message_date'], MINUSCULE); ?> -
 				<?php if($result['sujet_resolu']){ ?>
-				<img src="/bundles/zcoforum/img/resolu.png" alt="Sujet résolu" />
+				<img src="/bundles/zcocontent/img/resolu.png" alt="Sujet résolu" />
 				<?php } if($result['sujet_ferme']){ ?>
-				<img src="/bundles/zcoforum/img/cadenas.png" alt="Sujet fermé" />
+				<img src="/bundles/zcocontent/img/cadenas.png" alt="Sujet fermé" />
 				<?php } ?>
 
 				<strong>
-					<a href="<?php echo $view['router']->path('zco_forum_showTopic', ['id' => $result['sujet_id'], 'c' => $result['message_id'], 'slug' => rewrite($result['sujet_titre'])]) ?>">
+					<a href="<?php echo $view['router']->path('zco_topic_show', ['id' => $result['sujet_id'], 'c' => $result['message_id'], 'slug' => rewrite($result['sujet_titre'])]) ?>">
 						<?php echo htmlspecialchars($result['sujet_titre']); ?>
 					</a>
 				</strong>

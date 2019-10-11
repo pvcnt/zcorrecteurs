@@ -1,83 +1,83 @@
 zco_forum_index:
   path:   /forum
-  defaults:  { _controller: ZcoForumBundle:Default:index }
+  defaults:  { _controller: ZcoContentBundle:Forum:index }
 
 zco_forum_show:
   path:   /forum/categorie/{id}/{slug}
-  defaults:  { _controller: ZcoForumBundle:Default:showForum }
+  defaults:  { _controller: ZcoContentBundle:Forum:showForum }
   requirements:
     id: \d+
 
-zco_forum_showTopic:
+zco_topic_show:
   path:   /forum/sujet/{id}/{slug}
-  defaults:  { _controller: ZcoForumBundle:Topic:show }
+  defaults:  { _controller: ZcoContentBundle:Topic:show }
   requirements:
     id: \d+
 
-zco_forum_newTopic:
+zco_topic_new:
   path:   /forum/nouveau-sujet/{id}
-  defaults:  { _controller: ZcoForumBundle:Topic:new }
+  defaults:  { _controller: ZcoContentBundle:Topic:new }
   requirements:
     id: \d+
 
-zco_forum_trash:
+zco_topic_trash:
   path:   /forum/corbeille/{id}
-  defaults:  { _controller: ZcoForumBundle:Topic:trash }
+  defaults:  { _controller: ZcoContentBundle:Topic:trash }
   requirements:
     id: \d+
 
-zco_forum_markHelped:
+zco_message_markHelped:
   path:   /forum/aide/{id}
-  defaults:  { _controller: ZcoForumBundle:Message:markHelped }
+  defaults:  { _controller: ZcoContentBundle:Message:markHelped }
   requirements:
     id: \d+
 
-zco_forum_markSolved:
+zco_topic_markSolved:
   path:   /forum/resolu/{id}
-  defaults:  { _controller: ZcoForumBundle:Topic:markSolved }
+  defaults:  { _controller: ZcoContentBundle:Topic:markSolved }
   requirements:
     id: \d+
 
-zco_forum_markPinned:
+zco_topic_markPinned:
   path:   /forum/annonce/{id}
-  defaults:  { _controller: ZcoForumBundle:Topic:markPinned }
+  defaults:  { _controller: ZcoContentBundle:Topic:markPinned }
   requirements:
     id: \d+
 
-zco_forum_markClosed:
+zco_topic_markClosed:
   path:   /forum/ferme/{id}
-  defaults:  { _controller: ZcoForumBundle:Topic:markClosed }
+  defaults:  { _controller: ZcoContentBundle:Topic:markClosed }
   requirements:
     id: \d+
 
-zco_forum_delete:
+zco_topic_delete:
   path:   /forum/supprimer/{id}
-  defaults:  { _controller: ZcoForumBundle:Topic:delete }
+  defaults:  { _controller: ZcoContentBundle:Topic:delete }
   requirements:
     id: \d+
 
-zco_forum_reply:
+zco_message_new:
   path:   /forum/repondre/{id}
-  defaults:  { _controller: ZcoForumBundle:Message:new }
+  defaults:  { _controller: ZcoContentBundle:Message:new }
   methods: [POST]
   requirements:
     id: \d+
 
-zco_forum_move:
+zco_topic_move:
   path:   /forum/deplacer/{id}
-  defaults:  { _controller: ZcoForumBundle:Default:move }
+  defaults:  { _controller: ZcoContentBundle:Topic:move }
   methods: [POST]
   requirements:
     id: \d+
 
-zco_forum_edit:
+zco_message_edit:
   path:   /forum/modifier/{id}
-  defaults:  { _controller: ZcoForumBundle:Message:edit }
+  defaults:  { _controller: ZcoContentBundle:Message:edit }
   requirements:
     id: \d+
 
-zco_forum_deleteMessage:
+zco_message_delete:
   path:   /forum/supprimer-message/{id}
-  defaults:  { _controller: ZcoForumBundle:Message:delete }
+  defaults:  { _controller: ZcoContentBundle:Message:delete }
   requirements:
     id: \d+

@@ -33,7 +33,7 @@ if ( isset($Parent) && !empty($_GET['archives'])) : ?>
 
 			<?php foreach ($forum['sous_forums'] as $cat){ ?>
 				<?php if (empty($cat['cat_redirection'])) { ?>
-					<img src="/bundles/zcoforum/img/sous_forum_<?php echo $cat['lunonlu_message_id'] == $cat['message_id'] ? 'lu' : 'nonlu' ?>.png" alt="<?php echo $cat['lunonlu_message_id'] == $cat['message_id'] ? 'Pas de nouvelle réponse' : 'Nouvelles réponses' ?>" title="<?php echo $cat['lunonlu_message_id'] == $cat['message_id'] ? 'Pas de nouvelle réponse' : 'De nouvelles réponses ont été ajoutées' ?>" />
+					<img src="/bundles/zcocontent/img/sous_forum_<?php echo $cat['lunonlu_message_id'] == $cat['message_id'] ? 'lu' : 'nonlu' ?>.png" alt="<?php echo $cat['lunonlu_message_id'] == $cat['message_id'] ? 'Pas de nouvelle réponse' : 'Nouvelles réponses' ?>" title="<?php echo $cat['lunonlu_message_id'] == $cat['message_id'] ? 'Pas de nouvelle réponse' : 'De nouvelles réponses ont été ajoutées' ?>" />
 				<?php } else{ ?>
 					<img src="/pix.gif" class="fff anchor" alt="Redirection" title="Ce forum est une redirection" />
 				<?php } ?>
@@ -69,7 +69,7 @@ if ( isset($Parent) && !empty($_GET['archives'])) : ?>
 					echo '</a>';
 				}
 				echo '<br />
-				Dans <a href="' . $view['router']->path('zco_forum_showTopic', ['id' => $forum['message_sujet_id'], 'c' => $forum['message_id'], 'slug' => rewrite($forum['sujet_titre'])]).'">'.htmlspecialchars($forum['sujet_titre']).'</a></td>';
+				Dans <a href="' . $view['router']->path('zco_topic_show', ['id' => $forum['message_sujet_id'], 'c' => $forum['message_id'], 'slug' => rewrite($forum['sujet_titre'])]).'">'.htmlspecialchars($forum['sujet_titre']).'</a></td>';
 			} else {
 			    echo '<td><i>Aucun message</i></td>';
             }

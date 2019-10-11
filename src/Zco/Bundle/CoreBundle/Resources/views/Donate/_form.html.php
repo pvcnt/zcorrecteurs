@@ -25,10 +25,10 @@
 </form>
 
 <p style="margin-top: 20px; text-align: justify; background-color: white; border-top: 1px solid #DDD; border-bottom: 1px solid #DDD; padding: 5px;">
-    <img src="/bundles/zcoforum/img/resolu.png" alt="" />
+    <img src="/bundles/zcocontent/img/resolu.png" alt="" />
     Votre don ouvre droit à <a href="<?php echo $view['router']->path('zco_donate_fiscalDeduction') ?>">une déduction fiscale</a>.<br />
 
-    <img src="/bundles/zcoforum/img/cadenas.png" alt="" />
+    <img src="/bundles/zcocontent/img/cadenas.png" alt="" />
     Paiement sécurisé par carte bancaire <em>via</em> PayPal.
 </p>
 
@@ -37,7 +37,7 @@
 </p>
 <?php else: ?>
 <p style="margin-top: 20px; text-align: justify; background-color: white; border-top: 1px solid #DDD; border-bottom: 1px solid #DDD; padding: 5px;">
-    <img src="/bundles/zcoforum/img/resolu.png" alt="" />
+    <img src="/bundles/zcocontent/img/resolu.png" alt="" />
     Votre don ouvre droit à <a href="<?php echo $view['router']->path('zco_donate_fiscalDeduction') ?>">une déduction fiscale</a>.
 </p>
 

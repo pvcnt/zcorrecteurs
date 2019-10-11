@@ -19,19 +19,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\ForumBundle\Controller;
+namespace Zco\Bundle\ContentBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
-use Zco\Bundle\ForumBundle\Domain\ForumDAO;
+use Zco\Bundle\ContentBundle\Domain\ForumDAO;
 
 /**
  * @author Original DJ Fox <marthe59@yahoo.fr>
  */
-final class DefaultController extends Controller
+final class ForumController extends Controller
 {
     public function indexAction()
     {
@@ -86,9 +86,9 @@ final class DefaultController extends Controller
         }
         $this->get('zco_core.resource_manager')->requireResources([
             '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
-            '@ZcoForumBundle/Resources/public/css/forum.css',
+            '@ZcoContentBundle/Resources/public/css/forum.css',
         ]);
-        $response = $this->render('ZcoForumBundle::index.html.php', [
+        $response = $this->render('ZcoContentBundle:Forum:index.html.php', [
             'ListerCategories' => $ListerCategories,
             'Lu' => $Lu,
         ]);
@@ -155,7 +155,7 @@ final class DefaultController extends Controller
                 // Liste des pages
                 $nbMessagesParPage = 20;
                 $NombreDePagesSujet = ceil(($valeur['sujet_reponses'] + 1) / $nbMessagesParPage);
-                $Pages[$clef] = liste_pages(-1, $NombreDePagesSujet, $this->generateUrl('zco_forum_showTopic', ['id' => $valeur['sujet_id'], 'slug' => rewrite($valeur['sujet_titre'])]) . '?p=%s');
+                $Pages[$clef] = liste_pages(-1, $NombreDePagesSujet, $this->generateUrl('zco_topic_show', ['id' => $valeur['sujet_id'], 'slug' => rewrite($valeur['sujet_titre'])]) . '?p=%s');
             }
         }
 
@@ -219,11 +219,11 @@ final class DefaultController extends Controller
         $this->get('zco_core.resource_manager')->requireResources([
             '@ZcoCoreBundle/Resources/public/css/zcode.css',
             '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
-            '@ZcoForumBundle/Resources/public/css/forum.css',
+            '@ZcoContentBundle/Resources/public/css/forum.css',
             '@ZcoCoreBundle/Resources/public/js/messages.js'
         ]);
 
-        return $this->render('ZcoForumBundle::forum.html.php', [
+        return $this->render('ZcoContentBundle:Forum:forum.html.php', [
             'InfosForum' => $InfosForum,
             'CompterSujets' => $CompterSujets,
             'Lu' => $Lu,

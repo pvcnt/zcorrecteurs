@@ -84,4 +84,4 @@
 	</fieldset>
 </form>
 
-<?php include(__DIR__.'/revue_sujet.html.php'); ?>
+<?php include(__DIR__ . '/revue_sujet.html.php'); ?>

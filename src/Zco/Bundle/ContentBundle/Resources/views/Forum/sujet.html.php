@@ -3,7 +3,7 @@
 <?php $view['slots']->start('meta') ?>
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:site" content="zcorrecteurs" />
-<meta name="twitter:url" content="<?php echo $view['router']->url('zco_forum_showTopic', ['id' => $InfosSujet['sujet_id'], 'slug' => rewrite($InfosSujet['sujet_titre'])]) ?>" />
+<meta name="twitter:url" content="<?php echo $view['router']->url('zco_topic_show', ['id' => $InfosSujet['sujet_id'], 'slug' => rewrite($InfosSujet['sujet_titre'])]) ?>" />
 <meta name="twitter:description" content="<?php echo mb_substr(htmlspecialchars(strip_tags(str_replace("\n", ' ', $PremierMessage['message_texte']))), 0, 250) ?>" />
 <meta name="twitter:title" content="<?php echo htmlspecialchars($InfosSujet['sujet_titre']) ?>" />
 <?php if ($PremierMessage['auteur_avatar']): ?>
@@ -24,7 +24,7 @@
 <?php if(!empty($InfosSujet['sujet_corbeille'])){ ?>
 <div class="UI_errorbox">
 	Ce message a été jeté à la corbeille !
-	<a href="<?php echo $view['router']->path('zco_forum_trash', ['id' => $InfosSujet['sujet_id'], 'status' => 0, 'token' => $_SESSION['token']]) ?>">
+	<a href="<?php echo $view['router']->path('zco_topic_trash', ['id' => $InfosSujet['sujet_id'], 'status' => 0, 'token' => $_SESSION['token']]) ?>">
 		Restaurer le sujet
 	</a>
 </div>
@@ -114,14 +114,14 @@ if($InfosSujet['sujet_sondage'] > 0)
 					{
 					?>
 					<span class="commandes_textuelles">
-						<a href="<?php echo $view['router']->path('zco_forum_markHelped', ['id' => $valeur['message_id'], 'status' => 0, 'token' => $_SESSION['token']]) ?>">
+						<a href="<?php echo $view['router']->path('zco_message_markHelped', ['id' => $valeur['message_id'], 'status' => 0, 'token' => $_SESSION['token']]) ?>">
 							<img src="/pix.gif" class="fff delete icone_commande" alt="Indiquer que cette réponse de m'a pas aidé" />
 							Cette réponse ne m'a pas aidé
 						</a>
 					</span>
 					<?php } else{ ?>
 					<span class="commandes_textuelles">
-						<a href="<?php echo $view['router']->path('zco_forum_markHelped', ['id' => $valeur['message_id'], 'status' => 1, 'token' => $_SESSION['token']]) ?>">
+						<a href="<?php echo $view['router']->path('zco_message_markHelped', ['id' => $valeur['message_id'], 'status' => 1, 'token' => $_SESSION['token']]) ?>">
 							<img src="/pix.gif" class="fff accept icone_commande" alt="Indiquer que cette réponse m'a aidé" />
 							Cette réponse m'a aidé
 						</a>
@@ -131,7 +131,7 @@ if($InfosSujet['sujet_sondage'] > 0)
 				}
 				//Date d'envoi du message
 				?>
-				<span id="m<?php echo $valeur['message_id'];?>"><a href="<?php echo $view['router']->path('zco_forum_showTopic', ['id' => $InfosSujet['sujet_id'], 'c' => $valeur['message_id'], 'slug' => rewrite($InfosSujet['sujet_titre'])]) ?>" rel="nofollow">#</a></span>
+				<span id="m<?php echo $valeur['message_id'];?>"><a href="<?php echo $view['router']->path('zco_topic_show', ['id' => $InfosSujet['sujet_id'], 'c' => $valeur['message_id'], 'slug' => rewrite($InfosSujet['sujet_titre'])]) ?>" rel="nofollow">#</a></span>
 				Posté <?php echo dateformat($valeur['message_date'], MINUSCULE); ?>
 				<?php
 				//Edition du message
@@ -153,7 +153,7 @@ if($InfosSujet['sujet_sondage'] > 0)
 				)
 				{
 				?>
-				<a href="<?php echo $view['router']->path('zco_forum_edit', ['id' => $valeur['message_id']]) ?>">
+				<a href="<?php echo $view['router']->path('zco_message_edit', ['id' => $valeur['message_id']]) ?>">
 					<img src="/pix.gif" class="fff pencil" alt="Éditer" title="Éditer" />
 				</a>
 				<?php
@@ -162,7 +162,7 @@ if($InfosSujet['sujet_sondage'] > 0)
 				if($valeur['message_id'] == $InfosSujet['sujet_premier_message'] && verifier('suppr_sujets', $InfosSujet['sujet_forum_id']))
 				{
 				?>
-                <a href="<?php echo $view['router']->path('zco_forum_delete', ['id' => $InfosSujet['sujet_id']]) ?>">
+                <a href="<?php echo $view['router']->path('zco_topic_delete', ['id' => $InfosSujet['sujet_id']]) ?>">
 					<img src="/pix.gif" class="fff cross" alt="Supprimer le sujet" title="Supprimer le sujet" />
 				</a>
 				<?php
@@ -182,7 +182,7 @@ if($InfosSujet['sujet_sondage'] > 0)
 				)
 				{
 				?>
-				<a href="supprimer-message-<?php echo $valeur['message_id']; ?>.html">
+				<a href="<?php echo $view['router']->path('zco_message_delete', ['id' => $valeur['message_id']]) ?>">
 					<img src="/pix.gif" class="fff cross" alt="Supprimer le message" title="Supprimer le message" />
 				</a>
 				<?php } ?>
@@ -215,7 +215,7 @@ if($InfosSujet['sujet_sondage'] > 0)
 					if($valeur['message_help'])
 					{
 					?>
-					<div class="info_bonne_reponse"><img src="/bundles/zcoforum/img/resolu.png" alt="Cette réponse a aidé l'auteur du sujet" title="Cette réponse a aidé l'auteur du sujet" /> Cette réponse a aidé l'auteur du sujet.</div>
+					<div class="info_bonne_reponse"><img src="/bundles/zcocontent/img/resolu.png" alt="Cette réponse a aidé l'auteur du sujet" title="Cette réponse a aidé l'auteur du sujet" /> Cette réponse a aidé l'auteur du sujet.</div>
 					<?php
 					}
 
@@ -283,7 +283,7 @@ echo $SautRapide;
 
 $ReponseRapide = '
 <div id="reponse_rapide">
-<form action="' . $view['router']->path('zco_forum_reply', ['id' => $InfosSujet['sujet_id']])  . '" method="post">
+<form action="' . $view['router']->path('zco_message_new', ['id' => $InfosSujet['sujet_id']])  . '" method="post">
 	<fieldset id="rep_rapide">
 		Réponse rapide :<br />
 		<textarea name="texte" id="texte" tabindex="10" cols="40" rows="10" class="zcode_rep_rapide"></textarea>

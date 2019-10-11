@@ -40,7 +40,7 @@ if(verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']))
 			?>
 			<li>
 				<img src="/pix.gif" class="fff accept" alt="" />
-				<a href="<?php echo $view['router']->path('zco_forum_markSolved', ['id' => $InfosSujet['sujet_id'], 'token' => $_SESSION['token']]) ?>">
+				<a href="<?php echo $view['router']->path('zco_topic_markSolved', ['id' => $InfosSujet['sujet_id'], 'token' => $_SESSION['token']]) ?>">
 					Ne plus indiquer mon problème comme résolu
 				</a>
 			</li>
@@ -51,7 +51,7 @@ if(verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']))
 			?>
 			<li>
 				<img src="/pix.gif" class="fff accept" alt="" />
-				<a href="<?php echo $view['router']->path('zco_forum_markSolved', ['id' => $InfosSujet['sujet_id'], 'token' => $_SESSION['token']]) ?>">
+				<a href="<?php echo $view['router']->path('zco_topic_markSolved', ['id' => $InfosSujet['sujet_id'], 'token' => $_SESSION['token']]) ?>">
 					Indiquer mon problème comme résolu
 				</a>
 			</li>
@@ -65,7 +65,7 @@ if(verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']))
 			?>
 			<li>
 				<img src="/pix.gif" class="fff accept" alt="" />
-				<a href="<?php echo $view['router']->path('zco_forum_markSolved', ['id' => $InfosSujet['sujet_id'], 'token' => $_SESSION['token']]) ?>">
+				<a href="<?php echo $view['router']->path('zco_topic_markSolved', ['id' => $InfosSujet['sujet_id'], 'token' => $_SESSION['token']]) ?>">
 					Ne plus indiquer le problème de <strong><?php echo htmlspecialchars($InfosSujet['sujet_auteur_pseudo']); ?></strong> comme résolu.
 				</a>
 			</li>
@@ -76,7 +76,7 @@ if(verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']))
 			?>
 			<li>
 				<img src="/pix.gif" class="fff accept" alt="" />
-				<a href="<?php echo $view['router']->path('zco_forum_markSolved', ['id' => $InfosSujet['sujet_id'], 'token' => $_SESSION['token']]) ?>">
+				<a href="<?php echo $view['router']->path('zco_topic_markSolved', ['id' => $InfosSujet['sujet_id'], 'token' => $_SESSION['token']]) ?>">
 					Indiquer le problème de <strong><?php echo htmlspecialchars($InfosSujet['sujet_auteur_pseudo']); ?></strong> comme résolu.
 				</a>
 			</li>
@@ -100,7 +100,7 @@ if(verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']))
 			{
 			?>
 			<li><span><img src="/pix.gif" class="fff flag_yellow" alt="Enlever des annonces" title="Enlever des annonces" /></span>
-			<a href="<?php echo $view['router']->path('zco_forum_markPinned', ['id' => $InfosSujet['sujet_id'], 'token' => $_SESSION['token']]) ?>">
+			<a href="<?php echo $view['router']->path('zco_topic_markPinned', ['id' => $InfosSujet['sujet_id'], 'token' => $_SESSION['token']]) ?>">
 				Enlever des annonces
 			</a></li>
 			<?php
@@ -109,7 +109,7 @@ if(verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']))
 			{
 			?>
 			<li><span><img src="/pix.gif" class="fff flag_red" alt="Transformer en annonce" title="Mettre ce sujet en annonce" /></span>
-			<a href="<?php echo $view['router']->path('zco_forum_markPinned', ['id' => $InfosSujet['sujet_id'], 'token' => $_SESSION['token']]) ?>">
+			<a href="<?php echo $view['router']->path('zco_topic_markPinned', ['id' => $InfosSujet['sujet_id'], 'token' => $_SESSION['token']]) ?>">
 				Mettre le sujet en annonce
 			</a></li>
 			<?php
@@ -124,7 +124,7 @@ if(verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']))
 			{
 			?>
 			<li><span><img src="/pix.gif" class="fff lock_open" alt="Ouvrir" title="Ouvrir le sujet" /></span>
-                <a href="<?php echo $view['router']->path('zco_forum_markClosed', ['id' => $InfosSujet['sujet_id'], 'token' => $_SESSION['token']]) ?>">
+                <a href="<?php echo $view['router']->path('zco_topic_markClosed', ['id' => $InfosSujet['sujet_id'], 'token' => $_SESSION['token']]) ?>">
 				Ouvrir le sujet
 			</a></li>
 			<?php
@@ -133,7 +133,7 @@ if(verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']))
 			{
 			?>
 			<li><span><img src="/pix.gif" class="fff lock" alt="Fermer" title="Fermer le sujet" /></span>
-                <a href="<?php echo $view['router']->path('zco_forum_markClosed', ['id' => $InfosSujet['sujet_id'], 'token' => $_SESSION['token']]) ?>">
+                <a href="<?php echo $view['router']->path('zco_topic_markClosed', ['id' => $InfosSujet['sujet_id'], 'token' => $_SESSION['token']]) ?>">
 				Fermer le sujet
 			</a></li>
 			<?php
@@ -149,7 +149,7 @@ if(verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']))
 			<img src="/pix.gif" class="fff folder_go" alt="" />
 			Déplacer le sujet vers :
 
-            <form action="<?php echo $view['router']->path('zco_forum_move', ['id' => $InfosSujet['sujet_id']]) ?>" method="post">
+            <form action="<?php echo $view['router']->path('zco_topic_move', ['id' => $InfosSujet['sujet_id']]) ?>" method="post">
                 <select name="forum_cible">
                     <?php foreach($CategoriesForums as $i => $valeur) { ?>
                     <?php if($valeur['cat_niveau'] == 2 && $InfosSujet['sujet_forum_id'] != $valeur['cat_id']) { ?>
@@ -180,7 +180,7 @@ if(verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']))
 			?>
 			<li>
 				<img src="/pix.gif" class="fff bin" alt="" />
-				<a href="<?php echo $view['router']->path('zco_forum_trash', ['id' =>  $InfosSujet['sujet_id'], 'status' => 0, 'token' => $_SESSION['token']]) ?>">
+				<a href="<?php echo $view['router']->path('zco_topic_trash', ['id' =>  $InfosSujet['sujet_id'], 'status' => 0, 'token' => $_SESSION['token']]) ?>">
 					Restaurer le sujet
 				</a>
 			</li>
@@ -191,7 +191,7 @@ if(verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']))
 			?>
 			<li>
 				<img src="/pix.gif" class="fff bin" alt="" />
-				<a href="<?php echo $view['router']->path('zco_forum_trash', ['id' => $InfosSujet['sujet_id'], 'status' => 1, 'token' => $_SESSION['token']]) ?>">
+				<a href="<?php echo $view['router']->path('zco_topic_trash', ['id' => $InfosSujet['sujet_id'], 'status' => 1, 'token' => $_SESSION['token']]) ?>">
 					Mettre le sujet à la corbeille
 				</a>
 			</li>
@@ -206,7 +206,7 @@ if(verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']))
 			?>
 			<li>
 				<img src="/pix.gif" class="fff cross" alt="" />
-				<a href="<?php echo $view['router']->path('zco_forum_delete', ['id' => $InfosSujet['sujet_id']]) ?>">
+				<a href="<?php echo $view['router']->path('zco_topic_delete', ['id' => $InfosSujet['sujet_id']]) ?>">
 					Supprimer le sujet
 				</a>
 			</li>

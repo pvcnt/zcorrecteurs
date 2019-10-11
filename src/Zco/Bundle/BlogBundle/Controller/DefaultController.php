@@ -138,7 +138,7 @@ class DefaultController extends Controller
         \Page::$titre = htmlspecialchars($InfosBillet['version_titre']);
         \Page::$description = htmlspecialchars(strip_tags($InfosBillet['version_intro']));
         $this->get('zco_core.resource_manager')->requireResources(array(
-            '@ZcoForumBundle/Resources/public/css/forum.css',
+            '@ZcoContentBundle/Resources/public/css/forum.css',
             '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
         ));
 
@@ -373,7 +373,7 @@ class DefaultController extends Controller
         ));
         $this->get('zco_core.resource_manager')->requireResources([
             '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
-            '@ZcoForumBundle/Resources/public/css/forum.css',
+            '@ZcoContentBundle/Resources/public/css/forum.css',
         ]);
         \Page::$titre = htmlspecialchars($InfosBillet['version_titre']) . ' - Ajouter un commentaire';
 

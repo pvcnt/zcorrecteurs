@@ -52,7 +52,7 @@ class SearchController extends Controller
         $CatsBlog = CategoryDAO::ListerEnfants(CategoryDAO::GetIDCategorie('blog'), true, true);
         \Page::$titre = 'Recherche';
         $this->get('zco_core.resource_manager')->requireResources(array(
-            '@ZcoForumBundle/Resources/public/css/forum.css',
+            '@ZcoContentBundle/Resources/public/css/forum.css',
             '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
             '@ZcoCoreBundle/Resources/public/css/zcode.css',
         ));

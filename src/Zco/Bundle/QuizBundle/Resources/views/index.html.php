@@ -13,7 +13,7 @@
 <div class="alert alert-info">
     À noter que si vous souhaitez proposer vos propres questions afin d'enrichir
     ces quiz, vous pouvez nous les soumettre dans
-    <a href="<?php echo $view['router']->url('zco_forum_showTopic', ['id' => 871, 'slug' => 'quiz-proposez-vos-questions']) ?>">ce sujet
+    <a href="<?php echo $view['router']->url('zco_topic_show', ['id' => 871, 'slug' => 'quiz-proposez-vos-questions']) ?>">ce sujet
     réservé à cet usage</a>.
 </div>
 

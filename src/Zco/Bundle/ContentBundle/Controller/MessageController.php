@@ -19,18 +19,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\ForumBundle\Controller;
+namespace Zco\Bundle\ContentBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
-use Zco\Bundle\ForumBundle\Domain\ForumDAO;
-use Zco\Bundle\ForumBundle\Domain\MessageDAO;
-use Zco\Bundle\ForumBundle\Domain\PollDAO;
-use Zco\Bundle\ForumBundle\Domain\TopicDAO;
+use Zco\Bundle\ContentBundle\Domain\MessageDAO;
+use Zco\Bundle\ContentBundle\Domain\TopicDAO;
 
 /**
  * @author Original DJ Fox <marthe59@yahoo.fr>
@@ -60,7 +57,7 @@ final class MessageController extends Controller
 
         return redirect(
             $message,
-            $this->generateUrl('zco_forum_showTopic', ['id' => $InfosMessage['sujet_id'], 'c' => $InfosMessage['message_id'], 'slug' => rewrite($InfosMessage['sujet_titre'])])
+            $this->generateUrl('zco_topic_show', ['id' => $InfosMessage['sujet_id'], 'c' => $InfosMessage['message_id'], 'slug' => rewrite($InfosMessage['sujet_titre'])])
         );
     }
 
@@ -81,7 +78,7 @@ final class MessageController extends Controller
             if (empty($_POST['texte'])) {
                 return redirect(
                     'Vous devez remplir tous les champs nécessaires !',
-                    $this->generateUrl('zco_forum_showTopic', ['id' => $InfosSujet['sujet_id'], 'slug' => rewrite($InfosSujet['sujet_titre'])]),
+                    $this->generateUrl('zco_topic_show', ['id' => $InfosSujet['sujet_id'], 'slug' => rewrite($InfosSujet['sujet_titre'])]),
                     MSG_ERROR
                 );
             }
@@ -92,20 +89,20 @@ final class MessageController extends Controller
 
             return redirect(
                 'Le message a bien été édité.',
-                $this->generateUrl('zco_forum_showTopic', ['id' => $InfosSujet['sujet_id'], 'c' => $id, 'slug' => rewrite($InfosSujet['sujet_titre'])])
+                $this->generateUrl('zco_topic_show', ['id' => $InfosSujet['sujet_id'], 'c' => $id, 'slug' => rewrite($InfosSujet['sujet_titre'])])
             );
         }
 
         fil_ariane($InfosMessage['sujet_forum_id'], array(
-            htmlspecialchars($InfosMessage['sujet_titre']) => $this->generateUrl('zco_forum_showTopic', ['id' => $InfosSujet['sujet_id'], 'slug' => rewrite($InfosSujet['sujet_titre'])]),
+            htmlspecialchars($InfosMessage['sujet_titre']) => $this->generateUrl('zco_topic_show', ['id' => $InfosSujet['sujet_id'], 'slug' => rewrite($InfosSujet['sujet_titre'])]),
             'Modifier un message'
         ));
         $this->get('zco_core.resource_manager')->requireResources([
             '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
-            '@ZcoForumBundle/Resources/public/css/forum.css',
+            '@ZcoContentBundle/Resources/public/css/forum.css',
         ]);
 
-        return $this->render('ZcoForumBundle::editer.html.php', array(
+        return $this->render('ZcoContentBundle:Forum:editer.html.php', array(
             'tabindex_zform' => 1,
             'sujet_titre' => $InfosMessage['sujet_titre'],
             'sujet_id' => $InfosMessage['message_sujet_id'],
@@ -123,7 +120,7 @@ final class MessageController extends Controller
             throw new NotFoundHttpException();
         }
 
-        $url = $this->generateUrl('zco_forum_showTopic', ['id' => $InfosMessage['sujet_id'], 'slug' => rewrite($InfosMessage['sujet_titre'])]);
+        $url = $this->generateUrl('zco_topic_show', ['id' => $InfosMessage['sujet_id'], 'slug' => rewrite($InfosMessage['sujet_titre'])]);
 
         //Si on a le droit de supprimer ce message
         if (!(
@@ -156,7 +153,7 @@ final class MessageController extends Controller
             'Supprimer un message du sujet'
         ));
 
-        return $this->render('ZcoForumBundle::supprimerMessage.html.php', array(
+        return $this->render('ZcoContentBundle:Forum:supprimerMessage.html.php', array(
             'InfosMessage' => $InfosMessage,
             'url' => $url,
         ));
@@ -193,7 +190,7 @@ final class MessageController extends Controller
 
         return redirect(
             'Le message a bien été ajouté.',
-            $this->generateUrl('zco_forum_showTopic', ['id' => $id, 'c' => $nouveau_message_id, 'slug' => rewrite($InfosSujet['sujet_titre'])])
+            $this->generateUrl('zco_topic_show', ['id' => $id, 'c' => $nouveau_message_id, 'slug' => rewrite($InfosSujet['sujet_titre'])])
         );
     }
 

@@ -69,7 +69,7 @@ $view->extend('::layouts/default.html.php') ?>
 				if ( !empty($_GET['archives']) ) {
 					$viewVars['Parent'] = $valeur['parent'];
 				}
-				echo $view->render('ZcoForumBundle::_forum.html.php', $viewVars);
+				echo $view->render('ZcoContentBundle:Forum:_forum.html.php', $viewVars);
 			}
 		}
 	}

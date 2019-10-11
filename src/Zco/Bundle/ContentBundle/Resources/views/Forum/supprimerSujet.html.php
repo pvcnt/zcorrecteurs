@@ -15,6 +15,6 @@
 
     <p class="form-actions center">
         <input type="submit" class="btn btn-primary" value="Oui" />
-        <a class="btn" href="<?php echo $view['router']->path('zco_forum_showTopic', ['id' => $InfosSujet['sujet_id'], 'slug' => rewrite($InfosSujet['sujet_titre'])]) ?>">Non</a>
+        <a class="btn" href="<?php echo $view['router']->path('zco_topic_show', ['id' => $InfosSujet['sujet_id'], 'slug' => rewrite($InfosSujet['sujet_titre'])]) ?>">Non</a>
     </p>
 </form>

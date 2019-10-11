@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\ForumBundle\Controller;
+namespace Zco\Bundle\ContentBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -27,9 +27,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
-use Zco\Bundle\ForumBundle\Domain\ForumDAO;
-use Zco\Bundle\ForumBundle\Domain\PollDAO;
-use Zco\Bundle\ForumBundle\Domain\TopicDAO;
+use Zco\Bundle\ContentBundle\Domain\ForumDAO;
+use Zco\Bundle\ContentBundle\Domain\PollDAO;
+use Zco\Bundle\ContentBundle\Domain\TopicDAO;
 
 /**
  * @author Original DJ Fox <marthe59@yahoo.fr>
@@ -80,14 +80,14 @@ final class TopicController extends Controller
 
             return redirect(
                 'Le sujet a bien été créé.',
-                $this->generateUrl('zco_forum_showTopic', ['id' => $nouveau_sujet_id, 'slug' => rewrite($_POST['titre'])])
+                $this->generateUrl('zco_topic_show', ['id' => $nouveau_sujet_id, 'slug' => rewrite($_POST['titre'])])
             );
         }
 
         fil_ariane($id, 'Créer un nouveau sujet');
         $this->get('zco_core.resource_manager')->requireResources([
             '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
-            '@ZcoForumBundle/Resources/public/css/forum.css',
+            '@ZcoContentBundle/Resources/public/css/forum.css',
         ]);
 
         if (isset($_SESSION['forum_message_texte'])) {
@@ -97,7 +97,7 @@ final class TopicController extends Controller
             $texte = '';
         }
 
-        return $this->render('ZcoForumBundle::nouveau.html.php', [
+        return $this->render('ZcoContentBundle:Forum:nouveau.html.php', [
             'InfosForum' => $InfosForum,
             'tabindex_zform' => 4,
             'texte_zform' => $texte,
@@ -108,7 +108,7 @@ final class TopicController extends Controller
     {
         $InfosSujet = $this->getTopic($id);
         $InfosForum = CategoryDAO::InfosCategorie($InfosSujet['sujet_forum_id']);
-        $url = $this->generateUrl('zco_forum_showTopic', ['id' => $id, 'slug' => rewrite($InfosSujet['sujet_titre'])]);
+        $url = $this->generateUrl('zco_topic_show', ['id' => $id, 'slug' => rewrite($InfosSujet['sujet_titre'])]);
         //TODO zCorrecteurs::VerifierFormatageUrl($InfosSujet['sujet_titre'], true, true, 1);
 
         // Si le forum est archivé
@@ -202,7 +202,7 @@ final class TopicController extends Controller
         $this->get('zco_core.resource_manager')->requireResources([
             '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
             '@ZcoCoreBundle/Resources/public/js/zform.js',
-            '@ZcoForumBundle/Resources/public/css/forum.css',
+            '@ZcoContentBundle/Resources/public/css/forum.css',
         ]);
 
         if (verifier('deplacer_sujets', $InfosSujet['sujet_forum_id'])) {
@@ -232,7 +232,7 @@ final class TopicController extends Controller
             $afficher_options = false;
         }
 
-        return $this->render('ZcoForumBundle::sujet.html.php', [
+        return $this->render('ZcoContentBundle:Forum:sujet.html.php', [
             'InfosSujet' => $InfosSujet,
             'InfosForum' => $InfosForum,
             'tableau_pages' => $tableau_pages,
@@ -269,7 +269,7 @@ final class TopicController extends Controller
             throw new NotFoundHttpException();
         }
 
-        $url = $this->generateUrl('zco_forum_showTopic', ['id' => $id, 'slug' => rewrite($InfosSujet['sujet_titre'])]);
+        $url = $this->generateUrl('zco_topic_show', ['id' => $id, 'slug' => rewrite($InfosSujet['sujet_titre'])]);
 
         //Si forum source et cible sont identiques.
         if ($InfosSujet['sujet_forum_id'] == $_POST['forum_cible']) {
@@ -289,7 +289,7 @@ final class TopicController extends Controller
             throw new AccessDeniedHttpException();
         }
 
-        $url = $this->generateUrl('zco_forum_showTopic', ['id' => $id, 'slug' => rewrite($InfosSujet['sujet_titre'])]);
+        $url = $this->generateUrl('zco_topic_show', ['id' => $id, 'slug' => rewrite($InfosSujet['sujet_titre'])]);
         $status = (boolean)$request->get('status', false);
         if ($status) {
             if (!verifier('corbeille_sujets', $InfosSujet['sujet_forum_id'])) {
@@ -328,7 +328,7 @@ final class TopicController extends Controller
 
         return redirect(
             $message,
-            $this->generateUrl('zco_forum_showTopic', ['id' => $id, 'slug' => rewrite($InfosSujet['sujet_titre'])])
+            $this->generateUrl('zco_topic_show', ['id' => $id, 'slug' => rewrite($InfosSujet['sujet_titre'])])
         );
     }
 
@@ -349,7 +349,7 @@ final class TopicController extends Controller
 
         return redirect(
             $message,
-            $this->generateUrl('zco_forum_showTopic', ['id' => $id, 'slug' => rewrite($InfosSujet['sujet_titre'])])
+            $this->generateUrl('zco_topic_show', ['id' => $id, 'slug' => rewrite($InfosSujet['sujet_titre'])])
         );
     }
 
@@ -370,7 +370,7 @@ final class TopicController extends Controller
 
         return redirect(
             $message,
-            $this->generateUrl('zco_forum_showTopic', ['id' => $id, 'slug' => rewrite($InfosSujet['sujet_titre'])])
+            $this->generateUrl('zco_topic_show', ['id' => $id, 'slug' => rewrite($InfosSujet['sujet_titre'])])
         );
     }
 
@@ -392,11 +392,11 @@ final class TopicController extends Controller
         }
 
         fil_ariane($InfosSujet['sujet_forum_id'], [
-            htmlspecialchars($InfosSujet['sujet_titre']) => $this->generateUrl('zco_forum_showTopic', ['id' => $id, 'slug' => rewrite($InfosSujet['sujet_titre'])]),
+            htmlspecialchars($InfosSujet['sujet_titre']) => $this->generateUrl('zco_topic_show', ['id' => $id, 'slug' => rewrite($InfosSujet['sujet_titre'])]),
             'Supprimer le sujet'
         ]);
 
-        return $this->render('ZcoForumBundle::supprimerSujet.html.php', [
+        return $this->render('ZcoContentBundle:Forum:supprimerSujet.html.php', [
             'InfosSujet' => $InfosSujet,
             'InfosForum' => $InfosForum,
         ]);

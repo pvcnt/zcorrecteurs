@@ -59,7 +59,7 @@
 <p class="reponse_ajout_sujet">
 	<?php if(verifier('connecte')){ ?>
 	<a href="<?php echo $view['router']->path('zco_blog_newComment', ['id' => $InfosBillet['blog_id']]) ?>" title="Ajouter un commentaire">
-		<img src="/bundles/zcoforum/img/repondre.png" alt="Ajouter un commentaire" />
+		<img src="/bundles/zcocontent/img/repondre.png" alt="Ajouter un commentaire" />
 	</a>
 	<?php } ?>
 </p>
@@ -101,7 +101,7 @@
 
 				Ajouté <?php echo dateformat($valeur['commentaire_date'], MINUSCULE); ?>
 				<?php if(verifier('connecte')){ ?>
-				<a href="<?php echo $view['router']->path('zco_blog_newComment', ['id' => $InfosBillet['blog_id'], 'c' => $valeur['commentaire_id']]) ?>"><img src="/bundles/zcoforum/img/citer.png" alt="Citer" title="Citer" /></a>
+				<a href="<?php echo $view['router']->path('zco_blog_newComment', ['id' => $InfosBillet['blog_id'], 'c' => $valeur['commentaire_id']]) ?>"><img src="/bundles/zcocontent/img/citer.png" alt="Citer" title="Citer" /></a>
 				<?php }
 				if(($valeur['id_auteur'] == $_SESSION['id'] && verifier('blog_editer_ses_commentaires')) || verifier('blog_editer_commentaires')){ ?>
 				<a href="<?php echo $view['router']->path('zco_blog_editComment', ['id' => $valeur['commentaire_id']]) ?>" title="Modifier ce commentaire">
@@ -173,7 +173,7 @@ Aucun commentaire n'a encore été déposé sur ce billet.
 <p class="reponse_ajout_sujet">
 	<?php if(verifier('connecte')){ ?>
 	<a href="<?php echo $view['router']->path('zco_blog_newComment', ['id' => $InfosBillet['blog_id']]) ?>" title="Ajouter un commentaire">
-		<img src="/bundles/zcoforum/img/repondre.png" alt="Ajouter un commentaire" />
+		<img src="/bundles/zcocontent/img/repondre.png" alt="Ajouter un commentaire" />
 	</a>
 	<?php } ?>
 </p>
