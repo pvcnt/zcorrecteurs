@@ -11,6 +11,6 @@ jobs:
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       run: echo "$DOCKER_PASSWORD" | docker login docker.pkg.github.com -u "$DOCKER_USER" --password-stdin
     - name: Build the Docker image
-      run: docker build . --file ./build/Dockerfile --tag docker.pkg.github.com/zcorrecteurs/zcorrecteurs/server:${{ github.sha }}
+      run: docker build . --file ./build/Dockerfile --tag docker.pkg.github.com/zcorrecteurs/zcorrecteurs/webserver:${{ github.sha }}
     - name: Push the Docker image
-      run: docker push docker.pkg.github.com/zcorrecteurs/zcorrecteurs/server:${{ github.sha }}
+      run: docker push docker.pkg.github.com/zcorrecteurs/zcorrecteurs/webserver:${{ github.sha }}
