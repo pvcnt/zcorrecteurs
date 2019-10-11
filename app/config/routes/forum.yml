@@ -10,19 +10,19 @@ zco_forum_show:
 
 zco_forum_showTopic:
   path:   /forum/sujet/{id}/{slug}
-  defaults:  { _controller: ZcoForumBundle:Default:showTopic }
+  defaults:  { _controller: ZcoForumBundle:Topic:show }
   requirements:
     id: \d+
 
 zco_forum_newTopic:
   path:   /forum/nouveau-sujet/{id}
-  defaults:  { _controller: ZcoForumBundle:Default:newTopic }
+  defaults:  { _controller: ZcoForumBundle:Topic:new }
   requirements:
     id: \d+
 
 zco_forum_trash:
   path:   /forum/corbeille/{id}
-  defaults:  { _controller: ZcoForumBundle:Default:trash }
+  defaults:  { _controller: ZcoForumBundle:Topic:trash }
   requirements:
     id: \d+
 
@@ -34,25 +34,25 @@ zco_forum_markHelped:
 
 zco_forum_markSolved:
   path:   /forum/resolu/{id}
-  defaults:  { _controller: ZcoForumBundle:Default:markSolved }
+  defaults:  { _controller: ZcoForumBundle:Topic:markSolved }
   requirements:
     id: \d+
 
 zco_forum_markPinned:
   path:   /forum/annonce/{id}
-  defaults:  { _controller: ZcoForumBundle:Default:markPinned }
+  defaults:  { _controller: ZcoForumBundle:Topic:markPinned }
   requirements:
     id: \d+
 
 zco_forum_markClosed:
   path:   /forum/ferme/{id}
-  defaults:  { _controller: ZcoForumBundle:Default:markClosed }
+  defaults:  { _controller: ZcoForumBundle:Topic:markClosed }
   requirements:
     id: \d+
 
 zco_forum_delete:
   path:   /forum/supprimer/{id}
-  defaults:  { _controller: ZcoForumBundle:Default:deleteTopic }
+  defaults:  { _controller: ZcoForumBundle:Topic:delete }
   requirements:
     id: \d+
 
