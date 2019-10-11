@@ -81,7 +81,7 @@ class DefaultController extends Controller
 
         fil_ariane('Gestion des dictées');
 
-        return render_to_response('ZcoDicteesBundle::admin.html.php', array(
+        return $this->render('ZcoDicteesBundle::admin.html.php', array(
             'Dictees' => DictationDAO::ListerDictees(false),
             'DicteeEtats' => Dictation::STATUSES,
             'DicteeDifficultes' => Dictation::LEVELS,
@@ -110,7 +110,7 @@ class DefaultController extends Controller
             '@ZcoDicteesBundle/Resources/public/css/dictees.css',
         ]);
 
-        return render_to_response('ZcoDicteesBundle::dictee.html.php', [
+        return $this->render('ZcoDicteesBundle::dictee.html.php', [
             'Dictee' => $Dictee,
             'DicteeDifficultes' => Dictation::LEVELS,
             'DicteeEtats' => Dictation::STATUSES,
@@ -299,7 +299,7 @@ class DefaultController extends Controller
             'Editer'
         ));
 
-        return render_to_response('ZcoDicteesBundle::edit.html.php', compact('Dictee', 'Form'));
+        return $this->render('ZcoDicteesBundle::edit.html.php', compact('Dictee', 'Form'));
     }
 
     /**

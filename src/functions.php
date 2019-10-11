@@ -571,20 +571,6 @@ function array_trim($vars, $index = null)
     return $vars;
 }
 
-/**
- * Génération d'un objet réponse à partir d'un nom de template et de variables
- * à y insérer.
- *
- * @param string $template Le nom du template.
- * @param array $vars Variables à remplacer.
- * @param array $headers Options pour personnaliser la réponse.
- * @return Response
- */
-function render_to_response($template, array $vars = array(), array $headers = array())
-{
-    return new Response(\Container::get('templating')->render($template, $vars), 200, $headers);
-}
-
 function render_to_string($template = array(), array $vars = array())
 {
     return \Container::get('templating')->render($template, $vars);

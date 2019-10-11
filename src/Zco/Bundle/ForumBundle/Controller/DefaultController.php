@@ -192,7 +192,7 @@ final class DefaultController extends Controller
             $texte = '';
         }
 
-        return render_to_response('ZcoForumBundle::nouveau.html.php', [
+        return $this->render('ZcoForumBundle::nouveau.html.php', [
             'InfosForum' => $InfosForum,
             'tabindex_zform' => 4,
             'texte_zform' => $texte,
