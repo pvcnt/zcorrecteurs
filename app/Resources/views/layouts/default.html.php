@@ -53,7 +53,7 @@
             </li>
             <?php if (verifier('admin')): ?>
                 <li>
-                    <a href="<?php echo $view['router']->path('zco_admin_index') ?>">
+                    <a href="<?php echo $view['router']->path('zco_admin') ?>">
                         Admin
                         <?php if ($app->adminCount() > 0): ?>(<?php echo $app->adminCount() ?>)<?php endif ?>
                     </a>

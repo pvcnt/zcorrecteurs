@@ -1,3 +1,7 @@
 zco_core:
   resource: "@ZcoCoreBundle/Controller/"
   type:     annotation
+
+zco_content:
+  resource: "@ZcoContentBundle/Controller/"
+  type:     annotation

@@ -23,8 +23,10 @@ namespace Zco\Bundle\ContentBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
 use Zco\Bundle\ContentBundle\Form\CategoryType;
 
@@ -37,6 +39,10 @@ final class CategoryController extends Controller
 {
     /**
      * Affichage de la liste des catégories.
+     *
+     * @Route(name="zco_categories_index", path="/categories")
+     * @param Request $request
+     * @return Response
      */
     public function indexAction(Request $request)
     {
@@ -87,6 +93,10 @@ final class CategoryController extends Controller
 
     /**
      * Ajoute une nouvelle catégorie.
+     *
+     * @Route(name="zco_categories_new", path="/categories/ajouter")
+     * @param Request $request
+     * @return Response
      */
     public function newAction(Request $request)
     {
@@ -116,6 +126,11 @@ final class CategoryController extends Controller
 
     /**
      * Modification d'une catégorie.
+     *
+     * @Route(name="zco_categories_edit", path="/categories/modifier/{id}", requirements={"id":"\d+"})
+     * @param int $id Category identifier.
+     * @param Request $request
+     * @return Response
      */
     public function editAction($id, Request $request)
     {
@@ -160,6 +175,11 @@ final class CategoryController extends Controller
 
     /**
      * Suppression d'une catégorie.
+     *
+     * @Route(name="zco_categories_delete", path="/categories/supprimer/{id}", requirements={"id":"\d+"})
+     * @param int $id Category identifier.
+     * @param Request $request
+     * @return Response
      */
     public function deleteAction($id, Request $request)
     {

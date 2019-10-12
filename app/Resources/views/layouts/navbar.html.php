@@ -16,7 +16,7 @@
             <li><a href="<?php echo $view['router']->path('zco_dictation_index') ?>">Dictées</a></li>
             <?php if (verifier('admin')): ?>
                 <li>
-                    <a href="<?php echo $view['router']->path('zco_admin_index') ?>">
+                    <a href="<?php echo $view['router']->path('zco_admin') ?>">
                         Admin
                         <?php if ($app->adminCount() > 0): ?>
                             <span class="badge"><?php echo $app->adminCount() ?></span>

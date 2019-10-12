@@ -21,6 +21,7 @@
 
 namespace Zco\Bundle\ContentBundle\Controller;
 
+use Symfony\Component\Routing\Annotation\Route;
 use Zco\Bundle\ContentBundle\Captcha\Captcha;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -31,6 +32,10 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class CaptchaController
 {
+    /**
+     * @Route(name="zco_captcha", path="/captcha")
+     * @return Response
+     */
     public function indexAction()
     {
         $captcha = new Captcha();

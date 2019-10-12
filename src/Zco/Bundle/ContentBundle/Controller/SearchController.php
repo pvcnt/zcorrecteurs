@@ -23,6 +23,7 @@ namespace Zco\Bundle\ContentBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
 use Zco\Bundle\ContentBundle\Search\Searchable\BlogSearchable;
 use Zco\Bundle\ContentBundle\Search\Searchable\ForumSearchable;
@@ -39,6 +40,7 @@ class SearchController extends Controller
     /**
      * Affichage du formulaire complet de recherche et des résultats.
      *
+     * @Route(name="zco_search_index", path="/recherche")
      * @param Request $request HTTP request.
      * @return Response
      */

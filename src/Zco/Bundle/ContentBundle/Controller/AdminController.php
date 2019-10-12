@@ -23,6 +23,7 @@ namespace Zco\Bundle\ContentBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 use Zco\Bundle\ContentBundle\Menu\AdminMenuFactory;
 use Zco\Bundle\ContentBundle\Menu\MenuRenderer;
 
@@ -38,6 +39,10 @@ use Zco\Bundle\ContentBundle\Menu\MenuRenderer;
  */
 class AdminController extends Controller
 {
+    /**
+     * @Route(name="zco_admin", path="/admin")
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function indexAction()
     {
         if (!verifier('admin')) {

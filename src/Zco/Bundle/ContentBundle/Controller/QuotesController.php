@@ -26,6 +26,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 use Zco\Bundle\ContentBundle\Domain\QuoteRepository;
 use Zco\Bundle\ContentBundle\Form\QuoteType;
 
@@ -34,6 +35,7 @@ class QuotesController extends Controller
     /**
      * Display all quotes.
      *
+     * @Route(name="zco_quote_index", path="/citations")
      * @param Request $request
      * @return Response
      */
@@ -62,6 +64,11 @@ class QuotesController extends Controller
         ]);
     }
 
+    /**
+     * @Route(name="zco_quote_new", path="/citations/ajouter")
+     * @param Request $request
+     * @return Response
+     */
     public function newAction(Request $request)
     {
         if (!verifier('citations_modifier')) {
@@ -91,6 +98,12 @@ class QuotesController extends Controller
         ]);
     }
 
+    /**
+     * @Route(name="zco_quote_edit", path="/citations/modifier/{id}", requirements={"id": "\d+"})
+     * @param int $id Quote identifier.
+     * @param Request $request
+     * @return Response
+     */
     public function editAction($id, Request $request)
     {
         if (!verifier('citations_modifier')) {
@@ -125,6 +138,12 @@ class QuotesController extends Controller
         ]);
     }
 
+    /**
+     * @Route(name="zco_quote_delete", path="/citations/supprimer/{id}", requirements={"id": "\d+"})
+     * @param int $id Quote identifier.
+     * @param Request $request
+     * @return Response
+     */
     public function deleteAction($id, Request $request)
     {
         if (!verifier('citations_modifier')) {
