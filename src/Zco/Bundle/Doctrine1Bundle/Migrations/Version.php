@@ -24,7 +24,6 @@
 
 namespace Zco\Bundle\Doctrine1Bundle\Migrations;
 
-use Zco\Bundle\Doctrine1Bundle\Migrations\Configuration\Configuration;
 use Zco\Bundle\Doctrine1Bundle\Migrations\Exception\SkipMigrationException;
 use Symfony\Component\Console\Output\OutputInterface;
 

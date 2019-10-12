@@ -24,10 +24,11 @@
 
 namespace Zco\Bundle\Doctrine1Bundle\Command;
 
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Zco\Bundle\Doctrine1Bundle\Migrations\Configuration;
 
 /**
  * Tâche permettant de générer automatiquement les fichiers de migration 
@@ -36,15 +37,27 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class MigrationsStatusCommand extends ContainerAwareCommand
+class MigrationsStatusCommand extends Command
 {
-	/**
+    private $configuration;
+
+    /**
+     * Constructor.
+     *
+     * @param Configuration $configuration Migrations configuration.
+     */
+    public function __construct(Configuration $configuration)
+    {
+        parent::__construct('doctrine:migrations:status');
+        $this->configuration = $configuration;
+    }
+
+    /**
 	 * {@inheritdoc}
 	 */
 	protected function configure()
 	{
 		$this
-			->setName('doctrine:migrations:status')
 			->setDescription('View the status of a set of migrations.')
 			->addOption('show-versions', null, InputOption::VALUE_NONE, 'This will display a list of all available migrations and their status')
 			->setHelp(
@@ -64,14 +77,12 @@ class MigrationsStatusCommand extends ContainerAwareCommand
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$container	 = $this->getContainer();
-		$configuration = $container->get('zco_doctrine1.migrations.configuration');
-		$configuration->registerMigrations();
+		$this->configuration->registerMigrations();
 		
-		$currentVersion	  = $configuration->getCurrentVersion();
-		$latestVersion	   = $configuration->getLatestVersion();
-		$executedMigrations = $configuration->getMigratedVersions();
-		$availableMigrations = $configuration->getAvailableVersions();
+		$currentVersion	  = $this->configuration->getCurrentVersion();
+		$latestVersion	   = $this->configuration->getLatestVersion();
+		$executedMigrations = $this->configuration->getMigratedVersions();
+		$availableMigrations = $this->configuration->getAvailableVersions();
 		$executedUnavailableMigrations = array_diff($executedMigrations, $availableMigrations);
 		$numExecutedUnavailableMigrations = count($executedUnavailableMigrations);
 		$newMigrations = (count($availableMigrations) + $numExecutedUnavailableMigrations) - count($executedMigrations);
@@ -80,10 +91,10 @@ class MigrationsStatusCommand extends ContainerAwareCommand
 		$info = array(
 			'Database driver'		=> \Doctrine_Manager::connection()->getDriverName(),
 			'Database name'		 	=> $_SERVER['DATABASE_BASE'] ?? '<unknown>',
-			'Version table name'	=> $configuration->getMigrationsTableName(),
-			'Migrations directory'  => $configuration->getMigrationsDirectory(),
-			'Current version'		=> $currentVersion ? sprintf('%s (%s)', $configuration->formatVersion($currentVersion), $currentVersion) : $currentVersion,
-			'Latest version'		=> $latestVersion ? sprintf('%s (%s)', $configuration->formatVersion($latestVersion), $latestVersion) : $latestVersion,
+			'Version table name'	=> $this->configuration->getMigrationsTableName(),
+			'Migrations directory'  => $this->configuration->getMigrationsDirectory(),
+			'Current version'		=> $currentVersion ? sprintf('%s (%s)', $this->configuration->formatVersion($currentVersion), $currentVersion) : $currentVersion,
+			'Latest version'		=> $latestVersion ? sprintf('%s (%s)', $this->configuration->formatVersion($latestVersion), $latestVersion) : $latestVersion,
 			'Executed migrations'   => count($executedMigrations),
 			'Available migrations'  => count($availableMigrations),
 			'New migrations'		=> $newMigrations > 0 ? '<question>'.$newMigrations.'</question>' : $newMigrations,
@@ -96,15 +107,15 @@ class MigrationsStatusCommand extends ContainerAwareCommand
 		$showVersions = $input->getOption('show-versions') ? true : false;
 		if ($showVersions === true)
 		{
-			if ($migrations = $configuration->getMigrations())
+			if ($migrations = $this->configuration->getMigrations())
 			{
 				$output->writeln("\n<info>==</info> Available migrations");
-				$migratedVersions = $configuration->getMigratedVersions();
+				$migratedVersions = $this->configuration->getMigratedVersions();
 				foreach ($migrations as $version)
 				{
 					$isMigrated = in_array($version->getVersion(), $migratedVersions);
 					$status = $isMigrated ? '<info>migrated</info>' : '<error>not migrated</error>';
-					$output->writeln('	<comment>>></comment> ' . $configuration->formatVersion($version->getVersion()) . ' (<comment>' . $version->getVersion() . '</comment>)' . str_repeat(' ', 30 - strlen($name)) . $status);
+					$output->writeln('	<comment>>></comment> ' . $this->configuration->formatVersion($version->getVersion()) . ' (<comment>' . $version->getVersion() . '</comment>)' . str_repeat(' ', 30 - strlen($name)) . $status);
 				}
 			}
 
@@ -113,7 +124,7 @@ class MigrationsStatusCommand extends ContainerAwareCommand
 				$output->writeln("\n<info>==</info> Previously executed unavailable migrations");
 				foreach ($executedUnavailableMigrations as $executedUnavailableMigration)
 				{
-					$output->writeln('	<comment>>></comment> ' . $configuration->formatVersion($executedUnavailableMigration) . ' (<comment>' . $executedUnavailableMigration . '</comment>)');
+					$output->writeln('	<comment>>></comment> ' . $this->configuration->formatVersion($executedUnavailableMigration) . ' (<comment>' . $executedUnavailableMigration . '</comment>)');
 				}
 			}
 		}

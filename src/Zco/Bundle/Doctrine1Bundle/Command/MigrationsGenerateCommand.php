@@ -24,39 +24,30 @@
 
 namespace Zco\Bundle\Doctrine1Bundle\Command;
 
-use Zco\Bundle\Doctrine1Bundle\Migrations\Configuration\Configuration;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputArgument;
+use Zco\Bundle\Doctrine1Bundle\Migrations\MigrationGenerator;
 
-class MigrationsGenerateCommand extends ContainerAwareCommand
+class MigrationsGenerateCommand extends Command
 {
-	private static $template =
-'<?php
+    private $generator;
 
-use Zco\Bundle\Doctrine1Bundle\Migrations\AbstractMigration;
-use Symfony\Component\Console\Output\OutputInterface;
-
-/**
- * Classe de migration auto-générée. Modifiez-la selon vos besoins !
- */
-class Version<version> extends AbstractMigration
-{
-	public function up(OutputInterface $output)
-	{<up>
-	}
-
-	public function down(OutputInterface $output)
-	{<down>
-	}
-}';
+    /**
+     * Constructor.
+     *
+     * @param MigrationGenerator $generator Migrations generator.
+     */
+    public function __construct(MigrationGenerator $generator)
+    {
+        parent::__construct('doctrine:migrations:generate');
+        $this->generator = $generator;
+    }
 	
 	protected function configure()
 	{
 		$this
-			->setName('doctrine:migrations:generate')
 			->setDescription('Generate a blank migration file.')
 			->addOption('editor', null, InputOption::VALUE_OPTIONAL, 'Open file with this command upon creation')
 			->setHelp(
@@ -74,44 +65,7 @@ class Version<version> extends AbstractMigration
 	public function execute(InputInterface $input, OutputInterface $output)
 	{
 		$version = date('YmdHis');
-		$path    = $this->generateMigration($version, $input);
+        $path = $this->generator->generate($version, $input->getOption('editor'));
 		$output->writeln(sprintf('Generated new migration class to "<info>%s</info>"', $path));
-	}
-
-	protected function generateMigration($version, InputInterface $input, array $upSql = array(), array $downSql = array())
-	{
-		$configuration = $this->getContainer()->get('zco_doctrine1.migrations.configuration');
-		$directory     = rtrim($configuration->getMigrationsDirectory(), '/');
-		$path	       = $directory.'/Version'.$version.'.php';
-		
-		$up = array();
-		foreach ($upSql as $query)
-		{
-			$up [] = "\n\t\t".'$this->addSql("'.str_replace('"', '\\"', $query).'");';
-		}
-		$up = implode('', $up);
-		
-		$down = array();
-		foreach ($downSql as $query)
-		{
-			$down [] = "\n\t\t".'$this->addSql("'.str_replace('"', '\\"', $query).'");';
-		}
-		$down = implode('', $down);
-		
-		$code = str_replace(array('<version>', '<up>', '<down>'), array($version, $up, $down), self::$template);
-		
-		if (!file_exists($directory))
-		{
-			throw new \InvalidArgumentException(sprintf('Migrations directory "%s" does not exist.', $directory));
-		}
-
-		file_put_contents($path, $code);
-		
-		if ($editor = $input->getOption('editor'))
-		{
-			shell_exec($editor.' '.escapeshellarg($path));
-		}
-
-		return $path;
 	}
 }

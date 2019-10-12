@@ -24,14 +24,14 @@
 
 namespace Zco\Bundle\Doctrine1Bundle\Command;
 
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Question\Question;
 use Zco\Bundle\Doctrine1Bundle\Migrations\Migration;
-use Zco\Bundle\Doctrine1Bundle\Migrations\Configuration\Configuration;
+use Zco\Bundle\Doctrine1Bundle\Migrations\Configuration;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
 /**
  * Tâche appliquant une série de migrations sur la base de données afin de la 
@@ -39,15 +39,27 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class MigrationsExecuteCommand extends ContainerAwareCommand
+class MigrationsExecuteCommand extends Command
 {
+    private $configuration;
+
+    /**
+     * Constructor.
+     *
+     * @param Configuration $configuration Migrations configuration.
+     */
+    public function __construct(Configuration $configuration)
+    {
+        parent::__construct('doctrine:migrations:execute');
+        $this->configuration = $configuration;
+    }
+
 	/**
 	 * {@inheritdoc}
 	 */
 	protected function configure()
 	{
 		$this
-			->setName('doctrine:migrations:execute')
 			->setDescription('Execute a migration to a specified version or the latest available version.')
 			->addArgument('version', InputArgument::OPTIONAL, 'The version to migrate to', null)
 			->addOption('write-sql', null, InputOption::VALUE_NONE, 'The path to output the migration SQL file instead of executing it')
@@ -82,15 +94,14 @@ EOT
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$configuration = $this->getContainer()->get('zco_doctrine1.migrations.configuration');
-		$configuration->registerMigrations();
+		$this->configuration->registerMigrations();
 		
 		$version	= $input->getArgument('version');
 		$force		= (bool) $input->getOption('force');
-		$migration	= new Migration($configuration, $output);
+		$migration	= new Migration($this->configuration, $output);
 
-		$executedMigrations  = $configuration->getMigratedVersions();
-		$availableMigrations = $configuration->getAvailableVersions();
+		$executedMigrations  = $this->configuration->getMigratedVersions();
+		$availableMigrations = $this->configuration->getAvailableVersions();
 		$executedUnavailableMigrations = array_diff($executedMigrations, $availableMigrations);
 		
 		//Si on a des migrations qui ont déjà été exécutées mais sont maintenant 
@@ -101,7 +112,7 @@ EOT
 			$output->writeln(sprintf('<error>WARNING! You have %s previously executed migrations in the database that are not registered migrations.</error>', count($executedUnavailableMigrations)));
 			foreach ($executedUnavailableMigrations as $executedUnavailableMigration)
 			{
-				$output->writeln('	<comment>>></comment> ' . $configuration->formatVersion($executedUnavailableMigration) . ' (<comment>' . $executedUnavailableMigration . '</comment>)');
+				$output->writeln('	<comment>>></comment> ' . $this->configuration->formatVersion($executedUnavailableMigration) . ' (<comment>' . $executedUnavailableMigration . '</comment>)');
 			}
 			if (!$force && !$this->getHelper('question')->ask($input, $output, new Question('<question>Are you sure you wish to continue? (y/n)</question>', false)))
 			{

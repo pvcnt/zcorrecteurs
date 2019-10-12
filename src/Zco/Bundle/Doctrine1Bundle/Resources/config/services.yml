@@ -1,12 +1,16 @@
 services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
     zco_doctrine1.connection:
         class: Doctrine_Connection
         factory: [Doctrine_Manager, connection]
         public: true
         arguments: ['mysql://%env(DATABASE_HOST)%/%env(DATABASE_BASE)%', '%env(DATABASE_USER)%', '%env(DATABASE_PASSWORD)%']
         calls:
-          - [addListener, ['@zco_doctrine1.audit_listener']]
-          - [addListener, ['@zco_doctrine1.legacy_listener']]
+          - [addListener, ['@Zco\Bundle\Doctrine1Bundle\EventListener\QueryAuditListener']]
+          - [addListener, ['@Zco\Bundle\Doctrine1Bundle\EventListener\LegacyListener']]
           - [setOption, ['username', '%env(DATABASE_USER)%']]
           - [setOption, ['password', '%env(DATABASE_PASSWORD)%']]
 
@@ -14,33 +18,36 @@ services:
       alias: zco_doctrine1.connection
       public: true
 
-    zco_doctrine1.audit_listener:
-        class: Zco\Bundle\Doctrine1Bundle\EventListener\QueryAuditListener
+    Zco\Bundle\Doctrine1Bundle\EventListener\QueryAuditListener: ~
 
-    zco_doctrine1.legacy_listener:
-            class: Zco\Bundle\Doctrine1Bundle\EventListener\LegacyListener
+    Zco\Bundle\Doctrine1Bundle\EventListener\LegacyListener: ~
 
-    zco_doctrine1.data_collector:
-        class: Zco\Bundle\Doctrine1Bundle\DataCollector\DoctrineDataCollector
-        arguments: ['@zco_doctrine1.audit_listener']
+    Zco\Bundle\Doctrine1Bundle\DataCollector\DoctrineDataCollector:
+        arguments: ['@Zco\Bundle\Doctrine1Bundle\EventListener\QueryAuditListener']
         tags:
             - { name: data_collector, template: "ZcoDoctrine1Bundle::collector", id: doctrine1 }
-    
-    zco_core.pagination_listener:
-        class: Zco\Bundle\Doctrine1Bundle\EventListener\PaginationListener
+
+    Zco\Bundle\Doctrine1Bundle\EventListener\PaginationListener:
         tags:
             - { name: kernel.event_subscriber }
 
-    zco_doctrine1.form.type_guesser.orm:
-        class: Zco\Bundle\Doctrine1Bundle\Form\DoctrineOrmTypeGuesser
+    Zco\Bundle\Doctrine1Bundle\Migrations\MigrationGenerator: ~
+
+    Zco\Bundle\Doctrine1Bundle\Command\:
+        resource: '../../Command/*'
+        tags: ['console.command']
+
+    Zco\Bundle\Doctrine1Bundle\Command\MigrationsDiffCommand:
+        arguments:
+            $cacheDir: '%kernel.cache_dir%/zco_doctrine1'
+
+    Zco\Bundle\Doctrine1Bundle\Form\DoctrineOrmTypeGuesser:
         tags:
             - { name: form.type_guesser }
         
-    zco_doctrine1.form.type.entity:
-        class: Zco\Bundle\Doctrine1Bundle\Form\Type\EntityType
+    Zco\Bundle\Doctrine1Bundle\Form\Type\EntityType:
         tags:
             - { name: form.type, alias: entity }
-    
-    zco_doctrine1.migrations.configuration:
-        class: Zco\Bundle\Doctrine1Bundle\Migrations\Configuration\Configuration
+
+    Zco\Bundle\Doctrine1Bundle\Migrations\Configuration:
         arguments: ["%kernel.root_dir%/../data/migrations", "@service_container"]

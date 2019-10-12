@@ -24,13 +24,12 @@
 
 namespace Zco\Bundle\Doctrine1Bundle\Command;
 
-use Zco\Bundle\Doctrine1Bundle\Migrations\Migration;
-use Zco\Bundle\Doctrine1Bundle\Migrations\Configuration\Configuration;
+use Symfony\Component\Console\Command\Command;
+use Zco\Bundle\Doctrine1Bundle\Migrations\Configuration;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
 /**
  * Tâche permettant d'ajouter ou de supprimer manuellement des versions de la 
@@ -38,12 +37,24 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class MigrationsVersionCommand extends ContainerAwareCommand
+class MigrationsVersionCommand extends Command
 {
+    private $configuration;
+
+    /**
+     * Constructor.
+     *
+     * @param Configuration $configuration Migrations configuration.
+     */
+    public function __construct(Configuration $configuration)
+    {
+        parent::__construct('doctrine:migrations:version');
+        $this->configuration = $configuration;
+    }
+
 	protected function configure()
 	{
 		$this
-			->setName('doctrine:migrations:version')
 			->setDescription('Manually add and delete migration versions from the version table.')
 			->addArgument('version', InputArgument::REQUIRED, 'The version to add or delete', null)
 			->addOption('add', null, InputOption::VALUE_NONE, 'Add the specified version')
@@ -62,8 +73,7 @@ EOT
 
 	public function execute(InputInterface $input, OutputInterface $output)
 	{
-		$configuration = $this->getContainer()->get('zco_doctrine1.migrations.configuration');
-		$configuration->registerMigrations();
+		$this->configuration->registerMigrations();
 
 		if ($input->getOption('add') === false && $input->getOption('delete') === false)
 		{
@@ -73,18 +83,18 @@ EOT
 		$version = $input->getArgument('version');
 		$markMigrated = (bool) $input->getOption('add');
 
-		if (!$configuration->hasVersion($version))
+		if (!$this->configuration->hasVersion($version))
 		{
 			throw new \InvalidArgumentException(sprintf('Could not find migration version %s', $version));
 		}
 
-		$version = $configuration->getVersion($version);
-		if ($markMigrated && $configuration->hasVersionMigrated($version))
+		$version = $this->configuration->getVersion($version);
+		if ($markMigrated && $this->configuration->hasVersionMigrated($version))
 		{
 			throw new \InvalidArgumentException(sprintf('The version "%s" already exists in the version table.', $version));
 		}
 
-		if (!$markMigrated && !$configuration->hasVersionMigrated($version))
+		if (!$markMigrated && !$this->configuration->hasVersionMigrated($version))
 		{
 			throw new \InvalidArgumentException(sprintf('The version "%s" does not exists in the version table.', $version));
 		}

@@ -15,8 +15,8 @@ services:
   #  resource: '../src/Zco/Controller'
   #  tags: ['controller.service_arguments']
 
-  Zco\Bundle\Doctrine1Bundle\Command\:
-    resource: '../../src/Zco/Bundle/Doctrine1Bundle/Command/*'
+  Zco\Bundle\CoreBundle\Command\:
+    resource: '../../src/Zco/Bundle/CoreBundle/Command/*'
     tags: ['console.command']
 
   Zco\Bundle\UserBundle\Command\:

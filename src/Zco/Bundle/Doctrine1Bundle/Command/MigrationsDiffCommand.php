@@ -24,9 +24,10 @@
 
 namespace Zco\Bundle\Doctrine1Bundle\Command;
 
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Zco\Bundle\Doctrine1Bundle\Migrations\MigrationGenerator;
 
 /**
  * Tâche permettant de générer automatiquement les fichiers de migration 
@@ -35,8 +36,24 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class MigrationsDiffCommand extends MigrationsGenerateCommand
+class MigrationsDiffCommand extends Command
 {
+    private $generator;
+    private $cacheDir;
+
+    /**
+     * Constructor.
+     *
+     * @param MigrationGenerator $generator Migrations generator.
+     * @param string $cacheDir
+     */
+    public function __construct(MigrationGenerator $generator, string $cacheDir)
+    {
+        parent::__construct('doctrine:migrations:diff');
+        $this->generator = $generator;
+        $this->cacheDir = $cacheDir;
+    }
+
 	/**
 	 * {@inheritdoc}
 	 */
@@ -45,7 +62,6 @@ class MigrationsDiffCommand extends MigrationsGenerateCommand
 		parent::configure();
 		
 		$this
-			->setName('doctrine:migrations:diff')
 			->setDescription('Generate a migration by comparing your current database to your mapping information.')
 			->setHelp(<<<EOT
 The <info>%command.name%</info> command generates a migration by comparing your current database to your mapping information:
@@ -64,9 +80,7 @@ EOT
 	 */
 	public function execute(InputInterface $input, OutputInterface $output)
 	{
-		$configuration = $this->getContainer()->get('zco_doctrine1.migrations.configuration');
-		$cacheDir      = $this->getContainer()->getParameter('kernel.cache_dir').'/zco_doctrine1';
-		$dbh	       = \Doctrine_Manager::connection()->getDbh();
+		$dbh = \Doctrine_Manager::connection()->getDbh();
 		
 		$stmt = $dbh->prepare("SHOW TABLES");
 		$stmt->execute();
@@ -80,7 +94,7 @@ EOT
 		$upSql        = array();
 		$downSql      = array();
 		$conn	      = \Doctrine_Manager::connection();
-		$iterator     = new \DirectoryIterator($cacheDir.'/generated');
+		$iterator     = new \DirectoryIterator($this->cacheDir.'/generated');
 		
 		foreach ($iterator as $file)
 		{
@@ -101,7 +115,7 @@ EOT
 		if (!empty($upSql) || !empty($downSql))
 		{
 			$version = date('YmdHis');
-			$path    = $this->generateMigration($version, $input, $upSql, $downSql);
+			$path    = $this->generator->generate($version, $input, $upSql, $downSql);
 			$output->writeln(sprintf('Generated new migration class to "<info>%s</info>" from schema differences', $path));
 		}
 		else

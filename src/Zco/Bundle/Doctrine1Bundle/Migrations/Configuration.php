@@ -22,9 +22,8 @@
  * <jonwage@gmail.com> développé pour Doctrine 2 et publié sous licence LGPL.
  */
 
-namespace Zco\Bundle\Doctrine1Bundle\Migrations\Configuration;
+namespace Zco\Bundle\Doctrine1Bundle\Migrations;
 
-use Zco\Bundle\Doctrine1Bundle\Migrations\Version;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class Configuration
