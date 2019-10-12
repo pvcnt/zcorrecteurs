@@ -79,7 +79,7 @@ class MigrationsStatusCommand extends ContainerAwareCommand
 		$output->writeln("<info>==</info> Configuration");
 		$info = array(
 			'Database driver'		=> \Doctrine_Manager::connection()->getDriverName(),
-			'Database name'		 	=> $container->getParameter('database.base'),
+			'Database name'		 	=> $_SERVER['DATABASE_BASE'] ?? '<unknown>',
 			'Version table name'	=> $configuration->getMigrationsTableName(),
 			'Migrations directory'  => $configuration->getMigrationsDirectory(),
 			'Current version'		=> $currentVersion ? sprintf('%s (%s)', $configuration->formatVersion($currentVersion), $currentVersion) : $currentVersion,
