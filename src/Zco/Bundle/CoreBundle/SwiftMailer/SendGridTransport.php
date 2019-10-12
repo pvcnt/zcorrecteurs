@@ -112,11 +112,17 @@ class SendGridTransport implements \Swift_Transport
         $this->httpClientOptions = [];
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function isStarted()
     {
         return $this->started;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function start()
     {
         if (!$this->started) {
@@ -137,6 +143,9 @@ class SendGridTransport implements \Swift_Transport
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function stop()
     {
         if ($this->started) {
@@ -166,7 +175,7 @@ class SendGridTransport implements \Swift_Transport
      *
      * WARNING: $failedRecipients and return value are faked.
      */
-    public function send(\Swift_Mime_Message $message, &$failedRecipients = null)
+    public function send(\Swift_Mime_SimpleMessage $message, &$failedRecipients = null)
     {
         if ($evt = $this->eventDispatcher->createSendEvent($this, $message)) {
             $this->eventDispatcher->dispatchEvent($evt, 'beforeSendPerformed');
@@ -254,10 +263,9 @@ class SendGridTransport implements \Swift_Transport
 
         // add headers
         if ($headers = $message->getHeaders()->getAll()) {
-            foreach ($headers as $header) {
-                $headerName = $header->getFieldName();
-                if (!in_array(strtoupper($headerName), self::RESERVED_KEYWORDS)) {
-                    $mail->addHeader($headerName, $header->getFieldBody());
+            foreach ($headers as $name => $value) {
+                if (!in_array(strtoupper($name), self::RESERVED_KEYWORDS)) {
+                    $mail->addHeader($name, $value);
                 }
             }
         }
@@ -311,5 +319,13 @@ class SendGridTransport implements \Swift_Transport
     public function setHttpClientOptions(array $options)
     {
         $this->httpClientOptions = $options;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function ping()
+    {
+        return true;
     }
 }
