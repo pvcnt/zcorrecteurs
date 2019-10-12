@@ -215,9 +215,7 @@ final class TopicController extends Controller
         if
         (
             (
-                (
-                    verifier('resolu_ses_sujets', $InfosSujet['sujet_forum_id']) AND $_SESSION['id'] == $InfosSujet['sujet_auteur']
-                )
+                $_SESSION['id'] == $InfosSujet['sujet_auteur']
                 OR verifier('resolu_sujets', $InfosSujet['sujet_forum_id'])
             )
             OR verifier('epingler_sujets', $InfosSujet['sujet_forum_id'])
@@ -317,8 +315,7 @@ final class TopicController extends Controller
             throw new AccessDeniedHttpException();
         }
 
-        $allowed = ($_SESSION['id'] == $InfosSujet['sujet_auteur']
-                && verifier('resolu_ses_sujets', $InfosSujet['sujet_forum_id']))
+        $allowed = $_SESSION['id'] == $InfosSujet['sujet_auteur']
             || verifier('resolu_sujets', $InfosSujet['sujet_forum_id']);
         if (!$allowed) {
             throw new AccessDeniedHttpException();

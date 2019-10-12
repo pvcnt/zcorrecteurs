@@ -8,12 +8,11 @@
 	<div class="info">
 		<span class="moderation">
 			<?php if((in_array($InfosBillet['blog_etat'], array(BLOG_BROUILLON, BLOG_REFUSE)) && ($redacteur == true || verifier('blog_editer_brouillons'))) ||
-			($InfosBillet['blog_etat'] == BLOG_PREPARATION && verifier('blog_editer_preparation')) ||
 			($InfosBillet['blog_etat'] == BLOG_VALIDE && verifier('blog_editer_valide'))){ ?>
 			<a href="<?php echo $view['router']->path('zco_blog_manage', ['id' => $InfosBillet['blog_id']]) ?>" title="Modifier le billet">
 				<img src="/img/editer.png" alt="Modifier" />
 			</a>
-			<?php } if(verifier('blog_valider') && in_array($InfosBillet['blog_etat'], array(BLOG_VALIDE, BLOG_PREPARATION))){ ?>
+			<?php } if(verifier('blog_valider') && $InfosBillet['blog_etat'] == BLOG_VALIDE){ ?>
 			<a href="<?php echo $view['router']->path('zco_blog_unpublish', ['id' => $InfosBillet['blog_id']]) ?>" title="Mettre le billet hors ligne">
 				<img src="/bundles/zcoblog/img/refuser.png" alt="Dévalider" />
 			</a>

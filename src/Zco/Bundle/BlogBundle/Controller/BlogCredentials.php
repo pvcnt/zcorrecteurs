@@ -37,7 +37,6 @@ final class BlogCredentials
         $this->canEdit = (
             (in_array($article['blog_etat'], array(BLOG_BROUILLON, BLOG_REFUSE))
                 && ($this->isContributor || verifier('blog_editer_brouillons')))
-            || ($article['blog_etat'] == BLOG_PREPARATION && verifier('blog_editer_preparation'))
             || ($article['blog_etat'] == BLOG_VALIDE && verifier('blog_editer_valide'))
         );
 
@@ -47,10 +46,8 @@ final class BlogCredentials
             ($article['blog_etat'] == BLOG_VALIDE && strtotime($article['blog_date_publication']) <= time())
             //-> Billet programmé
             || ($article['blog_etat'] == BLOG_VALIDE && strtotime($article['blog_date_publication']) >= time() && verifier('blog_valider', $article['blog_id_categorie']))
-            //-> Billet proposé ou en préparation par l'équipe
-            || (in_array($article['blog_etat'], array(BLOG_PROPOSE, BLOG_PREPARATION)) && verifier('blog_voir_billets_proposes'))
-            //-> Billet en rédaction ou bien refusé
-            || (in_array($article['blog_etat'], array(BLOG_BROUILLON, BLOG_REFUSE)) && verifier('blog_voir_billets_redaction'))
+            //-> Billet non publié
+            || (in_array($article['blog_etat'], array(BLOG_BROUILLON, BLOG_REFUSE, BLOG_PROPOSE)) && verifier('blog_voir_billets_redaction'))
             //-> Ou bien si le membre est un rédacteur, il peut toujours voir le billet.
             || $this->isAllowed
         );
@@ -59,7 +56,7 @@ final class BlogCredentials
         $this->canManage = ($this->isAllowed || $this->canEdit || ($this->canView && $article['blog_etat'] != BLOG_VALIDE));
 
         //--- On regarde si le visiteur peut dévalider le billet ---
-        $this->canPublish = verifier('blog_valider') && in_array($article['blog_etat'], array(BLOG_VALIDE, BLOG_PREPARATION));
+        $this->canPublish = verifier('blog_valider') && $article['blog_etat'] == BLOG_VALIDE;
         $this->canUnpublish = verifier('blog_valider') && $article['blog_etat'] == BLOG_VALIDE;
 
         //--- On regarde si le visiteur peut supprimer le billet ---

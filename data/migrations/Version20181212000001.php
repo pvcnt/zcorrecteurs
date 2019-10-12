@@ -4,7 +4,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Zco\Bundle\Doctrine1Bundle\Migrations\AbstractMigration;
 
 /**
- * Delete obsolete credentials.
+ * Delete table for form backups.
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */

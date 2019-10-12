@@ -64,8 +64,7 @@ final class MessageController extends Controller
     public function editAction($id, Request $request)
     {
         $InfosMessage = $this->getMessage($id);
-        if (!((verifier('editer_ses_messages', $InfosMessage['sujet_forum_id']) AND $InfosMessage['message_auteur'] == $_SESSION['id'])
-            || verifier('editer_messages_autres', $InfosMessage['sujet_forum_id']))) {
+        if (!($InfosMessage['message_auteur'] == $_SESSION['id'] || verifier('editer_messages_autres', $InfosMessage['sujet_forum_id']))) {
             throw new AccessDeniedHttpException();
         }
 

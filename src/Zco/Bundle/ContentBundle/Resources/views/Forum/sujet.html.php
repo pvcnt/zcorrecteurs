@@ -103,10 +103,7 @@ if($InfosSujet['sujet_sondage'] > 0)
 						$numero_message == 1
 						)
 				&& (
-					(
-						verifier('indiquer_ses_messages_aide', $InfosSujet['sujet_forum_id'])
-						&& $_SESSION['id'] == $InfosSujet['sujet_auteur']
-					)
+					$_SESSION['id'] == $InfosSujet['sujet_auteur']
 					|| verifier('indiquer_messages_aide', $InfosSujet['sujet_forum_id'])
 				))
 				{
@@ -138,13 +135,8 @@ if($InfosSujet['sujet_sondage'] > 0)
 				if
 				(
 					(
-						(
-							verifier('editer_ses_messages', $InfosSujet['sujet_forum_id']) AND $_SESSION['id'] == $valeur['message_auteur']
-						)
-						OR
-						(
-							verifier('editer_messages_autres', $InfosSujet['sujet_forum_id'])
-						)
+						$_SESSION['id'] == $valeur['message_auteur']
+						OR verifier('editer_messages_autres', $InfosSujet['sujet_forum_id'])
 					)
 					AND !$InfosSujet['sujet_corbeille'] AND
 					(

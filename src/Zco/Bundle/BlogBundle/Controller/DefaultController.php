@@ -216,7 +216,6 @@ class DefaultController extends Controller
         \Page::$titre = htmlspecialchars($InfosBillet['version_titre']);
         $Etats = [
             BLOG_BROUILLON => 'Brouillon',
-            BLOG_PREPARATION => 'En cours de préparation',
             BLOG_PROPOSE => 'Proposé',
             BLOG_REFUSE => 'Refusé',
             BLOG_VALIDE => 'Validé',
@@ -277,7 +276,6 @@ class DefaultController extends Controller
             'AuteursClass' => [3 => 'gras', 2 => 'normal', 1 => 'italique'],
             'Etats' => [
                 BLOG_BROUILLON => 'Brouillon',
-                BLOG_PREPARATION => 'En cours de préparation',
                 BLOG_PROPOSE => 'Proposé',
                 BLOG_REFUSE => 'Refusé',
                 BLOG_VALIDE => 'Validé',
@@ -393,7 +391,7 @@ class DefaultController extends Controller
         }
 
         $authorized = (
-            ($InfosCommentaire['utilisateur_id'] == $_SESSION['id'] && verifier('blog_editer_ses_commentaires', $InfosCommentaire['blog_id_categorie']))
+            $InfosCommentaire['utilisateur_id'] == $_SESSION['id']
             || verifier('blog_editer_commentaires', $InfosCommentaire['blog_id_categorie']));
         if (!$authorized) {
             throw new AccessDeniedHttpException();

@@ -17,7 +17,6 @@
         <option value=""<?php if(empty($status)) echo ' selected="selected"'; ?>>Tous</option>
         <option value="<?php echo BLOG_BROUILLON; ?>"<?php if(!empty($status) && $status == BLOG_BROUILLON) echo ' selected="selected"'; ?>>Brouillon</option>
         <option value="<?php echo BLOG_REFUSE; ?>"<?php if(!empty($status) && $status == BLOG_REFUSE) echo ' selected="selected"'; ?>>Refusé</option>
-        <option value="<?php echo BLOG_PREPARATION; ?>"<?php if(!empty($status) && $status == BLOG_PREPARATION) echo ' selected="selected"'; ?>>En cours de préparation</option>
         <option value="<?php echo BLOG_PROPOSE; ?>"<?php if(!empty($status) && $status == BLOG_PROPOSE) echo ' selected="selected"'; ?>>Proposé</option>
         <option value="<?php echo BLOG_VALIDE; ?>"<?php if(!empty($status) && $status == BLOG_VALIDE) echo ' selected="selected"'; ?>>Validé</option>
     </select>

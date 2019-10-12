@@ -32,10 +32,6 @@
 <div class="rmq information">
 	Le billet que vous visualisez est <strong>refusé</strong>.
 </div>
-<?php } elseif($InfosBillet['blog_etat'] == BLOG_PREPARATION){ ?>
-<div class="rmq information">
-	Le billet que vous visualisez est <strong>en cours de préparation</strong>.
-</div>
 <?php } ?>
 
 <!-- Billet -->
@@ -103,7 +99,7 @@
 				<?php if(verifier('connecte')){ ?>
 				<a href="<?php echo $view['router']->path('zco_blog_newComment', ['id' => $InfosBillet['blog_id'], 'c' => $valeur['commentaire_id']]) ?>"><img src="/bundles/zcocontent/img/citer.png" alt="Citer" title="Citer" /></a>
 				<?php }
-				if(($valeur['id_auteur'] == $_SESSION['id'] && verifier('blog_editer_ses_commentaires')) || verifier('blog_editer_commentaires')){ ?>
+				if($valeur['id_auteur'] == $_SESSION['id'] || verifier('blog_editer_commentaires')){ ?>
 				<a href="<?php echo $view['router']->path('zco_blog_editComment', ['id' => $valeur['commentaire_id']]) ?>" title="Modifier ce commentaire">
 					<img src="/img/editer.png" alt="Modifier" /></a>
 				<?php } if(verifier('blog_editer_commentaires') || ($credentials->isOwner() && in_array($InfosBillet['blog_etat'], array(BLOG_REFUSE, BLOG_BROUILLON)))){ ?>

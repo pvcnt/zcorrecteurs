@@ -33,7 +33,7 @@ if(verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']))
 	<ul>
 		<?php
 		//DÉBUT sujet résolu
-		if( (verifier('resolu_ses_sujets', $InfosSujet['sujet_forum_id']) OR verifier('resolu_sujets', $InfosSujet['sujet_forum_id']) ) AND $_SESSION['id'] == $InfosSujet['sujet_auteur'])
+		if( verifier('resolu_sujets', $InfosSujet['sujet_forum_id']) || $_SESSION['id'] == $InfosSujet['sujet_auteur'])
 		{
 			if($InfosSujet['sujet_resolu'])
 			{

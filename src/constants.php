@@ -6,7 +6,7 @@
 //État des billets du blog
 define('BLOG_BROUILLON',           1);
 define('BLOG_PROPOSE',             2);
-define('BLOG_PREPARATION',         3);
+//define('BLOG_PREPARATION',         3);
 define('BLOG_VALIDE',              4);
 define('BLOG_REFUSE',              5);
 
