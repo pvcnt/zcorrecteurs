@@ -24,6 +24,7 @@ namespace Zco\Bundle\CoreBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Routing\Annotation\Route;
 use Zco\Bundle\CoreBundle\Entity\Contact;
 use Zco\Bundle\CoreBundle\Form\Type\ContactType;
 
@@ -36,6 +37,8 @@ class StaticController extends Controller
 {
     /**
      * Présentation du site, ses objectifs, son histoire.
+     *
+     * @Route(name="zco_about_index", path="/apropos")
      */
     public function indexAction()
     {
@@ -47,6 +50,8 @@ class StaticController extends Controller
 
     /**
      * Liste des bannières pouvant être réutilisées pour nous soutenir.
+     *
+     * @Route(name="zco_about_banners", path="/apropos/bannieres")
      */
     public function bannersAction()
     {
@@ -69,6 +74,8 @@ class StaticController extends Controller
 
     /**
      * Liste des membres de l'équipe et des anciens.
+     *
+     * @Route(name="zco_about_team", path="/apropos/equipe")
      */
     public function teamAction()
     {
@@ -85,6 +92,8 @@ class StaticController extends Controller
 
     /**
      * Informations à propos de l'association Corrigraphie.
+     *
+     * @Route(name="zco_about_corrigraphie", path="/apropos/association-corrigraphie")
      */
     public function corrigraphieAction()
     {
@@ -98,6 +107,8 @@ class StaticController extends Controller
     /**
      * Informations à propos des logiciels libres utilisés et des codes que
      * nous avons placés sous licence open source.
+     *
+     * @Route(name="zco_about_opensource", path="/apropos/logiciel-libre")
      */
     public function openSourceAction()
     {
@@ -110,6 +121,7 @@ class StaticController extends Controller
     /**
      * Formulaire de contact de l'équipe administrative du site.
      *
+     * @Route(name="zco_about_contact", path="/apropos/contact")
      * @param Request $request
      * @return Response
      */
@@ -159,6 +171,10 @@ class StaticController extends Controller
         );
     }
 
+    /**
+     * @Route(name="zco_donate_index", path="/dons")
+     * @return Response
+     */
     public function donateAction()
     {
         fil_ariane(['Faire un don']);
@@ -167,6 +183,10 @@ class StaticController extends Controller
         return $this->render('ZcoCoreBundle:Donate:index.html.php');
     }
 
+    /**
+     * @Route(name="zco_donate_otherWays", path="/dons/cheque-ou-virement")
+     * @return Response
+     */
     public function donateOtherWaysAction()
     {
         fil_ariane([
@@ -177,6 +197,10 @@ class StaticController extends Controller
         return $this->render('ZcoCoreBundle:Donate:otherWays.html.php');
     }
 
+    /**
+     * @Route(name="zco_donate_fiscalDeduction", path="/dons/deduction-fiscale")
+     * @return Response
+     */
     public function donateFiscalDeductionAction()
     {
         fil_ariane([
@@ -187,6 +211,10 @@ class StaticController extends Controller
         return $this->render('ZcoCoreBundle:Donate:fiscalDeduction.html.php');
     }
 
+    /**
+     * @Route(name="zco_donate_thanks", path="/dons/merci")
+     * @return Response
+     */
     public function donateThanksAction()
     {
         fil_ariane([
@@ -197,6 +225,10 @@ class StaticController extends Controller
         return $this->render('ZcoCoreBundle:Donate:thanks.html.php');
     }
 
+    /**
+     * @Route(name="zco_legal_mentions", path="/legal/mentions")
+     * @return Response
+     */
     public function mentionsAction()
     {
         fil_ariane(['Mentions légales']);
@@ -204,6 +236,10 @@ class StaticController extends Controller
         return $this->render('ZcoCoreBundle:Static:mentions.html.php');
     }
 
+    /**
+     * @Route(name="zco_legal_privacy", path="/legal/confidentialite")
+     * @return Response
+     */
     public function privacyAction()
     {
         fil_ariane(['Politique de confidentialité']);
@@ -211,6 +247,10 @@ class StaticController extends Controller
         return $this->render('ZcoCoreBundle:Static:privacy.html.php');
     }
 
+    /**
+     * @Route(name="zco_legal_rules", path="/legal/reglement")
+     * @return Response
+     */
     public function rulesAction()
     {
         fil_ariane(['Règlement']);
@@ -218,6 +258,10 @@ class StaticController extends Controller
         return $this->render('ZcoCoreBundle:Static:rules.html.php');
     }
 
+    /**
+     * @Route(path="/_erreur/{code}", requirements={"code": "\d+"})
+     * @return Response
+     */
     public function errorAction($code)
     {
         return $this->render('TwigBundle:Exception:error' . $code . '.html.twig');

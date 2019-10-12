@@ -1,0 +1,3 @@
+zco_core:
+  resource: "@ZcoCoreBundle/Controller/"
+  type:     annotation

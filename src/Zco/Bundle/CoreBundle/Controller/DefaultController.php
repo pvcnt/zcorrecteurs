@@ -24,6 +24,7 @@ namespace Zco\Bundle\CoreBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Zco\Bundle\CoreBundle\Sitemap\SitemapFactory;
 use Zco\Bundle\CoreBundle\Javelin\Filter\CssRewriteFilter;
@@ -35,6 +36,10 @@ class DefaultController extends Controller
 		return new Response($this->get('zco_parser.parser')->parse($request->request->get('texte')));
 	}
 
+    /**
+     * @Route(path="/robots.txt")
+     * @return Response
+     */
     public function robotsAction()
     {
         if ('prod' === $this->container->getParameter('kernel.environment')) {
@@ -46,11 +51,19 @@ class DefaultController extends Controller
         return new Response($content, 200, ['Content-type' => 'text/plain']);
     }
 
+    /**
+     * @Route(path="/health")
+     * @return Response
+     */
     public function healthAction()
     {
         return new Response('OK', 200, ['Content-type' => 'text/plain']);
     }
 
+    /**
+     * @Route(path="/sitemap.xml")
+     * @return Response
+     */
     public function sitemapAction()
     {
         $cache = $this->get('cache');

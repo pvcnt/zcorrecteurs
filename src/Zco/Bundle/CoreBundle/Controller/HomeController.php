@@ -22,6 +22,7 @@
 namespace Zco\Bundle\CoreBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Routing\Annotation\Route;
 use Zco\Bundle\BlogBundle\Domain\BlogDAO;
 use Zco\Bundle\DicteesBundle\Domain\DictationDAO;
 
@@ -32,6 +33,10 @@ use Zco\Bundle\DicteesBundle\Domain\DictationDAO;
  */
 class HomeController extends Controller
 {
+    /**
+     * @Route(name="zco_home", path="/")
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function indexAction()
     {
         \Page::$titre = 'zCorrecteurs.fr - Les réponses à toutes vos questions concernant la langue française !';
