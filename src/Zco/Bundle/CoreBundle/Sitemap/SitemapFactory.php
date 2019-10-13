@@ -26,6 +26,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Zco\Bundle\ContentBundle\Domain\BlogDAO;
 use Zco\Bundle\ContentBundle\Domain\ForumDAO;
 use Zco\Bundle\ContentBundle\Domain\TopicDAO;
+use Zco\Container;
 
 final class SitemapFactory
 {
@@ -143,7 +144,7 @@ final class SitemapFactory
             'changefreq' => 'weekly',
             'priority' => '0.6',
         ]);
-        $list = \Container::get('zco_quiz.manager.quiz')->lister();
+        $list = Container::get('zco_quiz.manager.quiz')->lister();
         foreach ($list as $quiz) {
             $url = $this->generateUrl('zco_quiz_show', ['id' => $quiz['id'], 'slug' => rewrite($quiz['nom'])]);
             $links[] = new SitemapLink($url, array(

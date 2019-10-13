@@ -21,6 +21,8 @@
 
 namespace Zco\Bundle\ContentBundle\Domain;
 
+use Zco\Container;
+
 /**
  * @author DJ Fox <djfox@zcorrecteurs.fr>
  */
@@ -289,7 +291,7 @@ class TopicDAO
         $stmt->bindValue(':message_auteur', $_SESSION['id']);
         $stmt->bindValue(':message_texte', $_POST['texte']);
         $stmt->bindValue(':message_sujet_id', $nouveau_sujet_id);
-        $stmt->bindValue(':ip', ip2long(\Container::request()->getClientIp()));
+        $stmt->bindValue(':ip', ip2long(Container::request()->getClientIp()));
         $stmt->execute();
         $nouveau_message_id = $dbh->lastInsertId();
         $stmt->closeCursor();

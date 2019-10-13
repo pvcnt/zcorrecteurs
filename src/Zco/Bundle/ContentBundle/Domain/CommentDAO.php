@@ -21,6 +21,8 @@
 
 namespace Zco\Bundle\ContentBundle\Domain;
 
+use Zco\Container;
+
 final class CommentDAO
 {
     /**
@@ -106,7 +108,7 @@ final class CommentDAO
             "VALUES(:id_billet, :id_utilisateur, :ip, :texte, NOW())");
         $stmt->bindParam(':id_billet', $id);
         $stmt->bindParam(':id_utilisateur', $id_u);
-        $stmt->bindValue(':ip', ip2long(\Container::request()->getClientIp()));
+        $stmt->bindValue(':ip', ip2long(Container::request()->getClientIp()));
         $stmt->bindParam(':texte', $texte);
         $stmt->execute();
         return $dbh->lastInsertId();

@@ -24,6 +24,7 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel as HttpKernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
+use Zco\Container;
 
 final class Kernel extends HttpKernel
 {
@@ -129,6 +130,6 @@ final class Kernel extends HttpKernel
     protected function initializeContainer()
     {
         parent::initializeContainer();
-        \Container::setInstance($this->container);
+        Container::setInstance($this->container);
     }
 }

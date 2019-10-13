@@ -19,6 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace Zco;
+
 use Doctrine\Common\Cache\CacheProvider;
 use Imagine\Image\ImagineInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

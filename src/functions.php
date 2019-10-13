@@ -24,6 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
 use Zco\Bundle\GroupesBundle\Domain\CredentialsDAO;
 use Zco\Bundle\UserBundle\Domain\UserDAO;
+use Zco\Container;
 
 /**
  * Réduit le charset pour une URL.
@@ -483,7 +484,7 @@ function preference($nom)
             return $_SESSION['prefs'][$nom];
         }
 
-        $logger = \Container::get('logger', ContainerInterface::NULL_ON_INVALID_REFERENCE);
+        $logger = Container::get('logger', ContainerInterface::NULL_ON_INVALID_REFERENCE);
         if ($logger) {
             $logger->warn(sprintf('La préférence "%s" n\'existe pas.', $nom));
         }
@@ -514,7 +515,7 @@ function send_mail($destinataire_adresse, $destinataire_nom, $objet, $message_ht
             ->setTo(array($destinataire_adresse => $destinataire_nom))
             ->setBody($message_html, 'text/html');
 
-        return \Container::get('mailer')->send($message);
+        return Container::get('mailer')->send($message);
     }
 
     return false;
@@ -573,7 +574,7 @@ function array_trim($vars, $index = null)
 
 function render_to_string($template = array(), array $vars = array())
 {
-    return \Container::get('templating')->render($template, $vars);
+    return Container::get('templating')->render($template, $vars);
 }
 
 /**

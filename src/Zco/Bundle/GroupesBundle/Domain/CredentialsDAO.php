@@ -21,6 +21,8 @@
 
 namespace Zco\Bundle\GroupesBundle\Domain;
 
+use Zco\Container;
+
 final class CredentialsDAO
 {
     public static function ListerDroits()
@@ -68,7 +70,7 @@ final class CredentialsDAO
 
     public static function RecupererDroitsGroupe($groupe)
     {
-        $cache = \Container::cache();
+        $cache = Container::cache();
         if (($retour = $cache->fetch('droits_groupe_' . $groupe)) === false) {
             $dbh = \Doctrine_Manager::connection()->getDbh();
             $retour = array();

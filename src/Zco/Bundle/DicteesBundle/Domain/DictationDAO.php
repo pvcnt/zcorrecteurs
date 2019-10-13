@@ -24,6 +24,7 @@ namespace Zco\Bundle\DicteesBundle\Domain;
 use Symfony\Component\HttpFoundation\Response;
 use Zco\Bundle\ContentBundle\Admin\Admin;
 use Zco\Bundle\DicteesBundle\DoubleDiff;
+use Zco\Container;
 
 /**
  * Gestion des dictées.
@@ -45,7 +46,7 @@ class DictationDAO
 
         if ($data['publique']) {
             $Dictee->etat = DICTEE_VALIDEE;
-            \Container::cache()->delete('dictees_accueil');
+            Container::cache()->delete('dictees_accueil');
         } else    $Dictee->etat = DICTEE_BROUILLON;
 
         unset($data['publique'], $data['lecture_rapide'], $data['lecture_lente'],
@@ -105,7 +106,7 @@ class DictationDAO
             $Dictee->etat = DICTEE_BROUILLON;
         }
         if ($Dictee->etat != $etat)
-            \Container::cache()->delete('dictees_accueil');
+            Container::cache()->delete('dictees_accueil');
 
         unset($data['publique'], $data['lecture_rapide'], $data['lecture_lente'],
             $data['MAX_FILE_SIZE'], $data['icone']);
@@ -181,13 +182,13 @@ class DictationDAO
         $Dictee->save();
 
         self::DicteesEffacerCache();
-        \Container::get(Admin::class)->refresh('dictees');
+        Container::get(Admin::class)->refresh('dictees');
     }
 
     private static function DicteesEffacerCache()
     {
         foreach (array('accueil', 'statistiques', 'plusJouees') as $c)
-            \Container::cache()->delete('dictees_' . $c);
+            Container::cache()->delete('dictees_' . $c);
     }
 
     /**
@@ -331,7 +332,7 @@ class DictationDAO
      */
     public static function DicteesStatistiques()
     {
-        $cache = \Container::cache();
+        $cache = Container::cache();
         if (!$Stats = $cache->fetch('dictees_statistiques')) {
             $Stats = new \StdClass;
             $Stats->nombreDictees = \Doctrine_Query::create()
@@ -364,7 +365,7 @@ class DictationDAO
      */
     public static function DicteesAccueil()
     {
-        $cache = \Container::cache();
+        $cache = Container::cache();
         if (!$d = $cache->fetch('dictees_accueil')) {
             $dictees = \Doctrine_Query::create()
                 ->from('Dictee')
@@ -388,7 +389,7 @@ class DictationDAO
      */
     public static function DicteesLesPlusJouees()
     {
-        $cache = \Container::cache();
+        $cache = Container::cache();
         if (!$d = $cache->fetch('dictees_plusJouees')) {
             $dictees = \Doctrine_Query::create()
                 ->from('Dictee')
@@ -412,7 +413,7 @@ class DictationDAO
      */
     public static function DicteeHasard()
     {
-        $cache = \Container::cache();
+        $cache = Container::cache();
         if (!$d = $cache->fetch('dictees_hasard')) {
             $d = \Doctrine_Query::create()
                 ->from('Dictee')

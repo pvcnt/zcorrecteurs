@@ -21,7 +21,7 @@
 
 namespace Zco\Bundle\DicteesBundle\Domain;
 
-class Dictation
+final class Dictation
 {
     const LEVELS = [
         1 => 'Facile',

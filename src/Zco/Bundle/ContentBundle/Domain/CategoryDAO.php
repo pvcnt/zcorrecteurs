@@ -21,6 +21,8 @@
 
 namespace Zco\Bundle\ContentBundle\Domain;
 
+use Zco\Container;
+
 /**
  * Modèle s'occupant de la gestion des catégories.
  * (2 niveaux de travail : depuis la bdd et depuis le cache)
@@ -117,7 +119,7 @@ final class CategoryDAO
         $stmt->closeCursor();
 
         //Si le parent change, on déplace la catégorie
-        $cache = \Container::cache();
+        $cache = Container::cache();
         if ($ListerParents[count($ListerParents) - 1]['cat_id'] != $data['parent'] && !empty($InfosNouveauParent)) {
             // On va simuler une suppression/réinsertion de la catégorie à déplacer (au lieu de supprimer,
             // on la déplace dans des bornes négatives)
@@ -265,7 +267,7 @@ final class CategoryDAO
         static $retour_avec_verif = null;
 
         if (!$retour) {
-            $cache = \Container::cache();
+            $cache = Container::cache();
             if (!($retour = $cache->fetch('categories'))) {
                 $dbh = \Doctrine_Manager::connection()->getDbh();
                 $retour = array();
@@ -424,7 +426,7 @@ final class CategoryDAO
             $stmt->closeCursor();
 
             //On supprime les caches de catégorie
-            \Container::cache()->delete('categories');
+            Container::cache()->delete('categories');
 
             return true;
         }
@@ -497,7 +499,7 @@ final class CategoryDAO
             $stmt->closeCursor();
 
             //On supprime les caches de catégorie
-            \Container::cache()->delete('categories');
+            Container::cache()->delete('categories');
 
             return true;
         }
@@ -550,7 +552,7 @@ final class CategoryDAO
         static $id_cats = array();
 
         if (!$module) {
-            $module = \Container::request()->attributes->get('_module');
+            $module = Container::request()->attributes->get('_module');
             if (empty($module)) {
                 return 1;
             }
@@ -578,7 +580,7 @@ final class CategoryDAO
         //Recherche pour retourner un ID de niveau plus bas si possible. Gros code
         //en dur pour tenir compte des spécificités de chaque catégorie.
         else {
-            $action = \Container::request()->attributes->get('_action');
+            $action = Container::request()->attributes->get('_action');
             if ($module === 'blog' && $action === 'categorie')
                 return !empty($_GET['id']) ? $_GET['id'] : null;
             elseif ($module === 'forum' && in_array($action, array('categorie', 'forum')))

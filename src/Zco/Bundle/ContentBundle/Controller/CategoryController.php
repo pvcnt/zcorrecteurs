@@ -29,6 +29,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
 use Zco\Bundle\ContentBundle\Form\CategoryType;
+use Zco\Container;
 
 /**
  * Actions pour tout ce qui concerne la gestion des catégories du site.
@@ -108,7 +109,7 @@ final class CategoryController extends Controller
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             CategoryDAO::AjouterCategorie($form->getData());
-            \Container::cache()->delete('categories');
+            Container::cache()->delete('categories');
 
             return redirect('La catégorie a bien été ajoutée.', $this->generateUrl('zco_categories_index'));
         }
@@ -155,7 +156,7 @@ final class CategoryController extends Controller
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             CategoryDAO::EditerCategorie($id, $form->getData());
-            \Container::cache()->delete('categories');
+            Container::cache()->delete('categories');
 
             return redirect('La catégorie a bien été modifiée.', $this->generateUrl('zco_categories_index'));
         }
@@ -200,7 +201,7 @@ final class CategoryController extends Controller
 
         if ($request->isMethod('POST')) {
             CategoryDAO::SupprimerCategorie($id);
-            \Container::cache()->delete('categories');
+            Container::cache()->delete('categories');
 
             return redirect('La catégorie a bien été supprimée.', $this->generateUrl('zco_categories_index'));
         }

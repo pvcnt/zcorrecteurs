@@ -21,6 +21,8 @@
 
 namespace Zco\Bundle\ContentBundle\Domain;
 
+use Zco\Container;
+
 /**
  * Modèle gérant tout ce qui est utile pour le blog.
  *
@@ -239,7 +241,7 @@ final class BlogDAO
             "VALUES(:id_utilisateur, NOW(), :ip, :titre, :sous_titre, :texte, " .
             ":intro, NULL, 'Création du billet.')");
         $stmt->bindParam(':id_utilisateur', $_SESSION['id']);
-        $stmt->bindValue(':ip', ip2long(\Container::request()->getClientIp()));
+        $stmt->bindValue(':ip', ip2long(Container::request()->getClientIp()));
         $stmt->bindParam(':titre', $_POST['titre']);
         $stmt->bindParam(':sous_titre', $_POST['sous_titre']);
         $stmt->bindParam(':texte', $_POST['texte']);
@@ -291,7 +293,7 @@ final class BlogDAO
         $url = preg_replace('`^http://www.zcorrecteurs.fr/uploads/(.+)$`', BASEPATH . '/uploads/$1', $url);
 
         try {
-            $thumbnail = \Container::imagine()
+            $thumbnail = Container::imagine()
                 ->open($url)
                 ->thumbnail(new \Imagine\Image\Box(100, 100));
             $path = BASEPATH . '/public/uploads/miniatures/blog/' . $id . '.png';
@@ -360,7 +362,7 @@ final class BlogDAO
             $stmt->bindParam(':id_b', $id);
             $stmt->bindParam(':id_v', $id_v);
             $stmt->bindParam(':id_u', $_SESSION['id']);
-            $stmt->bindValue(':ip', ip2long(\Container::request()->getClientIp()));
+            $stmt->bindValue(':ip', ip2long(Container::request()->getClientIp()));
             $stmt->bindParam(':titre', $params['titre']);
             $stmt->bindParam(':sous_titre', $params['sous_titre']);
             $stmt->bindParam(':texte', $params['texte']);
