@@ -23,7 +23,7 @@ namespace Zco\Bundle\CoreBundle\Sitemap;
 
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Zco\Bundle\BlogBundle\Domain\BlogDAO;
+use Zco\Bundle\ContentBundle\Domain\BlogDAO;
 use Zco\Bundle\ContentBundle\Domain\ForumDAO;
 use Zco\Bundle\ContentBundle\Domain\TopicDAO;
 

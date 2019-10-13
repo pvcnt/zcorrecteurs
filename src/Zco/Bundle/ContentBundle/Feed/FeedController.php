@@ -19,9 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\BlogBundle\Feed;
+namespace Zco\Bundle\ContentBundle\Feed;
 
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 /**
@@ -36,23 +35,9 @@ abstract class FeedController extends Controller
 	protected $object = null;
 
 	/**
-	 * Constructeur de classe. Récupère l'objet associé au flux.
+	 * Méthode de récupération des éléments du flux.
 	 */
-	public function indexAction()
-	{
-		$response = new Response($this->renderFeed());
-		$response->headers->set('Content-Type', 'application/atom+xml');
-		return $response;
-	}
-
-	/**
-	 * Méthode de récupération des éléments du flux. Doit être réécrite par
-	 * chaque flux.
-	 * @access protected
-	 */
-	protected function getItems()
-	{
-	}
+	protected abstract function getItems();
 
 	/**
 	 * S'occupe d'afficher le flux et de gérer sa mise en cache.
@@ -160,7 +145,7 @@ abstract class FeedController extends Controller
 	/**
 	 * Parse du texte pour que l'affichage se passe correctement depuis un
 	 * agrégateur (url relatives =>	absolues).
-	 * @access protected
+     *
 	 * @param string $text
 	 * @return string
 	 */
@@ -174,7 +159,7 @@ abstract class FeedController extends Controller
 	/**
 	 * Par défaut, le lien du flux est la valeur de la constante URL_SITE. Peut
 	 * bien entendu être réécrite.
-	 * @access protected
+     *
 	 * @return string
 	 */
 	protected function getLink()

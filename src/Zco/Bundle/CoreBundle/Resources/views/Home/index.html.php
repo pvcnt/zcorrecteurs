@@ -20,7 +20,7 @@
 			foreach($ListerBillets as $billet)
 			{
 
-				echo $view->render('ZcoBlogBundle::_intro_module.html.php', array(
+				echo $view->render('ZcoContentBundle:Blog:_intro_module.html.php', array(
 					'Auteurs' => $BilletsAuteurs[$billet['blog_id']],
 					'InfosBillet' => $billet,
 					'nb' => $nb,

@@ -114,7 +114,7 @@
 						<td class="centre">
 							Ajouté <?php echo dateformat($a['auteur_date'], MINUSCULE); ?>
 						</td>
-						<td><?php echo \Zco\Bundle\BlogBundle\Domain\Author::STATUSES[$a['auteur_statut']]; ?></td>
+						<td><?php echo \Zco\Bundle\ContentBundle\Domain\Author::STATUSES[$a['auteur_statut']]; ?></td>
 						<?php if($credentials->isOwner() || verifier('blog_toujours_createur')){ ?>
 						<td class="centre">
 							<a href="<?php echo $view['router']->path('zco_blog_editAuthor', ['id' => $InfosBillet['blog_id'], 'authorId' => $a['utilisateur_id']]) ?>" title="Modifier cet auteur">
@@ -142,7 +142,7 @@
 				)) ?>
 
 				<select name="statut" id="statut">
-					<?php foreach(\Zco\Bundle\BlogBundle\Domain\Author::STATUSES as $cle=>$valeur){ ?>
+					<?php foreach(\Zco\Bundle\ContentBundle\Domain\Author::STATUSES as $cle=>$valeur){ ?>
 					<option value="<?php echo $cle; ?>"><?php echo htmlspecialchars($valeur); ?></option>
 					<?php } ?>
 				</select>

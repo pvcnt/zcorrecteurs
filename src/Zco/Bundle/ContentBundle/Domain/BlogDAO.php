@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\BlogBundle\Domain;
+namespace Zco\Bundle\ContentBundle\Domain;
 
 /**
  * Modèle gérant tout ce qui est utile pour le blog.
@@ -481,57 +481,6 @@ final class BlogDAO
             "WHERE lunonlu_id_billet = :id");
         $stmt->bindParam(':id', $id);
         $stmt->execute();
-    }
-
-    /**
-     * Pour le sitemap, liste les billets avec leur titre et leur id.
-     * @return array
-     */
-    public static function ListerBilletsId()
-    {
-        $dbh = \Doctrine_Manager::connection()->getDbh();
-
-        $stmt = $dbh->prepare("SELECT version_titre, blog_id " .
-            "FROM zcov2_blog " .
-            "LEFT JOIN zcov2_blog_versions ON blog_id_version_courante = version_id " .
-            "WHERE blog_etat = " . BLOG_VALIDE . " " .
-            "ORDER BY blog_date_publication DESC");
-        $stmt->execute();
-        return $stmt->fetchAll();
-    }
-
-    public static function ChercherBillets($titre)
-    {
-        $dbh = \Doctrine_Manager::connection()->getDbh();
-
-        //Envoi de la requête
-        $stmt = $dbh->prepare("
-		SELECT blog_id, version_titre, version_texte, cat_id, cat_nom
-			FROM zcov2_blog
-			LEFT JOIN zcov2_blog_versions ON blog_id_version_courante = version_id
-			LEFT JOIN zcov2_categories ON cat_id = blog_id_categorie
-			WHERE version_titre LIKE :titre
-			ORDER BY version_titre ASC");
-        $stmt->bindValue(':titre', '%' . $titre . '%');
-        $stmt->execute();
-        $liste = $stmt->fetchAll();
-        $stmt->closeCursor();
-        return $liste;
-    }
-
-    public static function BilletAleatoire($categories = array())
-    {
-        $dbh = \Doctrine_Manager::connection()->getDbh();
-
-        //Envoi de la requête
-        $stmt = $dbh->prepare('SELECT blog_id
-		FROM zcov2_blog ' .
-            'WHERE blog_etat = ' . BLOG_VALIDE . ' AND blog_date_publication <= NOW() ' . ($categories == array() ? '' : 'AND blog_id_categorie IN(' . implode(',', $categories) . ') ') .
-            'ORDER BY RAND() LIMIT 0, 1');
-        $stmt->execute();
-        $liste = $stmt->fetch();
-        $stmt->closeCursor();
-        return $liste['blog_id'];
     }
 
     public static function BlogIncrementerVues($id)

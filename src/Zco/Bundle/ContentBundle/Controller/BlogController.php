@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\BlogBundle\Controller;
+namespace Zco\Bundle\ContentBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -27,8 +27,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Zco\Bundle\BlogBundle\Domain\BlogDAO;
-use Zco\Bundle\BlogBundle\Domain\CommentDAO;
+use Symfony\Component\Routing\Annotation\Route;
+use Zco\Bundle\ContentBundle\Domain\BlogCredentials;
+use Zco\Bundle\ContentBundle\Domain\BlogDAO;
+use Zco\Bundle\ContentBundle\Domain\CommentDAO;
 use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
 use Zco\Bundle\UserBundle\Domain\UserDAO;
 
@@ -37,10 +39,15 @@ use Zco\Bundle\UserBundle\Domain\UserDAO;
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class DefaultController extends Controller
+final class BlogController extends Controller
 {
     const PER_PAGE = 15;
 
+    /**
+     * @Route(name="zco_blog_index", path="/blog")
+     * @param Request $request
+     * @return Response
+     */
     public function indexAction(Request $request)
     {
         $page = (int)$request->get('page', 1);
@@ -69,7 +76,7 @@ class DefaultController extends Controller
 
         fil_ariane('Liste des derniers billets');
 
-        return $this->render('ZcoBlogBundle::index.html.php', [
+        return $this->render('ZcoContentBundle:Blog:index.html.php', [
             'Categories' => $Categories,
             'NombreDeBillet' => $NombreDeBillet,
             'ListerBillets' => $ListerBillets,
@@ -78,6 +85,13 @@ class DefaultController extends Controller
         ]);
     }
 
+    /**
+     * @Route(name="zco_blog_show", path="/blog/{id}/{slug}", requirements={"id":"\d+"})
+     * @param int $id
+     * @param string $slug
+     * @param Request $request
+     * @return Response
+     */
     public function showAction($id, $slug, Request $request)
     {
         $Auteurs = BlogDAO::InfosBillet($id);
@@ -91,7 +105,11 @@ class DefaultController extends Controller
             throw new AccessDeniedHttpException();
         }
 
-        //TODO zCorrecteurs::VerifierFormatageUrl($InfosBillet['version_titre'], true, true, 1);
+        $url = $this->generateUrl('zco_blog_show', ['id' => $id, 'slug' => rewrite($InfosBillet['version_titre'])]);
+        if ($slug !== rewrite($InfosBillet['version_titre'])) {
+            // Deduplicate URLs, good for SEO.
+            return new RedirectResponse($url, 301);
+        }
 
         //Si le billet est un article virtuel.
         if (!is_null($InfosBillet['blog_url_redirection']) && !empty($InfosBillet['blog_url_redirection'])) {
@@ -100,8 +118,6 @@ class DefaultController extends Controller
             }
             return new RedirectResponse(htmlspecialchars($InfosBillet['blog_url_redirection']), 301);
         }
-
-        $url = $this->generateUrl('zco_blog_show', ['id' => $id, 'slug' => rewrite($InfosBillet['version_titre'])]);
 
         //Si on veut voir un commentaire en particulier
         $commentId = $request->get('c');
@@ -142,7 +158,7 @@ class DefaultController extends Controller
             '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
         ));
 
-        return $this->render('ZcoBlogBundle::show.html.php', [
+        return $this->render('ZcoContentBundle:Blog:show.html.php', [
             'InfosBillet' => $InfosBillet,
             'Auteurs' => $Auteurs,
             'CompterCommentaires' => $CompterCommentaires,
@@ -152,7 +168,13 @@ class DefaultController extends Controller
         ]);
     }
 
-    public function manageAction($id, $slug, Request $request)
+    /**
+     * @Route(name="zco_blog_manage", path="/blog/gestion/{id}", requirements={"id":"\d+"})
+     *
+     * @param int $id
+     * @return Response
+     */
+    public function manageAction($id)
     {
         $Auteurs = BlogDAO::InfosBillet($id);
         if (!$Auteurs) {
@@ -221,7 +243,7 @@ class DefaultController extends Controller
             BLOG_VALIDE => 'Validé',
         ];
 
-        return $this->render('ZcoBlogBundle::adminBillet.html.php', [
+        return $this->render('ZcoContentBundle:Blog:adminBillet.html.php', [
             'Auteurs' => $Auteurs,
             'InfosBillet' => $InfosBillet,
             'Etats' => $Etats,
@@ -230,8 +252,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * Ajout d'un nouveau billet.
-     *
+     * @Route(name="zco_blog_new", path="/blog/nouveau")
      * @return Response
      */
     public function newAction()
@@ -251,11 +272,16 @@ class DefaultController extends Controller
         }
         fil_ariane(['Mes billets' => $this->generateUrl('zco_blog_mine'), 'Ajouter un billet']);
 
-        return $this->render('ZcoBlogBundle::new.html.php', [
+        return $this->render('ZcoContentBundle:Blog:new.html.php', [
             'Categories' => CategoryDAO::ListerEnfants(CategoryDAO::GetIDCategorieCourante())
         ]);
     }
 
+    /**
+     * @Route(name="zco_blog_mine", path="/blog/mes-billets")
+     * @param Request $request
+     * @return Response
+     */
     public function mineAction(Request $request)
     {
         if (!verifier('connecte')) {
@@ -270,7 +296,7 @@ class DefaultController extends Controller
         }
         list($ListerBillets, $BilletsAuteurs) = BlogDAO::ListerBillets($params);
 
-        return $this->render('ZcoBlogBundle::mine.html.php', [
+        return $this->render('ZcoContentBundle:Blog:mine.html.php', [
             'ListerBillets' => $ListerBillets,
             'BilletsAuteurs' => $BilletsAuteurs,
             'AuteursClass' => [3 => 'gras', 2 => 'normal', 1 => 'italique'],
@@ -285,9 +311,8 @@ class DefaultController extends Controller
     }
 
     /**
-     * Suppression d'un commentaire.
-     *
-     * @param int $id
+     * @Route(name="zco_blog_deleteComment", path="/blog/supprimer-commentaire/{id}", requirements={"id":"\d+"})
+     * @param int $id Comment identifier.
      * @param Request $request
      * @return Response
      */
@@ -324,13 +349,19 @@ class DefaultController extends Controller
             'Supprimer un commentaire'
         ]);
 
-        return $this->render('ZcoBlogBundle::deleteComment.html.php', [
+        return $this->render('ZcoContentBundle:Blog:deleteComment.html.php', [
             'InfosBillet' => $InfosBillet,
             'InfosCommentaire' => $InfosCommentaire,
         ]);
     }
 
-    public function newComment($id, Request $request)
+    /**
+     * @Route(name="zco_blog_newComment", path="/blog/commenter/{id}", requirements={"id":"\d+"})
+     * @param int $id Article identifier.
+     * @param Request $request
+     * @return Response
+     */
+    public function newCommentAction($id, Request $request)
     {
         if (!verifier('connecte')) {
             throw new AccessDeniedHttpException();
@@ -346,11 +377,11 @@ class DefaultController extends Controller
         }
 
         if ($request->isMethod('POST')) {
-            $id = CommentDAO::AjouterCommentaire($id, $_SESSION['id'], $_POST['texte']);
+            $commentId = CommentDAO::AjouterCommentaire($id, $_SESSION['id'], $_POST['texte']);
 
             return redirect(
                 'Le commentaire a bien été ajouté.',
-                $this->generateUrl('zco_blog_show', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])])
+                $this->generateUrl('zco_blog_show', ['id' => $InfosBillet['blog_id'], 'c' => $commentId, 'slug' => rewrite($InfosBillet['version_titre'])])
             );
         }
 
@@ -375,7 +406,7 @@ class DefaultController extends Controller
         ]);
         \Page::$titre = htmlspecialchars($InfosBillet['version_titre']) . ' - Ajouter un commentaire';
 
-        return $this->render('ZcoBlogBundle::ajouterCommentaire.html.php', [
+        return $this->render('ZcoContentBundle:Blog:ajouterCommentaire.html.php', [
             'InfosBillet' => $InfosBillet,
             'ListerCommentaires' => CommentDAO::ListerCommentairesBillet($id, -1),
             'texte_zform' => $texte_zform,
@@ -383,6 +414,12 @@ class DefaultController extends Controller
 
     }
 
+    /**
+     * @Route(name="zco_blog_editComment", path="/blog/modifier-commentaire/{id}", requirements={"id":"\d+"})
+     * @param int $id Comment identifier.
+     * @param Request $request
+     * @return Response
+     */
     public function editCommentAction($id, Request $request)
     {
         $InfosCommentaire = CommentDAO::InfosCommentaire($id);
@@ -413,11 +450,22 @@ class DefaultController extends Controller
             'Modifier un commentaire'
         ]);
 
-        return $this->render('ZcoBlogBundle::editComment.html.php', [
+        return $this->render('ZcoContentBundle:Blog:editComment.html.php', [
             'InfosCommentaire' => $InfosCommentaire,
         ]);
     }
 
+    /**
+     * @Route(
+     *     name="zco_blog_editAuthor",
+     *     path="/blog/modifier-auteur/{id}/{authorId}",
+     *     requirements={"id":"\d+", "authorId":"\d+"},
+     * )
+     * @param int $id Article identifier.
+     * @param int $authorId User identifier.
+     * @param Request $request
+     * @return Response
+     */
     public function editAuthorAction($id, $authorId, Request $request)
     {
         $Auteurs = BlogDAO::InfosBillet($id);
@@ -453,12 +501,23 @@ class DefaultController extends Controller
             'Modifier un auteur'
         ]);
 
-        return $this->render('ZcoBlogBundle::editerAuteur.html.php', [
+        return $this->render('ZcoContentBundle:Blog:editerAuteur.html.php', [
             'InfosBillet' => $InfosBillet,
             'InfosUtilisateur' => $InfosUtilisateur,
         ]);
     }
 
+    /**
+     * @Route(
+     *     name="zco_blog_deleteAuthor",
+     *     path="/blog/supprimer-auteur/{id}/{authorId}",
+     *     requirements={"id":"\d+", "authorId":"\d+"},
+     * )
+     * @param int $id Article identifier.
+     * @param int $authorId User identifier.
+     * @param Request $request
+     * @return Response
+     */
     public function deleteAuthorAction($id, $authorId, Request $request)
     {
         $Auteurs = BlogDAO::InfosBillet($id);
@@ -484,12 +543,18 @@ class DefaultController extends Controller
             'Supprimer un auteur'
         ]);
 
-        return $this->render('ZcoBlogBundle::supprimerAuteur.html.php', [
+        return $this->render('ZcoContentBundle:Blog:supprimerAuteur.html.php', [
             'InfosBillet' => $InfosBillet,
             'InfosUtilisateur' => $InfosUtilisateur,
         ]);
     }
 
+    /**
+     * @Route(name="zco_blog_unpublish", path="/blog/masquer/{id}", requirements={"id":"\d+"})
+     * @param int $id
+     * @param Request $request
+     * @return Response
+     */
     public function unpublishAction($id, Request $request)
     {
         $Auteurs = BlogDAO::InfosBillet($id);
@@ -514,11 +579,17 @@ class DefaultController extends Controller
             'Dévalider le billet'
         ]);
 
-        return $this->render('ZcoBlogBundle::unpublish.html.php', [
+        return $this->render('ZcoContentBundle:Blog:unpublish.html.php', [
             'InfosBillet' => $InfosBillet,
         ]);
     }
 
+    /**
+     * @Route(name="zco_blog_publish", path="/blog/publier/{id}", requirements={"id":"\d+"})
+     * @param integer $id
+     * @param Request $request
+     * @return Response
+     */
     public function publishAction($id, Request $request)
     {
         $Auteurs = BlogDAO::InfosBillet($id);
@@ -543,9 +614,14 @@ class DefaultController extends Controller
         ));
         \Page::$titre = htmlspecialchars($InfosBillet['version_titre']) . ' - Valider le billet';
 
-        return $this->render('ZcoBlogBundle::publish.html.php', ['InfosBillet' => $InfosBillet]);
+        return $this->render('ZcoContentBundle:Blog:publish.html.php', ['InfosBillet' => $InfosBillet]);
     }
 
+    /**
+     * @Route(name="zco_blog_history", path="/blog/versions/{id}", requirements={"id":"\d+"})
+     * @param int $id
+     * @return Response
+     */
     public function historyAction($id)
     {
         $Auteurs = BlogDAO::InfosBillet($id);
@@ -564,12 +640,18 @@ class DefaultController extends Controller
         ]);
         \Page::$titre = htmlspecialchars($InfosBillet['version_titre']) . ' - Historique des versions';
 
-        return $this->render('ZcoBlogBundle::versions.html.php', [
+        return $this->render('ZcoContentBundle:Blog:versions.html.php', [
             'InfosBillet' => $InfosBillet,
             'ListerVersions' => BlogDAO::ListerVersions($id),
         ]);
     }
 
+    /**
+     * @Route(name="zco_blog_edit", path="/blog/modifier/{id}", requirements={"id":"\d+"})
+     * @param int $id
+     * @param Request $request
+     * @return Response
+     */
     public function editAction($id, Request $request)
     {
         $Auteurs = BlogDAO::InfosBillet($id);
@@ -613,12 +695,18 @@ class DefaultController extends Controller
         ]);
         \Page::$titre = htmlspecialchars($InfosBillet['version_titre']) . ' - Modifier le billet';
 
-        return $this->render('ZcoBlogBundle::editer.html.php', [
+        return $this->render('ZcoContentBundle:Blog:editer.html.php', [
             'InfosBillet' => $InfosBillet,
             'Categories' => CategoryDAO::ListerEnfants(CategoryDAO::GetIDCategorieCourante()),
         ]);
     }
 
+    /**
+     * @Route(name="zco_blog_delete", path="/blog/supprimer/{id}", requirements={"id":"\d+"})
+     * @param int $id
+     * @param Request $request
+     * @return Response
+     */
     public function deleteAction($id, Request $request)
     {
         $Auteurs = BlogDAO::InfosBillet($id);
@@ -643,11 +731,21 @@ class DefaultController extends Controller
         ]);
         \Page::$titre = htmlspecialchars($InfosBillet['version_titre']) . ' - Supprimer le billet';
 
-        return $this->render('ZcoBlogBundle::supprimer.html.php', [
+        return $this->render('ZcoContentBundle:Blog:supprimer.html.php', [
             'InfosBillet' => $InfosBillet,
         ]);
     }
 
+    /**
+     * @Route(
+     *     name="zco_blog_compare",
+     *     path="/blog/comparaison/{from}/{to}",
+     *     requirements={"from":"\d+", "to":"\d+"},
+     * )
+     * @param int $from Article version identifier, serving as version to be compared with.
+     * @param int $to Article version identifier, serving as version to compare.
+     * @return Response
+     */
     public function compareAction($from, $to)
     {
         $infos_new = BlogDAO::InfosVersion($from);
@@ -688,7 +786,7 @@ class DefaultController extends Controller
             '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css'
         );
 
-        return $this->render('ZcoBlogBundle::comparaison.html.php', [
+        return $this->render('ZcoContentBundle:Blog:comparaison.html.php', [
             'infos_old' => $infos_old,
             'infos_new' => $infos_new,
             'diff_intro' => $diff_intro,

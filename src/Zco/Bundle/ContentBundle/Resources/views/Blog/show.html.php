@@ -17,7 +17,7 @@
 
 <!-- Liste des catégories -->
 <?php if($InfosBillet['blog_etat'] == BLOG_VALIDE){ ?>
-<?php echo $view->render('ZcoBlogBundle::_liste_categories.html.php'); ?>
+<?php echo $view->render('ZcoContentBundle:Blog:_liste_categories.html.php'); ?>
 <?php } ?>
 
 <?php if($InfosBillet['blog_etat'] == BLOG_PROPOSE){ ?>
@@ -35,7 +35,7 @@
 <?php } ?>
 
 <!-- Billet -->
-<?php echo $view->render('ZcoBlogBundle::_billet.html.php',
+<?php echo $view->render('ZcoContentBundle:Blog:_billet.html.php',
 	array(
 		'credentials' => $credentials,
 		'InfosBillet' => $InfosBillet,

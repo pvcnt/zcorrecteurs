@@ -4,7 +4,7 @@ $Auteurs = $Resultats[1];
 $Resultats = $Resultats[0];
 foreach ($Resultats as $result)
 {
-	echo $view->render('ZcoBlogBundle::_intro_module.html.php', array(
+	echo $view->render('ZcoContentBundle:Blog:_intro_module.html.php', array(
 		'InfosBillet' => $result,
 		'Auteurs' => $Auteurs[$result['blog_id']],
 		'nb' => 0,

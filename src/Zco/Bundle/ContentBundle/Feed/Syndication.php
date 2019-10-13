@@ -19,14 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\BlogBundle\Feed;
+namespace Zco\Bundle\ContentBundle\Feed;
 
 /**
  * Classe représentant un flux de syndication en cours de construction. Cette
  * classe est une API de plus bas niveau à laquelle fait appel Feed.
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
- *         mwsaz <mwsaz@zcorrecteurs.fr>
+ * @author mwsaz <mwsaz@zcorrecteurs.fr>
  */
 final class Syndication
 {

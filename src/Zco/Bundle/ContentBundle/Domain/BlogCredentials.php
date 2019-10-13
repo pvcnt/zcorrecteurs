@@ -1,6 +1,6 @@
 <?php
 
-namespace Zco\Bundle\BlogBundle\Controller;
+namespace Zco\Bundle\ContentBundle\Domain;
 
 final class BlogCredentials
 {

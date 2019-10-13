@@ -19,7 +19,7 @@
 		<label for="statut">Statut : </label>
 		<select name="statut" id="statut">
 			<?php
-			foreach(\Zco\Bundle\BlogBundle\Domain\Author::STATUSES as $cle=>$valeur)
+			foreach(\Zco\Bundle\ContentBundle\Domain\Author::STATUSES as $cle=>$valeur)
 			{
 				echo '<option value="'.$cle.'"';
 				if($InfosUtilisateur['auteur_statut'] == $cle) echo ' selected="selected"';

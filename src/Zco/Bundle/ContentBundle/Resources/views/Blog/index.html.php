@@ -7,14 +7,14 @@
     <?php echo pluriel($NombreDeBillet, 'ont', 'a') ?> été trouvé<?php echo pluriel($NombreDeBillet) ?>.
 </p>
 
-<?php echo $view->render('ZcoBlogBundle::_liste_categories.html.php') ?>
+<?php echo $view->render('ZcoContentBundle:Blog:_liste_categories.html.php') ?>
 
 <?php if(!empty($ListerBillets)){ ?>
 <p>Page : <?php echo implode($ListePage); ?></p>
 <?php
 foreach($ListerBillets as $billet)
 {
-	echo $view->render('ZcoBlogBundle::_intro.html.php', array(
+	echo $view->render('ZcoContentBundle:Blog:_intro.html.php', array(
 		'InfosBillet' => $billet,
 		'Auteurs' => $BilletsAuteurs[$billet['blog_id']]));
 }

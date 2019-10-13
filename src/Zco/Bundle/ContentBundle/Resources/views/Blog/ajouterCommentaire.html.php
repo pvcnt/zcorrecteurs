@@ -26,4 +26,4 @@
 	</fieldset>
 </form>
 
-<?php echo $view->render('ZcoBlogBundle::_revue_commentaires.html.php', array('ListerCommentaires' => $ListerCommentaires, 'InfosBillet' => $InfosBillet)) ?>
+<?php echo $view->render('ZcoContentBundle:Blog:_revue_commentaires.html.php', array('ListerCommentaires' => $ListerCommentaires, 'InfosBillet' => $InfosBillet)) ?>

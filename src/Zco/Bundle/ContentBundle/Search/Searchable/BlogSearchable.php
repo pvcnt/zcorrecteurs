@@ -21,7 +21,7 @@
 
 namespace Zco\Bundle\ContentBundle\Search\Searchable;
 
-use Zco\Bundle\BlogBundle\Domain\BlogDAO;
+use Zco\Bundle\ContentBundle\Domain\BlogDAO;
 
 /**
  * Recherche sur le blog.

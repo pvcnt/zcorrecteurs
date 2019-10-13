@@ -23,7 +23,7 @@ namespace Zco\Bundle\CoreBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
-use Zco\Bundle\BlogBundle\Domain\BlogDAO;
+use Zco\Bundle\ContentBundle\Domain\BlogDAO;
 use Zco\Bundle\DicteesBundle\Domain\DictationDAO;
 
 /**
