@@ -92,7 +92,7 @@ final class BlogController extends Controller
      * @param Request $request
      * @return Response
      */
-    public function showAction($id, $slug, Request $request)
+    public function showAction($id, $slug = null, Request $request)
     {
         $Auteurs = BlogDAO::InfosBillet($id);
         if (!$Auteurs) {

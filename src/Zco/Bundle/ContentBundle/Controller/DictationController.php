@@ -28,8 +28,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-use Zco\Bundle\ContentBundle\Chart\MyStatsFrequencyChart;
-use Zco\Bundle\ContentBundle\Chart\MyStatsTemporalChart;
+use Zco\Bundle\ContentBundle\Chart\MyDictationStatsFrequencyChart;
+use Zco\Bundle\ContentBundle\Chart\MyDictationStatsTemporalChart;
 use Zco\Bundle\ContentBundle\Domain\Dictation;
 use Zco\Bundle\ContentBundle\Domain\DictationDAO;
 use Zco\Bundle\ContentBundle\Domain\DictationScoreDAO;
@@ -87,7 +87,7 @@ final class DictationController extends Controller
      * @param string $slug
      * @return Response
      */
-    public function showAction($id, $slug)
+    public function showAction($id, $slug = null)
     {
         $Dictee = $this->getDictation($id);
         if ($Dictee->etat != DICTEE_VALIDEE && !verifier('dictees_publier')) {
@@ -211,13 +211,13 @@ final class DictationController extends Controller
         }
         $type = (int) $request->get('type', self::GRAPHIQUE_FREQUENCE);
         if ($type == self::GRAPHIQUE_FREQUENCE) {
-            $chart = new MyStatsFrequencyChart(DictationScoreDAO::FrequenceNotes());
+            $chart = new MyDictationStatsFrequencyChart(DictationScoreDAO::FrequenceNotes());
             return $chart->getResponse();
         } elseif ($type == self::GRAPHIQUE_EVOLUTION) {
             $count = $request->get('count', 20);
             $count < 5 && $count = 5;
             $count > 50 && $count = 50;
-            $chart = new MyStatsTemporalChart(DictationScoreDAO::DernieresNotes($count, 0));
+            $chart = new MyDictationStatsTemporalChart(DictationScoreDAO::DernieresNotes($count, 0));
             return $chart->getResponse();
         }
         throw new NotFoundHttpException();

@@ -2,12 +2,12 @@
 <?php $view['vitesse']->requireResources([
     '@ZcoCoreBundle/Resources/public/css/zcode.css',
     '@ZcoCoreBundle/Resources/public/css/zform.css',
-    '@ZcoQuizBundle/Resources/public/css/quiz.css',
+    '@ZcoContentBundle/Resources/public/css/quiz.css',
 ]) ?>
 
 <span style="float: right;">
 	<?php if (verifier('voir_stats_generales')){ ?>
-	<a href="statistiques-<?php echo $quiz['id'] ?>.html">
+	<a href="<?php echo $view['router']->path('zco_quiz_stats', ['id' => $quiz['id']]) ?>">
 		<img src="/img/membres/stats_zco.png" alt="Statistiques" />
 		Statistiques
 	</a>

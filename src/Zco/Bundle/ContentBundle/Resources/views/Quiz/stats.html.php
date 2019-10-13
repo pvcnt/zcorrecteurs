@@ -7,7 +7,7 @@
 <h1>Statistiques d'utilisation du quiz « <?php echo htmlspecialchars($quiz['nom']) ?> »</h1>
 <?php } ?>
 
-<form method="get" action="statistiques.html">
+<form method="get" action="<?php echo $view['router']->path('zco_quiz_stats') ?>">
 	<fieldset>
 	<legend>Voir les statistiques d'un quiz</legend>
 	<label for="id">Quiz : </label>
@@ -15,7 +15,7 @@
 		<option value="0">Statistiques générales</option>
 		<?php
 		$current = null;
-		foreach($listeQuiz as $cle => $qquiz)
+		foreach($quizList as $cle => $qquiz)
 		{
 			if ($qquiz['categorie_id'] != $current)
 			{
@@ -91,7 +91,7 @@
 					<input type="hidden" name="quiz" value="<?php echo $quiz['id'] ?>" />
 					<?php } ?>
 
-					<a href="?annee=<?php echo $annee_precedent ?>&mois=<?php echo $mois_precedent ?><?php if (isset($quiz)){ ?>&id=<?php echo $quiz['id'] ?><?php } ?>">
+					<a href="?annee=<?php echo $previousYear ?>&mois=<?php echo $previousMonth ?><?php if (isset($quiz)){ ?>&id=<?php echo $quiz['id'] ?><?php } ?>">
 						« Précédent
 					</a>
 
@@ -112,7 +112,7 @@
 
 					<input type="submit" value="Aller" />
 
-					<a href="?annee=<?php echo $annee_suivant ?>&mois=<?php echo $mois_suivant ?><?php if (isset($quiz)){ ?>&id=<?php echo $quiz['id'] ?><?php } ?>">
+					<a href="?annee=<?php echo $nextYear ?>&mois=<?php echo $nextMonth ?><?php if (isset($quiz)){ ?>&id=<?php echo $quiz['id'] ?><?php } ?>">
 						Suivant »
 					</a>
 				</form>

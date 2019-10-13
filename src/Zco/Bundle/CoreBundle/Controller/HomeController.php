@@ -25,6 +25,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Zco\Bundle\ContentBundle\Domain\BlogDAO;
 use Zco\Bundle\ContentBundle\Domain\DictationDAO;
+use Zco\Bundle\ContentBundle\Entity\QuizManager;
 
 /**
  * Affichage de la page d'accueil du site.
@@ -55,7 +56,7 @@ class HomeController extends Controller
         $vars['DicteesLesPlusJouees'] = array_slice(DictationDAO::DicteesLesPlusJouees(), 0, 2);
 
         // Quiz
-        $quizRepository = $this->get('zco_quiz.manager.quiz');
+        $quizRepository = $this->get(QuizManager::class);
         $vars['ListerQuizFrequentes'] = $quizRepository->listerParFrequentation();
         $vars['ListerQuizNouveaux'] = $quizRepository->listerRecents();
         $vars['QuizHasard'] = $quizRepository->hasard();

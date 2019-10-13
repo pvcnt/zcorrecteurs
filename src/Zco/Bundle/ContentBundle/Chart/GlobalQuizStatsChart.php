@@ -19,13 +19,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\QuizBundle\Chart;
+namespace Zco\Bundle\ContentBundle\Chart;
 
 use Symfony\Component\HttpFoundation\Response;
-use Zco\Bundle\QuizBundle\Entity\QuizScoreManager;
+use Zco\Bundle\ContentBundle\Entity\QuizScoreManager;
 use Zco\Util\TimeUtils;
 
-class GlobalStatsChart
+class GlobalQuizStatsChart
 {
     private $data;
     private $granularity;

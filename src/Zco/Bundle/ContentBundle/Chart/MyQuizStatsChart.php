@@ -19,11 +19,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\QuizBundle\Chart;
+namespace Zco\Bundle\ContentBundle\Chart;
 
 use Symfony\Component\HttpFoundation\Response;
 
-class MyStatsChart
+class MyQuizStatsChart
 {
     private $data;
 

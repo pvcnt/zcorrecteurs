@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\QuizBundle\Entity;
+namespace Zco\Bundle\ContentBundle\Entity;
 
 class QuizScoreManager
 {

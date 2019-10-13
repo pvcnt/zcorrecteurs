@@ -55,7 +55,6 @@ final class Kernel extends HttpKernel
             new Zco\Bundle\ContentBundle\ZcoContentBundle(),
             new Zco\Bundle\GroupesBundle\ZcoGroupesBundle(),
             new Zco\Bundle\OptionsBundle\ZcoOptionsBundle(),
-            new Zco\Bundle\QuizBundle\ZcoQuizBundle(),
             new Zco\Bundle\FileBundle\ZcoFileBundle(),
         );
 

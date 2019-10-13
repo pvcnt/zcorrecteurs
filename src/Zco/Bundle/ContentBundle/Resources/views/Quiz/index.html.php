@@ -23,29 +23,6 @@
     </p>
 <?php } ?>
 
-<?php if (!is_null($pinnedQuiz)) { ?>
-    <div class="well" style="width: 50%;">
-        <?php if (!empty($pinnedQuiz['image'])) { ?>
-            <a href="<?php echo $view['router']->path('zco_quiz_show', ['id' => $pinnedQuiz['id'], 'slug' => rewrite($pinnedQuiz['nom'])]) ?>">
-                <img class="flot_droite" src="<?php echo htmlspecialchars($pinnedQuiz['image']); ?>" alt=""/>
-            </a>
-        <?php } ?>
-
-        Le quiz suivant de la catégorie « <?php echo htmlspecialchars($pinnedQuiz['Categorie']['nom']); ?> »
-        est actuellement mis en valeur par l'équipe du site :<br/><br/>
-
-        <div>
-            <strong><a href="<?php echo $view['router']->path('zco_quiz_show', ['id' => $pinnedQuiz['id'], 'slug' => rewrite($pinnedQuiz['nom'])]) ?>">
-                    <?php echo htmlspecialchars($pinnedQuiz['nom']); ?>
-                </a></strong>
-            <?php if (!empty($pinnedQuiz['description'])) { ?><br/>
-                <?php echo htmlspecialchars($pinnedQuiz['description']); ?>
-            <?php } ?>
-        </div>
-        <div style="clear: right;"></div>
-    </div>
-<?php } ?>
-
 <?php
 $current = null;
 if (count($quizList) > 0):

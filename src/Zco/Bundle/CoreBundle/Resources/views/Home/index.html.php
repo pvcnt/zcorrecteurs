@@ -35,7 +35,7 @@
 
 	<td>
 		<h2 class="mod_quiz">Quiz</h2>
-		<?php echo $view->render('ZcoQuizBundle::_bloc_accueil.html.php',
+		<?php echo $view->render('ZcoContentBundle:Quiz:_bloc_accueil.html.php',
 			array(
 				'ListerQuizFrequentes' => $ListerQuizFrequentes,
 				'ListerQuizNouveaux' => $ListerQuizNouveaux,

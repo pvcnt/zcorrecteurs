@@ -2,7 +2,7 @@
 <?php $view['vitesse']->requireResources([
     '@ZcoCoreBundle/Resources/public/css/zcode.css',
     '@ZcoCoreBundle/Resources/public/css/zform.css',
-    '@ZcoQuizBundle/Resources/public/css/quiz.css',
+    '@ZcoContentBundle/Resources/public/css/quiz.css',
 ]) ?>
 
 <span style="float: right;">

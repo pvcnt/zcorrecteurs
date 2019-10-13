@@ -19,17 +19,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\QuizBundle\Controller;
+namespace Zco\Bundle\ContentBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
-use Zco\Bundle\QuizBundle\Chart\GlobalStatsChart;
-use Zco\Bundle\QuizBundle\Chart\MyStatsChart;
-use Zco\Bundle\QuizBundle\Entity\QuizScoreManager;
+use Zco\Bundle\ContentBundle\Chart\GlobalQuizStatsChart;
+use Zco\Bundle\ContentBundle\Chart\MyQuizStatsChart;
+use Zco\Bundle\ContentBundle\Entity\QuizManager;
+use Zco\Bundle\ContentBundle\Entity\QuizScoreManager;
+use Zco\Page;
 
 /**
  * Contrôleur gérant les actions liées aux quiz.
@@ -38,40 +42,44 @@ use Zco\Bundle\QuizBundle\Entity\QuizScoreManager;
  * @author Ziame <ziame@zcorrecteurs.fr>
  * @author mwsaz <mwsaz@zcorrecteurs.fr>
  */
-class DefaultController extends Controller
+final class QuizController extends Controller
 {
     /**
      * Affiche la liste des quiz disponibles.
+     *
+     * @Route(name="zco_quiz_index", path="/quiz")
      */
     public function indexAction()
     {
-        \Zco\Page::$titre = 'Quiz';
-        $registry = $this->get('zco_core.registry');
-        $pinnedQuiz = $registry->get('bloc_accueil') === 'quiz' ? $registry->get('accueil_quiz', null) : null;
-        $quizList = $this->get('zco_quiz.manager.quiz')->lister();
+        fil_ariane('Quiz');
 
-        return $this->render('ZcoQuizBundle::index.html.php', [
-            'quizList' => $quizList,
-            'pinnedQuiz' => $pinnedQuiz,
+        return $this->render('ZcoContentBundle:Quiz:index.html.php', [
+            'quizList' => $this->get(QuizManager::class)->lister(),
         ]);
     }
 
     /**
      * Affiche les questions d'un quiz.
      *
+     * @Route(name="zco_quiz_show", path="/quiz/{id}/{slug}", requirements={"id":"\d+"})
+     *
      * @param int $id
      * @param string $slug
      * @param Request $request
      * @return Response
      */
-    public function showAction($id, $slug, Request $request)
+    public function showAction(Request $request, $id, $slug = null)
     {
-        $repository = $this->get('zco_quiz.manager.quiz');
+        $repository = $this->get(QuizManager::class);
         $quiz = $repository->get($id);
-        if ($quiz === false || !$quiz->visible) {
+        if (!$quiz || !$quiz->visible) {
             throw new NotFoundHttpException();
         }
-        //TODO: check slug.
+        $url = $this->generateUrl('zco_quiz_show', ['id' => $quiz['id'], 'slug' => rewrite($quiz['nom'])]);
+        if ($slug !== rewrite($quiz['nom'])) {
+            // Redirect for SEO if slug is wrong.
+            return new RedirectResponse($url, 301);
+        }
 
         if ($request->getMethod() === 'POST') {
             $questions = $repository->findQuestions($quiz['id'], $_POST['rep']);
@@ -86,14 +94,13 @@ class DefaultController extends Controller
                 ];
             }
 
-            \Zco\Page::$titre = htmlspecialchars($quiz['nom']) . ' - Correction';
             fil_ariane([
                 'Quiz' => $this->generateUrl('zco_quiz_index'),
-                htmlspecialchars($quiz['nom']) => $this->generateUrl('zco_quiz_show', ['id' => $quiz['id'], 'slug' => rewrite($quiz['nom'])]),
+                htmlspecialchars($quiz['nom']) => $url,
                 'Correction',
             ]);
 
-            return $this->render('ZcoQuizBundle::correction.html.php', [
+            return $this->render('ZcoContentBundle:Quiz:correction.html.php', [
                 'quiz' => $quiz,
                 'questions' => $questions,
                 'note' => $note,
@@ -101,8 +108,7 @@ class DefaultController extends Controller
             ]);
         }
 
-        \Zco\Page::$titre = htmlspecialchars($quiz['nom']);
-        \Zco\Page::$description = htmlspecialchars($quiz['description']);
+        Page::$description = htmlspecialchars($quiz['description']);
         fil_ariane([
             'Quiz' => $this->generateUrl('zco_quiz_index'),
             htmlspecialchars($quiz['nom']),
@@ -110,7 +116,7 @@ class DefaultController extends Controller
 
         $questions = $repository->findQuestions($quiz['id'], $quiz['aleatoire']);
 
-        return $this->render('ZcoQuizBundle::show.html.php', [
+        return $this->render('ZcoContentBundle:Quiz:show.html.php', [
             'quiz' => $quiz,
             'questions' => $questions,
         ]);
@@ -118,24 +124,25 @@ class DefaultController extends Controller
 
     /**
      * Affiche les statistiques individuelles d'un membre.
+     *
+     * @Route(name="zco_quiz_myStats", path="/quiz/mes-statistiques")
      */
     public function myStatsAction()
     {
         if (!verifier('connecte')) {
             throw new AccessDeniedHttpException();
         }
-        $repository = $this->get('zco_quiz.manager.score');
+        $repository = $this->get(QuizScoreManager::class);
         $avgNote = $repository->getAverage($_SESSION['id']);
         $nbNotes = $repository->count($_SESSION['id']);
         $lastNotes = $repository->find($_SESSION['id'], 30);
 
-        \Zco\Page::$titre = 'Mes statistiques d\'utilisation du quiz';
         fil_ariane([
             'Quiz' => $this->generateUrl('zco_quiz_index'),
             'Mes statistiques',
         ]);
 
-        return $this->render('ZcoQuizBundle::myStats.html.php', [
+        return $this->render('ZcoContentBundle:Quiz:myStats.html.php', [
             'avgNote' => $avgNote,
             'nbNotes' => $nbNotes,
             'lastNotes' => $lastNotes,
@@ -145,6 +152,7 @@ class DefaultController extends Controller
     /**
      * Génère le graphique de statistiques.
      *
+     * @Route(name="zco_quiz_myStatsChart", path="/quiz/mes-statistiques.png")
      * @author Ziame <ziame@zcorrecteurs.fr>
      */
     public function myStatsChartAction()
@@ -152,13 +160,15 @@ class DefaultController extends Controller
         if (!verifier('connecte')) {
             throw new AccessDeniedHttpException();
         }
-        $distribution = $this->get('zco_quiz.manager.score')->getDistribution($_SESSION['id']);
+        $distribution = $this->get(QuizScoreManager::class)->getDistribution($_SESSION['id']);
 
-        return (new MyStatsChart($distribution))->getResponse();
+        return (new MyQuizStatsChart($distribution))->getResponse();
     }
 
     /**
      * Display a list of all quiz, including unpublished ones.
+     *
+     * @Route(name="zco_quiz_admin", path="/admin/quiz")
      *
      * @return Response
      */
@@ -167,21 +177,22 @@ class DefaultController extends Controller
         if (!verifier('quiz_ajouter')) {
             throw new AccessDeniedHttpException();
         }
-        \Zco\Page::$titre = 'Gestion des quiz';
         fil_ariane([
             'Quiz' => $this->generateUrl('zco_quiz_index'),
             'Gestion des quiz',
         ]);
 
-        $quizList = $this->get('zco_quiz.manager.quiz')->lister(true);
+        $quizList = $this->get(QuizManager::class)->lister(true);
 
-        return $this->render('ZcoQuizBundle::admin.html.php', [
+        return $this->render('ZcoContentBundle:Quiz:admin.html.php', [
             'quizList' => $quizList,
         ]);
     }
 
     /**
      * Add a new question to an existing quiz.
+     *
+     * @Route(name="zco_quiz_newQuestion", path="/quiz/ajouter-question/{quizId}", requirements={"quizId":"\d+"})
      *
      * @param int $quizId Quiz identifier.
      * @return Response
@@ -191,7 +202,7 @@ class DefaultController extends Controller
         if (!verifier('quiz_ajouter')) {
             throw new AccessDeniedHttpException();
         }
-        $quiz = $this->get('zco_quiz.manager.quiz')->get($quizId);
+        $quiz = $this->get(QuizManager::class)->get($quizId);
         if (!$quiz) {
             throw new NotFoundHttpException();
         }
@@ -225,19 +236,21 @@ class DefaultController extends Controller
             );
         }
 
-        \Zco\Page::$titre = 'Ajouter une question';
-        fil_ariane(array(
-            htmlspecialchars($quiz['nom']) => $this->generateUrl('zco_quiz_editQuiz', ['id' => $quiz['id']]),
-            'Ajouter une question'
-        ));
+        fil_ariane([
+            'Quiz' => $this->generateUrl('zco_quiz_index'),
+            htmlspecialchars($quiz['nom']) => $this->generateUrl('zco_quiz_show', ['id' => $quiz['id'], 'slug' => rewrite($quiz['nom'])]),
+            'Nouvelle question'
+        ]);
 
-        return $this->render('ZcoQuizBundle::newQuestion.html.php', [
+        return $this->render('ZcoContentBundle:Quiz:newQuestion.html.php', [
             'quiz' => $quiz,
         ]);
     }
 
     /**
      * Ajoute un nouveau quiz.
+     *
+     * @Route(name="zco_quiz_newQuiz", path="/quiz/ajouter")
      *
      * @return Response
      */
@@ -265,9 +278,12 @@ class DefaultController extends Controller
         }
 
         $categories = CategoryDAO::ListerEnfants(CategoryDAO::GetIDCategorie('quiz'));
-        \Zco\Page::$titre = 'Ajouter un quiz';
+        fil_ariane([
+            'Quiz' => $this->generateUrl('zco_quiz_index'),
+            'Nouveau quiz'
+        ]);
 
-        return $this->render('ZcoQuizBundle::newQuiz.html.php', [
+        return $this->render('ZcoContentBundle:Quiz:newQuiz.html.php', [
             'categories' => $categories,
             'levels' => \Quiz::LEVELS,
         ]);
@@ -275,6 +291,8 @@ class DefaultController extends Controller
 
     /**
      * Edit an existing question of a quiz.
+     *
+     * @Route(name="zco_quiz_editQuestion", path="/quiz/modifier-question/{id}", requirements={"id":"\d+"})
      *
      * @param int $id Question identifier.
      * @return Response
@@ -284,7 +302,7 @@ class DefaultController extends Controller
         if (!verifier('quiz_ajouter')) {
             throw new AccessDeniedHttpException();
         }
-        $question = $this->get('zco_quiz.manager.quiz')->getQuestion($id);
+        $question = $this->get(QuizManager::class)->getQuestion($id);
         if (!$question) {
             throw new NotFoundHttpException();
         }
@@ -305,19 +323,21 @@ class DefaultController extends Controller
             );
         }
 
-        \Zco\Page::$titre = 'Modifier une question';
-        fil_ariane(array(
-            htmlspecialchars($question->Quiz['nom']) => $this->generateUrl('zco_quiz_editQuiz', ['id' => $question->Quiz['id']]),
+        fil_ariane([
+            'Quiz' => $this->generateUrl('zco_quiz_index'),
+            htmlspecialchars($question->Quiz['nom']) => $this->generateUrl('zco_quiz_show', ['id' => $question->Quiz['id'], 'slug' => rewrite($question->Quiz['nom'])]),
             'Modifier une question'
-        ));
+        ]);
 
-        return $this->render('ZcoQuizBundle::editQuestion.html.php', [
+        return $this->render('ZcoContentBundle:Quiz:editQuestion.html.php', [
             'question' => $question,
         ]);
     }
 
     /**
      * Edit an existing quiz.
+     *
+     * @Route(name="zco_quiz_editQuiz", path="/quiz/modifier/{id}", requirements={"id":"\d+"})
      *
      * @param int $id Quiz identifier.
      * @return Response
@@ -327,7 +347,7 @@ class DefaultController extends Controller
         if (!verifier('quiz_ajouter')) {
             throw new AccessDeniedHttpException();
         }
-        $quizManager = $this->get('zco_quiz.manager.quiz');
+        $quizManager = $this->get(QuizManager::class);
         $quiz = $quizManager->get($id);
         if (!$quiz) {
             throw new NotFoundHttpException();
@@ -349,10 +369,13 @@ class DefaultController extends Controller
 
         $questions = $quizManager->findQuestions($quiz['id']);
         $categories = CategoryDAO::ListerEnfants(CategoryDAO::GetIDCategorie('quiz'));
-        \Zco\Page::$titre = 'Modifier le quiz';
-        fil_ariane(htmlspecialchars($quiz['nom']));
+        fil_ariane([
+            'Quiz' => $this->generateUrl('zco_quiz_index'),
+            htmlspecialchars($quiz['nom']) => $this->generateUrl('zco_quiz_show', ['id' => $quiz['id'], 'slug' => rewrite($quiz['nom'])]),
+            'Modifier'
+        ]);
 
-        return $this->render('ZcoQuizBundle::editQuiz.html.php', [
+        return $this->render('ZcoContentBundle:Quiz:editQuiz.html.php', [
             'quiz' => $quiz,
             'questions' => $questions,
             'categories' => $categories,
@@ -362,13 +385,15 @@ class DefaultController extends Controller
 
     /**
      * Supprime une question d'un quiz.
+     *
+     * @Route(name="zco_quiz_deleteQuestion", path="/quiz/supprimer-question/{id}", requirements={"id":"\d+"})
      */
     public function deleteQuestionAction($id, Request $request)
     {
         if (!verifier('quiz_ajouter')) {
             throw new AccessDeniedHttpException();
         }
-        $question = $this->get('zco_quiz.manager.quiz')->getQuestion($id);
+        $question = $this->get(QuizManager::class)->getQuestion($id);
         if (!$question) {
             throw new NotFoundHttpException();
         }
@@ -382,19 +407,21 @@ class DefaultController extends Controller
             );
         }
 
-        \Zco\Page::$titre = 'Supprimer une question';
-        fil_ariane($question->Quiz['categorie_id'], array(
-            htmlspecialchars($question->Quiz['nom']) => $this->generateUrl('zco_quiz_editQuiz', ['id' => $question->quiz['id']]),
+        fil_ariane([
+            'Quiz' => $this->generateUrl('zco_quiz_index'),
+            htmlspecialchars($question->Quiz['nom']) => $this->generateUrl('zco_quiz_show', ['id' => $question->Quiz['id'], 'slug' => rewrite($question->Quiz['nom'])]),
             'Supprimer une question'
-        ));
+        ]);
 
-        return $this->render('ZcoQuizBundle::deleteQuestion.html.php', [
+        return $this->render('ZcoContentBundle:Quiz:deleteQuestion.html.php', [
             'question' => $question,
         ]);
     }
 
     /**
      * Delete a quiz, after confirmation.
+     *
+     * @Route(name="zco_quiz_deleteQuiz", path="/quiz/supprimer/{id}", requirements={"id":"\d+"})
      *
      * @param int $id Quiz identifier.
      * @param Request $request HTTP request.
@@ -405,7 +432,7 @@ class DefaultController extends Controller
         if (!verifier('quiz_ajouter')) {
             throw new AccessDeniedHttpException();
         }
-        $quiz = $this->get('zco_quiz.manager.quiz')->get($id);
+        $quiz = $this->get(QuizManager::class)->get($id);
         if (!$quiz) {
             throw new NotFoundHttpException();
         }
@@ -416,31 +443,38 @@ class DefaultController extends Controller
             return redirect('Le quiz a bien été supprimé.', $this->generateUrl('zco_quiz_admin'));
         }
 
-        \Zco\Page::$titre = 'Supprimer le quiz';
-        fil_ariane($quiz['categorie_id'], array(
+        fil_ariane([
+            'Quiz' => $this->generateUrl('zco_quiz_index'),
             htmlspecialchars($quiz['nom']) => $this->generateUrl('zco_quiz_show', ['id' => $quiz['id'], 'slug' => rewrite($quiz['nom'])]),
-            'Supprimer le quiz'
-        ));
+            'Supprimer'
+        ]);
 
-        return $this->render('ZcoQuizBundle::deleteQuiz.html.php', array('quiz' => $quiz));
+        return $this->render('ZcoContentBundle:Quiz:deleteQuiz.html.php', array('quiz' => $quiz));
     }
 
     /**
      * Valide ou dévalide un quiz.
+     *
+     * @Route(name="zco_quiz_publish", path="/quiz/publier/{id}", requirements={"id":"\d+"})
+     *
+     * @param int $id Quiz identifier.
+     * @param Request $request
+     * @return Response
      */
-    public function publishQuizAction($id, $status, Request $request)
+    public function publishQuizAction($id, Request $request)
     {
         if (!verifier('quiz_ajouter')) {
             throw new AccessDeniedHttpException();
         }
-        if ($request->query->get('tk') !== $_SESSION['token']) {
+        if ($request->query->get('token') !== $_SESSION['token']) {
             // CSRF potential problem.
             throw new AccessDeniedHttpException();
         }
-        $quiz = $this->get('zco_quiz.manager.quiz')->get($id);
+        $quiz = $this->get(QuizManager::class)->get($id);
         if (!$quiz) {
             throw new NotFoundHttpException();
         }
+        $status = (boolean)$request->get('status', false);
         $quiz->visible = $status ? 1 : 0;
         $quiz->save();
 
@@ -453,7 +487,9 @@ class DefaultController extends Controller
     /**
      * Déplacer une question d'un quiz à un autre.
      *
+     * @Route(name="zco_quiz_moveQuestion", path="/quiz/deplacer-question/{id}", requirements={"id":"\d+"})
      * @author mwsaz <mwsaz@zcorrecteurs.fr>
+     *
      * @param int $id Quiz identifier.
      * @return Response
      */
@@ -462,12 +498,12 @@ class DefaultController extends Controller
         if (!verifier('quiz_ajouter')) {
             throw new AccessDeniedHttpException();
         }
-        $question = $this->get('zco_quiz.manager.quiz')->getQuestion($id);
+        $question = $this->get(QuizManager::class)->getQuestion($id);
         if (!$question) {
             throw new NotFoundHttpException();
         }
         $oldQuiz = $question->Quiz;
-        $repository = $this->get('zco_quiz.manager.quiz');
+        $repository = $this->get(QuizManager::class);
 
         if (!empty($_POST['quiz'])) {
             $nouveauQuiz = $repository->get($_POST['quiz']);
@@ -482,9 +518,13 @@ class DefaultController extends Controller
         }
 
         $quizList = $repository->lister(true);
-        \Zco\Page::$titre = 'Déplacer une question';
+        fil_ariane([
+            'Quiz' => $this->generateUrl('zco_quiz_index'),
+            htmlspecialchars($question->Quiz['nom']) => $this->generateUrl('zco_quiz_show', ['id' => $question->Quiz['id'], 'slug' => rewrite($question->Quiz['nom'])]),
+            'Déplacer une question'
+        ]);
 
-        return $this->render('ZcoQuizBundle::moveQuestion.html.php', [
+        return $this->render('ZcoContentBundle:Quiz:moveQuestion.html.php', [
             'question' => $question,
             'quizList' => $quizList,
             'oldQuiz' => $oldQuiz
@@ -496,7 +536,9 @@ class DefaultController extends Controller
      * classés par nombre de validations, avec diverses informations pour juger de
      * l'intérêt apporté aux membres à chacun des quiz.
      *
+     * @Route(name="zco_quiz_popularity", path="/quiz/popularite")
      * @author vincent1870 <vincent@zcorrecteurs.fr>
+     *
      * @return Response
      */
     public function popularityAction()
@@ -504,20 +546,27 @@ class DefaultController extends Controller
         if (!verifier('voir_stats_generales')) {
             throw new AccessDeniedHttpException();
         }
-        \Zco\Page::$titre = 'Popularité des quiz';
-        $quizList = $this->get('zco_quiz.manager.quiz')->getByPopularity();
+        fil_ariane([
+            'Quiz' => $this->generateUrl('zco_quiz_index'),
+            'Popularité des quiz'
+        ]);
 
-        return $this->render('ZcoQuizBundle::popularity.html.php', [
-            'quizList' => $quizList,
+        return $this->render('ZcoContentBundle:Quiz:popularity.html.php', [
+            'quizList' => $this->get(QuizManager::class)->getByPopularity(),
         ]);
     }
 
     /**
      * Affiche des statistiques détaillées sur l'utilisation du module de quiz.
      *
+     * @Route(name="zco_quiz_stats", path="/quiz/stats/{quizId}", requirements={"quizId":"\d+"})
      * @author vincent1870 <vincent@zcorrecteurs.fr>
+     *
+     * @param Request $request.
+     * @param int|null $quizId Quiz identifier (null to include all quiz).
+     * @return Response
      */
-    public function statsAction($quizId, Request $request)
+    public function statsAction(Request $request, $quizId = null)
     {
         if (!verifier('voir_stats_generales')) {
             throw new AccessDeniedHttpException();
@@ -527,14 +576,14 @@ class DefaultController extends Controller
         $day = $request->query->get('jour');
 
         if (isset($quizId)) {
-            $quiz = $this->get('zco_quiz.manager.quiz')->get($quizId);
+            $quiz = $this->get(QuizManager::class)->get($quizId);
             if (!$quiz) {
                 throw new NotFoundHttpException();
             }
         }
 
         list($granularity, $when) = $this->getStatsSpec($year, $month, $day);
-        $manager = $this->get('zco_quiz.manager.score');
+        $manager = $this->get(QuizScoreManager::class);
         $data = $manager->getSummary($granularity, $when, $quizId);
 
         $previousYear = ($month == 1) ? $year - 1 : $year;
@@ -542,18 +591,19 @@ class DefaultController extends Controller
         $previousMonth = ($month == 1) ? 12 : $month - 1;
         $nextMonth = ($month == 12) ? 1 : $month + 1;
 
-        //$donnees = (new StatsService())->construireTableauDonnees($donnees);
-
         // Statistiques globales (depuis la création des quiz).
         $validationsTotales = $manager->count(QuizScoreManager::ALL, isset($quiz) ? $quiz['id'] : null);
         $validationsMembres = $manager->count(QuizScoreManager::AUTHENTICATED, isset($quiz) ? $quiz['id'] : null);
         $validationsVisiteurs = $manager->count(QuizScoreManager::ANONYMOUS, isset($quiz) ? $quiz['id'] : null);
         $avgNote = $manager->getAverage(QuizScoreManager::ALL, isset($quiz) ? $quiz['id'] : null);
 
-        $quizList = $this->get('zco_quiz.manager.quiz')->lister();
-        \Zco\Page::$titre = 'Statistiques d\'utilisation des quiz';
+        $quizList = $this->get(QuizManager::class)->lister();
+        fil_ariane([
+            'Quiz' => $this->generateUrl('zco_quiz_index'),
+            'Statistiques d\'utilisation',
+        ]);
 
-        return $this->render('ZcoQuizBundle::stats.html.php', [
+        return $this->render('ZcoContentBundle:Quiz:stats.html.php', [
             'annee' => $year,
             'mois' => $month,
             'jour' => $day,
@@ -576,9 +626,14 @@ class DefaultController extends Controller
      * ou bien d'un quiz particulier sur n'importe quelle période (soit depuis la
      * création, sur une année, sur un mois ou bien sur une journée).
      *
+     * @Route(name="zco_quiz_statsChart", path="/quiz/stats/{quizId}.png", requirements={"quizId":"\d+"})
      * @author vincent1870 <vincent@zcorrecteurs.fr>
+     *
+     * @param Request $request.
+     * @param int|null $quizId Quiz identifier (null to include all quiz).
+     * @return Response
      */
-    public function statsChartAction($quizId, Request $request)
+    public function statsChartAction(Request $request, $quizId = null)
     {
         if (!verifier('voir_stats_generales')) {
             throw new AccessDeniedHttpException();
@@ -588,15 +643,15 @@ class DefaultController extends Controller
         $day = $request->query->get('jour');
 
         if (isset($quizId)) {
-            $quiz = $this->get('zco_quiz.manager.quiz')->get($quizId);
+            $quiz = $this->get(QuizManager::class)->get($quizId);
             if (!$quiz) {
                 throw new NotFoundHttpException();
             }
         }
 
         list($granularity, $when) = $this->getStatsSpec($year, $month, $day);
-        $data = $this->get('zco_quiz.manager.score')->getSummary($granularity, $when, $quizId);
-        $chart = new GlobalStatsChart($data, $granularity, $when);
+        $data = $this->get(QuizScoreManager::class)->getSummary($granularity, $when, $quizId);
+        $chart = new GlobalQuizStatsChart($data, $granularity, $when);
 
         return $chart->getResponse();
     }
@@ -617,5 +672,128 @@ class DefaultController extends Controller
             $when = [];
         }
         return [$granularity, $when];
+    }
+
+    /**
+     * Construit un tableau formaté pour l'affichage des données dans un
+     * tableau à partir de données brutes issues de la requête.
+     *
+     * @param array $rows Données brutes.
+     * @param string $key Clé du futur tableau.
+     * @param integer $min_key Clé numérique de départ du tableau.
+     * @param integer $max_key Clé numérique de fin du tableau.
+     * @return array            Données formatées.
+     */
+    private function construireTableauDonnees(array $rows, $key, $min_key = null, $max_key = null)
+    {
+        $ret = array(
+            'lignes' => [],
+            'totaux' => array(
+                'validations_totales' => 0,
+                'validations_membres' => 0,
+                'validations_visiteurs' => 0,
+                'note_moyenne' => 0,
+            ));
+        //Construction des lignes par défaut si demandé.
+        if (isset($min_key) && isset($max_key)) {
+            for ($i = $min_key; $i <= $max_key; $i++) {
+                $ret['lignes'][$i] = array(
+                    'validations_totales' => 0,
+                    'validations_membres' => 0,
+                    'validations_visiteurs' => 0,
+                    'note_moyenne' => 0,
+                );
+            }
+        }
+        //Remplissage avec les données issues de la base de données.
+        foreach ($rows as $i => $row) {
+            if ($row['validations_totales'] > 0) {
+                $ret['totaux']['note_moyenne'] = ($ret['totaux']['note_moyenne'] * $ret['totaux']['validations_totales'] + $row['note_moyenne'] * $row['validations_totales']) / ($ret['totaux']['validations_totales'] + $row['validations_totales']);
+            }
+            $ret['lignes'][$row[$key]] = $row;
+            $ret['totaux']['validations_totales'] += $row['validations_totales'];
+            $ret['totaux']['validations_membres'] += $row['validations_membres'];
+            $ret['totaux']['validations_visiteurs'] += $row['validations_visiteurs'];
+        }
+        return $ret;
+    }
+    /**
+     * Construit un tableau formaté pour le tracé d'un graphique d'utilisation
+     * du quiz à partir de données brutes issues de la requête.
+     *
+     * @param array $rows Données brutes.
+     * @param string $key Clé du futur tableau.
+     * @param integer $min_key Clé numérique de départ du tableau.
+     * @param integer $max_key Clé numérique de fin du tableau.
+     * @return array            Données formatées.
+     */
+    private function construireTableauGraphique(array $rows, $key, $min_key = null, $max_key = null)
+    {
+        $ret = array(
+            'validations_totales' => [],
+            'validations_membres' => [],
+            'validations_visiteurs' => [],
+            'note_moyenne' => [],
+        );
+        //Construction des lignes par défaut si demandé.
+        if (isset($min_key) && isset($max_key)) {
+            for ($i = $min_key; $i <= $max_key; $i++) {
+                $ret['validations_totales'][$i] = 0;
+                $ret['validations_membres'][$i] = 0;
+                $ret['validations_visiteurs'][$i] = 0;
+                $ret['note_moyenne'][$i] = 0;
+            }
+        }
+        //Remplissage avec les données issues de la base de données.
+        foreach ($rows as $row) {
+            $ret['validations_totales'][$row[$key]] = $row['validations_totales'];
+            $ret['validations_membres'][$row[$key]] = $row['validations_membres'];
+            $ret['validations_visiteurs'][$row[$key]] = $row['validations_visiteurs'];
+            $ret['note_moyenne'][$row[$key]] = $row['note_moyenne'];
+        }
+        return $ret;
+    }
+    /**
+     * Construit un tableau formaté pour le tracé d'un graphique d'utilisation
+     * du quiz, dans le cas particulier des statistiques globales sans limite de
+     *  temps à partir de données brutes issues de la requête.
+     *
+     * @param array $rows Données brutes.
+     * @param string $key Clé du futur tableau.
+     * @param string $debut Date de début, sous la forme annee-mois.
+     * @return array            Données formatées.
+     */
+    private function construireTableauGraphiqueGlobal(array $rows, $key, $debut = null)
+    {
+        $ret = array(
+            'validations_totales' => [],
+            'validations_membres' => [],
+            'validations_visiteurs' => [],
+            'note_moyenne' => [],
+        );
+        //Construction des lignes par défaut si demandé.
+        if (isset($debut)) {
+            list($annee_debut, $mois_debut) = explode('-', $debut);
+            $mois_debut--;
+            $cetteAnnee = date('Y');
+            for ($i = $annee_debut; $i <= $cetteAnnee; $i++) {
+                $min = ($i == $annee_debut) ? $mois_debut : 0;
+                $max = ($i == $cetteAnnee) ? date('m') - 1 : 11;
+                for ($j = $min; $j <= $max; $j++) {
+                    $ret['validations_totales'][$i . '-' . $j] = 0;
+                    $ret['validations_membres'][$i . '-' . $j] = 0;
+                    $ret['validations_visiteurs'][$i . '-' . $j] = 0;
+                    $ret['note_moyenne'][$i . '-' . $j] = 0;
+                }
+            }
+        }
+        //Remplissage avec les données issues de la base de données.
+        foreach ($rows as $row) {
+            $ret['validations_totales'][$row[$key]] = $row['validations_totales'];
+            $ret['validations_membres'][$row[$key]] = $row['validations_membres'];
+            $ret['validations_visiteurs'][$row[$key]] = $row['validations_visiteurs'];
+            $ret['note_moyenne'][$row[$key]] = $row['note_moyenne'];
+        }
+        return $ret;
     }
 }

@@ -8,7 +8,7 @@
         <strong><?php echo htmlspecialchars($quiz['nom']); ?></strong> ?
         Toutes les questions contenues dedans seront également supprimées, ainsi que les scores associés.
     </p>
-    <p class="form-actions">
+    <p class="form-actions center">
         <input type="submit" class="btn btn-primary" value="Oui" name="confirmer"/>
         <a class="btn" href="<?php echo $view['router']->path('zco_quiz_admin') ?>">Non</a>
     </p>

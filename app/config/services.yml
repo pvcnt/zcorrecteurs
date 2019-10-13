@@ -109,17 +109,11 @@ services:
     tags:
     - { name: zco.parser_feature }
 
-  zco_quiz.stats:
-    class: Zco\Bundle\QuizBundle\Service\StatsService
-    public: true
-
-  zco_quiz.manager.quiz:
-    class: Zco\Bundle\QuizBundle\Entity\QuizManager
+  Zco\Bundle\ContentBundle\Entity\QuizManager:
     public: true
     arguments: ['@zco_doctrine1.connection', '@cache']
 
-  zco_quiz.manager.score:
-    class: Zco\Bundle\QuizBundle\Entity\QuizScoreManager
+  Zco\Bundle\ContentBundle\Entity\QuizScoreManager:
     public: true
     arguments: ['@zco_doctrine1.connection']
 

@@ -60,7 +60,7 @@
     <a href="<?php echo $view['router']->path('zco_quiz_deleteQuiz', ['id' => $quiz['id']]) ?>" class="btn">
         <i class="icon-trash"></i> Supprimer le quiz
     </a>
-    <a href="<?php echo $view['router']->path('zco_quiz_publishQuiz', ['id' => $quiz['id'], 'status' => (int)!$quiz->visible, 'tk' => $_SESSION['token']]) ?>" class="btn">
+    <a href="<?php echo $view['router']->path('zco_quiz_publish', ['id' => $quiz['id'], 'status' => (int)!$quiz->visible, 'token' => $_SESSION['token']]) ?>" class="btn">
         <?php if ($quiz->visible): ?>
             <i class="icon-stop"></i> Dépublier le quiz
         <?php else: ?>

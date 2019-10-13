@@ -51,7 +51,7 @@ final class AdminMenuFactory
             ]);
         }
         if (verifier('citations_modifier')) {
-            $menu->getChild('Citations')->addChild('Gérer les citations', [
+            $menu->getChild('Catégories')->addChild('Gérer les citations', [
                 'uri' => $this->router->generate('zco_quote_index'),
             ]);
         }
@@ -73,12 +73,12 @@ final class AdminMenuFactory
             ));
         }
         if (verifier('quiz_ajouter')) {
-            $menu->getChild('Quiz')->addChild('Gérer les quiz', array(
+            $menu->getChild('Catégories')->addChild('Gérer les quiz', array(
                 'uri' => $this->router->generate('zco_quiz_admin'),
             ));
         }
         if (verifier('dictees_publier')) {
-            $menu->getChild('Quiz')->addChild('Gérer les dictées', array(
+            $menu->getChild('Catégories')->addChild('Gérer les dictées', array(
                 'uri' => $this->router->generate('zco_dictation_admin'),
             ));
         }

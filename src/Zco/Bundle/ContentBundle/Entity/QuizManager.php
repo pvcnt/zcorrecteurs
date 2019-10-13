@@ -1,6 +1,6 @@
 <?php
 
-namespace Zco\Bundle\QuizBundle\Entity;
+namespace Zco\Bundle\ContentBundle\Entity;
 
 use Doctrine\Common\Cache\Cache;
 
