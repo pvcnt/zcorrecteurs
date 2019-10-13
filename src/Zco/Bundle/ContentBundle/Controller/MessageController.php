@@ -178,7 +178,7 @@ final class MessageController extends Controller
             $InfosSujet['dernier_message_date'] = $InfosSujet['sujet_date'];
         }
 
-        \Page::$titre = htmlspecialchars($InfosSujet['sujet_titre']) . ' - Ajout d\'une réponse';
+        \Zco\Page::$titre = htmlspecialchars($InfosSujet['sujet_titre']) . ' - Ajout d\'une réponse';
 
         //On a validé le formulaire. Des vérifications s'imposent.
         if (empty($_POST['texte'])) {
@@ -202,7 +202,7 @@ final class MessageController extends Controller
         if (!verifier('voir_sujets', $InfosSujet['sujet_forum_id'])) {
             throw new NotFoundHttpException();
         }
-        \Page::$titre = htmlspecialchars($InfosSujet['sujet_titre']);
+        \Zco\Page::$titre = htmlspecialchars($InfosSujet['sujet_titre']);
 
         return $InfosSujet;
     }

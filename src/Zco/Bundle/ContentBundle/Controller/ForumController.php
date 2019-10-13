@@ -127,8 +127,8 @@ final class ForumController extends Controller
             throw new NotFoundHttpException();
 
         if ($page < $NombreDePages) {
-            \Page::$titre .= ' - Page ' . $page;
-            \Page::$description .= ' - Page ' . $page;
+            \Zco\Page::$titre .= ' - Page ' . $page;
+            \Zco\Page::$description .= ' - Page ' . $page;
         }
 
         // On récupère la liste des numéros des pages.

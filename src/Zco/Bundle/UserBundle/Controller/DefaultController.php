@@ -92,11 +92,11 @@ class DefaultController extends Controller
         $users->setUsedRoute('zco_user_indexWithPage');
 
         fil_ariane(null);
-        \Page::$titre = 'Liste des membres';
-        \Page::$description = 'Liste complète de tous les membres inscrits sur le site';
+        \Zco\Page::$titre = 'Liste des membres';
+        \Zco\Page::$description = 'Liste complète de tous les membres inscrits sur le site';
         if ($page > 1) {
-            \Page::$titre .= ' - Page ' . $page;
-            \Page::$description .= ' - Page ' . $page;
+            \Zco\Page::$titre .= ' - Page ' . $page;
+            \Zco\Page::$description .= ' - Page ' . $page;
         }
 
         return $this->render('ZcoUserBundle::index.html.php', array(
@@ -161,7 +161,7 @@ class DefaultController extends Controller
         $vars['own'] = $_SESSION['id'] == $user->getId();
 
         fil_ariane(['Profil d' . $art . htmlspecialchars($user->getUsername())]);
-        \Page::$description = 'Pour en savoir plus sur la personnalité d' . $art . htmlspecialchars($user->getUsername()) . ' et son activité sur le site';
+        \Zco\Page::$description = 'Pour en savoir plus sur la personnalité d' . $art . htmlspecialchars($user->getUsername()) . ' et son activité sur le site';
 
         return $this->render('ZcoUserBundle::profile.html.php', $vars);
     }
@@ -178,7 +178,7 @@ class DefaultController extends Controller
         if (!verifier('connecte')) {
             throw new AccessDeniedHttpException('Vous devez être connecté pour accéder à cette page.');
         }
-        \Page::$titre = 'Sauvegardes automatiques de zCode';
+        \Zco\Page::$titre = 'Sauvegardes automatiques de zCode';
         fil_ariane('Voir mes textes sauvegardés');
 
         return $this->render('ZcoUserBundle::zformBackups.html.php', array(

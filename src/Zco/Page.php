@@ -19,6 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace Zco;
+
 /**
  * Classe magique permettant de gérer des variables concernant la page.
  *

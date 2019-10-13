@@ -157,7 +157,7 @@
                 <div id="postloading-area"></div>
 
                 <p class="arianne">
-                    Vous êtes ici : <?php echo implode(' &gt; ', \Page::breadcrumb()) ?>
+                    Vous êtes ici : <?php echo implode(' &gt; ', \Zco\Page::breadcrumb()) ?>
                 </p>
             <?php endif ?>
 

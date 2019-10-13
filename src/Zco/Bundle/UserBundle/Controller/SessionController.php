@@ -78,7 +78,7 @@ class SessionController extends Controller
 		}
 		
 		//Paramétrage de la vue.
-		\Page::$titre = 'Se connecter sur zCorrecteurs.fr';
+		\Zco\Page::$titre = 'Se connecter sur zCorrecteurs.fr';
 		fil_ariane('Se connecter');
 		
 		return $this->render('ZcoUserBundle:Session:login.html.php', array(
@@ -148,8 +148,8 @@ class SessionController extends Controller
 				$this->generateUrl('zco_user_session_newPassword'), MSG_ERROR);
 		}
 		
-		\Page::$titre = 'Nouveau mot de passe';
-		\Page::$description = 'Si vous avez perdu votre mot de passe, nous pouvons vous en renvoyer un nouveau';
+		\Zco\Page::$titre = 'Nouveau mot de passe';
+		\Zco\Page::$description = 'Si vous avez perdu votre mot de passe, nous pouvons vous en renvoyer un nouveau';
 		
 		return $this->render('ZcoUserBundle:Session:newPassword.html.php');
 	}
@@ -200,7 +200,7 @@ class SessionController extends Controller
 		}
 		
 		//Paramétrage de la vue.
-		\Page::$titre = 'S\'inscrire sur zCorrecteurs.fr';
+		\Zco\Page::$titre = 'S\'inscrire sur zCorrecteurs.fr';
 		fil_ariane('Créer un nouveau compte');
 		
 		return $this->render('ZcoUserBundle:Session:register.html.php', array(

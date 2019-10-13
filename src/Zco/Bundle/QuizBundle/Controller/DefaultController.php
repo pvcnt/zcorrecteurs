@@ -45,7 +45,7 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        \Page::$titre = 'Quiz';
+        \Zco\Page::$titre = 'Quiz';
         $registry = $this->get('zco_core.registry');
         $pinnedQuiz = $registry->get('bloc_accueil') === 'quiz' ? $registry->get('accueil_quiz', null) : null;
         $quizList = $this->get('zco_quiz.manager.quiz')->lister();
@@ -86,7 +86,7 @@ class DefaultController extends Controller
                 ];
             }
 
-            \Page::$titre = htmlspecialchars($quiz['nom']) . ' - Correction';
+            \Zco\Page::$titre = htmlspecialchars($quiz['nom']) . ' - Correction';
             fil_ariane([
                 'Quiz' => $this->generateUrl('zco_quiz_index'),
                 htmlspecialchars($quiz['nom']) => $this->generateUrl('zco_quiz_show', ['id' => $quiz['id'], 'slug' => rewrite($quiz['nom'])]),
@@ -101,8 +101,8 @@ class DefaultController extends Controller
             ]);
         }
 
-        \Page::$titre = htmlspecialchars($quiz['nom']);
-        \Page::$description = htmlspecialchars($quiz['description']);
+        \Zco\Page::$titre = htmlspecialchars($quiz['nom']);
+        \Zco\Page::$description = htmlspecialchars($quiz['description']);
         fil_ariane([
             'Quiz' => $this->generateUrl('zco_quiz_index'),
             htmlspecialchars($quiz['nom']),
@@ -129,7 +129,7 @@ class DefaultController extends Controller
         $nbNotes = $repository->count($_SESSION['id']);
         $lastNotes = $repository->find($_SESSION['id'], 30);
 
-        \Page::$titre = 'Mes statistiques d\'utilisation du quiz';
+        \Zco\Page::$titre = 'Mes statistiques d\'utilisation du quiz';
         fil_ariane([
             'Quiz' => $this->generateUrl('zco_quiz_index'),
             'Mes statistiques',
@@ -167,7 +167,7 @@ class DefaultController extends Controller
         if (!verifier('quiz_ajouter')) {
             throw new AccessDeniedHttpException();
         }
-        \Page::$titre = 'Gestion des quiz';
+        \Zco\Page::$titre = 'Gestion des quiz';
         fil_ariane([
             'Quiz' => $this->generateUrl('zco_quiz_index'),
             'Gestion des quiz',
@@ -225,7 +225,7 @@ class DefaultController extends Controller
             );
         }
 
-        \Page::$titre = 'Ajouter une question';
+        \Zco\Page::$titre = 'Ajouter une question';
         fil_ariane(array(
             htmlspecialchars($quiz['nom']) => $this->generateUrl('zco_quiz_editQuiz', ['id' => $quiz['id']]),
             'Ajouter une question'
@@ -265,7 +265,7 @@ class DefaultController extends Controller
         }
 
         $categories = CategoryDAO::ListerEnfants(CategoryDAO::GetIDCategorie('quiz'));
-        \Page::$titre = 'Ajouter un quiz';
+        \Zco\Page::$titre = 'Ajouter un quiz';
 
         return $this->render('ZcoQuizBundle::newQuiz.html.php', [
             'categories' => $categories,
@@ -305,7 +305,7 @@ class DefaultController extends Controller
             );
         }
 
-        \Page::$titre = 'Modifier une question';
+        \Zco\Page::$titre = 'Modifier une question';
         fil_ariane(array(
             htmlspecialchars($question->Quiz['nom']) => $this->generateUrl('zco_quiz_editQuiz', ['id' => $question->Quiz['id']]),
             'Modifier une question'
@@ -349,7 +349,7 @@ class DefaultController extends Controller
 
         $questions = $quizManager->findQuestions($quiz['id']);
         $categories = CategoryDAO::ListerEnfants(CategoryDAO::GetIDCategorie('quiz'));
-        \Page::$titre = 'Modifier le quiz';
+        \Zco\Page::$titre = 'Modifier le quiz';
         fil_ariane(htmlspecialchars($quiz['nom']));
 
         return $this->render('ZcoQuizBundle::editQuiz.html.php', [
@@ -382,7 +382,7 @@ class DefaultController extends Controller
             );
         }
 
-        \Page::$titre = 'Supprimer une question';
+        \Zco\Page::$titre = 'Supprimer une question';
         fil_ariane($question->Quiz['categorie_id'], array(
             htmlspecialchars($question->Quiz['nom']) => $this->generateUrl('zco_quiz_editQuiz', ['id' => $question->quiz['id']]),
             'Supprimer une question'
@@ -416,7 +416,7 @@ class DefaultController extends Controller
             return redirect('Le quiz a bien été supprimé.', $this->generateUrl('zco_quiz_admin'));
         }
 
-        \Page::$titre = 'Supprimer le quiz';
+        \Zco\Page::$titre = 'Supprimer le quiz';
         fil_ariane($quiz['categorie_id'], array(
             htmlspecialchars($quiz['nom']) => $this->generateUrl('zco_quiz_show', ['id' => $quiz['id'], 'slug' => rewrite($quiz['nom'])]),
             'Supprimer le quiz'
@@ -482,7 +482,7 @@ class DefaultController extends Controller
         }
 
         $quizList = $repository->lister(true);
-        \Page::$titre = 'Déplacer une question';
+        \Zco\Page::$titre = 'Déplacer une question';
 
         return $this->render('ZcoQuizBundle::moveQuestion.html.php', [
             'question' => $question,
@@ -504,7 +504,7 @@ class DefaultController extends Controller
         if (!verifier('voir_stats_generales')) {
             throw new AccessDeniedHttpException();
         }
-        \Page::$titre = 'Popularité des quiz';
+        \Zco\Page::$titre = 'Popularité des quiz';
         $quizList = $this->get('zco_quiz.manager.quiz')->getByPopularity();
 
         return $this->render('ZcoQuizBundle::popularity.html.php', [
@@ -551,7 +551,7 @@ class DefaultController extends Controller
         $avgNote = $manager->getAverage(QuizScoreManager::ALL, isset($quiz) ? $quiz['id'] : null);
 
         $quizList = $this->get('zco_quiz.manager.quiz')->lister();
-        \Page::$titre = 'Statistiques d\'utilisation des quiz';
+        \Zco\Page::$titre = 'Statistiques d\'utilisation des quiz';
 
         return $this->render('ZcoQuizBundle::stats.html.php', [
             'annee' => $year,

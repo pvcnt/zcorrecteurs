@@ -39,7 +39,7 @@ class HomeController extends Controller
      */
     public function indexAction()
     {
-        \Page::$titre = 'zCorrecteurs.fr - Les réponses à toutes vos questions concernant la langue française !';
+        \Zco\Page::$titre = 'zCorrecteurs.fr - Les réponses à toutes vos questions concernant la langue française !';
         $vars = array();
 
         // Blog

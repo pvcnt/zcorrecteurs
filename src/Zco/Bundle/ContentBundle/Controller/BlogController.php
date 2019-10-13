@@ -54,7 +54,7 @@ final class BlogController extends Controller
         $NombreDeBillet = BlogDAO::CompterListerBilletsEnLigne();
         $NombreDePage = ceil($NombreDeBillet / self::PER_PAGE);
         if ($page > 1) {
-            \Page::$titre .= ' - Page ' . $page;
+            \Zco\Page::$titre .= ' - Page ' . $page;
         }
 
         $params = [
@@ -132,8 +132,8 @@ final class BlogController extends Controller
 
         $page = (int)$request->get('page', 1);
         if ($page > 1) {
-            \Page::$titre .= ' - Page ' . $page;
-            \Page::$description .= ' - Page ' . $page;
+            \Zco\Page::$titre .= ' - Page ' . $page;
+            \Zco\Page::$description .= ' - Page ' . $page;
         }
 
         $ListerCommentaires = CommentDAO::ListerCommentairesBillet($id, $page);
@@ -151,8 +151,8 @@ final class BlogController extends Controller
             htmlspecialchars($InfosBillet['version_titre']) => $url,
             'Lecture du billet',
         ]);
-        \Page::$titre = htmlspecialchars($InfosBillet['version_titre']);
-        \Page::$description = htmlspecialchars(strip_tags($InfosBillet['version_intro']));
+        \Zco\Page::$titre = htmlspecialchars($InfosBillet['version_titre']);
+        \Zco\Page::$description = htmlspecialchars(strip_tags($InfosBillet['version_intro']));
         $this->get('zco_core.resource_manager')->requireResources(array(
             '@ZcoContentBundle/Resources/public/css/forum.css',
             '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
@@ -235,7 +235,7 @@ final class BlogController extends Controller
             htmlspecialchars($InfosBillet['version_titre']) => $this->generateUrl('zco_blog_show', ['id' => $InfosBillet['blog_id'], 'slug' => rewrite($InfosBillet['version_titre'])]),
             'Modification du billet'
         ]);
-        \Page::$titre = htmlspecialchars($InfosBillet['version_titre']);
+        \Zco\Page::$titre = htmlspecialchars($InfosBillet['version_titre']);
         $Etats = [
             BLOG_BROUILLON => 'Brouillon',
             BLOG_PROPOSE => 'Proposé',
@@ -260,7 +260,7 @@ final class BlogController extends Controller
         if (!verifier('connecte')) {
             throw new AccessDeniedHttpException();
         }
-        \Page::$titre = 'Ajouter un billet';
+        \Zco\Page::$titre = 'Ajouter un billet';
 
         if (isset($_POST['submit'])) {
             if (!empty($_POST['titre']) && !empty($_POST['texte']) && !empty($_POST['intro'])) {
@@ -287,7 +287,7 @@ final class BlogController extends Controller
         if (!verifier('connecte')) {
             throw new AccessDeniedHttpException();
         }
-        \Page::$titre = 'Mes billets';
+        \Zco\Page::$titre = 'Mes billets';
 
         $params = ['id_utilisateur' => $_SESSION['id']];
         $status = $request->get('etat', '');
@@ -343,7 +343,7 @@ final class BlogController extends Controller
                 $this->generateUrl('zco_blog_show', ['id' => $InfosCommentaire['blog_id'], 'slug' => rewrite($InfosCommentaire['version_titre'])]));
         }
 
-        \Page::$titre = htmlspecialchars($InfosCommentaire['version_titre']) . ' - Supprimer un commentaire';
+        \Zco\Page::$titre = htmlspecialchars($InfosCommentaire['version_titre']) . ' - Supprimer un commentaire';
         fil_ariane($InfosBillet['cat_id'], [
             htmlspecialchars($InfosBillet['version_titre']) => $this->generateUrl('zco_blog_show', ['id' => $id, 'slug' => rewrite($InfosBillet['version_titre'])]),
             'Supprimer un commentaire'
@@ -404,7 +404,7 @@ final class BlogController extends Controller
             '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
             '@ZcoContentBundle/Resources/public/css/forum.css',
         ]);
-        \Page::$titre = htmlspecialchars($InfosBillet['version_titre']) . ' - Ajouter un commentaire';
+        \Zco\Page::$titre = htmlspecialchars($InfosBillet['version_titre']) . ' - Ajouter un commentaire';
 
         return $this->render('ZcoContentBundle:Blog:ajouterCommentaire.html.php', [
             'InfosBillet' => $InfosBillet,
@@ -444,7 +444,7 @@ final class BlogController extends Controller
             );
         }
 
-        \Page::$titre = htmlspecialchars($InfosCommentaire['version_titre']) . ' - Modifier un commentaire';
+        \Zco\Page::$titre = htmlspecialchars($InfosCommentaire['version_titre']) . ' - Modifier un commentaire';
         fil_ariane($InfosCommentaire['blog_id_categorie'], [
             htmlspecialchars($InfosCommentaire['version_titre']) => $this->generateUrl('zco_blog_show', ['id' => $InfosCommentaire['blog_id'], 'slug' => rewrite($InfosCommentaire['version_titre'])]),
             'Modifier un commentaire'
@@ -495,7 +495,7 @@ final class BlogController extends Controller
                 $InfosUtilisateur['auteur_statut'] = $a['auteur_statut'];
         }
 
-        \Page::$titre = htmlspecialchars($InfosBillet['version_titre']) . ' - Modifier un auteur';
+        \Zco\Page::$titre = htmlspecialchars($InfosBillet['version_titre']) . ' - Modifier un auteur';
         fil_ariane($InfosBillet['blog_id_categorie'], [
             htmlspecialchars($InfosBillet['version_titre']) => $url,
             'Modifier un auteur'
@@ -537,7 +537,7 @@ final class BlogController extends Controller
         }
 
         $InfosUtilisateur = UserDAO::InfosUtilisateur($authorId);
-        \Page::$titre = htmlspecialchars($InfosBillet['version_titre']) . ' - Supprimer un auteur';
+        \Zco\Page::$titre = htmlspecialchars($InfosBillet['version_titre']) . ' - Supprimer un auteur';
         fil_ariane($InfosBillet['blog_id_categorie'], [
             htmlspecialchars($InfosBillet['version_titre']) => $url,
             'Supprimer un auteur'
@@ -573,7 +573,7 @@ final class BlogController extends Controller
             return redirect('Le billet a bien été dévalidé.', $this->generateUrl('zco_blog_mine'));
         }
 
-        \Page::$titre = htmlspecialchars($InfosBillet['version_titre']) . ' - Dévalider le billet';
+        \Zco\Page::$titre = htmlspecialchars($InfosBillet['version_titre']) . ' - Dévalider le billet';
         fil_ariane($InfosBillet['cat_id'], [
             htmlspecialchars($InfosBillet['version_titre']) => $this->generateUrl('zco_blog_show', ['id' => $id, 'slug' => rewrite($InfosBillet['version_titre'])]),
             'Dévalider le billet'
@@ -612,7 +612,7 @@ final class BlogController extends Controller
             htmlspecialchars($InfosBillet['version_titre']) => $this->generateUrl('zco_blog_show', ['id' => $id, 'slug' => rewrite($InfosBillet['version_titre'])]),
             'Valider le billet'
         ));
-        \Page::$titre = htmlspecialchars($InfosBillet['version_titre']) . ' - Valider le billet';
+        \Zco\Page::$titre = htmlspecialchars($InfosBillet['version_titre']) . ' - Valider le billet';
 
         return $this->render('ZcoContentBundle:Blog:publish.html.php', ['InfosBillet' => $InfosBillet]);
     }
@@ -638,7 +638,7 @@ final class BlogController extends Controller
             htmlspecialchars($InfosBillet['version_titre']) => $this->generateUrl('zco_blog_manage', ['id' => $id]),
             'Voir l\'historique des versions',
         ]);
-        \Page::$titre = htmlspecialchars($InfosBillet['version_titre']) . ' - Historique des versions';
+        \Zco\Page::$titre = htmlspecialchars($InfosBillet['version_titre']) . ' - Historique des versions';
 
         return $this->render('ZcoContentBundle:Blog:versions.html.php', [
             'InfosBillet' => $InfosBillet,
@@ -693,7 +693,7 @@ final class BlogController extends Controller
             htmlspecialchars($InfosBillet['version_titre']) => $this->generateUrl('zco_blog_manage', ['id' => $id]),
             'Modifier le billet',
         ]);
-        \Page::$titre = htmlspecialchars($InfosBillet['version_titre']) . ' - Modifier le billet';
+        \Zco\Page::$titre = htmlspecialchars($InfosBillet['version_titre']) . ' - Modifier le billet';
 
         return $this->render('ZcoContentBundle:Blog:editer.html.php', [
             'InfosBillet' => $InfosBillet,
@@ -729,7 +729,7 @@ final class BlogController extends Controller
             htmlspecialchars($InfosBillet['version_titre']) => $this->generateUrl('zco_blog_manage', ['id' => $id]),
             'Supprimer le billet',
         ]);
-        \Page::$titre = htmlspecialchars($InfosBillet['version_titre']) . ' - Supprimer le billet';
+        \Zco\Page::$titre = htmlspecialchars($InfosBillet['version_titre']) . ' - Supprimer le billet';
 
         return $this->render('ZcoContentBundle:Blog:supprimer.html.php', [
             'InfosBillet' => $InfosBillet,
@@ -781,7 +781,7 @@ final class BlogController extends Controller
             'Historique des versions' => $this->generateUrl('zco_blog_history', ['id' => $InfosBillet['blog_id']]),
             'Comparaison',
         ]);
-        \Page::$titre = htmlspecialchars($InfosBillet['version_titre']) . ' - Historique des versions';
+        \Zco\Page::$titre = htmlspecialchars($InfosBillet['version_titre']) . ' - Historique des versions';
         $this->get('zco_core.resource_manager')->requireResource(
             '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css'
         );

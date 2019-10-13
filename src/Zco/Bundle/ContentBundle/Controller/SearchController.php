@@ -52,7 +52,7 @@ class SearchController extends Controller
         // Configuration pour les trois actions (avant et après la recherche)
         $CatsForum = CategoryDAO::ListerEnfants(CategoryDAO::GetIDCategorie('forum'), true, true);
         $CatsBlog = CategoryDAO::ListerEnfants(CategoryDAO::GetIDCategorie('blog'), true, true);
-        \Page::$titre = 'Recherche';
+        \Zco\Page::$titre = 'Recherche';
         $this->get('zco_core.resource_manager')->requireResources(array(
             '@ZcoContentBundle/Resources/public/css/forum.css',
             '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',

@@ -66,7 +66,7 @@ class AdminController extends Controller
         if (!verifier('gerer_comptes_valides')) {
             throw new AccessDeniedHttpException;
         }
-        \Page::$titre = 'Comptes en cours de validation';
+        \Zco\Page::$titre = 'Comptes en cours de validation';
 
         return $this->render('ZcoUserBundle:Admin:unvalidAccounts.html.php', array(
             'users' => \Doctrine_Core::getTable('Utilisateur')->getByNonValid(),
@@ -91,7 +91,7 @@ class AdminController extends Controller
             $users = null;
             $email = null;
         }
-        \Page::$titre = 'Rechercher une adresse mail';
+        \Zco\Page::$titre = 'Rechercher une adresse mail';
 
         return $this->render('ZcoUserBundle:Admin:searchEmail.html.php', array(
             'users' => $users,
@@ -122,7 +122,7 @@ class AdminController extends Controller
                 $this->generateUrl('zco_user_index'));
         }
 
-        \Page::$titre = 'Supprimer un compte';
+        \Zco\Page::$titre = 'Supprimer un compte';
 
         return $this->render('ZcoUserBundle:Admin:deleteAccount.html.php',
             array('user' => $user));

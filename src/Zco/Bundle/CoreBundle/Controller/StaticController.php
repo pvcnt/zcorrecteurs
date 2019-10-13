@@ -43,7 +43,7 @@ class StaticController extends Controller
     public function indexAction()
     {
         fil_ariane(['À propos des zCorrecteurs']);
-        \Page::$description = 'Apprenez-en plus sur le site et son histoire.';
+        \Zco\Page::$description = 'Apprenez-en plus sur le site et son histoire.';
 
         return $this->render('ZcoCoreBundle:Static:about.html.php');
     }
@@ -56,7 +56,7 @@ class StaticController extends Controller
     public function bannersAction()
     {
         fil_ariane(['Aidez-nous à promouvoir le site']);
-        \Page::$description = 'Découvrez une série de bannières et images que nous mettons à votre '
+        \Zco\Page::$description = 'Découvrez une série de bannières et images que nous mettons à votre '
             . 'disposition si vous souhaitez faire la promotion du site.';
 
         return $this->render('ZcoCoreBundle:Static:banners.html.php', array(
@@ -80,7 +80,7 @@ class StaticController extends Controller
     public function teamAction()
     {
         fil_ariane(['Notre équipe']);
-        \Page::$description = 'Ceux qui font vivre le site jour après jour, en '
+        \Zco\Page::$description = 'Ceux qui font vivre le site jour après jour, en '
             . 'corrigeant vos écrits, nourissant le contenu ou maintenant le site '
             . 'en état de marche.';
 
@@ -98,7 +98,7 @@ class StaticController extends Controller
     public function corrigraphieAction()
     {
         fil_ariane(['L\'association Corrigraphie']);
-        \Page::$description = 'Venez découvrir l\'association qui se cache derrière '
+        \Zco\Page::$description = 'Venez découvrir l\'association qui se cache derrière '
             . 'le site, Corrigraphie, son rôle et ses activités.';
 
         return $this->render('ZcoCoreBundle:Static:corrigraphie.html.php');
@@ -113,7 +113,7 @@ class StaticController extends Controller
     public function openSourceAction()
     {
         fil_ariane(['Logiciel libre']);
-        \Page::$description = 'zCorrecteurs.fr publie son code source sous licence libre.';
+        \Zco\Page::$description = 'zCorrecteurs.fr publie son code source sous licence libre.';
 
         return $this->render('ZcoCoreBundle:Static:openSource.html.php');
     }
@@ -133,12 +133,12 @@ class StaticController extends Controller
         $form = $this->createForm(ContactType::class, $contact);
 
         if ($contact->raison) {
-            \Page::$titre .= ' - ' . $contact->raison;
-            \Page::$description = 'Si vous avez une question ou une demande '
+            \Zco\Page::$titre .= ' - ' . $contact->raison;
+            \Zco\Page::$description = 'Si vous avez une question ou une demande '
                 . 'ayant pour objet « ' . $contact->raison . ' », vous pouvez joindre '
                 . 'l\'équipe du site zCorrecteurs.fr de manière personnalisée.';
         } else {
-            \Page::$description = 'Si vous avez une question ou une demande particulière, '
+            \Zco\Page::$description = 'Si vous avez une question ou une demande particulière, '
                 . 'vous pouvez joindre l\'équipe du site zCorrecteurs.fr de manière personnalisée.';
         }
 
@@ -178,7 +178,7 @@ class StaticController extends Controller
     public function donateAction()
     {
         fil_ariane(['Faire un don']);
-        \Page::$description = 'Découvrez comment faire un don au site et consultez la liste de ceux qui nous ont déjà aidé !';
+        \Zco\Page::$description = 'Découvrez comment faire un don au site et consultez la liste de ceux qui nous ont déjà aidé !';
 
         return $this->render('ZcoCoreBundle:Donate:index.html.php');
     }

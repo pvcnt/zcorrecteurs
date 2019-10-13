@@ -52,7 +52,7 @@ class QuotesController extends Controller
 
         $pages = liste_pages($page, ceil($totalCount / 30), $this->generateUrl('zco_quote_index') . '?page=%s');
 
-        \Page::$titre = 'Citations';
+        \Zco\Page::$titre = 'Citations';
         $this->get('zco_core.resource_manager')->requireResources([
             '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',
         ]);
@@ -87,7 +87,7 @@ class QuotesController extends Controller
             return redirect('La citation a bien été créée.', $this->generateUrl('zco_quote_index'));
         }
 
-        \Page::$titre = 'Nouvelle citation';
+        \Zco\Page::$titre = 'Nouvelle citation';
         fil_ariane([
             'Citations' => $this->generateUrl('zco_quote_index'),
             'Nouvelle citation',
@@ -127,7 +127,7 @@ class QuotesController extends Controller
             return redirect('La citation a bien été modifiée.', $this->generateUrl('zco_quote_index'));
         }
 
-        \Page::$titre = 'Modifier une citation';
+        \Zco\Page::$titre = 'Modifier une citation';
         fil_ariane([
             'Citations' => $this->generateUrl('zco_quote_index'),
             'Modifier une citation',
@@ -163,7 +163,7 @@ class QuotesController extends Controller
             return redirect('La citation a bien été supprimée.', $this->generateUrl('zco_quote_index'));
         }
 
-        \Page::$titre = 'Supprimer une citation';
+        \Zco\Page::$titre = 'Supprimer une citation';
         fil_ariane([
             'Citations' => $this->generateUrl('zco_quote_index'),
             'Modifier une citation',

@@ -44,7 +44,7 @@ final class DefaultController extends Controller
         if (!verifier('groupes_gerer')) {
             throw new AccessDeniedHttpException();
         }
-        \Page::$titre = 'Groupes';
+        \Zco\Page::$titre = 'Groupes';
 
         return $this->render('ZcoGroupesBundle::index.html.php', [
             'ListerGroupes' => GroupDAO::ListerGroupes(),
@@ -69,7 +69,7 @@ final class DefaultController extends Controller
             return redirect('Le groupe a bien été ajouté.', $this->generateUrl('zco_groups_index'));
         }
 
-        \Page::$titre = 'Créer un groupe';
+        \Zco\Page::$titre = 'Créer un groupe';
         fil_ariane([
             'Groupes' => $this->generateUrl('zco_groups_index'),
             'Créer un groupe',
@@ -104,7 +104,7 @@ final class DefaultController extends Controller
             return redirect('Le groupe a bien été modifié.', $this->generateUrl('zco_groups_index'));
         }
 
-        \Page::$titre = htmlspecialchars($InfosGroupe['groupe_nom']) . '- Modifier le groupe';
+        \Zco\Page::$titre = htmlspecialchars($InfosGroupe['groupe_nom']) . '- Modifier le groupe';
         fil_ariane([
             'Groupes' => $this->generateUrl('zco_groups_index'),
             htmlspecialchars($InfosGroupe['groupe_nom']),
@@ -134,7 +134,7 @@ final class DefaultController extends Controller
             return redirect('Le groupe a bien été supprimé.', $this->generateUrl('zco_groups_index'));
         }
 
-        \Page::$titre = htmlspecialchars($InfosGroupe['groupe_nom']) . ' - Supprimer le groupe';
+        \Zco\Page::$titre = htmlspecialchars($InfosGroupe['groupe_nom']) . ' - Supprimer le groupe';
         fil_ariane([
             'Groupes' => $this->generateUrl('zco_groups_index'),
             htmlspecialchars($InfosGroupe['groupe_nom']) => $this->generateUrl('zco_groups_edit', ['id' => $InfosGroupe['groupe_id']]),
@@ -158,7 +158,7 @@ final class DefaultController extends Controller
         $InfosGroupe = $this->getGroupOrThrow($id);
         $Droits = CredentialsDAO::VerifierDroitsGroupe($id);
 
-        \Page::$titre = htmlspecialchars($InfosGroupe['groupe_nom']) . ' - Vérifier les droits';
+        \Zco\Page::$titre = htmlspecialchars($InfosGroupe['groupe_nom']) . ' - Vérifier les droits';
         fil_ariane([
             'Groupes' => $this->generateUrl('zco_groups_index'),
             htmlspecialchars($InfosGroupe['groupe_nom']) => $this->generateUrl('zco_groups_edit', ['id' => $InfosGroupe['groupe_id']]),
@@ -210,7 +210,7 @@ final class DefaultController extends Controller
             );
         }
 
-        \Page::$titre = 'Changer de groupe - ' . htmlspecialchars($InfosUtilisateur['utilisateur_pseudo']);
+        \Zco\Page::$titre = 'Changer de groupe - ' . htmlspecialchars($InfosUtilisateur['utilisateur_pseudo']);
         fil_ariane([
             'Membres' => $this->generateUrl('zco_user_index'),
             htmlspecialchars($InfosUtilisateur['utilisateur_pseudo']) => $this->generateUrl('zco_user_profile', ['id' => $InfosUtilisateur['utilisateur_id'], 'slug' => rewrite($InfosUtilisateur['utilisateur_pseudo'])]),
@@ -328,7 +328,7 @@ final class DefaultController extends Controller
             );
         }
 
-        \Page::$titre = htmlspecialchars($InfosGroupe['groupe_nom']) . ' - Modifier les droits';
+        \Zco\Page::$titre = htmlspecialchars($InfosGroupe['groupe_nom']) . ' - Modifier les droits';
         fil_ariane([
             'Groupes' => $this->generateUrl('zco_groups_index'),
             htmlspecialchars($InfosGroupe['groupe_nom']) => $this->generateUrl('zco_groups_edit', ['id' => $InfosGroupe['groupe_id']]),

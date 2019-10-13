@@ -60,7 +60,7 @@ class DefaultController extends Controller
 			throw new AccessDeniedHttpException();
 		}
 		
-		\Page::$titre = 'Gestionnaire de fichiers';
+		\Zco\Page::$titre = 'Gestionnaire de fichiers';
 		$vars = $this->getVariables($request);
 
 		//Données en Mo.
@@ -182,7 +182,7 @@ class DefaultController extends Controller
 		{
 			$contentFolder = null;
 		}
-		\Page::$titre = $folder['name'];
+		\Zco\Page::$titre = $folder['name'];
 		
 		return $this->render(
 			'ZcoFileBundle::folder.html.php', $this->getVariables($request, array(
@@ -236,7 +236,7 @@ class DefaultController extends Controller
 				'</lien>';
 		}
 		
-		\Page::$titre = sprintf('Propriétés du fichier "%s"', $file['name']);
+		\Zco\Page::$titre = sprintf('Propriétés du fichier "%s"', $file['name']);
 		$timestamp = time();
 		
 		return $this->render(

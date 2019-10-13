@@ -85,7 +85,7 @@ final class CategoryController extends Controller
             return redirect('La catégorie a bien été montée.', $this->generateUrl('zco_categories_index'));
         }
 
-        \Page::$titre = 'Catégories';
+        \Zco\Page::$titre = 'Catégories';
 
         return $this->render('ZcoContentBundle:Category:index.html.php', [
             'categories' => CategoryDAO::ListerCategories(),
@@ -114,7 +114,7 @@ final class CategoryController extends Controller
             return redirect('La catégorie a bien été ajoutée.', $this->generateUrl('zco_categories_index'));
         }
 
-        \Page::$titre = 'Créer une catégorie';
+        \Zco\Page::$titre = 'Créer une catégorie';
         fil_ariane([
             'Catégories' => $this->generateUrl('zco_categories_index'),
             'Créer une catégorie',
@@ -161,7 +161,7 @@ final class CategoryController extends Controller
             return redirect('La catégorie a bien été modifiée.', $this->generateUrl('zco_categories_index'));
         }
 
-        \Page::$titre = htmlspecialchars($InfosCategorie['cat_nom']) . '- Modifier la catégorie';
+        \Zco\Page::$titre = htmlspecialchars($InfosCategorie['cat_nom']) . '- Modifier la catégorie';
         fil_ariane([
             'Catégories' => $this->generateUrl('zco_categories_index'),
             htmlspecialchars($InfosCategorie['cat_nom']),
@@ -206,7 +206,7 @@ final class CategoryController extends Controller
             return redirect('La catégorie a bien été supprimée.', $this->generateUrl('zco_categories_index'));
         }
 
-        \Page::$titre = htmlspecialchars($InfosCategorie['cat_nom']) . '- Supprimer la catégorie';
+        \Zco\Page::$titre = htmlspecialchars($InfosCategorie['cat_nom']) . '- Supprimer la catégorie';
         fil_ariane([
             'Catégories' => $this->generateUrl('zco_categories_index'),
             htmlspecialchars($InfosCategorie['cat_nom']) => $this->generateUrl('zco_categories_edit', ['id' => $id]),

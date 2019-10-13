@@ -49,7 +49,7 @@ class AdminController extends Controller
             throw new AccessDeniedHttpException();
         }
 
-        \Page::$titre = 'Accueil de l\'administration';
+        \Zco\Page::$titre = 'Accueil de l\'administration';
 
         $admin = $this->get(\Zco\Bundle\ContentBundle\Admin\Admin::class);
         $admin->refreshAll();

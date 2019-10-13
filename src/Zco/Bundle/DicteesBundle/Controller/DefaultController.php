@@ -150,7 +150,7 @@ class DefaultController extends Controller
         list($diff, $note) = DictationDAO::CorrigerDictee($Dictee, $_POST['texte']);
         $fautes = $diff->fautes();
 
-        \Page::$titre = 'Correction de la dictée';
+        \Zco\Page::$titre = 'Correction de la dictée';
         fil_ariane(array(
             htmlspecialchars($Dictee->titre) => $url,
             'Correction'
@@ -182,7 +182,7 @@ class DefaultController extends Controller
         if (!verifier('connecte')) {
             throw new NotFoundHttpException();
         }
-        \Page::$titre = 'Mes statistiques';
+        \Zco\Page::$titre = 'Mes statistiques';
         $count = $request->get('count', 20);
 
         return $this->render('ZcoDicteesBundle::statistiques.html.php', [
@@ -269,7 +269,7 @@ class DefaultController extends Controller
             unset($_SESSION['dictee_data']);
         }
 
-        \Page::$titre = 'Modifier une dictée';
+        \Zco\Page::$titre = 'Modifier une dictée';
 
         include(__DIR__ . '/../forms/AjouterForm.class.php');
         $Form = new \AjouterForm();
@@ -315,7 +315,7 @@ class DefaultController extends Controller
         }
 
         $Dictee = $this->getDictation($id);
-        \Page::$titre = 'Supprimer une dictée';
+        \Zco\Page::$titre = 'Supprimer une dictée';
 
         $url = 'dictee-' . $Dictee->id . '-' . rewrite($Dictee->titre) . '.html';
 

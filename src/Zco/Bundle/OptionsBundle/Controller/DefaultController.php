@@ -104,7 +104,7 @@ class DefaultController extends Controller
             );
         }
 
-        \Page::$titre = 'Modifier l\'avatar';
+        \Zco\Page::$titre = 'Modifier l\'avatar';
 
         return $this->render('ZcoOptionsBundle:Default:avatar.html.php', array(
             'user' => $user,
@@ -152,7 +152,7 @@ class DefaultController extends Controller
             );
         }
 
-        \Page::$titre = 'Modifier l\'adresse courriel';
+        \Zco\Page::$titre = 'Modifier l\'adresse courriel';
 
         return $this->render('ZcoOptionsBundle:Default:email.html.php', array(
             'form' => $form->createView(),
@@ -190,7 +190,7 @@ class DefaultController extends Controller
             );
         }
 
-        \Page::$titre = 'Modifier le mot de passe';
+        \Zco\Page::$titre = 'Modifier le mot de passe';
 
         return $this->render('ZcoOptionsBundle:Default:password.html.php', array(
             'form' => $form->createView(),
@@ -228,7 +228,7 @@ class DefaultController extends Controller
             );
         }
 
-        \Page::$titre = 'Modifier le profil';
+        \Zco\Page::$titre = 'Modifier le profil';
 
         return $this->render('ZcoOptionsBundle:Default:profile.html.php', array(
             'form' => $form->createView(),
@@ -273,7 +273,7 @@ class DefaultController extends Controller
             );
         }
 
-        \Page::$titre = 'Modifier les préférences';
+        \Zco\Page::$titre = 'Modifier les préférences';
 
         return $this->render('ZcoOptionsBundle:Default:preferences.html.php', array(
             'form' => $form->createView(),

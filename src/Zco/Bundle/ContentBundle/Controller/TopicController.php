@@ -52,7 +52,7 @@ final class TopicController extends Controller
             return redirect('Le forum n\'est plus accessible.', $this->generateUrl('zco_forum_index'), MSG_ERROR);
         }
 
-        \Page::$titre = htmlspecialchars($InfosForum['cat_nom']) . ' - Nouveau sujet';
+        \Zco\Page::$titre = htmlspecialchars($InfosForum['cat_nom']) . ' - Nouveau sujet';
 
         if ($request->isMethod('POST')) {
             if (empty($_POST['titre']) || empty($_POST['texte'])) {
@@ -119,7 +119,7 @@ final class TopicController extends Controller
         // Détermination de la page courante
         $page = (int)$request->get('p', 1);
         if ($page > 1) {
-            \Page::$titre .= ' - Page ' . $page;
+            \Zco\Page::$titre .= ' - Page ' . $page;
         }
 
         //--- Redirection de la mort qui tue pour le référencement. :D ---
@@ -174,9 +174,9 @@ final class TopicController extends Controller
         }
 
         if ($mettre_description) {
-            \Page::$description = htmlspecialchars(mb_substr($haystack, 0, mb_strpos($haystack, ' ', $offset)));
+            \Zco\Page::$description = htmlspecialchars(mb_substr($haystack, 0, mb_strpos($haystack, ' ', $offset)));
             if ($page > 1) {
-                \Page::$description .= ' - Page ' . $page;
+                \Zco\Page::$description .= ' - Page ' . $page;
             }
         }
 
@@ -408,7 +408,7 @@ final class TopicController extends Controller
         if (!verifier('voir_sujets', $InfosSujet['sujet_forum_id'])) {
             throw new NotFoundHttpException();
         }
-        \Page::$titre = htmlspecialchars($InfosSujet['sujet_titre']);
+        \Zco\Page::$titre = htmlspecialchars($InfosSujet['sujet_titre']);
 
         return $InfosSujet;
     }

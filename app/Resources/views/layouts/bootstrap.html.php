@@ -37,7 +37,7 @@
             <div id="postloading-area"></div>
 
             <ul class="breadcrumb">
-                <li><?php echo implode('<span class="divider">»</span></li><li>', \Page::breadcrumb()) ?></li>
+                <li><?php echo implode('<span class="divider">»</span></li><li>', \Zco\Page::breadcrumb()) ?></li>
             </ul>
         <?php endif ?>
 
