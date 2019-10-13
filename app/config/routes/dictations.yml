@@ -35,8 +35,8 @@ zco_dictation_edit:
   requirements:
     id: \d+
 
-zco_quiz_publishQuiz:
-  path: /dictees/publier/{id}/{status}
+zco_dictation_publish:
+  path: /dictees/publier/{id}
   defaults:  { _controller: ZcoDicteesBundle:Default:publish }
   requirements:
     id: \d+

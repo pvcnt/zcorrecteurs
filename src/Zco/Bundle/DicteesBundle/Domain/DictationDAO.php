@@ -21,6 +21,7 @@
 
 namespace Zco\Bundle\DicteesBundle\Domain;
 
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
 use Zco\Bundle\ContentBundle\Admin\Admin;
 use Zco\Bundle\DicteesBundle\DoubleDiff;
@@ -34,54 +35,20 @@ use Zco\Container;
 class DictationDAO
 {
     /**
-     * Ajoute une dictée.
+     * Creates a new dictation.
      *
-     * @param AjouterForm $Form Formulaire d'ajout de la dictée.
-     * @return bool | int        ID de la dictée créée, false si l'envoi du fichier a échoué.
+     * @param array $data Form data.
+     * @return int Identifier of the new dictation.
      */
-    public static function AjouterDictee(\AjouterForm &$form)
+    public static function AjouterDictee(array $data)
     {
         $Dictee = new \Dictee;
-        $data = $form->getCleanedData();
-
-        if ($data['publique']) {
-            $Dictee->etat = DICTEE_VALIDEE;
-            Container::cache()->delete('dictees_accueil');
-        } else    $Dictee->etat = DICTEE_BROUILLON;
-
-        unset($data['publique'], $data['lecture_rapide'], $data['lecture_lente'],
-            $data['MAX_FILE_SIZE'], $data['icone']);
-
-        foreach ($data as $k => &$v)
-            $Dictee->$k = $v;
-
-        $Dictee->utilisateur_id = $_SESSION['id'];
         $Dictee->creation = new \Doctrine_Expression('CURRENT_TIMESTAMP');
+        self::handleForm($Dictee, $data);
         $Dictee->save();
 
-        foreach (array('lecture_rapide', 'lecture_lente') as $l)
-            if (isset($_FILES[$l]) && $_FILES[$l]['error'] != 4) {
-                $r = self::DicteeEnvoyerSon($Dictee, $l);
-                if (!$r || $r instanceof Response)
-                    return $r;
-            }
-
-        // Traitement de l'icône
-        if (isset($_FILES['icone']) && $_FILES['icone']['error'] != 4) {
-            $ext = strtolower(strrchr($_FILES['icone']['name'], '.'));
-            $nom = $Dictee->id . $ext;
-            $chemin = BASEPATH . '/public/uploads/dictees';
-
-            if (!UploadHelper::Fichier($_FILES['icone'], $chemin, $nom, UploadHelper::FILE | UploadHelper::IMAGE))
-                return redirect(
-                    'Une erreur est survenue lors de l\'envoi de l\'icône : le format est peut-être invalide.',
-                    'editer-' . $Dictee->id . '-' . rewrite($Dictee->titre) . '.html',
-                    MSG_ERROR
-                );
-
-            $Dictee->icone = '/uploads/dictees/' . $nom;
-        }
-
+        // We proceed in two steps, because we need a stable identifier in order to proceed with uploads.
+        self::handleFormUploads($Dictee, $data);
         $Dictee->save();
         self::DicteesEffacerCache();
 
@@ -91,63 +58,69 @@ class DictationDAO
     /**
      * Modifie une dictée.
      *
-     * @param Dictee $Dictee Dictée.
-     * @param AjouterForm $Form Formulaire d'édition de la dictée.
-     * @return bool                False si l'envoi du fichier a échoué.
+     * @param \Dictee $Dictee Dictée.
+     * @param array $data Form data.
      */
-    public static function EditerDictee(\Dictee $Dictee, \AjouterForm $Form)
+    public static function EditerDictee(\Dictee $Dictee, array $data)
     {
-        $data = $Form->getCleanedData();
-        $etat = $Dictee->etat;
-
-        if ($data['publique'])
-            $Dictee->etat = DICTEE_VALIDEE;
-        else {
-            $Dictee->etat = DICTEE_BROUILLON;
-        }
-        if ($Dictee->etat != $etat)
-            Container::cache()->delete('dictees_accueil');
-
-        unset($data['publique'], $data['lecture_rapide'], $data['lecture_lente'],
-            $data['MAX_FILE_SIZE'], $data['icone']);
-        foreach ($data as $k => $v) {
-            $Dictee->$k = $v;
-        }
-
         $Dictee->edition = new \Doctrine_Expression('CURRENT_TIMESTAMP');
+        $etat = $Dictee->etat;
+        self::handleForm($Dictee, $data);
+        self::handleFormUploads($Dictee, $data);
 
-        foreach (array('lecture_rapide', 'lecture_lente') as $l)
-            if (isset($_FILES[$l]) && $_FILES[$l]['error'] != 4) {
-                $r = self::DicteeEnvoyerSon($Dictee, $l);
-                if (!$r || $r instanceof Response)
-                    return $r;
-            }
-
-        // Edition de l'icône
-        if (isset($_FILES['icone']) && $_FILES['icone']['error'] != 4) {
-            $ext = strtolower(strrchr($_FILES['icone']['name'], '.'));
-            $nom = $Dictee->id . $ext;
-            $chemin = BASEPATH . '/public/uploads/dictees';
-
-            if ($Dictee->icone && (strrchr($Dictee->icone, '.') != $ext))
-                @unlink(BASEPATH . '/web' . $Dictee->icone);
-
-
-            if (!UploadHelper::Fichier($_FILES['icone'], $chemin, $nom, UploadHelper::FILE | UploadHelper::IMAGE))
-                return redirect(
-                    'Une erreur est survenue lors de l\'envoi de l\'icône : le format est peut-être invalide.',
-                    'editer-' . $Dictee->id . '-' . rewrite($Dictee->titre) . '.html',
-                    MSG_ERROR
-                );
-
-            $Dictee->icone = '/uploads/dictees/' . $nom;
+        if ($Dictee->etat != $etat) {
+            Container::cache()->delete('dictees_accueil');
         }
-
 
         $Dictee->save();
         self::DicteesEffacerCache();
 
         return true;
+    }
+
+    private static function handleForm(\Dictee $Dictee, array $data)
+    {
+        $Dictee->titre = $data['title'];
+        $Dictee->difficulte = $data['level'];
+        $Dictee->temps_estime = $data['estimated_time'];
+        $Dictee->texte = $data['text'];
+        $Dictee->auteur_nom = $data['author_last_name'];
+        $Dictee->auteur_prenom = $data['author_first_name'];
+        $Dictee->source = $data['source'];
+        $Dictee->icone = $data['icon'];
+        $Dictee->description = $data['description'];
+        $Dictee->indications = $data['indications'];
+        $Dictee->commentaires = $data['comments'];
+        if ($data['publish']) {
+            $Dictee->etat = DICTEE_VALIDEE;
+            Container::cache()->delete('dictees_accueil');
+        } else {
+            $Dictee->etat = DICTEE_BROUILLON;
+        }
+        $Dictee->utilisateur_id = $_SESSION['id'];
+    }
+
+    private static function handleFormUploads(\Dictee $Dictee, array $data)
+    {
+        if (!is_dir(BASEPATH . '/public/uploads/dictees')) {
+            mkdir(BASEPATH . '/public/uploads/dictees', 0777, true);
+        }
+
+        if (isset($data['slow_voice'])) {
+            self::DicteeEnvoyerSon($Dictee, 'slow_voice', $data['slow_voice']);
+        }
+        if (isset($data['fast_voice'])) {
+            self::DicteeEnvoyerSon($Dictee, 'fast_voice', $data['fast_voice']);
+        }
+        if (isset($data['icon'])) {
+            $ext = $data['icon']->guessExtension();
+            if ($Dictee->icone && (strrchr($Dictee->icone, '.') != $ext)) {
+                @unlink(BASEPATH . '/web' . $Dictee->icone);
+            }
+            $directory = BASEPATH . '/public/uploads/dictees';
+            $name = $Dictee->id . '.' . $ext;
+            $data['icon']->move($directory, $name);
+        }
     }
 
     /**
@@ -195,7 +168,7 @@ class DictationDAO
      * Récupère une dictée par son id.
      *
      * @param int $id ID de la dictée à récupérer.
-     * @return Dictee        Dictée.
+     * @return \Dictee        Dictée.
      */
     public static function Dictee($id)
     {
@@ -230,63 +203,25 @@ class DictationDAO
     }
 
     /**
-     * Cherche les dictées en fonction d'un titre donné.
-     *
-     * @param  string $name
-     * @return array    Les dictées trouvées
-     */
-    public static function searchDictees($name)
-    {
-        $query = \Doctrine_Query::create()
-            ->select('d.*')
-            ->from('Dictee d')
-            ->where('d.titre LIKE ?', '%' . $name . '%');
-
-        return $query->fetchArray();
-    }
-
-    /**
-     * Liste les dictées d'un utilisateur
-     *
-     * @return \Doctrine_Collection    Les dictées
-     */
-    public static function DicteesUtilisateur()
-    {
-        return \Doctrine_Query::create()
-            ->from('Dictee')
-            ->addWhere('utilisateur_id = ?', $_SESSION['id'])
-            ->orderBy('etat ASC, edition DESC')
-            ->execute();
-    }
-
-    /**
      * Envoie un fichier audio.
      *
      * @param \Dictee $Dictee Dictee.
+     * @param string $field
+     * @param UploadedFile $file
      */
-    private static function DicteeEnvoyerSon(\Dictee $Dictee, $field = false)
+    private static function DicteeEnvoyerSon(\Dictee $Dictee, string $field, UploadedFile $file)
     {
-        if ($field === false) {
-            $r = self::DicteeEnvoyerSon($Dictee, 'lecture_rapide');
-            if (!$r || $r instanceof Response)
-                return $r;
-            return self::DicteeEnvoyerSon($Dictee, 'lecture_lente');
-        }
-
-        if (!isset($_FILES[$field]))
-            return false;
-        $ext = strtolower(strrchr($_FILES[$field]['name'], '.'));
+        /*$ext = $file->guessExtension();
         if ($ext != '.mp3' && $ext != '.ogg')
             return redirect(
                 'Format du fichier audio invalide.',
                 'editer-' . $Dictee->id . '-' . rewrite($Dictee->titre) . '.html',
                 MSG_ERROR
-            );
-        $Dictee->format = substr($ext, 1);
-        $path = BASEPATH . '/public/uploads/dictees';
+            );*/
+        $ext = $file->guessExtension();
+        $Dictee->format = $ext;
         $name = $Dictee->soundFilename($field);
-
-        return UploadHelper::Fichier($_FILES[$field], $path, $name);
+        $file->move(BASEPATH . '/public/uploads/dictees', $name);
     }
 
     /**

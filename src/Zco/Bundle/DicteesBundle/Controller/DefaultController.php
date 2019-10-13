@@ -32,6 +32,7 @@ use Zco\Bundle\DicteesBundle\Chart\MyStatsTemporalChart;
 use Zco\Bundle\DicteesBundle\Domain\Dictation;
 use Zco\Bundle\DicteesBundle\Domain\DictationDAO;
 use Zco\Bundle\DicteesBundle\Domain\DictationScoreDAO;
+use Zco\Bundle\DicteesBundle\Form\DictationType;
 
 /**
  * Contrôleur gérant les actions liées aux dictées.
@@ -45,7 +46,7 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        fil_ariane('Accueil des dictées');
+        fil_ariane('Dictées');
         $this->get('zco_core.resource_manager')->requireResources([
             '@ZcoCoreBundle/Resources/public/css/home.css',
             '@ZcoDicteesBundle/Resources/public/css/dictees.css',
@@ -65,7 +66,10 @@ class DefaultController extends Controller
      */
     public function listAction()
     {
-        fil_ariane('Liste des dictées');
+        fil_ariane([
+            'Dictées' => $this->generateUrl('zco_dictation_index'),
+            'Liste des dictées',
+        ]);
 
         return $this->render('ZcoDicteesBundle::liste.html.php', [
             'dictations' => DictationDAO::ListerDictees(),
@@ -79,7 +83,10 @@ class DefaultController extends Controller
             throw new AccessDeniedHttpException();
         }
 
-        fil_ariane('Gestion des dictées');
+        fil_ariane([
+            'Dictées' => $this->generateUrl('zco_dictation_index'),
+            'Gestion des dictées',
+        ]);
 
         return $this->render('ZcoDicteesBundle::admin.html.php', array(
             'Dictees' => DictationDAO::ListerDictees(false),
@@ -101,10 +108,15 @@ class DefaultController extends Controller
         if ($Dictee->etat != DICTEE_VALIDEE && !verifier('dictees_publier')) {
             throw new NotFoundHttpException();
         }
+        if ($slug !== rewrite($Dictee->titre)) {
+            // Redirect for SEO if slug is wrong.
+            return new RedirectResponse($this->generateUrl('zco_dictation_show', ['id' => $Dictee->id, 'slug' => rewrite($Dictee->titre)]), 301);
+        }
 
-        //TODO zCorrecteurs::VerifierFormatageUrl($Dictee->titre, true);
-
-        fil_ariane(htmlspecialchars($Dictee->titre));
+        fil_ariane([
+            'Dictées' => $this->generateUrl('zco_dictation_index'),
+            htmlspecialchars($Dictee->titre),
+        ]);
         $this->get('zco_core.resource_manager')->requireResources([
             '@ZcoCoreBundle/Resources/public/css/zcode.css',
             '@ZcoDicteesBundle/Resources/public/css/dictees.css',
@@ -224,114 +236,107 @@ class DefaultController extends Controller
 
     /**
      * Ajout d'une dictée.
+     *
+     * @param Request $request
+     * @return Response
      */
-    public function newAction()
+    public function newAction(Request $request)
     {
         if (!verifier('dictees_publier')) {
             throw new AccessDeniedHttpException();
         }
 
-        include_once(__DIR__ . '/../forms/AjouterForm.class.php');
-        $Form = new \AjouterForm();
+        $form = $this->createForm(DictationType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            DictationDAO::AjouterDictee($form->getData());
 
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $Form->bind($_POST);
-            if ($Form->isValid()) {
-                $r = DictationDAO::AjouterDictee($Form);
-                if (!$r)
-                    return redirect('Une erreur est survenue lors de l\'envoi du fichier audio.', '', MSG_ERROR);
-                elseif ($r instanceof Response)
-                    return $r;
-                return redirect('La dictée a été ajoutée.', 'index.html');
-            }
+            return redirect('La dictée a été ajoutée.', $this->generateUrl('zco_dictation_admin'));
         }
-        fil_ariane('Ajouter une dictée');
 
-        return $this->render('ZcoDicteesBundle::new.html.php', ['Form' => $Form]);
+        fil_ariane([
+            'Dictées' => $this->generateUrl('zco_dictation_index'),
+            'Ajouter une dictée',
+        ]);
+
+        return $this->render('ZcoDicteesBundle::new.html.php', ['form' => $form->createView()]);
     }
 
     /**
      * Modification d'une dictée.
      *
      * @param int $id
+     * @param Request $request
      * @return Response
      */
-    public function editAction($id)
+    public function editAction($id, Request $request)
     {
         if (!verifier('dictees_publier')) {
             throw new AccessDeniedHttpException();
         }
 
         $Dictee = $this->getDictation($id);
+        $form = $this->createForm(DictationType::class, [
+            'title' => $Dictee->titre,
+            'level' => $Dictee->difficulte,
+            'estimated_time' => $Dictee->temps_estime,
+            'author_first_name' => $Dictee->auteur_prenom,
+            'author_last_name' => $Dictee->auteur_nom,
+            'source' => $Dictee->source,
+            'description' => $Dictee->description,
+            'indications' => $Dictee->indications,
+            'comments' => $Dictee->commentaires,
+            'text' => $Dictee->texte,
+            'publish' => $Dictee->etat == DICTEE_VALIDEE,
+        ]);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            DictationDAO::EditerDictee($Dictee, $form->getData());
 
-        if (isset($_SESSION['dictee_data'])) {
-            $_POST = $_SESSION['dictee_data'];
-            unset($_SESSION['dictee_data']);
+            return redirect(
+                'La dictée a été modifiée.',
+                $this->generateUrl('zco_dictation_show', ['id' => $Dictee->id, 'slug' => rewrite($Dictee->titre)])
+            );
         }
 
-        \Zco\Page::$titre = 'Modifier une dictée';
+        fil_ariane([
+            'Dictées' => $this->generateUrl('zco_dictation_index'),
+            htmlspecialchars($Dictee->titre) => $this->generateUrl('zco_dictation_show', ['id' => $Dictee->id, 'slug' => rewrite($Dictee->titre)]),
+            'Modifier'
+        ]);
 
-        include(__DIR__ . '/../forms/AjouterForm.class.php');
-        $Form = new \AjouterForm();
-
-        $url = '-' . $Dictee->id . '-' . rewrite($Dictee->titre) . '.html';
-
-        $data = $Dictee->toArray();
-        $data['publique'] = $data['etat'] == DICTEE_VALIDEE;
-        $Form->setDefaults($data);
-
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $Form->bind($_POST);
-            if ($Form->isValid()) {
-                $r = DictationDAO::EditerDictee($Dictee, $Form);
-                if (!$r) {
-                    $_SESSION['dictee_data'] = $_POST;
-                    return redirect('Une erreur est survenue lors de l\'envoi du fichier audio.', 'editer' . $url, MSG_ERROR);
-                } elseif ($r instanceof Response)
-                    return $r;
-                return redirect('La dictée a été modifiée.', 'dictee' . $url);
-            }
-            $Form->setDefaults($_POST);
-        }
-
-        fil_ariane(array(
-            htmlspecialchars($Dictee->titre) => 'dictee' . $url,
-            'Editer'
-        ));
-
-        return $this->render('ZcoDicteesBundle::edit.html.php', compact('Dictee', 'Form'));
+        return $this->render('ZcoDicteesBundle::edit.html.php', [
+            'Dictee' => $Dictee,
+            'form' => $form->createView(),
+        ]);
     }
 
     /**
      * Suppression d'une dictée.
      *
      * @param int $id
+     * @param Request $request
      * @return Response
      */
-    public function deleteAction($id)
+    public function deleteAction($id, Request $request)
     {
         if (!verifier('dictees_publier')) {
             throw new AccessDeniedHttpException();
         }
 
         $Dictee = $this->getDictation($id);
-        \Zco\Page::$titre = 'Supprimer une dictée';
+        $url = $this->generateUrl('zco_dictation_show', ['id' => $Dictee->id, 'slug' => rewrite($Dictee->titre)]);
 
-        $url = 'dictee-' . $Dictee->id . '-' . rewrite($Dictee->titre) . '.html';
-
-        // Suppression / Annulation
-        if (isset($_POST['confirmer'])) {
+        if ($request->isMethod('POST')) {
             DictationDAO::SupprimerDictee($Dictee);
-            return redirect('La dictée a été supprimée.', 'index.html');
-        }
-        if (isset($_POST['annuler'])) {
-            return new RedirectResponse($url);
+            return redirect('La dictée a été supprimée.', $this->generateUrl('zco_dictation_admin'));
         }
 
-        fil_ariane(array(
+        fil_ariane([
+            'Dictées' => $this->generateUrl('zco_dictation_index'),
             htmlspecialchars($Dictee->titre) => $url,
             'Supprimer'
-        ));
+        ]);
 
         return $this->render('ZcoDicteesBundle::delete.html.php', compact('Dictee', 'url'));
     }
@@ -340,21 +345,26 @@ class DefaultController extends Controller
      * Passage d'une dictée en/hors ligne.
      *
      * @param int $id
-     * @param bool $status
+     * @param Request $request
      * @return Response
      */
-    public function publishAction($id, $status)
+    public function publishAction($id, Request $request)
     {
         if (!verifier('dictees_publier')) {
             throw new AccessDeniedHttpException();
         }
         $Dictee = $this->getDictation($id);
+        $status = (boolean)$request->get('status', false);
         DictationDAO::ValiderDictee($Dictee, $status);
 
         return redirect($status ? 'La dictée a bien été validée.' : 'La dictée a bien été refusée.',
             'dictee-' . $Dictee->id . '-' . rewrite($Dictee->titre) . '.html');
     }
 
+    /**
+     * @param int $id
+     * @return \Dictee
+     */
     private function getDictation($id)
     {
         $dictation = DictationDAO::Dictee($id);

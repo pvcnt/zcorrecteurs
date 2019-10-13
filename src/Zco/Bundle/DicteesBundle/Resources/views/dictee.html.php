@@ -3,7 +3,7 @@
 <?php $view['slots']->start('meta') ?>
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:site" content="zcorrecteurs" />
-<meta name="twitter:url" content="<a href="<?php echo $view['router']->url('zco_dictation_show', ['id' => $Dictee->id, 'slug' => rewrite($Dictee->titre)]) ?>">" />
+<meta name="twitter:url" content="<?php echo $view['router']->url('zco_dictation_show', ['id' => $Dictee->id, 'slug' => rewrite($Dictee->titre)]) ?>" />
 <meta name="twitter:description" content="<?php echo htmlspecialchars(strip_tags($Dictee->description)) ?>" />
 <meta name="twitter:title" content="<?php echo htmlspecialchars($Dictee->titre) ?>" />
 <?php if ($Dictee->icone): ?>
@@ -21,7 +21,7 @@
 	Vous êtes libre d'arrêter ou de reprendre la lecture à tout instant, en cliquant sur le bouton pause.
 </p>
 <p>	Si une partie du fichier audio vous semble peu claire, merci de nous en faire part
-	<a href="<?php echo $view['router']-path('zco_forum_index') ?>>">sur le forum</a>,
+	<a href="<?php echo $view['router']->path('zco_forum_index') ?>>">sur le forum</a>,
 	nous nous efforcerons de fournir une lecture la plus claire possible.<br/>
 	Bonne chance !
 </p>
@@ -32,7 +32,7 @@
 <div style="clear: right"></div>
 
 <?php if($Dictee->etat != DICTEE_VALIDEE): ?>
-<?php echo $view->render('ZcoDicteesBundle::_audio.html.php', compact('Dictee')) ?>
+<?php echo $view->render('ZcoDicteesBundle::_audio.html.php', ['dictation' => $Dictee]) ?>
 <p style="margin-top: 40px;" class="rmq erreur">
 Cette dictée n'est pas publique, vous ne pouvez donc pas la jouer.
 </p>
@@ -51,7 +51,7 @@ Cette dictée n'est pas publique, vous ne pouvez donc pas la jouer.
 	<?php endif ?>
 	<fieldset>
 		<legend>Dictée</legend>
-		<?php echo $view->render('ZcoDicteesBundle::_audio.html.php', compact('Dictee')) ?>
+		<?php echo $view->render('ZcoDicteesBundle::_audio.html.php', ['dictation' => $Dictee]) ?>
 
 		<label for="texte">Votre réponse :</label>
 		<textarea id="texte" name="texte" rows="10" style="width: 98%" spellcheck="false"></textarea>

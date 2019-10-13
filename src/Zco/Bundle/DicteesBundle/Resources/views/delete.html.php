@@ -1,25 +1,19 @@
-<?php $view->extend('::layouts/default.html.php') ?>
+<?php $view->extend('::layouts/bootstrap.html.php') ?>
 
 <h1>Supprimer une dictée</h1>
 
-<fieldset>
-	<legend>Supprimer une dictée</legend>
-	<form method="post" action="">
-		<?php if($Dictee->etat == DICTEE_VALIDEE): ?>
-			<p class="rmq attention">Cette dictée est en ligne.</p>
-		<?php endif; ?>
-		<p class="centre">
-			Êtes-vous sûr de vouloir supprimer cette dictée,
-			dont le titre est
-			<strong><a href="<?php echo $url; ?>">
-				<?php echo htmlspecialchars($Dictee->titre); ?>
-			</a></strong> ?
-		</p>
+<form method="post" action="">
+    <?php if($Dictee->etat == DICTEE_VALIDEE): ?>
+    <div class="alert alert-warn">Attention, cette dictée est accessible publiquement à tous les visiteurs.</div>
+    <?php endif; ?>
+    <p>
+        Êtes-vous sûr de vouloir supprimer cette dictée,
+        dont le titre est
+        <strong><?php echo htmlspecialchars($Dictee->titre) ?></strong> ?
+    </p>
 
-		<p class="centre">
-			<input type="submit" name="confirmer" value="Oui" />
-			<input type="submit" name="annuler" value="Non" />
-			<input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>"/>
-		</p>
-	</form>
-</fieldset>
+    <p class="form-actions center">
+        <input type="submit" class="btn btn-primary" value="Oui" />
+        <a href="<?php echo $url ?>" class="btn">Non</a>
+    </p>
+</form>

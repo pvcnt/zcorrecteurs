@@ -1,9 +1,7 @@
 <div style="float: right; margin-left: 10px;">
 <dl class="dictee-outils">
 
-    <?php use Zco\Bundle\DicteesBundle\Domain\DictationDAO;
-
-    if ($Dictee->icone): ?>
+    <?php if ($Dictee->icone): ?>
 	<div align="center">
 	    <img src="<?php echo htmlspecialchars($Dictee->icone) ?>" height="100" width="100" style="float :center;"/>
 	</div><br />
@@ -68,7 +66,7 @@
 )) ?></p>
 <?php endif ?>
 
-<p class="italique"><a href="https://twitter.com/share?text=<?php echo urlencode('Vous aussi, mesurez-vous à cette dictée des @zCorrecteurs : ') ?>&url=<a href="<?php echo $view['router']->url('zco_dictation_show', ['id' => $Dictee->id, 'slug' => rewrite($Dictee->titre)]) ?>">">
+<p class="italique"><a href="https://twitter.com/share?text=<?php echo urlencode('Vous aussi, mesurez-vous à cette dictée des @zCorrecteurs : ') ?>&url=<a href="<?php echo $view['router']->url('zco_dictation_show', ['id' => $Dictee->id, 'slug' => rewrite($Dictee->titre)]) ?>">
     <img src="/img/oiseau_16px.png" alt="Twitter" />
     Partager cette dictée sur Twitter
 </a></p>

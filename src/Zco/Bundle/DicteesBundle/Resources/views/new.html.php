@@ -1,9 +1,5 @@
-<?php $view->extend('::layouts/default.html.php') ?>
+<?php $view->extend('::layouts/bootstrap.html.php') ?>
 
 <h1>Ajouter une dictée</h1>
-<form action="" method="post" enctype="multipart/form-data">
-<?php echo $Form; ?>
-<p class="centre">
-	<input type="submit" value="Sauvegarder" name="sauvegarder" />
-</p>
-</form>
+
+<?php echo $view->render('ZcoDicteesBundle::form.html.php', ['form' => $form]) ?>

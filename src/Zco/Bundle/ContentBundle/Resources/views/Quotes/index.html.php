@@ -1,15 +1,18 @@
 <?php $view->extend('::layouts/bootstrap.html.php') ?>
 
+<div class="float-right">
+    <a href="<?php echo $view['router']->path('zco_quote_new') ?>" class="btn btn-primary">
+        <i class="icon-plus-sign icon-white"></i>
+        Ajouter une citation
+    </a>
+</div>
+
 <h1>Gestion des citations</h1>
 
 <p>
     Les citations sont de courtes phrases célèbres qui apparaissent dans l'en-tête du site à droite de la bannière.
     Elles sont en rotation automatique parmi celles qui ont été activées depuis cette interface.
     La citation affichée change toutes les heures.
-</p>
-
-<p class="bold center">
-    <a href="<?php echo $view['router']->path('zco_quote_new') ?>">Ajouter une nouvelle citation</a>
 </p>
 
 <table class="table table-striped table-bordered">

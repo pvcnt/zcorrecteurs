@@ -5,7 +5,6 @@
   "autoload": {
     "psr-0": {
       "Zco\\": "src",
-      "": "src/kernel",
       "Doctrine_": "lib/doctrine1"
     },
     "classmap": [

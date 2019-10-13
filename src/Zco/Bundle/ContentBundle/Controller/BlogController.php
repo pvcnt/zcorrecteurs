@@ -107,7 +107,7 @@ final class BlogController extends Controller
 
         $url = $this->generateUrl('zco_blog_show', ['id' => $id, 'slug' => rewrite($InfosBillet['version_titre'])]);
         if ($slug !== rewrite($InfosBillet['version_titre'])) {
-            // Deduplicate URLs, good for SEO.
+            // Redirect for SEO if slug is wrong.
             return new RedirectResponse($url, 301);
         }
 

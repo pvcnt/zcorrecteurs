@@ -1,10 +1,10 @@
 <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
 <meta http-equiv="content-language" content="fr"/>
-<meta name="description" content="<?php echo Page::$description; ?>"/>
-<meta name="robots" content="<?php echo Page::$robots; ?>"/>
+<meta name="description" content="<?php echo \Zco\Page::$description; ?>"/>
+<meta name="robots" content="<?php echo \Zco\Page::$robots; ?>"/>
 <?php $view['slots']->output('meta') ?>
 
-<title><?php echo str_replace(array(' '), ' ', Page::$titre); ?></title>
+<title><?php echo str_replace(array(' '), ' ', \Zco\Page::$titre); ?></title>
 
 <?php $view['vitesse']->requireResource('@FOSJsRoutingBundle/Resources/public/js/router.js') ?>
 <?php $view['javelin']->initBehavior('google-analytics', ['account' => $app->googleAnalyticsAccount()]) ?>

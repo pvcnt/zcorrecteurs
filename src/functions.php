@@ -25,6 +25,7 @@ use Zco\Bundle\ContentBundle\Domain\CategoryDAO;
 use Zco\Bundle\GroupesBundle\Domain\CredentialsDAO;
 use Zco\Bundle\UserBundle\Domain\UserDAO;
 use Zco\Container;
+use Zco\Page;
 
 /**
  * Réduit le charset pour une URL.
@@ -754,8 +755,8 @@ function fil_ariane($id = null, $enfants = array())
         $ListerParents = CategoryDAO::ListerParents(CategoryDAO::GetIDCategorie('informations'), false);
     }
     if (!empty($ListerParents)) {
-        \Zco\Page::$titre = htmlspecialchars($ListerParents[count($ListerParents) - 1]['cat_description']);
-        \Zco\Page::$description = htmlspecialchars($ListerParents[count($ListerParents) - 1]['cat_description']);
+        Page::$titre = htmlspecialchars($ListerParents[count($ListerParents) - 1]['cat_description']);
+        Page::$description = htmlspecialchars($ListerParents[count($ListerParents) - 1]['cat_description']);
     }
 
     $items = array();
@@ -786,7 +787,7 @@ function fil_ariane($id = null, $enfants = array())
         }
     }
     if (!empty($enfants)) {
-        \Zco\Page::$titre = htmlspecialchars(array_values($enfants)[count($enfants) - 1]);
+        Page::$titre = htmlspecialchars(array_values($enfants)[count($enfants) - 1]);
     }
 
     Page::$fil_ariane = $items;
