@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\DicteesBundle\Domain;
+namespace Zco\Bundle\ContentBundle\Domain;
 
 class DictationScoreDAO
 {

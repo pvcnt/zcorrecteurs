@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\DicteesBundle\Controller;
+namespace Zco\Bundle\ContentBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -27,56 +27,40 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Zco\Bundle\DicteesBundle\Chart\MyStatsFrequencyChart;
-use Zco\Bundle\DicteesBundle\Chart\MyStatsTemporalChart;
-use Zco\Bundle\DicteesBundle\Domain\Dictation;
-use Zco\Bundle\DicteesBundle\Domain\DictationDAO;
-use Zco\Bundle\DicteesBundle\Domain\DictationScoreDAO;
-use Zco\Bundle\DicteesBundle\Form\DictationType;
+use Symfony\Component\Routing\Annotation\Route;
+use Zco\Bundle\ContentBundle\Chart\MyStatsFrequencyChart;
+use Zco\Bundle\ContentBundle\Chart\MyStatsTemporalChart;
+use Zco\Bundle\ContentBundle\Domain\Dictation;
+use Zco\Bundle\ContentBundle\Domain\DictationDAO;
+use Zco\Bundle\ContentBundle\Domain\DictationScoreDAO;
+use Zco\Bundle\ContentBundle\Form\DictationType;
 
 /**
  * Contrôleur gérant les actions liées aux dictées.
  *
  * @author mwsaz <mwsaz@zcorrecteurs.fr>
  */
-class DefaultController extends Controller
+final class DictationController extends Controller
 {
     /**
-     * Affiche l'accueil des dictées.
+     * Affiche la liste des dictées disponibles.
+     *
+     * @Route(name="zco_dictation_index", path="/dictees")
      */
     public function indexAction()
     {
         fil_ariane('Dictées');
-        $this->get('zco_core.resource_manager')->requireResources([
-            '@ZcoCoreBundle/Resources/public/css/home.css',
-            '@ZcoDicteesBundle/Resources/public/css/dictees.css',
-        ]);
 
-        return $this->render('ZcoDicteesBundle::index.html.php', [
-            'DicteesAccueil' => DictationDAO::DicteesAccueil(),
-            'DicteeHasard' => DictationDAO::DicteeHasard(),
-            'DicteesLesPlusJouees' => DictationDAO::DicteesLesPlusJouees(),
-            'Statistiques' => DictationDAO::DicteesStatistiques(),
-            'DicteeDifficultes' => Dictation::LEVELS,
-        ]);
-    }
-
-    /**
-     * Affiche la liste des dictées disponibles.
-     */
-    public function listAction()
-    {
-        fil_ariane([
-            'Dictées' => $this->generateUrl('zco_dictation_index'),
-            'Liste des dictées',
-        ]);
-
-        return $this->render('ZcoDicteesBundle::liste.html.php', [
+        return $this->render('ZcoContentBundle:Dictation:index.html.php', [
             'dictations' => DictationDAO::ListerDictees(),
             'DicteeDifficultes' => Dictation::LEVELS,
         ]);
     }
 
+    /**
+     * @Route(name="zco_dictation_admin", path="/admin/dictees")
+     * @return Response
+     */
     public function adminAction()
     {
         if (!verifier('dictees_publier')) {
@@ -88,7 +72,7 @@ class DefaultController extends Controller
             'Gestion des dictées',
         ]);
 
-        return $this->render('ZcoDicteesBundle::admin.html.php', array(
+        return $this->render('ZcoContentBundle:Dictation:admin.html.php', array(
             'Dictees' => DictationDAO::ListerDictees(false),
             'DicteeEtats' => Dictation::STATUSES,
             'DicteeDifficultes' => Dictation::LEVELS,
@@ -98,6 +82,7 @@ class DefaultController extends Controller
     /**
      * Lecture d'une dictée.
      *
+     * @Route(name="zco_dictation_show", path="/dictees/{id}/{slug}", requirements={"id":"\d+"})
      * @param int $id
      * @param string $slug
      * @return Response
@@ -119,10 +104,10 @@ class DefaultController extends Controller
         ]);
         $this->get('zco_core.resource_manager')->requireResources([
             '@ZcoCoreBundle/Resources/public/css/zcode.css',
-            '@ZcoDicteesBundle/Resources/public/css/dictees.css',
+            '@ZcoContentBundle/Resources/public/css/dictees.css',
         ]);
 
-        return $this->render('ZcoDicteesBundle::dictee.html.php', [
+        return $this->render('ZcoContentBundle:Dictation:dictee.html.php', [
             'Dictee' => $Dictee,
             'DicteeDifficultes' => Dictation::LEVELS,
             'DicteeEtats' => Dictation::STATUSES,
@@ -170,10 +155,10 @@ class DefaultController extends Controller
 
         $this->get('zco_core.resource_manager')->requireResources([
             '@ZcoCoreBundle/Resources/public/css/zcode.css',
-            '@ZcoDicteesBundle/Resources/public/css/dictees.css',
+            '@ZcoContentBundle/Resources/public/css/dictees.css',
         ]);
 
-        return $this->render('ZcoDicteesBundle::corriger.html.php', [
+        return $this->render('ZcoContentBundle:Dictation:corriger.html.php', [
             'Dictee' => $Dictee,
             'note' => $note,
             'diff' => $diff,
@@ -185,8 +170,8 @@ class DefaultController extends Controller
     /**
      * Statistiques sur un membre.
      *
+     * @Route(name="zco_dictation_myStats", path="/dictees/mes-statistiques")
      * @param Request $request
-     * @param int $count
      * @return Response
      */
     public function myStatsAction(Request $request)
@@ -194,10 +179,13 @@ class DefaultController extends Controller
         if (!verifier('connecte')) {
             throw new NotFoundHttpException();
         }
-        \Zco\Page::$titre = 'Mes statistiques';
         $count = $request->get('count', 20);
+        fil_ariane([
+            'Dictées' => $this->generateUrl('zco_dictation_index'),
+            'Mes statistiques',
+        ]);;
 
-        return $this->render('ZcoDicteesBundle::statistiques.html.php', [
+        return $this->render('ZcoContentBundle:Dictation:statistiques.html.php', [
             'participations' => $count,
             'DernieresNotes' => DictationScoreDAO::DernieresNotes($count),
             'MesStatistiques' => DictationScoreDAO::MesStatistiques(),
@@ -212,6 +200,7 @@ class DefaultController extends Controller
     /**
      * Graphiques de la progression d'un membre sur les dictées.
      *
+     * @Route(name="zco_dictation_myStatsChart", path="/dictees/mes-statistiques.png")
      * @param Request $request
      * @return Response
      */
@@ -237,6 +226,7 @@ class DefaultController extends Controller
     /**
      * Ajout d'une dictée.
      *
+     * @Route(name="zco_dictation_new", path="/dictees/ajouter")
      * @param Request $request
      * @return Response
      */
@@ -256,15 +246,16 @@ class DefaultController extends Controller
 
         fil_ariane([
             'Dictées' => $this->generateUrl('zco_dictation_index'),
-            'Ajouter une dictée',
+            'Nouvelle dictée',
         ]);
 
-        return $this->render('ZcoDicteesBundle::new.html.php', ['form' => $form->createView()]);
+        return $this->render('ZcoContentBundle:Dictation:new.html.php', ['form' => $form->createView()]);
     }
 
     /**
      * Modification d'une dictée.
      *
+     * @Route(name="zco_dictation_edit", path="/dictees/modifier/{id}", requirements={"id":"\d+"})
      * @param int $id
      * @param Request $request
      * @return Response
@@ -305,7 +296,7 @@ class DefaultController extends Controller
             'Modifier'
         ]);
 
-        return $this->render('ZcoDicteesBundle::edit.html.php', [
+        return $this->render('ZcoContentBundle:Dictation:edit.html.php', [
             'Dictee' => $Dictee,
             'form' => $form->createView(),
         ]);
@@ -314,6 +305,7 @@ class DefaultController extends Controller
     /**
      * Suppression d'une dictée.
      *
+     * @Route(name="zco_dictation_delete", path="/dictees/supprimer/{id}", requirements={"id":"\d+"})
      * @param int $id
      * @param Request $request
      * @return Response
@@ -338,12 +330,13 @@ class DefaultController extends Controller
             'Supprimer'
         ]);
 
-        return $this->render('ZcoDicteesBundle::delete.html.php', compact('Dictee', 'url'));
+        return $this->render('ZcoContentBundle:Dictation:delete.html.php', compact('Dictee', 'url'));
     }
 
     /**
      * Passage d'une dictée en/hors ligne.
      *
+     * @Route(name="zco_dictation_publish", path="/dictees/publier/{id}", requirements={"id":"\d+"})
      * @param int $id
      * @param Request $request
      * @return Response

@@ -48,7 +48,7 @@
 	<tr>
 	<td>
 		<h2 class="mod_dictees">Dictées</h2>
-        <?php echo $view->render('ZcoDicteesBundle::_bloc_accueil.html.php',
+        <?php echo $view->render('ZcoContentBundle:Dictation:_bloc_accueil.html.php',
             compact('DicteesAccueil', 'DicteeHasard', 'DicteesLesPlusJouees')) ?>
 	</td>
 

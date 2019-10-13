@@ -18,7 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\DicteesBundle\Form;
+namespace Zco\Bundle\ContentBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -29,7 +29,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Zco\Bundle\CoreBundle\Form\Type\ZformType;
-use Zco\Bundle\DicteesBundle\Domain\Dictation;
+use Zco\Bundle\ContentBundle\Domain\Dictation;
 
 final class DictationType extends AbstractType
 {

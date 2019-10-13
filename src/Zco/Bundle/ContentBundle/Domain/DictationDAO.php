@@ -19,12 +19,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\DicteesBundle\Domain;
+namespace Zco\Bundle\ContentBundle\Domain;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpFoundation\Response;
 use Zco\Bundle\ContentBundle\Admin\Admin;
-use Zco\Bundle\DicteesBundle\DoubleDiff;
+use Zco\Bundle\ContentBundle\DoubleDiff;
 use Zco\Container;
 
 /**

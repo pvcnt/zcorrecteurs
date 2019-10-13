@@ -12,7 +12,7 @@
 <?php $view['slots']->stop() ?>
 
 <h1><?php echo htmlspecialchars($Dictee->titre) ?></h1>
-<?php echo $view->render('ZcoDicteesBundle::_dictee.html.php', compact('Dictee', 'DicteeEtats', 'DicteeDifficultes')) ?>
+<?php echo $view->render('ZcoContentBundle:Dictation:_dictee.html.php', compact('Dictee', 'DicteeEtats', 'DicteeDifficultes')) ?>
 
 <h2>Jouer</h2>
 <p>	Un fichier audio contenant la dictée vous est proposé, vous devez retranscrire son contenu fidèlement
@@ -32,7 +32,7 @@
 <div style="clear: right"></div>
 
 <?php if($Dictee->etat != DICTEE_VALIDEE): ?>
-<?php echo $view->render('ZcoDicteesBundle::_audio.html.php', ['dictation' => $Dictee]) ?>
+<?php echo $view->render('ZcoContentBundle:Dictation:_audio.html.php', ['dictation' => $Dictee]) ?>
 <p style="margin-top: 40px;" class="rmq erreur">
 Cette dictée n'est pas publique, vous ne pouvez donc pas la jouer.
 </p>
@@ -51,7 +51,7 @@ Cette dictée n'est pas publique, vous ne pouvez donc pas la jouer.
 	<?php endif ?>
 	<fieldset>
 		<legend>Dictée</legend>
-		<?php echo $view->render('ZcoDicteesBundle::_audio.html.php', ['dictation' => $Dictee]) ?>
+		<?php echo $view->render('ZcoContentBundle:Dictation:_audio.html.php', ['dictation' => $Dictee]) ?>
 
 		<label for="texte">Votre réponse :</label>
 		<textarea id="texte" name="texte" rows="10" style="width: 98%" spellcheck="false"></textarea>

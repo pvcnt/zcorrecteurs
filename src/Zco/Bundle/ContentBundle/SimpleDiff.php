@@ -21,7 +21,7 @@
     http://www.gnu.org/licenses/gpl.html
 */
 
-namespace Zco\Bundle\DicteesBundle;
+namespace Zco\Bundle\ContentBundle;
 
 class SimpleDiff
 {

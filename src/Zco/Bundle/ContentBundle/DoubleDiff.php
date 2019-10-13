@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\DicteesBundle;
+namespace Zco\Bundle\ContentBundle;
 
 /**
  * Calcule la différence entre deux textes avec wdiff.

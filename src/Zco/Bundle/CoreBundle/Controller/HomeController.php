@@ -24,7 +24,7 @@ namespace Zco\Bundle\CoreBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Zco\Bundle\ContentBundle\Domain\BlogDAO;
-use Zco\Bundle\DicteesBundle\Domain\DictationDAO;
+use Zco\Bundle\ContentBundle\Domain\DictationDAO;
 
 /**
  * Affichage de la page d'accueil du site.
@@ -64,7 +64,7 @@ class HomeController extends Controller
         $this->get('zco_core.resource_manager')->requireResources([
             '@ZcoCoreBundle/Resources/public/css/home.css',
             '@ZcoCoreBundle/Resources/public/css/zcode.css',
-            '@ZcoDicteesBundle/Resources/public/css/dictees.css'
+            '@ZcoContentBundle/Resources/public/css/dictees.css'
         ]);
 
         return $this->render('ZcoCoreBundle:Home:index.html.php', $vars);

@@ -19,10 +19,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\DicteesBundle;
+namespace Zco\Bundle\ContentBundle\Domain;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
-
-class ZcoDicteesBundle extends Bundle
+final class Dictation
 {
+    const LEVELS = [
+        1 => 'Facile',
+        2 => 'Moyen',
+        3 => 'Difficile',
+        4 => 'Cauchemardesque',
+    ];
+    const COLORS = [
+        1 => 'green',
+        2 => 'orange',
+        3 => 'red',
+        4 => '#770000',
+    ];
+    const STATUSES = [
+        1 => 'Brouillon',
+        2 => 'Proposée',
+        3 => 'Validée',
+    ];
 }

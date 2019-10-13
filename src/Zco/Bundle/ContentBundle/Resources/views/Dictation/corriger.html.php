@@ -3,7 +3,7 @@
 <h1>Correction de la dictée</h1>
 <?php
 	$extra = '<img alt="" src="/bundles/zcodictees/img/img_correction.gif"/>';
-	echo $view->render('ZcoDicteesBundle::_dictee.html.php', compact(
+	echo $view->render('ZcoContentBundle:Dictation:_dictee.html.php', compact(
 		'Dictee', 'DicteeEtats', 'DicteeDifficultes', 'extra'));
 ?>
 
