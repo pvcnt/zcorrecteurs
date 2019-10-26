@@ -119,7 +119,7 @@ class AdminController extends Controller
             $user->delete();
 
             return redirect('Le compte de l\'utilisateur a bien été supprimé.',
-                $this->generateUrl('zco_user_index'));
+                $this->generateUrl('zco_user_admin'));
         }
 
         \Zco\Page::$titre = 'Supprimer un compte';

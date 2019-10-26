@@ -45,6 +45,9 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
+        if (!verifier('rechercher_mail')) {
+            throw new AccessDeniedHttpException();
+        }
         $page = (int) $request->get('p', 1);
         $query = array();
 
@@ -95,7 +98,7 @@ class DefaultController extends Controller
             ->limit(30)
             ->offset(($page - 1) * 30)
             ->execute();
-        $pages = liste_pages($page, $pagesCount, $this->generateUrl('zco_user_index') . '?p=%s');
+        $pages = liste_pages($page, $pagesCount, $this->generateUrl('zco_user_admin') . '?p=%s');
 
         fil_ariane('Liste des membres');
 

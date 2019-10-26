@@ -212,7 +212,7 @@ final class DefaultController extends Controller
 
         \Zco\Page::$titre = 'Changer de groupe - ' . htmlspecialchars($InfosUtilisateur['utilisateur_pseudo']);
         fil_ariane([
-            'Membres' => $this->generateUrl('zco_user_index'),
+            'Membres' => $this->generateUrl('zco_user_admin'),
             htmlspecialchars($InfosUtilisateur['utilisateur_pseudo']) => $this->generateUrl('zco_user_profile', ['id' => $InfosUtilisateur['utilisateur_id'], 'slug' => rewrite($InfosUtilisateur['utilisateur_pseudo'])]),
             'Modifier les droits',
         ]);

@@ -167,10 +167,6 @@ final class SitemapFactory
             'changefreq' => 'monthly',
             'priority' => '0.5',
         ]);
-        $links[] = new SitemapLink($this->generateUrl('zco_user_index'), [
-            'changefreq' => 'daily',
-            'priority' => '0.5',
-        ]);
 
         return new Sitemap($links);
     }

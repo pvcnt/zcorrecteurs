@@ -115,27 +115,6 @@
                     </ul>
                 </div>
             <?php endif ?>
-
-            <div class="bloc communaute">
-                <h4>Communauté</h4>
-                <ul class="nav nav-list">
-                    <li>
-                        <a href="<?php echo $view['router']->path('zco_donate_index') ?>">
-                            Faire un don
-                        </a>
-                    </li>
-                    <li>
-                        <a href="<?php echo $view['router']->path('zco_about_team') ?>">
-                            L'équipe
-                        </a>
-                    </li>
-                    <li>
-                        <a href="<?php echo $view['router']->path('zco_user_index') ?>">
-                            Membres
-                        </a>
-                    </li>
-                </ul>
-            </div>
         </div>
         <div id="content" class="right">
             <?php endif ?>

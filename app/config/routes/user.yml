@@ -1,4 +1,4 @@
-zco_user_index:
+zco_user_admin:
   path:   /membres
   defaults:  { _controller: ZcoUserBundle:Default:index }
 

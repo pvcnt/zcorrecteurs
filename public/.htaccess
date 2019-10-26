@@ -47,7 +47,6 @@ RewriteRule ^forum/rapports-de-bugs-f3\.html /forum/categorie/48/rapports-de-bug
 RewriteRule ^forum/suggestions-et-commentaires-f8\.html /forum/categorie/47/suggestions-et-commentaires [R=301,L]
 RewriteRule ^forum/typographie-f42.html /forum/categorie/46/typographie [R=301,L]
 RewriteRule ^equipe\.html /apropos/equipe [R=301,L]
-RewriteRule ^membres\.html /membres/ [R=301,L]
 RewriteRule ^uploads/?$ /fichiers/ [R=301,L]
 RewriteRule ^profil-([0-9]+)\.html$ /membres/$1/inconnu [L,R=301]
 RewriteRule ^membres/profil-([0-9]+)\.html$ /membres/$1/inconnu [L,R=301]

@@ -62,7 +62,7 @@
 
 <?php echo implode($pages) ?>
 
-<form method="get" action="<?php echo $view['router']->path('zco_user_index') ?>" class="form-horizontal">
+<form method="get" action="<?php echo $view['router']->path('zco_user_admin') ?>" class="form-horizontal">
 	<fieldset>
 		<legend id="filtres">Filtres</legend>
 		<div class="control-group">
@@ -151,7 +151,7 @@
 
 		<div class="form-actions">
 			<input type="submit" class="btn btn-primary" value="Envoyer" />
-			<a href="<?php echo $view['router']->path('zco_user_index') ?>" class="btn">
+			<a href="<?php echo $view['router']->path('zco_user_admin') ?>" class="btn">
 				Effacer les filtres
 			</a>
 		</div>

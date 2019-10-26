@@ -87,7 +87,7 @@ final class AdminMenuFactory
                 'uri' => $this->router->generate('zco_user_admin_searchEmail'),
             ));
             $menu->getChild('Membres')->addChild('Voir tous les membres', array(
-                'uri' => $this->router->generate('zco_user_index'),
+                'uri' => $this->router->generate('zco_user_admin'),
             ));
         }
         if (verifier('gerer_comptes_valides')) {
