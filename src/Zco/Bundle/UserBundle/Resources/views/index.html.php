@@ -3,10 +3,10 @@
 <h1>Liste des membres</h1>
 
 <p class="bold center">
-	<?php if ($users->getTotalItemCount() > 0): ?>
-		<?php echo $users->getTotalItemCount() ?> membre<?php echo pluriel($users->getTotalItemCount()) ?> 
-		<?php echo pluriel($users->getTotalItemCount(), 'ont', 'a') ?> été 
-		trouvé<?php echo pluriel($users->getTotalItemCount()) ?>.
+	<?php if ($usersCount > 0): ?>
+		<?php echo $usersCount ?> membre<?php echo pluriel($usersCount) ?> 
+		<?php echo pluriel($usersCount, 'ont', 'a') ?> été 
+		trouvé<?php echo pluriel($usersCount) ?>.
 	<?php else: ?>
 		Aucun membre n'a été trouvé.
 	<?php endif ?><br />
@@ -14,7 +14,7 @@
 	<a href="#filtres">Filtrer les utilisateurs</a>
 </p>
 
-<?php echo $view['knp_pagination']->render($users) ?>
+<?php echo implode($pages) ?>
 
 <?php if (count($users) > 0): ?>
 <table class="table table-avatar">
@@ -60,7 +60,7 @@
 </table>
 <?php endif ?>
 
-<?php echo $view['knp_pagination']->render($users) ?>
+<?php echo implode($pages) ?>
 
 <form method="get" action="<?php echo $view['router']->path('zco_user_index') ?>" class="form-horizontal">
 	<fieldset>

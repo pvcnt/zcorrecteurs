@@ -126,11 +126,6 @@ final class ForumController extends Controller
         if ($page > $NombreDePages)
             throw new NotFoundHttpException();
 
-        if ($page < $NombreDePages) {
-            \Zco\Page::$titre .= ' - Page ' . $page;
-            \Zco\Page::$description .= ' - Page ' . $page;
-        }
-
         // On récupère la liste des numéros des pages.
         $tableau_pages = liste_pages($page, $NombreDePages, $this->generateUrl('zco_forum_show', ['id' => $id, 'slug' => rewrite($InfosForum['cat_nom'])]) . '?p=%s', true);
         $debut = ($NombreDePages - $page) * $nbSujetsParPage;
@@ -209,13 +204,24 @@ final class ForumController extends Controller
 
         // Inclusion de la vue
         if (!empty($_GET['trash']) && empty($_GET['archives'])) {
-            $msgFil = 'Liste des sujets dans la corbeille';
+            // TODO: append parents.
+            $breadcrumb = ['Accueil de la corbeille' => $this->generateUrl('zco_forum_index', ['trash' => 1])];
+            $breadcrumb[] = htmlspecialchars($InfosForum['cat_nom']);
+            fil_ariane($breadcrumb);
         } else if (empty($_GET['trash']) && !empty($_GET['archives'])) {
-            $msgFil = 'Liste des forums archivés';
+            // TODO: append parents.
+            $breadcrumb = ['Accueil des archives' => $this->generateUrl('zco_forum_index', ['trash' => 1])];
+            $breadcrumb[] = htmlspecialchars($InfosForum['cat_nom']);
+            fil_ariane($breadcrumb);
         } else {
-            $msgFil = 'Liste des sujets';
+            // TODO: append parents.
+            $breadcrumb = ['Accueil des forums' => $this->generateUrl('zco_forum_index', ['trash' => 1])];
+            $breadcrumb[] = htmlspecialchars($InfosForum['cat_nom']);
+            fil_ariane($breadcrumb);
         }
-        fil_ariane($id, $msgFil);
+        if ($page < $NombreDePages) {
+            \Zco\Page::$titre .= ' - Page ' . $page;
+        }
         $this->get('zco_core.resource_manager')->requireResources([
             '@ZcoCoreBundle/Resources/public/css/zcode.css',
             '@ZcoCoreBundle/Resources/public/css/tableaux_messages.css',

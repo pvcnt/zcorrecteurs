@@ -43,8 +43,9 @@ class DefaultController extends Controller
      * @param  integer $page La page à afficher
      * @return Response
      */
-    public function indexAction(Request $request, $page = 1)
+    public function indexAction(Request $request)
     {
+        $page = (int) $request->get('p', 1);
         $query = array();
 
         //Filtre par pseudo.
@@ -87,20 +88,21 @@ class DefaultController extends Controller
         }
 
         //Pagination.
-        $paginator = $this->get('knp_paginator');
-        $users = $paginator->paginate(\Doctrine_Core::getTable('Utilisateur')->getQuery($query), $page, 30);
-        $users->setUsedRoute('zco_user_indexWithPage');
+        $usersCount = \Doctrine_Core::getTable('Utilisateur')->getQuery($query)->count();
+        $pagesCount = ceil($usersCount / 30);
+        $users = \Doctrine_Core::getTable('Utilisateur')
+            ->getQuery($query)
+            ->limit(30)
+            ->offset(($page - 1) * 30)
+            ->execute();
+        $pages = liste_pages($page, $pagesCount, $this->generateUrl('zco_user_index') . '?p=%s');
 
-        fil_ariane(null);
-        \Zco\Page::$titre = 'Liste des membres';
-        \Zco\Page::$description = 'Liste complète de tous les membres inscrits sur le site';
-        if ($page > 1) {
-            \Zco\Page::$titre .= ' - Page ' . $page;
-            \Zco\Page::$description .= ' - Page ' . $page;
-        }
+        fil_ariane('Liste des membres');
 
         return $this->render('ZcoUserBundle::index.html.php', array(
             'users' => $users,
+            'usersCount' => $usersCount,
+            'pages' => $pages,
             'groups' => \Doctrine_Core::getTable('Groupe')->getApplicable(),
             'secondaryGroups' => \Doctrine_Core::getTable('Groupe')->getBySecondary(),
 

@@ -1,3 +1,0 @@
-knp_paginator:
-  template:
-    pagination: ZcoCoreBundle:Pagination:sliding.html.php

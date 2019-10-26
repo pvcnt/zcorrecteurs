@@ -37,7 +37,6 @@
     "doctrine/cache": "^1.8",
     "doctrine/doctrine-bundle": "^1.6",
     "imagine/imagine": "^0.6.3",
-    "knplabs/knp-paginator-bundle": "^2.5",
     "friendsofsymfony/jsrouting-bundle": "^2.4.0",
     "rkmax/sphinx-client": "^1.0.1",
     "scrivo/highlight.php": "^9.0",

@@ -44,7 +44,6 @@ final class Kernel extends HttpKernel
             new Symfony\Bundle\MonologBundle\MonologBundle(),
             new Symfony\Bundle\TwigBundle\TwigBundle(),
             new Zco\Bundle\Doctrine1Bundle\ZcoDoctrine1Bundle(),
-            new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
 
             // Infrastructure bundles.
