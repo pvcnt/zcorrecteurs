@@ -29,24 +29,17 @@ class LoginEvent extends Event
     protected $user;
     protected $remember;
     private $request;
-    private $state;
 
-    public function __construct(Request $request, \Utilisateur $user, $remember, $state)
+    public function __construct(Request $request, \Utilisateur $user, $remember)
     {
         $this->request = $request;
         $this->user = $user;
-        $this->state = $state;
         $this->remember = $remember;
     }
 
     public function getUser()
     {
         return $this->user;
-    }
-
-    public function getState()
-    {
-        return $this->state;
     }
 
     public function getRequest(): Request

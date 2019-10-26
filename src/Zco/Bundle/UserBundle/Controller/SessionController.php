@@ -52,8 +52,7 @@ class SessionController extends Controller
 	 */
 	public function loginAction(Request $request)
 	{
-		if ($this->get('zco_user.user')->isAuthenticated())
-		{
+		if (verifier('connecte')) {
 			throw new AccessDeniedHttpException('Vous êtes déjà connecté.');
 		}
 		
@@ -94,10 +93,7 @@ class SessionController extends Controller
 	 */
 	public function logoutAction(Request $request)
 	{
-		if ($this->get('zco_user.user')->isAuthenticated()
-			&& $request->query->has('token') && !empty($_SESSION['token']) 
-			&& $request->query->get('token') == $_SESSION['token'])
-		{
+		if (verifier('connecte') && $request->query->get('token') == $_SESSION['token']) {
 			$this->get('zco_user.user')->logout();
 			
 			return redirect('Vous êtes maintenant déconnecté de votre compte. À bientôt !', '/');
@@ -183,8 +179,7 @@ class SessionController extends Controller
 	 */
 	public function registerAction(Request $request)
 	{
-		if ($this->get('zco_user.user')->isAuthenticated())
-		{
+		if (verifier('connecte')) {
 			throw new AccessDeniedHttpException('Vous êtes déjà inscrit et connecté.');
 		}
 		

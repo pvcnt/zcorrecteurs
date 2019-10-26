@@ -40,14 +40,9 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class UserSession
 {
-	const AUTHENTICATED_ANONYMOUSLY = 0;
-	const AUTHENTICATED_REMEMBERED = 1;
-	const AUTHENTICATED_FULLY = 2;
-
 	protected $entityId;
 	protected $entity;
 	protected $dispatcher;
-	protected $pendingState;
 	protected $state;
 
 	/**
@@ -58,18 +53,6 @@ class UserSession
 	public function __construct(EventDispatcherInterface $dispatcher)
 	{
 		$this->dispatcher = $dispatcher;
-		$this->state      = self::AUTHENTICATED_ANONYMOUSLY;
-	}
-
-	/**
-	 * Vérifie si l'utilisateur est authentifié à un certain niveau.
-	 *
-	 * @param  integer $state Niveau d'authentification à vérifier
-	 * @return boolean
-	 */
-	public function isAuthenticated($state = self::AUTHENTICATED_REMEMBERED)
-	{
-		return $this->state >= $state;
 	}
 
 	/**
@@ -89,25 +72,6 @@ class UserSession
 	}
 
 	/**
-	 * Vérifie que le mot de passe soit acceptable, dans le sens où c'est un
-	 * « bon » mot de passe. La vérification de base vérifie que sa longueur
-	 * soit suffisante (6 caractères).
-	 *
-	 * @param  string $password Le mot de passe à valider
-	 * @return boolean
-	 * @throws ValueException Si le mot de passe n'est pas acceptable
-	 */
-	public function validatePassword($password)
-	{
-		if (strlen($password) < 6)
-		{
-			throw new ValueException('Le mot de passe est trop court.');
-		}
-
-		return true;
-	}
-
-	/**
 	 * Vérifie que le nom d'utilisateur soit acceptable, i.e., qu'il ne soit pas
      * déjà utilisé pour un autre compte.
 	 *
@@ -119,28 +83,6 @@ class UserSession
 	{
 		if (\Doctrine_Core::getTable('Utilisateur')->countByPseudo($username) > 0) {
 			throw new ValueException('Le pseudonyme est déjà utilisé.');
-		}
-
-		return true;
-	}
-
-	/**
-	 * Vérifie que l'adresse courriel soit autorisée.
-	 *
-	 * @param  string $email Le courriel à valider
-	 * @return boolean
-	 * @throws ValueException Si l'adresse courriel n'est pas acceptable
-	 */
-	public function validateEmail($email)
-	{
-        if (!EmailAddress::isValid($email)) {
-            throw new ValueException('Cette adresse courriel est invalide.');
-        }
-        if (!EmailAddress::isAllowed($email)) {
-            throw new ValueException('Cette adresse courriel n\'est pas autorisée.');
-        }
-		if (\Doctrine_Core::getTable('Utilisateur')->countByEmail($email) > 0) {
-			throw new ValueException('Cette adresse courriel est déjà utilisée.');
 		}
 
 		return true;
@@ -166,8 +108,6 @@ class UserSession
 			throw new LoginException('Mauvais couple pseudo/mot de passe.');
 		}
 
-		$this->pendingState = self::AUTHENTICATED_FULLY;
-
 		return $user;
 	}
 
@@ -191,8 +131,7 @@ class UserSession
 	 */
 	public function attemptEnvLogin(Request $request)
 	{
-		if (!empty($_SESSION['id']) && !empty($_SESSION['state']) && $_SESSION['id'] > 0
-            && $_SESSION['state'] > self::AUTHENTICATED_ANONYMOUSLY) {
+		if (!empty($_SESSION['id']) && !empty($_SESSION['authenticated']) && $_SESSION['id'] > 0) {
             // Already logged in.
 			return false;
 		}
@@ -207,7 +146,6 @@ class UserSession
         if ($user && $request->cookies->get('violon') === self::generateRememberKey($user)) {
             $this->entityId = $userId;
             $this->entity = $user;
-            $this->state = UserSession::AUTHENTICATED_REMEMBERED;
 
             return true;
 		}
@@ -225,29 +163,18 @@ class UserSession
      * @param Request $request La requête courante.
 	 * @param  \Utilisateur $user L'entité à connecter
 	 * @param  boolean $remember Se souvenir de l'utilisateur ?
-	 * @param  integer|null État final de l'utilisateur
 	 * @throws LoginException Si le compte n'est pas autorisé à se connecter
 	 */
-	public function login(Request $request, \Utilisateur $user, $remember = false, $state = null)
+	public function login(Request $request, \Utilisateur $user, $remember = false)
 	{
 		// Propagation de l'événement PRE_LOGIN. Celui-ci peut encore interrompre
 		// le processus. Il est conçu pour vérifier des informations comme la
 		// conformité du compte (compte validé, non banni, etc.).
-		$event = new FilterLoginEvent($request, $user, $remember, $state);
+		$event = new FilterLoginEvent($request, $user, $remember);
 		$this->dispatcher->dispatch(UserEvents::PRE_LOGIN, $event);
 		if ($event->isAborted())
 		{
 			throw new LoginException($event->getErrorMessage());
-		}
-
-		if ($this->pendingState !== null)
-		{
-			$this->state = $this->pendingState;
-			$this->pendingState = null;
-		}
-		else
-		{
-			$this->state = ($state !== null) ? $state : self::AUTHENTICATED_FULLY;
 		}
 
 		$this->entityId = $event->getUser()->getId();
@@ -265,11 +192,11 @@ class UserSession
 		//Ces informations sont nécessaires pour rétablir l'état de l'objet
 		//lors des futures requêtes.
 		$_SESSION['id']		= $this->entityId;
-		$_SESSION['state']  = $this->state;
+		$_SESSION['authenticated'] = true;
 
 		//On informe maintenant tous les observateurs que le processus de
 		//connexion s'est déroulé avec succès.
-		$event = new LoginEvent($request, $this->entity, $event->isRemember(), $this->state);
+		$event = new LoginEvent($request, $this->entity, $event->isRemember());
 		$this->dispatcher->dispatch(UserEvents::POST_LOGIN, $event);
 	}
 

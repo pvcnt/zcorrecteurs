@@ -83,7 +83,7 @@ class EventListener implements EventSubscriberInterface
 
             // Mise à jour temps réel des groupes associés au compte de
             // l'utilisateur actuellement connecté.
-            if ($user->isAuthenticated() && isset($_SESSION['refresh_droits'])) {
+            if (verifier('connecte') && isset($_SESSION['refresh_droits'])) {
                 $forceRefresh = $this->container->get('cache')->fetch('dernier_refresh_droits');
                 if ($forceRefresh !== false && $forceRefresh >= $_SESSION['refresh_droits']) {
                     $user->reloadGroups();
