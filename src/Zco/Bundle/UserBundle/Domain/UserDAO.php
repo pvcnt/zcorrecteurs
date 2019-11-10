@@ -40,7 +40,6 @@ final class UserDAO
 		END AS age
 		FROM zcov2_utilisateurs
 		LEFT JOIN zcov2_groupes ON utilisateur_id_groupe=groupe_id
-		LEFT JOIN zcov2_utilisateurs_preferences ON preference_id_utilisateur = utilisateur_id
 		WHERE utilisateur_id = :id");
             $stmt->bindParam(':id', $search);
             $stmt->execute();
@@ -53,7 +52,6 @@ final class UserDAO
 		END AS age
 		FROM zcov2_utilisateurs
 		LEFT JOIN zcov2_groupes ON utilisateur_id_groupe=groupe_id
-		LEFT JOIN zcov2_utilisateurs_preferences ON preference_id_utilisateur = utilisateur_id
 		WHERE utilisateur_pseudo = :pseudo");
             $stmt->bindParam(':pseudo', $search);
             $stmt->execute();

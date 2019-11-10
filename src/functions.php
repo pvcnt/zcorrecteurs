@@ -467,13 +467,19 @@ function redirect($message = null, $url = '', $type = MSG_OK)
  * Récupère la valeur d'une préférence.
  *
  * @param string $nom Le nom de la préférence.
+ * @param mixed $default Valeur par défaut.
  * @return mixed
  */
-function preference($nom)
+function preference($nom, $default = null)
 {
     //Si la préférence est déjà en session
     if (isset($_SESSION['prefs'][$nom])) {
         return $_SESSION['prefs'][$nom];
+    }
+
+    if ($_SESSION['id'] < 0) {
+        // Les visiteurs n'ont jamais de préférences à eux.
+        return $default;
     }
 
     //Sinon on les récupère toutes et on les met en session.
@@ -489,11 +495,9 @@ function preference($nom)
         if ($logger) {
             $logger->warn(sprintf('La préférence "%s" n\'existe pas.', $nom));
         }
-
-        return false;
     }
 
-    return null;
+    return $default;
 }
 
 /**
@@ -659,7 +663,7 @@ function dateformat($dateHeure, $casse = MAJUSCULE, $format = DATETIME)
     // Gestion du décalage
     static $decalage = false;
     if ($decalage === false) {
-        $decalage = preference('time_difference');
+        $decalage = preference('time_difference', 0);
         // Les timestamps sont enregistrés en GMT+1 dans la base de données
         $decalage -= 3600;
     }
