@@ -337,29 +337,6 @@ function verifier($droit, $cat = 0, $groupe = null)
     }
 }
 
-function verifier_array($credentials)
-{
-    if (empty($credentials)) {
-        return true;
-    }
-
-    //Doubles crochets => condition de type OR entre les droits cités.
-    if (is_array($credentials[0])) {
-        foreach ($credentials[0] as $auth) {
-            if (verifier($auth))
-                return true;
-        }
-        return false;
-    } //Sinon tableau simple => condition de type AND entre les droits cités.
-    else {
-        foreach ($credentials as $auth) {
-            if (!verifier($auth))
-                return false;
-        }
-        return true;
-    }
-}
-
 /**
  * Fonction permettant le listage des pages à la SdZ
  * (Page : Précédent 1 2 3 ... 7 8 9 Suivante).
@@ -524,57 +501,6 @@ function send_mail($destinataire_adresse, $destinataire_nom, $objet, $message_ht
     }
 
     return false;
-}
-
-/**
- * array_sum récursif
- *
- * @author mwsaz
- * @param  array $arr Array de nombres pouvant contenir des arrays
- * @return int
- */
-function array_sum_r($array)
-{
-    $sum = 0;
-    foreach ($array as &$v) {
-        if (is_array($v))
-            $sum += array_sum_r($v);
-        else
-            $sum += (int)$v;
-    }
-    return $sum;
-}
-
-/**
- * Remplace les longs isset($_POST[x], $_POST[y]...
- *
- * @author mwsaz
- * @param  array $arr Array des clés à vérifier
- * @return bool
- */
-function check_post_vars($a)
-{
-    foreach ((is_array($a) ? $a : func_get_args()) as $arg)
-        if (!isset($_POST[$arg]))
-            return false;
-    return true;
-}
-
-function array_trim($vars, $index = null)
-{
-    if ($index != null) {
-        if (!is_array($index))
-            $index = array($index);
-
-        $v2 = array();
-        foreach ($index as $ind)
-            $v2[$ind] = $vars[$ind];
-        $vars = $v2;
-    }
-
-    foreach ($vars as &$var)
-        $var = trim($var);
-    return $vars;
 }
 
 function render_to_string($template = array(), array $vars = array())
@@ -795,13 +721,4 @@ function fil_ariane($id = null, $enfants = array())
     }
 
     Page::$fil_ariane = $items;
-}
-
-function extrait($texte, $taille = 50)
-{
-    $extrait = wordwrap($texte, $taille);
-    $extrait = explode("\n", $extrait);
-    if ($extrait[0] != $texte)
-        $extrait[0] .= '…';
-    return $extrait[0];
 }

@@ -63,34 +63,6 @@ class HumanizeHelper extends Helper
     }
 
     /**
-     * Calcule une différence entre deux dates.
-     *
-     * @author mwsaz <mwsaz@zcorrecteurs.fr>
-     * @param  integer $t1 Le premier timestamp
-     * @param  integer $t2 Le second timestamp
-     * @return string
-     */
-    public function datediff($t1, $t2 = 0)
-    {
-        $diff = abs($t2 - $t1);
-        $m = (int)($diff / 60);
-        $h = (int)($m / 60);
-        $j = (int)($h / 24);
-
-        $s = $diff % 60;
-        $m = $m % 60;
-        $h = $h % 24;
-
-        $out = array();
-        if ($j) $out[] = $j . ' jour' . ($j > 1 ? 's' : '');
-        if ($h) $out[] = ($h < 10 ? '0' : '') . $h . ' h';
-        if ($m) $out[] = ($m < 10 ? '0' : '') . $m . ' min';
-        if ($s) $out[] = ($s < 10 ? '0' : '') . $s . ' s';
-
-        return implode(' ', $out);
-    }
-
-    /**
      * Formate un nombre pour l'afficher suivant les normes françaises. Permet
      * également de choisir la précision de l'affichage et éventuellement de
      * diminuer cette précision.
@@ -134,6 +106,17 @@ class HumanizeHelper extends Helper
         }
 
         return $retval;
+    }
+
+    public function summarize($text, $length = 50)
+    {
+        $text = strip_tags($text);
+        $extrait = wordwrap($text, $length);
+        $extrait = explode("\n", $extrait);
+        if ($extrait[0] != $text) {
+            $extrait[0] .= '…';
+        }
+        return $extrait[0];
     }
 
     /**

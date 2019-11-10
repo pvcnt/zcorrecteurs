@@ -24,7 +24,9 @@
         </dd>
     <?php endif ?>
 	<dd>
-		<p class="dictee-description" style="text-align: justify;"><strong style="color: black;">Description :</strong> <?php echo extrait(strip_tags($Dictee->description),230); ?></p>
+		<p class="dictee-description" style="text-align: justify;">
+            <strong style="color: black;">Description :</strong>
+            <?php echo $view['humanize']->summarize($Dictee->description ,230) ?></p>
 	</dd>
 </dl>
 <br/>

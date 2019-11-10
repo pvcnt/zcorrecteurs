@@ -15,7 +15,7 @@
 					<?php if($dictee->description): ?>
 						<span class="dictee-description">
 							—
-							<?php echo extrait(strip_tags($dictee->description)) ?>
+							<?php echo $view['humanize']->summarize($dictee->description) ?>
 						</span>
 					<?php endif ?>
 				</li>
@@ -35,7 +35,7 @@
 					<?php if($dictee->description): ?>
 						<span class="dictee-description">
 							—
-							<?php echo extrait(strip_tags($dictee->description)) ?>
+							<?php echo $view['humanize']->summarize($dictee->description) ?>
 						</span>
 					<?php endif ?>
 				</li>
@@ -55,7 +55,7 @@
                     <?php if($dictee->description): ?>
                         <span class="dictee-description">
 							—
-                            <?php echo extrait(strip_tags($dictee->description)) ?>
+                            <?php echo $view['humanize']->summarize($dictee->description) ?>
 						</span>
                     <?php endif ?>
 				</li>
