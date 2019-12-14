@@ -23,7 +23,6 @@ namespace Zco\Bundle\LivredorBundle\EventListener;
 
 use Zco\Bundle\InformationsBundle\InformationsEvents;
 use Zco\Bundle\InformationsBundle\Event\FilterSitemapEvent;
-use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -39,30 +38,8 @@ class EventListener implements EventSubscriberInterface
 	static public function getSubscribedEvents()
 	{
 		return array(
-			'zco_core.filter_menu.footer1' => 'onFilterFooter1',
 			InformationsEvents::SITEMAP => 'onFilterSitemap',
 		);
-	}
-	
-	/**
-	 * Ajoute un lien vers le livre d'or dans le peid de page.
-	 *
-	 * @param FilterMenuEvent $event
-	 */
-	public function onFilterFooter1(FilterMenuEvent $event)
-	{
-		if (!verifier('livredor'))
-		{
-		    return;
-	    }
-	    
-		$event->getRoot()->addChild('Livre d\'or', array(
-			'uri'    => '/livredor/',
-			'weight' => 40,
-			'linkAttributes' => array(
-				'title' => 'Vous aimez ce site ? N\'hésitez pas à laisser un message sur le livre d\'or.'
-			),
-		));
 	}
 	
 	/**

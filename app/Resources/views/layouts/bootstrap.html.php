@@ -82,11 +82,19 @@
                 </div>
 
                 <div class="center">
-                    <p><a href="#" title="Remonter en haut de page" id="toplink">Haut de page</a></p>
+                    <p>
+                        <a href="<?php echo $view['router']->path('zco_about_index') ?>" title="Pour en savoir plus sur le site et son organisation.">À propos</a>
+                        | <a href="<?php echo $view['router']->path('zco_about_contact') ?>" title="Si vous avez besoin de contacter les administrateurs de ce site.">Contact</a>
+                        | <a href="<?php echo $view['router']->path('zco_about_opensource') ?>">Code source</a>
+                        | <a href="/dons/">Faire un don</a>
+                        | <a href="/aide/page-19-mentions-legales.html">Mentions légales</a>
+                    </p>
 
-                    <?php echo $view['ui']->footer(1); ?>
-                    <?php echo $view['ui']->footer(2); ?>
-                    <?php echo $view['ui']->footer(3, array('childrenAttributes' => array('class'   => 'links bloc_partenaires'), 'preHtml' => 'Partenaires : ')); ?>
+                    <p>
+                        <a href="/blog/flux.html">Flux RSS</a>
+                        - <a href="https://twitter.com/zCorrecteurs" title="Tous nos tweets">Twitter</a>
+                        - <a href="https://www.facebook.com/pages/zCorrecteurs/292782574071649">Facebook</a>
+                    </p>
                 </div>
             </div>
         <?php endif ?>

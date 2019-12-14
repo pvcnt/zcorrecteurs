@@ -120,22 +120,6 @@ class UiHelper extends Helper
 	}
 	
 	/**
-	 * Effectue le rendu d'une ligne du pied de page du site.
-	 *
-	 * @return string Code HTML
-	 */
-	public function footer($line, array $options = array())
-	{
-		$factory = new MenuFactory();
-		$menu = $factory->createItem('footer'.$line, $options);
-		
-		$renderer = new FooterRenderer();
-		$renderer->setSeparator($line > 1 ? ' - ' : ' | ');
-		
-		return $this->renderMenu($menu, $renderer);
-	}
-	
-	/**
 	 * {@inheritdoc}
 	 */
 	public function getName()

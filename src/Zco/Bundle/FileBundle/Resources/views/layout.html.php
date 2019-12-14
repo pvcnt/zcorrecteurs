@@ -138,19 +138,6 @@
 			    <span>Site fièrement édité par</span>
 				<a href="http://www.corrigraphie.org" title="Ce site est hébergé et édité par l’association Corrigraphie.">Corrigraphie</a>
 			</div>
-			
-			<div class="right bloc_partenaires">
-				<a href="http://www.siteduzero.com" title="Le Site du Zéro, site communautaire de tutoriels gratuits pour débutants : programmation, création de sites Web, Linux..." id="pub-19">Site du Zéro</a>
-				<?php $view['cache']->increment('pub_nbv-19') ?>
-			</div>
-			
-			<div class="center">
-				<p><a href="#" title="Remonter en haut de page" id="toplink">Haut de page</a></p>
-				
-				<?php echo $view['ui']->footer(1); ?>
-				<?php echo $view['ui']->footer(2); ?>
-				<?php echo $view['ui']->footer(3, array('childrenAttributes' => array('class' => 'links bloc_partenaires'), 'preHtml' => 'Partenaires : ')); ?>
-			</div>
 		</div>
 	    <?php endif ?>
 	    

@@ -23,7 +23,6 @@ namespace Zco\Bundle\AideBundle\EventListener;
 
 use Zco\Bundle\InformationsBundle\Event\FilterSitemapEvent;
 use Zco\Bundle\InformationsBundle\InformationsEvents;
-use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
 use Zco\Component\Templating\Event\FilterContentEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -40,27 +39,10 @@ class EventListener implements EventSubscriberInterface
     static public function getSubscribedEvents()
     {
         return array(
-            'zco_core.filter_menu.footer1' => 'onFilterFooter1',
 			'zco_core.filter_block.breadcrumb' => 'onFilterBreadcrumb',
 			InformationsEvents::SITEMAP => 'onFilterSitemap',
         );
     }
-    
-	/**
-	 * Ajoute dans la première ligne du pied de page un lien vers la page 
-	 * de mentions légales.
-	 * 
-	 * @param FilterMenuEvent $event
-	 */
-	public function onFilterFooter1(FilterMenuEvent $event)
-	{
-		$event
-			->getRoot()
-			->addChild('Mentions légales', array(
-				'uri'    => '/aide/page-19-mentions-legales.html',
-				'weight' => 30,
-			));
-	}
 	
 	/**
 	 * Ajoute un lien vers le module d'aide à gauche du fil d'Ariane.

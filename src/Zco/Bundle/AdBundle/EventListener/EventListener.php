@@ -47,7 +47,6 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
     {
         return array(
             'zco_core.filter_menu.left_menu'   => 'onFilterLeftMenu',
-            'zco_core.filter_menu.footer3'     => 'onFilterFooter3',
             TemplatingEvents::FILTER_RESOURCES => 'onTemplatingFilterResources',
             AdminEvents::MENU                  => 'onFilterAdmin',
             CoreEvents::HOURLY_CRON            => 'onHourlyCron',
@@ -97,16 +96,6 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
                 ),
             ));
         }
-    }
-
-    /**
-     * Ajoute les partenaires dans le pied de page.
-     *
-     * @param FilterMenuEvent $event
-     */
-    public function onFilterFooter3(FilterMenuEvent $event)
-    {
-        $this->generateHtml('pied', $event->getRoot());
     }
 
     /**

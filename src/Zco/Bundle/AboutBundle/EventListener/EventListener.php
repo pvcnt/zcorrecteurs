@@ -40,45 +40,9 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 	static public function getSubscribedEvents()
 	{
 		return array(
-			'zco_core.filter_menu.footer1'   => 'onFilterFooter1',
 			'zco_core.filter_menu.left_menu' => 'onFilterLeftMenu',
 			InformationsEvents::SITEMAP 	 => 'onFilterSitemap',
 		);
-	}
-	
-	/**
-	 * Ajoute les liens dans le pied de page.
-	 *
-	 * @param FilterMenuEvent $event
-	 */
-	public function onFilterFooter1(FilterMenuEvent $event)
-	{
-		$event
-			->getRoot()
-			->addChild('À propos', array(
-				'uri'    => $this->container->get('router')->generate('zco_about_index'),
-				'weight' => 10,
-				'linkAttributes' => array(
-					'title' => 'Pour en savoir plus sur le site et son organisation.'
-				),
-			));
-		
-		$event
-			->getRoot()
-			->addChild('Contact', array(
-				'uri'    => $this->container->get('router')->generate('zco_about_contact'),
-				'weight' => 20,
-				'linkAttributes' => array(
-					'title' => 'Si vous avez besoin de contacter les administrateurs de ce site.'
-				),
-			));
-		
-		$event
-			->getRoot()
-			->addChild('Code source', array(
-				'uri'    => $this->container->get('router')->generate('zco_about_opensource'),
-				'weight' => 25,
-			));
 	}
 	
 	/**
