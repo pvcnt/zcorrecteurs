@@ -9,9 +9,6 @@ zco_admin:
 zco_file:
     resource: "@ZcoFileBundle/Resources/config/routing/index.yml"
 
-zco_twitter:
-    resource: "@ZcoTwitterBundle/Resources/config/routing/index.yml"
-
 zco_user:
     resource: "@ZcoUserBundle/Resources/config/routing/index.yml"
 

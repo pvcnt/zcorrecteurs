@@ -62,15 +62,6 @@ function CompterTachesDictees()
 		->count();
 }
 
-function CompterTachesMentions()
-{
-	return Doctrine_Query::create()
-		->select('COUNT(*)')
-		->from('TwitterMention')
-		->where('nouvelle = 1')
-		->count();
-}
-
 function CompterTachesCommentairesBlog()
 {
 	$dbh = Doctrine_Manager::connection()->getDbh();

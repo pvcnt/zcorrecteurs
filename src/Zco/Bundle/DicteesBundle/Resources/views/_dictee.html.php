@@ -68,6 +68,6 @@
 <?php endif ?>
 
 <p class="italique"><a href="https://twitter.com/share?text=<?php echo urlencode('Vous aussi, mesurez-vous à cette dictée des @zCorrecteurs : ') ?>&url=<?php echo URL_SITE ?>/dictees/dictee-<?php echo $Dictee->id ?>-<?php echo rewrite($Dictee->titre) ?>.html">
-    <img src="/bundles/zcotwitter/img/oiseau_16px.png" alt="Twitter" />
+    <img src="/bundles/zcocore/img/oiseau_16px.png" alt="Twitter" />
     Partager cette dictée sur Twitter
 </a></p>

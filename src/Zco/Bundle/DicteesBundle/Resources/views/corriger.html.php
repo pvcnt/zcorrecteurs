@@ -26,7 +26,7 @@
 <?php echo $commentaire ?></p>
 
 <p class="italique"><a href="https://twitter.com/share?text=<?php echo urlencode('J\'ai fait '.$diff->fautes().' faute'.pluriel($diff->fautes()).' à cette dictée des @zCorrecteurs. Pourrez-vous faire mieux ? Relevez le défi ici : ') ?>&url=<?php echo URL_SITE ?>/dictees/dictee-<?php echo $Dictee->id ?>-<?php echo rewrite($Dictee->titre) ?>.html">
-    <img src="/bundles/zcotwitter/img/oiseau_16px.png" alt="Twitter" />
+    <img src="/bundles/zcocore/img/oiseau_16px.png" alt="Twitter" />
     Partager mon résultat sur Twitter
 </a></p>
 

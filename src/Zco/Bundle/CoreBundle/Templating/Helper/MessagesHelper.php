@@ -184,21 +184,6 @@ class MessagesHelper extends Helper
 			.'(\s|$|<)`i',
 			'$1<a href="$2">$2</a>$3', $texte);
 	}
-
-	/**
-	 * Parse les mots clés spécifiques à twitter dans un texte.
-	 *
-	 * @param  string $texte Texte à parser.
-	 * @return string
-	 */
-	public function parseTwitter($texte)
-	{
-		return preg_replace(
-			'`(\s|^|>)'
-			.'@([0-9a-z_-]+)'
-			.'(\\.|\s|$|<)`i',
-			'$1<a href="http://twitter.com/$2">@$2</a>$3', $texte);
-	}
 	
 	/**
 	 * {@inheritdoc}

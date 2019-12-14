@@ -91,7 +91,7 @@
 			</a> |
 			<?php } ?>
 			<a href="https://twitter.com/share?text=<?php echo urlencode('Venez découvrir cet article des @zCorrecteurs : ') ?>&url=<?php echo URL_SITE ?>/blog/billet-<?php echo $InfosBillet['blog_id'] ?>-<?php echo rewrite($InfosBillet['version_titre']) ?>.html" class="italique">
-                <img src="/bundles/zcotwitter/img/oiseau_16px.png" alt="Twitter" />
+                <img src="/bundles/zcocore/img/oiseau_16px.png" alt="Twitter" />
                 Partager sur Twitter
             </a> |
 			<a href="#header">Remonter</a>

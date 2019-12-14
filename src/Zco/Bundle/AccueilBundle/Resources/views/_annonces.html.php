@@ -79,13 +79,6 @@
 					));
 		?>
 	</div>
-<?php } elseif ($quel_bloc == 'twitter') { ?>
-	<h2 class="mod_twitter">Twitter</h2>
-	<div class="accueil-twitter">
-		<?php
-			echo $view->render('ZcoTwitterBundle::_bloc_accueil.html.php', compact('Tweets'));
-		?>
-	</div>
 <?php } elseif ($quel_bloc == 'dictee' ) { ?>
 	<h2 class="mod_dictees">Dictée à la une</h2>
 	<div class="accueil_dictee">

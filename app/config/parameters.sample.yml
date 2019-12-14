@@ -16,8 +16,6 @@ parameters:
     analytics_domain: 'zcorrecteurs.fr'
     aviary_api_key: ''
     aviary_api_secret:  ''
-    twitter_api_key: ''
-    twitter_api_secret: ''
 
 swiftmailer:
     transport:  zco_core.swiftmailer.mandrill_transport

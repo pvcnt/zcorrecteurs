@@ -35,12 +35,10 @@
 
 	<td>
 		<span style="float: right; margin-left: 10px;">
-			<?php if ($quel_bloc == 'twitter'): ?>
-				<a href="<?php echo $view['router']->generate('zco_twitter_index') ?>">
-					<img src="/bundles/zcotwitter/img/bouton.png"
-					     alt="twitter"/>
-				</a>
-			<?php endif ?>
+            <a href="https://twitter.com/zCorrecteurs">
+                <img src="/bundles/zcocore/img/bouton.png"
+                     alt="twitter"/>
+            </a>
 			<a href="<?php echo $view['router']->generate('zco_info_feed') ?>" title="S'abonner au flux des annonces">
 				<img src="/pix.gif" class="fff feed" alt="Flux" />
 			</a>

@@ -833,28 +833,3 @@ index blog_billets : zcorrecteurs
 	source               = blog_billets
 	path                 = %sphinxpath%/index/blog_billets.idx
 }
-
-
-########################################
-########## Messages Twitter ############
-########################################
-
-source twitter_tweets : zcorrecteurs
-{
-	sql_query            = \
-		SELECT id, UNIX_TIMESTAMP(creation) AS creation, texte, utilisateur_id, compte_id AS categorie_id \
-		FROM %database.prefix%twitter_tweets \
-		WHERE id BETWEEN $start AND $end
-
-	sql_query_range      = SELECT 1, MAX(id) FROM %database.prefix%twitter_tweets
-
-	sql_attr_uint        = utilisateur_id
-	sql_attr_uint        = categorie_id
-	sql_attr_timestamp   = creation
-}
-
-index twitter_tweets : zcorrecteurs
-{
-	source               = twitter_tweets
-	path                 = %sphinxpath%/index/twitter_tweets.idx
-}

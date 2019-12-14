@@ -87,10 +87,6 @@
     target=/bundles/FOS/JsRoutingBundle
     version=1.3.0
 
-[FOSTwitterBundle]
-    git=http://github.com/FriendsOfSymfony/FOSTwitterBundle.git
-    target=/bundles/FOS/TwitterBundle
-
 [KnpPaginatorBundle]
     git=http://github.com/KnpLabs/KnpPaginatorBundle.git
     target=bundles/Knp/Bundle/PaginatorBundle
@@ -102,6 +98,3 @@
 [knp-components]
     git=https://github.com/KnpLabs/knp-components.git
     target=/knp-components
-
-[twitter-text-js]
-    git=https://github.com/twitter/twitter-text-js

@@ -115,27 +115,6 @@ class IndexController extends Controller
 				$vars['BilletHasard'] = $vars['BilletHasard'][0];
 			}
 		 }
-		 elseif($vars['quel_bloc'] == 'twitter')
-		 {
-			if (!$tweets = $cache->get('accueil_derniersTweets'))
-			{
-				$nb = $cache->get('accueil_tweets');
-				!$nb && $nb = 4;
-
-				$tweets = \Doctrine_Core::getTable('TwitterTweet')
-					->createQuery('t')
-					->select('t.twitter_id, t.creation, t.texte, '
-						.'u.id, u.pseudo, u.avatar, '
-						.'c.nom')
-					->leftJoin('t.Utilisateur u')
-					->leftJoin('t.Compte c')
-					->orderBy('id DESC')
-					->limit($nb)
-					->execute();
-				$cache->set('accueil_derniersTweets', $tweets, 0);
-			}
-			$vars['Tweets'] = $tweets ? $tweets : array();
-		 }
 		 elseif ($vars['quel_bloc'] == 'dictee')
 		 {
 		 	$dictee = $registry->get('dictee_en_avant');
