@@ -12,6 +12,7 @@ app/config/config_prod.yml
 # Fichiers de configuration
 app/config/constants.yml
 app/config/parameters.yml
+.env
 
 # Fichiers temporaires
 web/compiled/*
@@ -34,6 +35,7 @@ nbproject/
 .project
 .directory
 *.tmproj
+.idea/
 
 # Fichiers spécifiques aux OS
 .DS_Store
