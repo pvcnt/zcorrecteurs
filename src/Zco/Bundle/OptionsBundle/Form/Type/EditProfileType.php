@@ -21,10 +21,8 @@
 
 namespace Zco\Bundle\OptionsBundle\Form\Type;
 
-use Zco\Bundle\UserBundle\Form\EventListener\CalculateCoordinatesSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;
-use Geocoder\GeocoderInterface;
 
 /**
  * Formulaire permettant de modifier le profil d'un utilisateur.
@@ -33,24 +31,11 @@ use Geocoder\GeocoderInterface;
  */
 class EditProfileType extends AbstractType
 {
-	protected $geocoder;
-
-	/**
-	 * Constructeur.
-	 *
-	 * @param GeocoderInterface $geocoder
-	 */
-	public function __construct(GeocoderInterface $geocoder)
-	{
-		$this->geocoder = $geocoder;
-	}
-
 	/**
 	 * {@inheritdoc}
 	 */
 	public function buildForm(FormBuilder $builder, array $options)
 	{
-		$builder->addEventSubscriber(new CalculateCoordinatesSubscriber($this->geocoder));
 		$builder->add('twitter', null, array(
 			'label' => 'Compte Twitter',
 			'required' => false,

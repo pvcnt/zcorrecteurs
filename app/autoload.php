@@ -46,8 +46,6 @@ $loader->registerNamespaces(array(
     'Avalanche'        => __DIR__ . '/../vendor/bundles',
     'FOS'              => __DIR__ . '/../vendor/bundles',
     'Mopa'             => __DIR__ . '/../vendor/bundles',
-    'Bazinga'          => __DIR__ . '/../vendor/bundles',
-    'Geocoder'         => __DIR__ . '/../vendor/geocoder/src',
 ));
 
 $loader->registerPrefixes(array(

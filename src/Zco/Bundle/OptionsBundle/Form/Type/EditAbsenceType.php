@@ -21,7 +21,6 @@
 
 namespace Zco\Bundle\OptionsBundle\Form\Type;
 
-use Zco\Bundle\UserBundle\Form\EventListener\CalculateCoordinatesSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;
 

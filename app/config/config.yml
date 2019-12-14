@@ -26,7 +26,7 @@ zco_vitesse:
         -
             name: google-maps
             type: js
-            inputs: 'http://maps.google.com/maps?file=api&amp;v=2&amp;key=%gmaps_api_key%' }
+            inputs: 'http://maps.google.com/maps?file=api&amp;v=2&amp;key=%gmaps_api_key%'
         -
             name: aviary-feather
             type: js
@@ -42,8 +42,3 @@ knp_gaufrette:
 knp_paginator:
     template:
         pagination: ZcoCoreBundle:Pagination:sliding.html.php
-
-bazinga_geocoder:
-    providers:
-        google_maps:
-            locale:     fr_FR
