@@ -5,7 +5,6 @@ app/bootstrap.php.cache
 app/cache/*
 app/logs/*
 build/
-/vendor/
 app/config/config_dev.yml
 app/config/config_prod.yml
 
@@ -32,7 +31,6 @@ web/LL_*.xml
 nbproject/
 .settings/*
 .buildpath
-.project
 .directory
 *.tmproj
 .idea/
