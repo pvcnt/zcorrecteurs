@@ -1,5 +1,0 @@
-services:
-    zco_livredor.event_listener:
-        class: Zco\Bundle\LivredorBundle\EventListener\EventListener
-        tags:
-            - { name: kernel.event_subscriber }

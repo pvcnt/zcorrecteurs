@@ -42,7 +42,6 @@ class DicteeAction extends DicteesActions
         $this->get('zco_vitesse.resource_manager')->requireResources(array(
 		    '@ZcoCoreBundle/Resources/public/css/zcode.css',
 		    '@ZcoDicteesBundle/Resources/public/css/dictees.css',
-		    '@ZcoLivredorBundle/Resources/public/css/livredor.css',
 		));
 
 		return render_to_response(compact('Dictee', 'Tags'));

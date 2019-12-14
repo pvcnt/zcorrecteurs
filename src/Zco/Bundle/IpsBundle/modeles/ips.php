@@ -171,16 +171,6 @@ function AnalyserIP($ip)
 	$retour['forum'] = $stmt->fetchAll();
 	$stmt->closeCursor();
 
-	//Messages du livre d'or
-	$retour['livredor'] = Doctrine_Query::create()
-		->select('u.utilisateur_id, u.utilisateur_pseudo, u.utilisateur_ip, '.
-			'g.class, m.id, m.date, m.utilisateur_id, u.utilisateur_forum_messages')
-		->from('Livredor m')
-		->leftJoin('m.Utilisateur u')
-		->leftJoin('u.Groupe g')
-		->where('m.ip = ?', $ip)
-		->execute();
-
 	//Candidatures
 	$retour['recrutement'] = array();
 	$resultat = array();

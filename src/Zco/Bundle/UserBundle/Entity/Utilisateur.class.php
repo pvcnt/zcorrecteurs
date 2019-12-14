@@ -600,11 +600,6 @@ class Utilisateur extends BaseUtilisateur
 		$stmt->execute();
 
 		\Doctrine_Query::create()
-			->delete('Livredor')
-			->where('utilisateur_id = ?', $this->getId())
-			->execute();
-
-		\Doctrine_Query::create()
 			->delete('Quiz')
 			->where('utilisateur_id = ?', $this->getId())
 			->execute();
