@@ -122,10 +122,7 @@ class Inline
     static private function dumpArray($value)
     {
         // array
-        $keys = array_keys($value);
-        if ((1 == count($keys) && '0' == $keys[0])
-            || (count($keys) > 1 && array_reduce($keys, function ($v, $w) { return (integer) $v + $w; }, 0) == count($keys) * (count($keys) - 1) / 2)
-        ) {
+        if ($value && !self::isHash($value)) {
             $output = array();
             foreach ($value as $val) {
                 $output[] = self::dump($val);
@@ -141,6 +138,27 @@ class Inline
         }
 
         return sprintf('{ %s }', implode(', ', $output));
+    }
+
+    /**
+     * Check if given array is hash or just normal indexed array.
+     *
+     * @param array|\ArrayObject|\stdClass $value The PHP array or array-like object to check
+     *
+     * @return bool true if value is hash array, false otherwise
+     */
+    private static function isHash($value): bool
+    {
+        if ($value instanceof \stdClass || $value instanceof \ArrayObject) {
+            return true;
+        }
+        $expectedKey = 0;
+        foreach ($value as $key => $val) {
+            if ($key !== $expectedKey++) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
