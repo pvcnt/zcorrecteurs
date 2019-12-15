@@ -52,9 +52,9 @@ class ExceptionHandler
     /**
      * Sends a Response for the given Exception.
      *
-     * @param \Exception $exception An \Exception instance
+     * @param \Throwable $exception A \Throwable instance
      */
-    public function handle(\Exception $exception)
+    public function handle(\Throwable $exception)
     {
         $this->createResponse($exception)->send();
     }
@@ -62,14 +62,15 @@ class ExceptionHandler
     /**
      * Creates the error Response associated with the given Exception.
      *
-     * @param \Exception $exception An \Exception instance
+     * @param \Throwable $exception A \Throwable instance
      *
      * @return Response A Response instance
      */
-    public function createResponse(\Exception $exception)
+    public function createResponse(\Throwable $exception)
     {
         $content = '';
         $title = '';
+        $code = 500;
         try {
             $code = $exception instanceof HttpExceptionInterface ? $exception->getStatusCode() : 500;
             $exception = FlattenException::create($exception);
@@ -85,7 +86,7 @@ class ExceptionHandler
             if ($this->debug) {
                 $content = $this->getContent($exception);
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             // something nasty happened and we cannot throw an exception here anymore
             if ($this->debug) {
                 $title = sprintf('Exception thrown when handling an exception (%s: %s)', get_class($exception), $exception->getMessage());
@@ -97,7 +98,7 @@ class ExceptionHandler
         return new Response($this->decorate($content, $title), $code);
     }
 
-    private function getContent($exception)
+    private function getContent(FlattenException $exception)
     {
         $message = nl2br($exception->getMessage());
         $class = $this->abbrClass($exception->getClass());

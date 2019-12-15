@@ -28,7 +28,7 @@ class FlattenException
     private $statusCode;
     private $headers;
 
-    static public function create(\Exception $exception, $statusCode = 500, array $headers = array())
+    static public function create(\Throwable $exception, $statusCode = 500, array $headers = array())
     {
         $e = new static();
         $e->setMessage($exception->getMessage());
