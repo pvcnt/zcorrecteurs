@@ -49,10 +49,8 @@ $loader->registerNamespaces(array(
 ));
 
 $loader->registerPrefixes(array(
-    'Twig_Extensions_'   => __DIR__ . '/../vendor/twig-extensions/lib',
     'Twig_'              => __DIR__ . '/../vendor/twig/lib',
     'Doctrine_'          => __DIR__ . '/../vendor/doctrine1',
-    'Resque'             => __DIR__ . '/../vendor/resque/lib',
     'sfYaml'             => __DIR__ . '/../vendor/doctrine1/vendor/sfYaml',
     'CssMin'             => __DIR__ . '/../vendor/cssmin',
     'JavascriptMinifier' => __DIR__ . '/../vendor/jsmin',

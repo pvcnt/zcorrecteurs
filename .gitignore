@@ -1,7 +1,6 @@
 # .gitignore de Symfony
 app/phpunit.xml
 web/bundles/
-app/bootstrap.php.cache
 app/cache/*
 app/logs/*
 build/
