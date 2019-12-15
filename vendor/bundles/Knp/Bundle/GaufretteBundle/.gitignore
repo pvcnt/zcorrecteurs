@@ -1,0 +1,4 @@
+Tests/Resources/cache
+var/
+vendor/
+composer.lock

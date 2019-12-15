@@ -76,7 +76,6 @@ class AppKernel extends Kernel
             new Zco\Bundle\TechniqueBundle\ZcoTechniqueBundle(),
             new Zco\Bundle\ZcorrectionBundle\ZcoZcorrectionBundle(),
             new Zco\Bundle\FileBundle\ZcoFileBundle(),
-            new Zco\Bundle\SentryBundle\ZcoSentryBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
