@@ -25,7 +25,6 @@
 	<?php echo pluriel($nombre, 'ont', 'a') ?> été trouvé<?php echo pluriel($nombre) ?>
 	à partir de la recherche <em><?php echo htmlspecialchars($_GET['ip']) ?></em> -
 
-	<a href="localiser.html?ip=<?php echo $_GET['ip']; ?>">Localiser cette IP (<?php echo $pays; ?>)</a> -
 	<a href="http://dns.l4x.org/<?php echo $_GET['ip']; ?>">Résoudre cette IP</a>
 	<?php if(verifier('ips_bannir')){ ?>
 	 - <a href="bannir.html?ip=<?php echo $_GET['ip']; ?>">Bannir cette IP</a>

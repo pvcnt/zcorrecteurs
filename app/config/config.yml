@@ -1,5 +1,5 @@
 imports:
-    - { resource: parameters.yml }
+    - { resource: parameters.php }
 
 framework:
     secret:          %secret%
@@ -17,20 +17,8 @@ framework:
             resources: 
                 - 'ZcoCoreBundle:Form'
 
-zco_vitesse:
-    assets:
-        -
-            name: google-jsapi
-            type: js
-            inputs: 'https://www.google.com/jsapi'
-        -
-            name: google-maps
-            type: js
-            inputs: 'http://maps.google.com/maps?file=api&amp;v=2&amp;key=%gmaps_api_key%'
-        -
-            name: aviary-feather
-            type: js
-            inputs: 'http://feather.aviary.com/js/feather.js'
+swiftmailer:
+    transport:  zco_core.swiftmailer.mandrill_transport
 
 knp_gaufrette:
     adapters:

@@ -260,15 +260,12 @@ class DefaultController extends Controller
 		
 		\Page::$titre = sprintf('Propriétés du fichier "%s"', $file['name']);
 		$timestamp = time();
-		$apiKey = $this->container->getParameter('aviary_api_key');
 		
 		return render_to_response(
 			'ZcoFileBundle::file.html.php', array_merge(array(
 				'currentPage'	=> 'file',
 				'file'			=> $file,
 				'licenses'		=> \Doctrine_Core::getTable('License')->findAll(),
-				'apiKey'        => $apiKey,
-				'signature'	   	=> md5($apiKey.$this->container->getParameter('aviary_api_secret').$timestamp),
 				'timestamp'	   	=> $timestamp,
 			), $vars)
 		);

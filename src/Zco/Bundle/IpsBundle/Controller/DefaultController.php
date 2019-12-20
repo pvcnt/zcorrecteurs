@@ -94,69 +94,6 @@ class DefaultController extends Controller
 	}
 
 	/**
-	 * Tente de géolocaliser une adresse IP.
-	 */
-	public function localiserAction()
-	{
-		\zCorrecteurs::VerifierFormatageUrl();
-		\Page::$titre = 'Géolocaliser une adresse IP';
-
-		if (!empty($_GET['ip']))
-		{
-			$ip = $_GET['ip'];
-			$match = explode('.', $ip);
-
-			//Inclusion de la librairie
-			include_once(BASEPATH.'/vendor/geoip/geoipcity.php');
-
-			//Si l'adresse est spécifique (type localhost)
-			if ($match[0] == '127' or $match[0] == '10' or ($match[0] == '172' and $match[1] >= '16' and $match[1] <= '31') or ($match[0] == '192' and $match[1] == '168'))
-			{
-				return redirect(7, 'analyser.html?ip='.$ip, MSG_ERROR);
-			}
-
-			//Lancement de la procédure de localisation
-			$info = array();
-			$gi = geoip_open(BASEPATH.'/vendor/geoip/GeoLiteCity.dat', GEOIP_STANDARD);
-			$location = geoip_record_by_addr($gi, $ip);
-			geoip_close($gi);
-
-			//En cas d'échec de la localisation
-			if (empty($location))
-			{
-				return redirect(8, 'analyser.html?ip='.$ip, MSG_ERROR);
-			}
-
-			//Si on a eu la ville
-			if (!empty($location->city))
-			{
-				$info[] = $location->city;
-			}
-			//Si on a le pays
-			if (!empty($location->country_code))
-			{
-				$info[] = $location->country_name;
-			}
-
-			$longitude = $location->longitude;
-			$latitude  = $location->latitude;
-			$info      = implode(', ', $info);
-
-			//Inclusion de la vue
-			fil_ariane('Géolocaliser une adresse IP');
-            
-			return render_to_response(array(
-				'info' => $info,
-				'ip' => $ip,
-				'longitude' => str_replace(',', '.', $longitude),
-				'latitude' => str_replace(',', '.', $latitude),
-			));
-		}
-		else
-			return new RedirectResponse('analyser.html');
-	}
-
-	/**
 	 * Affiche le formulaire permettant de bannir une adresse IP.
 	 */
 	public function bannirAction()

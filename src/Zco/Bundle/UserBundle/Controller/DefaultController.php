@@ -252,27 +252,6 @@ class DefaultController extends Controller
 		
 		return render_to_response('ZcoUserBundle::profile.html.php', $vars);
 	}
-	
-	/**
-	 * Affiche la carte de géolocalisation des membres de l'équipe.
-	 *
-	 * @author DJ Fox <djfox@zcorrecteurs.fr>
-	 */
-	public function localisationAction()
-	{
-		if (!verifier('voir_adresse'))
-		{
-			throw new AccessDeniedHttpException;
-		}
-		
-		$markers = \Doctrine_Core::getTable('Utilisateur')->getMarkersForMap($this->get('router'));
-        
-		//Paramétrage de la vue.
-		\Page::$titre = 'Géolocalisation de l\'équipe';
-		fil_ariane('Voir la localisation des membres de l\'équipe');
-		
-		return render_to_response('ZcoUserBundle::localisation.html.php', compact('markers'));
-	}
 
 	/**
 	 * Modifie le titre d'un membre.
