@@ -331,7 +331,9 @@ class Generator extends Controller
 			$attrs = isset($config['fields'][$name]['attributes']) ?
 				implode(' ',
 					array_map(
-						create_function('$k, $v', 'return $k.\'="\'.$v.\'"\';'),
+					    function($k, $v) {
+                            return $k.'="'.$v.'"';
+                        },
 						array_keys($config['fields'][$name]['attributes']),
 						array_values($config['fields'][$name]['attributes'])
 					)

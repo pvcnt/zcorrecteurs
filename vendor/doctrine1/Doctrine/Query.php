@@ -1394,7 +1394,7 @@ class Doctrine_Query extends Doctrine_Query_Abstract implements Countable
                 foreach ($e as $f) {
                     if ($f == 0 || $f % 2 == 0) {
                         $partOriginal = trim($f);
-                        $callback = create_function('$e', 'return trim($e, \'[]`"\');');
+                        $callback = function($e) { return trim($e, '[]`"'); };
                         $part = trim(implode('.', array_map($callback, explode('.', $partOriginal))));
                 
                         if (strpos($part, '.') === false) {

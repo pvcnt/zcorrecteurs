@@ -314,10 +314,11 @@ class CoreFeature implements EventSubscriberInterface
 		}
 		while($remplacements && preg_match($pattern, $texte));
 
-		$code_c = create_function('$m', 'return $m[1].htmlspecialchars($m[2]).$m[3];');
 		$texte = preg_replace_callback(
 			'`(<code(?:(?:\s+[A-Za-z_-]+=".*?")*)>)(.+?)(</code>)`s',
-			$code_c, $texte);
+            function ($m) {
+                return $m[1].htmlspecialchars($m[2]).$m[3];
+            }, $texte);
 
 		$event->setContent($texte);
 	}
@@ -385,9 +386,9 @@ class CoreFeature implements EventSubscriberInterface
 		// URLs cliquables
 		$texte = str_replace(array('<lien>', '</lien>'), '', $texte);
 
-		$html = create_function('$t',
-			'return str_replace(array("&lt;", "&gt;", '
-			.'"&quot;", "&amp;"), array("<", ">", "\\"", "&"), $t);');
+		$html = function($t) {
+			return str_replace(array("&lt;", "&gt;", "&quot;", "&amp;"), array("<", ">", "\"", "&"), $t);
+		};
 		$texte = $html($html(trim($texte)));
 
 		// Décalage dans la numérotation (commencer à x)
