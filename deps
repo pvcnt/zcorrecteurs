@@ -34,16 +34,6 @@
     git=http://github.com/schmittjoh/metadata.git
     version=1.0.0
 
-[SensioDistributionBundle]
-    git=http://github.com/sensio/SensioDistributionBundle.git
-    target=/bundles/Sensio/Bundle/DistributionBundle
-    version=origin/2.0
-
-[SensioGeneratorBundle]
-    git=http://github.com/sensio/SensioGeneratorBundle.git
-    target=/bundles/Sensio/Bundle/GeneratorBundle
-    version=origin/2.0
-
 [AsseticBundle]
     git=http://github.com/symfony/AsseticBundle.git
     target=/bundles/Symfony/Bundle/AsseticBundle

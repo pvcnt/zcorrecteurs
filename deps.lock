@@ -8,7 +8,5 @@ swiftmailer v4.1.8
 assetic v1.0.3
 metadata 1.0.0
 SensioFrameworkExtraBundle 638f545b7020b9e9d5944a7e3167f60ed848250d
-SensioDistributionBundle 20b66a408084ad8752f98e50f10533f5245310bf
-SensioGeneratorBundle b1ccb78c1743f30817b0fce9bb5c6baff6ed7bf8
 AsseticBundle v1.0.1
 AvalancheImagineBundle symfony-2.0-66-g4ab9387
