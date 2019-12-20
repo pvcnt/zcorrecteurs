@@ -107,11 +107,6 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 			'credentials' => 'voir_rapport_zcorr', 
 			'uri' => '/statistiques/activite.html',
 		));
-	
-		$tab->addChild('Rapport d\'activité des développeurs', array(
-			'credentials' => 'stats_developpement', 
-			'uri' => '/statistiques/developpement.html',
-		));
 	}
 
 	/**

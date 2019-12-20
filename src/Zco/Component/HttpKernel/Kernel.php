@@ -51,10 +51,7 @@ abstract class Kernel extends BaseKernel
 	{
 		parent::boot();
 		
-		\Config::load('constants');
-		
-		foreach ($this->bundles as $name => $bundle)
-		{
+		foreach ($this->bundles as $name => $bundle) {
 			if ($bundle instanceof AbstractBundle)
 			{
 				$bundle->preload();

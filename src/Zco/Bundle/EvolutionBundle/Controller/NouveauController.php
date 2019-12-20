@@ -47,23 +47,6 @@ class NouveauController extends Controller
 				$_POST['categorie'], $assigner, $_POST['texte'], $prive,
 				$_POST['url'], $critique, $type);
 
-			//En cas de faille critique, on envoie un MP au superviseur de la sécurité
-			if($critique)
-			{
-				$InfosUtilisateur = InfosUtilisateur(ID_MBR_CHEF_SECURITE);
-				$message = render_to_string('::mp_auto/bug_critique.html.php', array(
-					'pseudo'      => $InfosUtilisateur['utilisateur_pseudo'],
-					'id'          => $id,
-					'description' => $_POST['texte'],
-					'resume'      => $_POST['resume'],
-				));
-
-				AjouterMPAuto('Une anomalie marquée comme faille critique a été rapportée',
-					$_POST['resume'], ID_MBR_CHEF_SECURITE, $message);
-
-				//Ajout du suivi pour le superviseur
-				ChangerSuiviTicket(ID_MBR_CHEF_SECURITE, $id, 1);
-			}
 
 			//Ajout du suivi pour le créateur
 			ChangerSuiviTicket($_SESSION['id'], $id, 1);

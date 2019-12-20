@@ -8,8 +8,6 @@ app/config/config_dev.yml
 app/config/config_prod.yml
 
 # Fichiers de configuration
-app/config/constants.yml
-app/config/parameters.yml
 .env
 
 # Fichiers temporaires

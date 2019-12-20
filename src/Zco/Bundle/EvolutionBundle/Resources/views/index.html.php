@@ -15,9 +15,8 @@
 	<div class="box">
 		<h3>Contact</h3>
 		Le responsable du développement est
-		<a href="/membres/profil-<?php echo $InfosUtilisateur['utilisateur_id']; ?>-<?php echo rewrite($InfosUtilisateur['utilisateur_pseudo']); ?>.html" style="color: <?php echo $InfosUtilisateur['groupe_class']; ?>;">
-		<?php echo htmlspecialchars($InfosUtilisateur['utilisateur_pseudo']); ?></a>. Si vous avez un doute ou souhaitez absolument le joindre directement, vous pouvez
-		<a href="/mp/nouveau-<?php echo $InfosUtilisateur['utilisateur_id']; ?>.html">lui envoyer un MP</a>.
+		<a href="/membres/profil-31-vincent1870.html">vincent1870</a>. Si vous avez un doute ou souhaitez absolument le joindre directement, vous pouvez
+		<a href="/mp/nouveau-31.html">lui envoyer un MP</a>.
 	</div>
 </div>
 

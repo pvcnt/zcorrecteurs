@@ -38,7 +38,6 @@ class IndexController extends Controller
 		fil_ariane('Vue globale');
 		
 		return render_to_response(array(
-			'InfosUtilisateur' => InfosUtilisateur(ID_MBR_CHEF_SECURITE),
 			'DerniersTickets' => Lister5DerniersTickets($prive, 'bug'),
 			'DerniersTicketsModifies' => Lister5DerniersTicketsModifies($prive, 'bug'),
 			'DernieresTaches' => Lister5DerniersTickets($prive, 'tache'),

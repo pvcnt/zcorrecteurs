@@ -152,3 +152,15 @@ define('ALL',                      100);
 //Sexe
 define('SEXE_MASCULIN', 1);
 define('SEXE_FEMININ', 2);
+
+// Nombre de minutes pour être marqué connecté
+const NOMBRE_MINUTES_CONNECTE = 2;
+
+// Temps de rafraîchissement entre deux billets au hasard (en minutes)
+const TEMPS_BILLET_HASARD = 30;
+
+const GROUPE_ADMINISTRATEURS = 5;
+const GROUPE_ANCIENS = 36;
+const GROUPE_DEFAUT = 1;
+const GROUPE_VISITEURS = 7;
+const URL_SITE = 'http://www.zcorrecteurs.fr';
