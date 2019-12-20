@@ -1,11 +1,6 @@
-bin/*
-!bin/tests
-!bin/tests-all
-composer.lock
-doc/.couscous
-.env
-.php_cs.cache
+vendor/
 phpunit.xml
 tests/adapters/*
 !tests/adapters/*.dist
-vendor/
+bin/*
+!bin/configure_test_env.sh

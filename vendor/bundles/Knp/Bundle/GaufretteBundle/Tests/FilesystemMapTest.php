@@ -3,9 +3,8 @@
 namespace Knp\Bundle\GaufretteBundle\Tests;
 
 use Knp\Bundle\GaufretteBundle\FilesystemMap;
-use PHPUnit\Framework\TestCase;
 
-class FilesystemMapTest extends TestCase
+class FilesystemMapTest extends \PHPUnit_Framework_TestCase
 {
     private $filesystemMap;
 
@@ -19,14 +18,8 @@ class FilesystemMapTest extends TestCase
      */
     public function shouldGetFilesystemByKey()
     {
-        if(class_exists('Gaufrette\FilesystemInterface')) {
-            $this->assertInstanceOf('Gaufrette\FilesystemInterface', $this->filesystemMap->get('amazon_fs'), 'should get filesystem object by key');
-            $this->assertInstanceOf('Gaufrette\FilesystemInterface', $this->filesystemMap->get('local_fs'), 'should get filesystem object by key');
-        } else {
-            $this->assertInstanceOf('Gaufrette\Filesystem', $this->filesystemMap->get('amazon_fs'), 'should get filesystem object by key');
-            $this->assertInstanceOf('Gaufrette\Filesystem', $this->filesystemMap->get('local_fs'), 'should get filesystem object by key');
-        }
-
+        $this->assertInstanceOf('Gaufrette\Filesystem', $this->filesystemMap->get('amazon_fs'), 'should get filesystem object by key');
+        $this->assertInstanceOf('Gaufrette\Filesystem', $this->filesystemMap->get('local_fs'), 'should get filesystem object by key');
     }
 
     /**

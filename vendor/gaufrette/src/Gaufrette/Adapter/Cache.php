@@ -6,16 +6,14 @@ use Gaufrette\File;
 use Gaufrette\Adapter;
 use Gaufrette\Adapter\InMemory as InMemoryAdapter;
 
-@trigger_error('The ' . __NAMESPACE__ . '\Cache adapter is deprecated since version 0.4 and will be removed in 1.0.', E_USER_DEPRECATED);
-
 /**
- * Cache adapter.
+ * Cache adapter
  *
+ * @package Gaufrette
  * @author  Antoine Hérault <antoine.herault@gmail.com>
- *
- * @deprecated The Cache adapter is deprecated since version 0.4 and will be removed in 1.0.
  */
-class Cache implements Adapter, MetadataSupporter
+class Cache implements Adapter,
+                       MetadataSupporter
 {
     /**
      * @var Adapter
@@ -28,7 +26,7 @@ class Cache implements Adapter, MetadataSupporter
     protected $cache;
 
     /**
-     * @var int
+     * @var integer
      */
     protected $ttl;
 
@@ -38,9 +36,11 @@ class Cache implements Adapter, MetadataSupporter
     protected $serializeCache;
 
     /**
+     * Constructor
+     *
      * @param Adapter $source         The source adapter that must be cached
      * @param Adapter $cache          The adapter used to cache the source
-     * @param int     $ttl            Time to live of a cached file
+     * @param integer $ttl            Time to live of a cached file
      * @param Adapter $serializeCache The adapter used to cache serializations
      */
     public function __construct(Adapter $source, Adapter $cache, $ttl = 0, Adapter $serializeCache = null)
@@ -56,9 +56,9 @@ class Cache implements Adapter, MetadataSupporter
     }
 
     /**
-     * Returns the time to live of the cache.
+     * Returns the time to live of the cache
      *
-     * @return int $ttl
+     * @return integer $ttl
      */
     public function getTtl()
     {
@@ -66,9 +66,9 @@ class Cache implements Adapter, MetadataSupporter
     }
 
     /**
-     * Defines the time to live of the cache.
+     * Defines the time to live of the cache
      *
-     * @param int $ttl
+     * @param integer $ttl
      */
     public function setTtl($ttl)
     {
@@ -76,7 +76,7 @@ class Cache implements Adapter, MetadataSupporter
     }
 
     /**
-     * {@inheritdoc}
+     * {@InheritDoc}
      */
     public function read($key)
     {
@@ -91,47 +91,35 @@ class Cache implements Adapter, MetadataSupporter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function rename($key, $new)
     {
-        return $this->source->rename($key, $new) && $this->cache->rename($key, $new);
+        $this->source->rename($key, $new);
+
+        return $this->cache->rename($key, $new);
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function write($key, $content, array $metadata = null)
     {
-        $bytesSource = $this->source->write($key, $content);
+        $this->source->write($key, $content);
 
-        if (false === $bytesSource) {
-            return false;
-        }
-
-        $bytesCache = $this->cache->write($key, $content);
-
-        if ($bytesSource !== $bytesCache) {
-            return false;
-        }
-
-        return $bytesSource;
+        return $this->cache->write($key, $content);
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function exists($key)
     {
-        if ($this->needsReload($key)) {
-            return $this->source->exists($key);
-        }
-
-        return $this->cache->exists($key);
+        return $this->source->exists($key);
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function mtime($key)
     {
@@ -139,7 +127,7 @@ class Cache implements Adapter, MetadataSupporter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function keys()
     {
@@ -156,7 +144,7 @@ class Cache implements Adapter, MetadataSupporter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function delete($key)
     {
@@ -164,7 +152,7 @@ class Cache implements Adapter, MetadataSupporter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function isDirectory($key)
     {
@@ -172,7 +160,7 @@ class Cache implements Adapter, MetadataSupporter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setMetadata($key, $metadata)
     {
@@ -186,7 +174,7 @@ class Cache implements Adapter, MetadataSupporter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getMetadata($key)
     {
@@ -198,7 +186,7 @@ class Cache implements Adapter, MetadataSupporter
     }
 
     /**
-     * Indicates whether the cache for the specified key needs to be reloaded.
+     * Indicates whether the cache for the specified key needs to be reloaded
      *
      * @param string $key
      */
@@ -215,15 +203,14 @@ class Cache implements Adapter, MetadataSupporter
                     $dateSource = $this->source->mtime($key);
                     $needsReload = $dateCache < $dateSource;
                 }
-            } catch (\RuntimeException $e) {
-            }
+            } catch (\RuntimeException $e) { }
         }
 
         return $needsReload;
     }
 
     /**
-     * Indicates whether the serialized cache file needs to be rebuild.
+     * Indicates whether the serialized cache file needs to be rebuild
      *
      * @param string $cacheFile
      */
@@ -234,8 +221,7 @@ class Cache implements Adapter, MetadataSupporter
         if ($this->serializeCache->exists($cacheFile)) {
             try {
                 $needsRebuild = time() - $this->ttl >= $this->serializeCache->mtime($cacheFile);
-            } catch (\RuntimeException $e) {
-            }
+            } catch (\RuntimeException $e) { }
         }
 
         return $needsRebuild;

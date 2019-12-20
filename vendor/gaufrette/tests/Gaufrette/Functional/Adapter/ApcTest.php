@@ -7,11 +7,11 @@ use Gaufrette\Filesystem;
 
 class ApcTest extends FunctionalTestCase
 {
-    protected function setUp()
+    public function setUp()
     {
         if (!extension_loaded('apc')) {
             return $this->markTestSkipped('The APC extension is not available.');
-        } elseif (!filter_var(ini_get('apc.enabled'), FILTER_VALIDATE_BOOLEAN) || !filter_var(ini_get('apc.enable_cli'), FILTER_VALIDATE_BOOLEAN)) {
+        } elseif (!ini_get('apc.enabled') || !ini_get('apc.enable_cli')) {
             return $this->markTestSkipped('The APC extension is available, but not enabled.');
         }
 
@@ -20,7 +20,7 @@ class ApcTest extends FunctionalTestCase
         $this->filesystem = new Filesystem(new Apc('gaufrette-test.'));
     }
 
-    protected function tearDown()
+    public function tearDown()
     {
         parent::tearDown();
         if (extension_loaded('apc')) {

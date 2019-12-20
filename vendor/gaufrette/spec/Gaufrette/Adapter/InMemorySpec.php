@@ -8,25 +8,15 @@ class InMemorySpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith([
-            'filename' => ['mtime' => 12345, 'content' => 'content'],
-            'filename2' => 'other content',
-        ]);
+        $this->beConstructedWith(array(
+            'filename'  => array('mtime' => 12345, 'content' => 'content'),
+            'filename2' => 'other content'
+        ));
     }
 
     function it_is_adapter()
     {
         $this->shouldHaveType('Gaufrette\Adapter');
-    }
-
-    function it_is_a_mime_type_provider()
-    {
-        $this->shouldHaveType('Gaufrette\Adapter\MimeTypeProvider');
-    }
-
-    function it_gets_the_file_mime_type()
-    {
-        $this->mimeType('filename')->shouldReturn('text/plain');
     }
 
     function it_reads_file()
@@ -41,9 +31,9 @@ class InMemorySpec extends ObjectBehavior
 
     function it_renames_file()
     {
-        $this->rename('filename', 'aaa/filename2')->shouldReturn(true);
-        $this->exists('filename')->shouldReturn(false);
-        $this->exists('aaa/filename2')->shouldReturn(true);
+         $this->rename('filename', 'aaa/filename2')->shouldReturn(true);
+         $this->exists('filename')->shouldReturn(false);
+         $this->exists('aaa/filename2')->shouldReturn(true);
     }
 
     function it_checks_if_file_exists()
@@ -54,7 +44,7 @@ class InMemorySpec extends ObjectBehavior
 
     function it_fetches_keys()
     {
-        $this->keys()->shouldReturn(['filename', 'filename2']);
+        $this->keys()->shouldReturn(array('filename', 'filename2'));
     }
 
     function it_fetches_mtime()

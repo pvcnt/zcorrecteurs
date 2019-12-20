@@ -2,10 +2,11 @@
 
 namespace Gaufrette\Functional\Adapter;
 
+use Gaufrette\Adapter\MogileFS;
+
 class MogileFSTest extends FunctionalTestCase
 {
     /**
-     * @test
      * @group functional
      */
     public function shouldGetMtime()
@@ -14,7 +15,6 @@ class MogileFSTest extends FunctionalTestCase
     }
 
     /**
-     * @test
      * @group functional
      */
     public function shouldGetMtimeNonExistingFile()

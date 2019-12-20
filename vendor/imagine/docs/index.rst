@@ -39,8 +39,17 @@ Contribute:
 Your contributions are more than welcome !
 
 Start by `forking Imagine repository <https://github.com/avalanche123/Imagine>`_, write your feature, fix bugs, and send a `pull request <https://help.github.com/articles/using-pull-requests>`_.
+If you modify Imagine API, please update the API documentation by running at the root of Imagine project:
 
-If you're a beginner, you will find some guidelines about code contributions at `Symfony <https://symfony.com/doc/current/contributing/code/patches.html>`_
+.. code-block:: bash
+
+    curl -s http://getcomposer.org/installer | php
+    php composer.phar install --dev
+    bin/sami.php update docs/sami_configuration.php -v
+
+and commit the updated files in the *docs/API/* folder.
+
+If you're a beginner, you will find some guidelines about code contributions at `Symfony <http://symfony.com/doc/current/contributing/code/patches.html>`_
 
 
 Ask a question:
@@ -56,12 +65,10 @@ Usage:
    :maxdepth: 3
 
    usage/introduction
-   usage/metadata
    usage/coordinates
    usage/drawing
-   usage/colors
-   usage/layers
    usage/effects
+   usage/layers
    usage/filters
    usage/exceptions
 

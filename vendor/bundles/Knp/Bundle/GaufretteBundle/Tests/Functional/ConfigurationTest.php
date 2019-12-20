@@ -4,9 +4,8 @@ namespace Knp\Bundle\GaufretteBundle\Tests\Functional;
 
 use Symfony\Component\Filesystem\Filesystem;
 use Gaufrette\StreamWrapper;
-use PHPUnit\Framework\TestCase;
 
-class ConfigurationTest extends TestCase
+class ConfigurationTest extends \PHPUnit_Framework_TestCase
 {
     private $cacheDir;
     private $kernel;

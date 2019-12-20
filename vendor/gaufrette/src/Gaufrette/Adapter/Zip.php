@@ -5,9 +5,10 @@ namespace Gaufrette\Adapter;
 use ZipArchive;
 use Gaufrette\Adapter;
 use Gaufrette\Util;
+use Gaufrette\Exception;
 
 /**
- * ZIP Archive adapter.
+ * ZIP Archive adapter
  *
  * @author Boris Guéry <guery.b@gmail.com>
  * @author Antoine Hérault <antoine.herault@gmail.com>
@@ -38,7 +39,7 @@ class Zip implements Adapter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function read($key)
     {
@@ -50,7 +51,7 @@ class Zip implements Adapter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function write($key, $content)
     {
@@ -66,7 +67,7 @@ class Zip implements Adapter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function exists($key)
     {
@@ -74,11 +75,11 @@ class Zip implements Adapter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function keys()
     {
-        $keys = [];
+        $keys = array();
 
         for ($i = 0; $i < $this->zipArchive->numFiles; ++$i) {
             $keys[$i] = $this->zipArchive->getNameIndex($i);
@@ -90,7 +91,7 @@ class Zip implements Adapter
     /**
      * @todo implement
      *
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function isDirectory($key)
     {
@@ -98,17 +99,17 @@ class Zip implements Adapter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function mtime($key)
     {
         $stat = $this->getStat($key);
 
-        return $stat['mtime'] ?? false;
+        return isset($stat['mtime']) ? $stat['mtime'] : false;
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function delete($key)
     {
@@ -120,7 +121,7 @@ class Zip implements Adapter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function rename($sourceKey, $targetKey)
     {
@@ -133,17 +134,16 @@ class Zip implements Adapter
 
     /**
      * Returns the stat of a file in the zip archive
-     *  (name, index, crc, mtime, compression size, compression method, filesize).
+     *  (name, index, crc, mtime, compression size, compression method, filesize)
      *
      * @param $key
-     *
      * @return array|bool
      */
     public function getStat($key)
     {
         $stat = $this->zipArchive->statName($key);
         if (false === $stat) {
-            return [];
+            return array();
         }
 
         return $stat;
@@ -155,6 +155,7 @@ class Zip implements Adapter
             try {
                 $this->zipArchive->close();
             } catch (\Exception $e) {
+
             }
             unset($this->zipArchive);
         }
@@ -168,43 +169,33 @@ class Zip implements Adapter
             switch ($resultCode) {
             case ZipArchive::ER_EXISTS:
                 $errMsg = 'File already exists.';
-
                 break;
             case ZipArchive::ER_INCONS:
                 $errMsg = 'Zip archive inconsistent.';
-
                 break;
             case ZipArchive::ER_INVAL:
                 $errMsg = 'Invalid argument.';
-
                 break;
             case ZipArchive::ER_MEMORY:
                 $errMsg = 'Malloc failure.';
-
                 break;
             case ZipArchive::ER_NOENT:
                 $errMsg = 'Invalid argument.';
-
                 break;
             case ZipArchive::ER_NOZIP:
                 $errMsg = 'Not a zip archive.';
-
                 break;
             case ZipArchive::ER_OPEN:
                 $errMsg = 'Can\'t open file.';
-
                 break;
             case ZipArchive::ER_READ:
                 $errMsg = 'Read error.';
-
                 break;
-            case ZipArchive::ER_SEEK:
+            case ZipArchive::ER_SEEK;
                 $errMsg = 'Seek error.';
-
                 break;
             default:
                 $errMsg = 'Unknown error.';
-
                 break;
             }
 
@@ -215,7 +206,7 @@ class Zip implements Adapter
     }
 
     /**
-     * Saves archive modifications and updates current ZipArchive instance.
+     * Saves archive modifications and updates current ZipArchive instance
      *
      * @throws \RuntimeException If file could not be saved
      */

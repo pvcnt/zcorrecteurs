@@ -5,12 +5,8 @@ namespace Gaufrette\Adapter;
 use Gaufrette\Adapter;
 use Ssh\Sftp as SftpClient;
 
-@trigger_error('The ' . __NAMESPACE__ . '\Sftp adapter is deprecated since version 0.4 and will be removed in 1.0.', E_USER_DEPRECATED);
-
-/**
- * @deprecated The Sftp adapter is deprecated since version 0.4 and will be removed in 1.0.
- */
-class Sftp implements Adapter, ChecksumCalculator
+class Sftp implements Adapter,
+                      ChecksumCalculator
 {
     protected $sftp;
     protected $directory;
@@ -18,20 +14,22 @@ class Sftp implements Adapter, ChecksumCalculator
     protected $initialized = false;
 
     /**
+     * Constructor
+     *
      * @param \Ssh\Sftp $sftp      An Sftp instance
      * @param string    $directory The distant directory
-     * @param bool      $create    Whether to create the remote directory if it
+     * @param boolean   $create    Whether to create the remote directory if it
      *                             does not exist
      */
     public function __construct(SftpClient $sftp, $directory = null, $create = false)
     {
-        $this->sftp = $sftp;
+        $this->sftp      = $sftp;
         $this->directory = $directory;
-        $this->create = $create;
+        $this->create    = $create;
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function read($key)
     {
@@ -43,34 +41,34 @@ class Sftp implements Adapter, ChecksumCalculator
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function rename($sourceKey, $targetKey)
     {
         $sourcePath = $this->computePath($sourceKey);
         $targetPath = $this->computePath($targetKey);
 
-        $this->ensureDirectoryExists(\Gaufrette\Util\Path::dirname($targetPath), true);
+        $this->ensureDirectoryExists(dirname($targetPath), true);
 
         return $this->sftp->rename($sourcePath, $targetPath);
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function write($key, $content)
     {
         $this->initialize();
 
         $path = $this->computePath($key);
-        $this->ensureDirectoryExists(\Gaufrette\Util\Path::dirname($path), true);
+        $this->ensureDirectoryExists(dirname($path), true);
         $numBytes = $this->sftp->write($path, $content);
 
         return $numBytes;
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function exists($key)
     {
@@ -83,7 +81,7 @@ class Sftp implements Adapter, ChecksumCalculator
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function isDirectory($key)
     {
@@ -95,18 +93,18 @@ class Sftp implements Adapter, ChecksumCalculator
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function keys()
     {
         $this->initialize();
         $results = $this->sftp->listDirectory($this->directory, true);
-        $files = array_map([$this, 'computeKey'], $results['files']);
+        $files = array_map(array($this, 'computeKey'), $results['files']);
 
-        $dirs = [];
+        $dirs = array();
         foreach ($files as $file) {
-            if ('.' !== $dirname = \Gaufrette\Util\Path::dirname($file)) {
-                $dirs[] = $dirname;
+            if ('.' !== dirname($file)) {
+                $dirs[] = dirname($file);
             }
         }
 
@@ -117,7 +115,7 @@ class Sftp implements Adapter, ChecksumCalculator
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function mtime($key)
     {
@@ -127,7 +125,7 @@ class Sftp implements Adapter, ChecksumCalculator
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function checksum($key)
     {
@@ -141,7 +139,7 @@ class Sftp implements Adapter, ChecksumCalculator
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function delete($key)
     {
@@ -151,7 +149,7 @@ class Sftp implements Adapter, ChecksumCalculator
     }
 
     /**
-     * Computes the key from the specified path.
+     * Computes the key from the specified path
      *
      * @param string $path
      *
@@ -167,7 +165,7 @@ class Sftp implements Adapter, ChecksumCalculator
     }
 
     /**
-     * Computes the path for the specified key.
+     * Computes the path for the specified key
      *
      * @param string $key
      *
@@ -179,7 +177,7 @@ class Sftp implements Adapter, ChecksumCalculator
     }
 
     /**
-     * Performs the adapter's initialization.
+     * Performs the adapter's initialization
      *
      * It will ensure the root directory exists
      */
@@ -194,10 +192,10 @@ class Sftp implements Adapter, ChecksumCalculator
     }
 
     /**
-     * Ensures the specified directory exists.
+     * Ensures the specified directory exists
      *
-     * @param string $directory The directory that we ensure the existence
-     * @param bool   $create    Whether to create it if it does not exist
+     * @param string  $directory The directory that we ensure the existence
+     * @param boolean $create    Whether to create it if it does not exist
      *
      * @throws RuntimeException if the specified directory does not exist and
      *                          could not be created
@@ -210,7 +208,7 @@ class Sftp implements Adapter, ChecksumCalculator
         if (false === $resource && (!$create || !$this->createDirectory($directory))) {
             throw new \RuntimeException(sprintf('The directory \'%s\' does not exist and could not be created.', $directory));
         }
-
+        
         // make sure we don't leak the resource
         if (is_resource($resource)) {
             closedir($resource);
@@ -218,11 +216,11 @@ class Sftp implements Adapter, ChecksumCalculator
     }
 
     /**
-     * Creates the specified directory and its parents.
+     * Creates the specified directory and its parents
      *
      * @param string $directory The directory to create
      *
-     * @return bool TRUE on success, or FALSE on failure
+     * @return boolean TRUE on success, or FALSE on failure
      */
     protected function createDirectory($directory)
     {

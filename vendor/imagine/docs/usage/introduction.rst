@@ -10,32 +10,42 @@ The main idea of Imagine is to avoid driver specific methods spill outside of th
 Installation
 ------------
 
-The recommended way to install Imagine is through `Composer`_.
-Composer is a dependency management library for PHP.
+Phar file (recommended)
++++++++++++++++++++++++
 
-Here is an example of composer project configuration that requires imagine
-version 0.5.
+`Download Imagine PHAR file here <https://github.com/downloads/avalanche123/Imagine/imagine-v0.3.0.phar>`_
 
-.. code-block:: json
-
-    {
-        "require": {
-            "imagine/imagine": "~0.5.0"
-        }
-    }
-
-Install the dependencies using composer.phar and use Imagine :
-
-.. code-block:: none
-
-    php composer.phar install
-    
 .. code-block:: php
 
-    <?php
-    require 'vendor/autoload.php';
+   <?php
 
-    $imagine = new Imagine\Gd\Imagine();
+   require_once 'phar://imagine.phar';
+
+   var_dump(interface_exists('Imagine\Image\ImageInterface'));
+
+PEAR package
+++++++++++++
+
+Install using pear package:
+
+.. code-block:: console
+
+   pear channel-discover pear.avalanche123.com
+   pear install avalanche123/Imagine-beta
+
+Clone from GitHub
++++++++++++++++++
+
+Clone Imagine git repository:
+
+.. code-block:: console
+
+   git clone git://github.com/avalanche123/Imagine.git
+
+then require files as usual
+
+.. NOTE::
+   when using git clone or pear install methods, classes don't get registered with autoload and you have to do it yourself, this will change in future.
 
 Basic usage
 -----------
@@ -84,38 +94,6 @@ Now that you've opened an image, you can perform manipulations on it:
    Read more about ImageInterface_
    Read more about coordinates_
 
-Resize Images
-+++++++++++++
-
-Resize an image is very easy, just pass the box size you want as argument :
-
-.. code-block:: php
-
-   <?php
-
-   use Imagine\Image\Box;
-   use Imagine\Image\Point;
-
-   $image->resize(new Box(15, 25))
-
-You can also specify the filter you want as second argument :
-
-.. code-block:: php
-
-   <?php
-
-   use Imagine\Image\Box;
-   use Imagine\Image\Point;
-   use Imagine\Image\ImageInterface;
-
-   // resize with lanczos filter
-   $image->resize(new Box(15, 25), ImageInterface::FILTER_LANCZOS);
-
-Available filters are ``ImageInterface::FILTER_*`` constants.
-
-.. NOTE::
-   GD only supports ``ImageInterface::RESIZE_UNDEFINED`` filter.
-
 Create New Images
 +++++++++++++++++
 
@@ -134,27 +112,14 @@ You can optionally specify the fill color for the new image, which defaults to o
 
    <?php
 
-   $palette = new Imagine\Image\Palette\RGB();
    $size  = new Imagine\Image\Box(400, 300);
-   $color = $palette->color('#000', 0);
+   $color = new Imagine\Image\Color('000', 100);
    $image = $imagine->create($size, $color);
-   
-To use a solid background color, for example orange, provide an alpha of 100.
-
-.. code-block:: php
-
-   <?php
-
-   $palette = new Imagine\Image\Palette\RGB();
-   $size  = new Imagine\Image\Box(400, 300);
-   $color = $palette->color('#ff9900', 100);
-   $image = $imagine->create($size, $color);
-
 
 Save Images
 +++++++++++
 
-Images are saved given a path and optionally options.
+Images are saved given a path and options.
 
 The following example opens a Jpg image and saves it as Png format :
 
@@ -169,13 +134,10 @@ The following example opens a Jpg image and saves it as Png format :
 
 Three options groups are currently supported : quality, resolution and flatten.
 
-.. TIP::
-   Default values are 75 for Jpeg quality, 7 for Png compression level, 75 for webp quality and 72 dpi for x/y-resolution.
-
 .. NOTE::
    GD does not support resolution options group
 
-The following example demonstrates the basic quality settings.
+The following example opens a Jpg image and saves it with its quality set to 50.
 
 .. code-block:: php
 
@@ -183,10 +145,10 @@ The following example demonstrates the basic quality settings.
 
    $imagine = new Imagine\Imagick\Imagine();
 
-   $imagine->open('/path/to/image.jpg')
-      ->save('/path/to/image.jpg', array('jpeg_quality' => 50)) // from 0 to 100
-      ->save('/path/to/image.png', array('png_compression_level' => 9)); // from 0 to 9
-      ->save('/path/to/image.webp', array('webp_quality' => 50)) // from 0 to 100
+   $imagine->open('/path/to/image.jpg')->save('/path/to/image.jpg', array('quality' => 50));
+
+.. TIP::
+   Default values are 75 for Jpeg quality and 72 dpi for x/y-resolution.
 
 The following example opens a Jpg image and saves it with it with 150 dpi horizontal resolution and 120 dpi vertical resolution.
 
@@ -202,15 +164,14 @@ The following example opens a Jpg image and saves it with it with 150 dpi horizo
        'resolution-units' => ImageInterface::RESOLUTION_PIXELSPERINCH,
        'resolution-x' => 150,
        'resolution-y' => 120,
-       'resampling-filter' => ImageInterface::FILTER_LANCZOS,
    );
 
    $imagine->open('/path/to/image.jpg')->save('/path/to/image.jpg', $options);
 
-.. NOTE::
+.. TIP::
    You **MUST** provide a unit system when setting resolution values.
    There are two available unit systems for resolution : ``ImageInterface::RESOLUTION_PIXELSPERINCH`` and ``ImageInterface::RESOLUTION_PIXELSPERCENTIMETER``.
-
+`
 The flatten option is used when dealing with multi-layers images (see the
 `layers <layers>`_ section for information). Image are saved flatten by default,
 you can avoid this by explicitly set this option to ``false`` when saving :
@@ -230,7 +191,7 @@ you can avoid this by explicitly set this option to ``false`` when saving :
            ->save('/path/to/animated-resized.gif', array('flatten' => false));
 
 .. TIP::
-   You **SHOULD NOT** flatten image only for animated gif and png images.
+   You **SHOULD** not flatten image only for animated gif and png images.
 
 Of course, you can combine options :
 
@@ -246,70 +207,42 @@ Of course, you can combine options :
        'resolution-units' => ImageInterface::RESOLUTION_PIXELSPERINCH,
        'resolution-x' => 300,
        'resolution-y' => 300,
-       'jpeg_quality' => 100,
+       'quality' => 100,
    );
 
    $imagine->open('/path/to/image.jpg')->save('/path/to/image.jpg', $options);
 
-Show Images
+Color Class
 +++++++++++
 
-Images are shown (i.e. outputs the image content) given a format and optionally options.
-
-The following example shows a Jpg image:
+Color is a class in Imagine, which takes two arguments in its constructor: the RGB color code and a transparency percentage. The following examples are equivalent ways of defining a fully-transparent white color.
 
 .. code-block:: php
 
    <?php
 
-   $imagine = new Imagine\Imagick\Imagine();
+   $white = new Imagine\Image\Color('fff', 100);
+   $white = new Imagine\Image\Color('ffffff', 100);
+   $white = new Imagine\Image\Color('#fff', 100);
+   $white = new Imagine\Image\Color('#ffffff', 100);
+   $white = new Imagine\Image\Color(0xFFFFFF, 100);
+   $white = new Imagine\Image\Color(array(255, 255, 255), 100);
 
-   $imagine->open('/path/to/image.jpg')
-      ->show('jpg');
-
-.. NOTE::
-   This will send a "Content-type" header.
-
-It supports the same options groups as for the save method.
-
-For example:
+After you have instantiated a color, you can easily get its Red, Green, Blue and Alpha (transparency) values:
 
 .. code-block:: php
 
    <?php
 
-   $imagine = new Imagine\Imagick\Imagine();
-
-   $options = array(
-      'resolution-units' => ImageInterface::RESOLUTION_PIXELSPERINCH,
-      'resolution-x' => 300,
-      'resolution-y' => 300,
-      'jpeg_quality' => 100,
-   );
-
-   $imagine->open('/path/to/image.jpg')
-      ->show('jpg', $options);
+   var_dump(array(
+      'R' => $white->getRed(),
+      'G' => $white->getGreen(),
+      'B' => $white->getBlue(),
+      'A' => $white->getAlpha()
+   ));
 
 Advanced Examples
 -----------------
-
-Image Watermarking
-++++++++++++++++++
-
-Here is a simple way to add a watermark to an image :
-
-.. code-block:: php
-
-    <?php
-
-    $watermark = $imagine->open('/my/watermark.png');
-    $image     = $imagine->open('/path/to/image.jpg');
-    $size      = $image->getSize();
-    $wSize     = $watermark->getSize();
-
-    $bottomRight = new Imagine\Image\Point($size->getWidth() - $wSize->getWidth(), $size->getHeight() - $wSize->getHeight());
-
-    $image->paste($watermark, $bottomRight);
 
 An Image Collage
 ++++++++++++++++
@@ -377,17 +310,17 @@ Image Reflection Filter
            $canvas     = new Imagine\Image\Box($size->getWidth(), $size->getHeight() * 2);
            $reflection = $image->copy()
                ->flipVertically()
-               ->applyMask($this->getTransparencyMask($image->palette(), $size))
+               ->applyMask($this->getTransparencyMask($size))
            ;
 
-           return $this->imagine->create($canvas, $image->palette()->color('fff', 100))
+           return $this->imagine->create($canvas, new Imagine\Image\Color('fff', 100))
                ->paste($image, new Imagine\Image\Point(0, 0))
                ->paste($reflection, new Imagine\Image\Point(0, $size->getHeight()));
        }
 
-       private function getTransparencyMask(Imagine\Image\Palette\PaletteInterface $palette, Imagine\Image\BoxInterface $size)
+       private function getTransparencyMask(Imagine\Image\BoxInterface $size)
        {
-           $white = $palette->color('fff');
+           $white = new Imagine\Image\Color('fff');
            $fill  = new Imagine\Image\Fill\Gradient\Vertical(
                $size->getHeight(),
                $white->darken(127),
@@ -408,7 +341,7 @@ Image Reflection Filter
    ;
 
 .. TIP::
-   For step by step explanation of the above code `see Reflection section of Introduction to Imagine <https://speakerdeck.com/avalanche123/introduction-to-imagine?slide=31>`_
+   For step by step explanation of the above code `see Reflection section of Introduction to Imagine <http://speakerdeck.com/u/avalanche123/p/introduction-to-imagine?slide=31>`_
 
 Architecture
 ------------
@@ -418,10 +351,9 @@ The architecture is very flexible, as the filters don't need any processing logi
 The ``Transformation`` object is an example of a composite filter, representing a stack or queue of filters, that get applied to an Image upon application of the ``Transformation`` itself.
 
 .. TIP::
-   For more information about ``Transformation`` filter `see Transformation section of Introduction to Imagine <https://speakerdeck.com/avalanche123/introduction-to-imagine?slide=57>`_
+   For more information about ``Transformation`` filter `see Transformation section of Introduction to Imagine <http://speakerdeck.com/u/avalanche123/p/introduction-to-imagine?slide=57>`_
 
 .. _ImagineInterface: ../_static/API/Imagine/Image/ImagineInterface.html
 .. _ImageInterface: ../_static/API/Imagine/Image/ImageInterface.html
 .. _coordinates: coordinates.html
 .. _exceptions: exceptions.html
-.. _Composer: https://getcomposer.org/

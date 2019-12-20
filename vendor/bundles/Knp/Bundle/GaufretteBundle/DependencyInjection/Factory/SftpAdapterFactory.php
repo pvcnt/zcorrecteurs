@@ -3,10 +3,9 @@
 namespace Knp\Bundle\GaufretteBundle\DependencyInjection\Factory;
 
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
-use Symfony\Component\DependencyInjection\ChildDefinition;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
-use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Sftp Adapter Factory
@@ -16,14 +15,10 @@ class SftpAdapterFactory implements AdapterFactoryInterface
     /**
      * {@inheritDoc}
      */
-    public function create(ContainerBuilder $container, $id, array $config)
+    function create(ContainerBuilder $container, $id, array $config)
     {
-        $definition = class_exists('\Symfony\Component\DependencyInjection\ChildDefinition')
-            ? new ChildDefinition('knp_gaufrette.adapter.sftp')
-            : new DefinitionDecorator('knp_gaufrette.adapter.sftp');
-
         $container
-            ->setDefinition($id, $definition)
+            ->setDefinition($id, new DefinitionDecorator('knp_gaufrette.adapter.sftp'))
             ->addArgument(new Reference($config['sftp_id']))
             ->addArgument($config['directory'])
             ->addArgument($config['create'])
@@ -33,7 +28,7 @@ class SftpAdapterFactory implements AdapterFactoryInterface
     /**
      * {@inheritDoc}
      */
-    public function getKey()
+    function getKey()
     {
         return 'sftp';
     }
@@ -41,7 +36,7 @@ class SftpAdapterFactory implements AdapterFactoryInterface
     /**
      * {@inheritDoc}
      */
-    public function addConfiguration(NodeDefinition $builder)
+    function addConfiguration(NodeDefinition $builder)
     {
         $builder
             ->children()

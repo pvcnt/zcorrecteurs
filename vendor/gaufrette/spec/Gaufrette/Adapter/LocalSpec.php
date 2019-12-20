@@ -10,7 +10,7 @@ class LocalSpec extends ObjectBehavior
     function let()
     {
         vfsStream::setup('test');
-        vfsStream::copyFromFileSystem(__DIR__ . '/MockFilesystem');
+        vfsStream::copyFromFileSystem(__DIR__.'/MockFilesystem');
         $this->beConstructedWith(vfsStream::url('test'));
     }
 
@@ -22,16 +22,6 @@ class LocalSpec extends ObjectBehavior
     function it_is_checksum_calculator()
     {
         $this->shouldHaveType('Gaufrette\Adapter\ChecksumCalculator');
-    }
-
-    function it_is_a_mime_type_provider()
-    {
-        $this->shouldHaveType('Gaufrette\Adapter\MimeTypeProvider');
-    }
-
-    function it_gets_the_file_mime_type()
-    {
-        $this->mimeType('filename')->shouldReturn('text/plain');
     }
 
     function it_is_stream_factory()
@@ -62,7 +52,7 @@ class LocalSpec extends ObjectBehavior
 
     function it_fetches_keys()
     {
-        $expectedKeys = ['filename', 'dir', 'dir/file'];
+        $expectedKeys = array('filename', 'dir', 'dir/file');
         sort($expectedKeys);
         $this->keys()->shouldReturn($expectedKeys);
     }
@@ -77,11 +67,6 @@ class LocalSpec extends ObjectBehavior
     {
         $this->delete('filename')->shouldReturn(true);
         $this->delete('filename1')->shouldReturn(false);
-    }
-
-    function it_deletes_dir()
-    {
-        $this->delete('dir')->shouldReturn(true);
     }
 
     function it_checks_if_given_key_is_directory()
@@ -151,16 +136,12 @@ class LocalSpec extends ObjectBehavior
             ->shouldThrow(new \RuntimeException(sprintf('The directory "%s" does not exist.', vfsStream::url('other'))))
             ->duringChecksum('filename')
         ;
-        $this
-            ->shouldThrow(new \RuntimeException(sprintf('The directory "%s" does not exist.', vfsStream::url('other'))))
-            ->duringMimeType('filename')
-        ;
     }
 
     function it_creates_directory_when_does_not_exists()
     {
         $this->beConstructedWith(vfsStream::url('test/other'), true);
 
-        $this->isDirectory('/')->shouldReturn(true);
+        $this->exists('/')->shouldReturn(true);
     }
 }

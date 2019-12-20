@@ -3,17 +3,17 @@
 namespace Gaufrette;
 
 /**
- * Associates filesystem instances to their names.
+ * Associates filesystem instances to domains
  *
  * @author Antoine Hérault <antoine.herault@gmail.com>
  */
-class FilesystemMap implements FilesystemMapInterface
+class FilesystemMap
 {
-    private $filesystems = [];
+    private $filesystems = array();
 
     /**
      * Returns an array of all the registered filesystems where the key is the
-     * name and the value the filesystem.
+     * domain and the value the filesystem
      *
      * @return array
      */
@@ -23,71 +23,87 @@ class FilesystemMap implements FilesystemMapInterface
     }
 
     /**
-     * Register the given filesystem for the specified name.
+     * Register the given filesystem for the specified domain
      *
-     * @param string     $name
-     * @param FilesystemInterface $filesystem
+     * @param string     $domain
+     * @param Filesystem $filesystem
      *
-     * @throws \InvalidArgumentException when the specified name contains
+     * @throws InvalidArgumentException when the specified domain contains
      *                                  forbidden characters
      */
-    public function set($name, FilesystemInterface $filesystem)
+    public function set($domain, Filesystem $filesystem)
     {
-        if (!preg_match('/^[-_a-zA-Z0-9]+$/', $name)) {
+        if (! preg_match('/^[-_a-zA-Z0-9]+$/', $domain)) {
             throw new \InvalidArgumentException(sprintf(
-                'The specified name "%s" is not valid.',
-                $name
+                'The specified domain "%s" is not a valid domain.',
+                $domain
             ));
         }
 
-        $this->filesystems[$name] = $filesystem;
+        $this->filesystems[$domain] = $filesystem;
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function has($name)
-    {
-        return isset($this->filesystems[$name]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function get($name)
-    {
-        if (!$this->has($name)) {
-            throw new \InvalidArgumentException(sprintf(
-                'There is no filesystem defined having "%s" name.',
-                $name
-            ));
-        }
-
-        return $this->filesystems[$name];
-    }
-
-    /**
-     * Removes the filesystem registered for the specified name.
+     * Indicates whether there is a filesystem registered for the specified
+     * domain
      *
-     * @param string $name
+     * @param string $domain
+     *
+     * @return Boolean
      */
-    public function remove($name)
+    public function has($domain)
     {
-        if (!$this->has($name)) {
+        return isset($this->filesystems[$domain]);
+    }
+
+    /**
+     * Returns the filesystem registered for the specified domain
+     *
+     * @param string $domain
+     *
+     * @return Filesystem
+     *
+     * @throw  InvalidArgumentException when there is no filesystem registered
+     *                                  for the specified domain
+     */
+    public function get($domain)
+    {
+        if (! $this->has($domain)) {
+            throw new \InvalidArgumentException(sprintf(
+                'There is no filesystem defined for the "%s" domain.',
+                $domain
+            ));
+        }
+
+        return $this->filesystems[$domain];
+    }
+
+    /**
+     * Removes the filesystem registered for the specified domain
+     *
+     * @param string $domain
+     *
+     * @return void
+     */
+    public function remove($domain)
+    {
+        if (! $this->has($domain)) {
             throw new \InvalidArgumentException(sprintf(
                 'Cannot remove the "%s" filesystem as it is not defined.',
-                $name
+                $domain
             ));
         }
 
-        unset($this->filesystems[$name]);
+        unset($this->filesystems[$domain]);
     }
 
     /**
-     * Clears all the registered filesystems.
+     * Clears all the registered filesystems
+     *
+     * @return void
      */
     public function clear()
     {
-        $this->filesystems = [];
+        $this->filesystems = array();
     }
 }

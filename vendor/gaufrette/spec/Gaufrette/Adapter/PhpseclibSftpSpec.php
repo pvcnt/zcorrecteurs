@@ -10,25 +10,16 @@ if (!defined('NET_SFTP_TYPE_DIRECTORY')) {
     define('NET_SFTP_TYPE_DIRECTORY', 2);
 }
 
-use Gaufrette\Filesystem;
-use phpseclib\Net\SFTP as Base;
 use PhpSpec\ObjectBehavior;
-
-class SFTP extends Base
-{
-    public function __construct()
-    {
-    }
-}
 
 class PhpseclibSftpSpec extends ObjectBehavior
 {
     /**
-     * @param \spec\Gaufrette\Adapter\SFTP $sftp
+     * @param \spec\Gaufrette\Adapter\Net_SFTP $sftp
      */
-    function let(SFTP $sftp)
+    function let($sftp)
     {
-        $this->beConstructedWith($sftp, '/home/l3l0', false, 'l3lo', 'password');
+        $this->beConstructedWith($sftp, '/home/l3l0');
     }
 
     function it_is_adapter()
@@ -47,36 +38,30 @@ class PhpseclibSftpSpec extends ObjectBehavior
     }
 
     /**
-     * @param \spec\Gaufrette\Adapter\SFTP $sftp
+     * @param \spec\Gaufrette\Adapter\Net_SFTP $sftp
      */
-    function it_fetches_keys(SFTP $sftp)
+    function it_fetchs_keys($sftp)
     {
         $sftp
-            ->file_exists('/home/l3l0/')
-            ->willReturn(true);
-        $sftp
             ->rawlist('/home/l3l0/')
-            ->willReturn([
-                'filename' => ['type' => NET_SFTP_TYPE_REGULAR],
-                'filename1' => ['type' => NET_SFTP_TYPE_REGULAR],
-                'aaa' => ['type' => NET_SFTP_TYPE_DIRECTORY],
-            ]);
-        $sftp
-            ->file_exists('/home/l3l0/aaa')
-            ->willReturn(true);
+            ->willReturn(array(
+                'filename' => array('type' => NET_SFTP_TYPE_REGULAR),
+                'filename1' => array('type' => NET_SFTP_TYPE_REGULAR),
+                'aaa' => array('type' => NET_SFTP_TYPE_DIRECTORY)
+            ));
         $sftp
             ->rawlist('/home/l3l0/aaa')
-            ->willReturn([
-                'filename' => ['type' => NET_SFTP_TYPE_REGULAR],
-            ]);
+            ->willReturn(array(
+                'filename' => array('type' => NET_SFTP_TYPE_REGULAR),
+            ));
 
-        $this->keys()->shouldReturn(['filename', 'filename1', 'aaa', 'aaa/filename']);
+        $this->keys()->shouldReturn(array('filename', 'filename1', 'aaa', 'aaa/filename'));
     }
 
     /**
-     * @param \spec\Gaufrette\Adapter\SFTP $sftp
+     * @param \spec\Gaufrette\Adapter\Net_SFTP $sftp
      */
-    function it_reads_file(SFTP $sftp)
+    function it_reads_file($sftp)
     {
         $sftp->get('/home/l3l0/filename')->willReturn('some content');
 
@@ -84,9 +69,9 @@ class PhpseclibSftpSpec extends ObjectBehavior
     }
 
     /**
-     * @param \spec\Gaufrette\Adapter\SFTP $sftp
+     * @param \spec\Gaufrette\Adapter\Net_SFTP $sftp
      */
-    function it_creates_and_writes_file(SFTP $sftp)
+    function it_creates_and_writes_file($sftp)
     {
         $sftp->pwd()->willReturn('/home/l3l0');
         $sftp->chdir('/home/l3l0')->willReturn(true);
@@ -97,9 +82,9 @@ class PhpseclibSftpSpec extends ObjectBehavior
     }
 
     /**
-     * @param \spec\Gaufrette\Adapter\SFTP $sftp
+     * @param \spec\Gaufrette\Adapter\Net_SFTP $sftp
      */
-    function it_renames_file(SFTP $sftp)
+    function it_renames_file($sftp)
     {
         $sftp->pwd()->willReturn('/home/l3l0');
         $sftp->chdir('/home/l3l0')->willReturn(true);
@@ -112,15 +97,15 @@ class PhpseclibSftpSpec extends ObjectBehavior
     }
 
     /**
-     * @param \spec\Gaufrette\Adapter\SFTP $sftp
+     * @param \spec\Gaufrette\Adapter\Net_SFTP $sftp
      */
-    function it_should_check_if_file_exists(SFTP $sftp)
+    function it_should_check_if_file_exists($sftp)
     {
         $sftp->pwd()->willReturn('/home/l3l0');
         $sftp->chdir('/home/l3l0')->willReturn(true);
-        $sftp->stat('/home/l3l0/filename')->willReturn([
-            'name' => '/home/l3l0/filename',
-        ]);
+        $sftp->stat('/home/l3l0/filename')->willReturn(array(
+            'name' => '/home/l3l0/filename'
+        ));
         $sftp->stat('/home/l3l0/filename1')->willReturn(false);
 
         $this->exists('filename')->shouldReturn(true);
@@ -128,9 +113,9 @@ class PhpseclibSftpSpec extends ObjectBehavior
     }
 
     /**
-     * @param \spec\Gaufrette\Adapter\SFTP $sftp
+     * @param \spec\Gaufrette\Adapter\Net_SFTP $sftp
      */
-    function it_should_check_is_directory(SFTP $sftp)
+    function it_should_check_is_directory($sftp)
     {
         $sftp->pwd()->willReturn('/home/l3l0');
         $sftp->chdir('/home/l3l0')->willReturn(true);
@@ -142,16 +127,23 @@ class PhpseclibSftpSpec extends ObjectBehavior
     }
 
     /**
-     * @param \spec\Gaufrette\Adapter\SFTP $sftp
+     * @param \spec\Gaufrette\Adapter\Net_SFTP $sftp
      * @param \Gaufrette\Filesystem $filesystem
      */
-    function it_should_create_file(SFTP $sftp, Filesystem $filesystem)
+    function it_should_create_file($sftp, $filesystem)
     {
-        $sftp->stat('/home/l3l0/filename')->willReturn([
+        $sftp->stat('/home/l3l0/filename')->willReturn(array(
             'name' => '/home/l3l0/filename',
             'size' => '30',
-        ]);
+        ));
 
         $this->createFile('filename', $filesystem)->beAnInstanceOf('Gaufrette\File');
+    }
+}
+
+class Net_SFTP extends \Net_SFTP
+{
+    public function __construct()
+    {
     }
 }

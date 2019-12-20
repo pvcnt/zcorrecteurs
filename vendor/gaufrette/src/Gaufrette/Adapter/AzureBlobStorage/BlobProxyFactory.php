@@ -2,22 +2,23 @@
 
 namespace Gaufrette\Adapter\AzureBlobStorage;
 
-use MicrosoftAzure\Storage\Blob\BlobRestProxy;
-use MicrosoftAzure\Storage\Common\ServicesBuilder;
+use WindowsAzure\Common\ServicesBuilder;
 
 /**
- * Basic implementation for a Blob proxy factory.
+ * Basic implementation for a Blob proxy factory
  *
  * @author Luciano Mammino <lmammino@oryzone.com>
  */
 class BlobProxyFactory implements BlobProxyFactoryInterface
 {
     /**
-     * @var string
+     * @var string $connectionString
      */
     protected $connectionString;
 
     /**
+     * Constructor
+     *
      * @param string $connectionString
      */
     public function __construct($connectionString)
@@ -26,15 +27,10 @@ class BlobProxyFactory implements BlobProxyFactoryInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function create()
     {
-        if (class_exists(ServicesBuilder::class)) {
-            // for microsoft/azure-storage < 1.0
-            return ServicesBuilder::getInstance()->createBlobService($this->connectionString);
-        }
-
-        return BlobRestProxy::createBlobService($this->connectionString);
+        return ServicesBuilder::getInstance()->createBlobService($this->connectionString);
     }
 }

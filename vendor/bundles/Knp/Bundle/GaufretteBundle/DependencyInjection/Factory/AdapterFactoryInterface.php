@@ -19,19 +19,19 @@ interface AdapterFactoryInterface
      * @param  string           $id         The id of the service
      * @param  array            $config     An array of configuration
      */
-    public function create(ContainerBuilder $container, $id, array $config);
+    function create(ContainerBuilder $container, $id, array $config);
 
     /**
      * Returns the key for the factory configuration
      *
      * @return string
      */
-    public function getKey();
+    function getKey();
 
     /**
      * Adds configuration nodes for the factory
      *
      * @param  NodeDefinition $builder
      */
-    public function addConfiguration(NodeDefinition $builder);
+    function addConfiguration(NodeDefinition $builder);
 }

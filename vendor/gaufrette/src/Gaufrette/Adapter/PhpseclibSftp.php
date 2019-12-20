@@ -3,11 +3,13 @@
 namespace Gaufrette\Adapter;
 
 use Gaufrette\Adapter;
-use phpseclib\Net\SFTP as SecLibSFTP;
+use \Net_SFTP;
 use Gaufrette\Filesystem;
 use Gaufrette\File;
 
-class PhpseclibSftp implements Adapter, FileFactory, ListKeysAware
+class PhpseclibSftp implements Adapter,
+                               FileFactory,
+                               ListKeysAware
 {
     protected $sftp;
     protected $directory;
@@ -15,12 +17,14 @@ class PhpseclibSftp implements Adapter, FileFactory, ListKeysAware
     protected $initialized = false;
 
     /**
-     * @param SecLibSFTP  $sftp      An Sftp instance
-     * @param string      $directory The distant directory
-     * @param bool        $create    Whether to create the remote directory if it
-     *                               does not exist
+     * Constructor
+     *
+     * @param \Net_SFTP $sftp      An Sftp instance
+     * @param string    $directory The distant directory
+     * @param boolean   $create    Whether to create the remote directory if it
+     *                             does not exist
      */
-    public function __construct(SecLibSFTP $sftp, $directory = null, $create = false)
+    public function __construct(Net_SFTP $sftp, $directory = null, $create = false)
     {
         $this->sftp = $sftp;
         $this->directory = $directory;
@@ -28,7 +32,7 @@ class PhpseclibSftp implements Adapter, FileFactory, ListKeysAware
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function read($key)
     {
@@ -36,7 +40,7 @@ class PhpseclibSftp implements Adapter, FileFactory, ListKeysAware
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function rename($sourceKey, $targetKey)
     {
@@ -45,20 +49,20 @@ class PhpseclibSftp implements Adapter, FileFactory, ListKeysAware
         $sourcePath = $this->computePath($sourceKey);
         $targetPath = $this->computePath($targetKey);
 
-        $this->ensureDirectoryExists(\Gaufrette\Util\Path::dirname($targetPath), true);
+        $this->ensureDirectoryExists(dirname($targetPath), true);
 
         return $this->sftp->rename($sourcePath, $targetPath);
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function write($key, $content)
     {
         $this->initialize();
 
         $path = $this->computePath($key);
-        $this->ensureDirectoryExists(\Gaufrette\Util\Path::dirname($path), true);
+        $this->ensureDirectoryExists(dirname($path), true);
         if ($this->sftp->put($path, $content)) {
             return $this->sftp->size($path);
         }
@@ -67,7 +71,7 @@ class PhpseclibSftp implements Adapter, FileFactory, ListKeysAware
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function exists($key)
     {
@@ -77,7 +81,7 @@ class PhpseclibSftp implements Adapter, FileFactory, ListKeysAware
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function isDirectory($key)
     {
@@ -94,7 +98,7 @@ class PhpseclibSftp implements Adapter, FileFactory, ListKeysAware
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function keys()
     {
@@ -104,7 +108,7 @@ class PhpseclibSftp implements Adapter, FileFactory, ListKeysAware
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function listKeys($prefix = '')
     {
@@ -117,9 +121,9 @@ class PhpseclibSftp implements Adapter, FileFactory, ListKeysAware
             return $keys;
         }
 
-        $filteredKeys = [];
-        foreach (['keys', 'dirs'] as $hash) {
-            $filteredKeys[$hash] = [];
+        $filteredKeys = array();
+        foreach (array('keys', 'dirs') as $hash) {
+            $filteredKeys[$hash] = array();
             foreach ($keys[$hash] as $key) {
                 if (0 === strpos($key, $prefix)) {
                     $filteredKeys[$hash][] = $key;
@@ -131,7 +135,7 @@ class PhpseclibSftp implements Adapter, FileFactory, ListKeysAware
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function mtime($key)
     {
@@ -139,11 +143,11 @@ class PhpseclibSftp implements Adapter, FileFactory, ListKeysAware
 
         $stat = $this->sftp->stat($this->computePath($key));
 
-        return $stat['mtime'] ?? false;
+        return isset($stat['mtime']) ? $stat['mtime'] : false;
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function delete($key)
     {
@@ -151,7 +155,7 @@ class PhpseclibSftp implements Adapter, FileFactory, ListKeysAware
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function createFile($key, Filesystem $filesystem)
     {
@@ -166,7 +170,7 @@ class PhpseclibSftp implements Adapter, FileFactory, ListKeysAware
     }
 
     /**
-     * Performs the adapter's initialization.
+     * Performs the adapter's initialization
      *
      * It will ensure the root directory exists
      */
@@ -202,21 +206,16 @@ class PhpseclibSftp implements Adapter, FileFactory, ListKeysAware
 
     protected function fetchKeys($directory = '', $onlyKeys = true)
     {
-        $keys = ['keys' => [], 'dirs' => []];
-        $computedPath = $this->computePath($directory);
+        $keys = array('keys' => array(), 'dirs' => array());
 
-        if (!$this->sftp->file_exists($computedPath)) {
-            return $keys;
-        }
-
-        $list = $this->sftp->rawlist($computedPath);
+        $list = $this->sftp->rawlist($this->computePath($directory));
         foreach ((array) $list as $filename => $stat) {
             if ('.' === $filename || '..' === $filename) {
                 continue;
             }
 
             $path = ltrim($directory . '/' . $filename, '/');
-            if (isset($stat['type']) && $stat['type'] === NET_SFTP_TYPE_DIRECTORY) {
+            if ($stat['type'] === NET_SFTP_TYPE_DIRECTORY) {
                 $keys['dirs'][] = $path;
             } else {
                 $keys['keys'][] = $path;
@@ -227,7 +226,7 @@ class PhpseclibSftp implements Adapter, FileFactory, ListKeysAware
 
         if ($onlyKeys && !empty($dirs)) {
             $keys['keys'] = array_merge($keys['keys'], $dirs);
-            $keys['dirs'] = [];
+            $keys['dirs'] = array();
         }
 
         foreach ($dirs as $dir) {

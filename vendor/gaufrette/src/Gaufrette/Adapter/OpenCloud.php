@@ -3,186 +3,195 @@
 namespace Gaufrette\Adapter;
 
 use Gaufrette\Adapter;
-use Gaufrette\Util;
-use Guzzle\Http\Exception\BadResponseException;
 use OpenCloud\Common\Exceptions\DeleteError;
 use OpenCloud\ObjectStore\Resource\Container;
 use OpenCloud\ObjectStore\Service;
 use OpenCloud\Common\Exceptions\CreateUpdateError;
-use OpenCloud\ObjectStore\Exception\ObjectNotFoundException;
+use OpenCloud\Common\Exceptions\ObjFetchError;
 
 /**
- * OpenCloud adapter.
+ * OpenCloud adapter
  *
+ * @package Gaufrette
  * @author  James Watson <james@sitepulse.org>
- * @author  Daniel Richter <nexyz9@gmail.com>
  */
-class OpenCloud implements Adapter, ChecksumCalculator
+class OpenCloud implements Adapter,
+                           ChecksumCalculator
 {
     /**
-     * @var Service
+     * @var ObjectStore
      */
     protected $objectStore;
-
     /**
      * @var string
      */
     protected $containerName;
-
     /**
      * @var bool
      */
     protected $createContainer;
-
+    /**
+     * @var bool
+     */
+    protected $detectContentType;
     /**
      * @var Container
      */
     protected $container;
 
-    /**
-     * @param Service $objectStore
-     * @param string  $containerName   The name of the container
-     * @param bool    $createContainer Whether to create the container if it does not exist
-     */
-    public function __construct(Service $objectStore, $containerName, $createContainer = false)
-    {
-        $this->objectStore = $objectStore;
-        $this->containerName = $containerName;
-        $this->createContainer = $createContainer;
+    public function __construct(
+        Service $objectStore, $containerName, $createContainer = false, $detectContentType = true
+    ) {
+        $this->objectStore       = $objectStore;
+        $this->containerName     = $containerName;
+        $this->createContainer   = $createContainer;
+        $this->detectContentType = $detectContentType;
     }
 
-    /**
-     * Returns an initialized container.
-     *
-     * @throws \RuntimeException
-     *
-     * @return Container
-     */
-    protected function getContainer()
+    private function initialize()
     {
-        if ($this->container) {
-            return $this->container;
-        }
+        if (!$this->container instanceof Container) {
 
-        try {
-            return $this->container = $this->objectStore->getContainer($this->containerName);
-        } catch (BadResponseException $e) { //OpenCloud lib does not wrap this exception
-            if (!$this->createContainer) {
-                throw new \RuntimeException(sprintf('Container "%s" does not exist.', $this->containerName));
+            if ($this->createContainer) {
+                $container       = $this->objectStore->Container();
+                $container->name = $this->containerName;
+                $container->Create();
+            } else {
+                $container = $this->objectStore->Container($this->containerName);
             }
+            $this->container = $container;
         }
-
-        if (!$container = $this->objectStore->createContainer($this->containerName)) {
-            throw new \RuntimeException(sprintf('Container "%s" could not be created.', $this->containerName));
-        }
-
-        return $this->container = $container;
     }
 
     /**
-     * Reads the content of the file.
+     * Reads the content of the file
      *
      * @param string $key
      *
-     * @return string|bool if cannot read content
+     * @return string|boolean if cannot read content
      */
     public function read($key)
     {
-        if ($object = $this->tryGetObject($key)) {
-            return $object->getContent();
+        $this->initialize();
+
+        // This method can return boolean or the object
+        // if there is a fetch error, tryGetObject returns false
+        // If it returns false, php throws a fatal error because boolean is a non-object.
+        $object = $this->tryGetObject($key);
+        if ($object) {
+            return $object->SaveToString();
         }
 
-        return false;
+        return $object;
     }
 
     /**
-     * Writes the given content into the file.
+     * Writes the given content into the file
      *
      * @param string $key
      * @param string $content
      *
-     * @return int|bool The number of bytes that were written into the file
+     * @return integer|boolean The number of bytes that were written into the file
      */
     public function write($key, $content)
     {
+        $this->initialize();
+        $object = $this->tryGetObject($key);
+
         try {
-            $this->getContainer()->uploadObject($key, $content);
-        } catch (CreateUpdateError $updateError) {
+            if ($object === false) {
+                $object = $this->container->DataObject();
+                $object->SetData($content);
+
+                $data = array ('name' => $key);
+
+                if ($this->detectContentType) {
+                    $fileInfo             = new \finfo(FILEINFO_MIME_TYPE);
+                    $contentType          = $fileInfo->buffer($content);
+                    $data['content_type'] = $contentType;
+                }
+
+                $object->Create($data);
+            }
+
+            return $object->bytes;
+        }
+        catch (CreateUpdateError $updateError) {
             return false;
         }
-
-        return Util\Size::fromContent($content);
     }
 
     /**
-     * Indicates whether the file exists.
+     * Indicates whether the file exists
      *
      * @param string $key
      *
-     * @return bool
+     * @return boolean
      */
     public function exists($key)
     {
-        try {
-            $exists = $this->getContainer()->getPartialObject($key) !== false;
-        } catch (BadResponseException $objFetchError) {
-            return false;
-        }
+        $this->initialize();
 
-        return $exists;
+        return ($this->tryGetObject($key) !== false);
     }
 
     /**
-     * Returns an array of all keys (files and directories).
+     * Returns an array of all keys (files and directories)
      *
      * @return array
      */
     public function keys()
     {
-        $objectList = $this->getContainer()->objectList();
-        $keys = [];
-
-        while ($object = $objectList->next()) {
-            $keys[] = $object->getName();
+        $this->initialize();
+        $objectList = $this->container->ObjectList();
+        $keys       = array ();
+        while ($object = $objectList->Next()) {
+            $keys[] = $object->name;
         }
-
         sort($keys);
 
         return $keys;
     }
 
     /**
-     * Returns the last modified time.
+     * Returns the last modified time
      *
      * @param string $key
      *
-     * @return int|bool An UNIX like timestamp or false
+     * @return integer|boolean An UNIX like timestamp or false
      */
     public function mtime($key)
     {
-        if ($object = $this->tryGetObject($key)) {
-            return (new \DateTime($object->getLastModified()))->format('U');
+        $this->initialize();
+
+        $object = $this->tryGetObject($key);
+
+        if ($object) {
+            return $object->last_modified;
         }
 
         return false;
     }
 
     /**
-     * Deletes the file.
+     * Deletes the file
      *
      * @param string $key
      *
-     * @return bool
+     * @return boolean
      */
     public function delete($key)
     {
-        if (!$object = $this->tryGetObject($key)) {
-            return false;
-        }
-
+        $this->initialize();
         try {
-            $object->delete();
-        } catch (DeleteError $deleteError) {
+            $object = $this->tryGetObject($key);
+            if (!$object) {
+                return false;
+            }
+            $object->Delete();
+        }
+        catch (DeleteError $deleteError) {
+
             return false;
         }
 
@@ -190,30 +199,26 @@ class OpenCloud implements Adapter, ChecksumCalculator
     }
 
     /**
-     * Renames a file.
+     * Renames a file
      *
      * @param string $sourceKey
      * @param string $targetKey
      *
-     * @return bool
+     * @return boolean
      */
     public function rename($sourceKey, $targetKey)
     {
-        if (false !== $this->write($targetKey, $this->read($sourceKey))) {
-            $this->delete($sourceKey);
-
-            return true;
-        }
-
-        return false;
+        $this->initialize();
+        $this->write($targetKey, $this->read($sourceKey));
+        $this->delete($sourceKey);
     }
 
     /**
-     * Check if key is directory.
+     * Check if key is directory
      *
      * @param string $key
      *
-     * @return bool
+     * @return boolean
      */
     public function isDirectory($key)
     {
@@ -221,7 +226,7 @@ class OpenCloud implements Adapter, ChecksumCalculator
     }
 
     /**
-     * Returns the checksum of the specified key.
+     * Returns the checksum of the specified key
      *
      * @param string $key
      *
@@ -229,7 +234,9 @@ class OpenCloud implements Adapter, ChecksumCalculator
      */
     public function checksum($key)
     {
-        if ($object = $this->tryGetObject($key)) {
+        $this->initialize();
+        $object = $this->tryGetObject($key);
+        if ($object) {
             return $object->getETag();
         }
 
@@ -237,15 +244,15 @@ class OpenCloud implements Adapter, ChecksumCalculator
     }
 
     /**
-     * @param string $key
-     *
-     * @return \OpenCloud\ObjectStore\Resource\DataObject|false
+     * @param $key
+     * @return \OpenCloud\ObjectStore\Resource\DataObject
      */
     protected function tryGetObject($key)
     {
         try {
-            return $this->getContainer()->getObject($key);
-        } catch (ObjectNotFoundException $objFetchError) {
+            return $this->container->DataObject($key);
+        }
+        catch (ObjFetchError $objFetchError) {
             return false;
         }
     }

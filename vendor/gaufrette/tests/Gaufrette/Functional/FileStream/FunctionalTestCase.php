@@ -3,9 +3,8 @@
 namespace Gaufrette\Functional\FileStream;
 
 use Gaufrette\StreamWrapper;
-use PHPUnit\Framework\TestCase;
 
-class FunctionalTestCase extends TestCase
+class FunctionalTestCase extends \PHPUnit_Framework_TestCase
 {
     protected $filesystem;
 
@@ -27,10 +26,10 @@ class FunctionalTestCase extends TestCase
     public function shouldCheckFileExists()
     {
         $this->filesystem->write('test.txt', 'some content');
-        $this->assertFileExists('gaufrette://filestream/test.txt');
+        $this->assertTrue(file_exists('gaufrette://filestream/test.txt'));
 
         $this->filesystem->delete('test.txt');
-        $this->assertFileNotExists('gaufrette://filestream/test.txt');
+        $this->assertFalse(file_exists('gaufrette://filestream/test.txt'));
     }
 
     /**
@@ -154,45 +153,12 @@ class FunctionalTestCase extends TestCase
     /**
      * @test
      */
-    public function shouldHandlesSubDir()
-    {
-        file_put_contents('gaufrette://filestream/subdir/test.txt', 'test content');
-
-        $this->assertTrue(is_file('gaufrette://filestream/subdir/test.txt'));
-
-        $this->filesystem->delete('subdir/test.txt');
-        $this->assertFalse(is_file('gaufrette://filestream/subdir/test.txt'));
-    }
-
-    /**
-     * @test
-     */
     public function shouldUnlinkFile()
     {
-        if (strtolower(substr(PHP_OS, 0, 3)) === 'win') {
-            $this->markTestSkipped('Flaky test on windows.');
-        }
-
         $this->filesystem->write('test.txt', 'some content');
         unlink('gaufrette://filestream/test.txt');
 
         $this->assertFalse($this->filesystem->has('test.txt'));
-    }
-
-    /**
-     * @test
-     */
-    public function shouldCopyFile()
-    {
-        file_put_contents('gaufrette://filestream/copy1.txt', 'test content');
-
-        $this->assertTrue(is_file('gaufrette://filestream/copy1.txt'));
-        $this->assertFalse(is_file('gaufrette://filestream/copy2.txt'));
-
-        copy('gaufrette://filestream/copy1.txt', 'gaufrette://filestream/copy2.txt');
-
-        $this->assertTrue(is_file('gaufrette://filestream/copy1.txt'));
-        $this->assertTrue(is_file('gaufrette://filestream/copy2.txt'));
     }
 
     /**
@@ -202,19 +168,19 @@ class FunctionalTestCase extends TestCase
     public function shouldCreateNewFile($mode)
     {
         $fileHandler = fopen('gaufrette://filestream/test.txt', $mode);
-        $this->assertFileExists('gaufrette://filestream/test.txt');
+        $this->assertTrue(file_exists('gaufrette://filestream/test.txt'));
     }
 
     public static function modesProvider()
     {
-        return [
-            ['w'],
-            ['a+'],
-            ['w+'],
-            ['ab+'],
-            ['wb'],
-            ['wb+'],
-        ];
+        return array(
+            array('w'),
+            array('a+'),
+            array('w+'),
+            array('ab+'),
+            array('wb'),
+            array('wb+')
+        );
     }
 
     protected function registerLocalFilesystemInStream()

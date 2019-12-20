@@ -3,14 +3,15 @@
 namespace Gaufrette\Util;
 
 /**
- * Path utils.
+ * Path utils
  *
+ * @package Gaufrette
  * @author  Antoine Hérault <antoine.herault@gmail.com>
  */
 class Path
 {
     /**
-     * Normalizes the given path.
+     * Normalizes the given path
      *
      * @param string $path
      *
@@ -18,23 +19,22 @@ class Path
      */
     public static function normalize($path)
     {
-        $path = str_replace('\\', '/', $path);
+        $path   = str_replace('\\', '/', $path);
         $prefix = static::getAbsolutePrefix($path);
-        $path = substr($path, strlen($prefix));
-        $parts = array_filter(explode('/', $path), 'strlen');
-        $tokens = [];
+        $path   = substr($path, strlen($prefix));
+        $parts  = array_filter(explode('/', $path), 'strlen');
+        $tokens = array();
 
         foreach ($parts as $part) {
             switch ($part) {
                 case '.':
-                    continue 2;
+                    continue;
                 case '..':
                     if (0 !== count($tokens)) {
                         array_pop($tokens);
-
-                        continue 2;
+                        continue;
                     } elseif (!empty($prefix)) {
-                        continue 2;
+                        continue;
                     }
                 default:
                     $tokens[] = $part;
@@ -45,11 +45,11 @@ class Path
     }
 
     /**
-     * Indicates whether the given path is absolute or not.
+     * Indicates whether the given path is absolute or not
      *
      * @param string $path A normalized path
      *
-     * @return bool
+     * @return boolean
      */
     public static function isAbsolute($path)
     {
@@ -57,7 +57,7 @@ class Path
     }
 
     /**
-     * Returns the absolute prefix of the given path.
+     * Returns the absolute prefix of the given path
      *
      * @param string $path A normalized path
      *
@@ -72,19 +72,5 @@ class Path
         }
 
         return strtolower($matches['prefix']);
-    }
-
-    /**
-     * Wrap native dirname function in order to handle only UNIX-style paths
-     *
-     * @param string $path
-     *
-     * @return string
-     *
-     * @see http://php.net/manual/en/function.dirname.php
-     */
-    public static function dirname($path)
-    {
-        return str_replace('\\', '/', \dirname($path));
     }
 }

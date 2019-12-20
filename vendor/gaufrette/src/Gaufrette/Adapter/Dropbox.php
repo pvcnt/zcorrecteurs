@@ -5,25 +5,23 @@ namespace Gaufrette\Adapter;
 use Gaufrette\Adapter;
 use Gaufrette\Util;
 use Gaufrette\Exception;
-use Dropbox_API as DropboxApi;
-use Dropbox_Exception_NotFound as DropboxNotFoundException;
-
-@trigger_error('The ' . __NAMESPACE__ . '\Dropbox adapter is deprecated since version 0.4 and will be removed in 1.0. You can move to our Flysystem adapter and use their Dropbox adapter if needed.', E_USER_DEPRECATED);
+use \Dropbox_API as DropboxApi;
+use \Dropbox_Exception_NotFound as DropboxNotFoundException;
 
 /**
- * Dropbox adapter.
+ * Dropbox adapter
  *
  * @author Markus Bachmann <markus.bachmann@bachi.biz>
  * @author Antoine Hérault <antoine.herault@gmail.com>
  * @author Leszek Prabucki <leszek.prabucki@gmail.com>
- *
- * @deprecated The Dropbox adapter is deprecated since version 0.4 and will be removed in 1.0.
  */
 class Dropbox implements Adapter
 {
     protected $client;
 
     /**
+     * Constructor
+     *
      * @param \Dropbox_API $client The Dropbox API client
      */
     public function __construct(DropboxApi $client)
@@ -32,7 +30,7 @@ class Dropbox implements Adapter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @throws \Dropbox_Exception_Forbidden
      * @throws \Dropbox_Exception_OverQuota
@@ -48,7 +46,7 @@ class Dropbox implements Adapter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function isDirectory($key)
     {
@@ -62,7 +60,7 @@ class Dropbox implements Adapter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @throws \Dropbox_Exception
      */
@@ -86,7 +84,7 @@ class Dropbox implements Adapter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function delete($key)
     {
@@ -100,7 +98,7 @@ class Dropbox implements Adapter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function rename($sourceKey, $targetKey)
     {
@@ -114,7 +112,7 @@ class Dropbox implements Adapter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function mtime($key)
     {
@@ -128,21 +126,21 @@ class Dropbox implements Adapter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function keys()
     {
         $metadata = $this->client->getMetaData('/', true);
-        if (!isset($metadata['contents'])) {
-            return [];
+        if (! isset($metadata['contents'])) {
+            return array();
         }
 
-        $keys = [];
+        $keys = array();
         foreach ($metadata['contents'] as $value) {
             $file = ltrim($value['path'], '/');
             $keys[] = $file;
-            if ('.' !== $dirname = \Gaufrette\Util\Path::dirname($file)) {
-                $keys[] = $dirname;
+            if ('.' !== dirname($file)) {
+                $keys[] = dirname($file);
             }
         }
         sort($keys);
@@ -151,7 +149,7 @@ class Dropbox implements Adapter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function exists($key)
     {

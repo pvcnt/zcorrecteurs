@@ -15,6 +15,7 @@
 {%- set render_sidebar = (not embedded) and (not theme_nosidebar|tobool) and
                          (sidebars != []) %}
 {%- set url_root = pathto('', 1) %}
+{# XXX necessary? #}
 {%- if url_root == '#' %}{% set url_root = '' %}{% endif %}
 {%- if not embedded and docstitle %}
   {%- set titlesuffix = " &mdash; "|safe + docstitle|e %}
@@ -163,20 +164,11 @@
               <li {% if pagename == "usage/introduction" %}class="active"{% endif %}>
                   <a href="{{ pathto('usage/introduction') }}">Introduction</a>
               </li>
-              <li {% if pagename == "usage/metadata" %}class="active"{% endif %}>
-                <a href="{{ pathto('usage/metadata') }}">Metadata</a>
-              </li>
               <li {% if pagename == "usage/coordinates" %}class="active"{% endif %}>
                   <a href="{{ pathto('usage/coordinates') }}">Coordinates</a>
               </li>
               <li {% if pagename == "usage/drawing" %}class="active"{% endif %}>
                   <a href="{{ pathto('usage/drawing') }}">Drawings</a>
-              </li>
-              <li {% if pagename == "usage/colors" %}class="active"{% endif %}>
-                  <a href="{{ pathto('usage/colors') }}">Colors</a>
-              </li>
-              <li {% if pagename == "usage/layers" %}class="active"{% endif %}>
-                  <a href="{{ pathto('usage/layers') }}">Layers</a>
               </li>
               <li {% if pagename == "usage/effects" %}class="active"{% endif %}>
                   <a href="{{ pathto('usage/effects') }}">Effects</a>
@@ -209,8 +201,8 @@
               </a></p>
             {%- endif %}
             {% if theme_github_fork %}
-              <a class="github_ribbon" href="https://github.com/{{ theme_github_fork }}">
-                <img src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" />
+              <a class="github_ribbon" href="http://github.com/{{ theme_github_fork }}">
+                <img src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" />
               </a>
             {% endif %}
           </header>
@@ -252,12 +244,11 @@
           (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
       })();
   </script>
-  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-  <a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 
   {%- block footer %}
-      <footer id="bottom-page">
-      Imagine v.{{release}}.
+      <footer>
       {%- if show_copyright %}
         {%- if hasdoc('copyright') %}
           {% trans path=pathto('copyright'), copyright=copyright|e %}&copy; <a href="{{ path }}">Copyright</a> {{ copyright }}.{% endtrans %}

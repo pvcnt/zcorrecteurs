@@ -3,7 +3,6 @@
 namespace Knp\Bundle\GaufretteBundle\DependencyInjection\Factory;
 
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
-use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Reference;
@@ -18,14 +17,10 @@ class DoctrineDbalAdapterFactory implements AdapterFactoryInterface
     /**
      * {@inheritDoc}
      */
-    public function create(ContainerBuilder $container, $id, array $config)
+    function create(ContainerBuilder $container, $id, array $config)
     {
-        $childDefinition = class_exists('\Symfony\Component\DependencyInjection\ChildDefinition')
-            ? new ChildDefinition('knp_gaufrette.adapter.doctrine_dbal')
-            : new DefinitionDecorator('knp_gaufrette.adapter.doctrine_dbal');
-
         $definition = $container
-            ->setDefinition($id, $childDefinition)
+            ->setDefinition($id, new DefinitionDecorator('knp_gaufrette.adapter.doctrine_dbal'))
             ->addArgument(new Reference('doctrine.dbal.' . $config['connection_name'] . '_connection'))
             ->addArgument($config['table'])
         ;
@@ -38,7 +33,7 @@ class DoctrineDbalAdapterFactory implements AdapterFactoryInterface
     /**
      * {@inheritDoc}
      */
-    public function getKey()
+    function getKey()
     {
         return 'doctrine_dbal';
     }
@@ -46,7 +41,7 @@ class DoctrineDbalAdapterFactory implements AdapterFactoryInterface
     /**
      * {@inheritDoc}
      */
-    public function addConfiguration(NodeDefinition $builder)
+    function addConfiguration(NodeDefinition $builder)
     {
         $builder
             ->children()

@@ -2,11 +2,10 @@
 
 namespace Knp\Bundle\GaufretteBundle\Command;
 
-use Symfony\Component\Console\Command\Command;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Output\OutputInterface;
-use Gaufrette\FilesystemMapInterface;
 use Gaufrette\Glob;
 
 /**
@@ -14,19 +13,8 @@ use Gaufrette\Glob;
  *
  * @author Antoine Hérault <antoine.herault@gmail.com>
  */
-class FilesystemKeysCommand extends Command
+class FilesystemKeysCommand extends ContainerAwareCommand
 {
-    /**
-     * @var FilesystemMapInterface
-     */
-    private $filesystemMap;
-
-    public function __construct(FilesystemMapInterface $filesystemMap)
-    {
-        $this->filesystemMap = $filesystemMap;
-
-        parent::__construct();
-    }
     /**
      * {@inheritDoc}
      */
@@ -54,14 +42,16 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $filesystemName = $input->getArgument('filesystem');
-        $glob = $input->getArgument('glob');
+        $filesystem = $input->getArgument('filesystem');
+        $glob       = $input->getArgument('glob');
+        $container  = $this->getContainer();
+        $serviceId  = sprintf('gaufrette.%s_filesystem', $filesystem);
 
-        if (!$this->filesystemMap->has($filesystemName)) {
+        if (!$container->has($serviceId)) {
             throw new \RuntimeException(sprintf('There is no \'%s\' filesystem defined.', $filesystem));
         }
 
-        $filesystem = $this->filesystemMap->get($filesystemName);
+        $filesystem = $container->get($serviceId);
         $keys       = $filesystem->keys();
 
         if (!empty($glob)) {
@@ -72,7 +62,7 @@ EOT
         $count = count($keys);
 
         $message = $count ? sprintf(
-                'Bellow %s the <info>%s key%s</info> that were found:',
+                'Bellow %s the <info>%s key%s</info> that where found:',
                 $count > 1 ? 'are' : 'is',
                 $count,
                 $count > 1 ? 's': ''

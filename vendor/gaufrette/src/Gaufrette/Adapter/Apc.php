@@ -5,16 +5,12 @@ namespace Gaufrette\Adapter;
 use Gaufrette\Adapter;
 use Gaufrette\Util;
 
-@trigger_error('The ' . __NAMESPACE__ . '\Apc adapter is deprecated since version 0.4 and will be removed in 1.0.', E_USER_DEPRECATED);
-
 /**
- * Apc adapter, a non-persistent adapter for when this sort of thing is appropriate.
+ * Apc adapter, a non-persistent adapter for when this sort of thing is appropriate
  *
  * @author Alexander Deruwe <alexander.deruwe@gmail.com>
  * @author Antoine Hérault <antoine.herault@gmail.com>
  * @author Leszek Prabucki <leszek.prabucki@gmail.com>
- *
- * @deprecated The Apc adapter is deprecated since version 0.4 and will be removed in 1.0.
  */
 class Apc implements Adapter
 {
@@ -22,10 +18,11 @@ class Apc implements Adapter
     protected $ttl;
 
     /**
-     * @throws \RuntimeException
+     * Constructor
      *
-     * @param string $prefix to avoid conflicts between filesystems
-     * @param int    $ttl    time to live, default is 0
+     * @throws \RuntimeException
+     * @param  string            $prefix to avoid conflicts between filesystems
+     * @param  int               $ttl    time to live, default is 0
      */
     public function __construct($prefix, $ttl = 0)
     {
@@ -38,7 +35,7 @@ class Apc implements Adapter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function read($key)
     {
@@ -46,7 +43,7 @@ class Apc implements Adapter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function write($key, $content, array $metadata = null)
     {
@@ -60,7 +57,7 @@ class Apc implements Adapter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function exists($key)
     {
@@ -68,17 +65,17 @@ class Apc implements Adapter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function keys()
     {
         $cachedKeys = $this->getCachedKeysIterator();
 
         if (null === $cachedKeys) {
-            return [];
+            return array();
         }
 
-        $keys = [];
+        $keys = array();
         foreach ($cachedKeys as $key => $value) {
             $pattern = sprintf('/^%s/', preg_quote($this->prefix, '/'));
             $keys[] = preg_replace($pattern, '', $key);
@@ -89,7 +86,7 @@ class Apc implements Adapter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function mtime($key)
     {
@@ -99,7 +96,7 @@ class Apc implements Adapter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function delete($key)
     {
@@ -107,19 +104,19 @@ class Apc implements Adapter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function rename($sourceKey, $targetKey)
     {
         // TODO: this probably allows for race conditions...
-        $written = $this->write($targetKey, $this->read($sourceKey));
+        $written  = $this->write($targetKey, $this->read($sourceKey));
         $deleted = $this->delete($sourceKey);
 
         return $written && $deleted;
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function isDirectory($key)
     {
@@ -127,10 +124,9 @@ class Apc implements Adapter
     }
 
     /**
-     * Computes the path for the given key.
+     * Computes the path for the given key
      *
-     * @param string $key
-     *
+     * @param  string $key
      * @return string
      */
     public function computePath($key)
@@ -139,14 +135,14 @@ class Apc implements Adapter
     }
 
     /**
-     * @param string $key    - by default ''
-     * @param int    $format - by default APC_ITER_NONE
-     *
+     * @param  string       $key    - by default ''
+     * @param  integer      $format - by default APC_ITER_NONE
      * @return \APCIterator
+     *
      */
     protected function getCachedKeysIterator($key = '', $format = APC_ITER_NONE)
     {
-        $pattern = sprintf('/^%s/', preg_quote($this->prefix . $key, '/'));
+        $pattern = sprintf('/^%s/', preg_quote($this->prefix.$key, '/'));
 
         return new \APCIterator('user', $pattern, $format);
     }

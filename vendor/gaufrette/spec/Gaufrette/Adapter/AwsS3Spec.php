@@ -2,16 +2,15 @@
 
 namespace spec\Gaufrette\Adapter;
 
-use Aws\S3\S3Client;
-use Gaufrette\Adapter\MimeTypeProvider;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 class AwsS3Spec extends ObjectBehavior
 {
     /**
      * @param \Aws\S3\S3Client $service
      */
-    function let(S3Client $service)
+    function let($service)
     {
         $this->beConstructedWith($service, 'bucketName');
     }
@@ -29,15 +28,5 @@ class AwsS3Spec extends ObjectBehavior
     function it_supports_metadata()
     {
         $this->shouldHaveType('Gaufrette\Adapter\MetadataSupporter');
-    }
-
-    function it_supports_sizecalculator()
-    {
-        $this->shouldHaveType('Gaufrette\Adapter\SizeCalculator');
-    }
-
-    function it_provides_mime_type()
-    {
-        $this->shouldHaveType(MimeTypeProvider::class);
     }
 }

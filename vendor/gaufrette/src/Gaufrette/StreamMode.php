@@ -3,7 +3,7 @@
 namespace Gaufrette;
 
 /**
- * Represents a stream mode.
+ * Represents a stream mode
  *
  * @author Antoine Hérault <antoine.herault@gmail.com>
  */
@@ -15,6 +15,8 @@ class StreamMode
     private $flag;
 
     /**
+     * Constructor
+     *
      * @param string $mode A stream mode as for the use of fopen()
      */
     public function __construct($mode)
@@ -30,7 +32,7 @@ class StreamMode
     }
 
     /**
-     * Returns the underlying mode.
+     * Returns the underlying mode
      *
      * @return string
      */
@@ -40,9 +42,9 @@ class StreamMode
     }
 
     /**
-     * Indicates whether the mode allows to read.
+     * Indicates whether the mode allows to read
      *
-     * @return bool
+     * @return Boolean
      */
     public function allowsRead()
     {
@@ -54,9 +56,9 @@ class StreamMode
     }
 
     /**
-     * Indicates whether the mode allows to write.
+     * Indicates whether the mode allows to write
      *
-     * @return bool
+     * @return Boolean
      */
     public function allowsWrite()
     {
@@ -68,9 +70,9 @@ class StreamMode
     }
 
     /**
-     * Indicates whether the mode allows to open an existing file.
+     * Indicates whether the mode allows to open an existing file
      *
-     * @return bool
+     * @return Boolean
      */
     public function allowsExistingFileOpening()
     {
@@ -78,9 +80,9 @@ class StreamMode
     }
 
     /**
-     * Indicates whether the mode allows to create a new file.
+     * Indicates whether the mode allows to create a new file
      *
-     * @return bool
+     * @return Boolean
      */
     public function allowsNewFileOpening()
     {
@@ -89,9 +91,9 @@ class StreamMode
 
     /**
      * Indicates whether the mode implies to delete the existing content of the
-     * file when it already exists.
+     * file when it already exists
      *
-     * @return bool
+     * @return Boolean
      */
     public function impliesExistingContentDeletion()
     {
@@ -100,9 +102,9 @@ class StreamMode
 
     /**
      * Indicates whether the mode implies positioning the cursor at the
-     * beginning of the file.
+     * beginning of the file
      *
-     * @return bool
+     * @return Boolean
      */
     public function impliesPositioningCursorAtTheBeginning()
     {
@@ -111,9 +113,9 @@ class StreamMode
 
     /**
      * Indicates whether the mode implies positioning the cursor at the end of
-     * the file.
+     * the file
      *
-     * @return bool
+     * @return Boolean
      */
     public function impliesPositioningCursorAtTheEnd()
     {
@@ -121,9 +123,9 @@ class StreamMode
     }
 
     /**
-     * Indicates whether the stream is in binary mode.
+     * Indicates whether the stream is in binary mode
      *
-     * @return bool
+     * @return Boolean
      */
     public function isBinary()
     {
@@ -131,9 +133,9 @@ class StreamMode
     }
 
     /**
-     * Indicates whether the stream is in text mode.
+     * Indicates whether the stream is in text mode
      *
-     * @return bool
+     * @return Boolean
      */
     public function isText()
     {

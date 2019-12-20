@@ -7,12 +7,10 @@ use Gaufrette\Filesystem;
 
 class ZipTest extends FunctionalTestCase
 {
-    protected function setUp()
+    public function setUp()
     {
         if (!extension_loaded('zip')) {
             return $this->markTestSkipped('The zip extension is not available.');
-        } elseif (strtolower(substr(PHP_OS, 0, 3)) === 'win') {
-            $this->markTestSkipped('Zip adapter is not supported on Windows.');
         }
 
         @touch(__DIR__ . '/test.zip');
@@ -20,7 +18,7 @@ class ZipTest extends FunctionalTestCase
         $this->filesystem = new Filesystem(new Zip(__DIR__ . '/test.zip'));
     }
 
-    protected function tearDown()
+    public function tearDown()
     {
         parent::tearDown();
 

@@ -2,22 +2,20 @@
 
 namespace Gaufrette\Adapter;
 
-use AmazonS3 as AmazonClient;
+use \AmazonS3 as AmazonClient;
 use Gaufrette\Adapter;
-
-@trigger_error('The ' . __NAMESPACE__ . '\AmazonS3 adapter is deprecated since version 0.4 and will be removed in 1.0. Use the AwsS3 adapter instead.', E_USER_DEPRECATED);
 
 /**
  * Amazon S3 adapter using the AWS SDK for PHP v1.x.
  *
  * See the AwsS3 adapter for using the AWS SDK for PHP v2.x.
  *
+ * @package Gaufrette
  * @author  Antoine Hérault <antoine.herault@gmail.com>
  * @author  Leszek Prabucki <leszek.prabucki@gmail.com>
- *
- * @deprecated The AmazonS3 adapter is deprecated since version 0.4 and will be removed in 1.0. Use the AwsS3 adapter instead.
  */
-class AmazonS3 implements Adapter, MetadataSupporter
+class AmazonS3 implements Adapter,
+                          MetadataSupporter
 {
     protected $service;
     protected $bucket;
@@ -25,18 +23,18 @@ class AmazonS3 implements Adapter, MetadataSupporter
     protected $metadata;
     protected $options;
 
-    public function __construct(AmazonClient $service, $bucket, $options = [])
+    public function __construct(AmazonClient $service, $bucket, $options = array())
     {
         $this->service = $service;
-        $this->bucket = $bucket;
+        $this->bucket  = $bucket;
         $this->options = array_replace_recursive(
-            ['directory' => '', 'create' => false, 'region' => $service->hostname, 'acl' => AmazonClient::ACL_PUBLIC],
+            array('directory' => '', 'create' => false, 'region' => AmazonClient::REGION_US_E1, 'acl' => AmazonClient::ACL_PUBLIC),
             $options
         );
     }
 
     /**
-     * Set the acl used when writing files.
+     * Set the acl used when writing files
      *
      * @param string $acl
      */
@@ -46,7 +44,7 @@ class AmazonS3 implements Adapter, MetadataSupporter
     }
 
     /**
-     * Get the acl used when writing files.
+     * Get the acl used when writing files
      *
      * @return string
      */
@@ -56,7 +54,7 @@ class AmazonS3 implements Adapter, MetadataSupporter
     }
 
     /**
-     * Set the base directory the user will have access to.
+     * Set the base directory the user will have access to
      *
      * @param string $directory
      */
@@ -66,7 +64,7 @@ class AmazonS3 implements Adapter, MetadataSupporter
     }
 
     /**
-     * Get the directory the user has access to.
+     * Get the directory the user has access to
      *
      * @return string
      */
@@ -76,7 +74,7 @@ class AmazonS3 implements Adapter, MetadataSupporter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setMetadata($key, $metadata)
     {
@@ -86,17 +84,17 @@ class AmazonS3 implements Adapter, MetadataSupporter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getMetadata($key)
     {
         $path = $this->computePath($key);
 
-        return isset($this->metadata[$path]) ? $this->metadata[$path] : [];
+        return isset($this->metadata[$path]) ? $this->metadata[$path] : array();
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function read($key)
     {
@@ -116,21 +114,21 @@ class AmazonS3 implements Adapter, MetadataSupporter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function rename($sourceKey, $targetKey)
     {
         $this->ensureBucketExists();
 
         $response = $this->service->copy_object(
-            [ // source
-                'bucket' => $this->bucket,
-                'filename' => $this->computePath($sourceKey),
-            ],
-            [ // target
-                'bucket' => $this->bucket,
-                'filename' => $this->computePath($targetKey),
-            ],
+            array( // source
+                'bucket'   => $this->bucket,
+                'filename' => $this->computePath($sourceKey)
+            ),
+            array( // target
+                'bucket'   => $this->bucket,
+                'filename' => $this->computePath($targetKey)
+            ),
             $this->getMetadata($sourceKey)
         );
 
@@ -138,16 +136,16 @@ class AmazonS3 implements Adapter, MetadataSupporter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function write($key, $content)
     {
         $this->ensureBucketExists();
 
         $opt = array_replace_recursive(
-            ['acl' => $this->options['acl']],
+            array('acl'  => $this->options['acl']),
             $this->getMetadata($key),
-            ['body' => $content]
+            array('body' => $content)
         );
 
         $response = $this->service->create_object(
@@ -160,11 +158,11 @@ class AmazonS3 implements Adapter, MetadataSupporter
             return false;
         };
 
-        return intval($response->header['x-aws-requestheaders']['Content-Length']);
+        return intval($response->header["x-aws-requestheaders"]["Content-Length"]);
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function exists($key)
     {
@@ -177,7 +175,7 @@ class AmazonS3 implements Adapter, MetadataSupporter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function mtime($key)
     {
@@ -193,7 +191,7 @@ class AmazonS3 implements Adapter, MetadataSupporter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function keys()
     {
@@ -201,10 +199,10 @@ class AmazonS3 implements Adapter, MetadataSupporter
 
         $list = $this->service->get_object_list($this->bucket);
 
-        $keys = [];
+        $keys = array();
         foreach ($list as $file) {
-            if ('.' !== $dirname = \Gaufrette\Util\Path::dirname($file)) {
-                $keys[] = $dirname;
+            if ('.' !== dirname($file)) {
+                $keys[] = dirname($file);
             }
             $keys[] = $file;
         }
@@ -214,7 +212,7 @@ class AmazonS3 implements Adapter, MetadataSupporter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function delete($key)
     {
@@ -230,11 +228,11 @@ class AmazonS3 implements Adapter, MetadataSupporter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function isDirectory($key)
     {
-        if ($this->exists($key . '/')) {
+        if ($this->exists($key.'/')) {
             return true;
         }
 
@@ -244,10 +242,10 @@ class AmazonS3 implements Adapter, MetadataSupporter
     /**
      * Ensures the specified bucket exists. If the bucket does not exists
      * and the create parameter is set to true, it will try to create the
-     * bucket.
+     * bucket
      *
      * @throws \RuntimeException if the bucket does not exists or could not be
-     *                           created
+     *                          created
      */
     private function ensureBucketExists()
     {
@@ -288,7 +286,7 @@ class AmazonS3 implements Adapter, MetadataSupporter
     }
 
     /**
-     * Computes the path for the specified key taking the bucket in account.
+     * Computes the path for the specified key taking the bucket in account
      *
      * @param string $key The key for which to compute the path
      *

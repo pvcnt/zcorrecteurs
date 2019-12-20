@@ -8,10 +8,9 @@
         <parameter key="knp_gaufrette.filesystem_map.class">Knp\Bundle\GaufretteBundle\FilesystemMap</parameter>
     </parameters>
     <services>
-        <service id="knp_gaufrette.filesystem" class="Gaufrette\Filesystem" abstract="true" public="true">
+        <service id="knp_gaufrette.filesystem" class="Gaufrette\Filesystem" abstract="true">
             <argument /><!-- The Adapter -->
         </service>
-
         <service id="knp_gaufrette.adapter.in_memory" class="Gaufrette\Adapter\InMemory" abstract="true" public="false">
             <argument /><!-- Files -->
         </service>
@@ -34,7 +33,6 @@
             <argument /><!-- Detect content type -->
         </service>
         <service id="knp_gaufrette.adapter.azure_blob_storage" class="Gaufrette\Adapter\AzureBlobStorage" abstract="true" public="false" />
-        <service id="knp_gaufrette.adapter.google_cloud_storage" class="Gaufrette\Adapter\GoogleCloudStorage" abstract="true" public="false" />
         <service id="knp_gaufrette.adapter.gridfs" class="Gaufrette\Adapter\GridFS" abstract="true" public="false" />
         <service id="knp_gaufrette.adapter.mogilefs" class="Gaufrette\Adapter\MogileFS" abstract="true" public="false">
             <argument /><!-- domain -->
@@ -48,16 +46,10 @@
             <argument /><!-- ttl -->
         </service>
         <service id="knp_gaufrette.adapter.cache" class="Gaufrette\Adapter\Cache" abstract="true" public="false" />
-        <service id="knp_gaufrette.filesystem_map" class="%knp_gaufrette.filesystem_map.class%" public="true">
+        <service id="knp_gaufrette.filesystem_map" class="%knp_gaufrette.filesystem_map.class%">
             <argument /> <!-- map of filesystems -->
         </service>
-        <service id="%knp_gaufrette.filesystem_map.class%" alias="knp_gaufrette.filesystem_map" public="false"/>
         <service id="knp_gaufrette.adapter.dropbox" class="Gaufrette\Adapter\Dropbox" abstract="true" public="false" />
-
-        <service id="knp_gaufrette.command.filesystem_keys" class="Knp\Bundle\GaufretteBundle\Command\FilesystemKeysCommand">
-            <argument type="service" id="knp_gaufrette.filesystem_map" />
-            <tag name="console.command" command="gaufrette:filesystem:keys" />
-        </service>
     </services>
 
 </container>

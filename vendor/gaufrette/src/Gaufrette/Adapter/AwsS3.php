@@ -4,44 +4,34 @@ namespace Gaufrette\Adapter;
 
 use Gaufrette\Adapter;
 use Aws\S3\S3Client;
-use Gaufrette\Util;
 
 /**
- * Amazon S3 adapter using the AWS SDK for PHP v2.x.
+ * Amazon S3 adapter using the AWS SDK for PHP v2.x
  *
+ * @package Gaufrette
  * @author  Michael Dowling <mtdowling@gmail.com>
  */
-class AwsS3 implements Adapter, MetadataSupporter, ListKeysAware, SizeCalculator, MimeTypeProvider
+class AwsS3 implements Adapter,
+                       MetadataSupporter,
+                       ListKeysAware
 {
-    /** @var S3Client */
     protected $service;
-    /** @var string */
     protected $bucket;
-    /** @var array */
     protected $options;
-    /** @var bool */
     protected $bucketExists;
-    /** @var array */
-    protected $metadata = [];
-    /** @var bool */
+    protected $metadata = array();
     protected $detectContentType;
 
-    /**
-     * @param S3Client $service
-     * @param string   $bucket
-     * @param array    $options
-     * @param bool     $detectContentType
-     */
-    public function __construct(S3Client $service, $bucket, array $options = [], $detectContentType = false)
+    public function __construct(S3Client $service, $bucket, array $options = array(), $detectContentType = false)
     {
         $this->service = $service;
         $this->bucket = $bucket;
         $this->options = array_replace(
-            [
+            array(
                 'create' => false,
                 'directory' => '',
                 'acl' => 'private',
-            ],
+            ),
             $options
         );
 
@@ -49,39 +39,28 @@ class AwsS3 implements Adapter, MetadataSupporter, ListKeysAware, SizeCalculator
     }
 
     /**
-     * Gets the publicly accessible URL of an Amazon S3 object.
+     * Gets the publicly accessible URL of an Amazon S3 object
      *
      * @param string $key     Object key
      * @param array  $options Associative array of options used to buld the URL
-     *                        - expires: The time at which the URL should expire
-     *                        represented as a UNIX timestamp
-     *                        - Any options available in the Amazon S3 GetObject
-     *                        operation may be specified.
-     *
+     *                       - expires: The time at which the URL should expire
+     *                           represented as a UNIX timestamp
+     *                       - Any options available in the Amazon S3 GetObject
+     *                           operation may be specified.
      * @return string
-     *
-     * @deprecated 1.0 Resolving object path into URLs is out of the scope of this repository since v0.4. gaufrette/extras
-     *                 provides a Filesystem decorator with a regular resolve() method. You should use it instead.
-     *
-     * @see https://github.com/Gaufrette/extras
      */
-    public function getUrl($key, array $options = [])
+    public function getUrl($key, array $options = array())
     {
-        @trigger_error(
-            E_USER_DEPRECATED,
-            'Using AwsS3::getUrl() method was deprecated since v0.4. Please chek gaufrette/extras package if you want this feature'
-        );
-
         return $this->service->getObjectUrl(
             $this->bucket,
             $this->computePath($key),
-            $options['expires'] ?? null,
+            isset($options['expires']) ? $options['expires'] : null,
             $options
         );
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setMetadata($key, $metadata)
     {
@@ -95,15 +74,15 @@ class AwsS3 implements Adapter, MetadataSupporter, ListKeysAware, SizeCalculator
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getMetadata($key)
     {
-        return isset($this->metadata[$key]) ? $this->metadata[$key] : [];
+        return isset($this->metadata[$key]) ? $this->metadata[$key] : array();
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function read($key)
     {
@@ -111,72 +90,62 @@ class AwsS3 implements Adapter, MetadataSupporter, ListKeysAware, SizeCalculator
         $options = $this->getOptions($key);
 
         try {
-            // Get remote object
-            $object = $this->service->getObject($options);
-            // If there's no metadata array set up for this object, set it up
-            if (!array_key_exists($key, $this->metadata) || !is_array($this->metadata[$key])) {
-                $this->metadata[$key] = [];
-            }
-            // Make remote ContentType metadata available locally
-            $this->metadata[$key]['ContentType'] = $object->get('ContentType');
-
-            return (string) $object->get('Body');
+            return (string) $this->service->getObject($options)->get('Body');
         } catch (\Exception $e) {
             return false;
         }
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function rename($sourceKey, $targetKey)
     {
         $this->ensureBucketExists();
         $options = $this->getOptions(
             $targetKey,
-            ['CopySource' => $this->bucket . '/' . $this->computePath($sourceKey)]
+            array(
+                'CopySource' => $this->bucket.'/'.$this->computePath($sourceKey),
+            )
         );
 
         try {
-            $this->service->copyObject(array_merge($options, $this->getMetadata($targetKey)));
-
-            return $this->delete($sourceKey);
+            $this->service->copyObject($options);
+            return true;
         } catch (\Exception $e) {
             return false;
         }
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function write($key, $content)
     {
         $this->ensureBucketExists();
-        $options = $this->getOptions($key, ['Body' => $content]);
+        $options = $this->getOptions($key, array('Body' => $content));
 
-        /*
+        /**
          * If the ContentType was not already set in the metadata, then we autodetect
          * it to prevent everything being served up as binary/octet-stream.
          */
         if (!isset($options['ContentType']) && $this->detectContentType) {
-            $options['ContentType'] = $this->guessContentType($content);
+            $finfo = new \finfo(FILEINFO_MIME_TYPE);
+            $mimeType = $finfo->buffer($content);
+
+            $options['ContentType'] = $mimeType;
         }
 
         try {
             $this->service->putObject($options);
-
-            if (is_resource($content)) {
-                return Util\Size::fromResource($content);
-            }
-
-            return Util\Size::fromContent($content);
+            return strlen($content);
         } catch (\Exception $e) {
             return false;
         }
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function exists($key)
     {
@@ -184,13 +153,12 @@ class AwsS3 implements Adapter, MetadataSupporter, ListKeysAware, SizeCalculator
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function mtime($key)
     {
         try {
             $result = $this->service->headObject($this->getOptions($key));
-
             return strtotime($result['LastModified']);
         } catch (\Exception $e) {
             return false;
@@ -198,21 +166,7 @@ class AwsS3 implements Adapter, MetadataSupporter, ListKeysAware, SizeCalculator
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function size($key)
-    {
-        try {
-            $result = $this->service->headObject($this->getOptions($key));
-
-            return $result['ContentLength'];
-        } catch (\Exception $e) {
-            return false;
-        }
-    }
-
-    /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function keys()
     {
@@ -224,32 +178,29 @@ class AwsS3 implements Adapter, MetadataSupporter, ListKeysAware, SizeCalculator
      */
     public function listKeys($prefix = '')
     {
-        $this->ensureBucketExists();
-
-        $options = ['Bucket' => $this->bucket];
+        $options = array('Bucket' => $this->bucket);
         if ((string) $prefix != '') {
             $options['Prefix'] = $this->computePath($prefix);
         } elseif (!empty($this->options['directory'])) {
             $options['Prefix'] = $this->options['directory'];
         }
 
-        $keys = [];
+        $keys = array();
         $iter = $this->service->getIterator('ListObjects', $options);
         foreach ($iter as $file) {
-            $keys[] = $this->computeKey($file['Key']);
+            $keys[] = $file['Key'];
         }
 
         return $keys;
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function delete($key)
     {
         try {
             $this->service->deleteObject($this->getOptions($key));
-
             return true;
         } catch (\Exception $e) {
             return false;
@@ -257,22 +208,17 @@ class AwsS3 implements Adapter, MetadataSupporter, ListKeysAware, SizeCalculator
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function isDirectory($key)
     {
-        $result = $this->service->listObjects([
-            'Bucket' => $this->bucket,
-            'Prefix' => rtrim($this->computePath($key), '/') . '/',
-            'MaxKeys' => 1,
-        ]);
-        if (isset($result['Contents'])) {
-            if (is_array($result['Contents']) || $result['Contents'] instanceof \Countable) {
-                return count($result['Contents']) > 0;
-            }
-        }
+        $result = $this->service->listObjects(array(
+            'Bucket'  => $this->bucket,
+            'Prefix'  => rtrim($this->computePath($key), '/') . '/',
+            'MaxKeys' => 1
+        ));
 
-        return false;
+        return count($result['Contents']) > 0;
     }
 
     /**
@@ -282,7 +228,7 @@ class AwsS3 implements Adapter, MetadataSupporter, ListKeysAware, SizeCalculator
      * client object.
      *
      * @throws \RuntimeException if the bucket does not exists or could not be
-     *                           created
+     *                          created
      */
     protected function ensureBucketExists()
     {
@@ -301,22 +247,24 @@ class AwsS3 implements Adapter, MetadataSupporter, ListKeysAware, SizeCalculator
             ));
         }
 
-        $this->service->createBucket([
-            'Bucket' => $this->bucket,
-            'LocationConstraint' => $this->service->getRegion(),
-        ]);
+        $options = array('Bucket' => $this->bucket);
+        if ($this->service->getRegion() != 'us-east-1') {
+            $options['LocationConstraint'] = $this->service->getRegion();
+        }
+
+        $this->service->createBucket($options);
         $this->bucketExists = true;
 
         return true;
     }
 
-    protected function getOptions($key, array $options = [])
+    protected function getOptions($key, array $options = array())
     {
         $options['ACL'] = $this->options['acl'];
         $options['Bucket'] = $this->bucket;
         $options['Key'] = $this->computePath($key);
 
-        /*
+        /**
          * Merge global options for adapter, which are set in the constructor, with metadata.
          * Metadata will override global options.
          */
@@ -332,44 +280,5 @@ class AwsS3 implements Adapter, MetadataSupporter, ListKeysAware, SizeCalculator
         }
 
         return sprintf('%s/%s', $this->options['directory'], $key);
-    }
-
-    /**
-     * Computes the key from the specified path.
-     *
-     * @param string $path
-     *
-     * return string
-     */
-    protected function computeKey($path)
-    {
-        return ltrim(substr($path, strlen($this->options['directory'])), '/');
-    }
-
-    /**
-     * @param string $content
-     *
-     * @return string
-     */
-    private function guessContentType($content)
-    {
-        $fileInfo = new \finfo(FILEINFO_MIME_TYPE);
-
-        if (is_resource($content)) {
-            return $fileInfo->file(stream_get_meta_data($content)['uri']);
-        }
-
-        return $fileInfo->buffer($content);
-    }
-
-    public function mimeType($key)
-    {
-        try {
-            $result = $this->service->headObject($this->getOptions($key));
-
-            return ($result['ContentType']);
-        } catch (\Exception $e) {
-            return false;
-        }
     }
 }

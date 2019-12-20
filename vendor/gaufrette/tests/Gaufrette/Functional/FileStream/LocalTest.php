@@ -9,51 +9,23 @@ class LocalTest extends FunctionalTestCase
 {
     protected $directory;
 
-    protected function setUp()
+    public function setUp()
     {
-        $this->directory = __DIR__ . DIRECTORY_SEPARATOR . 'filesystem';
-        @mkdir($this->directory . DIRECTORY_SEPARATOR . 'subdir', 0777, true);
-        umask(0002);
-        $this->filesystem = new Filesystem(new LocalAdapter($this->directory, true, 0770));
+        $this->directory = __DIR__.DIRECTORY_SEPARATOR.'filesystem';
+        @mkdir($this->directory);
+        @chmod($this->directory, 0777);
+        $this->filesystem = new Filesystem(new LocalAdapter($this->directory, true));
 
         $this->registerLocalFilesystemInStream();
     }
 
-    /**
-     * @test
-     */
-    public function shouldChmodDirectory()
+    public function tearDown()
     {
-        if (strtolower(substr(PHP_OS, 0, 3)) === 'win') {
-            $this->markTestSkipped('Chmod and umask are not available on Windows.');
+        if (is_file($file = $this->directory.DIRECTORY_SEPARATOR.'test.txt')) {
+            @unlink($file);
         }
-
-        $r = fopen('gaufrette://filestream/foo/bar', 'a+');
-        fclose($r);
-
-        $perms = fileperms($this->directory . '/foo/');
-        $this->assertEquals('0770', substr(sprintf('%o', $perms), -4));
-    }
-
-    protected function tearDown()
-    {
-        $adapter = $this->filesystem->getAdapter();
-
-        foreach ($this->filesystem->keys() as $key) {
-            $adapter->delete($key);
+        if (is_dir($this->directory)) {
+            @rmdir($this->directory);
         }
-
-        $this->filesystem = null;
-
-        rmdir($this->directory);
-    }
-
-    /**
-     * @test
-     */
-    public function shouldSupportsDirectory()
-    {
-        $this->assertFileExists('gaufrette://filestream/subdir');
-        $this->assertDirectoryExists('gaufrette://filestream/subdir');
     }
 }

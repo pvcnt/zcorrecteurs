@@ -32,13 +32,8 @@ class MainConfiguration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder('knp_gaufrette');
-        if (method_exists($treeBuilder, 'getRootNode')) {
-            $rootNode = $treeBuilder->getRootNode();
-        } else {
-            // BC for symfony/config < 4.2
-            $rootNode = $treeBuilder->root('knp_gaufrette');
-        }
+        $treeBuilder = new TreeBuilder();
+        $rootNode = $treeBuilder->root('knp_gaufrette');
 
         $this->addAdaptersSection($rootNode, $this->factories);
         $this->addFilesystemsSection($rootNode);
@@ -97,7 +92,7 @@ class MainConfiguration implements ConfigurationInterface
             ->children()
                 ->arrayNode('stream_wrapper')
                     ->children()
-                        ->scalarNode('protocol')->defaultValue('gaufrette')->treatNullLike('gaufrette')->end()
+                        ->scalarNode('protocol')->defaultValue('gaufrette')->end()
                         ->arrayNode('filesystems')
                             ->beforeNormalization()
                                 ->ifTrue(function ($array) {
