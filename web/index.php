@@ -31,9 +31,6 @@ if (in_array(BASEPATH, array('/home/web/zcorrecteurs.fr/prod', '/home/web/zcorre
 {
 	$kernel = new AppKernel('prod', false);
 	$kernel->loadClassCache();
-	
-	//require_once __DIR__.'/../app/AppCache.php';
-	//$kernel = new AppCache($kernel);
 }
 elseif (strpos(BASEPATH, '/home/web/zcorrecteurs.fr/dev') === 0)
 {
