@@ -112,15 +112,6 @@
                                         <?php if ($candidatures > 0) echo '(' . $candidatures . ')</strong>'; ?>
                                     </a>
                                 </div>
-                            <?php } if (verifier('zcorriger') || verifier('voir_tutos_attente')) {
-                                $tutos = \Container::getService('zco_admin.manager')->get('zcorrection'); ?>
-                                <div class="admin_lien">
-                                    <a href="/zcorrection/"<?php if ($tutos > 0) echo ' title="' . $tutos . ' tutoriel' . pluriel($tutos) . ' en attente"'; ?>>
-                                        <img src="/pix.gif" class="fff pencil_green" alt="" />
-                                        <?php if ($tutos > 0) echo '<strong>'; ?>zCorrection
-                                        <?php if ($tutos > 0) echo '(' . $tutos . ')</strong>'; ?>
-                                    </a>
-                                </div>
                         <?php } ?>
                         </div>
                     <?php } ?>

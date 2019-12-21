@@ -18,7 +18,6 @@
 
 # Toutes les images uploadées
 /web/uploads/*
-/web/tutos/*
 /lib/geoip/GeoLiteCity.dat
 /web/google*.html
 /web/LL_*.xml

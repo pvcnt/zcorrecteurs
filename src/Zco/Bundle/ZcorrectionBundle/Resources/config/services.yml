@@ -1,7 +1,0 @@
-services:
-    zco_zcorrection.event_listener:
-        class: Zco\Bundle\ZcorrectionBundle\EventListener\EventListener
-        calls:
-            - [setContainer, [@service_container]]
-        tags:
-            - { name: kernel.event_subscriber }

@@ -55,7 +55,6 @@ class IndexController extends Controller
         $factory = new MenuFactory();
         $menu    = $factory->createItem('Administration');
         $menu->addChild('Contenu');
-        $menu->addChild('zCorrection');
         $menu->addChild('Communauté');
         $menu->addChild('Gestion technique');
         $menu->addChild('Informations');

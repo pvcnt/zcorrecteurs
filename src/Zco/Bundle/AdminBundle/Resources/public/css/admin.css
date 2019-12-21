@@ -113,11 +113,6 @@ div.bloc_textes .admin_icone
 	background: url(../img/textes.png) no-repeat;
 }
 
-div.bloc_statistiques_de_zcorrection .admin_icone
-{
-	background: url(../img/stats_zco.png) no-repeat;
-}
-
 div.bloc_statistiques_generales .admin_icone
 {
 	background: url(../img/stats_generales.png) no-repeat;

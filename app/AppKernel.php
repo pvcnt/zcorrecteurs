@@ -73,7 +73,6 @@ class AppKernel extends Kernel
             new Zco\Bundle\SondagesBundle\ZcoSondagesBundle(),
             new Zco\Bundle\StatistiquesBundle\ZcoStatistiquesBundle(),
             new Zco\Bundle\TagsBundle\ZcoTagsBundle(),
-            new Zco\Bundle\ZcorrectionBundle\ZcoZcorrectionBundle(),
             new Zco\Bundle\FileBundle\ZcoFileBundle(),
         );
 

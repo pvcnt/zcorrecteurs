@@ -87,26 +87,6 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 			'credentials' => 'stats_blog_flux', 
 			'uri' => '/statistiques/blog-flux.html',
 		));
-		
-		$tab = $event
-	        ->getRoot()
-	        ->getChild('Informations')
-	        ->getChild('Statistiques d\'activité');
-        
-		$tab->addChild('Statistiques de zCorrection', array(
-			'credentials' => 'stats_prive', 
-			'uri' => '/statistiques/zcorrection.html',
-		));
-	
-		$tab->addChild('Mes statistiques de zCorrection', array(
-			'credentials' => 'stats_zcorrecteur', 
-			'uri' => '/statistiques/zcorrecteur.html',
-		));
-	
-		$tab->addChild('Rapport d\'activité des zCorrecteurs', array(
-			'credentials' => 'voir_rapport_zcorr', 
-			'uri' => '/statistiques/activite.html',
-		));
 	}
 
 	/**
@@ -116,11 +96,6 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 	 */
 	public function onDailyCron(CronEvent $event)
 	{
-		//Mise en cache des statistiques de zCorrection.
-		$this->container->get('zco_core.cache')->delete('statistiques_zcorrection');
-		include(__DIR__.'/../modeles/statistiques.php');
-		RecupStatistiques();
-		
 		//Statistiques Alexa.
 		include(__DIR__.'/../modeles/alexa.php');
 		SaveAlexaRanks();

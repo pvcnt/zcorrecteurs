@@ -144,12 +144,6 @@ function CompterTachesAlertesMP()
 	return $stmt->fetchColumn();
 }
 
-function CompterTachesZcorrection()
-{
-	include_once(BASEPATH.'/src/Zco/Bundle/ZcorrectionBundle/modeles/soumissions.php');
-	return CompterSoumissions();
-}
-
 function CompterTachesDemandes()
 {
 	include_once(BASEPATH.'/src/Zco/Bundle/EvolutionBundle/modeles/tickets.php');

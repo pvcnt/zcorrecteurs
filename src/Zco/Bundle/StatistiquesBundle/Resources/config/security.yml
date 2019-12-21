@@ -1,5 +1,3 @@
-zcorrection:
-    credentials:  [stats_prive]
 inscription:
     credentials:  [stats_inscription]
 activite:

@@ -218,12 +218,7 @@ if($id != 'texte'){
 			<input type="submit" name="xhr" id="lancer_apercu_<?php echo $id; ?>" value="Aperçu final" onclick="full_preview('<?php echo $id; ?>', 'prev_final_<?php echo $id; ?>'); return false;" />
 		</p>
 		<div id="prev_final_<?php echo $id; ?>" class="code_parse_final">
-			<?php
-			if($app->getRequest()->attributes->get('_module') == 'zcorrection')
-				echo $view['messages']->parseSdz($texte);
-			else
-				echo $view['messages']->parse($texte);
-			?>
+			<?php echo $view['messages']->parse($texte); ?>
 		</div>
 	</div>
 

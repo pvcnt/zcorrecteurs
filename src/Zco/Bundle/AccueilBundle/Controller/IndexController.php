@@ -128,10 +128,6 @@ class IndexController extends Controller
 			'futur' => false,
 		), -1);
 
-		// zCorrection
-		$vars['StatistiquesZcorrection'] = RecupStatistiques();
-		$vars['NombreTutosAttente']      = $this->get('zco_admin.manager')->get('zcorrection');
-
 		// Dictées
 		$vars['DicteesAccueil']       = array_slice(DicteesAccueil(), 0, 2);
 		$vars['DicteeHasard']         = DicteeHasard();
