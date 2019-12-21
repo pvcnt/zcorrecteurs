@@ -21,6 +21,7 @@
 
 namespace Zco\Bundle\ParserBundle\Feature;
 
+use Highlight\Highlighter;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zco\Bundle\ParserBundle\ParserEvents;
 use Zco\Bundle\ParserBundle\Event\FilterContentEvent;
@@ -517,19 +518,7 @@ class CoreFeature implements EventSubscriberInterface
 	 */
 	private static function colorerCode_c($code, $langage, $premiereLigne, $minicode)
 	{
-		include_once(BASEPATH.'/vendor/xmlrpc/xmlrpc.inc');
-
-		$client = new \xmlrpc_client('/', 'localhost', 21287);
-		$client->return_type = 'phpvals';
-		$client->request_charset_encoding = 'UTF-8';
-			$requete = new \xmlrpcmsg('colorer_code', array(
-			new \xmlrpcval($code, 'string'),
-			new \xmlrpcval($langage, 'string'),
-			new \xmlrpcval($premiereLigne, 'string'),
-			new \xmlrpcval(($minicode ? 'True' : 'False'), 'string')
-		));
-		$reponse = $client->send($requete);
-		return $reponse->faultCode() == 0 ? $reponse->value() : false;
+        return (new Highlighter())->highlight($langage, $code)->value;
 	}
 
 	/**
