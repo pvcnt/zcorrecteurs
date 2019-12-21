@@ -1,7 +1,11 @@
 <?php
 
-function fromEnv($name, $default) {
-    return $_SERVER[$name] ?? $default;
+if (!function_exists('fromEnv')) {
+    // Évite de redéclarer la fonction si le fichier est inclus plusieurs fois.
+    function fromEnv($name, $default)
+    {
+        return $_SERVER[$name] ?? $default;
+    }
 }
 
 // Configuration de la connexion à la base de données
