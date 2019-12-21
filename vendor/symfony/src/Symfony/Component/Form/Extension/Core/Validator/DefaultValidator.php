@@ -32,7 +32,7 @@ class DefaultValidator implements FormValidatorInterface
 
         if ($form->isRoot() && isset($_SERVER['CONTENT_LENGTH'])) {
             $length = (int) $_SERVER['CONTENT_LENGTH'];
-            $max = trim(ini_get('post_max_size'));
+            $max = (int)trim(ini_get('post_max_size'));
 
             if ('' !== $max) {
                 switch (strtolower(substr($max, -1))) {
