@@ -101,9 +101,9 @@ class AppKernel extends Kernel
      */
     public function getCacheDir()
     {
-        $cacheDir = '/var/cache/zcorrecteurs/' . $this->environment;
-        
-        return is_dir($cacheDir) ? $cacheDir : parent::getCacheDir();
+        return is_dir('/var/cache/zcorrecteurs')
+            ? '/var/cache/zcorrecteurs/' . $this->environment
+            : parent::getCacheDir();
     }
 
 
@@ -112,9 +112,9 @@ class AppKernel extends Kernel
      */
     public function getLogDir()
     {
-        $logDir = '/var/logs/zcorrecteurs';
-
-        return is_dir($logDir) ? $logDir : parent::getLogDir();
+        return is_dir('/var/logs/zcorrecteurs')
+            ? '/var/logs/zcorrecteurs'
+            : parent::getLogDir();
     }
 
     /**
