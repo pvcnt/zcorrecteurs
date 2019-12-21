@@ -86,11 +86,7 @@ class InfoCommand extends ContainerAwareCommand
 
 		if (!$found)
 		{
-			throw new \LogicException(
-				'You do not have any entity for any of your bundles. You must create '.
-				'model definition schema in your Resources/config/doctrine/ directory '.
-				'and the generate models with the doctrine:models command.'
-			);
+			throw new \LogicException('You do not have any entity for any of your bundles.');
 		}
 		
 		return 0;

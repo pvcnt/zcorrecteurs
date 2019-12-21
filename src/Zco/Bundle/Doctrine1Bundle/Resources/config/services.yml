@@ -1,14 +1,4 @@
 services:
-    zco_doctrine1.models_builder:
-        class: Zco\Bundle\Doctrine1Bundle\Builder\ModelsBuilder
-        arguments: [@kernel]
-    
-    zco_doctrine1.models_cache_warmer:
-        class: Zco\Bundle\Doctrine1Bundle\CacheWarmer\ModelsCacheWarmer
-        arguments: [@zco_doctrine1.models_builder]
-        tags:
-            - { name: kernel.cache_warmer }
-    
     zco_doctrine1.adapter.pdo:
         class:     Zco\Bundle\Doctrine1Bundle\Adapter\PDOAdapter
         arguments: ['mysql:dbname=%database.base%;host=%database.host%', '%database.username%', '%database.password%']
@@ -39,8 +29,3 @@ services:
     zco_doctrine1.migrations.configuration:
         class: Zco\Bundle\Doctrine1Bundle\Migrations\Configuration\Configuration
         arguments: [%kernel.root_dir%/../data/migrations, @service_container]
-
-#    zco_doctrine1.orm.validator.unique:
-#        class: Zco\Bundle\Doctrine1Bundle\Validator\Constraints\UniqueEntityValidator
-#        tags:
-#            - { name: validator.constraint_validator, alias: zco_doctrine1.orm.validator.unique }

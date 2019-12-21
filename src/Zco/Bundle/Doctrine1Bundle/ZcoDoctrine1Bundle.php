@@ -70,18 +70,8 @@ class ZcoDoctrine1Bundle extends Bundle
 		
 		//Les modèles générés sont cherchés en cache, les autres sont cherchés 
 		//directement dans les bundles.
-		$dir = $this->container->getParameter('kernel.cache_dir').'/zco_doctrine1/generated';
-		spl_autoload_register(function($className) use($directories, $dir)
+		spl_autoload_register(function($className) use($directories)
 		{
-		    if (strpos($className, 'Base') === 0)
-		    {
-		        if (is_file($file = $dir.'/'.$className.'.class.php'))
-		        {
-		            include($file);
-		            return true;
-		        }
-		    }
-		    
 		    foreach ($directories as $dir)
 		    {
 		        if (is_file($file = $dir.'/'.$className.'.class.php'))

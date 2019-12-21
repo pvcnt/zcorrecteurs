@@ -1,8 +1,0 @@
-Node:
-    actAs:
-        Timestampable:
-            created: { name: date }
-            updated: { name: edition_date }
-    columns:
-        id:       { type: integer, primary: true, autoincrement: true }
-        title:    { type: string(255), notnull: true }
