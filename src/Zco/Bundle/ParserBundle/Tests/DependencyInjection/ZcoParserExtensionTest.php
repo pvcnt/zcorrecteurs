@@ -34,7 +34,6 @@ class ZcoParserExtensionTest extends \PHPUnit_Framework_TestCase
 
 		$loader->load(array(), $container);
 		$this->assertTrue($container->hasDefinition('zco_parser.parser'));
-		$this->assertTrue($container->hasDefinition('zco_parser.parser.zcode'));
 		$this->assertTrue($container->hasDefinition('zco_parser.parser.sdz'));
 		$this->assertTrue($container->hasDefinition('zco_parser.feature.core'));
 		$this->assertTrue($container->hasDefinition('zco_parser.feature.cache'));

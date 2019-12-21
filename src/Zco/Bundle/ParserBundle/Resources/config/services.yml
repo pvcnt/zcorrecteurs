@@ -1,17 +1,7 @@
-parameters:
-    zco_parser.default_parser: zcode
-
 services:
     zco_parser.parser:
-        class: Zco\Bundle\ParserBundle\Parser\DelegatingParser
-        arguments: ['%zco_parser.default_parser%', {zcode: '@zco_parser.parser.zcode', sdz: '@zco_parser.parser.sdz'}]
-    
-    zco_parser.parser.zcode:
         class: Zco\Bundle\ParserBundle\Parser\zCodeParser
         arguments: [@event_dispatcher]
-    
-    zco_parser.parser.sdz:
-        class: Zco\Bundle\ParserBundle\Parser\SdzParser
     
     zco_parser.feature.cache:
         class: Zco\Bundle\ParserBundle\Feature\CacheFeature

@@ -155,20 +155,6 @@ class MessagesHelper extends Helper
 	    
 		return $this->parser->parse($texte, $options);
 	}
-	
-	/**
-	 * Parse un message écrit dans le zCode du SdZ pour l'affichage.
-	 *
-	 * @param  string $texte Le texte à parser
-	 * @return string Code HTML prêt à l'affichage
-	 */
-	public function parseSdz($texte)
-	{
-	    $this->resourceManager->requireResource(
-	        '@ZcoCoreBundle/Resources/public/css/zcode.css'
-	    );
-		return $this->parser->with('sdz')->parse($texte);
-	}
 
 	/**
 	 * Parse de façon automatique les liens dans un texte.
