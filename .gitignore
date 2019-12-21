@@ -4,8 +4,6 @@
 /app/cache/*
 /app/logs/*
 /build/
-/app/config/config_dev.yml
-/app/config/config_prod.yml
 /vendor
 
 # Fichiers de configuration
