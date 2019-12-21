@@ -163,8 +163,8 @@ function extrait($texte, $taille = 50)
  */
 function diff($old, $new, $raw = false)
 {
-	include_once(BASEPATH.'/vendor/diff/diff.php');
-	include_once(BASEPATH.'/vendor/diff/htmlformatter.php');
+	include_once(BASEPATH.'/lib/diff/diff.php');
+	include_once(BASEPATH.'/lib/diff/htmlformatter.php');
 
 	$old = explode("\n", $raw ? $old : strip_tags($old));
 	$new = explode("\n", $raw ? $new : strip_tags($new));
