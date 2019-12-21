@@ -16,7 +16,7 @@
         ]
     },
     "require": {
-        "php": ">=7.1.1",
+        "php": ">=7.2.0",
         "ext-json": "*",
         "ext-dom": "*",
         "ext-xsl": "*",
@@ -25,11 +25,11 @@
         "ext-gd": "*",
         "ext-pdo": "*",
         "ext-tokenizer": "*",
-        "imagine/imagine": "0.4.1",
-        "monolog/monolog": "1.0.2",
-        "knplabs/gaufrette": "0.1.7",
-        "swiftmailer/swiftmailer": "4.1.8",
-        "doctrine/dbal": "2.1.6",
-        "sentry/sdk": "2.0.4"
+        "imagine/imagine": "^0.4.1",
+        "monolog/monolog": "^1.3.0",
+        "knplabs/gaufrette": "^0.1.7",
+        "swiftmailer/swiftmailer": "^4.1.8",
+        "doctrine/dbal": "^2.1.6",
+        "sentry/sdk": "^2.0.4"
     }
 }
