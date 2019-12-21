@@ -32,17 +32,21 @@ class DefaultValidator implements FormValidatorInterface
 
         if ($form->isRoot() && isset($_SERVER['CONTENT_LENGTH'])) {
             $length = (int) $_SERVER['CONTENT_LENGTH'];
-            $max = (int)trim(ini_get('post_max_size'));
+            $max = trim(ini_get('post_max_size'));
 
             if ('' !== $max) {
+                $multiplier = 1;
                 switch (strtolower(substr($max, -1))) {
                     // The 'G' modifier is available since PHP 5.1.0
                     case 'g':
-                        $max *= 1024;
+                        $multiplier *= 1024;
                     case 'm':
-                        $max *= 1024;
+                        $multiplier *= 1024;
                     case 'k':
-                        $max *= 1024;
+                        $multiplier *= 1024;
+                }
+                if ($multiplier > 1) {
+                    $max = ((int) $max) * $multiplier;
                 }
 
                 if ($length > $max) {
