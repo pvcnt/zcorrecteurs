@@ -1,7 +1,7 @@
 <?php
 
 function fromEnv($name, $default) {
-    return $_SERVER[$name] ?? $_SERVER['REDIRECT_' . $name] ?? $default;
+    return $_SERVER[$name] ?? $default;
 }
 
 // Configuration de la connexion à la base de données

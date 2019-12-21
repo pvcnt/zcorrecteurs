@@ -25,23 +25,42 @@ define('APP_PATH', BASEPATH.'/app');
 require_once __DIR__.'/../app/autoload.php';
 require_once __DIR__.'/../app/AppKernel.php';
 
+// La directive SetEnv d'Apache semble ajouter un préfixe REDIRECT_ aux variables.
+// On le retire ici, car c'est assez peu pratique...
+foreach ($_SERVER as $key => $value) {
+    if (strpos($key, 'REDIRECT_') === 0) {
+        $_SERVER[substr($key, 8)] = $value;
+        unset($_SERVER[$key]);
+    }
+}
+
+// Détermine l'environnement courant.
+if (in_array(BASEPATH, array('/home/web/zcorrecteurs.fr/prod', '/home/web/zcorrecteurs.fr/test'))) {
+    $environment = 'prod';
+    $debug = false;
+    $local = false;
+} elseif (strpos(BASEPATH, '/home/web/zcorrecteurs.fr/dev') === 0) {
+    $environment = 'dev';
+    $debug = false;
+    $local = false;
+} else {
+    $environment ='dev';
+    $debug = true;
+    $local = true;
+}
+
+// Initialise Sentry aussi tôt que possible.
+if (isset($_SERVER['SENTRY_DSN']) && !$local) {
+    Sentry\init([
+        'dsn' => $_SERVER['SENTRY_DSN'],
+        'environment' => $environment,
+    ]);
+}
+
 use Symfony\Component\HttpFoundation\Request;
 
-if (in_array(BASEPATH, array('/home/web/zcorrecteurs.fr/prod', '/home/web/zcorrecteurs.fr/test')))
-{
-	$kernel = new AppKernel('prod', false);
-	$kernel->loadClassCache();
-}
-elseif (strpos(BASEPATH, '/home/web/zcorrecteurs.fr/dev') === 0)
-{
-	$kernel = new AppKernel('dev', false);
-	$kernel->loadClassCache();
-}
-else
-{
-	$kernel = new AppKernel('dev', true);
-	$kernel->loadClassCache();
-}
+$kernel = new AppKernel($environment, $debug);
+$kernel->loadClassCache();
 
 $request = Request::createFromGlobals();
 $response = $kernel->handle($request);
