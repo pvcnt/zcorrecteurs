@@ -57,7 +57,8 @@
 			<td class="infos_membre">
 			<?php if(!empty($valeur['avatar_auteur'])){ ?>
 				<a href="/membres/profil-<?php echo $valeur['id_auteur']; ?>-<?php echo rewrite($valeur['pseudo_auteur']); ?>.html"><img src="/uploads/avatars/<?php echo $valeur['avatar_auteur']; ?>" alt="Avatar" /></a><br />
-				<?php echo $view->get('messages')->afficherGroupe($valeur) ?><br/>
+            <?php } ?>
+            <?php echo $view->get('messages')->afficherGroupe($valeur) ?><br/>
 			<?php if(verifier('sanctionner')){ ?>
 				<a href="<?php echo $view['router']->generate('zco_user_admin_punish', array('id' => htmlspecialchars($valeur['id_auteur']))) ?>">
 					Sanctionner
