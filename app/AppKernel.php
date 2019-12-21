@@ -112,8 +112,8 @@ class AppKernel extends Kernel
      */
     public function getLogDir()
     {
-        return is_dir('/var/logs/zcorrecteurs')
-            ? '/var/logs/zcorrecteurs'
+        return is_dir('/var/log/zcorrecteurs')
+            ? '/var/log/zcorrecteurs'
             : parent::getLogDir();
     }
 
