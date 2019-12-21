@@ -1,0 +1,52 @@
+[symfony]
+    git=http://github.com/symfony/symfony.git
+    version=v2.0.12
+
+[twig]
+    git=http://github.com/fabpot/Twig.git
+    version=v1.6.2
+
+[doctrine]
+    git=http://github.com/doctrine/doctrine2.git
+    version=2.1.6
+
+[assetic]
+    git=http://github.com/kriswallsmith/assetic.git
+    version=v1.0.3
+
+[metadata]
+    git=http://github.com/schmittjoh/metadata.git
+    version=1.0.0
+
+[AsseticBundle]
+    git=http://github.com/symfony/AsseticBundle.git
+    target=/bundles/Symfony/Bundle/AsseticBundle
+    version=v1.0.1
+
+[KnpMenu]
+    git=https://github.com/KnpLabs/KnpMenu.git
+    version=v1.1.1
+
+[AvalancheImagineBundle]
+    git=http://github.com/avalanche123/AvalancheImagineBundle.git
+    target=bundles/Avalanche/Bundle/ImagineBundle
+    version=v2.1.2
+
+[KnpGaufretteBundle]
+    git=http://github.com/KnpLabs/KnpGaufretteBundle.git
+    target=/bundles/Knp/Bundle/GaufretteBundle
+    version=0.2.0
+
+[FOSJsRoutingBundle]
+    git=http://github.com/FriendsOfSymfony/FOSJsRoutingBundle.git
+    target=/bundles/FOS/JsRoutingBundle
+    version=1.3.0
+
+[KnpPaginatorBundle]
+    git=http://github.com/KnpLabs/KnpPaginatorBundle.git
+    target=bundles/Knp/Bundle/PaginatorBundle
+    version=6d93d89a3c913155d9d1778db4232db0e4d6f3e3
+
+[knp-components]
+    git=https://github.com/KnpLabs/knp-components.git
+    target=/knp-components

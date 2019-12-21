@@ -1,0 +1,34 @@
+{
+    "name": "zcorrecteurs/zcorrecteurs",
+    "type": "project",
+    "license": "AGPL",
+    "autoload": {
+        "psr-0": {
+            "Zco\\": "src",
+            "": "src/kernel"
+        },
+        "files": [
+            "app/config/constants.php",
+            "app/lib/functions.php",
+            "app/lib/zCorrecteurs.php",
+            "src/kernel/Zingle.php",
+            "src/Zco/Component/Util/utils.php"
+        ]
+    },
+    "require": {
+        "php": ">=7.1.1",
+        "ext-json": "*",
+        "ext-dom": "*",
+        "ext-xsl": "*",
+        "ext-iconv": "*",
+        "ext-fileinfo": "*",
+        "ext-gd": "*",
+        "ext-pdo": "*",
+        "ext-tokenizer": "*",
+        "imagine/imagine": "0.4.1",
+        "monolog/monolog": "1.0.2",
+        "knplabs/gaufrette": "0.1.7",
+        "swiftmailer/swiftmailer": "4.1.8",
+        "doctrine/dbal": "2.1.6"
+    }
+}
