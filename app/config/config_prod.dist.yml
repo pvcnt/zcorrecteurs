@@ -3,10 +3,6 @@ imports:
 
 monolog:
     handlers:
-        # Décommenter pour activer Sentry.
-        #sentry:
-        #    type: service
-        #    id:   zco_sentry.monolog.handler
         main:
             type:         fingers_crossed
             action_level: error
@@ -15,9 +11,3 @@ monolog:
             type:  stream
             path:  %kernel.logs_dir%/%kernel.environment%.log
             level: info
-
-# Décommenter pour activer Sentry.
-#zco_sentry:
-#    dsn: ''
-#    resque: zco-sentry
-#    auto_log_stacks: false

@@ -38,19 +38,16 @@ foreach ($_SERVER as $key => $value) {
 if (in_array(BASEPATH, array('/home/web/zcorrecteurs.fr/prod', '/home/web/zcorrecteurs.fr/test'))) {
     $environment = 'prod';
     $debug = false;
-    $local = false;
 } elseif (strpos(BASEPATH, '/home/web/zcorrecteurs.fr/dev') === 0) {
     $environment = 'dev';
     $debug = false;
-    $local = false;
 } else {
     $environment ='dev';
     $debug = true;
-    $local = true;
 }
 
 // Initialise Sentry aussi tôt que possible.
-if (isset($_SERVER['SENTRY_DSN']) && !$local) {
+if (isset($_SERVER['SENTRY_DSN'])) {
     Sentry\init([
         'dsn' => $_SERVER['SENTRY_DSN'],
         'environment' => $environment,
