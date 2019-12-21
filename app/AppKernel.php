@@ -97,8 +97,29 @@ class AppKernel extends Kernel
     }
 
     /**
-     * Gère le passage automatique vers le site de tests si celui-ci est 
-     * ouvert et que l'utilisateur en a émis le souhait. Rien d'automatisé 
+     * {@inheritdoc}
+     */
+    public function getCacheDir()
+    {
+        $cacheDir = '/var/cache/zcorrecteurs/' . $this->environment;
+        
+        return is_dir($cacheDir) ? $cacheDir : parent::getCacheDir();
+    }
+
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLogDir()
+    {
+        $logDir = '/var/logs/zcorrecteurs';
+
+        return is_dir($logDir) ? $logDir : parent::getLogDir();
+    }
+
+    /**
+     * Gère le passage automatique vers le site de tests si celui-ci est
+     * ouvert et que l'utilisateur en a émis le souhait. Rien d'automatisé
      * n'est en place, il faut (dé)commenter cette section de code.
      */
     /* public function onKernelRequest(GetResponseEvent $event)
