@@ -44,13 +44,6 @@
 	</fieldset>
 
 	<fieldset>
-	   <legend>Ajouter une image <em>(facultatif)</em></legend>
-	   <label for="image_file">Fichier : </label> <input type="file" name="image_file" id="image_file" /> ou<br />
-	   <label for="image_url">URL : </label> <input type="text" name="image_url" id="image_url" /><br />
-	   <em>L'image sera transformée en un .png d'une dimension de 80x80 pixels.</em>
-	</fieldset>
-
-	<fieldset>
 		<legend>Paramétrage des droits</legend>
 		<label for="cat">Copier les droits d'une catégorie : </label>
 		<select name="cat" id="cat">

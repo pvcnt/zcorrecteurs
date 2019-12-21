@@ -65,13 +65,12 @@ function AjouterCategorie()
 	$gauche = !empty($InfosParent) ? $InfosParent['cat_droite'] : 1;
 	$droite = !empty($InfosParent) ? $InfosParent['cat_droite'] + 1 : 2;
 	$type = isset($_POST['type']) && in_array($_POST['type'], array(MAP_FIRST, MAP_ALL)) ? $_POST['type'] : MAP_FIRST;
-	$image = (!empty($_FILES['image_file']['name']) || !empty($_POST['image_url'])) ? 1 : 0;
 
 	$stmt = $dbh->prepare("INSERT INTO zcov2_categories(cat_nom, cat_description, " .
 			"cat_url, cat_gauche, cat_droite, cat_niveau, cat_reglement, cat_map, " .
-			"cat_map_type, cat_image, cat_redirection, cat_keywords, cat_disponible_ciblage, cat_ciblage_actions) " .
+			"cat_map_type, cat_redirection, cat_keywords, cat_disponible_ciblage, cat_ciblage_actions) " .
 			"VALUES(:nom, :desc, :url, :gauche, :droite, :niveau, :reglement, " .
-			":map, :type_map, :cat_image, :url_redir, :keywords, :ciblage, :ciblage_actions)");
+			":map, :type_map, :url_redir, :keywords, :ciblage, :ciblage_actions)");
 	$stmt->bindParam(':nom', $_POST['nom']);
 	$stmt->bindParam(':url', $_POST['url']);
 	$stmt->bindParam(':url_redir', $_POST['url_redir']);
@@ -82,7 +81,6 @@ function AjouterCategorie()
 	$stmt->bindParam(':reglement', $_POST['texte']);
 	$stmt->bindParam(':map', $_POST['map']);
 	$stmt->bindParam(':type_map', $type);
-	$stmt->bindParam(':cat_image', $image);
 	$stmt->bindParam(':keywords', $_POST['keywords']);
 	$stmt->bindValue(':ciblage', isset($_POST['disponible_ciblage']) ? 1 : 0);
 	$stmt->bindValue(':ciblage_actions', isset($_POST['ciblage_actions']) ? 1 : 0);
@@ -90,26 +88,6 @@ function AjouterCategorie()
 	$stmt->execute();
 	$stmt->closeCursor();
 	$id_cat = $dbh->lastInsertId();
-
-	// Création de l'image si besoin
-	if ($image)
-	{
-	    $upload_type = !empty($_POST['image_url']) ? File_Upload::URL : File_Upload::FILE;
-	    $nom_fichier = !empty($_POST['image_url']) ? $_POST['image_url'] : $_FILES['image_file'];
-	    $extension = !empty($_POST['image_url']) ? mb_strtolower(pathinfo($_POST['image_url'], PATHINFO_EXTENSION)) : mb_strtolower(pathinfo($_FILES['image_file']['name'], PATHINFO_EXTENSION));
-		
-	    File_Upload::Fichier($nom_fichier, BASEPATH.'/web/uploads/categories/', $id_cat.'.'.$extension, $upload_type);
-		
-		\Container::getService('imagine')
-			->open(BASEPATH.'/web/uploads/categories/'.$id_cat.'.'.$extension)
-			->thumbnail(new \Imagine\Image\Box(80, 80))
-			->save(BASEPATH.'/web/uploads/categories/'.$id_cat.'.png');
-		
-	    if ($extension != 'png')
-		{
-	       @unlink(BASEPATH.'/web/uploads/categories/'.$id_cat.'.'.$extension);
-		}
-	}
 
 	//Insertion des droits si besoin
 	if(!empty($_POST['cat']) && is_numeric($_POST['cat']))
@@ -172,12 +150,11 @@ function EditerCategorie($id)
 
 	//Mise à jour du nom et de la description
 	$type = isset($_POST['type']) && in_array($_POST['type'], array(MAP_FIRST, MAP_ALL)) ? $_POST['type'] : MAP_FIRST;
-	$image = (($InfosCategorie['cat_image']==1 || !empty($_FILES['image_file']['name']) || !empty($_POST['image_url'])) && !isset($_POST['image_del'])) ? 1 : 0;
 
 	$stmt = $dbh->prepare("UPDATE zcov2_categories " .
 			"SET cat_nom = :nom, cat_description = :desc, cat_url = :url, " .
 			"cat_reglement = :reglement, cat_map = :map, " .
-			"cat_map_type = :type_map, cat_image = :image, " .
+			"cat_map_type = :type_map, " .
 			"cat_redirection = :url_redir, cat_keywords = :keywords, ".
 			"cat_disponible_ciblage = :ciblage, cat_ciblage_actions = :ciblage_actions " .
 			"WHERE cat_id = :id");
@@ -189,36 +166,11 @@ function EditerCategorie($id)
 	$stmt->bindParam(':reglement', $_POST['texte']);
 	$stmt->bindParam(':map', $_POST['map']);
 	$stmt->bindParam(':type_map', $type);
-	$stmt->bindParam(':image', $image);
 	$stmt->bindParam(':keywords', $_POST['keywords']);
 	$stmt->bindValue(':ciblage', isset($_POST['disponible_ciblage']) ? 1 : 0);
 	$stmt->bindValue(':ciblage_actions', isset($_POST['ciblage_actions']) ? 1 : 0);
 	$stmt->execute();
 	$stmt->closeCursor();
-
-	// Si on doit supprimer l'image
-	if($InfosCategorie['cat_image'] && !$image)
-	{
-	    @unlink(BASEPATH.'/web/uploads/categories/'.$id.'.png');
-	} // Sinon si on doit modifier l'image
-	else if(!empty($_POST['image_url']) || !empty($_FILES['image_file']['name']))
-	{
-	    $upload_type = !empty($_POST['image_url']) ? File_Upload::URL : File_Upload::FILE;
-	    $nom_fichier = !empty($_POST['image_url']) ? $_POST['image_url'] : $_FILES['image_file']['name'];
-	    $extension = !empty($_POST['image_url']) ? mb_strtolower(pathinfo($_POST['image_url'], PATHINFO_EXTENSION)) : mb_strtolower(pathinfo($_FILES['image_file']['name'], PATHINFO_EXTENSION));
-
-	    File_Upload::Fichier($nom_fichier, BASEPATH.'/web/uploads/categories/', $id.'.'.$extension, $upload_type);
-		
-		\Container::getService('imagine')
-			->open(BASEPATH.'/web/uploads/categories/'.$id.'.'.$extension)
-			->thumbnail(new \Imagine\Image\Box(80, 80))
-			->save(BASEPATH.'/web/uploads/categories/'.$id.'.png');
-		
-	    if ($extension != 'png')
-		{
-	       @unlink(BASEPATH.'/web/uploads/categories/'.$id.'.'.$extension);
-		}
-	}
 
 	//Si le parent change, on déplace la catégorie
 	if($ListerParents[count($ListerParents)-1]['cat_id'] != $_POST['parent'] && !empty($InfosNouveauParent))
@@ -390,7 +342,7 @@ function ListerCategories($verif_droits = false)
 			$stmt = $dbh->prepare("SELECT cat_id, cat_nom, cat_description, " .
 					"cat_gauche, cat_droite, cat_niveau, cat_url, cat_reglement, " .
 					"cat_redirection, cat_map, cat_map_type, cat_nb_elements, " .
-					"cat_last_element, cat_image, cat_keywords, cat_disponible_ciblage, cat_ciblage_actions, " .
+					"cat_last_element, cat_keywords, cat_disponible_ciblage, cat_ciblage_actions, " .
 					" cat_archive FROM zcov2_categories " .
 					"ORDER BY cat_gauche ASC");
 

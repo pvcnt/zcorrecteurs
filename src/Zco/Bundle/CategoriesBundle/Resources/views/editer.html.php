@@ -55,13 +55,6 @@
 		</legend>
 
 		<div id="image" style="display: none;">
-		   <?php if($InfosCategorie['cat_image']) { ?>
-		   <div style="float:right;">
-		       <img src="/uploads/categories/<?php echo $InfosCategorie['cat_id'] ?>.png" alt="Image de la catégorie" /><br />
-		       <label for="image_del"><input type="checkbox" name="image_del" id="image_del"> Supprimer l'image?</label>
-		   </div>
-		   <?php } ?>
-
 		   <label for="image_file">Fichier : </label> <input type="file" name="image_file" id="image_file" /> ou<br />
 		   <label for="image_url">URL : </label> <input type="text" name="image_url" id="image_url" /><br />
 		   <em>L'image sera transformée en un .png d'une dimension de 80x80 pixels.</em>

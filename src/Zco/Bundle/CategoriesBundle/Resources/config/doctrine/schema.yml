@@ -18,7 +18,6 @@ Categorie:
     cat_reglement:       { type: string(), name: cat_reglement as reglement }
     cat_map:             { type: string(), name: cat_map as map }
     cat_map_type:        { type: integer(1), name: cat_map_type as map_type }
-    cat_image:           { type: boolean, name: cat_image as image }
     cat_redirection:     { type: string(255), name: cat_redirection as redirection }
     cat_disponible_ciblage: { type: boolean, name: cat_disponible_ciblage as disponible_ciblage }
     cat_ciblage_actions: { type: boolean, name: cat_ciblage_actions as ciblage_actions }
