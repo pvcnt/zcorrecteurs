@@ -21,8 +21,6 @@
 
 namespace Zco\Bundle\FileBundle\Controller;
 
-use Zco\Bundle\FileBundle\Mediawiki\API;
-use Zco\Bundle\FileBundle\Mediawiki\Request as MWRequest;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -147,8 +145,6 @@ class DefaultController extends Controller
 				'textarea' => $vars['textarea'],
 			))
 		);
-		
-		return new Response(json_encode($response));
 	}
 	
 	/**
