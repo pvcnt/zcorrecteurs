@@ -202,7 +202,9 @@ function Geolocaliser($ip)
 	}
 
 	//Lancement de la procédure de localisation
-	$info = array();
+	if (!is_file(BASEPATH.'/vendor/geoip/GeoLiteCity.dat')) {
+        return ['Inconnu', null, null];
+    }
 	$gi = geoip_open(BASEPATH.'/vendor/geoip/GeoLiteCity.dat', GEOIP_STANDARD);
 	$location = geoip_record_by_addr($gi, $ip);
 	geoip_close($gi);
