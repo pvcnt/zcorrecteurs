@@ -20,6 +20,7 @@
  */
 
 use Zco\Bundle\CoreBundle\Paginator\Paginator;
+use Zco\Bundle\DicteesBundle\DoubleDiff;
 
 /**
  * Gestion des dictées.
@@ -451,8 +452,6 @@ function DicteeSon(Dictee $Dictee, $field)
 */
 function CorrigerDictee(Dictee $Dictee, $texte)
 {
-	require_once(__DIR__.'/Diff.php');
-
 	$Dictee->participations = Doctrine_Query::create()
 		->select('COUNT(*) AS participations')
 		->from('Dictee_Participation')
@@ -460,7 +459,7 @@ function CorrigerDictee(Dictee $Dictee, $texte)
 		->execute()
 		->offsetGet(0)
 		->participations;
-	$diff = DicteeDiff::doubleDiff($Dictee, $texte);
+	$diff = DoubleDiff::doubleDiff($Dictee, $texte);
 	$note = max(0, 20 - $diff->fautes());
 	$Dictee->note = (int)(
 		($Dictee->note * $Dictee->participations + $note)
