@@ -1,7 +1,0 @@
-#!/bin/bash
-
-git pull
-php bin/vendors install
-php app/console doctrine:migrations:execute
-php app/console cache:clear --env=prod
-php app/console assets:install web
