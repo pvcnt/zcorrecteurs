@@ -57,7 +57,6 @@
 	<li><a href="http://www.mysql.fr/">MySQL</a></li>
 	<li><a href="http://fr.php.net/">PHP</a></li>
 	<li><a href="http://symfony.com/">Symfony</a></li>
-	<li><a href="http://swiftmailer.org/">Swiftmailer</a></li>
 </ul>
 
 <p class="good">

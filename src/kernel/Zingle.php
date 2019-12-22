@@ -370,49 +370,29 @@ function preference($nom)
  * @param string $destinataire_nom      Le nom du destinataire.
  * @param string $objet                 L'objet du message.
  * @param string $message_html          Le message formaté en HTML.
- * @param string $expediteur_adresse    L'adresse de l'expéditeur.
- * @param string $expediteur_nom        Le nom de l'expéditeur.
  * @return bool
  */
-function send_mail(
-	$destinataire_adresse, $destinataire_nom, $objet, $message_html,
-	$expediteur_adresse = 'contact@zcorrecteurs.fr', $expediteur_nom = 'Contact des zCorrecteurs'
-)
+function send_mail($destinataire_adresse, $destinataire_nom, $objet, $message_html)
 {
-	if (!empty($destinataire_adresse) AND !empty($message_html))
-	{
-		$message = \Swift_Message::newInstance()
-			->setSubject($objet)
-			->setFrom(array($expediteur_adresse => $expediteur_nom))
-			->setSender($expediteur_adresse)
-			->setReplyTo($expediteur_adresse)
-			->setTo(array($destinataire_adresse => $destinataire_nom))
-			->setBody($message_html, 'text/html');
-		
-		return \Container::getService('mailer')->send($message);
-	}
-	
-	return false;
-}
+    $apiKey = $_SERVER['SENDGRID_API_KEY'] ?? null;
+    if (!$apiKey) {
+        return false;
+    }
 
-/**
- * array_sum récursif
- *
- * @author mwsaz
- * @param  array  $arr  Array de nombres pouvant contenir des arrays
- * @return int
- */
-function array_sum_r($array)
-{
-	$sum = 0;
-	foreach($array as &$v)
-	{
-		if(is_array($v))
-			$sum += array_sum_r($v);
-		else
-			$sum += (int)$v;
-	}
-	return $sum;
+    $email = new \SendGrid\Mail\Mail();
+    $email->setFrom('contact@zcorrecteurs.fr', 'Contact des zCorrecteurs');
+    $email->setSubject($objet);
+    $email->addTo($destinataire_adresse, $destinataire_nom);
+    $email->addContent("text/html", $message_html);
+    $sendgrid = new \SendGrid($apiKey);
+    try {
+        $response = $sendgrid->send($email);
+
+        return $response->statusCode() >= 200 && $response->statusCode() < 300;
+    } catch (Exception $e) {
+        \Sentry\captureException($e);
+        return false;
+    }
 }
 
 /**

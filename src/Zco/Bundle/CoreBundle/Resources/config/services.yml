@@ -10,7 +10,3 @@ services:
         class: Zco\Bundle\CoreBundle\Form\Type\ZformType
         tags:
             - { name: form.type, alias: zform }
-    
-    zco_core.swiftmailer.mandrill_transport:
-        class: Zco\Bundle\CoreBundle\Swiftmailer\MandrillTransport
-        arguments: [@swiftmailer.transport.eventdispatcher, %zco_core.mandrill.api_key%, %zco_core.mandrill.track_clicks%, %zco_core.mandrill.track_opens%, %zco_core.mandrill.tags%]

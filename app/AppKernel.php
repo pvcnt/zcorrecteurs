@@ -32,7 +32,6 @@ class AppKernel extends Kernel
         $bundles = array(
             //Bundles génériques.
             new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
-            new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
             new Symfony\Bundle\MonologBundle\MonologBundle(),
             new Symfony\Bundle\TwigBundle\TwigBundle(),
             new Zco\Bundle\Doctrine1Bundle\ZcoDoctrine1Bundle(),

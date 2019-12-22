@@ -17,9 +17,6 @@ framework:
             resources: 
                 - 'ZcoCoreBundle:Form'
 
-swiftmailer:
-    transport:  zco_core.swiftmailer.mandrill_transport
-
 knp_gaufrette:
     adapters:
         uploads:
