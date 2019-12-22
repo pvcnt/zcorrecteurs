@@ -25,15 +25,6 @@ define('APP_PATH', BASEPATH.'/app');
 require_once __DIR__.'/../app/autoload.php';
 require_once __DIR__.'/../app/AppKernel.php';
 
-// La directive SetEnv d'Apache semble ajouter un préfixe REDIRECT_ aux variables.
-// On le retire ici, car c'est assez peu pratique...
-foreach ($_SERVER as $key => $value) {
-    if (strpos($key, 'REDIRECT_') === 0) {
-        $_SERVER[substr($key, 8)] = $value;
-        unset($_SERVER[$key]);
-    }
-}
-
 $environment = $_SERVER['SYMFONY_ENVIRONMENT'] ?? 'prod';
 $debug = ($_SERVER['SYMFONY_DEBUG'] ?? '') === 'yes';
 
