@@ -97,7 +97,7 @@ function AjouterDictee(AjouterForm &$form)
 		$ext = strtolower(strrchr($_FILES['icone']['name'], '.'));
 		$nom = $Dictee->id.$ext;
 
-		if (!File_Upload::Fichier($_FILES['icone'], 'dictees', $nom, true))
+		if (!File_Upload::Fichier($_FILES['icone'], 'dictees/' . $nom, true))
 			return redirect(514, 'editer-'.$Dictee->id.'-'.rewrite($Dictee->titre).'.html', MSG_ERROR);
 			
 		$Dictee->icone = '/uploads/dictees/'.$nom;
@@ -167,7 +167,7 @@ function EditerDictee(Dictee $Dictee, AjouterForm &$Form)
 		if ( $Dictee->icone && ( strrchr($Dictee->icone, '.') != $ext ) )
 			@unlink(BASEPATH.'/web'.$Dictee->icone);
 		
-		if (!File_Upload::Fichier($_FILES['icone'], 'dictees', $nom, true))
+		if (!File_Upload::Fichier($_FILES['icone'], 'dictees/' . $nom, true))
 			return redirect(514, 'editer-'.$Dictee->id.'-'.rewrite($Dictee->titre).'.html', MSG_ERROR);
 		
 		$Dictee->icone = '/uploads/dictees/'.$nom;
@@ -423,7 +423,7 @@ function DicteeEnvoyerSon(Dictee $Dictee, $field = false)
 		return redirect(512, 'editer-'.$Dictee->id.'-'.rewrite($Dictee->titre).'.html', MSG_ERROR);
 	$Dictee->format = substr($ext, 1);
 	$name = DicteeSon($Dictee, $field);
-	return File_Upload::Fichier($_FILES[$field], 'dictees', $name);
+	return File_Upload::Fichier($_FILES[$field], 'dictees/' . $name);
 }
 
 /**

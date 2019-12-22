@@ -21,38 +21,26 @@
 
 /**
  * Classe contenant des méthodes statiques pour faciliter les uploads de
- * fichiers. Supporte l'upload depuis le disque dur ou bien depuis une URL.
+ * fichiers.
  *
  * @author Vanger
  */
 class File_Upload
 {
-	const FILE = 1;
-	const URL = 2;
-	const IMAGE = 4;
-
 	/**
 	*	Fonction qui permet d'uploader un fichier (sans que celui-ci finisse dans le module d'upload).
 	*
-	*	@param mixed $fichier				L'array ou le nom du fichier à uploader
-	*	@param string $dossierDestination	Le dossier de destination
-	*	@param string $nomDestination		Le nom de destination
-	*	@param boolean $image               Est-ce que le fichier est une image ?
+	*	@param mixed $fichier			L'array du fichier à uploader
+	*	@param string $destination		Le nom du fichier de destination
+	*	@param boolean $image           Est-ce que le fichier est une image ?
 	*	@return bool
 	*/
-	public static function Fichier($fichier, $dossierDestination, $nomDestination, $image = false)
+	public static function Fichier($fichier, $destination, $image = false)
 	{
 		//S'il y a eu une erreur lors de l'upload, on peut arrêter dès maintenant.
 		if (empty($fichier['name']) || $fichier['error'] > 0)
 		{
 			return false;
-		}
-
-		//Normalisation du nom du dossier puis création si nécessaire.
-		$dossierDestination = rtrim($dossierDestination, '/').'/';
-		if (!is_dir($dossierDestination))
-		{
-			mkdir($dossierDestination, 0777, true);
 		}
 		
 		//Si on envoie une image, on vérifie qu'elle soit d'un type acceptable 
@@ -71,7 +59,7 @@ class File_Upload
 			}
 		}
 
-        \Container::getService('gaufrette.uploads_filesystem')->write($dossierDestination . $nomDestination, file_get_contents($fichier['tmp_name']));
+        \Container::getService('gaufrette.uploads_filesystem')->write($destination, file_get_contents($fichier['tmp_name']));
 
 		return true;
 	}
