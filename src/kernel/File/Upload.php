@@ -36,14 +36,14 @@ class File_Upload
 	*
 	*	@param mixed $fichier				L'array ou le nom du fichier à uploader
 	*	@param string $dossierDestination	Le dossier de destination
-	*	@param string $nomDestination		Le nom de destination (sans extension, l'extension est automatiquement la même que celle du fichier uploadé)
-	*	@param integer $type				Le type d'upload (par fichier ou par url, éventuellement une image)
+	*	@param string $nomDestination		Le nom de destination
+	*	@param boolean $image               Est-ce que le fichier est une image ?
 	*	@return bool
 	*/
-	public static function Fichier($fichier, $dossierDestination, $nomDestination, $type = self::FILE)
+	public static function Fichier($fichier, $dossierDestination, $nomDestination, $image = false)
 	{
 		//S'il y a eu une erreur lors de l'upload, on peut arrêter dès maintenant.
-		if (($type & self::FILE) && (empty($fichier['name']) || $fichier['error'] > 0))
+		if (empty($fichier['name']) || $fichier['error'] > 0)
 		{
 			return false;
 		}
@@ -57,12 +57,12 @@ class File_Upload
 		
 		//Si on envoie une image, on vérifie qu'elle soit d'un type acceptable 
 		//(par son extension et son mimetype).
-		if ($type & self::IMAGE)
+		if ($image)
 		{
 			$extensions = array('.gif', '.png', '.jpg', '.jpeg');
 			$mimetypes = array(IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_GIF);
 			
-			$infos = getimagesize(($type & self::URL) ? $fichier : $fichier['tmp_name']);
+			$infos = getimagesize($fichier['tmp_name']);
 			$ext = strtolower(strrchr($fichier['name'], '.'));
 			
 			if (!in_array($infos[2], $mimetypes) || !in_array($ext, $extensions))
@@ -70,23 +70,9 @@ class File_Upload
 				return false;
 			}
 		}
-		
-		try
-		{
-			if ($type & self::FILE)
-			{
-				move_uploaded_file($fichier['tmp_name'], $dossierDestination.$nomDestination);
-			}
-			else
-			{
-				file_put_contents($dossierDestination.$nomDestination, file_get_contents($fichier));
-			}
-		}
-		catch (Exception $e)
-		{
-			return false;
-		}
-		
+
+        \Container::getService('gaufrette.uploads_filesystem')->write($dossierDestination . $nomDestination, file_get_contents($fichier['tmp_name']));
+
 		return true;
 	}
 }
