@@ -21,37 +21,39 @@
 
 namespace Zco\Bundle\RechercheBundle\Search;
 
+use Sphinx\Client;
+
 /**
  * Driver Sphinx pour la recherche.
  *
  * @author mwsaz <mwsaz@zcorrecteurs.fr>
  */
-
-include_once(BASEPATH.'/vendor/Sphinx/sphinxapi.php');
-
 class Sphinx extends Search
 {
+    /**
+     * @var Client
+     */
 	private $client;
 	private $matchMode, $sortMode, $sortKey;
 
 	protected function configure()
 	{
-		$this->client = new \SphinxClient();
-		$this->client->SetServer(BASEPATH.'/data/store/sphinx/run/searchd.sock', null);
-		$this->client->SetConnectTimeout(1);
-		$this->client->SetMaxQueryTime(5000); // 5 seconds
-		$this->client->SetArrayResult(true);
-		//$this->client->SetIndexWeights(array('message_texte' => 100));
-		$this->client->SetRankingMode(SPH_RANK_PROXIMITY_BM25);
+		$this->client = new Client();
+		$this->client->setServer(BASEPATH.'/data/store/sphinx/run/searchd.sock', null);
+		$this->client->setConnectTimeout(1);
+		$this->client->setMaxQueryTime(5000); // 5 seconds
+		$this->client->setArrayResult(true);
+		//$this->client->setIndexWeights(array('message_texte' => 100));
+		$this->client->setRankingMode(Client::RANK_PROXIMITY_BM25);
 	}
 
 	public function setMatchMode($mode)
 	{
 		$modes = array(
-			self::MATCH_ALL => SPH_MATCH_ALL,
-			self::MATCH_ANY => SPH_MATCH_ANY,
-			self::MATCH_BOOLEAN => SPH_MATCH_BOOLEAN,
-			self::MATCH_PHRASE => SPH_MATCH_PHRASE
+			self::MATCH_ALL => Client::MATCH_ALL,
+			self::MATCH_ANY => Client::MATCH_ANY,
+			self::MATCH_BOOLEAN => Client::MATCH_BOOLEAN,
+			self::MATCH_PHRASE => Client::MATCH_PHRASE
 		);
 
 		if (!isset($modes[$mode]))
@@ -77,9 +79,9 @@ class Sphinx extends Search
 		}
 
 		$modes = array(
-			self::SORT_ASC => SPH_SORT_ATTR_ASC,
-			self::SORT_DESC => SPH_SORT_ATTR_DESC,
-			self::SORT_RELEVANCE => SPH_SORT_RELEVANCE
+			self::SORT_ASC => Client::SORT_ATTR_ASC,
+			self::SORT_DESC => Client::SORT_ATTR_DESC,
+			self::SORT_RELEVANCE => Client::SORT_RELEVANCE,
 		);
 
 		if (!isset($modes[$mode]))
@@ -96,10 +98,9 @@ class Sphinx extends Search
 
 	public function getResults($search)
 	{
-		$this->client->SetMatchMode($this->matchMode);
-		$this->client->SetSortMode($this->sortMode,
-			($this->sortKey === null ? '' : $this->sortKey));
-		$this->client->SetLimits($this->offset, $this->limit);
+		$this->client->setMatchMode($this->matchMode);
+		$this->client->setSortMode($this->sortMode, ($this->sortKey === null ? '' : $this->sortKey));
+		$this->client->setLimits($this->offset, $this->limit);
 
 		foreach ($this->filters as $key => $filters)
 		{
@@ -110,14 +111,15 @@ class Sphinx extends Search
 		{
 			foreach ($filters as $filter)
 			{
-				$this->client->SetFilterRange($key, $filter[0], $filter[1]);
+				$this->client->setFilterRange($key, $filter[0], $filter[1]);
 			}
 		}
 
-		$r = $this->client->Query($search, $this->index);
+		$r = $this->client->query($search, $this->index);
 
-		if ($this->client->_error != '')
-			throw new \Exception($this->client->_error);
+		if ($this->client->getLastError()) {
+            throw new \Exception($this->client->getLastError());
+        }
 
 		if (!isset($r['matches']))
 		{

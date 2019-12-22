@@ -31,6 +31,7 @@
         "swiftmailer/swiftmailer": "^4.1.8",
         "doctrine/dbal": "^2.1.6",
         "sentry/sdk": "^2.0.4",
-	"scrivo/highlight.php": "^9.0"
+	"scrivo/highlight.php": "^9.0",
+        "sphinx/client": "dev-master"
     }
 }

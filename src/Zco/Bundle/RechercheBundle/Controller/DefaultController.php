@@ -41,7 +41,6 @@ class DefaultController extends Controller
 		// Configuration pour les trois actions (avant et après la recherche)
 		$CatsForum = ListerEnfants(GetIDCategorie('forum'), true, true);
 		$CatsBlog = ListerEnfants(GetIDCategorie('blog'), true, true);
-		$CatsTwitter = \Doctrine_Core::getTable('TwitterCompte')->getAll(true);
 		\Page::$titre = 'Recherche';
 		$this->get('zco_vitesse.resource_manager')->requireResources(array(
 		    '@ZcoForumBundle/Resources/public/css/forum.css',
@@ -53,10 +52,8 @@ class DefaultController extends Controller
 		$_flags['nb_resultats'] = $resultats = 20;
 
 		// Section du site concernée par la recherche
-		$sections = array('forum', 'blog', 'twitter');
-		$section = !empty($_GET['section'])
-			? $_GET['section']
-			: current($sections);
+		$sections = array('forum', 'blog');
+		$section = !empty($_GET['section']) ? $_GET['section'] : current($sections);
 		if (!in_array($section, $sections))
 		{
 			return redirect(2, 'index.html', MSG_ERROR);
@@ -65,9 +62,7 @@ class DefaultController extends Controller
 
 		if (empty($_GET['recherche']))
 		{
-			return render_to_response(compact(
-				'CatsForum', 'CatsBlog', 'CatsTwitter', '_flags'
-			));
+			return render_to_response(compact('CatsForum', 'CatsBlog', '_flags'));
 		}
 		$_flags['recherche'] = $_GET['recherche'];
 
@@ -138,15 +133,8 @@ class DefaultController extends Controller
 			}
 			$_flags['auteur'] = isset($_GET['auteur']) ? $_GET['auteur'] : '';
 			$addSearchArg($Search, 'auteur', 'user');
-		}
-		elseif ($section == 'blog')
-		{
+		} elseif ($section == 'blog') {
 			// …
-		}
-		elseif ($section == 'twitter')
-		{
-			$_flags['auteur'] = isset($_GET['auteur']) ? $_GET['auteur'] : '';
-			$addSearchArg($Search, 'auteur', 'user');
 		}
 
 		// Récupération des résultats
@@ -169,7 +157,7 @@ class DefaultController extends Controller
 		}
 
 		return render_to_response(compact(
-			'CatsForum', 'CatsBlog', 'CatsTwitter', '_flags',
+			'CatsForum', 'CatsBlog', '_flags',
 			'pages', 'CompterResultats', 'Resultats'
 		));
 	}

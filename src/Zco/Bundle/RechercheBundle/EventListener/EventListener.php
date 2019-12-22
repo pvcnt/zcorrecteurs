@@ -39,7 +39,7 @@ class EventListener implements EventSubscriberInterface
 	public function onFilterSpeedbarre(FilterContentEvent $event)
 	{
 		$module = $event->getRequest()->attributes->get('_module');
-		$section = $module === 'blog' ? 'blog' : ($module === 'twitter' ? 'twitter' : 'forum');
+		$section = $module === 'blog' ? 'blog' : 'forum';
 
 		$html = <<<HTML
 	<form class="navbar-search pull-right form-search" id="search" method="get" action="/recherche/">
