@@ -1,0 +1,18 @@
+name: Package
+on: [push]
+jobs:
+  build-docker-image:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build Docker images
+      run: |
+        docker build -f build/webserver/Dockerfile -t docker.pkg.github.com/zcorrecteurs/zcorrecteurs/webserver:${{ github.sha }} .
+        docker build -f build/sphinx/Dockerfile -t docker.pkg.github.com/zcorrecteurs/zcorrecteurs/sphinx:${{ github.sha }} .
+    - name: Push Docker images
+      env:
+        DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        echo "$DOCKER_PASSWORD" | docker login docker.pkg.github.com -u zcorrecteurs --password-stdin
+        docker push docker.pkg.github.com/zcorrecteurs/zcorrecteurs/webserver:${{ github.sha }}
+        docker push docker.pkg.github.com/zcorrecteurs/zcorrecteurs/sphinx:${{ github.sha }}
