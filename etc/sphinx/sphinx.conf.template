@@ -1,13 +1,10 @@
 # Configuration de Sphinx.
 #
-# Variables disponibles (enfermées par une paire de %)
-#  - sphinxpath
-#  - database.host
-#  - database.username
-#  - database.password
-#  - database.base
-#  - database.prefix
-
+# Variables disponibles
+#  - $DATABASE_HOST
+#  - $DATABASE_USER
+#  - $DATABASE_PASSWORD
+#  - $DATABASE_BASE
 
 
 #######################################
@@ -21,15 +18,8 @@ indexer
 
 searchd
 {
-	# Socket UNIX plus rapide que TCP/IP
-	# listen             = 127.0.0.1:9312
-	listen               = %sphinxpath%/run/searchd.sock
-
-	# Log des requêtes (inutile, géré par Google Analytics)
-	# query_log          = %sphinxpath%/run/queries.log
-	log                  = %sphinxpath%/run/searchd.log
-
-	pid_file             = %sphinxpath%/run/searchd.pid
+	listen               = 0.0.0.0:5000
+	pid_file             = /var/run/searchd.pid
 
 	max_children         = 15    # Nombre maximal de recherches simultanées
 	max_matches          = 1000
@@ -52,10 +42,10 @@ source zcorrecteurs
 {
 	type                 = mysql
 
-	sql_host             = %database.host%
-	sql_user             = %database.username%
-	sql_pass             = %database.password%
-	sql_db               = %database.base%
+	sql_host             = $DATABASE_HOST
+	sql_user             = $DATABASE_USER
+	sql_pass             = $DATABASE_PASSWORD
+	sql_db               = $DATABASE_BASE
 	sql_port             = 3306
 
 	sql_query_pre        = SET NAMES utf8
@@ -69,15 +59,15 @@ source zcorrecteurs
 index zcorrecteurs
 {
 	source               = zcorrecteurs
-	path                 = /tmp/sphinx-dummy-%database.base%
+	path                 = /tmp/dummy-zcorrecteurs.idx
 	docinfo              = extern
 	mlock                = 0
 	morphology           = none
 	inplace_enable       = 1
 
-	# stopwords            = %sphinxpath%/config/stopwords.txt
-	# wordforms            = %sphinxpath%/config/wordforms.txt
-	# exceptions           = %sphinxpath%/config/exceptions.txt
+	# stopwords            = /etc/sphinx/stopwords.txt
+	# wordforms            = /etc/sphinx/wordforms.txt
+	# exceptions           = /etc/sphinx/exceptions.txt
 
 	min_word_len         = 3
 	charset_type         = utf-8
@@ -774,12 +764,12 @@ source forum_messages : zcorrecteurs
 		sujet_id, sujet_forum_id AS categorie_id, \
 		CASE sujet_sondage WHEN 0 THEN 0 WHEN NULL THEN 0 ELSE 1 END AS sujet_sondage, \
 		sujet_annonce, sujet_ferme, sujet_resolu, sujet_corbeille, sujet_coup_coeur \
-		FROM %database.prefix%forum_messages \
-		JOIN %database.prefix%forum_sujets ON sujet_id = message_sujet_id \
+		FROM zcov2_forum_messages \
+		JOIN zcov2_forum_sujets ON sujet_id = message_sujet_id \
 		WHERE sujet_corbeille = 0 \
 		AND message_id BETWEEN $start AND $end
 
-	sql_query_range      = SELECT 1, MAX(message_id) FROM %database.prefix%forum_messages
+	sql_query_range      = SELECT 1, MAX(message_id) FROM zcov2_forum_messages
 
 	sql_attr_uint        = utilisateur_id
 	sql_attr_uint        = sujet_id
@@ -795,14 +785,14 @@ source forum_messages : zcorrecteurs
 
 
 	# sql_query_killlist   = \
-	# 	SELECT message_id FROM %database.prefix%forum_messages \
+	# 	SELECT message_id FROM zcov2_forum_messages \
 	# 	WHERE UNIX_TIMESTAMP(message_edite_date) >= @last_reindex
 }
 
 index forum_messages : zcorrecteurs
 {
 	source               = forum_messages
-	path                 = %sphinxpath%/index/forum_messages.idx
+	path                 = /var/lib/sphinx/forum_messages.idx
 }
 
 
@@ -817,12 +807,12 @@ source blog_billets : zcorrecteurs
 		version_titre, version_sous_titre, version_intro, version_texte, \
 		UNIX_TIMESTAMP(blog_date) AS blog_date, \
 		blog_id_categorie AS categorie_id \
-		FROM %database.prefix%blog \
-		JOIN %database.prefix%blog_versions ON blog_id_version_courante = version_id \
+		FROM zcov2_blog \
+		JOIN zcov2_blog_versions ON blog_id_version_courante = version_id \
 		WHERE blog_etat = 4 AND \
 		blog_id BETWEEN $start AND $end
 
-	sql_query_range      = SELECT 1, MAX(blog_id) FROM %database.prefix%blog
+	sql_query_range      = SELECT 1, MAX(blog_id) FROM zcov2_blog
 
 	sql_attr_uint        = categorie_id
 	sql_attr_timestamp   = blog_date
@@ -831,5 +821,5 @@ source blog_billets : zcorrecteurs
 index blog_billets : zcorrecteurs
 {
 	source               = blog_billets
-	path                 = %sphinxpath%/index/blog_billets.idx
+	path                 = /var/lib/sphinx/blog_billets.idx
 }

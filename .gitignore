@@ -3,7 +3,6 @@
 /web/bundles/
 /app/cache/*
 /app/logs/*
-/build/
 /vendor
 
 # Fichiers de configuration
@@ -11,10 +10,9 @@
 
 # Fichiers temporaires
 /web/compiled/*
-/data/store/*
-/data/index/*
 /web/ext/pack_design.tar.bz2
 /composer.phar
+/.vagrant/
 
 # Toutes les images uploadées
 /web/uploads/*

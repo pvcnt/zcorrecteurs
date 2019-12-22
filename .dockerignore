@@ -1,0 +1,7 @@
+/.git/
+/.gitignore
+/var/
+/vendor/
+/web/bundles/
+/web/compiled/
+/web/uploads/
