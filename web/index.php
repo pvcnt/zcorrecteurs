@@ -34,17 +34,8 @@ foreach ($_SERVER as $key => $value) {
     }
 }
 
-// Détermine l'environnement courant.
-if (in_array(BASEPATH, array('/home/web/zcorrecteurs.fr/prod', '/home/web/zcorrecteurs.fr/test'))) {
-    $environment = 'prod';
-    $debug = false;
-} elseif (strpos(BASEPATH, '/home/web/zcorrecteurs.fr/dev') === 0) {
-    $environment = 'dev';
-    $debug = false;
-} else {
-    $environment ='dev';
-    $debug = true;
-}
+$environment = $_SERVER['SYMFONY_ENVIRONMENT'] ?? 'prod';
+$debug = ($_SERVER['SYMFONY_DEBUG'] ?? '') === 'yes';
 
 // Initialise Sentry aussi tôt que possible.
 if (isset($_SERVER['SENTRY_DSN'])) {
