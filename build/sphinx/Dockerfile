@@ -14,11 +14,11 @@ RUN add-apt-repository ppa:builds/sphinxsearch-rel22 \
 
 VOLUME /var/lib/sphinx
 
-COPY etc/sphinx/sphinx.conf.template etc/sphinx/stopwords.txt /etc/sphinx/
-COPY build/sphinx/reindex.sh /usr/local/bin/
+COPY etc/sphinx/sphinx.conf.template etc/sphinx/stopwords.txt /etc/sphinxsearch/
+COPY build/sphinx/reindex.sh /usr/local/bin/reindex
 COPY build/sphinx/entrypoint.sh /
 
-RUN chmod +x /entrypoint.sh && chmod +x /usr/local/bin/reindex.sh
+RUN chmod +x /entrypoint.sh && chmod +x /usr/local/bin/reindex
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["searchd", "--nodetach"]

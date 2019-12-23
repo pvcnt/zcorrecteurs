@@ -1,24 +1,13 @@
-# .gitignore de Symfony
-/app/phpunit.xml
 /web/bundles/
+/web/compiled/
 /app/cache/*
 /app/logs/*
 /vendor
-
-# Fichiers de configuration
-.env
-
-# Fichiers temporaires
-/web/compiled/*
-/web/ext/pack_design.tar.bz2
 /composer.phar
 /.vagrant/
 
-# Toutes les images uploadées
-/web/uploads/*
-/lib/geoip/GeoLiteCity.dat
-/web/google*.html
-/web/LL_*.xml
+# Fichiers de configuration
+.env
 
 # Fichiers de configuration des IDE
 .project

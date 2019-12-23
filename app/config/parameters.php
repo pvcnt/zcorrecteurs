@@ -12,8 +12,8 @@ if (!function_exists('fromEnv')) {
 $container->setParameter('database.prefix', 'zcov2_');
 $container->setParameter('database.host', fromEnv('DATABASE_HOST', 'localhost'));
 $container->setParameter('database.base', fromEnv('DATABASE_BASE', 'zcodev'));
-$container->setParameter('database.username', fromEnv('DATABASE_USER', 'root'));
-$container->setParameter('database.password', fromEnv('DATABASE_PASSWORD', ''));
+$container->setParameter('database.username', fromEnv('DATABASE_USER', 'zcodev'));
+$container->setParameter('database.password', fromEnv('DATABASE_PASSWORD', 'pass'));
 
 // Symfony secret (utilisé par exemple pour la protection CSRF).
 $container->setParameter('secret', fromEnv('SYMFONY_SECRET', 'dDj85§fd+dedS9-sE4'));
