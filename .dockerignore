@@ -1,4 +1,3 @@
 # We don't exclude here what is already excluded in update-sources.sh,
 # because it won't get sync'd on Vagrant host.
 /build/devbox/
-/etc/
