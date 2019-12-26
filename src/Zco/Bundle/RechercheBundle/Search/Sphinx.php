@@ -39,7 +39,7 @@ class Sphinx extends Search
 	protected function configure()
 	{
 		$this->client = new Client();
-		$this->client->setServer(BASEPATH.'/data/store/sphinx/run/searchd.sock', null);
+		$this->client->setServer(getenv('SPHINX_HOST') ?: 'localhost', 5000);
 		$this->client->setConnectTimeout(1);
 		$this->client->setMaxQueryTime(5000); // 5 seconds
 		$this->client->setArrayResult(true);
