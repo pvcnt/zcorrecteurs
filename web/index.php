@@ -25,13 +25,14 @@ define('APP_PATH', BASEPATH.'/app');
 require_once __DIR__.'/../app/autoload.php';
 require_once __DIR__.'/../app/AppKernel.php';
 
-$environment = $_SERVER['SYMFONY_ENVIRONMENT'] ?? 'prod';
-$debug = ($_SERVER['SYMFONY_DEBUG'] ?? '') === 'yes';
+$environment = getenv('SYMFONY_ENVIRONMENT') ?: 'prod';
+$debug = getenv('SYMFONY_DEBUG') === 'yes';
 
 // Initialise Sentry aussi tôt que possible.
-if (isset($_SERVER['SENTRY_DSN'])) {
+$sentryDsn = getenv('SENTRY_DSN');
+if ($sentryDsn) {
     Sentry\init([
-        'dsn' => $_SERVER['SENTRY_DSN'],
+        'dsn' => $sentryDsn,
         'environment' => $environment,
     ]);
 }

@@ -374,7 +374,7 @@ function preference($nom)
  */
 function send_mail($destinataire_adresse, $destinataire_nom, $objet, $message_html)
 {
-    $apiKey = $_SERVER['SENDGRID_API_KEY'] ?? null;
+    $apiKey = getenv('SENDGRID_API_KEY');
     if (!$apiKey) {
         return false;
     }
