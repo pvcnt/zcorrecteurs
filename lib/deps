@@ -41,12 +41,3 @@
     git=http://github.com/FriendsOfSymfony/FOSJsRoutingBundle.git
     target=/bundles/FOS/JsRoutingBundle
     version=1.3.0
-
-[KnpPaginatorBundle]
-    git=http://github.com/KnpLabs/KnpPaginatorBundle.git
-    target=bundles/Knp/Bundle/PaginatorBundle
-    version=6d93d89a3c913155d9d1778db4232db0e4d6f3e3
-
-[knp-components]
-    git=https://github.com/KnpLabs/knp-components.git
-    target=/knp-components

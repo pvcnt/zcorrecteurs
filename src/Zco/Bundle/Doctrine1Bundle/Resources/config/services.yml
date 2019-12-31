@@ -11,11 +11,6 @@ services:
         tags:
             - { name: data_collector, template: "ZcoDoctrine1Bundle::collector", id: doctrine1 }
     
-    zco_core.pagination_listener:
-        class: Zco\Bundle\Doctrine1Bundle\EventListener\PaginationListener
-        tags:
-            - { name: kernel.event_subscriber }
-
     zco_doctrine1.form.type_guesser.orm:
         class: Zco\Bundle\Doctrine1Bundle\Form\DoctrineOrmTypeGuesser
         tags:

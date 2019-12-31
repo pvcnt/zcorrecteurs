@@ -21,6 +21,7 @@
 
 namespace Zco\Bundle\UserBundle\Controller;
 
+use Zco\Bundle\CoreBundle\Paginator\Paginator;
 use Zco\Bundle\UserBundle\Form\Type\NewUsernameType;
 use Zco\Bundle\CaptchaBundle\Captcha\Captcha;
 use Symfony\Component\HttpFoundation\Request;
@@ -48,9 +49,8 @@ class DefaultController extends Controller
 	 * @author Ziame <ziame@zcorrecteurs.fr>
 	 *
 	 * @param  Request $request
-	 * @param  integer $page La page à afficher
 	 */
-	public function indexAction(Request $request, $page = 1)
+	public function indexAction(Request $request)
 	{
 		$query = array();
 		
@@ -103,9 +103,9 @@ class DefaultController extends Controller
 		}
 		
 		//Pagination.
-		$paginator = $this->get('knp_paginator');
-		$users = $paginator->paginate(\Doctrine_Core::getTable('Utilisateur')->getQuery($query), $page, 30);
-		$users->setUsedRoute('zco_user_indexWithPage');
+        $paginator = new Paginator(\Doctrine_Core::getTable('Utilisateur')->getQuery($query), 30);
+		$page = $request->get('page', 1);
+		$url = $this->generateUrl('zco_user_index') . '?page=%s';
 		
 		//Paramétrage de la vue.
 		fil_ariane(null);
@@ -118,7 +118,7 @@ class DefaultController extends Controller
 		}
 		
 		return render_to_response('ZcoUserBundle::index.html.php', array(
-			'users' => $users,
+			'users' => $paginator->createView($page, $url),
 			'groups' => \Doctrine_Core::getTable('Groupe')->getApplicable(),
 			'secondaryGroups' => \Doctrine_Core::getTable('Groupe')->getBySecondary(),
 			

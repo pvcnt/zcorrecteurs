@@ -1,6 +1,0 @@
-.*.cache
-/tests/phpunit.xml
-/tests/temp/*.php
-/vendor
-tags
-/composer.lock

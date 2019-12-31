@@ -21,6 +21,8 @@
 
 namespace Zco\Bundle\UserBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
+use Zco\Bundle\CoreBundle\Paginator\Paginator;
 use Zco\Bundle\UserBundle\Form\Type\BannedEmailType;
 use Zco\Bundle\UserBundle\Form\Type\WarningType;
 use Zco\Bundle\UserBundle\Form\Type\PunishmentType;
@@ -74,10 +76,10 @@ class AdminController extends Controller
 	 * Affiche la liste des blocages de connexion suite à des tentatives ratées 
 	 * trop nombreuses.
 	 *
-	 * @param  integer $page
+	 * @param  Request $request
 	 * @return Response
 	 */
-	public function blocagesAction($page = 1)
+	public function blocagesAction(Request $request)
 	{
 		if (!verifier('lister_blocages'))
 		{
@@ -86,14 +88,16 @@ class AdminController extends Controller
 		
 		$query = \Doctrine_Core::getTable('Tentative')->getByBlockedQuery();
 		
-		$paginator = $this->get('knp_paginator');
-		$blocages = $paginator->paginate($query, $page, 20);
-		$blocages->setUsedRoute('zco_user_blocages');
+		$paginator = new Paginator($query, 20);
+        $page = $request->get('page', 1);
+        $url = $this->generateUrl('zco_user_admin_blocages') . '?page=%s';
 		
 		//Paramétrage de la vue.
 		\Page::$titre = 'Tentatives de connexion ratées';
 		
-		return render_to_response('ZcoUserBundle:Admin:blocages.html.php', compact('blocages'));
+		return render_to_response('ZcoUserBundle:Admin:blocages.html.php', [
+		    'blocages' => $paginator->createView($page, $url),
+        ]);
 	}
 
 	/**

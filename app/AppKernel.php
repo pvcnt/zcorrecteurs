@@ -38,7 +38,6 @@ class AppKernel extends Kernel
             new Zco\Bundle\VitesseBundle\ZcoVitesseBundle(),
             new Avalanche\Bundle\ImagineBundle\AvalancheImagineBundle(),
             new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
-            new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
 
             //Bundles nécessaires pour que les modules fonctionnent.

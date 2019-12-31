@@ -23,7 +23,3 @@ knp_gaufrette:
             local:   { directory:  %kernel.root_dir%/../web/uploads, create: true }
     filesystems:
             uploads: { adapter: uploads }
-
-knp_paginator:
-    template:
-        pagination: ZcoCoreBundle:Pagination:sliding.html.php

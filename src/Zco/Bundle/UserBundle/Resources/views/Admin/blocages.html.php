@@ -3,7 +3,7 @@
 <h1>Liste des tentatives de connexion ratées</h1>
 
 <?php if (count($blocages) > 0): ?>
-    <?php echo $view['knp_pagination']->render($blocages) ?>
+    <?php echo $blocages->render(['bootstrap' => true]) ?>
 
     <table class="table">
         <thead>
@@ -19,7 +19,7 @@
                 <tr>
                     <td>
                         <a href="<?php echo $view['router']->generate('zco_user_profile', array('id'   => $blocage->Utilisateur->getId(), 'slug' => rewrite($blocage->Utilisateur->getUsername()))) ?>" style="color: <?php echo htmlspecialchars($blocage->Utilisateur->getGroup()->getCssClass()) ?>">
-                            <?php echo htmlspecialchars($t->Utilisateur->getUsername()) ?>
+                            <?php echo htmlspecialchars($blocage->Utilisateur->getUsername()) ?>
                         </a>
                     </td>
                     <td><?php echo long2ip($blocage['ip']) ?></td>
@@ -29,7 +29,7 @@
         </tbody>
     </table>
 
-    <?php echo $view['knp_pagination']->render($blocages) ?>
+    <?php echo $blocages->render(['bootstrap' => true]) ?>
 <?php else: ?>
     <p>Aucune tentative de connexion ratée n'a été enregistrée.</p>
 <?php endif ?>

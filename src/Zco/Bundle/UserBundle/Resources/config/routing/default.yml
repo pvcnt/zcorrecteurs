@@ -1,12 +1,6 @@
 zco_user_index:
     pattern:   /
-    defaults:  { _controller: ZcoUserBundle:Default:index, page: 1 }
-
-zco_user_indexWithPage:
-    pattern:   /{page}
-    defaults:  { _controller: ZcoUserBundle:Default:index, page: 1 }
-    requirements:
-        page: \d+
+    defaults:  { _controller: ZcoUserBundle:Default:index }
 
 zco_user_online:
     pattern:   /connectes
