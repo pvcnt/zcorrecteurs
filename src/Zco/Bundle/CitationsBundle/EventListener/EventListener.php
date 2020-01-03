@@ -44,7 +44,7 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 		{
 			$citation = \Doctrine_Core::getTable('Citation')->CitationAleatoire();
 			$html = '';
-			if (count($citation) > 0)
+			if (false !== $citation && count($citation) > 0)
 			{
 				$html = render_to_string('ZcoCitationsBundle::citation.html.php', compact('citation'));
 			}
