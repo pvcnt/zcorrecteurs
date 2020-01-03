@@ -59,45 +59,10 @@ class ZcoVitesseExtension extends Extension
         //Définit les paramètres simples.
         $container->setParameter('zco_vitesse.cache_dir', $config['cache_dir']);
         $container->setParameter('zco_vitesse.web_dir', $config['web_dir']);
-        $container->setParameter('zco_vitesse.debug', $config['debug']);
-        $container->setParameter(
-            'zco_vitesse.combine_assets', 
-            $config['combine_assets'] === null ? !$container->getParameterBag()->resolveValue($config['debug']) : $config['combine_assets']
-        );
-        
+
         $definition    = $container->getDefinition('zco_vitesse.assetic.asset_manager');
         $resourceGraph = array();
         $aliases       = array();
-        
-        //Configure le chargement des ressources définies dans la configuration.
-        foreach ($config['assets'] as $provides => $formula)
-        {
-            if (count($formula['inputs']) === 1)
-            {
-                if (!preg_match('/\.(css|js)$/', $provides, $matches))
-                {
-                    if (empty($formula['type']))
-                    {
-                        throw new \InvalidArgumentException(sprintf('Cannot guess type of "%s" asset.', $provides));
-                    }
-                    $type = $formula['type'];
-                }
-                else
-                {
-                    $type = $matches[1];
-                }
-                
-                $name = sha1($provides).'_'.$type;
-            }
-            else
-            {
-                $name = sha1($provides).'_pkg';
-            }
-            
-            $definition->addMethodCall('setFormula', array($name, array($formula['inputs'], array(), array())));
-            $resourceGraph[$name] = array();
-            $aliases[$provides] = $name;
-        }
 		
 		foreach ($container->getParameter('kernel.bundles') as $bundle => $className)
 		{

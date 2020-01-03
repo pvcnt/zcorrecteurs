@@ -6,8 +6,7 @@ services:
             - @zco_vitesse.resource_map
             - @router
             - %zco_vitesse.web_dir%
-            - %zco_vitesse.combine_assets%
-            - %zco_vitesse.debug%
+            - %kernel.debug%
             - @?logger
     
     zco_vitesse.resource_map:

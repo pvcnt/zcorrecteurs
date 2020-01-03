@@ -42,9 +42,9 @@ class ResourceManager implements ResourceManagerInterface
 	private $map;
 	private $router;
 	private $webDir;
-	private $combine;
 	private $debug;
 	private $logger;
+	private $writer;
 	
 	private $feeds = array();
 	private $symbols = array();
@@ -59,16 +59,14 @@ class ResourceManager implements ResourceManagerInterface
 	 * @param ResourceMap $map
 	 * @param RouterInterface $router
 	 * @param string $webDir
-	 * @param boolean $combine
-	 * @param boolean $debug 
+	 * @param boolean $debug
 	 * @param LoggerInterface|null $logger
 	 */
 	public function __construct(
 		AssetManager $am, 
 		ResourceMap $map, 
 		RouterInterface $router, 
-		$webDir, 
-		$combine = true, 
+		$webDir,
 		$debug = false, 
 		LoggerInterface $logger = null
 	)
@@ -77,7 +75,6 @@ class ResourceManager implements ResourceManagerInterface
 		$this->map = $map;
 		$this->router = $router;
 		$this->webDir = $webDir;
-		$this->combine = $combine;
 		$this->debug = $debug;
 		$this->logger = $logger;
 		$this->writer = new AssetWriter($webDir);
@@ -186,16 +183,14 @@ class ResourceManager implements ResourceManagerInterface
 			}
 		}
 		
-		$symbols = $this->buildCollection($collection, $resolved, $type);
+		$this->buildCollection($collection, $resolved, $type);
+
+        if (!is_file($this->webDir.$collection->getTargetPath()))
+        {
+            $this->writer->writeAsset($collection);
+        }
 		
-		if ($this->combine)
-		{
-			$this->writeCollection($collection);
-		
-			return array($collection->getTargetPath());
-		}
-		
-		return $this->buildUrls($symbols);
+		return array($collection->getTargetPath());
 	}
 	
 	/**
@@ -204,7 +199,6 @@ class ResourceManager implements ResourceManagerInterface
 	 * @param  AssetCollection $collection Une collection de ressources initialisée
 	 * @param  array $resolved La liste des ressources à inclure (tous types confondus)
 	 * @param  string $type Le type des ressources ('js' ou 'css')
-	 * @return array La liste des noms de ressources inclues dans la collection
 	 */
 	private function buildCollection(AssetCollection $collection, array $resolved, $type)
 	{
@@ -226,20 +220,9 @@ class ResourceManager implements ResourceManagerInterface
 				}
 				catch (\InvalidArgumentException $e)
 				{
-					if ($this->debug)
-					{
-						$name = array_search($symbol, $this->aliases);
-						throw new \InvalidArgumentException(
-							str_replace($symbol, $name, $e->getMessage()),
-							$e->getCode(),
-							$e->getPrevious()
-						);
-					}
 					if ($this->logger)
 					{
-						$this->logger->warn(sprintf(
-							'Cannot find resource "%s".', $name
-						));
+						$this->logger->warn(sprintf('Cannot find resource "%s".', $symbol));
 					}
 					continue;
 				}
@@ -252,40 +235,5 @@ class ResourceManager implements ResourceManagerInterface
 		}
 		
 		$collection->setTargetPath('/compiled/'.substr(sha1(implode("\n", $hashes)), 0, 10).'.min.'.$type);
-		
-		return $symbols;
 	}
-	
-	/**
-	 * Écrit le contenu d'une collection de ressources sur le disque.
-	 *
-	 * @param AssetCollection $collection
-	 */
-	private function writeCollection(AssetCollection $collection)
-	{
-		if (!is_file($this->webDir.$collection->getTargetPath()))
-		{
-			$this->writer->writeAsset($collection);
-		}
-	}
-	
-	/**
-	 * Génère les chemins vers une série de ressources.
-	 *
-	 * @param  array $symbols Une liste de ressources
-	 * @return array Une liste de chemins
-	 */
-	private function buildUrls(array $symbols)
-	{
-		$urls = array();
-		foreach ($symbols as $symbol)
-		{
-			$urls[] = $this->router->generate(
-				'zco_vitesse_asset', 
-				array('hash' => str_replace('_', '.', $symbol))
-			);
-		}
-		
-		return $urls;
-	}	
 }
