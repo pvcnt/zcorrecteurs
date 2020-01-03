@@ -26,7 +26,7 @@ require_once __DIR__.'/../app/autoload.php';
 require_once __DIR__.'/../app/AppKernel.php';
 
 $environment = getenv('SYMFONY_ENVIRONMENT') ?: 'prod';
-$debug = getenv('SYMFONY_DEBUG') === 'yes';
+$debug = getenv('SYMFONY_DEBUG') === 'true';
 
 // Initialise Sentry aussi tôt que possible.
 $sentryDsn = getenv('SENTRY_DSN');

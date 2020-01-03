@@ -2,7 +2,7 @@
 
 // Configuration de la connexion à la base de données
 $container->setParameter('database.prefix', 'zcov2_');
-$container->setParameter('database.host', getenv('DATABASE_HOST') ?: 'localhost');
+$container->setParameter('database.host', getenv('DATABASE_HOST') ?: '127.0.0.1');
 $container->setParameter('database.base', getenv('DATABASE_BASE') ?: 'zcodev');
 $container->setParameter('database.username', getenv('DATABASE_USER') ?: 'zcodev');
 $container->setParameter('database.password', getenv('DATABASE_PASSWORD') ?: 'pass');
