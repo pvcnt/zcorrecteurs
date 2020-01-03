@@ -95,9 +95,7 @@ class AppKernel extends Kernel
      */
     public function getCacheDir()
     {
-        return is_dir('/var/cache/zcorrecteurs')
-            ? '/var/cache/zcorrecteurs/' . $this->environment
-            : parent::getCacheDir();
+        return getenv('SYMFONY_CACHE_DIR') ?: parent::getCacheDir();
     }
 
 
@@ -106,9 +104,7 @@ class AppKernel extends Kernel
      */
     public function getLogDir()
     {
-        return is_dir('/var/log/zcorrecteurs')
-            ? '/var/log/zcorrecteurs'
-            : parent::getLogDir();
+        return getenv('SYMFONY_LOG_DIR') ?: parent::getLogDir();
     }
 
     /**
