@@ -43,6 +43,7 @@ RUN apk update && \
 	php7-zip \
 	php7-gd \
 	php7-pdo_mysql \
+	php7-pdo_sqlite \
 	php7-curl \
 	php7-apcu \
 	php7-ctype \
