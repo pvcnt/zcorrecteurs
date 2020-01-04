@@ -2,6 +2,11 @@
     "name": "zcorrecteurs/zcorrecteurs",
     "type": "project",
     "license": "AGPL",
+    "config": {
+        "platform":{
+            "php": "7.2.0"
+        }
+    },
     "autoload": {
         "psr-0": {
             "Zco\\": "src",
@@ -30,8 +35,9 @@
         "knplabs/gaufrette": "^0.1.7",
         "doctrine/dbal": "^2.1.6",
         "sentry/sdk": "^2.0.4",
-	"scrivo/highlight.php": "^9.0",
+	    "scrivo/highlight.php": "^9.0",
         "sphinx/client": "dev-master",
-        "sendgrid/sendgrid": "^7.4"
+        "sendgrid/sendgrid": "^7.4",
+        "microsoft/windowsazure": "^0.5"
     }
 }

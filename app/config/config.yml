@@ -22,4 +22,4 @@ knp_gaufrette:
         uploads:
             local:   { directory:  %kernel.root_dir%/../web/uploads, create: true }
     filesystems:
-            uploads: { adapter: uploads }
+        uploads: { adapter: uploads }

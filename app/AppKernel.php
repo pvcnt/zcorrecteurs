@@ -106,27 +106,4 @@ class AppKernel extends Kernel
     {
         return getenv('SYMFONY_LOG_DIR') ?: parent::getLogDir();
     }
-
-    /**
-     * Gère le passage automatique vers le site de tests si celui-ci est
-     * ouvert et que l'utilisateur en a émis le souhait. Rien d'automatisé
-     * n'est en place, il faut (dé)commenter cette section de code.
-     */
-    /* public function onKernelRequest(GetResponseEvent $event)
-      {
-      if (isset($_COOKIE['beta_tests']) && $_COOKIE['beta_tests'] === 'participer' && substr($_SERVER['SERVER_NAME'], 0, strpos($_SERVER['SERVER_NAME'], '.')) !== 'test')
-      {
-      if ($this->getEnvironment() === 'prod')
-      {
-      $url = 'test'.substr($_SERVER['SERVER_NAME'], strpos($_SERVER['SERVER_NAME'], '.'));
-      }
-      else
-      {
-      $url = 'test.'.$_SERVER['SERVER_NAME'];
-      }
-
-      $event->setProcessed(true);
-      $event->setReturnValue(new Symfony\Component\HttpFoundation\RedirectResponse('//'.$url.$_SERVER['REQUEST_URI']));
-      }
-      } */
 }

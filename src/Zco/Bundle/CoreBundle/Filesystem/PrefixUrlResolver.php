@@ -19,33 +19,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Zco\Bundle\CoreBundle\DependencyInjection;
+namespace Zco\Bundle\CoreBundle\Filesystem;
 
-use Symfony\Component\Config\Definition\Builder\TreeBuilder;
-use Symfony\Component\Config\Definition\ConfigurationInterface;
-
-class Configuration implements ConfigurationInterface
+final class PrefixUrlResolver implements UrlResolver
 {
-	/**
-	 * Generates the configuration tree builder.
-	 *
-	 * @return TreeBuilder The tree builder
-	 */
-	public function getConfigTreeBuilder()
-	{
-		$builder = new TreeBuilder();
+    private $prefix;
 
-		$builder->root('zco_core')
-			->children()
-				->arrayNode('cache')
-					->addDefaultsIfNotSet()
-					->children()
-						->scalarNode('default')->defaultValue('file')->end()
-					->end()
-				->end()
-			->end()
-		;
+    /**
+     * Constructor.
+     *
+     * @param string $prefix
+     */
+    public function __construct(string $prefix)
+    {
+        $this->prefix = rtrim($prefix, '/');
+    }
 
-		return $builder;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    public function resolve(string $path): string
+    {
+        return $this->prefix . '/' . $path;
+    }
 }
