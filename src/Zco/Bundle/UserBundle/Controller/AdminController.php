@@ -89,8 +89,8 @@ class AdminController extends Controller
 		$query = \Doctrine_Core::getTable('Tentative')->getByBlockedQuery();
 		
 		$paginator = new Paginator($query, 20);
-        $page = $request->get('page', 1);
-        $url = $this->generateUrl('zco_user_admin_blocages') . '?page=%s';
+        $page = (int)$request->get('p', 1);
+        $url = $this->generateUrl('zco_user_admin_blocages') . '?p=%s';
 		
 		//Paramétrage de la vue.
 		\Page::$titre = 'Tentatives de connexion ratées';

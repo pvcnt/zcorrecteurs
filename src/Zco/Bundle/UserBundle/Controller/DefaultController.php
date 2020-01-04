@@ -104,8 +104,8 @@ class DefaultController extends Controller
 		
 		//Pagination.
         $paginator = new Paginator(\Doctrine_Core::getTable('Utilisateur')->getQuery($query), 30);
-		$page = $request->get('page', 1);
-		$url = $this->generateUrl('zco_user_index') . '?page=%s';
+		$page = (int)$request->get('p', 1);
+		$url = $this->generateUrl('zco_user_index') . '?p=%s';
 		
 		//Paramétrage de la vue.
 		fil_ariane(null);
