@@ -19,12 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Zco\Bundle\ForumBundle\Controller\BaseController;
+
 /**
  * Contrôleur pour l'édition d'un sondage.
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class EditerSondageAction extends ForumActions
+class EditerSondageAction extends BaseController
 {
 	public function execute()
 	{

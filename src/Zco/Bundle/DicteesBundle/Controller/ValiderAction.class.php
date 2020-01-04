@@ -19,12 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Zco\Bundle\DicteesBundle\Controller\BaseController;
+
 /**
  * Passage d'une dictée en/hors ligne.
  *
  * @author mwsaz <mwsaz@zcorrecteurs.fr>
  */
-class ValiderAction extends DicteesActions
+class ValiderAction extends BaseController
 {
 	public function execute()
 	{

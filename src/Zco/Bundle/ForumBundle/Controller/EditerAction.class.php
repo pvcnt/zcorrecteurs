@@ -20,13 +20,14 @@
  */
 
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Zco\Bundle\ForumBundle\Controller\BaseController;
 
 /**
  * Contrôleur pour l'édition d'un message.
  *
  * @author DJ Fox <djfox@zcorrecteurs.fr>
  */
-class EditerAction extends ForumActions
+class EditerAction extends BaseController
 {
 	public function execute()
 	{

@@ -19,12 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Zco\Bundle\DicteesBundle\Controller\BaseController;
+
 /**
  * Listage des dictées d'un membre.
  *
  * @author mwsaz <mwsaz@zcorrecteurs.fr>
  */
-class ProposerAction extends DicteesActions
+class ProposerAction extends BaseController
 {
 	public function execute()
 	{

@@ -20,13 +20,14 @@
  */
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\ForumBundle\Controller\BaseController;
 
 /**
  * Liste des messages d'un membre.
  *
  * @author mwsaz@zcorrecteurs.fr
  */
-class MessagesAction extends ForumActions
+class MessagesAction extends BaseController
 {
 	public function execute()
 	{

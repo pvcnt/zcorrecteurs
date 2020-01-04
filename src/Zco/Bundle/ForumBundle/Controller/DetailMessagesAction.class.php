@@ -18,7 +18,10 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-class DetailMessagesAction extends ForumActions
+
+use Zco\Bundle\ForumBundle\Controller\BaseController;
+
+class DetailMessagesAction extends BaseController
 {
 	public function execute()
 	{

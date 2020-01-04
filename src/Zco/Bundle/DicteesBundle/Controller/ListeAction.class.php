@@ -20,13 +20,14 @@
  */
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zco\Bundle\DicteesBundle\Controller\BaseController;
 
 /**
  * Liste des dictées.
  *
  * @author mwsaz <mwsaz@zcorrecteurs.fr>
  */
-class ListeAction extends DicteesActions
+class ListeAction extends BaseController
 {
 	public function execute()
 	{

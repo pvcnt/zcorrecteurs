@@ -19,12 +19,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpFoundation\Response;
+use Zco\Bundle\ForumBundle\Controller\BaseController;
+
 /**
  * Contrôleur chargé du changement du statut résolu d'un sujet.
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class ChangerResoluAction extends ForumActions
+class ChangerResoluAction extends BaseController
 {
 	public function execute()
 	{

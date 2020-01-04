@@ -19,15 +19,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Zco\Bundle\DicteesBundle\Controller\BaseController;
+
+include_once(dirname(__FILE__).'/../modeles/statistiques.php');
+
 /**
  * Graphiques de la progression d'un membre sur les dictées.
  *
  * @author mwsaz <mwsaz@zcorrecteurs.fr>
  */
-
-include(dirname(__FILE__).'/../modeles/statistiques.php');
-
-class GraphiqueAction extends DicteesActions
+class GraphiqueAction extends BaseController
 {
 	public function execute()
 	{

@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Zco\Bundle\ForumBundle\Controller\BaseController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
@@ -26,7 +27,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  *
  * @author Original DJ Fox <marthe59@yahoo.fr>
  */
-class IndexAction extends ForumActions
+class IndexAction extends BaseController
 {
 	public function execute()
 	{
@@ -118,11 +119,23 @@ class IndexAction extends ForumActions
 			'ListerCategories' => $ListerCategories,
 			'Lu' => $Lu,
 			'ListerVisiteurs' => ListerVisiteursForumEntier(),
-			'Ordre' => $this->executeAjaxOrdre(true)
+			'Ordre' => $this->ordre()
 		));
 		$response->headers->set('Pragma', 'no-cache');
 		$response->headers->set('cache-Control', 'no-cache');
 		
 		return $response;
 	}
+
+    private function ordre()
+    {
+        $dbh = \Doctrine_Manager::connection()->getDbh();
+
+        $stmt = $dbh->prepare('SELECT ordre FROM zcov2_forum_ordre '
+            .'WHERE utilisateur_id = :id');
+        $stmt->bindParam(':id', $_SESSION['id']);
+        $stmt->execute();
+
+        return $stmt->fetchColumn(0);
+    }
 }

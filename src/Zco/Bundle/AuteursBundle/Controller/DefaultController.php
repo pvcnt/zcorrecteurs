@@ -19,6 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace Zco\Bundle\AuteursBundle\Controller;
+
 use Zco\Bundle\CoreBundle\Generator\Generator;
 
 /**
@@ -26,16 +28,16 @@ use Zco\Bundle\CoreBundle\Generator\Generator;
  *
  * @author mwsaz <mwsaz@zcorrecteurs.fr>
  */
-class AuteursActions extends Generator
+class DefaultController extends Generator
 {
 	protected $modelName = 'Auteur';
 
-	public function executeIndex()
+	public function indexAction()
 	{
 		return $this->executeList();
 	}
 
-	public function executeAjouter()
+	public function ajouterAction()
 	{
 		if (empty($_GET['id']))
 			return $this->executeNew();
@@ -49,7 +51,7 @@ class AuteursActions extends Generator
 
 			if ($vars['nom'] != '')
 			{
-				$Auteur = new Auteur();
+				$Auteur = new \Auteur();
 				foreach ($vars as $column => $value)
 					$Auteur[$column] = $value;
 				$Auteur['utilisateur_id'] = $_SESSION['id'];
@@ -62,29 +64,29 @@ class AuteursActions extends Generator
 		return render_to_response('ZcoAuteursBundle::ajouter-mini.html.php', compact('Auteur'));
 	}
 
-	public function executeModifier()
+	public function modifierAction()
 	{
-		zCorrecteurs::VerifierFormatageUrl(null, true);
+        \zCorrecteurs::VerifierFormatageUrl(null, true);
 		return $this->executeEdit($_GET['id']);
 	}
 
-	public function executeSupprimer()
+	public function supprimerAction()
 	{
-		zCorrecteurs::VerifierFormatageUrl(null, true);
+        \zCorrecteurs::VerifierFormatageUrl(null, true);
 		return $this->executeDelete($_GET['id']);
 	}
 
 	// Ressources liées à un auteur
-	public function executeAuteur()
+	public function auteurAction()
 	{
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))
 		{
-			$Auteur = Doctrine_Core::getTable('Auteur')->find($_GET['id']);
+			$Auteur = \Doctrine_Core::getTable('Auteur')->find($_GET['id']);
 			if($Auteur === false)
 				return redirect(1, 'index.html', MSG_ERROR, -1);
 
-			Page::$titre = htmlspecialchars($Auteur);
-			zCorrecteurs::VerifierFormatageUrl($Auteur->__toString(), true);
+			\Page::$titre = htmlspecialchars($Auteur);
+            \zCorrecteurs::VerifierFormatageUrl($Auteur->__toString(), true);
 			
 			//Inclusion de la vue
 			fil_ariane(array(

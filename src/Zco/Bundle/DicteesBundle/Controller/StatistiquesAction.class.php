@@ -19,15 +19,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Zco\Bundle\DicteesBundle\Controller\BaseController;
+
+include(dirname(__FILE__).'/../modeles/statistiques.php');
+
 /**
  * Statistiques sur un membre.
  *
  * @author mwsaz <mwsaz@zcorrecteurs.fr>
  */
-
-include(dirname(__FILE__).'/../modeles/statistiques.php');
-
-class StatistiquesAction extends DicteesActions
+class StatistiquesAction extends BaseController
 {
 	public function execute()
 	{

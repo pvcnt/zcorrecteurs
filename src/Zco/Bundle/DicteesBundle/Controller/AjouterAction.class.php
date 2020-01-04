@@ -19,12 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Zco\Bundle\DicteesBundle\Controller\BaseController;
+
 /**
  * Ajout d'une dictée.
  *
  * @author mwsaz <mwsaz@zcorrecteurs.fr>
  */
-class AjouterAction extends DicteesActions
+class AjouterAction extends BaseController
 {
 	public function execute()
 	{

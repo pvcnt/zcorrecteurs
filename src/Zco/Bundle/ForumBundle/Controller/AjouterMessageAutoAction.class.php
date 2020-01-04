@@ -19,13 +19,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Zco\Bundle\ForumBundle\Controller\BaseController;
+
 /**
  * Action responsable de l'ajout d'un nouveau message automatique
  * à destination des modérateurs.
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class AjouterMessageAutoAction extends ForumActions
+class AjouterMessageAutoAction extends BaseController
 {
 	public function execute()
 	{

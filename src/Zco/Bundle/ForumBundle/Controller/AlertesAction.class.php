@@ -19,12 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Zco\Bundle\ForumBundle\Controller\BaseController;
+
 /**
  * Contrôleur se chargeant de la visualisation des alertes sur un sujet.
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class AlertesAction extends ForumActions
+class AlertesAction extends BaseController
 {
 	public function execute()
 	{

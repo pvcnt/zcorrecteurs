@@ -19,12 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Zco\Bundle\ForumBundle\Controller\BaseController;
+
 /**
  * Contrôleur gérant la division d'un sujet.
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class DiviserAction extends ForumActions
+class DiviserAction extends BaseController
 {
 	public function execute()
 	{

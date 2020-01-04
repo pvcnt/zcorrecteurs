@@ -19,12 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Zco\Bundle\ForumBundle\Controller\BaseController;
+
 /**
  * Affichage des sujets en favoris, en coup de coeur, etc
  *
  * @author Original Barbatos <barbatos@f1m.fr>
  */
-class SuiviAction extends ForumActions
+class SuiviAction extends BaseController
 {
 	public function execute()
 	{

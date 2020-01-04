@@ -19,12 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Zco\Bundle\ForumBundle\Controller\BaseController;
+
 /**
  * Contrôleur marquant tous les sujets comme lu.
  *
  * @author Skydreamer
  */
-class MarquerLuAction extends ForumActions
+class MarquerLuAction extends BaseController
 {
 	public function execute()
 	{

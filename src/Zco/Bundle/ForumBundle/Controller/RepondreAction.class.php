@@ -20,13 +20,14 @@
  */
 
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Zco\Bundle\ForumBundle\Controller\BaseController;
 
 /**
  * Contrôleur gérant la réponse à un sujet.
  *
  * @author Original DJ Fox <marthe59@yahoo.fr>
  */
-class RepondreAction extends ForumActions
+class RepondreAction extends BaseController
 {
 	public function execute()
 	{

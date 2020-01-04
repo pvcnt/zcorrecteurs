@@ -19,12 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Zco\Bundle\BlogBundle\Controller\BaseController;
+
 /**
  * Contrôleur gérant l'affichage des billets refusés.
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class RefusAction extends BlogActions
+class RefusAction extends BaseController
 {
 	public function execute()
 	{

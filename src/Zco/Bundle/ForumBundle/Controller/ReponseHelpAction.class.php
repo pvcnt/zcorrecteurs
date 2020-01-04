@@ -19,13 +19,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpFoundation\Response;
+use Zco\Bundle\ForumBundle\Controller\BaseController;
+
 /**
  * Contrôleur chargé du changement du statut ayant aidé ou non d'une
  * réponse à un sujet.
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class ReponseHelpAction extends ForumActions
+class ReponseHelpAction extends BaseController
 {
 	public function execute()
 	{

@@ -19,12 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Zco\Bundle\DicteesBundle\Controller\BaseController;
+
 /**
  * Réponse à une soumission.
  *
  * @author mwsaz <mwsaz@zcorrecteurs.fr>
  */
-class RepondreAction extends DicteesActions
+class RepondreAction extends BaseController
 {
 	public function execute()
 	{

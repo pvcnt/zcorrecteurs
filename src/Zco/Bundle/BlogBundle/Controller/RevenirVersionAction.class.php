@@ -19,12 +19,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpFoundation\Response;
+use Zco\Bundle\BlogBundle\Controller\BaseController;
+
 /**
  * Contrôleur gérant le retour à une ancienne version.
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class RevenirVersionAction extends BlogActions
+class RevenirVersionAction extends BaseController
 {
 	public function execute()
 	{

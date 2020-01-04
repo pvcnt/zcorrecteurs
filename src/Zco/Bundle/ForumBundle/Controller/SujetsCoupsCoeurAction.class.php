@@ -19,12 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Zco\Bundle\ForumBundle\Controller\BaseController;
+
 /**
  * Controleur pour l'affichage des sujets en coups de coeur.
  *
  * @author Barbatos <barbatos.tsyke@gmail.com>
  */
-class SujetsCoupsCoeurAction extends ForumActions
+class SujetsCoupsCoeurAction extends BaseController
 {
 	public function execute()
 	{

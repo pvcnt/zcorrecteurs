@@ -19,12 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Zco\Bundle\BlogBundle\Controller\BaseController;
+
 /**
  * Contrôleur gérant l'affichage des billets en cours de rédaction.
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class BrouillonsAction extends BlogActions
+class BrouillonsAction extends BaseController
 {
 	public function execute()
 	{

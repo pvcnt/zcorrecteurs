@@ -19,6 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Zco\Bundle\ForumBundle\Controller\BaseController;
+
 /**
  * Contrôleur pour le vote (vérification et enregistrement du vote).
  *
@@ -26,7 +28,7 @@
  *         vincent1870 <vincent@zcorrecteurs.fr>
  *         Ziame <ziame@zcorrecteurs.fr>
  */
-class VoterAction extends ForumActions
+class VoterAction extends BaseController
 {
 	public function execute()
 	{

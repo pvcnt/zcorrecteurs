@@ -19,9 +19,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace Zco\Bundle\BlogBundle\Controller;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class BlogActions extends Controller
+class BaseController extends Controller
 {
     protected $_vars = array();
     

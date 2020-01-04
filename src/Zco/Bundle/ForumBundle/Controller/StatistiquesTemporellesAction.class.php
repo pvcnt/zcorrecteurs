@@ -19,6 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Zco\Bundle\ForumBundle\Controller\BaseController;
+
 /**
  * Contrôleur gérant l'affichage des statistiques temporelles
  * d'utilisation du forum.
@@ -26,7 +28,7 @@
  * @author Savageman <savageman@zcorrecteurs.fr>
  * @todo		Changer le droit associé (cf security.yml).
  */
-class StatistiquesTemporellesAction extends ForumActions
+class StatistiquesTemporellesAction extends BaseController
 {
 	public function execute()
 	{

@@ -19,14 +19,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Zco\Bundle\BlogBundle\Controller\BaseController;
 
 /**
  * Contrôleur gérant la page de modification du billet.
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class AdminBilletAction extends BlogActions
+class AdminBilletAction extends BaseController
 {
 	public function execute()
 	{

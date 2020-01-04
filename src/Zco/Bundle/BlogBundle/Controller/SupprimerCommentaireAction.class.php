@@ -19,12 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Zco\Bundle\BlogBundle\Controller\BaseController;
+
 /**
  * Contrôleur gérant la suppression d'un commentaire sur un billet du blog.
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class SupprimerCommentaireAction extends BlogActions
+class SupprimerCommentaireAction extends BaseController
 {
 	public function execute()
 	{
@@ -49,7 +51,7 @@ class SupprimerCommentaireAction extends BlogActions
 			Page::$titre = htmlspecialchars($InfosCommentaire['version_titre']).' - Supprimer un commentaire';
 
 			//Si on a bien le droit de supprimer le commentaire
-			if(verifier('blog_supprimer_commentaires') || ($InfosCommentaire['utilisateur_id'] == $_SESSION['id'] && verifier('blog_supprimer_ses_commentaire')) || ($createur == true && $nfosBillet['blog_etat'] != BLOG_VALIDE))
+			if(verifier('blog_supprimer_commentaires') || ($InfosCommentaire['utilisateur_id'] == $_SESSION['id'] && verifier('blog_supprimer_ses_commentaire')) || ($createur == true && $InfosBillet['blog_etat'] != BLOG_VALIDE))
 			{
 				//Si on veut le supprimer
 				if(isset($_POST['confirmer']))

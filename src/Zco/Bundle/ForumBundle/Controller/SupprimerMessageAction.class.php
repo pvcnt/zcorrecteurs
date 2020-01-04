@@ -19,12 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Zco\Bundle\ForumBundle\Controller\BaseController;
+
 /**
  * Contrôleur pour la suppression d'un message.
  *
  * @author DJ Fox <djfox@zcorrecteurs.fr>
  */
-class SupprimerMessageAction extends ForumActions
+class SupprimerMessageAction extends BaseController
 {
 	public function execute()
 	{

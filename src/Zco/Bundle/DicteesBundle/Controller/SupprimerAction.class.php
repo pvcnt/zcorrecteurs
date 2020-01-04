@@ -19,13 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Zco\Bundle\DicteesBundle\Controller\BaseController;
+
 /**
  * Suppression d'une dictée.
  *
  * @author mwsaz <mwsaz@zcorrecteurs.fr>
  */
-
-class SupprimerAction extends DicteesActions
+class SupprimerAction extends BaseController
 {
 	public function execute()
 	{

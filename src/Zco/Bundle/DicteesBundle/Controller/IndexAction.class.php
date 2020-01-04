@@ -19,12 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Zco\Bundle\DicteesBundle\Controller\BaseController;
+
 /**
  * Accueil des dictées.
  *
  * @author mwsaz <mwsaz@zcorrecteurs.fr>
  */
-class IndexAction extends DicteesActions
+class IndexAction extends BaseController
 {
 	public function execute()
 	{

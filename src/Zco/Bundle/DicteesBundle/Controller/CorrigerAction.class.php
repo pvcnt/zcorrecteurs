@@ -19,12 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Zco\Bundle\DicteesBundle\Controller\BaseController;
+
 /**
  * Lecture d'une dictée.
  *
  * @author mwsaz <mwsaz@zcorrecteurs.fr>
  */
-class CorrigerAction extends DicteesActions
+class CorrigerAction extends BaseController
 {
 	public function execute()
 	{

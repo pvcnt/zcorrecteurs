@@ -19,26 +19,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+namespace Zco\Bundle\ForumBundle\Controller;
+
 use Symfony\Component\HttpFoundation\Response;
 
-class ForumActions extends Controller
+class DefaultController extends BaseController
 {
-	public function __construct()
+	public function ajaxAutocompleteTitreAction()
 	{
-	    $resourceManager = \Container::getService('zco_vitesse.resource_manager');
-		$resourceManager->addFeed(
-		    '/forum/messages-flux.html', 
-		    array('title' => 'Derniers messages du forum')
-		);
-		$resourceManager->requireResource(
-		    '@ZcoForumBundle/Resources/public/css/forum.css'
-		);
-	}
-
-	public function executeAjaxAutocompleteTitre()
-	{
-		$dbh = Doctrine_Manager::connection()->getDbh();
+		$dbh = \Doctrine_Manager::connection()->getDbh();
 
 		$stmt = $dbh->prepare("SELECT sujet_titre, sujet_forum_id
 			FROM zcov2_forum_sujets
@@ -49,13 +38,13 @@ class ForumActions extends Controller
 		foreach($donnees as $row)
 			if(verifier('voir_sujets', $row['sujet_forum_id']))
 				$retour[] = $row['sujet_titre'];
-		$response = new Symfony\Component\HttpFoundation\Response;
+		$response = new Response();
 		$response->headers->set('Content-type',  'application/json');
 		$response->setContent(json_encode($retour));
 		return $response;
 	}
 
-	public function executeAjaxEditInPlaceTitre()
+	public function ajaxEditInPlaceTitreAction()
 	{
 		if(!empty($_POST['id_suj']))
 		{
@@ -65,23 +54,23 @@ class ForumActions extends Controller
 				($infos['sujet_auteur'] == $_SESSION['id'] && verifier('editer_ses_sujets', $infos['sujet_forum_id']))
 			)
 			{
-				$dbh = Doctrine_Manager::connection()->getDbh();
+				$dbh = \Doctrine_Manager::connection()->getDbh();
 				$stmt = $dbh->prepare("UPDATE zcov2_forum_sujets
 					SET sujet_titre = :titre
 					WHERE sujet_id = :id");
 				$stmt->bindParam(':id', $_POST['id_suj']);
 				$stmt->bindValue(':titre', trim($_POST['data']));
 				$stmt->execute();
-				return new Symfony\Component\HttpFoundation\Response($_POST['data']);
+				return new Response($_POST['data']);
 			}
 			else
-				return new Symfony\Component\HttpFoundation\Response('Vous n\'avez pas l\'autorisation de modifier le titre.');
+				return new Response('Vous n\'avez pas l\'autorisation de modifier le titre.');
 		}
 		else
-			return new Symfony\Component\HttpFoundation\Response('ERREUR');
+			return new Response('ERREUR');
 	}
 
-	public function executeAjaxEditInPlaceSousTitre()
+	public function ajaxEditInPlaceSousTitreAction()
 	{
 		if(!empty($_POST['id_suj']))
 		{
@@ -91,23 +80,23 @@ class ForumActions extends Controller
 				($infos['sujet_auteur'] == $_SESSION['id'] && verifier('editer_ses_sujets', $infos['sujet_forum_id']))
 			)
 			{
-				$dbh = Doctrine_Manager::connection()->getDbh();
+				$dbh = \Doctrine_Manager::connection()->getDbh();
 				$stmt = $dbh->prepare("UPDATE zcov2_forum_sujets
 					SET sujet_sous_titre = :sous_titre
 					WHERE sujet_id = :id");
 				$stmt->bindParam(':id', $_POST['id_suj']);
 				$stmt->bindValue(':sous_titre', trim($_POST['data']));
 				$stmt->execute();
-				return new Symfony\Component\HttpFoundation\Response($_POST['data']);
+				return new Response($_POST['data']);
 			}
 			else
-				return new Symfony\Component\HttpFoundation\Response('Vous n\'avez pas l\'autorisation de modifier le sous-titre.');
+				return new Response('Vous n\'avez pas l\'autorisation de modifier le sous-titre.');
 		}
 		else
-			return new Symfony\Component\HttpFoundation\Response('ERREUR');
+			return new Response('ERREUR');
 	}
 
-	public function executeAjaxDeplacementMassif()
+	public function ajaxDeplacementMassifAction()
 	{
 		//Inclusion du modèle
 		include(BASEPATH.'/src/Zco/Bundle/ForumBundle/modeles/categories.php');
@@ -150,10 +139,10 @@ class ForumActions extends Controller
 			$ret = 'Vous n\'avez pas les droits requis ou un paramètre a été omis.';
 		}
         
-		return new Symfony\Component\HttpFoundation\Response($ret);
+		return new Response($ret);
 	}
 
-	public function executeAjaxDeplacerSujet()
+	public function ajaxDeplacerSujetAction()
 	{
 		//Inclusion du modèle
 		include(BASEPATH.'/src/Zco/Bundle/ForumBundle/modeles/categories.php');
@@ -210,10 +199,10 @@ class ForumActions extends Controller
 		{
 			$ret = 'Vous n\'avez pas les droits requis ou un paramètre a été omis.';
 		}
-		return new Symfony\Component\HttpFoundation\Response($ret);
+		return new Response($ret);
 	}
 
-	public function executeAjaxMultiCiter()
+	public function ajaxMultiCiterAction()
 	{
 		//Inclusion du modèle
 		include(BASEPATH.'/src/Zco/Bundle/ForumBundle/modeles/messages.php');
@@ -250,11 +239,11 @@ class ForumActions extends Controller
 			return new Response('Vous n\'avez pas les droits requis ou un paramètre a été omis.');
 	}
 
-	public function executeAjaxReponseAuto()
+	public function ajaxReponseAutoAction()
 	{
 		if(verifier('poster_reponse_auto', $_POST['fofo_actuel']))
 		{
-			$messages = Doctrine_Core::getTable('ForumMessageAuto')->Lister();
+			$messages = \Doctrine_Core::getTable('ForumMessageAuto')->Lister();
 
 			$ret = '<form method="post" action=""><select name="message" id="message">';
 			foreach($messages as $message)
@@ -262,15 +251,15 @@ class ForumActions extends Controller
 				$ret .= '<option value="'.$message['id'].'">'.$message['nom'].'</option>';
 			}
 			$ret .= '</select><input type="submit" value="Aller" /></form>';
-			return new Symfony\Component\HttpFoundation\Response($ret);
+			return new Response($ret);
 		}
 		else
 		{
-			return new Symfony\Component\HttpFoundation\Response('Vous n\'avez pas l\'autorisation de voir les messages automatiques.');
+			return new Response('Vous n\'avez pas l\'autorisation de voir les messages automatiques.');
 		}
 	}
 
-	public function executeAjaxRetourSondage()
+	public function ajaxRetourSondageAction()
 	{
 		//Inclusion du modèle
 		include(BASEPATH.'/src/Zco/Bundle/ForumBundle/modeles/sondages.php');
@@ -298,29 +287,29 @@ class ForumActions extends Controller
 						}
 						$retour .= ', ';
 					}
-					return new Symfony\Component\HttpFoundation\Response(mb_substr($retour, 0, -2));
+					return new Response(mb_substr($retour, 0, -2));
 				}
 				else
 				{
-					return new Symfony\Component\HttpFoundation\Response('Ce sondage n\'existe pas ou personne n\'y a voté.');
+					return new Response('Ce sondage n\'existe pas ou personne n\'y a voté.');
 				}
 
 			}
 			else
 			{
-				return new Symfony\Component\HttpFoundation\Response('Vous n\'avez pas le droit de voir qui a voté.');
+				return new Response('Vous n\'avez pas le droit de voir qui a voté.');
 			}
 		}
 		else
 		{
-			return new Symfony\Component\HttpFoundation\Response('Le forum visionné actuellement n\'est pas spécifié.');
+			return new Response('Le forum visionné actuellement n\'est pas spécifié.');
 		}
 	}
 
-	public function executeAjaxOrdre($ordre = false)
+	public function ajaxOrdreAction()
 	{
-		$dbh = Doctrine_Manager::connection()->getDbh();
-		if(!$ordre && isset($_POST['ordre']))
+		$dbh = \Doctrine_Manager::connection()->getDbh();
+		if(isset($_POST['ordre']))
 		{
 			$stmt = $dbh->prepare('REPLACE INTO zcov2_forum_ordre '
 				.'(utilisateur_id, ordre) VALUES ('
@@ -328,7 +317,8 @@ class ForumActions extends Controller
 			$stmt->bindParam(':id', $_SESSION['id']);
 			$stmt->bindValue(':ordre', $_POST['ordre']);
 			$stmt->execute();
-			return new Symfony\Component\HttpFoundation\Response('');
+
+			return new Response('');
 		}
 
 		$stmt = $dbh->prepare('SELECT ordre FROM zcov2_forum_ordre '
@@ -336,32 +326,7 @@ class ForumActions extends Controller
 		$stmt->bindParam(':id', $_SESSION['id']);
 		$stmt->execute();
 		$d = $stmt->fetchColumn(0);
-		if($ordre) return $d;
-		return new Symfony\Component\HttpFoundation\Response($d);
-	}
 
-	public function initSujet()
-	{
-		include(dirname(__FILE__).'/../modeles/sujets.php');
-
-		//Compatibilité
-		if(!isset($_GET['s'])) $_GET['s'] = $_GET['id'];
-		if(empty($_GET['id'])) $_GET['id'] = $_GET['s'];
-
-		//--- Récupération des infos sur le sujet ---
-		if(empty($_GET['id']) || !is_numeric($_GET['id']))
-			return array(redirect(45, '/forum/', MSG_ERROR), null);
-		else
-		{
-			$InfosSujet = InfosSujet($_GET['id']);
-			$InfosForum = InfosCategorie($InfosSujet['sujet_forum_id']);
-			if(empty($InfosSujet))
-				return array(redirect(47, '/forum/', MSG_ERROR), null);
-		}
-
-		//--- Modification des balises méta ---
-		Page::$titre = htmlspecialchars($InfosSujet['sujet_titre']);
-
-		return array($InfosSujet, $InfosForum);
+		return new Response($d);
 	}
 }

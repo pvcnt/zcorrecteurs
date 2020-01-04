@@ -19,12 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Zco\Bundle\ForumBundle\Controller\BaseController;
+
 /**
  * Contrôleur gérant l'affichage des forums d'une catégorie.
  *
  * @author DJ Fox <djfox@zcorrecteurs.fr>
  */
-class CategorieAction extends ForumActions
+class CategorieAction extends BaseController
 {
 	public function execute()
 	{

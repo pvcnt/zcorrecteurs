@@ -19,12 +19,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpFoundation\Response;
+use Zco\Bundle\ForumBundle\Controller\BaseController;
+
 /**
  * Contrôleur pour la suppression d'un sujet.
  *
  * @author DJ Fox <djfox@zcorrecteurs.fr>
  */
-class SupprimerSujetAction extends ForumActions
+class SupprimerSujetAction extends BaseController
 {
 	public function execute()
 	{

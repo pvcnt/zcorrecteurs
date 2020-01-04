@@ -20,13 +20,14 @@
  */
 
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Zco\Bundle\ForumBundle\Controller\BaseController;
 
 /**
  * Contrôleur gérant la création d'un nouveau sujet.
  *
  * @author Original DJ Fox <marthe59@yahoo.fr>
  */
-class NouveauAction extends ForumActions
+class NouveauAction extends BaseController
 {
 	public function execute()
 	{

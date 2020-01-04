@@ -19,12 +19,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpFoundation\Response;
+use Zco\Bundle\BlogBundle\Controller\BaseController;
+
 /**
  * Contrôleur gérant la proposition d'un billet.
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class ProposerAction extends BlogActions
+class ProposerAction extends BaseController
 {
 	public function execute()
 	{

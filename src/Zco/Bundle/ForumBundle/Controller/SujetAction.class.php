@@ -20,13 +20,14 @@
  */
 
 use Symfony\Component\HttpFoundation\Response;
+use Zco\Bundle\ForumBundle\Controller\BaseController;
 
 /**
  * Contrôleur gérant l'affichage d'un sujet.
  *
  * @author DJ Fox <djfox@zcorrecteurs.fr>
  */
-class SujetAction extends ForumActions
+class SujetAction extends BaseController
 {
 	public function execute()
 	{

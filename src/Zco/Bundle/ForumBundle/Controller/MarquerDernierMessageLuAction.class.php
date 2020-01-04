@@ -19,12 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Zco\Bundle\ForumBundle\Controller\BaseController;
+
 /**
  * Contrôleur pour le marquage du dernier message lu d'un sujet
  *
  * @author DJ Fox <djfox@zcorrecteurs.fr>
  */
-class MarquerDernierMessageLuAction extends ForumActions
+class MarquerDernierMessageLuAction extends BaseController
 {
 	public function execute()
 	{

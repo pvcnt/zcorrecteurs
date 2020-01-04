@@ -19,12 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Zco\Bundle\ForumBundle\Controller\BaseController;
+
 /**
  * Contrôleur pour la suppression d'un sondage.
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class SupprimerSondageAction extends ForumActions
+class SupprimerSondageAction extends BaseController
 {
 	public function execute()
 	{

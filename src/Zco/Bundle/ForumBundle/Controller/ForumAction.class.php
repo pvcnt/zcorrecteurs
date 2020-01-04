@@ -19,12 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Zco\Bundle\ForumBundle\Controller\BaseController;
+
 /**
  * Contrôleur gérant l'affichage de la liste des sujets d'un forum.
  *
  * @author DJ Fox <marthe59@yahoo.fr>
  */
-class ForumAction extends ForumActions
+class ForumAction extends BaseController
 {
 	public function execute()
 	{

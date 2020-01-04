@@ -19,12 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Zco\Bundle\BlogBundle\Controller\BaseController;
+
 /**
  * Commentaires non lus par l'équipe de modération
  *
  * @author mwsaz
  */
-class NouveauxCommentairesAction extends BlogActions
+class NouveauxCommentairesAction extends BaseController
 {
 	public function execute()
 	{

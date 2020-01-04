@@ -86,9 +86,9 @@ class RouterListener extends ContainerAware implements EventSubscriberInterface
 		}
 		
 		$action = str_replace('-', '_', $action);
-		$camelizedAction = $this->camelize($action);
-		
-		//On vérifie qu'un bundle au nom du module existe bien. Par convention, 
+        $camelizedAction = $this->camelize($action);
+
+        //On vérifie qu'un bundle au nom du module existe bien. Par convention,
 		//tous les bundles directement liés au site de zCorrection et gérés par 
 		//ce listener ne sont pas préfixés par un nom de vendor.
 		$bundle = 'Zco'.ucfirst($module).'Bundle';
@@ -108,7 +108,15 @@ class RouterListener extends ContainerAware implements EventSubscriberInterface
 		//espace de noms.
 		$namespacedAction1 = $bundle->getNamespace().'\\Controller\\'.$camelizedAction.'Controller';
 		$namespacedAction2 = $bundle->getNamespace().'\\Controller\\DefaultController';
-		if (class_exists($namespacedAction1))
+        if (is_file($bundle->getPath().'/Controller/'.$camelizedAction.'Action.class.php'))
+        {
+            //Les contrôleurs ne sont pas (encore) contenus dans des namespaces et
+            //doivent donc être trouvés et inclus à la main.
+            $class = $camelizedAction.'Action';
+            include_once($bundle->getPath().'/Controller/'.$class.'.class.php');
+            $method = 'execute';
+        }
+        elseif (class_exists($namespacedAction1))
 		{
 		    $class = $namespacedAction1;
 		    $method = 'defaultAction';
@@ -117,27 +125,6 @@ class RouterListener extends ContainerAware implements EventSubscriberInterface
 		{
 		    $class = $namespacedAction2;
 		    $method = lcfirst($camelizedAction).'Action';
-		}
-        else
-        {
-            //Les contrôleurs ne sont pas (encore) contenus dans des namespaces et 
-            //doivent donc être trouvés et inclus à la main.
-    		if (is_file($bundle->getPath().'/Controller/actions.class.php'))
-    		{
-    			include_once($bundle->getPath().'/Controller/actions.class.php');
-    		}
-		
-    		if (is_file($bundle->getPath().'/Controller/'.$camelizedAction.'Action.class.php'))
-    		{
-    		    $class = $camelizedAction.'Action';
-    			include_once($bundle->getPath().'/Controller/'.$class.'.class.php');
-    			$method = 'execute';
-    		}
-    		elseif (class_exists(ucfirst($module).'Actions'))
-    		{
-    			$class = ucfirst($module).'Actions';
-    			$method = 'execute'.$camelizedAction;
-    		}
 		}
 
         //On définit l'attribut _controller de la requête pour recoller avec le 

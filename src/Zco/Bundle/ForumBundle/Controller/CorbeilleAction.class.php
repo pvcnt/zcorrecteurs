@@ -19,13 +19,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpFoundation\Response;
+use Zco\Bundle\ForumBundle\Controller\BaseController;
+
 /**
  * Contrôleur chargé du changement de la mise en corbeille ou de la
  * restauration d'un sujet.
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class CorbeilleAction extends ForumActions
+class CorbeilleAction extends BaseController
 {
 	public function execute()
 	{

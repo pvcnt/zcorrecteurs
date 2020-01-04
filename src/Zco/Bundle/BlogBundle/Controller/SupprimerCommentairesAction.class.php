@@ -19,12 +19,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpFoundation\Response;
+use Zco\Bundle\BlogBundle\Controller\BaseController;
+
 /**
  * Contrôleur gérant la suppression de tous les commentaires d'un billet.
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class SupprimerCommentairesAction extends BlogActions
+class SupprimerCommentairesAction extends BaseController
 {
 	public function execute()
 	{

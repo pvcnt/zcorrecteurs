@@ -19,12 +19,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpFoundation\Response;
+use Zco\Bundle\ForumBundle\Controller\BaseController;
+
 /**
  * Contrôleur chargé du changement du statut fermé d'un sujet.
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class ChangerStatutAction extends ForumActions
+class ChangerStatutAction extends BaseController
 {
 	public function execute()
 	{

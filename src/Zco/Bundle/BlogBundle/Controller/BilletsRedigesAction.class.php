@@ -19,12 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Zco\Bundle\BlogBundle\Controller\BaseController;
+
 /**
  * Contrôleur gérant l'affichage de tous les billets validés d'un membre.
  *
  * @author Barbatos <barbatos@f1m.fr>
  */
-class BilletsRedigesAction extends BlogActions
+class BilletsRedigesAction extends BaseController
 {
 	public function execute()
 	{

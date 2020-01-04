@@ -27,7 +27,7 @@
 
 /**
  * Récupère une liste de billets du blog.
- * @param arary $params			Une liste de paramètres de filtrage.
+ * @param array $params			Une liste de paramètres de filtrage.
  * @param integer $page			Une page (limite la liste des résultats à cette page).
  * @return array
  */
@@ -186,7 +186,7 @@ function ListerBillets($params, $page = null, $nombre = 15)
 /**
  * Compte tous les billets en ligne.
  * @param integer $id		ID de la catégorie (null pour toutes les catégories confondues)
- * @return array
+ * @return int
  */
 function CompterListerBilletsEnLigne($id = null)
 {

@@ -19,6 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace Zco\Bundle\DicteesBundle\Controller;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 /**
@@ -26,10 +28,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
  *
  * @author mwsaz <mwsaz@zcorrecteurs.fr>
  */
-class DicteesActions extends Controller
+abstract class BaseController extends Controller
 {
 	public function __construct()
 	{
-		$this->config = Config::Get('messages');
+		$this->config = \Config::Get('messages');
 	}
 }

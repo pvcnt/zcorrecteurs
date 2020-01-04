@@ -19,13 +19,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Zco\Bundle\ForumBundle\Controller\BaseController;
+
 /**
  * Controleur pour le listage des sujets dans auxquels un membre a
  * participé.
  *
  * @author DJ Fox <djfox@zcorrecteurs.fr>
  */
-class SujetsParticipeAction extends ForumActions
+class SujetsParticipeAction extends BaseController
 {
 	public function execute()
 	{

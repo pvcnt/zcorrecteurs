@@ -19,21 +19,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace Zco\Bundle\CategoriesBundle\Controller;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Actions pour tout ce qui concerne la gestion des catégories du site.
  *
  * @author vincent1870 <vincent@zcorrecteurs.fr>
  */
-class CategoriesActions extends Controller
+final class DefaultController extends Controller
 {
 	/**
 	 * Affichage de la liste des catégories.
 	 */
-	public function executeIndex()
+	public function indexAction()
 	{
-		zCorrecteurs::VerifierFormatageUrl();
+		\zCorrecteurs::VerifierFormatageUrl();
 
 		//Si on veut descendre une catégorie
 		if(!empty($_GET['descendre']) && is_numeric($_GET['descendre']) && verifier('cats_ordonner'))
@@ -74,10 +77,10 @@ class CategoriesActions extends Controller
 	/**
 	 * Ajout d'une nouvelle catégorie.
 	 */
-	public function executeAjouter()
+	public function ajouterAction()
 	{
-		zCorrecteurs::VerifierFormatageUrl();
-		Page::$titre = 'Ajouter une catégorie';
+		\zCorrecteurs::VerifierFormatageUrl();
+		\Page::$titre = 'Ajouter une catégorie';
 
 		//Si on veut ajouter une catégorie
 		if(!empty($_POST['nom']))
@@ -94,10 +97,10 @@ class CategoriesActions extends Controller
 	/**
 	 * Modification d'une catégorie.
 	 */
-	public function executeEditer()
+	public function editerAction()
 	{
-		zCorrecteurs::VerifierFormatageUrl(null, true);
-		Page::$titre = 'Modifier une catégorie';
+		\zCorrecteurs::VerifierFormatageUrl(null, true);
+		\Page::$titre = 'Modifier une catégorie';
 
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))
 		{
@@ -138,10 +141,10 @@ class CategoriesActions extends Controller
 	/**
 	 * Suppression d'une catégorie.
 	 */
-	public function executeSupprimer()
+	public function supprimerAction()
 	{
-		zCorrecteurs::VerifierFormatageUrl(null, true);
-		Page::$titre = 'Supprimer une catégorie';
+		\zCorrecteurs::VerifierFormatageUrl(null, true);
+		\Page::$titre = 'Supprimer une catégorie';
 
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))
 		{
@@ -161,7 +164,7 @@ class CategoriesActions extends Controller
 			//Si on annule
 			elseif(isset($_POST['annuler']))
 			{
-				return new Symfony\Component\HttpFoundation\RedirectResponse('index.html');
+				return new RedirectResponse('index.html');
 			}
 
 			fil_ariane('Supprimer une catégorie');
@@ -177,11 +180,11 @@ class CategoriesActions extends Controller
 	 * Page permettant d'afficher la représetation graphique d'un arbre.
 	 * @author mwsaz
 	 */
-	public function executeImage()
+	public function imageAction()
 	{
-		zCorrecteurs::VerifierFormatageUrl();
-		Page::$titre = 'Représentation graphique';
-		fil_ariane(Page::$titre);
+		\zCorrecteurs::VerifierFormatageUrl();
+		\Page::$titre = 'Représentation graphique';
+		fil_ariane(\Page::$titre);
 		return render_to_response(array('categories' => ListerCategories()));
 	}
 
@@ -189,14 +192,14 @@ class CategoriesActions extends Controller
 	 * Affichage du graphique des catégories.
 	 * @author mwsaz
 	 */
-	public function executeGraphique()
+	public function graphiqueAction()
 	{
 		isset($_POST['id']) && $_GET['id'] = $_POST['id'];
 		isset($_POST['id2']) && $_GET['id2'] = $_POST['id2'];
 		isset($_POST['orientation']) && $_GET['orientation'] = $_POST['orientation'];
 		unset($_POST['id'], $_POST['id2'], $_POST['orientation']);
 
-		zCorrecteurs::VerifierFormatageUrl(null, true, true);
+		\zCorrecteurs::VerifierFormatageUrl(null, true, true);
 		include(dirname(__FILE__).'/../modeles/graphique.php');
 
 		$cat = is_numeric($_GET['id']) ? $_GET['id'] : 1;
