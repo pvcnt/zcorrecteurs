@@ -1,5 +1,0 @@
-# Crontab d'exemple, pensez à spécifier des chemins absolus vers les différents fichiers.
-# m h  dom mon dow   command
-0 0 * * * php app/console cron:quotidien >> app/logs/crons/quotidien.log 2>&1
-0 * * * * php app/console cron:sessions >> app/logs/crons/sessions.log 2>&1
-0 0 * * * bin/sphinx index >> app/logs/crons/sphinx.log 2>&1

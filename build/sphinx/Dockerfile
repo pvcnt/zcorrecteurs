@@ -21,4 +21,4 @@ COPY build/sphinx/entrypoint.sh /
 RUN chmod +x /entrypoint.sh && chmod +x /usr/local/bin/reindex
 
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["searchd", "--nodetach"]
+CMD ["serve"]

@@ -23,6 +23,17 @@ envsubst '\$DATABASE_HOST \$DATABASE_USER \$DATABASE_PASSWORD \$DATABASE_BASE' \
   < /etc/sphinxsearch/sphinx.conf.template \
   > /etc/sphinxsearch/sphinx.conf
 
-/usr/local/bin/reindex
+function reindex {
+  /usr/local/bin/reindex
+}
 
-exec "$@"
+function serve {
+  reindex
+  searchd --nodetach
+}
+
+case "$1" in
+  serve) serve;;
+  reindex) reindex;;
+  *) exec "$@";;
+esac
