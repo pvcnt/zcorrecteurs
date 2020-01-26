@@ -13,8 +13,11 @@ class Version20200126000000 extends AbstractMigration
 {
     public function up(OutputInterface $output)
     {
-        $this->addSql('ALTER TABLE zcov2_utilisateurs DROP utilisateur_absent, utilisateur_debut_absence, utilisateur_fin_absence, utilisateur_motif_absence');
-        $this->addSql('UPDATE zcov2_quiz SET aleatoire=10 WHERE aleatoire = 1');
+        $this->addSql('ALTER TABLE zcov2_utilisateurs 
+                            DROP utilisateur_absent, 
+                            DROP utilisateur_debut_absence, 
+                            DROP utilisateur_fin_absence, 
+                            DROP utilisateur_motif_absence');
     }
 
     public function down(OutputInterface $output)
