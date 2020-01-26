@@ -9,7 +9,7 @@ services:
         arguments:
             - "@zco_parser.parser"
             - "@zco_vitesse.resource_manager"
-            - "@Zco\Bundle\CoreBundle\Filesystem\UrlResolver"
+            - "@zco.url_resolver"
         tags:
             - { name: templating.helper, alias: messages }
 

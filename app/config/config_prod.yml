@@ -9,7 +9,7 @@ monolog:
             level: info
 
 services:
-  Zco\Bundle\CoreBundle\Filesystem\UrlResolver:
+  zco.url_resolver:
     class: Zco\Bundle\CoreBundle\Filesystem\AzureBlobUrlResolver
     arguments: [zcorrecteurs, uploads]
 

@@ -27,6 +27,6 @@ knp_gaufrette:
     uploads: { adapter: uploads }
 
 services:
-  Zco\Bundle\CoreBundle\Filesystem\UrlResolver:
+  zco.url_resolver:
     class: Zco\Bundle\CoreBundle\Filesystem\LocalUrlResolver
     arguments: [uploads]
