@@ -21,8 +21,6 @@
 
 namespace Zco\Bundle\CoreBundle\Filesystem;
 
-use Zco\Bundle\FileBundle\Util\UrlResolver;
-
 final class LocalUrlResolver implements UrlResolver
 {
     private $directory;

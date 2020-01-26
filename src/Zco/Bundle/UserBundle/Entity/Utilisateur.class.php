@@ -19,11 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Zco\Bundle\CoreBundle\Filesystem\UrlResolver;
 use Zco\Bundle\UserBundle\Validator\Constraints;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
-use Symfony\Component\Validator\Constraints\Callback;
-use Symfony\Component\Validator\ExecutionContext;
 
 /**
  * Utilisateur inscrit sur le site.
@@ -188,7 +185,7 @@ class Utilisateur extends BaseUtilisateur
 	public function getAvatarUrl()
 	{
 		if ($this->avatar) {
-		    return \Container::getService(UrlResolver::class)->resolveUrl('avatars/' . $this->avatar);
+		    return \Container::getService('zco.url_resolver')->resolveUrl('avatars/' . $this->avatar);
 		}
 
 		return '/img/default-avatar.png';
