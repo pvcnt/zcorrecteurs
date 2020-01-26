@@ -127,7 +127,7 @@
 		<hr />
 
 		<?php if(!empty($r['utilisateur_avatar'])){ ?>
-		<img src="/uploads/avatars/<?php echo $r['utilisateur_avatar']; ?>" alt="Avatar" class="avatar" />
+            <?php echo $view['messages']->afficherAvatar($r) ?>
 		<?php } ?>
 
 		<ul>

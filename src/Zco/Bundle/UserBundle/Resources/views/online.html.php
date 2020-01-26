@@ -48,7 +48,7 @@
 					<?php if ($user->isAuthenticated()): ?>
 					<div class="avatar">
 						<a href="<?php echo $view['router']->generate('zco_user_profile', array('id' => $user->getUser()->getId(), 'slug' => rewrite($user->getUser()->getUsername()))) ?>">
-							<img src="<?php echo htmlspecialchars($user->getUser()->getAvatar()) ?>" 
+							<img src="<?php echo htmlspecialchars($user->getUser()->getAvatarUrl()) ?>"
 								alt="Avatar de <?php echo htmlspecialchars($user->getUser()->getUsername()) ?>" />
 						</a>
 						<?php endif ?>

@@ -34,7 +34,7 @@
 		<tr>
 			<td class="avatar">
 				<a href="<?php echo $view['router']->generate('zco_user_profile', array('id' => $user->getId(), 'slug' => rewrite($user->getUsername()))) ?>">
-					<img src="<?php echo htmlspecialchars($user->getAvatar()) ?>" 
+					<img src="<?php echo htmlspecialchars($user->getAvatarUrl()) ?>"
 						 alt="Avatar de <?php echo htmlspecialchars($user->getUsername()) ?>" />
 				</a>
 			</td>

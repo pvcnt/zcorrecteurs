@@ -6,7 +6,10 @@ services:
 
     zco_core.templating.helper.messages:
         class: Zco\Bundle\CoreBundle\Templating\Helper\MessagesHelper
-        arguments: [@zco_parser.parser, @zco_vitesse.resource_manager]
+        arguments:
+            - "@zco_parser.parser"
+            - "@zco_vitesse.resource_manager"
+            - "@Zco\Bundle\CoreBundle\Filesystem\UrlResolver"
         tags:
             - { name: templating.helper, alias: messages }
 
@@ -26,9 +29,3 @@ services:
         arguments: [@zco_core.cache]
         tags:
             - { name: templating.helper, alias: cache }
-    
-    zco_core.templating.helper.resources:
-        class: Zco\Bundle\CoreBundle\Templating\Helper\ResourcesHelper
-        arguments: [@zco_vitesse.resource_manager]
-        tags:
-            - { name: templating.helper, alias: resources }

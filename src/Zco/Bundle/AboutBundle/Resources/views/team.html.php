@@ -20,7 +20,7 @@
 		<li class="span2">
 			<div class="thumbnail center" style="height: 165px;">
 				<a href="<?php echo $view['router']->generate('zco_user_profile', array('id' => $user->getId(), 'slug' => rewrite($user->getUsername()))) ?>" class="avatar-link" title="Groupe : <?php echo htmlspecialchars($user->getGroup()) ?>">
-                    <img src="<?php echo htmlspecialchars($user->getAvatar()) ?>" alt="Avatar de <?php echo htmlspecialchars($user->getUsername()) ?>" style="vertical-align: middle;" />
+                    <img src="<?php echo htmlspecialchars($user->getAvatarUrl()) ?>" alt="Avatar de <?php echo htmlspecialchars($user->getUsername()) ?>" style="vertical-align: middle;" />
 				</a>
 				<div class="caption" style="text-align: center;">
 					<a href="<?php echo $view['router']->generate('zco_user_profile', array('id' => $user->getId(), 'slug' => rewrite($user->getUsername()))) ?>" title="Groupe : <?php echo htmlspecialchars($user->getGroup()) ?>">

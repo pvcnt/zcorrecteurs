@@ -315,7 +315,9 @@ in_array($InfosCandidature['candidature_etat'], array(CANDIDATURE_ACCEPTE, CANDI
 					<?php
 					if(!empty($valeur['utilisateur_citation'])) echo htmlspecialchars($valeur['utilisateur_citation']).'<br />';
 					if(!empty($valeur['utilisateur_avatar'])): ?>
-						<a href="/membres/profil-<?php echo $valeur['utilisateur_id']; ?>-<?php echo rewrite($valeur['utilisateur_pseudo']); ?>.html"><img src="/uploads/avatars/<?php echo $valeur['utilisateur_avatar']; ?>" alt="<?php echo htmlspecialchars($valeur['utilisateur_pseudo']); ?>" /></a><br />
+						<a href="/membres/profil-<?php echo $valeur['utilisateur_id']; ?>-<?php echo rewrite($valeur['utilisateur_pseudo']); ?>.html">
+                            <?php echo $view['messages']->afficherAvatar($valeur) ?>
+                        </a><br />
 					<?php endif; ?>
 					<?php echo $view->get('messages')->afficherGroupe($valeur) ?><br/>
 

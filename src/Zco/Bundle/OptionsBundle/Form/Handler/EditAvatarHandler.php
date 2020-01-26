@@ -21,8 +21,8 @@
 
 namespace Zco\Bundle\OptionsBundle\Form\Handler;
 
+use Gaufrette\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Imagine\Image\Box;
 use Imagine\Image\ImagineInterface;
 
@@ -40,22 +40,26 @@ class EditAvatarHandler
 
 	protected $request;
 	protected $imagine;
-	
+	protected $filesystem;
+
 	/**
 	 * Constructeur.
 	 *
-	 * @param Request $this->request
+	 * @param Request $request
+     * @param ImagineInterface $imagine
+     * @param Filesystem $filesystem
 	 */
-	public function __construct(Request $request, ImagineInterface $imagine)
+	public function __construct(Request $request, ImagineInterface $imagine, Filesystem $filesystem)
 	{
 		$this->request = $request;
 		$this->imagine = $imagine;
+		$this->filesystem = $filesystem;
 	}
 	
 	/**
 	 * Procède à la soumission du formulaire.
 	 *
-	 * @param  Utilisateur $user L'utiliser à modifier
+	 * @param  \Utilisateur $user L'utiliser à modifier
 	 * @return boolean Le formulaire a-t-il été traité correctement ?
 	 */
 	public function process(\Utilisateur $user)
@@ -71,7 +75,7 @@ class EditAvatarHandler
 	/**
 	 * Action à effectuer lorsque le formulaire est valide.
 	 *
-	 * @param Utilisateur $user L'entité liée au formulaire
+	 * @param \Utilisateur $user L'entité liée au formulaire
 	 */
 	protected function onSuccess(\Utilisateur $user)
 	{
@@ -100,37 +104,29 @@ class EditAvatarHandler
 				return self::WRONG_FORMAT;
 			}
 
-			//Si l'utilisateur a déjà un avatar local, on le supprime.
-			if ($user->hasAvatar())
-			{
-				unlink(BASEPATH.'/web/'.$user->getAvatar());
+			//Si l'utilisateur a déjà un avatar, on le supprime.
+			if ($user->hasAvatar()) {
+			    $this->filesystem->delete('avatars/' . $user->getAvatar());
 			}
 
-			//Déplacement du fichier temporaire vers le dossier des avatars.
-			$extension = $file->guessExtension();
-			$path = array(BASEPATH.'/web/uploads/avatars', $user->getId().'.'.$extension);
-			try
-			{
-				$file = $file->move($path[0], $path[1]);
-			}
-			catch (FileException $e)
-			{
+            //Redimensionnement de l'avatar si nécessaire afin de ne pas dépasser 100x100.
+            $contents = file_get_contents($file->getPathname());
+            $size = getimagesize($file->getPathname());
+            if ($size[0] > 100 || $size[1] > 100) {
+                $contents = (string) $this->imagine->load($contents)->thumbnail(new Box(100, 100));
+            }
+
+            //Déplacement du fichier temporaire vers le dossier des avatars.
+            $filename = $user->getId() . '.' . $file->guessExtension();
+            $destination = 'avatars/' . $filename;
+			try {
+                $this->filesystem->write($destination, $contents);
+			} catch (\Exception $e) {
 				return self::INTERNAL_ERROR;
 			}
 
-			//Redimensionnement de l'avatar si nécessaire afin de ne pas dépasser 100x100.
-			$size = getimagesize($path[0].'/'.$path[1]);
-			if ($size[0] > 100 || $size[1] > 100)
-			{
-				$this
-					->imagine
-					->open($path[0].'/'.$path[1])
-					->thumbnail(new Box(100, 100))
-					->save($path[0].'/'.$path[1]);
-			}
-			
 			//On termine en modifiant l'utilisateur pour lui lier son nouvel avatar.
-			$user->setAvatar($path[1]);
+			$user->setAvatar($filename);
 			$user->save();
 
 			return self::AVATAR_CHANGED;

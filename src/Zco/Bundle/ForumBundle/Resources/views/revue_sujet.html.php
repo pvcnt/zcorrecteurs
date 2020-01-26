@@ -50,7 +50,9 @@
 					if(!empty($valeur['auteur_avatar']))
 					{
 					?>
-					<a href="/membres/profil-<?php echo $valeur['message_auteur']; ?>-<?php echo rewrite($valeur['auteur_message_pseudo']); ?>.html"><img src="/uploads/avatars/<?php echo $valeur['auteur_avatar']; ?>" alt="Avatar" /></a><br />
+					<a href="/membres/profil-<?php echo $valeur['message_auteur']; ?>-<?php echo rewrite($valeur['auteur_message_pseudo']); ?>.html">
+                        <?php echo $view['messages']->afficherAvatar($valeur, 'auteur_avatar') ?>
+                    </a><br />
 					<?php
 					}
 					echo $view->get('messages')->afficherGroupe($valeur) ?><br/>

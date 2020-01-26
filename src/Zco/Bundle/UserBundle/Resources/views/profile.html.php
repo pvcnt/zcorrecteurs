@@ -4,7 +4,7 @@
 	<div class="row-fluid">
 		<div class="span2" style="text-align: center;">
 			<div class="avatar" style="margin-bottom: 5px;">
-				<img src="<?php echo $user->getAvatar() ?>" />
+				<img src="<?php echo $user->getAvatarUrl() ?>" />
 			</div>
 			<?php echo $view->get('messages')->userGroup($user) ?>
 		</div>

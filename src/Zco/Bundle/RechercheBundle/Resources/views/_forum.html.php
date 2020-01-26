@@ -46,7 +46,7 @@
 			<td class="infos_membre">
 				<?php if(!empty($result['utilisateur_avatar'])){ ?>
 				<a href="/membres/profil-<?php echo $result['message_auteur']; ?>-<?php echo rewrite($result['utilisateur_pseudo']); ?>.html" rel="nofollow">
-					<img src="/uploads/avatars/<?php echo htmlspecialchars($result['utilisateur_avatar']); ?>" alt="<?php echo 'Avatar de '.htmlspecialchars($result['utilisateur_pseudo']); ?>" />
+                    <?php echo $view['messages']->afficherAvatar($result) ?>
 				</a><br />
 				<?php } ?>
 

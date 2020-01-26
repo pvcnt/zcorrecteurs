@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Zco\Bundle\CoreBundle\Filesystem\UrlResolver;
 use Zco\Bundle\UserBundle\Validator\Constraints;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Constraints\Callback;
@@ -178,11 +179,16 @@ class Utilisateur extends BaseUtilisateur
 	{
 		$this->avatar = $avatar;
 	}
-	
+
 	public function getAvatar()
+    {
+        return $this->avatar;
+    }
+	
+	public function getAvatarUrl()
 	{
 		if ($this->avatar) {
-			return '/uploads/avatars/'.$this->avatar;
+		    return \Container::getService(UrlResolver::class)->resolveUrl('avatars/' . $this->avatar);
 		}
 
 		return '/img/default-avatar.png';

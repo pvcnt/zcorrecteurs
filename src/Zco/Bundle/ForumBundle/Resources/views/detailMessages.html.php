@@ -6,7 +6,9 @@
 if(!empty($InfosUtilisateur['utilisateur_avatar']))
 {
 ?>
-	<p class="centre"><img src="/uploads/avatars/<?php echo $InfosUtilisateur['utilisateur_avatar']; ?>" alt="Avatar de <?php echo $InfosUtilisateur['utilisateur_pseudo']; ?>" /></p>
+	<p class="centre">
+        <?php echo $view['messages']->afficherAvatar($InfosUtilisateur) ?>
+    </p>
 <?php
 }
 ?>

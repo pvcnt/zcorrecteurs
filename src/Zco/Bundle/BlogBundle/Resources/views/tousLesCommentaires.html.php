@@ -56,7 +56,9 @@
 		<tr>
 			<td class="infos_membre">
 			<?php if(!empty($valeur['avatar_auteur'])){ ?>
-				<a href="/membres/profil-<?php echo $valeur['id_auteur']; ?>-<?php echo rewrite($valeur['pseudo_auteur']); ?>.html"><img src="/uploads/avatars/<?php echo $valeur['avatar_auteur']; ?>" alt="Avatar" /></a><br />
+				<a href="/membres/profil-<?php echo $valeur['id_auteur']; ?>-<?php echo rewrite($valeur['pseudo_auteur']); ?>.html">
+                    <?php echo $view['messages']->afficherAvatar($valeur, 'avatar_auteur') ?>
+                </a><br />
             <?php } ?>
             <?php echo $view->get('messages')->afficherGroupe($valeur) ?><br/>
 			<?php if(verifier('sanctionner')){ ?>

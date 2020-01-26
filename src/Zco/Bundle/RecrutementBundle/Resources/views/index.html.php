@@ -11,7 +11,7 @@
 		<tr>
 	<?php endif; ?>
 	<td class="center">
-		<img src="/uploads/avatars/<?php echo htmlspecialchars($membre['avatar']) ?>" alt="<?php echo htmlspecialchars($membre['pseudo']) ?>" title="<?php echo htmlspecialchars($membre['pseudo']) ?>" class="team-avatar" />
+		<img src="<?php echo htmlspecialchars($membre->getAvatarUrl()) ?>" alt="<?php echo htmlspecialchars($membre['pseudo']) ?>" title="<?php echo htmlspecialchars($membre['pseudo']) ?>" class="team-avatar" />
 	</td>
 	<?php endforeach; ?>
 	</tr>

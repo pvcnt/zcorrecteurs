@@ -24,7 +24,7 @@
 		<label class="control-label">Avatar actuel</label>
 		<div class="controls">
 			<div class="avatar" style="float: left;">
-				<img src="<?php echo htmlspecialchars($user->getAvatar()) ?>" alt="Avatar actuel" />
+				<img src="<?php echo htmlspecialchars($user->getAvatarUrl()) ?>" alt="Avatar actuel" />
 			</div>
 			<div style="margin-left: 110px">
 				<p>

@@ -21,6 +21,7 @@
 
 namespace Zco\Bundle\CoreBundle\Templating\Helper;
 
+use Zco\Bundle\CoreBundle\Filesystem\UrlResolver;
 use Zco\Bundle\ParserBundle\Parser\ParserInterface;
 use Zco\Bundle\VitesseBundle\Resource\ResourceManagerInterface;
 use Symfony\Component\Templating\Helper\Helper;
@@ -34,16 +35,23 @@ class MessagesHelper extends Helper
 {
     private $parser;
     private $resourceManager;
+    private $urlResolver;
 	
 	/**
 	 * Constructeur.
 	 *
 	 * @param ParserInterface $parser
+     * @param ResourceManagerInterface $resourceManager
+     * @param UrlResolver $urlResolver
 	 */
-	public function __construct(ParserInterface $parser, ResourceManagerInterface $resourceManager)
+	public function __construct(
+	    ParserInterface $parser,
+        ResourceManagerInterface $resourceManager,
+        UrlResolver $urlResolver)
 	{
 	    $this->parser = $parser;
 	    $this->resourceManager = $resourceManager;
+	    $this->urlResolver = $urlResolver;
     }
 
 	/**
@@ -81,28 +89,18 @@ class MessagesHelper extends Helper
 	/**
 	 * Retourne un avatar prêt à l'affichage.
 	 *
-	 * @param  string $u  Tableau des informations utilisateur.
+	 * @param  array $u  Tableau des informations utilisateur.
 	 * @param  string $av Colonne contenant l'avatar de l'utilisateur.
 	 * @return string
 	 */
-	public function afficherAvatar($u, $av = 'utilisateur_avatar')
+	public function afficherAvatar(array $u, $av = 'utilisateur_avatar')
 	{
-		return empty($u[$av]) ? null :
-			'<img src="/uploads/avatars/'.htmlspecialchars($u[$av]).'" '
-			.'alt="Avatar" class="avatar" />';
-	}
-	
-	/**
-	 * Retourne un avatar prêt à l'affichage (version Doctrine).
-	 *
-	 * @param  string $u L'utilisateur
-	 * @return string
-	 */
-	public function avatar($u)
-	{
-		return !strlen($u['avatar']) ? null :
-			'<img src="/uploads/avatars/'.htmlspecialchars($u['avatar']).'" '
-			.'alt="Avatar" class="avatar" />';
+	    if (empty($u[$av])) {
+	        return '';
+        }
+	    $publicUrl = $this->urlResolver->resolveUrl('avatars/' . htmlspecialchars($u[$av]));
+
+		return sprintf('<img src="%s" alt="Avatar" class="avatar" />', $publicUrl);
 	}
 
 	/**
