@@ -51,8 +51,7 @@ function ListerCommentairesBillet($id, $page)
 			"Ma.utilisateur_nb_sanctions AS nb_sanctions_auteur, " .
 			"Ma.utilisateur_pourcentage AS pourcentage_auteur, " .
 			"Ma.utilisateur_titre, " .
-			"Ma.utilisateur_citation, Ma.utilisateur_absent, " .
-			"Ma.utilisateur_fin_absence, " .
+			"Ma.utilisateur_citation, " .
 
 			"Mb.utilisateur_id AS id_edite, " .
 			"Mb.utilisateur_pseudo AS pseudo_edite, " .

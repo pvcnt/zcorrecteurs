@@ -44,7 +44,6 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 			'zco_core.filter_menu.left_menu'        => 'onFilterLeftMenu',
 			'zco_core.filter_menu.speedbarre_right' => 'onFilterSpeedbarreRight',
 			AdminEvents::MENU                       => 'onFilterAdmin',
-			CoreEvents::DAILY_CRON                  => 'onDailyCron',
 		);
 	}
 	
@@ -105,15 +104,5 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 		$tab->addChild('Modifier les options de navigation par défaut', array(
 			'uri' => $this->container->get('router')->generate('zco_options_preferences', array('id' => '0')),
 		))->secure('options_editer_defaut');
-	}
-
-	/**
-	 * Met à jour les absences chaque jour.
-	 *
-	 * @param CronEvent $event
-	 */
-	public function onDailyCron(CronEvent $event)
-	{
-		\Doctrine_Core::getTable('Utilisateur')->purgeAbsences();
 	}
 }

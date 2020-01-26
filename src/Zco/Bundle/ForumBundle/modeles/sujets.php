@@ -83,7 +83,7 @@ function ListerMessages($id, $PremierMess, $MessaAfficher)
 	SELECT DISTINCT message_id, message_auteur, Ma.utilisateur_id_groupe AS auteur_groupe, Ma.utilisateur_sexe, message_texte, message_date, message_ip, message_help,
 	groupe_class, groupe_nom, groupe_logo, groupe_logo_feminin, Ma.utilisateur_nb_sanctions, Ma.utilisateur_forum_messages, Ma.utilisateur_pourcentage, Ma.utilisateur_site_web,
 	Ma.utilisateur_titre, message_date, message_sujet_id, message_edite_auteur, message_edite_date,
-	sujet_date, Ma.utilisateur_citation, Ma.utilisateur_absent, Ma.utilisateur_fin_absence,
+	sujet_date, Ma.utilisateur_citation,
 
 	CASE WHEN connecte_derniere_action >= NOW() - INTERVAL ".NOMBRE_MINUTES_CONNECTE." MINUTE
 	THEN 'online.png'

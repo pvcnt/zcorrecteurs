@@ -24,9 +24,4 @@
 			Préférences
 		</a>
 	</li>
-	<li<?php if ('absence' === $tab): ?> class="active"<?php endif ?>>
-		<a href="<?php echo $view['router']->generate('zco_options_absence', array('id' => $id)) ?>">
-			Période d’absence
-		</a>
-	</li>
 </ul>

@@ -23,7 +23,6 @@ namespace Zco\Bundle\OptionsBundle\Controller;
 
 use Zco\Bundle\OptionsBundle\Form\Type\EditProfileType;
 use Zco\Bundle\OptionsBundle\Form\Type\EditPreferencesType;
-use Zco\Bundle\OptionsBundle\Form\Type\EditAbsenceType;
 use Zco\Bundle\OptionsBundle\Form\Type\EditPasswordType;
 use Zco\Bundle\OptionsBundle\Form\Type\EditEmailType;
 use Zco\Bundle\OptionsBundle\Form\Model\EditPassword;
@@ -31,9 +30,6 @@ use Zco\Bundle\OptionsBundle\Form\Model\EditEmail;
 use Zco\Bundle\OptionsBundle\Form\Handler\EditAvatarHandler;
 use Zco\Bundle\OptionsBundle\Form\Handler\EditEmailHandler;
 use Zco\Bundle\OptionsBundle\Form\Handler\EditPasswordHandler;
-use Zco\Bundle\OptionsBundle\Form\Handler\EditProfileHandler;
-use Zco\Bundle\OptionsBundle\Form\Handler\EditPreferencesHandler;
-use Zco\Bundle\OptionsBundle\Form\Handler\EditAbsenceHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -268,74 +264,6 @@ class DefaultController extends Controller
 		\Page::$titre = 'Modifier le profil';
 		
 		return render_to_response('ZcoOptionsBundle:Default:profile.html.php', array(
-			'form' => $form->createView(),
-			'user' => $user,
-			'own' => $own,
-		));
-	}
-
-	/**
-	 * Permet d'indiquer une période d'absence ou de la lever.
-	 *
-	 * @author Vanger
-	 * @author vincent1870 <vincent@zcorrecteurs.fr>
-	 *
-	 * @param Request $request
-	 * @param integer $id
-	 */
-	public function absenceAction(Request $request, $id = null)
-	{
-		$user = $this->getEditableUser($id);
-		$own  = $user->getId() == $_SESSION['id'];
-		$form = $this->createForm(new EditAbsenceType(), $user);
-
-		if ('POST' === $request->getMethod())
-		{
-			//Si on souhaite supprimer la période d'absence.
-			if ($request->request->has('delete'))
-			{
-				$user->setAbsent(false);
-				$user->save();
-
-				if ($own)
-				{
-					return redirect('Votre période d\'absence a bien été supprimée.', $this->generateUrl('zco_options_absence'));
-				}
-				
-				return redirect(
-					'La période d\'absence a bien été supprimée.', 
-					$this->generateUrl('zco_user_profile', array(
-						'id' => $user->getId(), 
-						'slug' => rewrite($user->getUsername()),
-					))
-				);
-			}
-			
-			//Sinon on souhaite en (re)définir une.
-			$form->bindRequest($request);
-			if ($form->isValid())
-			{
-				$user->save();
-				if ($own)
-				{
-					return redirect('Votre période d\'absence a bien été modifiée.', $this->generateUrl('zco_options_absence'));
-				}
-				
-				return redirect(
-					'La période d\'absence a bien été modifiée.', 
-					$this->generateUrl('zco_user_profile', array(
-						'id' => $user->getId(), 
-						'slug' => rewrite($user->getUsername()),
-					))
-				);
-			}
-		}
-
-		//Paramétrage de la vue.
-		fil_ariane('Modifier la période d\'absence');
-		\Page::$titre = 'Indiquer une période d\'absence';
-		
-		return render_to_response('ZcoOptionsBundle:Default:absence.html.php', array(
 			'form' => $form->createView(),
 			'user' => $user,
 			'own' => $own,

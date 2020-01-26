@@ -118,7 +118,10 @@ function ListerMessages($page, $rev = false)
 
 	$dbh = Doctrine_Manager::connection()->getDbh();
 	$stmt = $dbh->prepare("
-	SELECT utilisateur_sexe, mp_message_id, mp_message_mp_id, mp_message_auteur_id, utilisateur_pseudo, mp_message_date, mp_message_texte, mp_participant_statut, groupe_nom, groupe_class, groupe_logo, groupe_logo_feminin, utilisateur_avatar, utilisateur_nb_sanctions, utilisateur_pourcentage, mp_message_ip, utilisateur_signature, utilisateur_citation, utilisateur_titre, utilisateur_absent, utilisateur_fin_absence,
+	SELECT utilisateur_sexe, mp_message_id, mp_message_mp_id, mp_message_auteur_id, utilisateur_pseudo, mp_message_date, 
+	mp_message_texte, mp_participant_statut, groupe_nom, groupe_class, groupe_logo, groupe_logo_feminin, utilisateur_avatar, 
+	utilisateur_nb_sanctions, utilisateur_pourcentage, mp_message_ip, utilisateur_signature, utilisateur_citation, 
+	utilisateur_titre, 
 
 	CASE WHEN connecte_derniere_action >= NOW() - INTERVAL ".NOMBRE_MINUTES_CONNECTE." MINUTE
 	THEN 'online.png'

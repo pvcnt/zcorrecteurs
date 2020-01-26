@@ -24,10 +24,6 @@ zco_options_avatar:
     pattern:   /avatar/{id}
     defaults:  { _controller: ZcoOptionsBundle:Default:avatar, id: ~ }
 
-zco_options_absence:
-    pattern:   /absence/{id}
-    defaults:  { _controller: ZcoOptionsBundle:Default:absence, id: ~ }
-
 zco_options_preferences:
     pattern:   /preferences/{id}
     defaults:  { _controller: ZcoOptionsBundle:Default:preferences, id: ~ }
