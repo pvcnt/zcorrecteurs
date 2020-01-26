@@ -284,29 +284,6 @@ function VerifierValiditeMail($mail)
 }
 
 /**
- * Renvoie un id pour un visiteur (négatif).
- *
- * @return integer
- */
-function RecupererIdVisiteur()
-{
-	$dbh = Doctrine_Manager::connection()->getDbh();
-
-	$stmt = $dbh->prepare("SELECT MIN(connecte_id_utilisateur) FROM zcov2_connectes");
-	$stmt->execute();
-	$id = $stmt->fetchColumn();
-	if ($id > 0 || !$id)
-	{
-		$id = -1;
-	}
-	else
-	{
-		$id--;
-	}
-	return $id;
-}
-
-/**
  * Liste les utilisateurs ayant un certain droit.
  *
  * @param  string $droit	Nom du droit

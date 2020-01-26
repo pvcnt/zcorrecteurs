@@ -153,9 +153,6 @@ define('ALL',                      100);
 define('SEXE_MASCULIN', 1);
 define('SEXE_FEMININ', 2);
 
-// Nombre de minutes pour être marqué connecté
-const NOMBRE_MINUTES_CONNECTE = 2;
-
 // Temps de rafraîchissement entre deux billets au hasard (en minutes)
 const TEMPS_BILLET_HASARD = 30;
 

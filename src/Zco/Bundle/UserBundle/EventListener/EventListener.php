@@ -53,7 +53,6 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 			UserEvents::VALIDATE_EMAIL  => 'onValidateEmail',
 			InformationsEvents::SITEMAP => 'onFilterSitemap',
 			CoreEvents::DAILY_CRON      => 'onDailyCron',
-			CoreEvents::HOURLY_CRON     => 'onHourlyCron',
 		);
 	}
 		
@@ -119,7 +118,7 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 		if (!isset($_SESSION['groupe']) || !isset($_SESSION['id']))
 		{
 			$_SESSION['groupe'] = GROUPE_VISITEURS;
-			$_SESSION['id'] = RecupererIdVisiteur();
+			$_SESSION['id'] = -1;
 			$_SESSION['refresh_droits'] = time();
 		}
 		
@@ -166,14 +165,6 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 		{
 			$this->refreshSession();
 		}
-		
-		//Mise à jour du nombre de connectés (cache invalide ou 0 connecté, 
-		//ce qui n'est pas possible => utilisation directe de !).
-		$cache = $this->container->get('zco_core.cache');
-		if (!$cache->get('nb_connectes'))
-		{
-			$cache->set('nb_connectes', \Doctrine_Core::getTable('Online')->countAll(), 60 * 5);
-		}
 	}
 	
 	/**
@@ -190,10 +181,6 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 		));
 		$event->addLink($router->generate('zco_user_session_login', array(), true), array(
 			'changefreq' => 'monthly',
-			'priority'	 => '0.5',
-		));
-		$event->addLink($router->generate('zco_user_online', array(), true), array(
-			'changefreq' => 'daily',
 			'priority'	 => '0.5',
 		));
 		$event->addLink($router->generate('zco_user_index', array(), true), array(
@@ -230,17 +217,6 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 		//Ne surtout pas supprimer (déclaration CNIL, toussa).
 		\Doctrine_Core::getTable('UtilisateurIp')->purge();
 	}
-
-	/**
-	 * Actions à exécuter toutes les heures.
-	 *
-	 * @param CronEvent $event
-	 */
-	public function onHourlyCron(CronEvent $event)
-	{
-		//Mise à jour de la table des sessions.
-		\Doctrine_Core::getTable('Online')->purge();
-	}
 	
 	/**
 	 * Met à jour les différentes données liées à la session, en particulier la 
@@ -260,18 +236,6 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 		//Si la dernière IP diffère, on la met à jour (en cas de membre connecté uniquement)
 		if (!isset($_SESSION['last_ip']) || $_SESSION['last_ip'] != $ip)
 		{
-			if (isset($_SESSION['last_ip']))
-			{
-				$ip_to_delete = $_SESSION['last_ip'];
-			}
-			else
-			{
-				$ip_to_delete = $ip;
-			}
-
-			//Suppression de sa ligne de visiteur dans la table des connectés
-			\Doctrine_Core::getTable('Online')->deleteByIp($ip_to_delete);
-			
 			if (verifier('connecte'))
 			{
 				//Géolocalisation
@@ -309,41 +273,5 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 
 			$_SESSION['last_ip'] = $ip;
 		}
-		
-		//On met à jour la table des sessions.
-		$stmt = $dbh->prepare('UPDATE '.$this->container->getParameter('database.prefix').'connectes '
-			.'SET connecte_ip = :ip, connecte_derniere_action = NOW(), '
-			.'connecte_id_categorie = :cat, connecte_user_agent = :agent, '
-			.'connecte_nom_action = \'\' '
-			.'WHERE connecte_id_utilisateur = :u');
-		$stmt->bindValue(':ip', $ip, \PDO::PARAM_INT);
-		$stmt->bindValue(':u', $id, \PDO::PARAM_INT);
-		$stmt->bindValue(':cat', $cat, \PDO::PARAM_INT);
-		$stmt->bindValue(':agent', $request->server->get('HTTP_USER_AGENT'));
-		$stmt->execute();
-		
-		if (!$stmt->rowCount())
-		{
-			$stmt->closeCursor();
-			
-			$stmt = $dbh->prepare('INSERT INTO '.$this->container->getParameter('database.prefix').'connectes(connecte_ip, '
-				.'connecte_id_utilisateur, connecte_debut, connecte_derniere_action, '
-				.'connecte_id_categorie, connecte_user_agent) '
-				.'VALUES(:ip, :u, NOW(), NOW(), :cat, :agent)');
-			$stmt->bindParam(':ip', $ip);
-			$stmt->bindParam(':u', $id);
-			$stmt->bindParam(':cat', $cat);
-			$stmt->bindValue(':agent', $request->server->get('HTTP_USER_AGENT'));
-			try
-			{
-				$stmt->execute();
-			}
-			catch (\PDOException $e)
-			{
-				//Bloque des erreurs survenant quelquefois lors de l'insertion 
-				//d'un nouvel enregistrement (clé primaire dupliquée).
-			}
-		}
-		$stmt->closeCursor();
 	}
 }

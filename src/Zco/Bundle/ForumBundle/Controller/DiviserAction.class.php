@@ -51,9 +51,6 @@ class DiviserAction extends BaseController
 		}
 
 		Page::$titre = $InfosSujet['sujet_titre'].' - Diviser le sujet';
-		
-		//Mise à jour de la position sur le site.
-		\Doctrine_Core::getTable('Online')->updateUserPosition($_SESSION['id'], 'ZcoForumBundle:sujet', $_GET['id']);
 
 		if(verifier('diviser_sujets', $InfosSujet['sujet_forum_id']))
 		{

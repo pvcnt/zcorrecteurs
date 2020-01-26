@@ -45,9 +45,6 @@ class EditerSondageAction extends BaseController
 		zCorrecteurs::VerifierFormatageUrl($InfosSondage['sujet_titre'], true);
 		Page::$titre = $InfosSondage['sondage_question'].' - Modification d\'un sondage';
 		$ListerQuestions = ListerQuestions($_GET['id']);
-		
-		//Mise à jour de la position sur le site.
-		\Doctrine_Core::getTable('Online')->updateUserPosition($_SESSION['id'], 'ZcoForumBundle:sujet', $InfosSondage['sujet_id']);
 
 		if(empty($_POST['send']) || $_POST['send'] != 'Modifier')
 		{

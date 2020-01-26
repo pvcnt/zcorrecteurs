@@ -84,27 +84,14 @@ function ListerMessages($id, $PremierMess, $MessaAfficher)
 	groupe_class, groupe_nom, groupe_logo, groupe_logo_feminin, Ma.utilisateur_nb_sanctions, Ma.utilisateur_forum_messages, Ma.utilisateur_pourcentage, Ma.utilisateur_site_web,
 	Ma.utilisateur_titre, message_date, message_sujet_id, message_edite_auteur, message_edite_date,
 	sujet_date, Ma.utilisateur_citation,
-
-	CASE WHEN connecte_derniere_action >= NOW() - INTERVAL ".NOMBRE_MINUTES_CONNECTE." MINUTE
-	THEN 'online.png'
-	ELSE 'offline.png'
-	END AS statut_connecte,
-
-	CASE WHEN connecte_derniere_action >= NOW() - INTERVAL ".NOMBRE_MINUTES_CONNECTE." MINUTE
-	THEN 'En ligne'
-	ELSE 'Hors ligne'
-	END AS statut_connecte_label,
-
 	COALESCE(Ma.utilisateur_pseudo, 'Anonyme') AS auteur_message_pseudo, Ma.utilisateur_avatar AS auteur_avatar,
 	COALESCE(Mb.utilisateur_pseudo, 'Anonyme') AS auteur_edition_pseudo,
 	Mb.utilisateur_id AS auteur_edition_id,
 	Ma.utilisateur_signature AS auteur_message_signature, sujet_auteur, sujet_premier_message, sujet_dernier_message, sujet_sondage, sujet_annonce, sujet_ferme
-
 	FROM zcov2_forum_messages
 	LEFT JOIN zcov2_forum_sujets ON zcov2_forum_messages.message_sujet_id = zcov2_forum_sujets.sujet_id
 	LEFT JOIN zcov2_utilisateurs Ma ON zcov2_forum_messages.message_auteur = Ma.utilisateur_id
 	LEFT JOIN zcov2_utilisateurs Mb ON zcov2_forum_messages.message_edite_auteur = Mb.utilisateur_id
-	LEFT JOIN zcov2_connectes ON connecte_id_utilisateur = Ma.utilisateur_id
 	LEFT JOIN zcov2_groupes ON Ma.utilisateur_id_groupe=groupe_id
 	WHERE sujet_id = :s
 	ORDER BY message_date ASC
@@ -402,22 +389,6 @@ function EnregistrerNouveauSujet($id, $nouveau_sondage_id, $annonce, $ferme, $re
 		$stmt->closeCursor();
 	}
 	return $nouveau_sujet_id;
-}
-
-function ListerVisiteursSujet($id)
-{
-	$dbh = Doctrine_Manager::connection()->getDbh();
-
-	$stmt = $dbh->prepare("SELECT utilisateur_id, utilisateur_pseudo, groupe_nom, groupe_class, connecte_nom_action
-	FROM zcov2_connectes
-	LEFT JOIN zcov2_utilisateurs ON connecte_id_utilisateur = utilisateur_id
-	LEFT JOIN zcov2_groupes ON utilisateur_id_groupe = groupe_id
-	WHERE connecte_derniere_action >= NOW() - INTERVAL ".NOMBRE_MINUTES_CONNECTE." MINUTE
-	AND connecte_id1 = :id AND connecte_nom_action = 'ZcoForumBundle:sujet'");
-	$stmt->bindParam(':id', $id);
-	$stmt->execute();
-
-	return $stmt->fetchAll();
 }
 
 function ChangerFavori($sujet_id, $etat)

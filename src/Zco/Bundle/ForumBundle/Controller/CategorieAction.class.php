@@ -55,9 +55,6 @@ class CategorieAction extends BaseController
 
 		zCorrecteurs::VerifierFormatageUrl($InfosCategorie['cat_nom'], true);
 		
-		//Mise à jour de la position sur le site.
-		\Doctrine_Core::getTable('Online')->updateUserPosition($_SESSION['id'], 'ZcoForumBundle:categorie', $_GET['id']);
-
 		//On récupère la catégorie et ses forums.
 		$ListerUneCategorie = ListerCategoriesForum($InfosCategorie);
 		Page::$robots = 'noindex,follow';

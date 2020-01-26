@@ -54,9 +54,6 @@ class EditerAction extends BaseController
 			{
 				throw new AccessDeniedHttpException;
 			}
-			
-			//Mise à jour de la position sur le site.
-			\Doctrine_Core::getTable('Online')->updateUserPosition($_SESSION['id'], 'ZcoForumBundle:sujet', $InfosMessage['sujet_id']);
 
 			$InfosForum = InfosCategorie($InfosMessage['sujet_forum_id']);
 			$InfosSujet = InfosSujet($InfosMessage['sujet_id']);

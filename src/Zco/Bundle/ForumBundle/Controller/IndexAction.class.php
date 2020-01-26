@@ -38,9 +38,6 @@ class IndexAction extends BaseController
 		{
 			return new RedirectResponse('/forum/'.htmlspecialchars($_POST['saut_forum']));
 		}
-		
-		//Mise à jour de la position sur le site.
-		\Doctrine_Core::getTable('Online')->updateUserPosition($_SESSION['id'], 'ZcoForumBundle:index');
 
 		//Inclusion du modèle
 		include(dirname(__FILE__).'/../modeles/categories.php');
@@ -118,7 +115,6 @@ class IndexAction extends BaseController
 		$response = render_to_response(array(
 			'ListerCategories' => $ListerCategories,
 			'Lu' => $Lu,
-			'ListerVisiteurs' => ListerVisiteursForumEntier(),
 			'Ordre' => $this->ordre()
 		));
 		$response->headers->set('Pragma', 'no-cache');

@@ -118,10 +118,6 @@
 		<?php foreach($ListerCommentaires as $clef => $valeur){ ?>
 		<tr class="header_message">
 			<td class="pseudo_membre">
-				<img src="/img/<?php echo $valeur['statut_connecte']; ?>"
-					alt="<?php echo $valeur['statut_connecte_label']; ?>"
-					title="<?php echo $valeur['statut_connecte_label']; ?>" />
-
 				<?php echo $view->get('messages')->colorerPseudo($valeur, 'id_auteur', 'pseudo_auteur') ?><br/>
 			</td>
 

@@ -61,7 +61,6 @@
 				<?php foreach($ListerMessages as $clef => $valeur){ ?>
 				<tr class="header_message">
 					<td class="pseudo_membre">
-						<img src="/img/<?php echo $valeur['statut_connecte']; ?>" alt="<?php echo $valeur['statut_connecte_label']; ?>" title="<?php echo $valeur['statut_connecte_label']; ?>" />
 						<?php if(!empty($valeur['auteur_groupe'])) {?>
 						<a href="/membres/profil-<?php echo $valeur['message_auteur']; ?>-<?php echo rewrite($valeur['auteur_message_pseudo']); ?>.html" style="color: <?php echo $valeur['groupe_class']; ?>;">
 						<?php } ?>

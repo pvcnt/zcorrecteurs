@@ -56,24 +56,12 @@ function ListerCommentairesBillet($id, $page)
 			"Mb.utilisateur_id AS id_edite, " .
 			"Mb.utilisateur_pseudo AS pseudo_edite, " .
 			"groupe_class, groupe_nom, groupe_logo, groupe_logo_feminin, " .
-			"commentaire_date, commentaire_edite_date, " .
-
-			"CASE WHEN connecte_derniere_action >= NOW() - INTERVAL ".NOMBRE_MINUTES_CONNECTE." MINUTE " .
-			"THEN 'online.png' " .
-			"ELSE 'offline.png' " .
-			"END AS statut_connecte, " .
-
-
-			"CASE WHEN connecte_derniere_action >= NOW() - INTERVAL ".NOMBRE_MINUTES_CONNECTE." MINUTE " .
-			"THEN 'En ligne' " .
-			"ELSE 'Hors ligne' " .
-			"END AS statut_connecte_label " .
+			"commentaire_date, commentaire_edite_date " .
 
 			"FROM zcov2_blog_commentaires " .
 			"LEFT JOIN zcov2_utilisateurs Ma ON Ma.utilisateur_id = commentaire_id_utilisateur " .
 			"LEFT JOIN zcov2_utilisateurs Mb ON Mb.utilisateur_id = commentaire_id_edite " .
 			"LEFT JOIN zcov2_groupes ON Ma.utilisateur_id_groupe = groupe_id " .
-			"LEFT JOIN zcov2_connectes ON connecte_id_utilisateur = Ma.utilisateur_id " .
 
 			"WHERE commentaire_id_billet = :id " .
 			"ORDER BY commentaire_date ".$order." " .
@@ -317,18 +305,7 @@ function ListerTousLesCommentaires($page)
 	Ma.utilisateur_id AS id_auteur, Ma.utilisateur_pseudo AS pseudo_auteur, Ma.utilisateur_avatar AS avatar_auteur,
 	Ma.utilisateur_signature AS signature_auteur, Ma.utilisateur_nb_sanctions AS nb_sanctions_auteur, Ma.utilisateur_pourcentage AS pourcentage_auteur,
 	Mb.utilisateur_id AS id_edite, Mb.utilisateur_pseudo AS pseudo_edite, groupe_class, groupe_nom, groupe_logo,
-	blog_id, version_titre, blog_commentaires, commentaire_date, commentaire_edite_date,
-
-	CASE WHEN Ma.utilisateur_date_derniere_visite >= NOW() - INTERVAL ".NOMBRE_MINUTES_CONNECTE." MINUTE
-	THEN 'online.png'
-	ELSE 'offline.png'
-	END AS statut_connecte,
-
-	CASE WHEN DATE(Ma.utilisateur_date_derniere_visite ) >= DATE( NOW( ) - INTERVAL ".NOMBRE_MINUTES_CONNECTE." MINUTE )
-	THEN 'En ligne'
-	ELSE 'Hors ligne'
-	END AS statut_connecte_label
-
+	blog_id, version_titre, blog_commentaires, commentaire_date, commentaire_edite_date
 	FROM zcov2_blog_commentaires
 	LEFT JOIN zcov2_utilisateurs Ma ON Ma.utilisateur_id = commentaire_id_utilisateur
 	LEFT JOIN zcov2_utilisateurs Mb ON Mb.utilisateur_id = commentaire_id_edite
@@ -393,18 +370,7 @@ function ListerCommentairesNonValides($page = 1)
 		.'Ma.utilisateur_pourcentage AS pourcentage_auteur, '
 		.'Mb.utilisateur_id AS id_edite, Mb.utilisateur_pseudo AS pseudo_edite, '
 		.'groupe_class, groupe_nom, groupe_logo, groupe_logo_feminin, '
-		.'blog_id, version_titre, blog_commentaires, commentaire_date, commentaire_edite_date, '
-
-		.'CASE WHEN Ma.utilisateur_date_derniere_visite >= '
-			.'CURRENT_TIMESTAMP - INTERVAL :connecte MINUTE '
-			.'THEN \'online.png\' '
-			.'ELSE \'offline.png\' '
-		.'END AS statut_connecte, '
-		.'CASE WHEN Ma.utilisateur_date_derniere_visite >= '
-			.'CURRENT_TIMESTAMP - INTERVAL :connecte MINUTE '
-			.'THEN \'En ligne\' '
-			.'ELSE \'Hors ligne\' '
-		.'END AS statut_connecte_label '
+		.'blog_id, version_titre, blog_commentaires, commentaire_date, commentaire_edite_date '
 
 		.'FROM '.Container::getParameter('database.prefix').'blog_commentaires '
 
@@ -452,7 +418,6 @@ function ListerCommentairesNonValides($page = 1)
 		.'LIMIT :nombre OFFSET :page');
 
 	$nbCommentairesParPage = 15;
-	$stmt->bindValue(':connecte', NOMBRE_MINUTES_CONNECTE);
 	$stmt->bindValue(':page', ($page - 1) * $nbCommentairesParPage, PDO::PARAM_INT);
 	$stmt->bindValue(':nombre', $nbCommentairesParPage, PDO::PARAM_INT);
 	$stmt->execute();

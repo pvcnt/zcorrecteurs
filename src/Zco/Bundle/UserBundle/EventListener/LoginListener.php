@@ -26,7 +26,6 @@ use Zco\Bundle\UserBundle\Event\LoginEvent;
 use Zco\Bundle\UserBundle\Event\FilterLoginEvent;
 use Zco\Bundle\UserBundle\Event\FormLoginEvent;
 use Zco\Bundle\UserBundle\Event\EnvLoginEvent;
-use Zco\Bundle\UserBundle\Event\CheckPasswordEvent;
 use Zco\Bundle\UserBundle\User\User;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\DependencyInjection\ContainerAware;
@@ -49,7 +48,6 @@ class LoginListener extends ContainerAware implements EventSubscriberInterface
 			UserEvents::ENV_LOGIN   => 'onEnvLogin',
 			UserEvents::PRE_LOGIN   => 'onPreLogin',
 			UserEvents::POST_LOGIN  => 'onPostLogin',
-			UserEvents::POST_LOGOUT => 'onPostLogout',
 		);
 	}
 	
@@ -145,16 +143,6 @@ class LoginListener extends ContainerAware implements EventSubscriberInterface
 			setcookie('violon', $this->generateRememberKey($event->getUser()), strtotime("+1 year"), '/');
 			setcookie('user_id', $event->getUser()->getId(), strtotime("+1 year"), '/');
 		}
-	}
-	
-	/**
-	 * Supprime l'utilisateur de la table des connectés.
-	 *
-	 * @param LoginEvent $event
-	 */
-	public function onPostLogout(LoginEvent $event)
-	{
-		\Doctrine_Core::getTable('Online')->deleteByUserId($event->getUser()->getId());
 	}
 	
 	/**

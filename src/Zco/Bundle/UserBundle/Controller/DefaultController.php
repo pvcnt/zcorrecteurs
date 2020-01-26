@@ -132,54 +132,6 @@ class DefaultController extends Controller
 	}
 
 	/**
-	 * Affiche la liste des personnes connectées sur le site.
-	 *
-	 * @author vincent1870 <vincent@zcorrecteurs.fr>
-	 * @param  boolean $showAnonymousUsers Montrer les visiteurs non connectés ?
-	 */
-	public function onlineAction($showAnonymousUsers)
-	{
-		//Met à jour le nombre de connectés pour rester cohérent.
-		$countAll = \Doctrine_Core::getTable('Online')->countAll();
-		$this->get('zco_core.cache')->set('nb_connectes', $countAll, 60);
-		
-		$online         = \Doctrine_Core::getTable('Online')->getAll($showAnonymousUsers);
-		$loggedUsers    = 0;
-		$anonymousUsers = 0;
-		if ($showAnonymousUsers)
-		{
-			foreach ($online as $user)
-			{
-				if ($user->isAuthenticated())
-				{
-					$loggedUsers++;
-				}
-				else
-				{
-					$anonymousUsers++;
-				}
-			}
-		}
-		else
-		{
-			$loggedUsers    = count($online);
-			$anonymousUsers = $countAll - $loggedUsers;
-		}
-		
-		//Paramétrage de la vue.
-		fil_ariane('Connectés');
-		\Page::$titre = 'Qui est en ligne ?'.($showAnonymousUsers ? ' - Voir les visiteurs non connectés' : '');
-		\Page::$description = 'Quels sont les membres actuellement en ligne ?';
-		
-		return render_to_response('ZcoUserBundle::online.html.php', array(
-			'online' 			 => $online,
-			'anonymousUsers'	 => $anonymousUsers,
-			'loggedUsers' 		 => $loggedUsers,
-			'showAnonymousUsers' => $showAnonymousUsers,
-		));
-	}
-	
-	/**
 	 * Affiche le profil d'un membre.
 	 *
 	 * @author vincent1870 <vincent@zcorrecteurs.fr>

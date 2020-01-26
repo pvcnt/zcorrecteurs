@@ -353,19 +353,3 @@ function ListerSujetsTitre($titre)
 	$stmt->execute();
 	return $stmt->fetchAll();
 }
-
-function ListerVisiteursForum($id)
-{
-	$dbh = Doctrine_Manager::connection()->getDbh();
-
-	$stmt = $dbh->prepare("SELECT utilisateur_id, utilisateur_pseudo, groupe_nom, groupe_class, connecte_nom_action, sujet_forum_id
-	FROM zcov2_connectes
-	LEFT JOIN zcov2_utilisateurs ON connecte_id_utilisateur = utilisateur_id
-	LEFT JOIN zcov2_groupes ON utilisateur_id_groupe = groupe_id
-	LEFT JOIN zcov2_forum_sujets ON connecte_id1 = sujet_id
-	WHERE connecte_derniere_action >= NOW() - INTERVAL ".NOMBRE_MINUTES_CONNECTE." MINUTE
-	AND ((connecte_nom_action = 'ZcoForumBundle:forum' AND connecte_id1 = :id) OR (connecte_nom_action = 'ZcoForumBundle:sujet' AND sujet_forum_id = :id))");
-	$stmt->bindParam(':id', $id);
-	$stmt->execute();
-	return $stmt->fetchAll();
-}

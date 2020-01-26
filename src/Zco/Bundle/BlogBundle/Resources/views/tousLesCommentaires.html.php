@@ -31,7 +31,6 @@
 		?>
 		<tr class="header_message">
 			<td class="pseudo_membre">
-			<img src="/img/<?php echo $valeur['statut_connecte']; ?>" alt="<?php echo $valeur['statut_connecte_label']; ?>" title="<?php echo $valeur['statut_connecte_label']; ?>" />
 			<?php if(!empty($valeur['id_auteur'])) {?>
 			<a href="/membres/profil-<?php echo $valeur['id_auteur']; ?>-<?php echo rewrite($valeur['pseudo_auteur']); ?>.html" style="color: <?php echo $valeur['groupe_class']; ?>;">
 			<?php } ?>

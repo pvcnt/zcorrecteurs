@@ -59,9 +59,6 @@ class RepondreAction extends BaseController
 			}
 		}
 		
-		//Mise à jour de la position sur le site.
-		\Doctrine_Core::getTable('Online')->updateUserPosition($_SESSION['id'], 'ZcoForumBundle:repondre');
-
 		zCorrecteurs::VerifierFormatageUrl($InfosSujet['sujet_titre'], true, true);
 
 		if (empty($InfosSujet['dernier_message_auteur']))

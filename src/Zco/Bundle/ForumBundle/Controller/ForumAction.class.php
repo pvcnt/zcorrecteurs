@@ -361,9 +361,6 @@ class ForumAction extends BaseController
 				$parent = array_pop($parent);
 			else
 				$parent = null;
-			
-			//Mise à jour de la position sur le site.
-			\Doctrine_Core::getTable('Online')->updateUserPosition($_SESSION['id'], 'ZcoForumBundle:forum', $_GET['id']);
 
 			// Inclusion de la vue
 			$msgFil = '';
@@ -397,7 +394,6 @@ class ForumAction extends BaseController
 				'Tags' => $Tags,
 				'Pages' => $Pages,
 				'SautRapide' => $SautRapide,
-				'ListerVisiteurs' => ListerVisiteursForum($_GET['id']),
 				'action_etendue_a_plusieurs_messages_actif' => $action_etendue_a_plusieurs_messages_actif,
 				'ListerUneCategorie' => isset($ListerUneCategorie) ? $ListerUneCategorie : null,
 				'LuForum' => $LuForum,

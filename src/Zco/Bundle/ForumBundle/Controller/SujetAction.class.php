@@ -136,12 +136,8 @@ class SujetAction extends BaseController
 		{
 			$nombreDeMessagesAafficher = $nbMessagesParPage;
 		}
-		
-		//Mise à jour de la position sur le site.
-		\Doctrine_Core::getTable('Online')->updateUserPosition($_SESSION['id'], 'ZcoForumBundle:sujet', $_GET['id']);
 
 		$ListerMessages = ListerMessages($_GET['id'], $debut, $nombreDeMessagesAafficher);
-		$ListerVisiteurs = ListerVisiteursSujet($_GET['id']);
 		$SautRapide = RecupererSautRapide($InfosSujet['sujet_forum_id']);
                 $PremierMessage = ListerMessages($_GET['id'], 0, 1);
 
@@ -268,7 +264,6 @@ class SujetAction extends BaseController
 			'InfosForum' => $InfosForum,
 			'tableau_pages' => $tableau_pages,
 			'ListerMessages' => $ListerMessages,
-			'ListerVisiteurs' => $ListerVisiteurs,
 			'SautRapide' => $SautRapide,
 			'InfosLuNonlu' => $InfosLuNonlu,
 			'afficher_options' => $afficher_options,

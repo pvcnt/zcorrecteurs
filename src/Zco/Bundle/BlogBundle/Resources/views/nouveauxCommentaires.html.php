@@ -35,7 +35,6 @@ avant dans le même billet ! Les commentaires sont affichés du plus ancien au p
 		foreach($ListerCommentaires as $clef => $valeur): ?>
 		<tr class="header_message">
 			<td class="pseudo_membre">
-				<img src="/img/<?php echo $valeur['statut_connecte'] ?>" alt="<?php echo $valeur['statut_connecte_label'] ?>" title="<?php echo $valeur['statut_connecte_label'] ?>" />
 				<?php if($valeur['id_auteur']) echo $view->get('messages')->colorerPseudo($valeur, 'id_auteur', 'pseudo_auteur') ?>
 			</td>
 			<td class="dates">

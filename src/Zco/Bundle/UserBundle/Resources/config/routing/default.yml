@@ -2,14 +2,6 @@ zco_user_index:
     pattern:   /
     defaults:  { _controller: ZcoUserBundle:Default:index }
 
-zco_user_online:
-    pattern:   /connectes
-    defaults:  { _controller: ZcoUserBundle:Default:online, showAnonymousUsers: false }
-
-zco_user_online_all:
-    pattern:   /connectes/tous
-    defaults:  { _controller: ZcoUserBundle:Default:online, showAnonymousUsers: true }
-
 zco_user_profile:
     pattern:   /{id}/{slug}
     defaults:  { _controller: ZcoUserBundle:Default:profile }

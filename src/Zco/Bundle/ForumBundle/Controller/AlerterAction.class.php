@@ -43,9 +43,6 @@ class AlerterAction extends BaseController
 			zCorrecteurs::VerifierFormatageUrl($InfosSujet['sujet_titre'], true);
 			Page::$titre .= ' - '.$InfosSujet['sujet_titre'].' - Alerter les modérateurs';
 			
-			//Mise à jour de la position sur le site.
-			\Doctrine_Core::getTable('Online')->updateUserPosition($_SESSION['id'], 'ZcoForumBundle:sujet', $_GET['id']);
-
 			if(verifier('signaler_sujets', $InfosSujet['sujet_forum_id']))
 			{
 				//Si le sujet est fermé

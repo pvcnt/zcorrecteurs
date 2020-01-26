@@ -121,10 +121,6 @@ abstract class BaseCategorie extends Doctrine_Record
              'local' => 'id',
              'foreign' => 'gd_id_categorie'));
 
-        $this->hasMany('Online', array(
-             'local' => 'cat_id',
-             'foreign' => 'category_id'));
-
         $this->hasMany('Aide', array(
              'local' => 'id',
              'foreign' => 'categorie_id'));

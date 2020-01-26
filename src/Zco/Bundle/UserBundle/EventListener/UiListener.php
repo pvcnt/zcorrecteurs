@@ -221,17 +221,6 @@ class UiListener extends ContainerAware implements EventSubscriberInterface
 			),
 		));
 		
-		$connectes = $this->container->get('zco_core.cache')->get('nb_connectes');
-		$event->getRoot()->getChild('Communauté')->addChild('Connectés', array(
-			'uri'	=> $this->container->get('router')->generate('zco_user_online'),
-			'weight' => 50,
-			'label' => $connectes.' connecté'.pluriel($connectes),
-			'linkAttributes' => array(
-				'rel'   => 'Quels sont les membres actuellement connectés sur le site ?', 
-				'title' => 'Connectés',
-			),
-		));
-		
 		//Intégration du formulaire de connexion rapide sous Bootstrap.
 		if (!verifier('connecte') && $event->getTemplate() === 'bootstrap')
 		{
