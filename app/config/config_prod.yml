@@ -23,6 +23,6 @@ knp_gaufrette:
       azure_blob_storage:
         blob_proxy_factory_id: azure_blob_proxy_factory
         container_name: zcorrecteurs
-        create_container: true
+        create_container: false
   filesystems:
     uploads: { adapter: uploads }
