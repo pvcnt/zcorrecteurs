@@ -12,3 +12,17 @@ services:
   Zco\Bundle\CoreBundle\Filesystem\UrlResolver:
     class: Zco\Bundle\CoreBundle\Filesystem\AzureBlobUrlResolver
     arguments: [zcorrecteurs, uploads]
+
+  azure_blob_proxy_factory:
+    class: Gaufrette\Adapter\AzureBlobStorage\BlobProxyFactory
+    arguments: ["%azure_blob_dsn%"]
+
+knp_gaufrette:
+  adapters:
+    uploads:
+      azure_blob_storage:
+        blob_proxy_factory_id: azure_blob_proxy_factory
+        container_name: zcorrecteurs
+        create_container: true
+  filesystems:
+    uploads: { adapter: uploads }

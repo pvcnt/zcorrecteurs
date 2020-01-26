@@ -16,10 +16,3 @@ framework:
         form:
             resources: 
                 - 'ZcoCoreBundle:Form'
-
-knp_gaufrette:
-    adapters:
-        uploads:
-            local:   { directory:  %kernel.root_dir%/../web/uploads, create: true }
-    filesystems:
-        uploads: { adapter: uploads }

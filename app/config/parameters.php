@@ -13,3 +13,6 @@ $container->setParameter('secret', getenv('SYMFONY_SECRET') ?: 'dDj85§fd+dedS9-
 // Google Analytics.
 $container->setParameter('analytics_domain', getenv('GA_DOMAIN') ?: 'zcorrecteurs.fr');
 $container->setParameter('analytics_account', getenv('GA_ACCOUNT') ?: '');
+
+// Azure blob storage.
+$container->setParameter('azure_blob_dsn', getenv('AZURE_BLOB_DSN') ?: '');
