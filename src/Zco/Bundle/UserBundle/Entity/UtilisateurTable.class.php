@@ -112,11 +112,6 @@ class UtilisateurTable extends Doctrine_Table
 		return $this->getByEmailQuery($email)->execute(array(), $hydrationMode);
 	}
 	
-	public function getOneByEmail($email, $hydrationMode = null)
-	{
-		return $this->getByEmailQuery($email)->fetchOne(array(), $hydrationMode);
-	}
-	
 	public function countByEmail($email)
 	{
 		return $this->getByEmailQuery($email)->count();
@@ -257,87 +252,6 @@ class UtilisateurTable extends Doctrine_Table
 			->set('utilisateur_mot_de_passe', 'utilisateur_nouveau_mot_de_passe')
 			->where('utilisateur_hash_validation = ?', $hash)
 			->execute();
-	}
-
-	public function getAgeMembres($groupe = null)
-	{
-		if ($ages = Container::getService('zco_core.cache')->get('membres_ages'.$groupe))
-		{
-			return $ages;
-		}
-
-		//@TODO calcul de l'âge en DQL. Aucune idée de comment faire.
-
-		$dbh = Doctrine_Manager::connection()->getDbh();
-		$q = $dbh->prepare('SELECT COUNT(utilisateur_id) AS nombre, '
-			.'CASE utilisateur_date_naissance '
-				.'WHEN NULL THEN 0 '
-				.'ELSE DATEDIFF(NOW(), utilisateur_date_naissance) DIV 365 '
-			.'END AS age '
-			.'FROM '.Container::getParameter('database.prefix').'utilisateurs '
-			.'WHERE utilisateur_date_naissance IS NOT NULL '
-			.'AND utilisateur_date_naissance <> \'0000-00-00\''
-			.($groupe !== null ? 'AND utilisateur_id_groupe = :g ' : '')
-			.'GROUP BY age ORDER BY age');
-
-		$groupe !== null && $q->bindParam('g', $groupe);
-		$q->execute();
-		$r2 = $q->fetchAll();
-
-		if (!$r2)
-			return array();
-
-		// Réindexer avec l'âge comme clé
-		$r = array();
-		foreach($r2 as $a)
-			$r[$a['age']] = $a['nombre'];
-
-		$ageMin = $r2[0]['age'];
-		$ageMax = $r2[count($r2) - 1]['age'];
-
-		$tailleTranche = 6;  // Taille d'une tranche
-		$tranchesMax   = 15; // Nombre de tranches tenant sur le graphique
-		$ages = array();
-
-		// Découper les âges en tranches
-		$nombreTranches = $cle_old = 0;
-		$plafondAges = $ageMax;
-		for ($i = $ageMin; $i <= $ageMax; $i++)
-		{
-			$tranche = floor($i / $tailleTranche) * $tailleTranche;
-			$cle = $tranche.' - '.($tranche + $tailleTranche - 1);
-
-			if ($cle_old !== $cle)
-			{
-				$cle_old = $cle;
-				$nombreTranches++;
-
-				if ($nombreTranches >= $tranchesMax
-				    && $ageMax > ($tranche + $tailleTranche - 1))
-				{
-					$plafondAges = $tranche - 1;
-					break;
-				}
-			}
-
-			if (!isset($ages[$cle]))
-				$ages[$cle] = 0;
-			$ages[$cle] += isset($r[$i]) ? $r[$i] : 0;
-		}
-
-		// Ceux qui sont trop vieux pour être affichés
-		if ($ageMax > $plafondAges)
-		{
-			$ages['> '.$plafondAges] = 0;
-			for ($i = $plafondAges + 1; $i <= $ageMax; $i++)
-			{
-				$ages['> '.$plafondAges]
-					+= isset($r[$i]) ? $r[$i] : 0;
-			}
-		}
-
-		Container::getService('zco_core.cache')->Set('membres_ages'.$groupe, $ages, 3600 * 24);
-		return $ages;
 	}
 	
 	public function insert(\Utilisateur $user)

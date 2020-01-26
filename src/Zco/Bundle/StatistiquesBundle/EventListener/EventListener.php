@@ -78,11 +78,6 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 			'uri' => '/statistiques/geolocalisation.html',
 		));
 	
-		$tab->addChild('Âge des membres', array(
-			'credentials' => 'voir_stats_ages', 
-			'uri' => '/statistiques/graphique-ages.html',
-		));
-	
 		$tab->addChild('Statistiques de consultation du flux du blog', array(
 			'credentials' => 'stats_blog_flux', 
 			'uri' => '/statistiques/blog-flux.html',
