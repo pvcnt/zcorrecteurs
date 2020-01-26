@@ -55,9 +55,6 @@
 			echo '<br /><label for="ferme">MP fermé : </label><input type="checkbox" name="ferme" id="ferme" value="ferme" />';
 		}
 		?>
-		<br/><label for="crypter" title="Si le destinataire a renseigné une clé PGP, s'en servir pour chiffrer le message.">Chiffrer le message :</label>
-		<input type="checkbox" name="crypter" id="crypter" />
-		<em>Si vous validez cette option, le MP ne pourra être envoyé qu'à un seul destinataire (le premier).</em><br />
 
 		<div class="cleaner">&nbsp;</div>
 

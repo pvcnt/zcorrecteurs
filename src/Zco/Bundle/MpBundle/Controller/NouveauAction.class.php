@@ -114,9 +114,6 @@ class NouveauAction extends Controller
 				}
 				$NombreParticipants++; //On compte aussi le créateur du MP.
 
-				if(isset($_POST['crypter']) && $NombreParticipants != 2)
-					return redirect(293, '', MSG_ERROR);
-
 				//On vérifie qu'il y a au moins un participant en plus du créateur.
 				if($NombreParticipants < 2)
 				{
@@ -131,8 +128,6 @@ class NouveauAction extends Controller
 
 				//On ajoute le MP en BDD
 				$NouveauMPID = AjouterMP();
-				if($NouveauMPID === false)
-					return redirect(292, '', MSG_ERROR);
 
 				//On vide les caches de tous les participants
 				$current_participant = 0;

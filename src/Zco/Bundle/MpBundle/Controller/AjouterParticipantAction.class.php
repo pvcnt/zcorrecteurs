@@ -39,8 +39,6 @@ class AjouterParticipantAction extends Controller
 		if(!empty($_GET['id']))
 		{
 			$InfoMP = InfoMP();
-			if($InfoMP['mp_crypte'])
-				return redirect(294, 'index.html', MSG_ERROR);
 			$autoriser_ecrire = true;
 			if(empty($InfoMP['mp_participant_mp_id']) && verifier('mp_espionner'))
 			{

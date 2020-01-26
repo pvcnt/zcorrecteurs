@@ -35,7 +35,7 @@ function InfoMP()
 	$dbh = Doctrine_Manager::connection()->getDbh();
 
 	$stmt = $dbh->prepare("
-	SELECT mp_id, mp_participant_mp_id, mp_titre, mp_sous_titre, mp_date, mp_premier_message_id, mp_dernier_message_id, mp_reponses, mp_ferme, mp_crypte, mp_participant_dernier_message_lu AS mp_lunonlu_message_id, mp_participant_statut, mp_participant_mp_dossier_id, mp_alerte_id, mp_alerte_resolu
+	SELECT mp_id, mp_participant_mp_id, mp_titre, mp_sous_titre, mp_date, mp_premier_message_id, mp_dernier_message_id, mp_reponses, mp_ferme, mp_participant_dernier_message_lu AS mp_lunonlu_message_id, mp_participant_statut, mp_participant_mp_dossier_id, mp_alerte_id, mp_alerte_resolu
 	FROM zcov2_mp_mp
 	LEFT JOIN zcov2_mp_participants ON mp_id = mp_participant_mp_id AND mp_participant_id = :user_id AND mp_participant_statut >= 0
 	LEFT JOIN zcov2_mp_alertes ON mp_id = mp_alerte_mp_id AND mp_alerte_resolu = 0
@@ -74,7 +74,7 @@ function InfoMessage($id)
 	$dbh = Doctrine_Manager::connection()->getDbh();
 
 	$stmt = $dbh->prepare("
-	SELECT mp_id, mp_titre, mp_ferme, mp_crypte, mp_message_id, mp_message_auteur_id, mp_message_texte, utilisateur_pseudo, mp_participant_id, mp_alerte_id
+	SELECT mp_id, mp_titre, mp_ferme, mp_message_id, mp_message_auteur_id, mp_message_texte, utilisateur_pseudo, mp_participant_id, mp_alerte_id
 	FROM zcov2_mp_messages
 	LEFT JOIN zcov2_mp_mp ON mp_message_mp_id = mp_id
 	LEFT JOIN zcov2_mp_participants ON mp_participant_mp_id = mp_message_mp_id AND mp_participant_id = :user_id AND mp_participant_statut >= ".MP_STATUT_NORMAL."

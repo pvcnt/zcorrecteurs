@@ -48,8 +48,4 @@ msg:
   288: Vous ne pouvez pas changer le statut d'un MP.
   289: Les alertes ont bien été marquées comme résolues.
   291: Le MP semi-automatique a bien été envoyé.
-  
-  292: Le destinataire n'a pas renseigné de clé PGP, le MP ne peut donc pas être crypté.
-  293: Vous ne pouvez indiquer qu'un seul destinataire pour les MPs cryptés.
-  294: Il n'est pas possible d'ajouter de participants à un MP crypté.
 

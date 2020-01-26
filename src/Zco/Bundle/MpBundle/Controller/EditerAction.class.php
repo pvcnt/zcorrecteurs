@@ -87,8 +87,7 @@ class EditerAction extends Controller
 					else
 					{
 						//On édite la réponse en BDD
-						if(EditerReponse() === false)
-							return redirect(292, 'editer-'.$_GET['id'].'.html', MSG_ERROR);
+						EditerReponse();
 
 						return redirect(35, 'lire-'.$InfoMessage['mp_id'].'-'.$_GET['id'].'.html');
 					}

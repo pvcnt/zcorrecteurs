@@ -95,7 +95,6 @@ if(	($InfoMP['mp_participant_statut'] >= MP_STATUT_MASTER
 		|| (verifier('mp_tous_droits_participants') && $autoriser_ecrire))
 	&& ($NombreParticipants < verifier('mp_nb_participants_max')
 		|| verifier('mp_nb_participants_max') == -1)
-	&& !$InfoMP['mp_crypte']
 )
 {
 	echo '<p><a id="ajouter-participant" href="ajouter-participant-'.$_GET['id'].'.html"><img src="/bundles/zcomp/img/user_add.png" alt="Ajouter" /> Ajouter un membre à la conversation</a>';

@@ -114,8 +114,6 @@ class RepondreAction extends Controller
 						{
 							//On ajoute la réponse en BDD
 							$NouveauMessageID = AjouterReponse();
-							if($NouveauMessageID === false)
-								return redirect(292, 'repondre-'.$_GET['id'].'.html', MSG_ERROR);
 
 							//On vide les caches de tous les participants
 							$current_participant = 0;

@@ -36,7 +36,6 @@
  * @property string $biography
  * @property string $hobbies
  * @property string $citation
- * @property string $pgk_key
  * @property timestamp $utilisateur_derniere_lecture
  * @property integer $sexe
  * @property string $twitter
@@ -215,10 +214,6 @@ abstract class BaseUtilisateur extends Doctrine_Record
         $this->hasColumn('utilisateur_citation as citation', 'string', 30, array(
              'type' => 'string',
              'length' => '30',
-             ));
-        $this->hasColumn('utilisateur_cle_pgp as pgk_key', 'string', null, array(
-             'type' => 'string',
-             'length' => '',
              ));
         $this->hasColumn('utilisateur_derniere_lecture', 'timestamp', 25, array(
              'type' => 'timestamp',

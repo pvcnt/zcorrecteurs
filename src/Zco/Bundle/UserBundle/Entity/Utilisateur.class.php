@@ -258,16 +258,6 @@ class Utilisateur extends BaseUtilisateur
 		return $this->ip;
 	}
 	
-	public function hasPGPKey()
-	{
-		return !empty($this->pgp_key);
-	}
-	
-	public function getPGPKey()
-	{
-		return $this->pgp_key;
-	}
-	
 	public function getNbMessages()
 	{
 		return $this->forum_messages;
