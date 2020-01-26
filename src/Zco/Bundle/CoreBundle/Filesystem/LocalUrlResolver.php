@@ -21,25 +21,27 @@
 
 namespace Zco\Bundle\CoreBundle\Filesystem;
 
-final class PrefixUrlResolver implements UrlResolver
+use Zco\Bundle\FileBundle\Util\UrlResolver;
+
+final class LocalUrlResolver implements UrlResolver
 {
-    private $prefix;
+    private $directory;
 
     /**
      * Constructor.
      *
-     * @param string $prefix
+     * @param string $directory
      */
-    public function __construct(string $prefix)
+    public function __construct(string $directory)
     {
-        $this->prefix = rtrim($prefix, '/');
+        $this->directory = trim($directory, '/');
     }
 
     /**
      * {@inheritDoc}
      */
-    public function resolve(string $path): string
+    public function resolveUrl(string $path)
     {
-        return $this->prefix . '/' . $path;
+        return sprintf('/%s/%s', $this->directory, $path);
     }
 }

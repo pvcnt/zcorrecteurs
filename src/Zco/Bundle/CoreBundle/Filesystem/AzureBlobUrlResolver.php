@@ -21,40 +21,30 @@
 
 namespace Zco\Bundle\CoreBundle\Filesystem;
 
-use Gaufrette\Adapter\AzureBlobStorage\BlobProxyFactoryInterface;
+use Zco\Bundle\FileBundle\Util\UrlResolver;
 
 final class AzureBlobUrlResolver implements UrlResolver
 {
-    private $blobProxyFactory;
-    private $containerName;
-    private $blobProxy;
+    private $account;
+    private $container;
 
     /**
      * Constructor.
      *
-     * @param BlobProxyFactoryInterface $blobProxyFactory
-     * @param string $containerName
+     * @param string $account
+     * @param string $container
      */
-    public function __construct(BlobProxyFactoryInterface $blobProxyFactory, string $containerName)
+    public function __construct(string $account, string $container)
     {
-        $this->blobProxyFactory = $blobProxyFactory;
-        $this->containerName = $containerName;
-    }
-
-    public function resolve(string $path): string
-    {
-        $this->init();
-
-        return $this->blobProxy->getBlobUrl($this->containerName, $path);
+        $this->account = $account;
+        $this->container = $container;
     }
 
     /**
-     * Lazy initialization, automatically called when some method is called after construction
+     * {@inheritDoc}
      */
-    protected function init()
+    public function resolveUrl(string $path)
     {
-        if ($this->blobProxy == null) {
-            $this->blobProxy = $this->blobProxyFactory->create();
-        }
+        return sprintf('https://%s.blob.core.windows.net/%s/%s', $this->account, $this->container, $path);
     }
 }

@@ -23,5 +23,5 @@ namespace Zco\Bundle\CoreBundle\Filesystem;
 
 interface UrlResolver
 {
-    public function resolve(string $path): string;
+    public function resolveUrl(string $path);
 }

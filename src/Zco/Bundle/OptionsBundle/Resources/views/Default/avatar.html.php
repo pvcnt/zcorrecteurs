@@ -28,10 +28,8 @@
 			</div>
 			<div style="margin-left: 110px">
 				<p>
-					<?php if ($user->hasLocalAvatar()): ?>
+					<?php if ($user->hasAvatar()): ?>
 					<strong>Cet avatar provient de votre ordinateur.</strong>
-					<?php elseif ($user->hasGravatar()): ?>
-					<strong>Cet avatar provient de <a href="http://fr.gravatar.com">Gravatar</a>.</strong>
 					<?php else: ?>
 					<em>Cet avatar est l’image par défaut.</em>
 					<?php endif ?>
@@ -57,7 +55,7 @@
 
 	<div class="form-actions">
 		<input type="submit" class="btn btn-primary" name="submit" value="Modifier <?php echo $own ? 'mon' : 'son' ?> avatar" />
-		<?php if ($user->hasLocalAvatar()): ?>
+		<?php if ($user->hasAvatar()): ?>
 		<input type="submit" class="btn" name="delete" value="Supprimer <?php echo $own ? 'mon' : 'son' ?> avatar" />
 		<?php endif ?>
 	</div>

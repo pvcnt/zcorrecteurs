@@ -259,39 +259,6 @@ class UtilisateurTable extends Doctrine_Table
 			->execute();
 	}
 
-	public function getIdByPseudo($pseudo)
-	{
-		return $this->createQuery()
-			->select('id')
-			->where('pseudo = ?', $pseudo)
-			->execute(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
-	}
-	
-	public function getPays()
-	{
-		$rows = $this->createQuery('u')
-			->select('u.utilisateur_localisation, COUNT(*) AS nombre')
-			->groupBy('u.utilisateur_localisation')
-			->execute();
-		$total = $this->createQuery('u')->count();
-
-		$ret = array();
-		foreach ($rows as $row)
-		{
-			if (!empty($row['localisation']) && !in_array($row['localisation'], array('-', 'Inconnu')))
-				$ret[] = array('pays' => $row['localisation'], 'nombre' => $row['nombre'], 'pourcent' => $row['nombre']/$total);
-		}
-		return $ret;
-	}
-
-	public function compterMembresAge()
-	{
-		return $this->createQuery('u')
-			->where('u.utilisateur_date_naissance IS NOT NULL')
-			->andWhere('u.utilisateur_date_naissance <> \'0000-00-00\'')
-			->count();
-	}
-
 	public function getAgeMembres($groupe = null)
 	{
 		if ($ages = Container::getService('zco_core.cache')->get('membres_ages'.$groupe))

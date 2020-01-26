@@ -237,17 +237,7 @@ class Utilisateur extends BaseUtilisateur
 	
 	public function hasAvatar()
 	{
-		return $this->hasLocalAvatar() || $this->hasGravatar();
-	}
-
-	public function hasLocalAvatar()
-	{
-		return (boolean) $this->avatar;
-	}
-
-	public function hasGravatar()
-	{
-		return (boolean) @fopen($this->getGravatarUrl().'?d=404', 'r');
+        return (boolean) $this->avatar;
 	}
 
 	public function setAvatar($avatar)
@@ -255,18 +245,13 @@ class Utilisateur extends BaseUtilisateur
 		$this->avatar = $avatar;
 	}
 	
-	public function getAvatar($size = 80, $default = 'mm')
+	public function getAvatar()
 	{
 		if ($this->avatar) {
 			return '/uploads/avatars/'.$this->avatar;
 		}
 
-		return $this->getGravatarUrl().'?s='.$size.'&d='.$default;
-	}
-
-	protected function getGravatarUrl()
-	{
-		return 'http://www.gravatar.com/avatar/'.md5(strtolower(trim($this->email)));
+		return '/img/default-avatar.png';
 	}
 	
 	public function getGender()

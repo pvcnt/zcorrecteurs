@@ -101,7 +101,7 @@ class EditAvatarHandler
 			}
 
 			//Si l'utilisateur a déjà un avatar local, on le supprime.
-			if ($user->hasLocalAvatar())
+			if ($user->hasAvatar())
 			{
 				unlink(BASEPATH.'/web/'.$user->getAvatar());
 			}

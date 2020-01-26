@@ -7,3 +7,8 @@ monolog:
             type:  stream
             path:  "php://stdout"
             level: info
+
+services:
+  Zco\Bundle\CoreBundle\Filesystem\UrlResolver:
+    class: Zco\Bundle\CoreBundle\Filesystem\AzureBlobUrlResolver
+    arguments: [zcorrecteurs, uploads]
