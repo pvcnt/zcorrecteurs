@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpFoundation\Response;
 use Zco\Bundle\CoreBundle\Paginator\Paginator;
 use Zco\Bundle\DicteesBundle\DoubleDiff;
 
@@ -100,7 +101,7 @@ function AjouterDictee(AjouterForm &$form)
 		if (!File_Upload::Fichier($_FILES['icone'], 'dictees/' . $nom, true))
 			return redirect(514, 'editer-'.$Dictee->id.'-'.rewrite($Dictee->titre).'.html', MSG_ERROR);
 			
-		$Dictee->icone = '/uploads/dictees/'.$nom;
+		$Dictee->icone = 'dictees/'.$nom;
 	}
 			
 	$Dictee->save();
@@ -170,7 +171,7 @@ function EditerDictee(Dictee $Dictee, AjouterForm &$Form)
 		if (!File_Upload::Fichier($_FILES['icone'], 'dictees/' . $nom, true))
 			return redirect(514, 'editer-'.$Dictee->id.'-'.rewrite($Dictee->titre).'.html', MSG_ERROR);
 		
-		$Dictee->icone = '/uploads/dictees/'.$nom;
+		$Dictee->icone = 'dictees/'.$nom;
 	}
 
 
@@ -186,8 +187,13 @@ function EditerDictee(Dictee $Dictee, AjouterForm &$Form)
  */
 function SupprimerDictee(Dictee $Dictee)
 {
-	@unlink(BASEPATH.'/web/uploads/dictees/'.DicteeSon($Dictee, 'lecture_rapide'));
-	@unlink(BASEPATH.'/web/uploads/dictees/'.DicteeSon($Dictee, 'lecture_lente'));
+    $filesystem = \Container::getService('gaufrette.uploads_filesystem');
+    foreach (['lecture_lente', 'lecture_rapide'] as $field) {
+        $path = 'dictees/' . DicteeSon($Dictee, $field);
+        if ($filesystem->has($path)) {
+            $filesystem->delete($path);
+        }
+    }
 	Doctrine_Query::create()
 		->delete('Dictee_Participation')
 		->where('dictee_id = ?', $Dictee->id)

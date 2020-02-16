@@ -103,6 +103,23 @@ class MessagesHelper extends Helper
 		return sprintf('<img src="%s" alt="Avatar" class="avatar" />', $publicUrl);
 	}
 
+    /**
+     * Retourne le chemin vers un fichier.
+     *
+     * @param  string $path Chemin vers le fichier.
+     * @return string
+     */
+    public function blobUrl($path)
+    {
+        // Historiquement, les chemins commencent généralement par "uploads/", inquant ainsi qu'on est sur le système
+        // de fichiers des "uploads". On retire ce préfixe et laisse le resolver faire son boulot.
+        $path = ltrim($path, '/');
+        if (strpos($path, 'uploads/') === 0) {
+            $path = substr($path, 8);
+        }
+        return $this->urlResolver->resolveUrl($path);
+    }
+
 	/**
 	 * Logo du groupe, ou nom si aucun.
 	 *

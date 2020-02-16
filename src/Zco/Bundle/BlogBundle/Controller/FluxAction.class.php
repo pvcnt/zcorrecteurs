@@ -177,6 +177,8 @@ class FluxAction extends Feed
 
 	protected function getItemEnclosureUrl($item)
 	{
-		return URL_SITE.'/'.htmlspecialchars($item['blog_image']);
+	    $path = ltrim('/uploads/', $item['blog_image']);
+
+		return $this->get('zco.url_resolver')->blobUrl($path);
 	}
 }

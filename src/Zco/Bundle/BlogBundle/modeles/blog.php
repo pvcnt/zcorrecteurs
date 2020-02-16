@@ -19,6 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Imagine\Image\Box;
+
 /**
  * Modèle gérant tout ce qui est utile pour le blog.
  *
@@ -286,7 +288,7 @@ function AjouterBillet()
 			"blog_id_version_courante, blog_image) " .
 			"VALUES(:id_categorie, NOW(), NOW(), :etat, :comms, :id_version, :image)");
 	$stmt->bindParam(':id_categorie', $_POST['categorie']);
-	$stmt->bindValue(':image', 'uploads/miniatures/blog/defaut.png');
+	$stmt->bindValue(':image', 'miniatures/blog/defaut.png');
 	$stmt->bindValue(':etat', BLOG_BROUILLON);
 	$stmt->bindValue(':comms', COMMENTAIRES_OK);
 	$stmt->bindParam(':id_version', $id_version);
@@ -321,27 +323,25 @@ function AjouterBillet()
 function AjouterBilletImage($id, $url)
 {
 	//On corrige l'url si elle est mal formée
-	$url = trim($url, '/');
-	$url = preg_replace('`^http://www.zcorrecteurs.fr/uploads/(.+)$`', BASEPATH.'/uploads/$1', $url);
+	//$url = trim($url, '/');
+	//$url = preg_replace('`^http://www.zcorrecteurs.fr/uploads/(.+)$`', '$1', $url);
 
+	$filesystem = \Container::getService('gaufrette.uploads_filesystem');
 	try
 	{
-		$thumbnail = \Container::getService('imagine')
-			->open($url)
-            ->thumbnail(new \Imagine\Image\Box(100, 100));
-		$path = BASEPATH.'/web/uploads/miniatures/blog/'.$id.'.png';
-		$thumbnail->save($path);
+	    //$contents = $filesystem->get($url)->getContent();
+		$thumbnail = (string) \Container::getService('imagine')->open($url)->thumbnail(new Box(100, 100));
+		$path = 'miniatures/blog/' . $id . '.png';
+		$filesystem->write($path, $thumbnail, true);
 		
-		return array(true, 'uploads/miniatures/blog/'.$id.'.png');
+		return array(true, $path);
 	}
 	catch (InvalidArgumentException $e)
 	{
-		throw $e;
 		return array(false, 0);
 	}
 	catch (Exception $e)
 	{
-		throw $e;
 		return array(false, 2);
 	}
 }

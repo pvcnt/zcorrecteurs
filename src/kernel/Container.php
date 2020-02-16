@@ -64,7 +64,7 @@ final class Container
 	 * Shortcut to get a service without using the container instance.
 	 *
 	 * @param string $service		The service name.
-	 * @return ContainerInterface			The required service.
+	 * @return object			The required service.
 	 */
 	public static function getService($service)
 	{

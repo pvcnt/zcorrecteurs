@@ -64,14 +64,14 @@
 		<div class="title">Logo de l'article</div>
 
 		<div class="content centre">
-			<img src="/<?php echo $InfosBillet['blog_image']; ?>" alt="Logo de l'article" id="image_actuelle" style="width: 70px; height: 70px;" />
+			<img src="<?php echo $this['messages']->blobUrl($InfosBillet['blog_image']) ?>" alt="Logo de l'article" id="image_actuelle" style="width: 70px; height: 70px;" />
 		</div>
 
 		<div class="hidden hr">
 			<?php if($verifier_editer){ ?>
 			<form method="post" action="">
 				<label for="image" class="nofloat">Changer le logo :</label><br />
-				<input type="text" name="image" id="image" value="<?php echo htmlspecialchars($InfosBillet['blog_image']); ?>" />
+				<input type="text" name="image" id="image" value="<?php echo $this['messages']->blobUrl($InfosBillet['blog_image']) ?>" />
 				<br />
 
 				<a href="<?php echo $view['router']->generate('zco_file_index', array('input' => 'image', 'xhr' => 1)) ?>" id="blog-files-link">

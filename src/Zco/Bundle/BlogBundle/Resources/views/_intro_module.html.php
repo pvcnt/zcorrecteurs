@@ -7,7 +7,7 @@
 	</h5>
 
 	<div class="zcode">
-		<img class="image flot_<?php echo (isset($cote) ? $cote : (($nb % 2) == 0 ? 'gauche' : 'droite')); ?>" src="/<?php echo htmlspecialchars($InfosBillet['blog_image']); ?>" alt="Logo du billet" />
+		<img class="image flot_<?php echo (isset($cote) ? $cote : (($nb % 2) == 0 ? 'gauche' : 'droite')); ?>" src="<?php echo $this['messages']->blobUrl($InfosBillet['blog_image']) ?>" alt="Logo du billet" />
 		<?php echo $view['messages']->parse($InfosBillet['version_intro'], array(
 		    'core.anchor_prefix' => $InfosBillet['blog_id'],
 		    'files.entity_id' => $InfosBillet['blog_id'],
