@@ -3,7 +3,7 @@
 
     <?php if ($Dictee->icone): ?>
 	<div align="center">
-	    <img src="<?php echo htmlspecialchars($Dictee->icone) ?>" height="100" width="100" style="float :center;"/>
+	    <img src="<?php echo $this['messages']->blobUrl($Dictee->icone) ?>" height="100" width="100" style="float :center;"/>
 	</div><br />
 	<?php endif; ?>
 	<dd title="Difficulté : <?php echo $DicteeDifficultes[$Dictee->difficulte] ?>">

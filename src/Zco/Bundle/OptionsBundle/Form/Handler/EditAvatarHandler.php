@@ -81,7 +81,9 @@ class EditAvatarHandler
 	{
 		if ($this->request->request->has('delete'))
 		{
-			unlink(BASEPATH.'/web/'.$user->getAvatar());
+            if ($this->filesystem->has('avatars/' . $user->getAvatar())) {
+                $this->filesystem->delete('avatars/' . $user->getAvatar());
+            }
 			$user->setAvatar('');
 			$user->save();
 

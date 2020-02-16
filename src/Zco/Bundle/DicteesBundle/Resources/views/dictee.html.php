@@ -7,7 +7,7 @@
 <meta name="twitter:description" content="<?php echo htmlspecialchars(strip_tags($Dictee->description)) ?>" />
 <meta name="twitter:title" content="<?php echo htmlspecialchars($Dictee->titre) ?>" />
 <?php if ($Dictee->icone): ?>
-	<meta name="twitter:image" content="<?php echo URL_SITE ?>/<?php echo htmlspecialchars($Dictee->icone) ?>" />
+	<meta name="twitter:image" content="<?php echo $this['messages']->blobUrl($Dictee->icone) ?>" />
 <?php endif ?>
 <?php $view['slots']->stop() ?>
 

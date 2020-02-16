@@ -165,8 +165,13 @@ function EditerDictee(Dictee $Dictee, AjouterForm &$Form)
 		$ext = strtolower(strrchr($_FILES['icone']['name'], '.'));
 		$nom = $Dictee->id.$ext;
 
-		if ( $Dictee->icone && ( strrchr($Dictee->icone, '.') != $ext ) )
-			@unlink(BASEPATH.'/web'.$Dictee->icone);
+		if ( $Dictee->icone && ( strrchr($Dictee->icone, '.') != $ext ) ) {
+		    $path = $Dictee->icone;
+		    if (strpos($path, '/uploads/')) {
+		        $path = substr($path, 9);
+            }
+            \Container::getService('gaufrette.uploads_filesystem')->delete($path);
+        }
 		
 		if (!File_Upload::Fichier($_FILES['icone'], 'dictees/' . $nom, true))
 			return redirect(514, 'editer-'.$Dictee->id.'-'.rewrite($Dictee->titre).'.html', MSG_ERROR);

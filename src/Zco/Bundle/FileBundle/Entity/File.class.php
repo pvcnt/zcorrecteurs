@@ -115,7 +115,7 @@ class File extends BaseFile
      */
     public function getWebPath()
     {
-        return $this->getWebBasePath().'/'.$this->getRelativePath();
+        return \Container::getService('zco.url_resolver')->resolveUrl($this->getRelativePath());
     }
     
     /**

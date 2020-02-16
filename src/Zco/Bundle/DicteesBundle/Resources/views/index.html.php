@@ -16,7 +16,7 @@
 			<dd>
 			<div <?php if(!$dictee->icone) echo 'style="height:45px; display: table-cell; vertical-align:middle;"' ?>>
 			<?php if ($dictee->icone) :?>
-				<img src="<?php echo htmlspecialchars($dictee->icone); ?>" height="40" width="40" style="float:left;"/>
+				<img src="<?php echo $this['messages']->blobUrl($dictee->icone) ?>" height="40" width="40" style="float:left;"/>
 			<?php endif; ?>
 				<p <?php if($dictee->icone) echo 'style="text-indent:5px;"'; else echo 'style="text-indent:40px;"' ?>>
 				<a href="dictee-<?php echo $dictee->id ?>-<?php
@@ -47,7 +47,7 @@
 			<dd>
 			<div <?php if(!$dictee->icone) echo 'style="height:45px; display: table-cell; vertical-align:middle;"' ?>>
 			<?php if ($dictee->icone) :?>
-				<img src="<?php echo htmlspecialchars($dictee->icone); ?>" height="40" width="40" style="float:left;"/>
+				<img src="<?php echo $this['messages']->blobUrl($dictee->icone) ?>" height="40" width="40" style="float:left;"/>
 			<?php endif; ?>
 			<p <?php if($dictee->icone) echo 'style="text-indent:5px;"'; else echo 'style="text-indent:40px;"' ?>>
 				<a href="dictee-<?php echo $dictee->id ?>-<?php
@@ -78,7 +78,7 @@
 		<?php else: $dictee = $DicteeHasard ?>
 			<dd>
 			<?php if ($dictee->icone) :?>
-				<img src="<?php echo htmlspecialchars($dictee->icone); ?>" height="100" width="100" style="float:left;"/>
+				<img src="<?php echo $this['messages']->blobUrl($dictee->icone); ?>" height="100" width="100" style="float:left;"/>
 			<?php endif; ?>
 			<div <?php if ($dictee->icone) echo 'style="text-indent:5px;"' ?>>
 				<a href="dictee-<?php echo $dictee->id ?>-<?php

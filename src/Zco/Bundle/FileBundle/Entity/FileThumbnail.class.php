@@ -38,7 +38,7 @@ class FileThumbnail extends BaseFileThumbnail
      */
     public function getWebPath()
     {
-        return $this->File->getWebBasePath().'/'.$this->getRelativePath();
+        return \Container::getService('zco.url_resolver')->resolveUrl($this->path);
     }
     
     public function getFullname()

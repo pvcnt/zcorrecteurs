@@ -30,7 +30,7 @@
 		<tr>
 			<td>
 			<?php if ($Dictee->icone) :?>
-				<img src="<?php echo htmlspecialchars($Dictee->icone); ?>" height="50" width="50"/>
+				<img src="<?php echo $this['messages']->blobUrl($Dictee->icone); ?>" height="50" width="50"/>
 			<?php endif; ?>
 				<a href="dictee-<?php echo $Dictee->id.'-'.rewrite($Dictee->titre); ?>.html">
 					<?php echo htmlspecialchars($Dictee->titre); ?>

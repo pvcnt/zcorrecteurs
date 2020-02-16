@@ -59,7 +59,8 @@ class File_Upload
 			}
 		}
 
-        \Container::getService('gaufrette.uploads_filesystem')->write($destination, file_get_contents($fichier['tmp_name']));
+        \Container::getService('gaufrette.uploads_filesystem')
+            ->write($destination, file_get_contents($fichier['tmp_name']), true);
 
 		return true;
 	}

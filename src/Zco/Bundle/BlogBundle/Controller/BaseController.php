@@ -148,7 +148,9 @@ class BaseController extends Controller
 			$this->verifier_supprimer = true;
 
 		//--- Modification des balises meta ---
-		Page::$titre = htmlspecialchars($this->InfosBillet['version_titre']);
-		Page::$description = htmlspecialchars(strip_tags($this->InfosBillet['version_intro']));
+		\Page::$titre = htmlspecialchars($this->InfosBillet['version_titre']);
+        \Page::$description = htmlspecialchars(strip_tags($this->InfosBillet['version_intro']));
+
+        return null;
 	}
 }
