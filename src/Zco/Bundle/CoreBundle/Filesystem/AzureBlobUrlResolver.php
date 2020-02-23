@@ -43,6 +43,10 @@ final class AzureBlobUrlResolver implements UrlResolver
      */
     public function resolveUrl(string $path)
     {
+        if (strpos($path, '://') > -1) {
+            // It is already a full URL.
+            return $path;
+        }
         return sprintf('https://%s.blob.core.windows.net/%s/%s', $this->account, $this->container, $path);
     }
 }

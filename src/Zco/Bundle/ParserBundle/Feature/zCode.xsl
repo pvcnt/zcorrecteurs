@@ -243,7 +243,7 @@
 		<xsl:choose>
 			<xsl:when test="$protocole='http' or $protocole=''">
 				<xsl:element name="img">
-					<xsl:attribute name="src"><xsl:value-of select="."/></xsl:attribute>
+					<xsl:attribute name="src"><xsl:value-of select="php:functionString('\Zco\Bundle\ParserBundle\Feature\CoreFeature::imageLien', .)"/></xsl:attribute>
 					<xsl:choose>
 						<xsl:when test="@legende">
 							<xsl:attribute name="alt"><xsl:value-of select="@legende"/></xsl:attribute>

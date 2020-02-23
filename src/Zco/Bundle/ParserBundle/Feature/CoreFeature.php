@@ -507,6 +507,23 @@ class CoreFeature implements EventSubscriberInterface
 		return $id;
 	}
 
+    /**
+     * Résout le chemin complet vers une image.
+     *
+     * @param string $path
+     * @return string
+     */
+	public static function imageLien($path)
+    {
+        // Historiquement, les chemins commencent généralement par "uploads/", inquant ainsi qu'on est sur le système
+        // de fichiers des "uploads". On retire ce préfixe et laisse le resolver faire son boulot.
+        $path = ltrim($path, '/');
+        if (strpos($path, 'uploads/') === 0) {
+            $path = substr($path, 8);
+        }
+	    return \Container::getService('zco.url_resolver')->resolveUrl($path);
+    }
+
 	/**
 	 * Callback pour la coloration d'un code.
 	 *
