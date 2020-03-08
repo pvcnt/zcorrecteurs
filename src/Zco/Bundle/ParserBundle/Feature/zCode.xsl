@@ -241,7 +241,7 @@
 	<xsl:template match="image">
 		<xsl:variable name="protocole" select="substring-before(., ':')"/>
 		<xsl:choose>
-			<xsl:when test="$protocole='http' or $protocole=''">
+			<xsl:when test="$protocole='http' or $protocole='https' or $protocole=''">
 				<xsl:element name="img">
 					<xsl:attribute name="src"><xsl:value-of select="php:functionString('\Zco\Bundle\ParserBundle\Feature\CoreFeature::imageLien', .)"/></xsl:attribute>
 					<xsl:choose>
@@ -260,6 +260,8 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
+
+
 	<xsl:template match="math">
 		<xsl:variable name="formule" select="php:functionString('rawurlencode', .)"/>
 		<img src="/cgi-bin/mimetex.cgi?{$formule}" alt="{.}"/>
