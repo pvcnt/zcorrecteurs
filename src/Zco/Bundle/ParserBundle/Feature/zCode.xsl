@@ -168,19 +168,7 @@
 			<xsl:when test="@url and php:functionString('\Zco\Bundle\ParserBundle\Feature\CoreFeature::verifierLien', @url)">
 				<xsl:element name="a">
 					<xsl:attribute name="href">
-						<xsl:choose>
-							<xsl:when test="substring(@url, 1, 4)='ftp.'">
-								<xsl:text>ftp://</xsl:text>
-								<xsl:value-of select="@url"/>
-							</xsl:when>
-							<xsl:when test="substring(@url, 1, 4)='www.'">
-								<xsl:text>http://</xsl:text>
-								<xsl:value-of select="@url"/>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:value-of select="@url"/>
-							</xsl:otherwise>
-						</xsl:choose>
+						<xsl:value-of select="php:functionString('\Zco\Bundle\ParserBundle\Feature\CoreFeature::lien', @url)"/>
 					</xsl:attribute>
 					<xsl:apply-templates/>
 				</xsl:element>
@@ -188,19 +176,7 @@
 			<xsl:when test="php:functionString('\Zco\Bundle\ParserBundle\Feature\CoreFeature::verifierLien', .)">
 				<xsl:element name="a">
 					<xsl:attribute name="href">
-						<xsl:choose>
-							<xsl:when test="substring(., 1, 4)='ftp.'">
-								<xsl:text>ftp://</xsl:text>
-								<xsl:value-of select="."/>
-							</xsl:when>
-							<xsl:when test="substring(., 1, 4)='www.'">
-								<xsl:text>http://</xsl:text>
-								<xsl:value-of select="."/>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:value-of select="."/>
-							</xsl:otherwise>
-						</xsl:choose>
+						<xsl:value-of select="php:functionString('\Zco\Bundle\ParserBundle\Feature\CoreFeature::lien', .)"/>
 					</xsl:attribute>
 					<xsl:call-template name="raccourcirLien">
 						<xsl:with-param name="lien" select="."/>

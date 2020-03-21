@@ -43,9 +43,9 @@ class CoreFeature implements EventSubscriberInterface
 	private static $protocoles = array(
 		'apt', 'ftp', 'http', 'https',
 	);
-	
+
 	/**
-	 * Liste des balises du zCode (utilisé pour échapper les autres balises, 
+	 * Liste des balises du zCode (utilisé pour échapper les autres balises,
 	 * supposées malicieuses).
 	 *
 	 * @var array
@@ -63,11 +63,11 @@ class CoreFeature implements EventSubscriberInterface
 		'citation', 'secret', 'code', 'minicode', 'touche',
 		'tableau', 'legende', 'ligne', 'entete', 'cellule',
 	);
-	
+
 	/**
 	 * Liste des différents types de codes pour le colorateur syntaxique.
-	 * Le type de code est placé en clé et en valeur un tableau contenant 
-	 * le nom du colorateur à utiliser le nom lisible du langage. Le type 
+	 * Le type de code est placé en clé et en valeur un tableau contenant
+	 * le nom du colorateur à utiliser le nom lisible du langage. Le type
 	 * a été entré directement par l'utilisateur.
 	 *
 	 * @var array
@@ -167,12 +167,12 @@ class CoreFeature implements EventSubscriberInterface
 		'xml' => array('xml', 'XML'),
 		'zcode' => array('xml', 'zCode')
 	);
-    
+
 	private static $codesParses;
 	private static $prefixeAncre;
 	private static $ancres;
 	private static $dom;
-	
+
 	/**
 	 * {@inheritdoc}
 	 */
@@ -185,7 +185,7 @@ class CoreFeature implements EventSubscriberInterface
             ParserEvents::POST_PROCESS_TEXT => 'postProcessText',
         );
     }
-    
+
     /**
      * Remplace les liens automatiques (non-entourés de balises).
      *
@@ -193,7 +193,7 @@ class CoreFeature implements EventSubscriberInterface
      */
     public function preProcessText(FilterContentEvent $event)
     {
-		static $protocoles = array();		
+		static $protocoles = array();
 		if (!$protocoles)
 		{
 			foreach (self::$protocoles as $protocole)
@@ -338,6 +338,33 @@ class CoreFeature implements EventSubscriberInterface
 	}
 
     /**
+     * Corrige les URLs.
+     *
+     * @param string $url URL brute.
+     * @return string
+     */
+	public static function lien($url)
+    {
+        if (strpos($url, '/uploads/') === 0) {
+            // Historiquement, les chemins commencent généralement par "/uploads/", inquant ainsi qu'on est sur
+            // le système de fichiers des "uploads". On retire ce préfixe et utilise le resolver pour transformer
+            // ce lien en une URL correcte.
+            return \Container::getService('zco.url_resolver')->resolveUrl(substr($url, 9));
+        }
+        if (strpos($url, 'ftp.') === 0) {
+            // Si aucun protocole n'est spécifié et que l'url commence par "ftp.", on suppose que c'est le protocole
+            // FTP qui est en jeu.
+            return 'ftp://' . $url;
+        }
+        if (strpos($url, 'www.') === 0) {
+            // Si aucun protocole n'est spécifié et que l'url commence par "ftp.", on suppose que c'est le protocole
+            // HTTP qui est en jeu.
+            return 'http://' . $url;
+        }
+        return $url;
+    }
+
+    /**
      * Crée une ancre automatique pour un contenu donné.
      *
      * @param  string $text Le contenu sur lequel créer une ancre
@@ -364,7 +391,7 @@ class CoreFeature implements EventSubscriberInterface
 
 		return self::$prefixeAncre.$t;
 	}
-    
+
 	/**
 	 * Colore un code.
 	 *
@@ -561,7 +588,7 @@ class CoreFeature implements EventSubscriberInterface
 		return isset(self::$langages[$langage]) ?
 			' '.$langage : '';
 	}
-	
+
 	/**
 	 * Renvoie le nom de l'auteur, et un lien vers le message.
 	 *
