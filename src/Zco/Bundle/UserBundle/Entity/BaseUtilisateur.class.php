@@ -51,7 +51,6 @@
  * @property Doctrine_Collection $UserWarning
  * @property Doctrine_Collection $ZformBackup
  * @property Doctrine_Collection $Tentative
- * @property Doctrine_Collection $Annonce
  * @property Doctrine_Collection $Auteur
  * @property Doctrine_Collection $BlogAuteur
  * @property Doctrine_Collection $Citation
@@ -282,10 +281,6 @@ abstract class BaseUtilisateur extends Doctrine_Record
         $this->hasMany('Tentative', array(
              'local' => 'utilisateur_id',
              'foreign' => 'user'));
-
-        $this->hasMany('Annonce', array(
-             'local' => 'utilisateur_id',
-             'foreign' => 'utilisateur_id'));
 
         $this->hasMany('Auteur', array(
              'local' => 'utilisateur_id',

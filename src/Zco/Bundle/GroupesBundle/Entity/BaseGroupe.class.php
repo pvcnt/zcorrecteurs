@@ -16,8 +16,6 @@
  * @property Doctrine_Collection $SecondaryGroup
  * @property Doctrine_Collection $Utilisateurs
  * @property Doctrine_Collection $UserPunishment
- * @property Doctrine_Collection $Annonce
- * @property Doctrine_Collection $AnnonceGroupe
  * @property Doctrine_Collection $GroupeDroit
  * @property Doctrine_Collection $HistoriqueGroupe
  * @property Doctrine_Collection $Recrutement
@@ -82,15 +80,6 @@ abstract class BaseGroupe extends Doctrine_Record
         $this->hasMany('UserPunishment', array(
              'local' => 'groupe_id',
              'foreign' => 'to_group_id'));
-
-        $this->hasMany('Annonce', array(
-             'refClass' => 'AnnonceGroupe',
-             'local' => 'groupe_id',
-             'foreign' => 'annonce_id'));
-
-        $this->hasMany('AnnonceGroupe', array(
-             'local' => 'id',
-             'foreign' => 'groupe_id'));
 
         $this->hasMany('GroupeDroit', array(
              'local' => 'groupe_id',

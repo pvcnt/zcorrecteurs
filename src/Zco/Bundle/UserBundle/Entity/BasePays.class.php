@@ -8,9 +8,7 @@
  * @property integer $id
  * @property string $code
  * @property string $nom
- * @property Doctrine_Collection $Annonce
- * @property Doctrine_Collection $AnnoncePays
- * 
+ *
  * @package    ##PACKAGE##
  * @subpackage ##SUBPACKAGE##
  * @author     ##NAME## <##EMAIL##>
@@ -38,18 +36,5 @@ abstract class BasePays extends Doctrine_Record
 
         $this->option('collate', 'utf8_unicode_ci');
         $this->option('charset', 'utf8');
-    }
-
-    public function setUp()
-    {
-        parent::setUp();
-        $this->hasMany('Annonce', array(
-             'refClass' => 'AnnoncePays',
-             'local' => 'pays_id',
-             'foreign' => 'annonce_id'));
-
-        $this->hasMany('AnnoncePays', array(
-             'local' => 'id',
-             'foreign' => 'pays_id'));
     }
 }

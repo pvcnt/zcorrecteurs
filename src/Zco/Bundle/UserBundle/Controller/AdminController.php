@@ -31,7 +31,6 @@ use Zco\Bundle\UserBundle\Form\Handler\WarningHandler;
 use Zco\Bundle\UserBundle\Form\Handler\PunishmentHandler;
 use Zco\Bundle\UserBundle\Form\Handler\AnswerNewUsernameHandler;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

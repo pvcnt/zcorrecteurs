@@ -25,8 +25,6 @@
  * @property GroupeDroit $GroupeDroit
  * @property Doctrine_Collection $Online
  * @property Doctrine_Collection $Aide
- * @property Doctrine_Collection $Annonce
- * @property Doctrine_Collection $AnnonceCategorie
  * @property Doctrine_Collection $Blog
  * @property Doctrine_Collection $ForumSujet
  * @property Doctrine_Collection $Droit
@@ -123,15 +121,6 @@ abstract class BaseCategorie extends Doctrine_Record
 
         $this->hasMany('Aide', array(
              'local' => 'id',
-             'foreign' => 'categorie_id'));
-
-        $this->hasMany('Annonce', array(
-             'refClass' => 'AnnonceCategorie',
-             'local' => 'categorie_id',
-             'foreign' => 'annonce_id'));
-
-        $this->hasMany('AnnonceCategorie', array(
-             'local' => 'cat_id',
              'foreign' => 'categorie_id'));
 
         $this->hasMany('Blog', array(
