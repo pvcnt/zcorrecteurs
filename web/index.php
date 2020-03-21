@@ -33,7 +33,7 @@ $sentryDsn = getenv('SENTRY_DSN');
 if ($sentryDsn) {
     Sentry\init([
         'dsn' => $sentryDsn,
-        'environment' => $environment,
+        'environment' => getenv('SENTRY_ENVIRONMENT') ?: $environment,
     ]);
 }
 
