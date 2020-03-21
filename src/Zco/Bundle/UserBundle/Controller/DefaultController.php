@@ -148,7 +148,7 @@ class DefaultController extends Controller
 		//zCorrecteurs::VerifierFormatageUrl($user->getUsername(), true);
 		$vars = array('user' => $user);
 		
-		$firstChar = iconv('utf-8', 'us-ascii//TRANSLIT', $user->getUsername());
+		$firstChar = stripAccents($user->getUsername());
 		$firstChar = strtolower($firstChar[0]);
 		$art = in_array($firstChar, array('a', 'e', 'i', 'o', 'u', 'y')) ? "'" : 'e ';
 		$vars['art'] = $art;

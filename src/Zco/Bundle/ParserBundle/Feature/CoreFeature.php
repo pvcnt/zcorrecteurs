@@ -375,7 +375,7 @@ class CoreFeature implements EventSubscriberInterface
 		if (self::$prefixeAncre === false)
 			return '';
 
-		$t = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+		$t = stripAccents($text);
 		$t = preg_replace('`[^A-Za-z0-9]+`', '-', $t);
 		$t = trim($t, '-');
 
