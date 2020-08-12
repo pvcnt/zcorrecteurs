@@ -20,13 +20,13 @@ services:
   memcached:
     class: Memcached
     calls:
-    - [addServer, ["memcached", 11211]]
+      - [addServer, ["memcached", 11211]]
 
   zco_core.cache:
     class: Doctrine\Common\Cache\MemcachedCache
     calls:
-    - [setMemcached, ["@memcached"]]
-    - [setNamespace, [cache]]
+      - [setMemcached, ["@memcached"]]
+      - [setNamespace, [cache]]
 
 knp_gaufrette:
   adapters:

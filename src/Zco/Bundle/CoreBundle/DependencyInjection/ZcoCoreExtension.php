@@ -44,7 +44,6 @@ class ZcoCoreExtension extends Extension
 		$loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 		$loader->load('services.yml');
 		$loader->load('listeners.yml');
-		$loader->load('cache.yml');
 		$loader->load('templating_helpers.yml');
 	}
 }
