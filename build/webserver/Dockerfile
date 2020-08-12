@@ -51,6 +51,7 @@ RUN apk update && \
 	php7-simplexml \
 	php7-xsl \
 	php7-fileinfo \
+	php7-memcached \
 	php7-tokenizer
 
 RUN cp /usr/bin/php7 /usr/bin/php && rm -f /var/cache/apk/*
