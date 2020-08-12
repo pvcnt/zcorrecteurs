@@ -23,12 +23,15 @@ function build_webserver {
     # Build Docker container.
     docker build -f build/webserver/Dockerfile -t webserver .
 
+    # Kill previous container if any, and start a new one.
+    prev=$(docker ps -q -f name=webserver)
+    if [ ! -z "$prev" ]; then
+      docker rm -f $prev
+    fi
+    docker run --rm --net=host -d --name webserver -e SYMFONY_ENVIRONMENT=dev -e SYMFONY_DEBUG=true webserver serve
+
     # Run Doctrine migrations.
     docker run --rm --net=host webserver php app/console doctrine:migrations:execute --force
-
-    # Restart container.
-    docker rm -f webserver
-    docker run --rm --net=host -d --name webserver -e SYMFONY_ENVIRONMENT=dev -e SYMFONY_DEBUG=true webserver serve
 }
 
 function build_sphinx {
