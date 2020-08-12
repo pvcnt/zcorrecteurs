@@ -85,7 +85,7 @@ final class DefaultController extends Controller
 		//Si on veut ajouter une catégorie
 		if(!empty($_POST['nom']))
 		{
-			AjouterCategorie();
+			AjouterCategorie($this->get('zco_core.cache'));
 			return redirect(1, 'index.html');
 		}
 

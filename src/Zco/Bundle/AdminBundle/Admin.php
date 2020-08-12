@@ -21,7 +21,7 @@
 
 namespace Zco\Bundle\AdminBundle;
 
-use Zco\Bundle\CoreBundle\Cache\CacheInterface;
+use Doctrine\Common\Cache\Cache;
 
 /**
  * Classe facilitant l'enregistrement et le comptage des tâches d'administration.
@@ -38,8 +38,10 @@ class Admin
 
     /**
      * Constructeur.
+     *
+     * @param Cache $cache
      */
-    public function __construct(CacheInterface $cache)
+    public function __construct(Cache $cache)
     {
         $this->cache = $cache;
         include_once(__DIR__ . '/modeles/taches_admin.php');
@@ -87,7 +89,7 @@ class Admin
         }
 
         //Si on peut la récupérer du cache.
-        if (($value = $this->cache->get('zco_admin:task_' . $name)) !== false && !$forceRefresh) {
+        if (($value = $this->cache->fetch('zco_admin:task_' . $name)) !== false && !$forceRefresh) {
             $value                        = (int) $value;
             $this->taches[$name]['value'] = $value;
 
@@ -155,7 +157,7 @@ class Admin
     {
         $this->taches[$name]['value'] = (int) $value;
         $this->taches[$name]['fresh'] = true;
-        $this->cache->set('zco_admin:task_' . $name, $value, $this->time);
+        $this->cache->save('zco_admin:task_' . $name, $value, $this->time);
     }
 
 }

@@ -34,16 +34,18 @@ class IndexAction extends BaseController
 
 		Page::$titre = 'Accueil des dictées';
 		fil_ariane(Page::$titre);
-		$this->get('zco_vitesse.resource_manager')->requireResources(array(
+        $this->get('zco_vitesse.resource_manager')->requireResources(array(
 		    '@ZcoAccueilBundle/Resources/public/css/home.css',
 		    '@ZcoDicteesBundle/Resources/public/css/dictees.css',
 		));
+        /** @var \Doctrine\Common\Cache\Cache $cache */
+        $cache = $this->get('zco_core.cache');
 
-		return render_to_response(array(
-			'DicteesAccueil'=> DicteesAccueil(),
-			'DicteeHasard'	=> DicteeHasard(),
-			'DicteesLesPlusJouees' => DicteesLesPlusJouees(),
-			'Statistiques'	=> DicteesStatistiques()
+        return render_to_response(array(
+			'DicteesAccueil'=> DicteesAccueil($cache),
+			'DicteeHasard'	=> DicteeHasard($cache),
+			'DicteesLesPlusJouees' => DicteesLesPlusJouees($cache),
+			'Statistiques'	=> DicteesStatistiques($cache)
 		));
 	}
 }

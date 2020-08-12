@@ -76,7 +76,7 @@ class Categorie extends BaseCategorie
 			->where('gd_id_categorie = ?', $this['id'])
 			->execute();
 
-		Container::getService('zco_core.cache')->Delete('categories');
+		Container::getService('zco_core.cache')->delete('categories');
 	}
 
 	public function majNbElements($nb = 1)

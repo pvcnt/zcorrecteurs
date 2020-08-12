@@ -170,29 +170,9 @@ function LuNonluCategorie($lu)
 	return $retour;
 }
 
-function ListeCategoriesForums()
-{
-	return ListerCategoriesForum();
-}
-
 function RecupererSautRapide($id)
 {
-	if (empty($_SESSION['groupes_secondaires']))
-	{
-		if(($ListerCategories = Container::getService('zco_core.cache')->Get('saut_rapide_'.$_SESSION['groupe'])) === false)
-		{
-			$ListerCategories = ListerCategoriesForum();
-			Container::getService('zco_core.cache')->Set('saut_rapide_'.$_SESSION['groupe'], $ListerCategories, 3600);
-		}
-	}
-	else
-	{
-		if(($ListerCategories = Container::getService('zco_core.cache')->Get('saut_rapide_utilisateur_'.$_SESSION['id'])) === false)
-		{
-			$ListerCategories = ListerCategoriesForum();
-			Container::getService('zco_core.cache')->Set('saut_rapide_utilisateur_'.$_SESSION['id'], $ListerCategories, 3600);
-		}
-	}
+    $ListerCategories = ListerCategoriesForum();
 
 	$SautRapide = '';
 	if(!empty($ListerCategories))

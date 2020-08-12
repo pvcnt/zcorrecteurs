@@ -55,7 +55,7 @@ class CacheFlushCommand extends ContainerAwareCommand
         $cache = $this->getContainer()->get('zco_core.cache');
         $args  = $input->getArgument('files');
         if (empty($args)) {
-            $cache->flush();
+            $cache->delete('*');
         } else {
             foreach ($args as $arg) {
                 $cache->delete($arg);

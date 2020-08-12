@@ -30,3 +30,7 @@ services:
   zco.url_resolver:
     class: Zco\Bundle\CoreBundle\Filesystem\LocalUrlResolver
     arguments: [uploads]
+
+  zco_core.cache:
+    class: Doctrine\Common\Cache\FilesystemCache
+    arguments: [%kernel.cache_dir%/zco_core_cache]

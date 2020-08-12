@@ -19,20 +19,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * Modèle s'occupant de la gestion des catégories.
- * (2 niveaux de travail : depuis la bdd et depuis le cache)
- *
- * @author vincent1870 <vincent@zcorrecteurs.fr>
- * @begin 08/08/2008
- * @last 08/08/2008
- */
+use Doctrine\Common\Cache\Cache;
 
 /**
  * Ajoute une catégorie.
+ *
+ * @param Cache $cache
  * @return integer				L'id de la catégorie insérée.
  */
-function AjouterCategorie()
+function AjouterCategorie(Cache $cache)
 {
 	$dbh = Doctrine_Manager::connection()->getDbh();
 
@@ -118,12 +113,8 @@ function AjouterCategorie()
 			$stmt->closeCursor();
 			$groupes[$d['gd_id_groupe']] = true;
 		}
-
-		//On supprime les caches de catégorie
-		Container::getService('zco_core.cache')->Delete('droits_groupe_*');
-		Container::getService('zco_core.cache')->Delete('saut_rapide_*');
 	}
-	Container::getService('zco_core.cache')->Delete('categories');
+    $cache->delete('categories');
 	return $id_cat;
 }
 
@@ -259,7 +250,6 @@ function EditerCategorie($id)
 	isset($_POST['archiver']) ? ArchiverForum($id) : DesarchiverForum($id);
 
 	//On supprime les caches de catégorie
-	Container::getService('zco_core.cache')->Delete('saut_rapide_*');
 	Container::getService('zco_core.cache')->Delete('categories');
 }
 
@@ -300,10 +290,6 @@ function SupprimerCategorie($id)
 	$stmt->execute();
 	$stmt->closeCursor();
 
-	//On supprime les caches de catégorie
-	Container::getService('zco_core.cache')->Delete('droits_groupe_*');
-	Container::getService('zco_core.cache')->Delete('saut_rapide_*');
-
 	Container::getService('zco_core.cache')->Delete('categories');
 }
 
@@ -334,7 +320,7 @@ function ListerCategories($verif_droits = false)
 
 	if (!$retour)
 	{
-		if(!($retour = Container::getService('zco_core.cache')->Get('categories')))
+		if(!($retour = Container::getService('zco_core.cache')->fetch('categories')))
 		{
 			$dbh = Doctrine_Manager::connection()->getDbh();
 			$retour = array();
@@ -352,7 +338,7 @@ function ListerCategories($verif_droits = false)
 			foreach($ListerCategories as $c)
 				$retour[$c['cat_id']] = $c;
 
-			Container::getService('zco_core.cache')->Set('categories', $retour, 0);
+			Container::getService('zco_core.cache')->save('categories', $retour, 0);
 		}
 	}
 
@@ -498,7 +484,6 @@ function DescendreCategorie($InfosCategorie)
 		$stmt->closeCursor();
 
 		//On supprime les caches de catégorie
-		Container::getService('zco_core.cache')->Delete('saut_rapide_*');
 		Container::getService('zco_core.cache')->Delete('categories');
 
 		return true;
@@ -573,7 +558,6 @@ function MonterCategorie($InfosCategorie)
 		$stmt->closeCursor();
 
 		//On supprime les caches de catégorie
-		Container::getService('zco_core.cache')->Delete('saut_rapide_*');
 		Container::getService('zco_core.cache')->Delete('categories');
 
 		return true;

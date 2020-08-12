@@ -23,7 +23,6 @@ namespace Zco\Bundle\CoreBundle\Templating\Helper;
 
 use Zco\Bundle\CoreBundle\Menu\Renderer\SpeedbarreRenderer;
 use Zco\Bundle\CoreBundle\Menu\Renderer\LeftMenuRenderer;
-use Zco\Bundle\CoreBundle\Menu\Renderer\FooterRenderer;
 use Zco\Bundle\CoreBundle\Menu\MenuFactory;
 use Zco\Bundle\CoreBundle\View\ViewInterface;
 use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
@@ -44,7 +43,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class UiHelper extends Helper
 {
 	private $container;
-	
+
 	/**
 	 * Constructeur.
 	 *
@@ -176,25 +175,12 @@ class UiHelper extends Helper
 	 * @param  string $content Le contenu du bloc
 	 * @param  string $block Le nom du bloc
  	 * @param  string $template Le nom du layout dans lequel le bloc est inclus
- 	 * @param  integer|false $lifetime Durée de mise en cache du bloc, false pour désactiver
 	 * @return string
 	 */
-	private function filterBlock($content, $block, $template = null, $lifetime = false)
+	private function filterBlock($content, $block, $template = null)
 	{
 		$event = new FilterContentEvent($this->container->get('request'), $content, $template);
 		$this->container->get('event_dispatcher')->dispatch('zco_core.filter_block.'.$block, $event);
-		
-		if ($lifetime !== false)
-		{
-			$cache = $this->container->get('zco_core.cache');
-			$cache->set('zco_core.ui.block.'.$block, $event->getContent(), $lifetime);
-		}
-		
 		return $event->getContent();
-	}
-	
-	private function checkCache($block)
-	{
-		return $this->container->get('zco_core.cache')->get('zco_core.ui.block.'.$block);
 	}
 }

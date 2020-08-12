@@ -21,6 +21,7 @@
 
 namespace Zco\Bundle\UserBundle\EventListener;
 
+use Doctrine\Common\Cache\Cache;
 use Zco\Bundle\CoreBundle\CoreEvents;
 use Zco\Bundle\CoreBundle\Event\CronEvent;
 use Zco\Bundle\InformationsBundle\Event\FilterSitemapEvent;
@@ -42,7 +43,19 @@ use Symfony\Component\DependencyInjection\ContainerAware;
  */
 class EventListener extends ContainerAware implements EventSubscriberInterface
 {
-	/**
+    private $cache;
+
+    /**
+     * Constructeurr.
+     *
+     * @param Cache $cache
+     */
+    public function __construct(Cache $cache)
+    {
+        $this->cache = $cache;
+    }
+
+    /**
 	 * {@inheritdoc}
 	 */
 	static public function getSubscribedEvents()
@@ -91,8 +104,9 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 		//l'utilisateur actuellement connecté.
 		if (
 			$user->isAuthenticated()
-			&& isset($_SESSION['refresh_droits']) 
-			&& $this->container->get('zco_core.cache')->get('dernier_refresh_droits') >= $_SESSION['refresh_droits']
+			&& isset($_SESSION['refresh_droits'])
+            && $this->cache->contains('dernier_refresh_droits')
+			&& $this->cache->fetch('dernier_refresh_droits') >= $_SESSION['refresh_droits']
 		)
 		{
 			$user->reloadGroups();

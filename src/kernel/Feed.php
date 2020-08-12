@@ -86,7 +86,7 @@ abstract class Feed extends Controller
 		$lifetime = isset($this->lifetime) ? $this->lifetime : 3600;
 		$cache = $this->get('zco_core.cache');
 
-		if(($content = $cache->get($cache_file)) === false)
+		if(($content = $cache->fetch($cache_file)) === false)
 		{
 			$objects = $this->getItems($this->object);
 			$params = array(
@@ -119,7 +119,7 @@ abstract class Feed extends Controller
 
 			//Sauvegarde du XML
 			$content = $feed->writeString();
-			$cache->set($cache_file, $content, $lifetime);
+			$cache->save($cache_file, $content, $lifetime);
 		}
 
 		return $content;

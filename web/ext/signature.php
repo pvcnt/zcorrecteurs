@@ -15,8 +15,10 @@ header('Content-Type: image/png');
  * Crée une signature avec le titre du dernier billet
  * @author Skydreamer
 */
-if (!$cache->output('signature', 7200))
-{
+if (false === ($contents = $this->cache->get('signature'))) {
+    ob_start();
+    ob_implicit_flush(false);
+
 	include(BASEPATH.'/src/Zco/Bundle/BlogBundle/modeles/blog.php');
 	$billets = ListerBillets(array('etat' => BLOG_VALIDE), 1, 1);
 
@@ -36,5 +38,8 @@ if (!$cache->output('signature', 7200))
 	imagettftext($image, $taille, $angle, $x, $y, $noir, $police, $texte);
 	imagepng($image);
 	
-	$cache->end();
+	$contents = ob_get_flush();
+	$cache->set('signature', 7200);
 }
+
+echo $contents;

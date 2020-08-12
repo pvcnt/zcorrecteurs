@@ -140,7 +140,7 @@ function AjouterMPAuto($titre, $SousTitre, $participants, $message)
 		$stmt->bindValue(':statut', MP_STATUT_NORMAL);
 		$stmt->execute();
 
-		Container::getService('zco_core.cache')->Set('MPnonLu'.$valeur, true, strtotime('+1 hour'));
+		Container::getService('zco_core.cache')->save('MPnonLu'.$valeur, true, strtotime('+1 hour'));
 	}
 	$stmt->closeCursor();
 
@@ -370,4 +370,57 @@ function ListerDeveloppeurs()
 	foreach($retour as &$dev)
 		$devs[$dev['utilisateur_pseudo']] = (int)$dev['utilisateur_id'];
 	return $devs;
+}
+
+function Geolocaliser($ip)
+{
+    //Inclusion de la librairie
+    include_once(BASEPATH.'/lib/geoip/geoipcity.php');
+
+    $ip = long2ip($ip);
+    $match = explode('.', $ip);
+
+    //Si l'adresse est spécifique (type localhost)
+    if ($match[0] == '127' or $match[0] == '10' or ($match[0] == '172' and $match[1] >= '16' and $match[1] <= '31') or ($match[0] == '192' and $match[1] == '168'))
+    {
+        return array(false, '-', null);
+    }
+
+    //Lancement de la procédure de localisation
+    if (!is_file(BASEPATH.'/lib/geoip/GeoLiteCity.dat')) {
+        return ['Inconnu', null, null];
+    }
+    $gi = geoip_open(BASEPATH.'/lib/geoip/GeoLiteCity.dat', GEOIP_STANDARD);
+    $location = geoip_record_by_addr($gi, $ip);
+    geoip_close($gi);
+
+    //En cas d'échec de la localisation
+    if (empty($location))
+    {
+        return array('Inconnu', null, null);
+    }
+
+    //Si on a le pays
+    if (!empty($location->country_code))
+    {
+        $objet = Doctrine_Core::getTable('Pays')->findOneByCode(strtoupper($location->country_code));
+        return array($location->country_name, $location, $objet ? $objet['id'] : null);
+    }
+    else
+    {
+        return null;
+    }
+}
+
+function ListerIPsMembre($id)
+{
+    $dbh = Doctrine_Manager::connection()->getDbh();
+
+    $stmt = $dbh->prepare("SELECT ip_ip, ip_proxy, ip_date_debut, ip_date_last, ip_localisation " .
+        "FROM zcov2_utilisateurs_ips " .
+        "WHERE ip_id_utilisateur = :id " .
+        "ORDER BY ip_date_last DESC");
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+    return $stmt->fetchAll();
 }

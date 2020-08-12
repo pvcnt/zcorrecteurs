@@ -19,14 +19,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Doctrine\Common\Cache\Cache;
+
 /**
  * Liste les 3 dernières dictées.
  *
- * @return Doctrine_Collection	Les dictées.
+ * @param Cache $cache
+ * @return array
 */
-function DicteesAccueil()
+function DicteesAccueil(Cache $cache)
 {
-	if(!$d = Container::getService('zco_core.cache')->Get('dictees_accueil'))
+	if(!$d = $cache->fetch('dictees_accueil'))
 	{
 		$dictees = Doctrine_Query::create()
 			->from('Dictee')
@@ -38,7 +41,7 @@ function DicteesAccueil()
 		$d = array();
 		foreach ($dictees as $dictee)
 			$d[] = $dictee;
-		Container::getService('zco_core.cache')->Set('dictees_accueil', $d, 120);
+		$cache->save('dictees_accueil', $d, 120);
 	}
 	return $d;
 }
@@ -46,11 +49,12 @@ function DicteesAccueil()
 /**
  * Liste les 3 dictées les plus jouées.
  *
- * @return Doctrine_Collection	Les dictées.
+ * @param Cache $cache
+ * @return array
 */
-function DicteesLesPlusJouees()
+function DicteesLesPlusJouees(Cache $cache)
 {
-	if(!$d = Container::getService('zco_core.cache')->Get('dictees_plusJouees'))
+	if(!$d = $cache->fetch('dictees_plusJouees'))
 	{
 		$dictees = Doctrine_Query::create()
 			->from('Dictee')
@@ -61,7 +65,7 @@ function DicteesLesPlusJouees()
 		$d = array();
 		foreach ($dictees as $dictee)
 			$d[] = $dictee;
-		Container::getService('zco_core.cache')->Set('dictees_plusJouees', $d, 3600);
+		$cache->save('dictees_plusJouees', $d, 3600);
 	}
 	return $d;
 }
@@ -70,11 +74,12 @@ function DicteesLesPlusJouees()
 /**
  * Choisit une dictée au hasard.
  *
+ * @param Cache $cache
  * @return Dictee	La dictée choisie.
 */
-function DicteeHasard()
+function DicteeHasard(Cache $cache)
 {
-	if(!$d = Container::getService('zco_core.cache')->Get('dictees_hasard'))
+	if(!$d = $cache->fetch('dictees_hasard'))
 	{
 		$d = Doctrine_Query::create()
 			->from('Dictee')
@@ -82,7 +87,7 @@ function DicteeHasard()
 			->orderBy('RAND()')
 			->limit(1)
 			->fetchOne();
-		Container::getService('zco_core.cache')->Set('dictees_hasard', $d ?: false, 120);
+		$cache->save('dictees_hasard', $d ?: false, 120);
 	}
 	return $d;
 }

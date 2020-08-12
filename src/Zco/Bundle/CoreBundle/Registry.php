@@ -21,7 +21,7 @@
 
 namespace Zco\Bundle\CoreBundle;
 
-use Zco\Bundle\CoreBundle\Cache\CacheInterface;
+use Doctrine\Common\Cache\Cache;
 
 /**
  * Classe permettant de stocker des paires clé/valeur en BDD. Une surcouche 
@@ -37,10 +37,10 @@ class Registry
 	/**
 	 * Constructeur.
 	 *
-	 * @param CacheInterface $cache
+	 * @param Cache $cache
 	 * @param string $prefix Le préfix des tables en base de données
 	 */
-	public function __construct(CacheInterface $cache, $prefix)
+	public function __construct(Cache $cache, $prefix)
 	{
 		$this->cache = $cache;
 	    $this->prefix = $prefix;
@@ -60,7 +60,7 @@ class Registry
 		$query->bindValue(':value', serialize($value));
 		$query->execute();
 		
-		$this->cache->set('registry_'.$key, $value, 0);
+		$this->cache->save('registry_'.$key, $value);
 	}
 
 
@@ -69,11 +69,11 @@ class Registry
 	 *
 	 * @param  string $key Clé identifiant la valeur
 	 * @param  mixed $default Valeur à retourner si l'enregistrement n'existe pas
-	 * @return mixed $value Valeur enregistrée
+	 * @return mixed Valeur enregistrée
 	 */
 	public function get($key, $default = false)
 	{
-		if (($value = $this->cache->get('registry_'.$key)) !== false)
+		if (($value = $this->cache->fetch('registry_'.$key)) !== false)
 		{
 			return $value;
 		}
@@ -88,7 +88,7 @@ class Registry
 			return $default;
 		}
 		$value = unserialize($value);
-		$this->cache->set('registry_'.$key, $value, 0);
+		$this->cache->save('registry_'.$key, $value, 0);
 		
 		return $value;
 	}

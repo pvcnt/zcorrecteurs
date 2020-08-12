@@ -108,7 +108,7 @@ class DefaultController extends Controller
             //Si on veut supprimer le groupe
             if (isset($_POST['confirmer'])) {
                 SupprimerGroupe($_GET['id']);
-                $this->get('zco_core.cache')->set('dernier_refresh_droits', time(), 0);
+                $this->get('zco_core.cache')->save('dernier_refresh_droits', time(), 0);
 
                 return redirect(8, 'index.html');
             } //Si on annule
@@ -171,30 +171,6 @@ class DefaultController extends Controller
     }
 
     /**
-     * Recharge les droits de chaque groupe et l'id du groupe stocké en session.
-     * @author vincent1870 <vincent@zcorrecteurs.fr>
-     */
-    public function rechargerDroitsAction()
-    {
-        \zCorrecteurs::VerifierFormatageUrl();
-        \Page::$titre = 'Recharger les droits des groupes';
-
-        //Si on veut recharger le cache
-        if (isset($_POST['confirmer'])) {
-            $this->get('zco_core.cache')->set('dernier_refresh_droits', time(), 0);
-            $this->get('zco_core.cache')->delete('droits_groupe_*');
-
-            return redirect(5, '/admin/');
-        } //Si on annule
-        elseif (isset($_POST['annuler'])) {
-            return new RedirectResponse('/admin/');
-        }
-
-        fil_ariane('Recharger le cache des groupes et des droits');
-        return render_to_response(array());
-    }
-
-    /**
      * Change un membre de groupe.
      */
     public function changerMembreGroupeAction()
@@ -219,7 +195,7 @@ class DefaultController extends Controller
             } elseif (!empty($_POST['groupe']) && is_numeric($_POST['groupe']) && $_POST['groupe'] != GROUPE_VISITEURS) {
                 $_POST['id'] = $_GET['id'];
                 ChangerGroupeUtilisateur();
-                $this->get('zco_core.cache')->set('dernier_refresh_droits', time(), 0);
+                $this->get('zco_core.cache')->save('dernier_refresh_droits', time(), 0);
 
                 return redirect(9, 'changer-membre-groupe-' . $_GET['id'] . '.html');
             } else
@@ -230,8 +206,7 @@ class DefaultController extends Controller
                     $_GET['id'],
                     isset($_POST['groupes_secondaires']) ? $_POST['groupes_secondaires'] : array()
                 );
-                $this->get('zco_core.cache')->set('dernier_refresh_droits', time(), 0);
-                $this->get('zco_core.cache')->delete('saut_rapide_utilisateur_' . $_GET['id']);
+                $this->get('zco_core.cache')->save('dernier_refresh_droits', time(), 0);
 
                 return redirect(9,
                     '/groupes/changer-membre-groupe-'
@@ -281,7 +256,7 @@ class DefaultController extends Controller
         if ($_GET['id'] != '' && is_numeric($_GET['id'])) {
             $InfosGroupe = InfosGroupe($_GET['id']);
             if (empty($InfosGroupe))
-                return redirect(2, 'gestion-droits.html', MSG_ERROR);
+                return redirect(2, 'droits.html', MSG_ERROR);
         } else {
             $InfosGroupe = null;
         }
@@ -289,7 +264,7 @@ class DefaultController extends Controller
         if (!empty($_GET['id2']) && is_numeric($_GET['id2'])) {
             $InfosDroit = InfosDroit($_GET['id2']);
             if (empty($InfosDroit))
-                return redirect(3, 'gestion-droits.html', MSG_ERROR);
+                return redirect(3, 'droits.html', MSG_ERROR);
         } else {
             $InfosDroit = null;
         }
@@ -372,112 +347,6 @@ class DefaultController extends Controller
             'ValeurDroit' => $ValeurDroit,
             'ValeurNumerique' => $ValeurNumerique,
         ));
-    }
-
-    /**
-     * AAffiche la liste de tous les droits.
-     * @author vincent1870 <vincent@zcorrecteurs.fr>
-     */
-    public function gestionDroitsAction()
-    {
-        \zCorrecteurs::VerifierFormatageUrl();
-        fil_ariane('Gestion des droits');
-
-        return render_to_response(array(
-            'ListerDroits' => ListerDroits(),
-            'ListerCategories' => ListerCategories(),
-        ));
-    }
-
-    /**
-     * Ajoute un nouveau droit.
-     * @author vincent1870 <vincent@zcorrecteurs.fr>
-     */
-    public function ajouterDroitAction()
-    {
-        \zCorrecteurs::VerifierFormatageUrl();
-        \Page::$titre = 'Ajouter un droit';
-
-        //Si on veut ajouter un droit
-        if (!empty($_POST['nom']) && !empty($_POST['desc']) && !empty($_POST['cat'])) {
-            AjouterDroit($_POST['nom'], $_POST['desc'], $_POST['texte'],
-                $_POST['cat'], isset($_POST['choix_cat']), !isset($_POST['choix_binaire']));
-            $this->get('zco_core.cache')->delete('droits_groupe_*');
-
-            return redirect(10, 'gestion-droits.html');
-        }
-
-        //Inclusion de la vue
-        fil_ariane('Ajouter un droit');
-
-        return render_to_response(array());
-    }
-
-    /**
-     * Modifie un droit.
-     * @author vincent1870 <vincent@zcorrecteurs.fr>
-     */
-    public function editerDroitAction()
-    {
-        \Page::$titre = 'Modifier un droit';
-
-        if (!empty($_GET['id']) && is_numeric($_GET['id'])) {
-            $InfosDroit = InfosDroit($_GET['id']);
-            if (empty($InfosDroit))
-                return redirect(3, 'gestion-droits.html', MSG_ERROR);
-            \zCorrecteurs::VerifierFormatageUrl($InfosDroit['droit_nom'], true);
-
-            //Si on veut éditer le droit
-            if (!empty($_POST['nom']) && !empty($_POST['desc']) && !empty($_POST['cat'])) {
-                EditerDroit($InfosDroit, $_POST['nom'], $_POST['desc'], $_POST['texte'],
-                    $_POST['cat'], isset($_POST['choix_cat']), !isset($_POST['choix_binaire']));
-                $this->get('zco_core.cache')->delete('droits_groupe_*');
-
-                return redirect(11, 'gestion-droits.html');
-            }
-
-            fil_ariane(array('Gestion des droits' => 'gestion-droits.html', 'Modifier un droit'));
-
-            return render_to_response(array(
-                'ListerCategories' => ListerCategories(),
-                'InfosDroit' => $InfosDroit,
-            ));
-        } else
-            return redirect(3, 'gestion-droits.html', MSG_ERROR);
-    }
-
-    /**
-     * Supprime un droit.
-     * @author vincent1870 <vincent@zcorrecteurs.fr>
-     */
-    public function supprimerDroitAction()
-    {
-        \Page::$titre = 'Supprimer un droit';
-
-        if (!empty($_GET['id']) && is_numeric($_GET['id'])) {
-            $InfosDroit = InfosDroit($_GET['id']);
-            if (empty($InfosDroit))
-                return redirect(3, 'gestion-droits.html', MSG_ERROR);
-            \zCorrecteurs::VerifierFormatageUrl($InfosDroit['droit_nom'], true);
-
-            //Si on veut supprimer le droit
-            if (isset($_POST['confirmer'])) {
-                SupprimerDroit($_GET['id']);
-                $this->get('zco_core.cache')->delete('droits_groupe_*');
-
-                return redirect(12, 'gestion-droits.html');
-            } //Si on annule
-            elseif (isset($_POST['annuler'])) {
-                return new RedirectResponse('gestion-droits.html');
-            }
-
-            //Inclusion de la vue
-            fil_ariane(array('Gestion des droits' => 'gestion-droits.html', 'Supprimer un droit'));
-
-            return render_to_response(array('InfosDroit' => $InfosDroit));
-
-        } else
-            return redirect(3, 'gestion-droits.html', MSG_ERROR);
     }
 
     /**

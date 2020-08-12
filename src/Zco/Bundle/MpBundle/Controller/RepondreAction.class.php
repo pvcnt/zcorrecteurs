@@ -123,7 +123,7 @@ class RepondreAction extends Controller
 								   $current_participant != $valeur['mp_participant_id'])
 								{
 									$current_participant = $valeur['mp_participant_id'];
-									$this->get('zco_core.cache')->set('MPnonLu'.$valeur['mp_participant_id'], true, strtotime('+1 hour'));
+									$this->get('zco_core.cache')->save('MPnonLu'.$valeur['mp_participant_id'], true, strtotime('+1 hour'));
 								}
 							}
 							return redirect(34, 'lire-'.$_GET['id'].'-'.$NouveauMessageID.'.html');

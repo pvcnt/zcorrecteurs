@@ -21,7 +21,9 @@
 
 namespace Zco\Bundle\AccueilBundle\Controller;
 
+use Doctrine\Common\Cache\Cache;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Zco\Bundle\CoreBundle\Registry;
 
 /**
  * Affichage de la page d'accueil du site.
@@ -32,7 +34,9 @@ class IndexController extends Controller
 {
 	public function defaultAction()
 	{
+	    /** @var Registry $registry */
 		$registry = $this->get('zco_core.registry');
+		/** @var Cache $cache */
 		$cache = $this->get('zco_core.cache');
 		
 		\zCorrecteurs::VerifierFormatageUrl();
@@ -74,10 +78,10 @@ class IndexController extends Controller
 		elseif($vars['quel_bloc'] == 'recrutement')
 		{
 			$cacheKey = verifier('recrutements_voir_prives') ? 'liste_recrutements_prives' : 'liste_recrutements_publics';
-			if(($ListerRecrutements = $cache->get($cacheKey)) === false)
+			if(($ListerRecrutements = $cache->fetch($cacheKey)) === false)
 			{
 				$ListerRecrutements = ListerRecrutements();
-				$cache->set($cacheKey, $ListerRecrutements, 0);
+				$cache->save($cacheKey, $ListerRecrutements, 0);
 			}
 			$vars['ListerRecrutements'] = $ListerRecrutements;
 		 }
@@ -98,7 +102,7 @@ class IndexController extends Controller
 		 }
 		 elseif($vars['quel_bloc'] == 'billet_hasard')
 		 {
-			if($billet = $cache->get('billet_hasard'))
+			if($billet = $cache->fetch('billet_hasard'))
 			{
 				$vars['BilletHasard'] = InfosBillet($billet);
 				$vars['BilletAuteurs'] = $vars['BilletHasard'];
@@ -109,7 +113,7 @@ class IndexController extends Controller
 				if(!$categories = $registry->get('categories_billet_hasard'))
 					$categories = array();
 				$rand = BilletAleatoire($categories);
-				$cache->set('billet_hasard', $rand, TEMPS_BILLET_HASARD * 60);
+				$cache->save('billet_hasard', $rand, TEMPS_BILLET_HASARD * 60);
 				$vars['BilletHasard'] = InfosBillet($rand);
 				$vars['BilletAuteurs'] = $vars['BilletHasard'];
 				$vars['BilletHasard'] = $vars['BilletHasard'][0];
@@ -129,9 +133,9 @@ class IndexController extends Controller
 		), -1);
 
 		// Dictées
-		$vars['DicteesAccueil']       = array_slice(DicteesAccueil(), 0, 2);
-		$vars['DicteeHasard']         = DicteeHasard();
-		$vars['DicteesLesPlusJouees'] = array_slice(DicteesLesPlusJouees(), 0, 2);
+		$vars['DicteesAccueil']       = array_slice(DicteesAccueil($cache), 0, 2);
+		$vars['DicteeHasard']         = DicteeHasard($cache);
+		$vars['DicteesLesPlusJouees'] = array_slice(DicteesLesPlusJouees($cache), 0, 2);
 
 		// Quiz
 		$vars['ListerQuizFrequentes'] = \Doctrine_Core::getTable('Quiz')->listerParFrequentation();
@@ -139,7 +143,7 @@ class IndexController extends Controller
 		$vars['QuizHasard']           = \Doctrine_Core::getTable('Quiz')->hasard();
 
 		// Forum
-		$vars['StatistiquesForum'] = RecupererStatistiquesForum();
+		$vars['StatistiquesForum'] = RecupererStatistiquesForum($cache);
 
 		// Inclusion de la vue
 		fil_ariane('Accueil');

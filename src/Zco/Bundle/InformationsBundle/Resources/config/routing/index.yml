@@ -13,7 +13,3 @@ zco_info_static_rules:
 zco_info_sitemap:
     pattern:   /sitemap.xml
     defaults:  { _controller: ZcoInformationsBundle:Default:sitemap }
-
-zco_info_feed:
-    pattern:   /informations/flux.xml
-    defaults:  { _controller: ZcoInformationsBundle:Feed:home }

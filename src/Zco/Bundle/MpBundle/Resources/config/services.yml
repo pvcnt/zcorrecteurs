@@ -1,7 +1,6 @@
 services:
     zco_mp.event_listener:
         class: Zco\Bundle\MpBundle\EventListener\EventListener
-        calls:
-            - [setContainer, [@service_container]]
+        arguments: ["@zco_core.cache", "@zco_admin.manager"]
         tags:
             - { name: kernel.event_subscriber }

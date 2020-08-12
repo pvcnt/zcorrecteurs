@@ -45,7 +45,8 @@ class CategorieTable extends Doctrine_Table
 
 		if (!$retour)
 		{
-			if(!($retour = Container::getService('zco_core.cache')->Get('categories')))
+		    $cache = Container::getService('zco_core.cache');
+			if(!($retour = $cache->fetch('categories')))
 			{
 				$rows = Doctrine_Query::create()
 					->select('c.*')
@@ -56,7 +57,7 @@ class CategorieTable extends Doctrine_Table
 				foreach($rows as $row)
 					$retour[$row['id']] = $row;
 
-				Container::getService('zco_core.cache')->Set('categories', $retour, 0);
+				$cache->save('categories', $retour);
 			}
 		}
 

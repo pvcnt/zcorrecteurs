@@ -91,7 +91,10 @@ class QuizTable extends Doctrine_Table implements NamedDoctrineTableInterface
 	 */
 	public function listerParFrequentation()
 	{
-		if(!($listeQuizFrequentes = Container::getService('zco_core.cache')->Get('quiz_liste_frequentes')))
+        /** @var \Doctrine\Common\Cache\Cache $cache */
+        $cache = Container::getService('zco_core.cache');
+
+		if(!($listeQuizFrequentes = $cache->fetch('quiz_liste_frequentes')))
 		{
 			$listeQuizFrequentes = Doctrine_Query::create()
 				->select('q.id, q.nom, q.description, q.date, q.difficulte, q.aleatoire, '.
@@ -104,7 +107,7 @@ class QuizTable extends Doctrine_Table implements NamedDoctrineTableInterface
 				->orderBy('COUNT(*) DESC')
 				->limit(2)
 				->execute();
-			Container::getService('zco_core.cache')->Set('quiz_liste_frequentes', $listeQuizFrequentes, 86400);
+			$cache->save('quiz_liste_frequentes', $listeQuizFrequentes, 86400);
 		}
 		return $listeQuizFrequentes;
 	}
@@ -118,8 +121,10 @@ class QuizTable extends Doctrine_Table implements NamedDoctrineTableInterface
 	public function listerRecents()
 	{
 		$dbh = Doctrine_Manager::connection()->getDbh();
+        /** @var \Doctrine\Common\Cache\Cache $cache */
+        $cache = Container::getService('zco_core.cache');
 
-		if(($listeNouveauxQuiz = Container::getService('zco_core.cache')->Get('quiz_liste_nouveaux')) === false)
+		if(($listeNouveauxQuiz = $cache->fetch('quiz_liste_nouveaux')) === false)
 		{
 			$stmt = $dbh->query('SELECT DISTINCT question.quiz_id AS id, quiz.nom, quiz.description, '
 				.'(SELECT COUNT(*) FROM zcov2_quiz_questions WHERE quiz_id = quiz.id) AS nb_questions '
@@ -132,7 +137,7 @@ class QuizTable extends Doctrine_Table implements NamedDoctrineTableInterface
 				.'WHERE quiz.visible = 1 '
 				.'LIMIT 2');
 			$listeNouveauxQuiz = $stmt->fetchAll();
-			Container::getService('zco_core.cache')->Set('quiz_liste_nouveaux', $listeNouveauxQuiz, 86400);
+			$cache->save('quiz_liste_nouveaux', $listeNouveauxQuiz, 86400);
 		}
 		return $listeNouveauxQuiz;
 	}
@@ -145,9 +150,10 @@ class QuizTable extends Doctrine_Table implements NamedDoctrineTableInterface
 	 */
 	public function hasard()
 	{
-		$dbh = Doctrine_Manager::connection()->getDbh();
+	    /** @var \Doctrine\Common\Cache\Cache $cache */
+		$cache = Container::getService('zco_core.cache');
 
-		if(!($quizHasard = Container::getService('zco_core.cache')->Get('quiz_quiz_tire_au_hasard')))
+		if(!($quizHasard = $cache->fetch('quiz_quiz_tire_au_hasard')))
 		{
 			$quizHasard = Doctrine_Query::create()
 				->select('q.id, q.nom, q.description, q.date, q.difficulte, q.aleatoire, '.
@@ -157,7 +163,7 @@ class QuizTable extends Doctrine_Table implements NamedDoctrineTableInterface
 				->orderBy('RAND()')
 				->limit(1)
 				->fetchOne();
-			Container::getService('zco_core.cache')->Set('quiz_quiz_tire_au_hasard', $quizHasard, 86400);
+			$cache->save('quiz_quiz_tire_au_hasard', $quizHasard, 86400);
 		}
 		return $quizHasard;
 	}

@@ -17,6 +17,17 @@ services:
     class: Gaufrette\Adapter\AzureBlobStorage\BlobProxyFactory
     arguments: ["%azure_blob_dsn%"]
 
+  memcached:
+    class: Memcached
+    calls:
+    - [addServer, ["memcached", 11211]]
+
+  zco_core.cache:
+    class: Doctrine\Common\Cache\MemcachedCache
+    calls:
+    - [setMemcached, ["@memcached"]]
+    - [setNamespace, [cache]]
+
 knp_gaufrette:
   adapters:
     uploads:

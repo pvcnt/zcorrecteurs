@@ -19,15 +19,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * Modèle s'occupant des statistiques du forum.
- *
- * @author Ziame vincent1870
- * @begin 24/07/2008
- * @last 27/10/2008 vincent1870
- */
+use Doctrine\Common\Cache\Cache;
 
-function RecupererStatistiquesForum()
+function RecupererStatistiquesForum(Cache $cache)
 {
 	$dbh = Doctrine_Manager::connection()->getDbh();
 	$retour = array();
@@ -35,28 +29,28 @@ function RecupererStatistiquesForum()
 	$finJour = strtotime('tomorrow') - time();
 
 	//Nombre de topics
-	if(false === ($nombreTopics = Container::getService('zco_core.cache')->Get('forum_nombre_topics')))
+	if(false === ($nombreTopics = $cache->fetch('forum_nombre_topics')))
 	{
 		$stmt = $dbh->prepare("SELECT COUNT(*) AS nb FROM zcov2_forum_sujets");
 		$stmt->execute();
 		$nombreTopics = $stmt->fetchColumn();
-		Container::getService('zco_core.cache')->Set('forum_nombre_topics', $nombreTopics, $finJour);
+        $cache->save('forum_nombre_topics', $nombreTopics, $finJour);
 	}
 	$retour['nb_topics'] = $nombreTopics;
 
 	//Nombre de posts
-	if(false === ($nombrePosts = Container::getService('zco_core.cache')->Get('forum_nombre_posts')))
+	if(false === ($nombrePosts = $cache->fetch('forum_nombre_posts')))
 	{
 		$stmt = $dbh->prepare("SELECT COUNT(*) AS nb FROM zcov2_forum_messages");
 		$stmt->execute();
 		$nombrePosts = $stmt->fetchColumn();
-		Container::getService('zco_core.cache')->Set('forum_nombre_posts', $nombrePosts, $finJour);
+        $cache->save('forum_nombre_posts', $nombrePosts, $finJour);
 	}
 	$retour['nb_posts'] = $nombrePosts;
 
 	$nbJours = false;
 	//Nombre de topics par jour (on prendra la plus ancienne date de message comme date de départ)
-	if(!($nombreTopicsParJour = Container::getService('zco_core.cache')->Get('forum_nombre_topics_par_jour')) OR !($nombrePostsParJour = Container::getService('zco_core.cache')->Get('forum_nombre_posts_par_jour')))
+	if(!($nombreTopicsParJour = $cache->fetch('forum_nombre_topics_par_jour')) OR !($nombrePostsParJour = $cache->fetch('forum_nombre_posts_par_jour')))
 	{
 		$stmt = $dbh->prepare("SELECT DATEDIFF(NOW(), message_date) as nb_jours
 				FROM zcov2_forum_messages
@@ -65,23 +59,23 @@ function RecupererStatistiquesForum()
 		$stmt->execute();
 		$nb_jours = $stmt->fetchColumn();
 
-		if (false === ($nombreTopicsParJour = Container::getService('zco_core.cache')->Get('forum_nombre_topics_par_jour')))
+		if (false === ($nombreTopicsParJour = $cache->fetch('forum_nombre_topics_par_jour')))
 		{
 			$nombreTopicsParJour = 0;
 			if ($nb_jours > 0)
 			{
 				$nombreTopicsParJour = round($retour['nb_topics'] / $nb_jours, 2);
 			}
-			Container::getService('zco_core.cache')->Set('forum_nombre_topics_par_jour', $nombreTopicsParJour, $finJour);
+            $cache->save('forum_nombre_topics_par_jour', $nombreTopicsParJour, $finJour);
 		}
-		if (false === ($nombrePostsParJour = Container::getService('zco_core.cache')->Get('forum_nombre_posts_par_jour')))
+		if (false === ($nombrePostsParJour = $cache->fetch('forum_nombre_posts_par_jour')))
 		{
 			$nombrePostsParJour = 0;
 			if ($nb_jours > 0)
 			{
 				$nombrePostsParJour = round($retour['nb_posts'] / $nb_jours, 2);
 			}
-			Container::getService('zco_core.cache')->Set('forum_nombre_posts_par_jour', $nombrePostsParJour, $finJour);
+            $cache->save('forum_nombre_posts_par_jour', $nombrePostsParJour, $finJour);
 		}
 	}
 	$retour['nb_topics_jour'] = $nombreTopicsParJour;

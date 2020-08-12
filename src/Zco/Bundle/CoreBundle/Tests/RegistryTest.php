@@ -22,7 +22,7 @@
 namespace Zco\Bundle\CoreBundle\Tests;
 
 use Zco\Bundle\CoreBundle\Registry;
-use Zco\Bundle\CoreBundle\Cache\MemoryCache;
+use Doctrine\Common\Cache\ArrayCache;
 
 class RegistryTest extends \PHPUnit_Framework_TestCase
 {
@@ -77,6 +77,6 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
 	
 	protected function getRegistry()
 	{
-		return new Registry(new MemoryCache(600), '');
+		return new Registry(new ArrayCache(), '');
 	}
 }

@@ -136,7 +136,7 @@ class NouveauAction extends Controller
 					if($current_participant != $valeur)
 					{
 						$current_participant = $valeur;
-						$this->get('zco_core.cache')->set('MPnonLu'.$valeur, true, strtotime('+1 hour'));
+						$this->get('zco_core.cache')->save('MPnonLu'.$valeur, true, strtotime('+1 hour'));
 					}
 				}
 

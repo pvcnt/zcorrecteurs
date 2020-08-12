@@ -21,6 +21,8 @@
 
 namespace Zco\Bundle\InformationsBundle\Controller;
 
+use Doctrine\Common\Cache\Cache;
+use Zco\Bundle\CoreBundle\Registry;
 use Zco\Bundle\InformationsBundle\Event\FilterSitemapEvent;
 use Zco\Bundle\InformationsBundle\InformationsEvents;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -116,10 +118,8 @@ class DefaultController extends Controller
 	 */
 	public function editerAnnoncesAction()
 	{
+	    /** @var Registry $registry */
 		$registry = $this->get('zco_core.registry');
-
-		if (!empty($_POST))
-			$this->get('zco_core.cache')->set('accueil_maj', date('c'), 0);
 
 		//--- Si on veut modifier le bloc ---
 		$bloc_accueil = $registry->get('bloc_accueil');

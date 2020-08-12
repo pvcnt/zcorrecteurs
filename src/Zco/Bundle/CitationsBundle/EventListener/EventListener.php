@@ -21,6 +21,7 @@
 
 namespace Zco\Bundle\CitationsBundle\EventListener;
 
+use Doctrine\Common\Cache\Cache;
 use Zco\Bundle\AdminBundle\AdminEvents;
 use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
 use Zco\Component\Templating\Event\FilterContentEvent;
@@ -29,18 +30,24 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class EventListener extends ContainerAware implements EventSubscriberInterface
 {
-	static public function getSubscribedEvents()
+    private $cache;
+
+    public function __construct(Cache $cache)
+    {
+        $this->cache = $cache;
+    }
+
+    static public function getSubscribedEvents()
 	{
 		return array(
 			'zco_core.filter_block.header_right' => 'onFilterHeaderRight',
 			AdminEvents::MENU => 'onFilterAdmin',
 		);
 	}
-	
-	public function onFilterHeaderRight(FilterContentEvent $event)
+
+    public function onFilterHeaderRight(FilterContentEvent $event)
 	{
-		$cache = $this->container->get('zco_core.cache');
-		if (($html = $cache->get('header_citations')) === false)
+		if (($html = $this->cache->fetch('header_citations')) === false)
 		{
 			$citation = \Doctrine_Core::getTable('Citation')->CitationAleatoire();
 			$html = '';
@@ -48,7 +55,7 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 			{
 				$html = render_to_string('ZcoCitationsBundle::citation.html.php', compact('citation'));
 			}
-			$cache->set('header_citations', $html, 3600);
+			$this->cache->save('header_citations', $html, 3600);
 		}
 		
 		$event->setContent($html);

@@ -54,19 +54,6 @@ class EventListener implements EventSubscriberInterface
 			'uri' => '/groupes/droits.html',
 		))->secure('groupes_changer_droits');
 	
-		$tab->addChild('Ajouter un droit', array(
-			'uri' => '/groupes/ajouter-droit.html',
-			'separator' => true,
-		))->secure('droits_gerer');
-	
-		$tab->addChild('Gérer les droits', array(
-			'uri' => '/groupes/gestion-droits.html',
-		))->secure('droits_gerer');
-	
-		$tab->addChild('Recharger le cache des droits et les groupes', array(
-			'uri' => '/groupes/recharger-droits.html',
-		))->secure('droits_recharger');
-	
 		$tab->addChild('Changer un membre de groupe', array(
 			'uri' => '/groupes/changer-membre-groupe.html',
 			'separator' => true,

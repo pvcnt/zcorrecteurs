@@ -39,9 +39,6 @@
                 <img src="/bundles/zcocore/img/bouton.png"
                      alt="twitter"/>
             </a>
-			<a href="<?php echo $view['router']->generate('zco_info_feed') ?>" title="S'abonner au flux des annonces">
-				<img src="/pix.gif" class="fff feed" alt="Flux" />
-			</a>
 		</span>
 		<?php echo $view->render('ZcoAccueilBundle::_annonces.html.php',
 				array(

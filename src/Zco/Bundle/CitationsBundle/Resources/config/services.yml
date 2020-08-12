@@ -1,7 +1,8 @@
 services:
     zco_citations.event_listener:
         class: Zco\Bundle\CitationsBundle\EventListener\EventListener
+        arguments: ["@zco_core.cache"]
         calls:
-            - [setContainer, [@service_container]]
+            - [setContainer, ["@service_container"]]
         tags:
             - { name: kernel.event_subscriber }

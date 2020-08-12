@@ -41,14 +41,10 @@ class ZcoCoreExtension extends Extension
 	 */
 	public function load(array $configs, ContainerBuilder $container)
 	{
-		$config = $this->processConfiguration(new Configuration(), $configs);
-		
 		$loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 		$loader->load('services.yml');
 		$loader->load('listeners.yml');
 		$loader->load('cache.yml');
 		$loader->load('templating_helpers.yml');
-		
-		$container->setAlias('zco_core.cache', 'zco_core.cache.'.$config['cache']['default']);
 	}
 }

@@ -137,7 +137,7 @@ function AjouterParticipant()
 
 		if($stmt->execute())
 		{
-			Container::getService('zco_core.cache')->Set('MPnonLu'.$result['utilisateur_id'], true, strtotime('+1 hour'));
+			Container::getService('zco_core.cache')->save('MPnonLu'.$result['utilisateur_id'], true, strtotime('+1 hour'));
 			return 265;
 		}
 		else
@@ -159,7 +159,7 @@ function SupprimerParticipant()
 
 	$stmt->execute();
 
-	Container::getService('zco_core.cache')->Set('MPnonLu'.$_GET['id2'], true, strtotime('+1 hour'));
+	Container::getService('zco_core.cache')->save('MPnonLu'.$_GET['id2'], true, strtotime('+1 hour'));
 
 	return true;
 }

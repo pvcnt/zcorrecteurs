@@ -213,7 +213,10 @@ function RecupererValeurDroit($droit, $groupe)
 
 function RecupererDroitsGroupe($groupe)
 {
-	if(($retour = Container::getService('zco_core.cache')->Get('droits_groupe_'.$groupe)) === false)
+    /** @var \Doctrine\Common\Cache\Cache $cache */
+    $cache = Container::getService('zco_core.cache');
+
+	if(($retour = $cache->fetch('droits_groupe_'.$groupe)) === false)
 	{
 		//Récupération depuis la BDD
 		$dbh = Doctrine_Manager::connection()->getDbh();
@@ -238,7 +241,7 @@ function RecupererDroitsGroupe($groupe)
 				$retour[$r['droit_nom']][$r['gd_id_categorie']] = (int)$r['gd_valeur'];
 			}
 
-		Container::getService('zco_core.cache')->Set('droits_groupe_'.$groupe, $retour, 0);
+		$cache->save('droits_groupe_'.$groupe, $retour);
 	}
 	return $retour;
 }

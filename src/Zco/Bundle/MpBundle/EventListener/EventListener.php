@@ -21,16 +21,33 @@
 
 namespace Zco\Bundle\MpBundle\EventListener;
 
+use Doctrine\Common\Cache\Cache;
+use Zco\Bundle\AdminBundle\Admin;
 use Zco\Bundle\AdminBundle\AdminEvents;
 use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\DependencyInjection\ContainerAware;
 
-class EventListener extends ContainerAware implements EventSubscriberInterface
+class EventListener implements EventSubscriberInterface
 {
+    private $cache;
+    private $admin;
+
+    /**
+     * Constructeur.
+     *
+     * @param Cache $cache
+     * @param Admin $admin
+     */
+    public function __construct(Cache $cache, Admin $admin)
+    {
+        $this->cache = $cache;
+        $this->admin = $admin;
+    }
+
+
     static public function getSubscribedEvents()
     {
         return array(
@@ -49,13 +66,13 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 	public function onKernelRequest(GetResponseEvent $event)
 	{
 		//Enregistrement du compteur de tâches admin.
-		$this->container->get('zco_admin.manager')->register('alertesMP', 'mp_alertes');
+		$this->admin->register('alertesMP', ['mp_alertes']);
 		
 		// Mise à jour du nombre de MPs non lus.
-		$rafraichir = $this->container->get('zco_core.cache')->get('MPnonLu'.$_SESSION['id']);
+		$rafraichir = $this->cache->fetch('MPnonLu'.$_SESSION['id']);
 		if ($rafraichir)
 		{
-			$this->container->get('zco_core.cache')->delete('MPnonLu'.$_SESSION['id']);
+			$this->cache->delete('MPnonLu'.$_SESSION['id']);
 		}
 		if (verifier('mp_voir') && ($rafraichir || !isset($_SESSION['MPsnonLus'])))
 		{
@@ -101,7 +118,7 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 		    ->getChild('Communauté')
 		    ->getChild('Messagerie privée');
 		
-		$NombreAlertesMP = $this->container->get('zco_admin.manager')->get('alertesMP');
+		$NombreAlertesMP = $this->admin->get('alertesMP');
 		
 		$tab->addChild('Voir les alertes non résolues', array(
 			'label' => 'Il y a ' . $NombreAlertesMP . ' alerte' . pluriel($NombreAlertesMP) . ' non résolue' . pluriel($NombreAlertesMP),

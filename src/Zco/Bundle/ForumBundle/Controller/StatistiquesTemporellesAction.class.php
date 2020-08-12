@@ -43,13 +43,16 @@ class StatistiquesTemporellesAction extends BaseController
 			'juillet', 'août', 'septembre', 'octobre', 'novembre','décembre'
 		);
 
-		$StatsGeneralesForumMessages = StatsGeneralesForumMessages();
+		/** @var \Doctrine\Common\Cache\Cache $cache */
+		$cache = $this->get('zco_core.cache');
+
+		$StatsGeneralesForumMessages = StatsGeneralesForumMessages($cache);
 		$StatsGoogleMessages = array();
 		foreach($StatsGeneralesForumMessages as $k => $q) {
 			$StatsGoogleMessages[] = array(ucfirst($mois[$q['mois']]).' '.$q['annee'], (int)$q['count_team'], (int)($q['count_total']-$q['count_team']));
 		}
 
-		$StatsGeneralesForumSujets = StatsGeneralesForumSujets();
+		$StatsGeneralesForumSujets = StatsGeneralesForumSujets($cache);
 		$StatsGoogleSujets = array();
 		foreach($StatsGeneralesForumSujets as $k => $q) {
 			$StatsGoogleSujets[] = array(ucfirst($mois[$q['mois']]).' '.$q['annee'], (int)$q['count']);
