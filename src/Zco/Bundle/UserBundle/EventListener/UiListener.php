@@ -70,10 +70,6 @@ class UiListener extends ContainerAware implements EventSubscriberInterface
 			'count' => $tasks,
 		))->secure('membres_valider_ch_pseudos');
 	
-		$tab->addChild('Modifier le pourcentage d\'un membre', array(
-			'uri' => $router->generate('zco_user_admin_warn'),
-		))->secure('membres_avertir');
-	
 		$tab->addChild('Sanctionner un membre', array(
 			'uri' => $router->generate('zco_user_admin_punish'),
 		))->secure('sanctionner');

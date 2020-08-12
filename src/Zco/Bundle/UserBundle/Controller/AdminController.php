@@ -24,10 +24,8 @@ namespace Zco\Bundle\UserBundle\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Zco\Bundle\CoreBundle\Paginator\Paginator;
 use Zco\Bundle\UserBundle\Form\Type\BannedEmailType;
-use Zco\Bundle\UserBundle\Form\Type\WarningType;
 use Zco\Bundle\UserBundle\Form\Type\PunishmentType;
 use Zco\Bundle\UserBundle\Form\Type\AnswerNewUsernameType;
-use Zco\Bundle\UserBundle\Form\Handler\WarningHandler;
 use Zco\Bundle\UserBundle\Form\Handler\PunishmentHandler;
 use Zco\Bundle\UserBundle\Form\Handler\AnswerNewUsernameHandler;
 use Symfony\Component\HttpFoundation\Request;
@@ -97,52 +95,6 @@ class AdminController extends Controller
 		return render_to_response('ZcoUserBundle:Admin:blocages.html.php', [
 		    'blocages' => $paginator->createView($page, $url),
         ]);
-	}
-
-	/**
-	 * Modifie le niveau d'avertissement d'un membre.
-	 *
-	 * @param  Request $request
-	 * @param  integer $id
-	 * @return Response
-	 */
-	public function warnAction(Request $request, $id = null)
-	{
-		if (!verifier('membres_avertir'))
-		{
-			throw new AccessDeniedHttpException;
-		}
-		
-		$warning = new \UserWarning;
-		$warning->setPercentage(0);
-		$warning->setAdminId($_SESSION['id']);
-		if ($id)
-		{
-			if (!($user = \Doctrine_Core::getTable('Utilisateur')->getById($id)))
-			{
-				throw new NotFoundHttpException('Cet utilisateur n\'existe pas.');
-			}
-			$warning->setUser($user);
-		}
-		else
-		{
-			$user = null;
-		}
-		
-		$form = $this->get('form.factory')->create(new WarningType);
-		$handler = new WarningHandler($form, $request);
-		if ($handler->process($warning))
-		{
-			return redirect('Le niveau d\'avertissement du membre a bien été mis à jour.', 
-				$this->generateUrl('zco_user_profile', array('id' => $warning->getUserId(), 'slug' => rewrite($warning->getUser()->getUsername()))));
-		}
-
-		\Page::$titre = 'Niveau d\'avertissement';
-		
-		return render_to_response('ZcoUserBundle:Admin:warn.html.php', array(
-			'user' => $user,
-			'form' => $form->createView(),
-		));
 	}
 
 	/**

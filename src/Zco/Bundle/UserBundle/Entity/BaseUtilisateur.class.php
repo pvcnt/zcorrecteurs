@@ -48,7 +48,6 @@
  * @property Doctrine_Collection $UtilisateurIp
  * @property Doctrine_Collection $UserNewUsername
  * @property Doctrine_Collection $UserPunishment
- * @property Doctrine_Collection $UserWarning
  * @property Doctrine_Collection $ZformBackup
  * @property Doctrine_Collection $Tentative
  * @property Doctrine_Collection $Auteur
@@ -267,10 +266,6 @@ abstract class BaseUtilisateur extends Doctrine_Record
              'foreign' => 'user_id'));
 
         $this->hasMany('UserPunishment', array(
-             'local' => 'utilisateur_id',
-             'foreign' => 'user_id'));
-
-        $this->hasMany('UserWarning', array(
              'local' => 'utilisateur_id',
              'foreign' => 'user_id'));
 

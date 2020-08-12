@@ -60,64 +60,6 @@
 	</div> <!-- /.accordion-group -->
 	<?php ++$c; endif ?>
 
-	<?php if (verifier('membres_voir_avertos') && count($warnings) > 0): ?>
-	<div class="accordion-group">
-		<div class="accordion-heading">
-            <a class="accordion-toggle" data-toggle="collapse" href="#profile-infos-warnings">
-                <?php echo $user->getPercentage() ?> % d'avertissement
-            </a>
-        </div>
-        <div id="profile-infos-warnings" class="accordion-body collapse">
-            <div class="accordion-inner">
-            	<table class="table">
-					<thead>
-						<tr>
-							<th style="width: 10%;">Admin</th>
-							<th style="width: 15%;">Date</th>
-							<th style="width: 10%;">Niveau</th>
-							<th style="width: 5%;">Lien</th>
-							<th style="width: 30%;">Raison admin</th>
-							<th style="width: 30%;">Raison</th>
-						</tr>
-					</thead>
-					<tbody>
-						<?php foreach ($warnings as $warning): ?>
-						<tr>
-							<td>
-								<?php if ($warning->getAdmin()): ?>
-								<a href="<?php echo $view['router']->generate('zco_user_profile', array('id' => $warning->getAdminId(), 'slug' => rewrite($warning->getAdmin()->getUsername()))) ?>">
-									<?php echo htmlspecialchars($warning->getAdmin()->getUsername()) ?>
-								</a>
-								<?php else: ?>
-								Anonyme
-								<?php endif ?>
-							</td>
-							<td class="center">
-								<?php echo dateformat($warning->getDate(), DATE) ?>
-							</td>
-							<td class="center">
-								<span class="<?php if ($warning->getPercentage() < 0) echo ' vertf'; elseif ($warning->getPercentage() > 0) echo 'rouge'; ?>">
-									<?php echo $warning->getPercentage() ?> %
-								</span>
-							</td>
-							<td class="center">
-								<?php if ($warning->hasLink()): ?>
-								<a href="<?php echo htmlspecialchars($warning->getLink()); ?>">Lien</a>
-								<?php else: ?>
-								-
-								<?php endif ?>
-							</td>
-							<td><?php echo $view['messages']->parse($warning->getAdminReason()) ?></td>
-							<td><?php echo $view['messages']->parse($warning->getReason()) ?></td>
-						</tr>
-						<?php endforeach ?>
-					</tbody>
-				</table>
-			</div> <!-- /.accordion-inner -->
-		</div> <!-- /.accordion-body -->
-	</div> <!-- /.accordion-group -->
-	<?php ++$c; endif ?>
-
 	<?php if (verifier('voir_sanctions') && count($punishments) > 0): ?>
 	<div class="accordion-group">
 		<div class="accordion-heading">

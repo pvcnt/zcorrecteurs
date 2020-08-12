@@ -96,20 +96,9 @@ if($ListerAlertes)
 				<a href="/membres/profil-<?php echo $valeur['utilisateur_id']; ?>-<?php echo rewrite($valeur['utilisateur_pseudo']); ?>.html">
                     <?php echo $view['messages']->afficherAvatar($valeur) ?>
                 </a><br />
+                <?php } ?>
 				<?php echo $view->get('messages')->afficherGroupe($valeur) ?><br/>
-			<?php if(verifier('membres_avertir'))
-			{
-			?>
-			<br /><a href="<?php echo $view['router']->generate('zco_user_admin_warn', array('id' => htmlspecialchars($valeur['utilisateur_id']))) ?>">
-				Avertir : <?php echo $valeur['utilisateur_pourcentage']; ?> %
-			</a>
 			<?php
-			}
-			elseif(verifier('membres_voir_avertos') AND $valeur['utilisateur_pourcentage'] > 0){
-			?>
-			<br /><a href="/membres/profil-<?php echo $valeur['utilisateur_id']; ?>-<?php echo rewrite($valeur['utilisateur_pseudo']); ?>.html#avertos">Averto(s) : <?php echo $valeur['utilisateur_pourcentage']; ?> %</a>
-			<?php
-			}
 			if(verifier('sanctionner'))
 			{
 			?>
@@ -174,7 +163,6 @@ if($ListerAlertes)
 		</tr>
 <?php
 	}
-}
 }
 else
 {

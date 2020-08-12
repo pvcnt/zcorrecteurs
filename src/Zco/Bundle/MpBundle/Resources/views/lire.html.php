@@ -226,18 +226,6 @@ if($autoriser_ecrire AND ($NombreParticipants > 1 OR $MPTotal < verifier('mp_quo
 			<?php if(!empty($valeur['utilisateur_titre']))
 			{
 				echo htmlspecialchars($valeur['utilisateur_titre']).'<br />';
-			} if(verifier('membres_avertir'))
-			{
-			?>
-			<br /><a href="<?php echo $view['router']->generate('zco_user_admin_warn', array('id' => htmlspecialchars($valeur['mp_message_auteur_id']))) ?>">
-				Avertir : <?php echo $valeur['utilisateur_pourcentage']; ?> %
-			</a>
-			<?php
-			}
-			elseif(verifier('membres_voir_avertos') AND $valeur['utilisateur_pourcentage'] > 0){
-			?>
-			<br /><a href="/membres/profil-<?php echo $valeur['mp_message_auteur_id']; ?>-<?php echo rewrite($valeur['utilisateur_pseudo']); ?>.html#avertos">Averto(s) : <?php echo $valeur['utilisateur_pourcentage']; ?> %</a>
-			<?php
 			}
 			if(verifier('sanctionner'))
 			{

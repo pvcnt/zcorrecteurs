@@ -157,10 +157,6 @@ class DefaultController extends Controller
 		{
 			$vars['punishments'] = \Doctrine_Core::getTable('UserPunishment')->getByUserId($user->getId());
 		}
-		if (verifier('membres_voir_avertos'))
-		{
-			$vars['warnings'] = \Doctrine_Core::getTable('UserWarning')->getByUserId($user->getId());
-		}
 		if (verifier('membres_voir_ch_pseudos'))
 		{
 			$vars['newPseudo'] = \Doctrine_Core::getTable('UserNewUsername')->getByUserId($user->getId());
@@ -192,7 +188,7 @@ class DefaultController extends Controller
         $vars['canSendMp'] = $_SESSION['id'] != $user->getId() && verifier('mp_voir') && $user->getId() != ID_COMPTE_AUTO 
         						&& ($_SESSION['MPs'] < verifier('mp_quota') OR verifier('mp_quota') == -1);
         $vars['canSendEmail'] = verifier('rechercher_mail') || $user->isEmailDisplayed();
-        $vars['canSeeInfos'] = verifier('membres_voir_ch_pseudos') || verifier('membres_voir_avertos') || verifier('voir_sanctions') 
+        $vars['canSeeInfos'] = verifier('membres_voir_ch_pseudos') || verifier('voir_sanctions')
         						|| verifier('voir_historique_groupes') || verifier('ips_analyser');
         $vars['canAdmin'] = verifier('groupes_changer_membre') || verifier('membres_editer_titre') || verifier('options_editer_profils');
         $vars['own'] = $_SESSION['id'] == $user->getId();

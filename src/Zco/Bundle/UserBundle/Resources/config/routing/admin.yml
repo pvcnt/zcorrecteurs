@@ -16,12 +16,6 @@ zco_user_admin_deleteAccount:
     requirements:
         id: \d+
 
-zco_user_admin_warn:
-    pattern:   /avertir/{id}
-    defaults:  { _controller: ZcoUserBundle:Admin:warn, id: ~ }
-    requirements:
-        id: \d+
-
 zco_user_admin_punish:
     pattern:   /sanctionner/{id}
     defaults:  { _controller: ZcoUserBundle:Admin:punish, id: ~ }
