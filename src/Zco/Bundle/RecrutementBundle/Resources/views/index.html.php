@@ -45,7 +45,7 @@
 			<span class="titre">Rédacteurs</span><br />
 			<span class="description">Rédiger et valider le contenu du site</span>
 		</a></td>
-		<td><a href="http://www.corrigraphie.org/adherer">
+		<td><a href="mailto:association@corrigraphie.org">
 			<span class="titre">Bénévoles associatifs</span><br />
 			<span class="description">Participer à la vie et la croissance de l’association</span>
 		</a></td>

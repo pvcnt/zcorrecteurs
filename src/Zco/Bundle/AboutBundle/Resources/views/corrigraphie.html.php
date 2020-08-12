@@ -6,7 +6,7 @@
 	<div class="span8">
 		<p style="text-align: justify;">
 			Début 2011, soit quatre ans après la création du site, fut prise la décision de fonder 
-			une association. Cette association, dénommée <a href="http://www.corrigraphie.org">Corrigraphie</a>, 
+			une association. Cette association, dénommée Corrigraphie,
 			a depuis pour objectif de donner une existence légale au site, de favoriser 
 			l’implication de ses membres et de réfléchir à des façons de développer le 
 			site et de renforcer sa présence. Vaste programme !
@@ -24,15 +24,7 @@
 	</div>
 
 	<div class="span4">
-		<a href="http://www.corrigraphie.org">
-			<img src="http://www.corrigraphie.org/sites/default/files/drupal_0.png" />
-		</a>
-	
-		<p style="margin-top: 15px;"><em>Pour en savoir plus :</em></p>
-		<ul>
-			<li><a href="http://www.corrigraphie.org">Le site officiel de l’association</a></li>
-			<li><a href="http://www.corrigraphie.org/association/statuts">Les statuts de l’association</a></li>
-		</ul>
+        <img src="/img/corrigraphie.png" />
 	</div>
 </div>
 
