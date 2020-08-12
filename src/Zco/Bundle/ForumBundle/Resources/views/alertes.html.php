@@ -33,9 +33,6 @@
 			<th style="width: 10%;">Pseudo</th>
 			<th style="width: 10%;">Date</th>
 			<th style="width: 15%;">Alerte résolue</th>
-			<?php if(verifier('ips_analyser')){ ?>
-			<th style="width: 5%;">IP</th>
-			<?php } ?>
 			<th style="width: 40%;">Raison</th>
 		</tr>
 	</thead>
@@ -72,13 +69,6 @@
 				<a href="?nonresolu=<?php echo $alerte['id']; ?>">N'est plus résolue</a>
 				<?php } ?>
 			</td>
-			<?php if(verifier('ips_analyser')){ ?>
-			<td>
-				<a href="/ips/analyser.html?ip=<?php echo long2ip($alerte['ip']); ?>">
-					<?php echo long2ip($alerte['ip']); ?>
-				</a>
-			</td>
-			<?php } ?>
 			<td><?php echo $view['messages']->parse($alerte['raison'], array(
 				'files.entity_id' => $alerte['id'],
 				'files.entity_class' => 'ForumAlerte',

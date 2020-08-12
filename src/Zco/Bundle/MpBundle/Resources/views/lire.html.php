@@ -254,7 +254,7 @@ if($autoriser_ecrire AND ($NombreParticipants > 1 OR $MPTotal < verifier('mp_quo
 			}
 			if(verifier('ips_analyser') && !empty($valeur['mp_message_ip']))
 			{
-				echo '<br /><br />IP : <a href="/ips/analyser.html?ip='.long2ip($valeur['mp_message_ip']).'">'.long2ip($valeur['mp_message_ip']).'</a>';
+				echo '<br /><br />IP : '.long2ip($valeur['mp_message_ip']);
 			}
 				?>
 			</td>

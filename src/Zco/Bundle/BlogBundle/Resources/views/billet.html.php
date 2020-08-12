@@ -190,10 +190,7 @@
 
 				<?php if(verifier('ips_analyser')){ ?>
 				<br /><br />
-				IP :
-				<a href="/ips/analyser.html?ip=<?php echo long2ip($valeur['commentaire_ip']); ?>'">
-					<?php echo long2ip($valeur['commentaire_ip']); ?>
-				</a>
+				IP : <?php echo long2ip($valeur['commentaire_ip']); ?>
 				<?php } ?>
 			</td>
 

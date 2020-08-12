@@ -73,7 +73,7 @@
 			<?php }	elseif(verifier('membres_voir_avertos') && $valeur['pourcentage_auteur'] > 0){ ?>
 			<br /><a href="/membres/profil-<?php echo $valeur['message_auteur']; ?>-<?php echo rewrite($valeur['pseudo_auteur']); ?>.html#avertos">Averto(s) : <?php echo $valeur['pourcentage_auteur']; ?> %</a>
 			<?php } if(verifier('ips_analyser')){
-				echo '<br /><br />IP : <a href="/ips/analyser.html?ip='.long2ip($valeur['commentaire_ip']).'">'.long2ip($valeur['commentaire_ip']).'</a>';
+				echo '<br /><br />IP : '.long2ip($valeur['commentaire_ip']);
 			} ?>
 			</td>
 

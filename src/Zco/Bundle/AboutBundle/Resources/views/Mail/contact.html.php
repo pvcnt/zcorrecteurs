@@ -13,7 +13,7 @@
 	<?php endif; ?>
 	<li>Nom de la personne : <?php echo $contact->nom ? htmlspecialchars($contact->nom) : 'non renseigné' ?>.</li>
 	<li>Adresse mail indiquée : <a href="mailto: <?php echo htmlspecialchars($contact->courriel) ?>"><?php echo htmlspecialchars($contact->courriel) ?></a>.</li>
-	<li>Adresse IP : <a href="<?php echo URL_SITE ?>/ips/analyser.html?ip=<?php echo $ip ?>"><?php echo $ip ?></a>.</li>
+	<li>Adresse IP : <?php echo $ip ?></li>
 </ul>
 
 <hr />

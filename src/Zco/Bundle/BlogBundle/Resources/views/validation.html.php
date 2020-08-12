@@ -19,9 +19,6 @@
 		<tr>
 			<th style="width: 25%;">Pseudo</th>
 			<th style="width: 25%;">Date</th>
-			<?php if(verifier('ips_analyser')){ ?>
-			<th style="width: 10%;">IP</th>
-			<?php } ?>
 			<th style="width: 20%;">Version concernée</th>
 			<th style="width: 20%;">Décision</th>
 		</tr>
@@ -38,15 +35,6 @@
 			<td class="centre">
 				<?php echo dateformat($h['valid_date']); ?>
 			</td>
-			<?php if(verifier('ips_analyser')){ ?>
-			<td class="centre">
-				<?php if(!empty($h['valid_ip'])){ ?>
-				<a href="/ips/analyser.html?ip=<?php echo long2ip($h['valid_ip']); ?>">
-					<?php echo long2ip($h['valid_ip']); ?>
-				</a>
-				<?php } else echo '-'; ?>
-			</td>
-			<?php } ?>
 			<td class="centre">
 				N<sup>o</sup>&nbsp;<?php echo $h['valid_id_version']; ?> -
 				<a href="billet-<?php echo $_GET['id']; ?>.html?version=<?php echo $h['valid_id_version']; ?>">Voir</a>

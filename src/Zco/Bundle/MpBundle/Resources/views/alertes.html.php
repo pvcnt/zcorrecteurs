@@ -125,7 +125,7 @@ if($ListerAlertes)
 			}
 			if(verifier('ips_analyser') && !empty($valeur['mp_alerte_ip']))
 			{
-				echo '<br /><br />IP : <a href="/ips/analyser.html?ip='.long2ip($valeur['mp_alerte_ip']).'">'.long2ip($valeur['mp_alerte_ip']).'</a>';
+				echo '<br /><br />IP : '.long2ip($valeur['mp_alerte_ip']);
 			}
 				if($valeur['mp_alerte_resolu'])
 				{

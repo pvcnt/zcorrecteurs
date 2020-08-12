@@ -28,9 +28,6 @@
 	<thead>
 		<tr>
 			<th style="width: 20%;">Pseudo</th>
-			<?php if (verifier('ips_analyser')): ?>
-			<th style="width: 8%;">IP</th>
-			<?php endif ?>
 			<th style="width: 20%;">Adresse mail</th>
 			<th style="width: 5%;">Validé&nbsp;?</th>
 			<th style="width: 20%;">Date d'inscription</th>
@@ -47,13 +44,6 @@
 					<?php echo htmlspecialchars($user->getUsername()) ?>
 				</a>
 			</td>
-			<?php if (verifier('ips_analyser')): ?>
-			<td class="center">
-				<a href="/ips/analyser.html?ip=<?php echo long2ip($user->getLastIpAddress()) ?>">
-					<?php echo long2ip($user->getLastIpAddress()); ?>
-				</a>
-			</td>
-			<?php endif ?>
 			<td><?php echo htmlspecialchars($user->getEmail()) ?></td>
 			<td class="center">
 				<img src="/bundles/zcocore/img/generator/boolean-<?php echo $user->isAccountValid() ? 'yes' : 'no' ?>.png" 

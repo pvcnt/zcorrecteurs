@@ -75,7 +75,7 @@ avant dans le même billet ! Les commentaires sont affichés du plus ancien au p
 				<?php elseif(verifier('membres_voir_avertos') && $valeur['pourcentage_auteur'] > 0): ?>
 					<br /><a href="/membres/profil-<?php echo $valeur['id_auteur'] ?>-<?php echo rewrite($valeur['pseudo_auteur']) ?>.html#avertos">Averto(s) : <?php echo $valeur['pourcentage_auteur'] ?> %</a>
 				<?php endif; if(verifier('ips_analyser')): ?>
-					<br /><br />IP : <a href="/ips/analyser.html?ip=<?php echo ($ip = long2ip($valeur['commentaire_ip'])) ?>"><?php echo $ip ?></a>
+					<br /><br />IP : <?php echo $ip ?>
 				<?php endif ?>
 			</td>
 

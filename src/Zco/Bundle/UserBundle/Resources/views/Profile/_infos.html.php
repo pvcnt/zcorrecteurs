@@ -253,7 +253,7 @@
 						<?php foreach ($ListerIPs as $ip): ?>
 						<tr>
 							<td>
-								<a href="/ips/analyser.html?ip=<?php echo long2ip($ip['ip_ip']); ?>"><?php echo long2ip($ip['ip_ip']); ?></a>
+								<?php echo long2ip($ip['ip_ip']); ?>
 							</td>
 							<td>
 								<?php if(!empty($ip['ip_proxy'])): ?>
