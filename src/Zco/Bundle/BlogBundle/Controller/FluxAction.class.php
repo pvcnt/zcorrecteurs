@@ -179,6 +179,6 @@ class FluxAction extends Feed
 	{
 	    $path = ltrim('/uploads/', $item['blog_image']);
 
-		return $this->get('zco.url_resolver')->blobUrl($path);
+		return $this->get('zco.url_resolver')->resolveUrl($path);
 	}
 }
