@@ -47,7 +47,7 @@ class AjouterController
 			$aide['racine']       = isset($_POST['racine']);
 			$aide->save();
 
-			return redirect(2, 'index.html');
+			return redirect('La page a bien été créée.', 'index.html');
 		}
 		
 		return render_to_response(array(

@@ -21,6 +21,7 @@
 
 namespace Zco\Bundle\RechercheBundle\Controller;
 
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zco\Bundle\RechercheBundle\Search\SearchInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -56,7 +57,7 @@ class DefaultController extends Controller
 		$section = !empty($_GET['section']) ? $_GET['section'] : current($sections);
 		if (!in_array($section, $sections))
 		{
-			return redirect(2, 'index.html', MSG_ERROR);
+			throw new NotFoundHttpException();
 		}
 		$_flags['section'] = $section;
 

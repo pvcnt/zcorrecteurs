@@ -24,6 +24,7 @@ namespace Zco\Bundle\CategoriesBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Actions pour tout ce qui concerne la gestion des catégories du site.
@@ -48,12 +49,12 @@ final class DefaultController extends Controller
 			if(!empty($InfosCategorie))
 			{
 				if(DescendreCategorie($InfosCategorie))
-					return redirect(5, '/categories/');
+					return redirect('La catégorie a bien été descendue.', '/categories/');
 				else
-					return redirect(9, '/categories/', MSG_ERROR);
+					return redirect('Impossible de descendre cette catégorie car elle est déjà en bas.', '/categories/', MSG_ERROR);
 			}
 			else
-				return redirect(6, '/categories/', MSG_ERROR);
+				throw new NotFoundHttpException();
 		}
 
 		//Si on veut monter une catégorie
@@ -63,12 +64,12 @@ final class DefaultController extends Controller
 			if(!empty($InfosCategorie))
 			{
 				if(MonterCategorie($InfosCategorie))
-					return redirect(4, '/categories/');
+					return redirect('La catégorie a bien été montée.', '/categories/');
 				else
-					return redirect(8, '/categories/', MSG_ERROR);
+					return redirect('Impossible de monter cette catégorie car elle est déjà en haut.', '/categories/', MSG_ERROR);
 			}
 			else
-				return redirect(6, '/categories/', MSG_ERROR);
+                throw new NotFoundHttpException();
 		}
 
 		fil_ariane('Liste des catégories');
@@ -91,7 +92,7 @@ final class DefaultController extends Controller
 		if(!empty($_POST['nom']))
 		{
 			AjouterCategorie($this->get('zco_core.cache'));
-			return redirect(1, 'index.html');
+			return redirect('La catégorie a bien été ajoutée.', 'index.html');
 		}
 
 		fil_ariane('Ajouter une catégorie');
@@ -113,13 +114,13 @@ final class DefaultController extends Controller
 		{
 			$InfosCategorie = InfosCategorie($_GET['id']);
 			if(empty($InfosCategorie))
-				return redirect(6, 'index.html', MSG_ERROR);
+				throw new NotFoundHttpException();
 
 			//Si on veut éditer la catégorie
 			if(!empty($_POST['nom']))
 			{
 				EditerCategorie($_GET['id']);
-				return redirect(2, 'index.html');
+				return redirect('La catégorie a bien été modifiée.', 'index.html');
 			}
 
 			fil_ariane('Modifier une catégorie');
@@ -136,7 +137,7 @@ final class DefaultController extends Controller
 			}
 		}
 		else
-			return redirect(6, 'index.html', MSG_ERROR);
+            throw new NotFoundHttpException();
 
 		return render_to_response(array(
 			'InfosCategorie' => $InfosCategorie,
@@ -159,16 +160,16 @@ final class DefaultController extends Controller
 		{
 			$InfosCategorie = InfosCategorie($_GET['id']);
 			if(empty($InfosCategorie))
-				return redirect(6, 'index.html', MSG_ERROR);
+                throw new NotFoundHttpException();
 
 			if($InfosCategorie['cat_droite'] - $InfosCategorie['cat_gauche'] > 1)
-				return redirect(7, 'index.html', MSG_ERROR);
+				return redirect('Vous ne pouvez pas supprimer cette catégorie car elle a des sous-catégories.', 'index.html', MSG_ERROR);
 
 			//Si on veut supprimer la catégorie
 			if(isset($_POST['confirmer']))
 			{
 				SupprimerCategorie($_GET['id']);
-				return redirect(3, 'index.html');
+				return redirect('La catégorie a bien été supprimée.', 'index.html');
 			}
 			//Si on annule
 			elseif(isset($_POST['annuler']))
@@ -181,7 +182,7 @@ final class DefaultController extends Controller
 		}
 		else
 		{
-			return redirect(6, 'index.html', MSG_ERROR);
+            throw new NotFoundHttpException();
 		}
 	}
 

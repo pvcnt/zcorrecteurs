@@ -21,6 +21,8 @@
 
 namespace Zco\Bundle\AideBundle\Controller;
 
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 /**
  * Affiche un sujet d'aide.
  *
@@ -35,7 +37,7 @@ class PageController
 			$page = \Doctrine_Core::getTable('Aide')->find($_GET['id']);
 			if (!$page)
 			{
-				return redirect(1, 'index.html', MSG_ERROR);
+                throw new NotFoundHttpException();
 			}
 			\zCorrecteurs::VerifierFormatageUrl($page['titre'], true);
 			\Page::$titre = htmlspecialchars($page['titre']);
@@ -54,7 +56,7 @@ class PageController
 		}
 		else
 		{
-			return redirect(1, 'index.html', MSG_ERROR);
+            throw new NotFoundHttpException();
 		}
 	}
 }

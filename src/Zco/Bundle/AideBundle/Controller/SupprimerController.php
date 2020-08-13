@@ -23,6 +23,7 @@ namespace Zco\Bundle\AideBundle\Controller;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Confirmation de la suppression d'un sujet d'aide.
@@ -42,14 +43,14 @@ class SupprimerController
 			$page = \Doctrine_Core::getTable('Aide')->find($_GET['id']);
 			if (!$page)
 			{
-				return redirect(1, 'index.html', MSG_ERROR);
+				throw new NotFoundHttpException();
 			}
 			\Page::$titre = htmlspecialchars($page['titre']);
 
 			if (isset($_POST['confirmer']))
 			{
 				$page->delete();
-				return redirect(4, 'index.html');
+				return redirect('La page a bien été supprimée.', 'index.html');
 			}
 			if (isset($_POST['annuler']))
 			{
@@ -60,7 +61,7 @@ class SupprimerController
 		}
 		else
 		{
-			return redirect(1, 'index.html', MSG_ERROR);
+            throw new NotFoundHttpException();
 		}
 	}
 }

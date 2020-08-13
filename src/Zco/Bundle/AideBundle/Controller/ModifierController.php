@@ -22,6 +22,7 @@
 namespace Zco\Bundle\AideBundle\Controller;
 
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Modifie les informations liées à un sujet d'aide.
@@ -41,7 +42,7 @@ class ModifierController
 			$page = \Doctrine_Core::getTable('Aide')->find($_GET['id']);
 			if (!$page)
 			{
-				return redirect(1, 'index.html', MSG_ERROR);
+                throw new NotFoundHttpException();
 			}
 			\Page::$titre = htmlspecialchars($page['titre']);
 
@@ -54,7 +55,7 @@ class ModifierController
 				$page['racine']       = isset($_POST['racine']);
 				$page->save();
 
-				return redirect(3, 'page-'.$page['id'].'-'.rewrite($page['titre']).'.html');
+				return redirect('La page a bien été modifiée.', 'page-'.$page['id'].'-'.rewrite($page['titre']).'.html');
 			}
 			
 			return render_to_response(array(
@@ -64,7 +65,7 @@ class ModifierController
 		}
 		else
 		{
-			return redirect(1, 'index.html', MSG_ERROR);
+			throw new NotFoundHttpException();
 		}
 	}
 }
