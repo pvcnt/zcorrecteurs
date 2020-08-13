@@ -32,6 +32,8 @@ function build_webserver {
 
     # Run Doctrine migrations.
     docker run --rm --net=host webserver php app/console doctrine:migrations:execute --force
+
+    echo "Site is accessible at http://192.168.33.10"
 }
 
 function build_sphinx {
