@@ -22,6 +22,7 @@
 namespace Zco\Bundle\EvolutionBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Contrôleur se chargeant de l'affichage d'un ticket et de ses réponses liées.
@@ -36,13 +37,13 @@ class DemandeController extends Controller
 		{
 			$InfosTicket = InfosTicket($_GET['id']);
 			if(empty($InfosTicket))
-				return redirect(357, 'index.html', MSG_ERROR);
+				throw new NotFoundHttpException();
 
 			\Page::$titre = htmlspecialchars($InfosTicket['ticket_titre']);
 		}
 		else
 		{
-			return redirect(364, 'index.html', MSG_ERROR);
+            throw new NotFoundHttpException();
 		}
 
 		\zCorrecteurs::VerifierFormatageUrl($InfosTicket['ticket_titre'], true, true);
@@ -52,7 +53,10 @@ class DemandeController extends Controller
 		{
 			ChangerSuiviTicket($_SESSION['id'], $_GET['id'], $_GET['suivi'] != 0 ? 1 : 0);
 			
-			return redirect($_GET['suivi'] != 0 ? 388 : 389, 'demande-'.$_GET['id'].'-'.rewrite($InfosTicket['ticket_titre']).'.html');
+			return redirect(
+			    $_GET['suivi'] != 0 ?
+                'Vous suivez maintenant cette demande.' : 'Vous ne suivez plus cette demande.',
+                'demande-'.$_GET['id'].'-'.rewrite($InfosTicket['ticket_titre']).'.html');
 		}
 
 		MarquerTicketCommeLu($_GET['id'], $InfosTicket['ticket_id_version_courante']);

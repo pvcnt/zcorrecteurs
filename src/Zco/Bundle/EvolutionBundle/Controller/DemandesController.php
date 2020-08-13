@@ -67,8 +67,6 @@ class DemandesController extends Controller
 		$CompterTicketsEtat = CompterTicketsEtat(verifier('tracker_voir_prives'), $type == 2 ? 'tache' : 'bug');
 		$tableau_pages = liste_pages($page, ceil($CompterTickets / 30), $CompterTickets, 30, $url);
 
-		$colspan = verifier('tracker_voir_assigne') ? 6 : 5;
-
 		//Inclusion de la vue
 		fil_ariane('Liste des anomalies');
 		$this->get('zco_vitesse.resource_manager')->requireResource('@ZcoCoreBundle/Resources/public/css/zcode.css');
@@ -79,7 +77,6 @@ class DemandesController extends Controller
 			'CompterTickets' => $CompterTickets,
 			'CompterTicketsEtat' => $CompterTicketsEtat,
 			'tableau_pages' => $tableau_pages,
-			'colspan' => $colspan,
 			'filtre' => $filtre,
 			'type' => $type,
 		));

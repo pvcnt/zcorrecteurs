@@ -43,7 +43,6 @@ class ZcoEvolutionBundle extends AbstractBundle
 		
 		//Inclusion des modèles
 		include(__DIR__.'/modeles/tickets.php');
-		include(__DIR__.'/modeles/reponses.php');
 		
 		$this->container->get('event_dispatcher')->addListener(TemplatingEvents::FILTER_VARIABLES, function(FilterVariablesEvent $event)
 		{

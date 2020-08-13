@@ -5,13 +5,6 @@
 <h1>Aperçu rapide des anomalies et suggestions</h1>
 
 <div class="UI_column_menu">
-	<?php if(verifier('tracker_ajouter')){ ?>
-	<div class="box">
-		<a href="nouveau.html?type=bug">Signaler une anomalie</a><br />
-		<a href="nouveau.html?type=tache">Ajouter une tâche</a>
-	</div>
-	<?php } ?>
-
 	<div class="box">
 		<h3>Contact</h3>
 		Le responsable du développement est
@@ -40,7 +33,7 @@
 				<dl>
 					<?php foreach($DerniersTickets as $t){ ?>
 					<dd>
-						<img src="/bundles/zcoevolution/img/bug_priorite_<?php echo rewrite($TicketsPriorites[$t['version_priorite']]['priorite_nom']); ?>.png" alt="<?php echo htmlspecialchars($TicketsPriorites[$t['version_priorite']]['priorite_nom']); ?>" title="<?php echo htmlspecialchars($TicketsPriorites[$t['version_priorite']]['priorite_nom']); ?>" />
+
 						<a href="demande-<?php echo $t['ticket_id']; ?>-<?php echo rewrite($t['ticket_titre']); ?>.html"><?php echo htmlspecialchars($t['ticket_titre']); ?></a>,
 						<?php echo dateformat($t['ticket_date'], MINUSCULE); ?> par
 						<a href="/membres/profil-<?php echo $t['utilisateur_id']; ?>-<?php echo rewrite($t['utilisateur_pseudo']); ?>.html" style="color:<?php echo $t['groupe_class']; ?>"><?php echo htmlspecialchars($t['utilisateur_pseudo']); ?></a>

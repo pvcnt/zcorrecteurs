@@ -2,14 +2,6 @@
 
 <?php echo $view->render('ZcoEvolutionBundle::_onglets.html.php', array('type' => $InfosTicket['ticket_type'])) ?>
 
-<?php if(verifier('tracker_repondre')){ ?>
-<div class="flot_droite">
-	<a href="repondre-<?php echo $_GET['id']; ?>.html">
-		<img src="/bundles/zcoforum/img/repondre.png" alt="" />
-	</a>
-</div>
-<?php } ?>
-
 <h1><?php echo htmlspecialchars($InfosTicket['ticket_titre']); ?></h1>
 
 <p>
@@ -103,26 +95,6 @@
 		<p>
 			Par <a href="/membres/profil-<?php echo $r['utilisateur_id']; ?>-<?php echo rewrite($r['utilisateur_pseudo']); ?>.html" style="color: <?php echo $r['groupe_class']; ?>;"><?php echo htmlspecialchars($r['utilisateur_pseudo']); ?></a>,
 			<?php echo dateformat($r['version_date'], MINUSCULE); ?>.
-
-			<?php if(verifier('tracker_repondre')){ ?>
-			<a href="repondre-<?php echo $_GET['id']; ?>-<?php echo $r['version_id']; ?>.html">
-				<img src="/bundles/zcoforum/img/citer.png" alt="Citer" title="Répondre en citant cette réponse" />
-			</a>
-			<?php } ?>
-
-			<?php if(verifier('tracker_editer_reponses') ||
-				($r['utilisateur_id'] == $_SESSION['id'] && verifier('tracker_editer_reponses_siennes'))
-			){ ?>
-			<a href="modifier-reponse-<?php echo $_GET['id']; ?>-<?php echo $r['version_id']; ?>.html" title="Modifier cette réponse">
-				<img src="/img/editer.png" alt="Modifier" />
-			</a>
-			<?php } ?>
-
-			<?php if(verifier('tracker_supprimer_reponses')){ ?>
-			<a href="supprimer-reponse-<?php echo $_GET['id']; ?>-<?php echo $r['version_id']; ?>.html" title="Supprimer cette réponse">
-				<img src="/img/supprimer.png" alt="Supprimer" />
-			</a>
-			<?php } ?>
 		</p>
 		<hr />
 
@@ -177,12 +149,3 @@
 	<p>Aucune réponse n'a été déposée à la suite de cette demande.</p>
 	<?php } ?>
 </div>
-
-
-<?php if(verifier('tracker_repondre')){ ?>
-<div>
-	<a href="repondre-<?php echo $_GET['id']; ?>.html">
-		<img src="/bundles/zcoforum/img/repondre.png" alt="" />
-	</a>
-</div>
-<?php } ?>

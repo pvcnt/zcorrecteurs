@@ -507,7 +507,7 @@ function sizeint($size)
  * @param  integer $nb     Le nombre à tester
  * @param  string $alt     Le pluriel à afficher
  * @param  string $normal  La forme singulière
- * @return array
+ * @return string
  */
 function pluriel($nb, $alt = 's', $normal = '')
 {

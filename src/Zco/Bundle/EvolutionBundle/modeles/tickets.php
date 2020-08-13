@@ -19,75 +19,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * Modèle contenant toutes les fonctions utiles à la gestion des tickets.
- *
- * @author vincent1870 <vincent@zcorrecteurs.fr>
- */
-
-function AjouterTicket($titre, $priorite, $categorie, $assigne, $texte, $prive, $url, $critique, $type)
-{
-	$dbh = Doctrine_Manager::connection()->getDbh();
-
-	//Insertion de la version
-	$stmt = $dbh->prepare("INSERT INTO zcov2_tracker_tickets_versions(version_id_utilisateur, version_id_categorie_concernee, version_etat, " .
-			"version_date, version_priorite, version_id_admin, version_ip) " .
-			"VALUES(:u, :cat_concernee, 1, NOW(), :priorite, :assigne, :ip)");
-	$stmt->bindParam(':u', $_SESSION['id']);
-	$stmt->bindParam(':cat_concernee', $categorie);
-	$stmt->bindParam(':priorite', $priorite);
-	$stmt->bindParam(':assigne', $assigne);
-	$stmt->bindValue(':ip', ip2long(\Container::getService('request')->getClientIp(true)));
-	$stmt->execute();
-
-	$id_v = $dbh->lastInsertId();
-
-	//Insertion du ticket
-	$stmt = $dbh->prepare("INSERT INTO zcov2_tracker_tickets(ticket_id_utilisateur, ticket_date, ticket_prive, ticket_titre, " .
-			"ticket_description, ticket_url, ticket_id_version_courante, ticket_id_version_first, ticket_critique, " .
-			"ticket_type, ticket_user_agent) " .
-			"VALUES(:u, NOW(), :prive, :titre, :description, :url, :id_v, :id_v, :critique, :type, :ua)");
-	$stmt->bindParam('u', $_SESSION['id']);
-	$stmt->bindParam('prive', $prive);
-	$stmt->bindParam('description', $texte);
-	$stmt->bindParam('url', $url);
-	$stmt->bindParam('critique', $critique);
-	$stmt->bindParam('id_v', $id_v);
-	$stmt->bindParam('titre', $titre);
-	$stmt->bindParam('type', $type);
-	$stmt->bindParam('ua', $_SERVER['HTTP_USER_AGENT']);
-	$stmt->execute();
-	$id_t = $dbh->lastInsertId();
-
-	//Mise à jour de la version
-	$stmt = $dbh->prepare("UPDATE zcov2_tracker_tickets_versions SET version_id_ticket = :id_t WHERE version_id = :id_v");
-	$stmt->bindParam(':id_v', $id_v);
-	$stmt->bindParam(':id_t', $id_t);
-	$stmt->execute();
-
-	Container::getService('zco_core.cache')->Delete('liste_tickets');
-	\Container::getService('zco_admin.manager')->get('demandes', true);
-	return $id_t;
-}
-
-function EditerTicket($id, $titre, $desc, $url, $prive)
-{
-	$dbh = Doctrine_Manager::connection()->getDbh();
-
-	$stmt = $dbh->prepare("UPDATE zcov2_tracker_tickets " .
-			"SET ticket_titre = :titre, ticket_url = :url, ticket_description = :desc, ticket_prive = :prive " .
-			"WHERE ticket_id = :id");
-	$stmt->bindParam(':id', $id);
-	$stmt->bindParam(':titre', $titre);
-	$stmt->bindParam(':desc', $desc);
-	$stmt->bindParam(':url', $url);
-	$stmt->bindParam(':prive', $prive);
-	$stmt->execute();
-
-	Container::getService('zco_core.cache')->Delete('liste_tickets');
-	\Container::getService('zco_admin.manager')->get('demandes', true);
-}
-
 function TicketsConstruireWhere($params)
 {
 	$dbh = Doctrine_Manager::connection()->getDbh();
@@ -385,18 +316,6 @@ function ChangerSuiviTicket($id_u, $id_t, $etat)
 	$stmt->execute();
 }
 
-function MarquerSuivisTicketEnvoyes($id)
-{
-	$dbh = Doctrine_Manager::connection()->getDbh();
-
-	$stmt = $dbh->prepare("UPDATE zcov2_tracker_tickets_flags " .
-			"SET lunonlu_suivi_envoye = 1 " .
-			"WHERE lunonlu_id_ticket = :id");
-	$stmt->bindParam(':id', $id);
-	$stmt->execute();
-
-}
-
 function ListerSuivisTicket($id)
 {
 	$dbh = Doctrine_Manager::connection()->getDbh();
@@ -408,4 +327,25 @@ function ListerSuivisTicket($id)
 	$stmt->bindParam(':id', $id);
 	$stmt->execute();
 	return $stmt->fetchAll();
+}
+
+function ListerReponses($id)
+{
+    $dbh = Doctrine_Manager::connection()->getDbh();
+
+    $stmt = $dbh->prepare("SELECT version_id, version_date, version_commentaire, version_priorite, version_etat, " .
+        "u1.utilisateur_id AS utilisateur_id, u1.utilisateur_pseudo AS utilisateur_pseudo, " .
+        "groupe_class, u2.utilisateur_id AS id_admin, u2.utilisateur_pseudo AS pseudo_admin, " .
+        "u1.utilisateur_avatar, cat_id, cat_nom " .
+        "FROM zcov2_tracker_tickets_versions " .
+        "LEFT JOIN zcov2_utilisateurs u1 ON version_id_utilisateur = u1.utilisateur_id " .
+        "LEFT JOIN zcov2_utilisateurs u2 ON version_id_admin = u2.utilisateur_id " .
+        "LEFT JOIN zcov2_categories ON version_id_categorie_concernee = cat_id " .
+        "LEFT JOIN zcov2_groupes ON u1.utilisateur_id_groupe = groupe_id " .
+        "WHERE version_id_ticket = :id " .
+        "ORDER BY version_date");
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+
+    return $stmt->fetchAll();
 }
