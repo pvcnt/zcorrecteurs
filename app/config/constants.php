@@ -160,4 +160,4 @@ const GROUPE_ADMINISTRATEURS = 5;
 const GROUPE_ANCIENS = 36;
 const GROUPE_DEFAUT = 1;
 const GROUPE_VISITEURS = 0;
-const URL_SITE = 'http://www.zcorrecteurs.fr';
+const URL_SITE = 'https://www.zcorrecteurs.fr';

@@ -32,13 +32,13 @@ ErrorDocument 500 /informations/erreur.html?erreur=500
 RewriteEngine on
 RewriteBase /
 
+# Force l'utilisation de SSL.
+RewriteCond %{REQUEST_SCHEME} ^https$
+RewriteRule ^(.*) https://www.zcorrecteurs.fr/$1 [L,R=301]
+
 # Si jamais on tente d'accéder à zcorrecteurs.fr
 RewriteCond %{HTTP_HOST} ^zcorrecteurs.fr$
-RewriteRule ^(.*) http://www.zcorrecteurs.fr/$1 [L,R=301]
-
-# Si jamais on tente d'accéder à test.zcorrecteurs.fr et qu'aucun bêta-test n'est en cours.
-RewriteCond %{HTTP_HOST} ^test.zcorrecteurs.fr$
-RewriteRule ^(.*) http://www.zcorrecteurs.fr/$1 [L,R=301]
+RewriteRule ^(.*) https://www.zcorrecteurs.fr/$1 [L,R=301]
 
 # Redirections de compatiblité avec les anciennes url
 RewriteRule ^blog/categorie-4-insolite\.html /blog/categorie-25-insolite.html [R=301,L]
