@@ -13,7 +13,6 @@
  * @property timestamp $date
  * @property boolean $statut
  * @property Utilisateur $Utilisateur
- * @property Doctrine_Collection $Tags
  * 
  * @package    ##PACKAGE##
  * @subpackage ##SUBPACKAGE##
@@ -63,9 +62,5 @@ abstract class BaseCitation extends Doctrine_Record
         $this->hasOne('Utilisateur', array(
              'local' => 'utilisateur_id',
              'foreign' => 'utilisateur_id'));
-
-        $this->hasMany('TagCitation as Tags', array(
-             'local' => 'id',
-             'foreign' => 'citation_id'));
     }
 }

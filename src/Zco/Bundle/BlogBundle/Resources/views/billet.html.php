@@ -46,20 +46,7 @@
 		'verifier_supprimer' => $verifier_supprimer,
 		'InfosBillet' => $InfosBillet,
 		'Auteurs' => $Auteurs,
-		'ListerTags' => $ListerTags,
 	)) ?>
-
-<!-- Billets liés -->
-<?php if(!empty($ListerBilletsLies)){ ?>
-<div class="UI_box">
-	<strong>Ressources liées à ce billet :</strong>
-	<?php foreach($ListerBilletsLies as $cle => $b){ ?>
-	<a href="billet-<?php echo $b['blog_id']; ?>-<?php echo rewrite($b['version_titre']); ?>.html">
-		<?php echo htmlspecialchars($b['version_titre']); ?>
-	</a>
-	<?php if($cle + 1 != count($ListerBilletsLies)) echo ' - '; } ?>
-</div>
-<?php } ?>
 
 <?php if($comms == true){ ?>
 <br /><hr />

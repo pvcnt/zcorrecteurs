@@ -52,7 +52,7 @@ class SuiviAction extends BaseController
 
 		$tableau_pages = liste_pages($_GET['p'], $NombreDePages, $CompterSujets, $nbSujetsParPage, '', true);
 		$debut = ($NombreDePages-$_GET['p']) * $nbSujetsParPage;
-		list($ListerSujets, $Tags) = ListerSujets($debut, $nbSujetsParPage);
+		$ListerSujets = ListerSujets($debut, $nbSujetsParPage);
 
 		$derniere_lecture = DerniereLecture($_SESSION['id']);
 		$Lu = $Pages = array();
@@ -90,7 +90,6 @@ class SuiviAction extends BaseController
 		return render_to_response(array(
 			'CompterSujets' => $CompterSujets,
 			'ListerSujets' => $ListerSujets,
-			'Tags' => $Tags,
 			'tableau_pages' => $tableau_pages,
 			'Pages' => $Pages,
 			'Lu' => $Lu,

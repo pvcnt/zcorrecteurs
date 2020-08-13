@@ -212,24 +212,6 @@
 		</div>
 	</div>
 
-	<div class="UI_rollbox">
-		<div class="title"><?php echo count($ListerTagsBillet); ?> mot<?php echo pluriel(count($ListerTagsBillet)); ?> clé<?php echo pluriel(count($ListerTagsBillet)); ?></div>
-
-		<div class="hidden">
-			<?php if($verifier_editer){ ?>
-			<form method="post" action="admin-billet-<?php echo $_GET['id'] ?>.html" id="change_tags_form">
-				<label for="tags" class="nofloat">Modifier les mots clés :</label>
-				<input type="text" name="tags" id="tags" size="60" value="<?php echo implode(', ', array_values($Tags)); ?>" />
-				<input type="submit" name="ajouter_tag" value="Modifier" />
-			</form>
-			<?php $view['javelin']->initBehavior('ajax-form', array('id' => 'change_tags_form')) ?>
-			<?php } else{ ?>
-			Modifier les mots clés :
-			<input type="text" size="60" value="<?php echo implode(', ', array_values($Tags)); ?>" readonly="readonly" />
-			<?php } ?>
-		</div>
-	</div>
-
 	<?php if(is_null($InfosBillet['blog_url_redirection'])){ ?>
 	<div class="UI_box">
 		<p>

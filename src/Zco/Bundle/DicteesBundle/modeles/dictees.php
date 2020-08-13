@@ -32,24 +32,6 @@ use Doctrine\Common\Cache\Cache;
 
 require_once(__DIR__.'/statistiques-accueil.php');
 
-function TaggerDictee(Dictee $Dictee, $tags)
-{
-	if (!is_array($tags))
-		$tags = explode(',', $tags);
-	foreach ($tags as $tag)
-	{
-		$tag = trim($tag);
-		if (!$tag)
-			continue;
-
-		$id = Doctrine_Core::getTable('Tag')->ajouter($tag);
-		$Dt = new DicteeTag;
-		$Dt->dictee_id = $Dictee->id;
-		$Dt->tag_id = $id;
-		$Dt->replace();
-	}
-}
-
 /**
  * Ajoute une dictée.
  *
@@ -68,12 +50,11 @@ function AjouterDictee(AjouterForm &$form)
 	}
 	else	$Dictee->etat = DICTEE_BROUILLON;
 
-	$tags = $data['tags'];
 	$data['auteur_id'] = (int)$data['auteur']; unset($data['auteur']);
 	$data['auteur_id'] = ($data['auteur_id'] == 0) ? null : $data['auteur_id'];
 
 	unset($data['publique'], $data['lecture_rapide'], $data['lecture_lente'],
-		$data['MAX_FILE_SIZE'], $data['tags'], $data['icone']);
+		$data['MAX_FILE_SIZE'], $data['icone']);
 
 	foreach($data as $k => &$v)
 		$Dictee->$k = $v;
@@ -81,9 +62,6 @@ function AjouterDictee(AjouterForm &$form)
 	$Dictee->utilisateur_id = $_SESSION['id'];
 	$Dictee->creation = new Doctrine_Expression('CURRENT_TIMESTAMP');
 	$Dictee->save();
-
-	// Ajout des tags
-	TaggerDictee($Dictee, $tags);
 
 	foreach(array('lecture_rapide', 'lecture_lente') as $l)
 	if(isset($_FILES[$l]) && $_FILES[$l]['error'] != 4)
@@ -132,19 +110,11 @@ function EditerDictee(Dictee $Dictee, AjouterForm &$Form)
 			Container::getService('zco_core.cache')->delete('dictees_accueil');
 	}
 
-	// Tags
-	Doctrine_Query::create()
-		->delete()
-		->from('DicteeTag dt')
-		->where('dt.dictee_id = ?', $Dictee->id)
-		->execute();
-	TaggerDictee($Dictee, $data['tags']);
-
 	$data['auteur_id'] = (int)$data['auteur']; unset($data['auteur']);
 	$data['auteur_id'] = ($data['auteur_id'] == 0) ? null : $data['auteur_id'];
 
 	unset($data['publique'], $data['lecture_rapide'], $data['lecture_lente'],
-		$data['MAX_FILE_SIZE'], $data['tags'], $data['icone']);
+		$data['MAX_FILE_SIZE'], $data['icone']);
 	foreach($data as $k => $v)
 	{
 		$Dictee->$k = $v;
@@ -520,16 +490,4 @@ function DicteesStatistiques(Cache $cache)
 	}
 
 	return $Stats;
-}
-
-
-/**
- * Renvoie les tags associés à une dictée.
- *
- * @param  Dictee  $Dictee       Dictee.
- * @return Doctrine_Collection   Tags.
-*/
-function DicteeTags(Dictee $Dictee)
-{
-	return Doctrine_Core::getTable('Dictee')->getTags($Dictee);
 }

@@ -266,7 +266,7 @@ class ForumAction extends BaseController
 			$debut = ($NombreDePages-$_GET['p']) * $nbSujetsParPage;
 
 			// On récupère les sujets du forum depuis la fonction du modèle.
-			list($ListerSujets, $Tags) = ListerSujets($debut, $nbSujetsParPage, $_GET['id']);
+			$ListerSujets = ListerSujets($debut, $nbSujetsParPage, $_GET['id']);
 
 			$derniere_lecture = DerniereLecture($_SESSION['id']);
 
@@ -391,7 +391,6 @@ class ForumAction extends BaseController
 				'Lu' => $Lu,
 				'tableau_pages' => $tableau_pages,
 				'ListerSujets' => $ListerSujets,
-				'Tags' => $Tags,
 				'Pages' => $Pages,
 				'SautRapide' => $SautRapide,
 				'action_etendue_a_plusieurs_messages_actif' => $action_etendue_a_plusieurs_messages_actif,

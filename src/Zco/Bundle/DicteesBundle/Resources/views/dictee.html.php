@@ -61,32 +61,3 @@ Cette dictée n'est pas publique, vous ne pouvez donc pas la jouer.
 	<input type="submit" value="Corriger" /></p>
 </form>
 <?php endif ?>
-
-<?php if ($Tags):
-echo '<div style="margin-top: 20px"></div>';
-$tagsParColonne = 1;
-
-echo '<div style="float: left">';
-$nb = 1;
-foreach ($Tags as $Tag)
-{
-	echo sprintf(
-		'<a href="/tags/tag-'.$Tag->Tag->id.'-'.rewrite($Tag->Tag->nom).'.html">'
-		.'<img src="/pix.gif" alt="" class="fff tag_blue"/> '
-		.'%s%s%s'.str_repeat('&nbsp;', 5).'%s</a>',
-
-		($Tag->Tag->couleur) ? '<span style="color: '
-		                       .htmlspecialchars($Tag->Tag->couleur).'">'
-		                     : '',
-		$Tag->Tag->nom,
-		($Tag->Tag->couleur) ? '</span>' : '',
-		($nb && !($nb % $tagsParColonne)) ? '</div>'."\n\n".'<div style="float: left">'
-		                                  : '<br/>'."\n"
-	);
-
-	$nb++;
-}
-
-echo '</div>';
-endif ?>
-

@@ -27,9 +27,7 @@ Vous êtes dans la corbeille !
 		<label for="sous_titre">Sous-titre : </label>
 		<input type="text" name="sous_titre" id="sous_titre" value="<?php if(!empty($_POST['sous_titre'])) echo htmlspecialchars($_POST['sous_titre']); ?>" size="35" tabindex="1" /><br />
 
-		<?php /*<label for="tags">Mots-clés : </label>
-		<input type="text" name="tags" id="tags" size="35" tabindex="3" />
-		<br />*/ ?><br />
+        <br />
 
 		<label for="texte">Contenu du message :</label>
 		<?php echo $view->render('::zform.html.php', array('upload_utiliser_element' => true, 'texte' => $texte_zform)); ?>

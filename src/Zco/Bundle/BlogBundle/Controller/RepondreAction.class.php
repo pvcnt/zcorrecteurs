@@ -90,7 +90,6 @@ class RepondreAction extends BaseController
 
 				//Infos sur le commentaire
 				$this->InfosValidation = InfosValidationVersion($this->InfosBillet['blog_id_version_courante']);
-				$this->ListerTags = ListerTagsBillet($_GET['id']);
 
 				//Inclusion de la vue
 				fil_ariane($this->InfosBillet['cat_id'], array(

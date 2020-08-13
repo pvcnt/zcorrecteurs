@@ -44,32 +44,7 @@ class AdminBilletAction extends BaseController
 			if (!$this->verifier_admin_billet)
 				throw new AccessDeniedHttpException();
 
-			$this->ListerTags = Doctrine_Core::getTable('Tag')->findAll();
-			$this->ListerTagsBillet = ListerTagsBillet($_GET['id']);
-			$Tags = array();
-			foreach($this->ListerTagsBillet as $tag)
-				$Tags[$tag['id']] = mb_strtolower(htmlspecialchars($tag['nom']));
-			$this->setRef('Tags', $Tags);
-			
-			//--- Si on veut modifier tous les tags ---
-			if(isset($_POST['tags']) && $this->verifier_editer)
-			{
-				$TagsExtraits = Doctrine_Core::getTable('Tag')->Extraire($_POST['tags'], false);
-
-				foreach($TagsExtraits as $tag)
-				{
-					if(!array_key_exists($tag, $Tags))
-						AjouterTagBillet($_GET['id'], $tag);
-				}
-				foreach($Tags as $cle => $tag)
-				{
-					if(!in_array($cle, $TagsExtraits))
-						SupprimerTagBillet($_GET['id'], $cle);
-				}
-				return redirect(427, 'admin-billet-'.$_GET['id'].'.html');
-			}
-
-			//--- Si on veut ajouteur un auteur ---
+			//--- Si on veut ajouter un auteur ---
 			if(isset($_POST['ajouter_auteur']) && ($this->createur == true || verifier('blog_toujours_createur')))
 			{
 				$InfosUtilisateur = InfosUtilisateur($_POST['pseudo']);

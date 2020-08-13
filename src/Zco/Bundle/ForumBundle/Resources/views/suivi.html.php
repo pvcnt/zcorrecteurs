@@ -172,14 +172,6 @@
 						<?php if(!empty($valeur['sujet_sous_titre'])){ ?>
 						<?php echo htmlspecialchars($valeur['sujet_sous_titre']); ?>
 						<?php } ?>
-
-						<?php /*if(!empty($Tags[$valeur['sujet_id']])){ ?>
-						<?php foreach($Tags[$valeur['sujet_id']] as $tag){ ?>
-						<a href="/tags/tag-<?php echo $tag['tag_id']; ?>-<?php echo rewrite($tag['tag_nom']); ?>.html" class="tag">
-							<?php echo htmlspecialchars($tag['tag_nom']); ?>
-						</a>
-						<?php } ?>
-						<?php }*/ ?>
 					</span>
 				</td>
 

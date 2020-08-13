@@ -96,12 +96,6 @@
             </a> |
 			<a href="#header">Remonter</a>
 		</span>
-
-		<?php foreach($ListerTags as $tag){ ?>
-		<a href="/tags/tag-<?php echo $tag['id']; ?>-<?php echo rewrite($tag['nom']); ?>.html" class="tag">
-			<?php echo htmlspecialchars($tag['nom']); ?>
-		</a>
-		<?php } ?>
-		<?php if(empty($ListerTags)) echo '&nbsp;'; ?>
+        &nbsp;
 	</div>
 </div>

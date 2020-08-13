@@ -37,8 +37,6 @@ class DicteeAction extends BaseController
 
 		zCorrecteurs::VerifierFormatageUrl($Dictee->titre, true);
 
-		$Tags = DicteeTags($Dictee);
-
 		Page::$titre = htmlspecialchars($Dictee->titre);
 		fil_ariane(Page::$titre);
         $this->get('zco_vitesse.resource_manager')->requireResources(array(
@@ -46,7 +44,6 @@ class DicteeAction extends BaseController
 		    '@ZcoDicteesBundle/Resources/public/css/dictees.css',
 		));
 
-		return render_to_response(compact('Dictee', 'Tags'));
+		return render_to_response(compact('Dictee'));
 	}
 }
-?>

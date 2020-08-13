@@ -27,7 +27,6 @@
  * @property Utilisateur $Utilisateur
  * @property Auteur $Auteur
  * @property Doctrine_Collection $Dictee_Participation
- * @property Doctrine_Collection $DicteeTag
  * 
  * @package    ##PACKAGE##
  * @subpackage ##SUBPACKAGE##
@@ -136,10 +135,6 @@ abstract class BaseDictee extends Doctrine_Record
              'foreign' => 'id'));
 
         $this->hasMany('Dictee_Participation', array(
-             'local' => 'id',
-             'foreign' => 'dictee_id'));
-
-        $this->hasMany('DicteeTag', array(
              'local' => 'id',
              'foreign' => 'dictee_id'));
     }

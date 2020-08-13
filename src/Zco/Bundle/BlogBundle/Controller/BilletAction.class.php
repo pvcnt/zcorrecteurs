@@ -121,8 +121,6 @@ class BilletAction extends BaseController
 				else
 					$this->voir_moderation = false;
 
-				$this->ListerBilletsLies = ListerBilletsLies($_GET['id']);
-				$this->ListerTags = ListerTagsBillet($_GET['id']);
 				$this->InfosBillet['blog_etat'] == BLOG_VALIDE && BlogIncrementerVues($_GET['id']);
 
 				//Inclusion de la vue

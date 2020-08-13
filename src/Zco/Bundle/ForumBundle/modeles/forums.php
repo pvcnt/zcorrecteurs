@@ -176,9 +176,9 @@ function ListerSujets($PremierMess, $MessaAfficher, $forumID = null)
 	$stmt->bindParam(':trash', $trash);
 	$stmt->execute();
 	$sujets = $stmt->fetchAll();
+	$stmt->closeCursor();
 
-	$tags = array();
-	return array($sujets, $tags);
+	return $sujets;
 }
 
 // Cette fonction retourne l'image du système lu/non lu.

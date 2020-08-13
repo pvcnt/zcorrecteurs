@@ -153,12 +153,6 @@
 	font-size: 1.1em;
 }
 
-.boite_message .tags {
-	margin-top: 15px;
-	padding: 3px;
-	border: 1px solid #d6d6d6;
-}
-
 .boite_message .label {
 	font-size: 0.9em;
 	font-style: italic;

@@ -100,12 +100,10 @@ class AjouterForm extends Form
 
 		$this->addWidget('auteur', new Widget_Auteur);
 		$this->addWidget('source', new Widget_Input_Text(array(), array('size' => 60, 'maxlength' => 255)));
-		$this->addWidget('tags', new Widget_Tags);
 		$this->addWidget('MAX_FILE_SIZE', new Widget_Input_Hidden);
 		$this->addWidget('icone', new Widget_Input_File);
 		$this->setHelpText('auteur', 'Choisissez un auteur dans la liste, ou créez-en un s\'il n\'existe pas déjà.');
 		$this->setHelpText('source', 'Indiquez l\'origine du texte.');
-		$this->setHelpText('tags', 'Liez des mots clés à votre dictée (séparés par des virgules).');
 		$this->setHelpText('icone','Icône pour votre dictée, au format jpg ou png.');
 		$this->addWidget('description', new Widget_zForm);
 		$this->addWidget('indications', new Widget_zForm);
@@ -114,13 +112,11 @@ class AjouterForm extends Form
 		$this->setHelpText('commentaires', 'Ce texte sera affiché avec la correction.');
 		$this->setDefault('MAX_FILE_SIZE', sizeint(ini_get('upload_max_filesize')));
 
-		$this->setLabel('tags', 'Mots-clés');
 		$this->setLabel('icone', 'Icône');
 
 		$this->attachFieldset(array(
 			'auteur'       => $fname,
 			'source'       => $fname,
-			'tags'         => $fname,
 			'icone'		   => $fname,
 			'description'  => $fname,
 			'indications'  => $fname,
