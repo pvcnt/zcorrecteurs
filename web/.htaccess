@@ -32,14 +32,6 @@ ErrorDocument 500 /informations/erreur.html?erreur=500
 RewriteEngine on
 RewriteBase /
 
-# Force l'utilisation de SSL.
-RewriteCond %{REQUEST_SCHEME} ^https$
-RewriteRule ^(.*) https://www.zcorrecteurs.fr/$1 [L,R=301]
-
-# Si jamais on tente d'accéder à zcorrecteurs.fr
-RewriteCond %{HTTP_HOST} ^zcorrecteurs.fr$
-RewriteRule ^(.*) https://www.zcorrecteurs.fr/$1 [L,R=301]
-
 # Redirections de compatiblité avec les anciennes url
 RewriteRule ^blog/categorie-4-insolite\.html /blog/categorie-25-insolite.html [R=301,L]
 RewriteRule ^blog/categorie-2-orthographe\.html /blog/categorie-24-orthographe.html [R=301,L]
