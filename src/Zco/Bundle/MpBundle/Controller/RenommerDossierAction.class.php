@@ -20,6 +20,7 @@
  */
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Contrôleur gérant le renommage d'un dossier de MP.
@@ -30,6 +31,9 @@ class RenommerDossierAction extends Controller
 {
 	public function execute()
 	{
+        if (!verifier('connecte')) {
+            throw new AccessDeniedHttpException();
+        }
 		zCorrecteurs::VerifierFormatageUrl(null, true);
 		include(BASEPATH.'/src/Zco/Bundle/MpBundle/modeles/dossiers.php');
 

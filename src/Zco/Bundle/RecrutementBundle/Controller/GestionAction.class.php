@@ -20,6 +20,7 @@
  */
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Contrôleur gérant l'affichage de la liste complète des recrutements (y compris
@@ -31,7 +32,9 @@ class GestionAction extends Controller
 {
 	public function execute()
 	{
-		zCorrecteurs::VerifierFormatageUrl();
+        if (!verifier_array([['recrutements_ajouter', 'recrutements_editer', 'recrutements_supprimer', 'recrutements_voir_candidatures', 'recrutements_repondre']])) {
+            throw new AccessDeniedHttpException();
+        }
 
 		//Inclusion de la vue
 		fil_ariane('Gestion des recrutements');

@@ -21,6 +21,8 @@
 
 namespace Zco\Bundle\AideBundle\Controller;
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+
 /**
  * Modifie les informations liées à un sujet d'aide.
  *
@@ -30,7 +32,9 @@ class ModifierController
 {
 	public function defaultAction()
 	{
-		\zCorrecteurs::VerifierFormatageUrl(null, true);
+        if (!verifier('aide_modifier')) {
+            throw new AccessDeniedHttpException();
+        }
 
 		if (!empty($_GET['id']) && is_numeric($_GET['id']))
 		{

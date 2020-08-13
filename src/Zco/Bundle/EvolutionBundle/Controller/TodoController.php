@@ -22,6 +22,7 @@
 namespace Zco\Bundle\EvolutionBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Contrôleur se chargeant de l'affichage de la todo-list d'un développeur.
@@ -32,6 +33,9 @@ class TodoController extends Controller
 {
 	public function defaultAction()
 	{
+        if (!verifier('tracker_etre_assigne')) {
+            throw new AccessDeniedHttpException();
+        }
 		$id_admin = !empty($_GET['id']) && is_numeric($_GET['id']) ? $_GET['id'] : $_SESSION['id'];
 		if ($id_admin != $_SESSION['id']) $admin = InfosUtilisateur($id_admin);
 		

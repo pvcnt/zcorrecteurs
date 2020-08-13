@@ -20,6 +20,7 @@
  */
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Contrôleur gérant l'affichage de toutes les alertes.
@@ -30,7 +31,9 @@ class AlertesAction extends Controller
 {
 	public function execute()
 	{
-		zCorrecteurs::VerifierFormatageUrl(null, true);
+        if (!verifier_array(['connecte', 'mp_alertes'])) {
+            throw new AccessDeniedHttpException();
+        }
 		//Inclusion des modèles
 		include(dirname(__FILE__).'/../modeles/alertes.php');
 		include(dirname(__FILE__).'/../modeles/lire.php');

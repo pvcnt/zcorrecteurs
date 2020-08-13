@@ -20,6 +20,7 @@
  */
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Contrôleur gérant la modification d'un message d'un MP si et
@@ -31,6 +32,9 @@ class EditerAction extends Controller
 {
 	public function execute()
 	{
+        if (!verifier('connecte')) {
+            throw new AccessDeniedHttpException();
+        }
 		zCorrecteurs::VerifierFormatageUrl(null, true);
 		include(BASEPATH.'/src/Zco/Bundle/MpBundle/modeles/lire.php');
 		include(BASEPATH.'/src/Zco/Bundle/MpBundle/modeles/participants.php');

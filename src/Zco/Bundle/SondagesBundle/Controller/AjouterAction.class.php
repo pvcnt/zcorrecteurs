@@ -19,6 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+
 /**
  * Contrôleur gérant la création d'un nouveau sondage.
  *
@@ -28,6 +30,10 @@ class AjouterAction
 {
 	public function execute()
 	{
+	    if (!verifier('sondages_ajouter')) {
+	        throw new AccessDeniedHttpException();
+        }
+
 		//Ajout d'un sondage demandé.
 		if (!empty($_POST['nom']))
 		{

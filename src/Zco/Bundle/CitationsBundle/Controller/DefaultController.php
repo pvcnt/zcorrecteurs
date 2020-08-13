@@ -21,6 +21,7 @@
 
 namespace Zco\Bundle\CitationsBundle\Controller;
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Zco\Bundle\CoreBundle\Generator\Generator;
 
 /**
@@ -38,6 +39,9 @@ class DefaultController extends Generator
      */
 	public function indexAction()
 	{
+        if (!verifier('citations_ajouter')) {
+            throw new AccessDeniedHttpException();
+        }
 		return $this->executeList();
 	}
 
@@ -46,6 +50,9 @@ class DefaultController extends Generator
      */
 	public function ajouterAction()
 	{
+        if (!verifier('citations_ajouter')) {
+            throw new AccessDeniedHttpException();
+        }
 		return $this->executeNew();
 	}
 
@@ -54,8 +61,9 @@ class DefaultController extends Generator
      */
 	public function modifierAction()
 	{
-		\zCorrecteurs::VerifierFormatageUrl(null, true);
-		
+        if (!verifier('citations_ajouter')) {
+            throw new AccessDeniedHttpException();
+        }
 		return $this->executeEdit($_GET['id']);
 	}
 
@@ -64,8 +72,9 @@ class DefaultController extends Generator
      */
 	public function supprimerAction()
 	{
-		\zCorrecteurs::VerifierFormatageUrl(null, true);
-		
+        if (!verifier('citations_ajouter')) {
+            throw new AccessDeniedHttpException();
+        }
 		return $this->executeDelete($_GET['id']);
 	}
 	

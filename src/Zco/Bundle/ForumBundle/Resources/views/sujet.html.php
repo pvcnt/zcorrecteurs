@@ -241,7 +241,7 @@ if($InfosSujet['sujet_sondage'] > 0)
 				//Envoi d'un MP
 				if(
 					$_SESSION['id'] != $valeur['message_auteur']
-					AND verifier('mp_voir')
+					AND verifier('connecte')
 					AND ($_SESSION['MPs'] < verifier('mp_quota') OR verifier('mp_quota') == -1)
 				)
 				{

@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Zco\Bundle\DicteesBundle\Controller\BaseController;
 
 /**
@@ -30,6 +31,9 @@ class ValiderAction extends BaseController
 {
 	public function execute()
 	{
+        if (!verifier('dictees_publier')) {
+            throw new AccessDeniedHttpException();
+        }
 		if($r = zCorrecteurs::verifierToken()) return $r;
 		$Dictee = $_GET['id'] ? Dictee($_GET['id']) : null;
 		if(!$Dictee)

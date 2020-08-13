@@ -20,6 +20,7 @@
  */
 
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Contrôleur pour le graphique des statistiques d'utilisation du flux du blog.
@@ -30,9 +31,12 @@ class GraphiqueBlogFluxAction
 {
 	public function execute()
 	{
+        if (!verifier('stats_blog_flux')) {
+            throw new AccessDeniedHttpException();
+        }
 		zCorrecteurs::VerifierFormatageUrl();
-		include_once(BASEPATH.'/vendor/Artichow/LinePlot.class.php');
-		include_once(BASEPATH.'/vendor/Artichow/Graph.class.php');
+		include_once(BASEPATH.'/lib/Artichow/LinePlot.class.php');
+		include_once(BASEPATH.'/lib/Artichow/Graph.class.php');
 
 		if (!isset($_SESSION['donnees_flux_blog']))
 		{

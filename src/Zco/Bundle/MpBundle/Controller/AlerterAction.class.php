@@ -20,6 +20,7 @@
  */
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Contrôleur gérant l'ajout d'une nouvelle alerte concernant un MP.
@@ -30,6 +31,9 @@ class AlerterAction extends Controller
 {
 	public function execute()
 	{
+        if (!verifier('connecte')) {
+            throw new AccessDeniedHttpException();
+        }
 		zCorrecteurs::VerifierFormatageUrl(null, true);
 		include(BASEPATH.'/src/Zco/Bundle/MpBundle/modeles/lire.php');
 		include(BASEPATH.'/src/Zco/Bundle/MpBundle/modeles/participants.php');

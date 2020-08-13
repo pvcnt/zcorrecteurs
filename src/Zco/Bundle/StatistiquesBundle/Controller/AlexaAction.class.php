@@ -20,6 +20,7 @@
  */
 
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Statistiques Alexa
@@ -30,8 +31,10 @@ class AlexaAction
 {
 	public function execute()
 	{
+        if (!verifier('voir_stats_generales')) {
+            throw new AccessDeniedHttpException();
+        }
 	    include_once(__DIR__.'/../modeles/alexa.php');
-		zCorrecteurs::VerifierFormatageUrl(null, true);
 		Page::$titre = 'Classement Alexa';
 
 		$anneeActuelle = date('Y');

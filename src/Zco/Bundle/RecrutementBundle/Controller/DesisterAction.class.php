@@ -20,6 +20,7 @@
  */
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Contrôleur gérant le désistement d'un candidat du recrutement.
@@ -30,6 +31,9 @@ class DesisterAction extends Controller
 {
 	public function execute()
 	{
+        if (!verifier('recrutements_desistement')) {
+            throw new AccessDeniedHttpException();
+        }
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))
 		{
 			$InfosCandidature = InfosCandidature($_GET['id']);

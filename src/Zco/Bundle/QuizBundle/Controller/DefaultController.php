@@ -167,6 +167,9 @@ class DefaultController extends Controller
 	 */
 	public function mesStatistiquesAction()
 	{
+        if (!verifier('connecte')) {
+            throw new AccessDeniedHttpException();
+        }
 		\Page::$titre = 'Mes statistiques d\'utilisation du quiz';
 
 		//Si on veut accéder à d'autres statistiques que les siennes
@@ -185,7 +188,6 @@ class DefaultController extends Controller
 		}
 		else
 		{
-			$id = $_GET['id'];
 			\zCorrecteurs::VerifierFormatageUrl(null, true);
 		}
 
@@ -206,7 +208,11 @@ class DefaultController extends Controller
 	 */
 	public function gestionAction()
 	{
-		\zCorrecteurs::VerifierFormatageUrl();
+		if (!verifier_array([['quiz_ajouter', 'quiz_editer', 'quiz_editer_siens', 'quiz_supprimer', 'quiz_supprimer_siens',
+            'quiz_ajouter_questions', 'quiz_ajouter_questions_siens', 'quiz_editer_ses_questions', 'quiz_editer_questions',
+            'quiz_supprimer_questions', 'quiz_supprimer_ses_questions']])) {
+		    throw new AccessDeniedHttpException();
+        }
 		\Page::$titre = 'Gérer les quiz';
 		fil_ariane('Gestion des quiz');
 		
@@ -279,6 +285,9 @@ class DefaultController extends Controller
 	 */
 	public function ajouterQuizAction()
 	{
+        if (!verifier('quiz_ajouter')) {
+            throw new AccessDeniedHttpException();
+        }
 		\zCorrecteurs::VerifierFormatageUrl();
 		\Page::$titre = 'Ajouter un quiz';
 
@@ -517,8 +526,8 @@ class DefaultController extends Controller
 	 */
 	public function graphiqueStatsAction()
 	{
-		include_once(BASEPATH.'/vendor/Artichow/BarPlot.class.php');
-		include_once(BASEPATH.'/vendor/Artichow/Graph.class.php');
+		include_once(BASEPATH.'/lib/Artichow/BarPlot.class.php');
+		include_once(BASEPATH.'/lib/Artichow/Graph.class.php');
 
 		if (!isset($_SESSION['graphe_quiz']) || !isset($_SESSION['graphe_quiz_type']))
 		{
@@ -585,6 +594,9 @@ class DefaultController extends Controller
      */
 	public function validerQuizAction()
 	{
+        if (!verifier('quiz_ajouter')) {
+            throw new AccessDeniedHttpException();
+        }
 		\Page::$titre = 'Modifier l\'état d\'un quiz';
 		if (empty($_GET['id']))
 		{
@@ -614,6 +626,10 @@ class DefaultController extends Controller
 		{
 			return redirect(7, 'gestion.html', MSG_ERROR);
 		}
+
+        if (!verifier_array(['quiz_supprimer_questions', 'quiz_ajouter_questions'])) {
+            throw new AccessDeniedHttpException();
+        }
 
 		$question = \Doctrine_Core::getTable('QuizQuestion')->find($_GET['id']);
 		if ($question === false)
@@ -654,6 +670,9 @@ class DefaultController extends Controller
      */
 	public function statistiquesPopulariteAction()
 	{
+        if (!verifier('quiz_stats_generales')) {
+            throw new AccessDeniedHttpException();
+        }
 		\Page::$titre = 'Popularité des quiz';
 		$listeQuiz = \Doctrine_Core::getTable('Quiz')->listerParPopularite();
 		
@@ -667,6 +686,9 @@ class DefaultController extends Controller
 	 */
 	public function statistiquesAction()
 	{
+        if (!verifier('quiz_stats_generales')) {
+            throw new AccessDeniedHttpException();
+        }
 		$annee   = isset($_GET['annee']) ? (int) $_GET['annee'] : (int) date('Y');
 		$mois    = isset($_GET['mois']) ? (int) $_GET['mois'] : (int) date('m');
 		$jour    = isset($_GET['jour']) ? (int) $_GET['jour'] : null;
@@ -797,8 +819,8 @@ class DefaultController extends Controller
 			unset($annee, $mois);
 		}
 
-		include(BASEPATH.'/vendor/Artichow/Graph.class.php');
-		include(BASEPATH.'/vendor/Artichow/LinePlot.class.php');
+		include(BASEPATH.'/lib/Artichow/Graph.class.php');
+		include(BASEPATH.'/lib/Artichow/LinePlot.class.php');
 
 		$graph = new \Graph(700, 400);
 		$graph->setAntiAliasing(true);
@@ -879,8 +901,8 @@ class DefaultController extends Controller
 			\Doctrine_Core::getTable('QuizScore')->getGraphiqueQuizNotes($quiz['id']) :
 			\Doctrine_Core::getTable('QuizScore')->getGraphiqueNotes();
 
-		include(BASEPATH.'/vendor/Artichow/Graph.class.php');
-		include(BASEPATH.'/vendor/Artichow/BarPlot.class.php');
+		include(BASEPATH.'/lib/Artichow/Graph.class.php');
+		include(BASEPATH.'/lib/Artichow/BarPlot.class.php');
 
 		$graph = new \Graph(700, 400);
 		$hautGraph = new \Color(62, 207, 248, 0);

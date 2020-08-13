@@ -32,23 +32,10 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 	static public function getSubscribedEvents()
 	{
 		return array(
-			AdminEvents::MENU => 'onFilterAdmin',
 			'zco_core.filter_block.breadcrumb' => 'onFilterBreadcrumb',
 		);
 	}
-	
-	public function onFilterAdmin(FilterMenuEvent $event)
-	{
-	    $tab = $event
-	        ->getRoot()
-	        ->getChild('Contenu')
-	        ->getChild('Communication');
-		
-		$tab->addChild('Liste des retours d\'expérience', array(
-			'uri' => '/evolution/liste-retours-experience.html',
-		))->secure('evolution_voir_retours');
-	}
-	
+
 	public function onFilterBreadcrumb(FilterContentEvent $event)
 	{
 		if (verifier('tracker_voir') && $event->getTemplate() === 'legacy')

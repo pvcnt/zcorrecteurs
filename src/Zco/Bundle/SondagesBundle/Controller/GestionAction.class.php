@@ -19,6 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+
 /**
  * Contrôleur gérant l'affichage de la page de gestion des sondages.
  *
@@ -28,6 +30,10 @@ class GestionAction
 {
 	public function execute()
 	{
+        if (!verifier_array([['sondages_ajouter', 'sondages_supprimer', 'sondages_editer', 'sondages_editer_siens', 'sondages_supprimer_siens']])) {
+            throw new AccessDeniedHttpException();
+        }
+
 		Page::$titre = 'Gestion des sondages';
 		
 		return render_to_response(array(

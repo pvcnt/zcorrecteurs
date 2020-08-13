@@ -19,6 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+
 /**
  * Contrôleur pour l'affichage des statistiques d'inscription.
  *
@@ -28,6 +30,9 @@ class InscriptionAction
 {
 	public function execute()
 	{
+        if (!verifier('stats_inscription')) {
+            throw new AccessDeniedHttpException();
+        }
 		zCorrecteurs::VerifierFormatageUrl();
 		Page::$titre = 'Statistiques d\'inscription du site';
 

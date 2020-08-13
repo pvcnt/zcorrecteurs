@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Zco\Bundle\BlogBundle\Controller\BaseController;
 
 /**
@@ -30,7 +31,9 @@ class NouveauxCommentairesAction extends BaseController
 {
 	public function execute()
 	{
-		zCorrecteurs::VerifierFormatageUrl(null, false, false, 1);
+        if (!verifier_array([['blog_editer_commentaires', 'blog_supprimer_commentaires']])) {
+            throw new AccessDeniedHttpException();
+        }
 
 		$nbCommentairesParPage = 15;
 		$page = !empty($_GET['p']) && is_numeric($_GET['p']) ? $_GET['p'] : 1;

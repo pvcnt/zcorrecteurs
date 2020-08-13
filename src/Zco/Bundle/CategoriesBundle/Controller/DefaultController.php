@@ -23,6 +23,7 @@ namespace Zco\Bundle\CategoriesBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Actions pour tout ce qui concerne la gestion des catégories du site.
@@ -36,10 +37,12 @@ final class DefaultController extends Controller
 	 */
 	public function indexAction()
 	{
-		\zCorrecteurs::VerifierFormatageUrl();
+        if (!verifier('cats_ajouter')) {
+            throw new AccessDeniedHttpException();
+        }
 
 		//Si on veut descendre une catégorie
-		if(!empty($_GET['descendre']) && is_numeric($_GET['descendre']) && verifier('cats_ordonner'))
+		if(!empty($_GET['descendre']) && is_numeric($_GET['descendre']))
 		{
 			$InfosCategorie = InfosCategorie($_GET['descendre']);
 			if(!empty($InfosCategorie))
@@ -54,7 +57,7 @@ final class DefaultController extends Controller
 		}
 
 		//Si on veut monter une catégorie
-		if(!empty($_GET['monter']) && is_numeric($_GET['monter']) && verifier('cats_ordonner'))
+		if(!empty($_GET['monter']) && is_numeric($_GET['monter']))
 		{
 			$InfosCategorie = InfosCategorie($_GET['monter']);
 			if(!empty($InfosCategorie))
@@ -79,7 +82,9 @@ final class DefaultController extends Controller
 	 */
 	public function ajouterAction()
 	{
-		\zCorrecteurs::VerifierFormatageUrl();
+        if (!verifier('cats_ajouter')) {
+            throw new AccessDeniedHttpException();
+        }
 		\Page::$titre = 'Ajouter une catégorie';
 
 		//Si on veut ajouter une catégorie
@@ -99,7 +104,9 @@ final class DefaultController extends Controller
 	 */
 	public function editerAction()
 	{
-		\zCorrecteurs::VerifierFormatageUrl(null, true);
+        if (!verifier('cats_ajouter')) {
+            throw new AccessDeniedHttpException();
+        }
 		\Page::$titre = 'Modifier une catégorie';
 
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))
@@ -143,7 +150,9 @@ final class DefaultController extends Controller
 	 */
 	public function supprimerAction()
 	{
-		\zCorrecteurs::VerifierFormatageUrl(null, true);
+        if (!verifier('cats_ajouter')) {
+            throw new AccessDeniedHttpException();
+        }
 		\Page::$titre = 'Supprimer une catégorie';
 
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))
@@ -182,7 +191,9 @@ final class DefaultController extends Controller
 	 */
 	public function imageAction()
 	{
-		\zCorrecteurs::VerifierFormatageUrl();
+        if (!verifier('cats_ajouter')) {
+            throw new AccessDeniedHttpException();
+        }
 		\Page::$titre = 'Représentation graphique';
 		fil_ariane(\Page::$titre);
 		return render_to_response(array('categories' => ListerCategories()));
@@ -194,6 +205,9 @@ final class DefaultController extends Controller
 	 */
 	public function graphiqueAction()
 	{
+        if (!verifier('cats_ajouter')) {
+            throw new AccessDeniedHttpException();
+        }
 		isset($_POST['id']) && $_GET['id'] = $_POST['id'];
 		isset($_POST['id2']) && $_GET['id2'] = $_POST['id2'];
 		isset($_POST['orientation']) && $_GET['orientation'] = $_POST['orientation'];

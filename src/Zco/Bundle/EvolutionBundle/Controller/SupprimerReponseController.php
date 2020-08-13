@@ -23,6 +23,7 @@ namespace Zco\Bundle\EvolutionBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Contrôleur se chargeant de la suppression d'une réponse.
@@ -33,6 +34,9 @@ class SupprimerReponseController extends Controller
 {
 	public function defaultAction()
 	{
+        if (!verifier('tracker_supprimer_reponses')) {
+            throw new AccessDeniedHttpException();
+        }
 		if(!empty($_GET['id2']) && is_numeric($_GET['id2']) && !empty($_GET['id']) && is_numeric($_GET['id']))
 		{
 			$InfosReponse = InfosReponse($_GET['id2']);

@@ -19,6 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+
 /**
  * Contrôleur pour les statistiques d'utilisation du flux du blog.
  *
@@ -28,7 +30,9 @@ class BlogFluxAction
 {
 	public function execute()
 	{
-		zCorrecteurs::VerifierFormatageUrl();
+        if (!verifier('stats_blog_flux')) {
+            throw new AccessDeniedHttpException();
+        }
 		Page::$titre .= ' - Consultation du flux du blog';
 
 		//Inclusion des modèles

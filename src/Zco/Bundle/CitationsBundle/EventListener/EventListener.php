@@ -74,6 +74,6 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 		
 		$tab->addChild('Gérer les citations', array(
 			'uri' => '/citations/',
-		))->secure(array('or', 'citations_modifier', 'citations_supprimer', 'citations_autoriser'));
+        ))->secure('citations_ajouter');
 	}
 }

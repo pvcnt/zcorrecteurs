@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Zco\Bundle\DicteesBundle\Controller\BaseController;
 
 include_once(dirname(__FILE__).'/../modeles/statistiques.php');
@@ -32,6 +33,9 @@ class GraphiqueAction extends BaseController
 {
 	public function execute()
 	{
+        if (!verifier('connecte')) {
+            throw new AccessDeniedHttpException();
+        }
 		$d = null;
 		if($_GET['id'] == GRAPHIQUE_FREQUENCE)
 			$d = GraphiqueFrequenceNotes();

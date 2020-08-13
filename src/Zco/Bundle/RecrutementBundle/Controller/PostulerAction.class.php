@@ -21,6 +21,7 @@
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Contrôleur gérant l'affichage de la page recueillant une candidature (envoi de
@@ -32,6 +33,9 @@ class PostulerAction extends Controller
 {
 	public function execute()
 	{
+        if (!verifier('recrutements_postuler')) {
+            throw new AccessDeniedHttpException();
+        }
 	    include(__DIR__.'/../modeles/quiz.php');
 	    
 		//Si on a bien envoyé un recrutement

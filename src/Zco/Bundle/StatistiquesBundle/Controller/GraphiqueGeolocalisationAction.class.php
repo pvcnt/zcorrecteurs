@@ -20,6 +20,7 @@
  */
 
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Contrôleur pour le graphique des statistiques de géolocalisation.
@@ -30,9 +31,11 @@ class GraphiqueGeolocalisationAction
 {
 	public function execute()
 	{
-		zCorrecteurs::VerifierFormatageUrl();
-		include_once(BASEPATH.'/vendor/Artichow/Pie.class.php');
-		include_once(BASEPATH.'/vendor/Artichow/Graph.class.php');
+        if (!verifier('stats_geolocalisation')) {
+            throw new AccessDeniedHttpException();
+        }
+		include_once(BASEPATH.'/lib/Artichow/Pie.class.php');
+		include_once(BASEPATH.'/lib/Artichow/Graph.class.php');
 
 		if (empty($_SESSION['stats_geoloc']))
 		{

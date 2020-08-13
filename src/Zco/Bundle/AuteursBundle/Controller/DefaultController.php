@@ -21,6 +21,7 @@
 
 namespace Zco\Bundle\AuteursBundle\Controller;
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Zco\Bundle\CoreBundle\Generator\Generator;
 
 /**
@@ -39,6 +40,9 @@ class DefaultController extends Generator
 
 	public function ajouterAction()
 	{
+        if (!verifier('auteurs_ajouter')) {
+            throw new AccessDeniedHttpException();
+        }
 		if (empty($_GET['id']))
 			return $this->executeNew();
 
@@ -66,12 +70,18 @@ class DefaultController extends Generator
 
 	public function modifierAction()
 	{
+        if (!verifier('auteurs_modifier')) {
+            throw new AccessDeniedHttpException();
+        }
         \zCorrecteurs::VerifierFormatageUrl(null, true);
 		return $this->executeEdit($_GET['id']);
 	}
 
 	public function supprimerAction()
 	{
+        if (!verifier('auteurs_modifier')) {
+            throw new AccessDeniedHttpException();
+        }
         \zCorrecteurs::VerifierFormatageUrl(null, true);
 		return $this->executeDelete($_GET['id']);
 	}

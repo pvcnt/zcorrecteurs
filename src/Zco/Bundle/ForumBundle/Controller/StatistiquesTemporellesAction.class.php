@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Zco\Bundle\ForumBundle\Controller\BaseController;
 
 /**
@@ -26,12 +27,16 @@ use Zco\Bundle\ForumBundle\Controller\BaseController;
  * d'utilisation du forum.
  *
  * @author Savageman <savageman@zcorrecteurs.fr>
- * @todo		Changer le droit associé (cf security.yml).
+ * @todo		Changer le droit associé.
  */
 class StatistiquesTemporellesAction extends BaseController
 {
 	public function execute()
 	{
+        if (!verifier('forum_stats_generales')) {
+            throw new AccessDeniedHttpException();
+        }
+
 		Page::$titre .= ' - Statistiques d\'utilisation du forum';
 		zCorrecteurs::VerifierFormatageUrl();
 

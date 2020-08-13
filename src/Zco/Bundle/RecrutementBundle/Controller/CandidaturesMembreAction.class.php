@@ -20,6 +20,7 @@
  */
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Contrôleur gérant l'affichage de la liste des candidatures d'un membre
@@ -30,6 +31,9 @@ class CandidaturesMembreAction extends Controller
 {
 	public function execute()
 	{
+        if (!verifier('recrutements_voir_candidatures')) {
+            throw new AccessDeniedHttpException();
+        }
 		if ($_GET['id'])
 		{
 		    zCorrecteurs::VerifierFormatageUrl(null, true);

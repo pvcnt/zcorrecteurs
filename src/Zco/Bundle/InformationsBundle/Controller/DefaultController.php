@@ -22,6 +22,7 @@
 namespace Zco\Bundle\InformationsBundle\Controller;
 
 use Doctrine\Common\Cache\Cache;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Zco\Bundle\CoreBundle\Registry;
 use Zco\Bundle\InformationsBundle\Event\FilterSitemapEvent;
 use Zco\Bundle\InformationsBundle\InformationsEvents;
@@ -118,6 +119,9 @@ class DefaultController extends Controller
 	 */
 	public function editerAnnoncesAction()
 	{
+        if (!verifier('gerer_breve_accueil')) {
+            throw new AccessDeniedHttpException();
+        }
 	    /** @var Registry $registry */
 		$registry = $this->get('zco_core.registry');
 
@@ -126,7 +130,7 @@ class DefaultController extends Controller
 		if(isset($_POST['choix_bloc']))
 		{
 			$registry->set('bloc_accueil', $_POST['choix_bloc']);
-			return redirect(1);
+			return redirect('Le contenu du bloc à tout faire a bien été changé.');
 		}
 
 		//--- Cas de l'annonce personnalisée ---
@@ -134,7 +138,7 @@ class DefaultController extends Controller
 		if(isset($_POST['texte']))
 		{
 			$registry->set('accueil_informations', $_POST['texte']);
-			return redirect(1);
+			return redirect('Le contenu du bloc à tout faire a bien été changé.');
 		}
 
 		//Cas du sujet mis en valeur
@@ -160,7 +164,7 @@ class DefaultController extends Controller
 					'image' => $image_sujet,
 				);
 				$registry->set('accueil_sujet', $sujet);
-				return redirect(1);
+				return redirect('Le contenu du bloc à tout faire a bien été changé.');
 			}
 		}
 		if(!empty($_GET['sujet']) && is_numeric($_GET['sujet']))
@@ -178,14 +182,14 @@ class DefaultController extends Controller
 					'image' => $image_sujet,
 				);
 				$registry->set('accueil_sujet', $sujet);
-				return redirect(1);
+				return redirect('Le contenu du bloc à tout faire a bien été changé.');
 			}
 		}
 		if(isset($_POST['image_sujet']))
 		{
 			$infos_sujet['image'] = $_POST['image_sujet'];
 			$registry->set('accueil_sujet', $infos_sujet);
-			return redirect(1);
+			return redirect('Le contenu du bloc à tout faire a bien été changé.');
 		}
 
 		//--- Cas du quiz mis en valeur ---
@@ -209,7 +213,7 @@ class DefaultController extends Controller
 					),
 				);
 				$registry->set('accueil_quiz', $quiz);
-				return redirect(1);
+				return redirect('Le contenu du bloc à tout faire a bien été changé.');
 			}
 		}
 		if(!empty($_GET['quiz']) && is_numeric($_GET['quiz']))
@@ -228,14 +232,14 @@ class DefaultController extends Controller
 					),
 				);
 				$registry->set('accueil_quiz', $quiz);
-				return redirect(1);
+				return redirect('Le contenu du bloc à tout faire a bien été changé.');
 			}
 		}
 		if(isset($_POST['image_quiz']))
 		{
 			$infos_quiz['image'] = $_POST['image_quiz'];
 			$registry->set('accueil_quiz', $infos_quiz);
-			return redirect(1);
+            return redirect('Le contenu du bloc à tout faire a bien été changé.');
 		}
 
 		//--- Cas du blog mis en valeur ---
@@ -257,7 +261,7 @@ class DefaultController extends Controller
 					'cat_nom' => $choix_billet[0]['cat_nom']
 				);
 				$registry->set('accueil_billet', $billet);
-				return redirect(1);
+                return redirect('Le contenu du bloc à tout faire a bien été changé.');
 			}
 		}
 		if(!empty($_GET['billet']))
@@ -271,7 +275,7 @@ class DefaultController extends Controller
 					'cat_nom' => $billet[0]['cat_nom']
 				);
 				$registry->set('accueil_billet', $billet);
-				return redirect(1);
+				return redirect('Le contenu du bloc à tout faire a bien été changé.');
 			}
 		}
 
@@ -281,14 +285,14 @@ class DefaultController extends Controller
 		if(isset($_POST['categories']))
 		{
 			$registry->set('categories_billet_hasard', $_POST['categories']);
-			return redirect(1);
+			return redirect('Le contenu du bloc à tout faire a bien été changé.');
 		}
 
 		if(isset($_GET['supprimer_cache']))
 		{
 			$this->get('zco_core.cache')->delete('billet_hasard');
 			
-			return redirect(2, 'index.html');
+			return redirect('Le billet au hasard a bien été régénéré.');
 		}
 
 
@@ -301,7 +305,7 @@ class DefaultController extends Controller
 			$nb > 10 && $nb = 10;
 
 			$registry->set('accueil_tweets', $nb);
-			return redirect(1);
+			return redirect('Le contenu du bloc à tout faire a bien été changé.');
 		}
 		
 		// Dictée
@@ -315,7 +319,7 @@ class DefaultController extends Controller
 			{
 				$dictee = Dictee($listDictees[0]['id']);
 				$registry->set('dictee_en_avant', $dictee);
-				return redirect(1);
+				return redirect('Le contenu du bloc à tout faire a bien été changé.');
 			}
 		}
 		
@@ -324,7 +328,7 @@ class DefaultController extends Controller
 			settype($_GET['dictee'],'int');
 			$dictee = Dictee($_GET['dictee']);
 			$registry->set('dictee_en_avant', $dictee);
-			return redirect(1);
+			return redirect('Le contenu du bloc à tout faire a bien été changé.');
 		}
 		
 		$selectDictee = $registry->get('dictee_en_avant');

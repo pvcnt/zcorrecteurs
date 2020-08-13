@@ -23,8 +23,7 @@ namespace Zco\Bundle\GroupesBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-
-include_once(__DIR__ . '/../modeles/droits.php');
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Contrôleur gérant les actions sur les groupes et les droits.
@@ -34,12 +33,22 @@ include_once(__DIR__ . '/../modeles/droits.php');
 class DefaultController extends Controller
 {
     /**
+     * Constructeur.
+     */
+    public function __construct()
+    {
+        include_once(__DIR__ . '/../modeles/droits.php');
+    }
+
+    /**
      * Affiche la liste des groupes.
      * @author vincent1870 <vincent@zcorrecteurs.fr>
      */
     public function indexAction()
     {
-        \zCorrecteurs::VerifierFormatageUrl();
+        if (!verifier_array([['groupes_gerer', 'groupes_changer_droits']])) {
+            throw new AccessDeniedHttpException();
+        }
 
         fil_ariane('Gestion des groupes');
 
@@ -55,7 +64,9 @@ class DefaultController extends Controller
      */
     public function ajouterAction()
     {
-        \zCorrecteurs::VerifierFormatageUrl();
+        if (!verifier('groupes_gerer')) {
+            throw new AccessDeniedHttpException();
+        }
         \Page::$titre = 'Ajouter un groupe';
 
         //Si on veut ajouter un groupe
@@ -75,6 +86,9 @@ class DefaultController extends Controller
      */
     public function editerAction()
     {
+        if (!verifier('groupes_gerer')) {
+            throw new AccessDeniedHttpException();
+        }
         \Page::$titre = 'Modifier un groupe';
 
         if (!empty($_GET['id']) && is_numeric($_GET['id'])) {
@@ -102,6 +116,9 @@ class DefaultController extends Controller
      */
     public function supprimerAction()
     {
+        if (!verifier('groupes_gerer')) {
+            throw new AccessDeniedHttpException();
+        }
         \Page::$titre = 'Supprimer un groupe';
 
         if (!empty($_GET['id']) && is_numeric($_GET['id'])) {
@@ -134,6 +151,9 @@ class DefaultController extends Controller
      */
     public function verifierAction()
     {
+        if (!verifier_array([['groupes_changer_droits', 'groupes_changer_membre']])) {
+            throw new AccessDeniedHttpException();
+        }
         \Page::$titre = 'Vérification des droits d\'un groupe';
 
         $ListerGroupes = ListerGroupes();
@@ -175,6 +195,9 @@ class DefaultController extends Controller
      */
     public function changerMembreGroupeAction()
     {
+        if (!verifier('groupes_changer_membre')) {
+            throw new AccessDeniedHttpException();
+        }
         \Page::$titre = 'Changer un membre de groupe';
 
         if (!empty($_POST['pseudo'])) {
@@ -247,6 +270,9 @@ class DefaultController extends Controller
      */
     public function droitsAction()
     {
+        if (!verifier('groupes_changer_droits')) {
+            throw new AccessDeniedHttpException();
+        }
         \Page::$titre = 'Changement des droits d\'un groupe';
 
         $ListerGroupes = array_merge(ListerGroupes(), ListerGroupesSecondaires());
@@ -355,7 +381,9 @@ class DefaultController extends Controller
      */
     public function historiqueGroupesAction()
     {
-        \zCorrecteurs::VerifierFormatageUrl(null, false, false, 1);
+        if (!verifier('groupes_changer_membre')) {
+            throw new AccessDeniedHttpException();
+        }
         \Page::$titre = 'Historique des changements de groupe';
 
         $NombreDeChangements = CompterChangementHistorique();

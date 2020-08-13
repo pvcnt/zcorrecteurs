@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Zco\Bundle\RecrutementBundle\Form\Type\RecrutementType;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -37,6 +38,10 @@ class EditerRecrutementAction extends Controller
 		{
 			return redirect(228, '/recrutement/', MSG_ERROR);
 		}
+
+        if (!verifier('recrutements_editer')) {
+            throw new AccessDeniedHttpException();
+        }
 
 		$recrutement = Doctrine_Core::getTable('Recrutement')->recuperer($_GET['id']);
 		if (!$recrutement)

@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Zco\Bundle\ForumBundle\Controller\BaseController;
 
 /**
@@ -30,6 +31,10 @@ class SujetsCoupsCoeurAction extends BaseController
 {
 	public function execute()
 	{
+        if (!verifier('mettre_sujets_coup_coeur')) {
+            throw new AccessDeniedHttpException();
+        }
+
 		zCorrecteurs::VerifierFormatageUrl();
 		Page::$titre = 'Gérer les sujets en coups de cœur';
 

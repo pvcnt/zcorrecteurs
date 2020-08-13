@@ -7,9 +7,9 @@ Citation:
         plural:              Citations
 
     actions:
-        _delete:     { label: Supprimer, credentials: [citations_supprimer] }
-        _new:        { label: Ajouter une nouvelle citation, credentials: [citations_ajouter] }
-        _edit:       { label: Modifier, credentials: [citations_modifier] }
+        _delete:     { label: Supprimer }
+        _new:        { label: Ajouter une nouvelle citation }
+        _edit:       { label: Modifier }
 
     fields:
         date:                 { label: Création }
@@ -43,7 +43,7 @@ Citation:
             _delete:        ~
         batch_actions:
             _delete:        ~
-            autorisations:  { credentials: [citations_autoriser], label: Afficher / cacher de l'en-tête }
+            autorisations:  { label: Afficher / cacher de l'en-tête }
         actions:
             _new:           ~
         fields:

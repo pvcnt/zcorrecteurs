@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Zco\Bundle\DicteesBundle\Controller\BaseController;
 
 /**
@@ -30,6 +31,9 @@ class AjouterAction extends BaseController
 {
 	public function execute()
 	{
+	    if (!verifier('dictees_ajouter')) {
+        throw new AccessDeniedHttpException();
+        }
 		zCorrecteurs::VerifierFormatageUrl();
 		Page::$titre = 'Ajouter une dictée';
 
@@ -52,7 +56,7 @@ class AjouterAction extends BaseController
 		}
 		fil_ariane('Ajout d\'une dictée');
 		$this->get('zco_vitesse.resource_manager')->requireResource('@ZcoDicteesBundle/Resources/public/js/upload.js');
-		
+
 		return render_to_response(compact('Form'));
 	}
 }

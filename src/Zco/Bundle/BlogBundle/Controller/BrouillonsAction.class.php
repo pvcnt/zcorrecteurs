@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Zco\Bundle\BlogBundle\Controller\BaseController;
 
 /**
@@ -30,7 +31,9 @@ class BrouillonsAction extends BaseController
 {
 	public function execute()
 	{
-		zCorrecteurs::VerifierFormatageUrl();
+        if (!verifier('blog_voir_billets_redaction')) {
+            throw new AccessDeniedHttpException();
+        }
 		Page::$titre .= ' - Voir les billets en cours de rédaction';
 
 		list($ListerBillets, $Auteurs) = ListerBillets(array('etat' => BLOG_BROUILLON));

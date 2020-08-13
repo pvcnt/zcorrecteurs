@@ -21,15 +21,10 @@
 
 namespace Zco\Bundle\DonsBundle\EventListener;
 
-use Zco\Bundle\AdminBundle\AdminEvents;
-use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
-use Zco\Bundle\InformationsBundle\InformationsEvents;
-use Zco\Bundle\InformationsBundle\Event\FilterSitemapEvent;
-use Zco\Component\Templating\TemplatingEvents;
-use Zco\Component\Templating\Event\FilterContentEvent;
-use Zco\Component\Templating\Event\FilterResourcesEvent;
-use Knp\Menu\ItemInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Zco\Bundle\CoreBundle\Menu\Event\FilterMenuEvent;
+use Zco\Bundle\InformationsBundle\Event\FilterSitemapEvent;
+use Zco\Bundle\InformationsBundle\InformationsEvents;
 
 class EventListener implements EventSubscriberInterface
 {
@@ -40,52 +35,10 @@ class EventListener implements EventSubscriberInterface
 	{
 		return array(
 			'zco_core.filter_menu.left_menu' => 'onFilterLeftMenu',
-//			'zco_core.filter_menu.speedbarre_right' => 'onFilterSpeedbarreRight',
-//			TemplatingEvents::FILTER_RESOURCES => 'onTemplatingFilterResources',
-			AdminEvents::MENU => 'onFilterAdmin',
 			InformationsEvents::SITEMAP => 'onFilterSitemap',
 		);
 	}
-	
-	/**
-	 * Initialise le code javascript nécessaire à l'affichage du lien vers la 
-	 * page de dons.
-	 */
-	public function onTemplatingFilterResources(FilterResourcesEvent $event)
-	{
-		$event->initBehavior('popover', array('selector' => '#faire-un-don', 'options' => array('placement' => 'bottom')));
-	}
-	
-	public function onFilterSpeedbarreRight(FilterMenuEvent $event)
-	{
-		$event->getRoot()->addChild('Faire un don', array(
-			'uri' => '/dons/',
-			'linkAttributes' => array(
-				'title' => 'Faire un don &rarr;', 
-				'data-content' => 'Le site et son association ont de nombreux nouveaux projets. Découvrez dès maintenant lesquels et comment vous pouvez les soutenir !',
-				'id' => 'faire-un-don',
-				'rel' => 'popover',
-			),
-			'label' => '<img src="/img/aide/argent.png" />',
-		));
-	}
-	
-	public function onFilterAdmin(FilterMenuEvent $event)
-	{
-	    $tab = $event
-	        ->getRoot()
-	        ->getChild('Gestion financière')
-	        ->getChild('Dons');
-		
-		$tab->addChild('Ajouter un don', array(
-			'uri' => '/dons/ajouter.html'
-		))->secure('dons_ajouter');
-		
-		$tab->addChild('Voir tous les dons', array(
-			'uri' => '/dons/gestion.html'
-		))->secure(array('or', 'dons_ajouter', 'dons_editer', 'dons_supprimer'));
-	}
-	
+
 	public function onFilterLeftMenu(FilterMenuEvent $event)
 	{
 		$event

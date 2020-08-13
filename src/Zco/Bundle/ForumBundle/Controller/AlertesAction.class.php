@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Zco\Bundle\ForumBundle\Controller\BaseController;
 
 /**
@@ -30,7 +31,10 @@ class AlertesAction extends BaseController
 {
 	public function execute()
 	{
-		zCorrecteurs::VerifierFormatageUrl(null, true);
+	    if (!verifier('voir_alertes')) {
+            throw new AccessDeniedHttpException();
+        }
+
 		include(dirname(__FILE__).'/../modeles/sujets.php');
 
 		//Si un sujet a été envoyé

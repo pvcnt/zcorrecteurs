@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Zco\Bundle\BlogBundle\Controller\BaseController;
 
 /**
@@ -30,6 +31,9 @@ class AjouterAction extends BaseController
 {
 	public function execute()
 	{
+        if (!verifier('blog_ajouter')) {
+            throw new AccessDeniedHttpException();
+        }
 		zCorrecteurs::VerifierFormatageUrl();
 		Page::$titre .= ' - Ajouter un billet';
 

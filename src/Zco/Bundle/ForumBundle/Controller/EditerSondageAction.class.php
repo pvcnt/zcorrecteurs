@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Zco\Bundle\ForumBundle\Controller\BaseController;
 
 /**
@@ -30,6 +31,10 @@ class EditerSondageAction extends BaseController
 {
 	public function execute()
 	{
+	    if (!verifier('editer_sondages')) {
+            throw new AccessDeniedHttpException();
+        }
+
 		include(dirname(__FILE__).'/../modeles/sondages.php');
 
 		if(empty($_GET['id']) || !is_numeric($_GET['id']))

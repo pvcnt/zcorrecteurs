@@ -20,6 +20,7 @@
  */
 
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Zco\Bundle\BlogBundle\Controller\BaseController;
 
 /**
@@ -31,7 +32,9 @@ class ValidationAction extends BaseController
 {
 	public function execute()
 	{
-		zCorrecteurs::VerifierFormatageUrl(null, true);
+        if (!verifier('blog_voir_historique')) {
+            throw new AccessDeniedHttpException();
+        }
 
 		//Si on a bien demandé à voir un billet
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))

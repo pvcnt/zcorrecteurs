@@ -22,6 +22,7 @@
 namespace Zco\Bundle\EvolutionBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Contrôleur se chargeant de la création d'une nouvelle demande.
@@ -32,6 +33,9 @@ class NouveauController extends Controller
 {
 	public function defaultAction()
 	{
+        if (!verifier('tracker_ajouter')) {
+            throw new AccessDeniedHttpException();
+        }
 		//Si on veut envoyer une demande
 		if(isset($_POST['send']))
 		{

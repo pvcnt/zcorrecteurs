@@ -21,6 +21,7 @@
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Contrôleur gérant la lecture d'un MP et les actions associées.
@@ -31,6 +32,9 @@ class LireAction extends Controller
 {
 	public function execute()
 	{
+        if (!verifier('connecte')) {
+            throw new AccessDeniedHttpException();
+        }
 		zCorrecteurs::VerifierFormatageUrl(null, true, true, 1);
 		include(__DIR__.'/../modeles/lire.php');
 		include(__DIR__.'/../modeles/participants.php');

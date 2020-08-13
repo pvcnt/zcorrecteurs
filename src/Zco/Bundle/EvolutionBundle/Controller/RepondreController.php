@@ -22,6 +22,7 @@
 namespace Zco\Bundle\EvolutionBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Contrôleur se chargeant de l'ajout d'une réponse à une demande.
@@ -32,6 +33,9 @@ class RepondreController extends Controller
 {
 	public function defaultAction()
 	{
+        if (!verifier('tracker_repondre')) {
+            throw new AccessDeniedHttpException();
+        }
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))
 		{
 			$InfosTicket = InfosTicket($_GET['id']);

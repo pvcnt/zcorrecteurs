@@ -28,7 +28,7 @@
 
 					<?php if(
 						$_SESSION['id'] != $valeur['id_auteur']
-						AND verifier('mp_voir')
+						AND verifier('connecte')
 						AND ($_SESSION['MPs'] < verifier('mp_quota') OR verifier('mp_quota') == -1)
 					)
 					{

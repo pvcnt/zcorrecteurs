@@ -28,9 +28,9 @@
 define('GRAPHIQUE_FREQUENCE', 1);
 define('GRAPHIQUE_EVOLUTION', 2);
 
-include_once(BASEPATH.'/vendor/Artichow/BarPlot.class.php');
-include_once(BASEPATH.'/vendor/Artichow/LinePlot.class.php');
-include_once(BASEPATH.'/vendor/Artichow/Graph.class.php');
+include_once(BASEPATH.'/lib/Artichow/BarPlot.class.php');
+include_once(BASEPATH.'/lib/Artichow/LinePlot.class.php');
+include_once(BASEPATH.'/lib/Artichow/Graph.class.php');
 
 function MesStatistiques()
 {

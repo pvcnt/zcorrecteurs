@@ -21,6 +21,7 @@
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Contrôleur gérant la suppression d'un recrutement.
@@ -35,6 +36,10 @@ class SupprimerRecrutementAction extends Controller
 		{
 			return redirect(228, '/recrutement/', MSG_ERROR);
 		}
+
+        if (!verifier('recrutements_supprimer')) {
+            throw new AccessDeniedHttpException();
+        }
 
 		$recrutement = Doctrine_Core::getTable('Recrutement')->recuperer($_GET['id']);
 		if (!$recrutement)

@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Zco\Bundle\DicteesBundle\Controller\BaseController;
 
 /**
@@ -30,7 +31,9 @@ class PropositionsAction extends BaseController
 {
 	public function execute()
 	{
-		zCorrecteurs::VerifierFormatageUrl();
+        if (!verifier('dictees_publier')) {
+            throw new AccessDeniedHttpException();
+        }
 		Page::$titre = 'Dictées proposées';
 		fil_ariane('Liste des dictées proposées');
 

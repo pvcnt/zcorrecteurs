@@ -48,10 +48,10 @@ class EventListener implements EventSubscriberInterface
 		
 		$tab->addChild('Gérer les catégories', array(
 			'uri' => '/categories/',
-		))->secure(array('or', 'cats_ordonner', 'cats_editer', 'cats_supprimer'));
+		))->secure('cats_ajouter');
 		
 		$tab->addChild('Afficher un graphique des catégories', array(
 			'uri' => '/categories/image.html'
-		))->secure(array('or', 'cats_ordonner', 'cats_editer', 'cats_supprimer'));
+		))->secure('cats_ajouter');
 	}
 }

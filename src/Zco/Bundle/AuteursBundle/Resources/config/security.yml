@@ -1,6 +1,0 @@
-ajouter:
-    credentials:    [auteurs_ajouter]
-editer:
-    credentials:    [auteurs_modifier]
-supprimer:
-    credentials:    [auteurs_modifier]

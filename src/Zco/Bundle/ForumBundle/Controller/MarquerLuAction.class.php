@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Zco\Bundle\ForumBundle\Controller\BaseController;
 
 /**
@@ -30,6 +31,10 @@ class MarquerLuAction extends BaseController
 {
 	public function execute()
 	{
+        if (!verifier('connecte')) {
+            throw new AccessDeniedHttpException();
+        }
+
 		zCorrecteurs::VerifierFormatageUrl(null, true);
 
 		//Inclusion des modèles

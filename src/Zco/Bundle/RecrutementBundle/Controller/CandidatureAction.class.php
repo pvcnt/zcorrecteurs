@@ -20,6 +20,7 @@
  */
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Contrôleur gérant l'affichage d'une candidature et de toutes les informations
@@ -33,6 +34,10 @@ class CandidatureAction extends Controller
 {
 	public function execute()
 	{
+        if (!verifier('recrutements_voir_candidatures')) {
+            throw new AccessDeniedHttpException();
+        }
+
 		//Si on a bien envoyé une candidature
 		if(!empty($_GET['id']) && is_numeric($_GET['id']))
 		{

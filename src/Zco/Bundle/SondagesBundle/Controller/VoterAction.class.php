@@ -20,6 +20,7 @@
  */
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Contrôleur gérant la validation d'un vote à un sondage et son insertion
@@ -31,6 +32,10 @@ class VoterAction extends Controller
 {
 	public function execute()
 	{
+	    if (!verifier('sondages_voter')) {
+            throw new AccessDeniedHttpException();
+        }
+
 		if (!empty($_GET['id']) && is_numeric($_GET['id']))
 		{
 			$question = Doctrine_Core::getTable('SondageQuestion')->find($_GET['id']);

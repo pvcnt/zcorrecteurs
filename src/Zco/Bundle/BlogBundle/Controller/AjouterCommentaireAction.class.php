@@ -20,6 +20,7 @@
  */
 
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Zco\Bundle\BlogBundle\Controller\BaseController;
 
 /**
@@ -32,6 +33,9 @@ class AjouterCommentaireAction extends BaseController
 {
 	public function execute()
 	{
+        if (!verifier('blog_commenter')) {
+            throw new AccessDeniedHttpException();
+        }
 		zCorrecteurs::VerifierFormatageUrl(null, true, true);
 
 		//Si on a bien demandé à voir un billet

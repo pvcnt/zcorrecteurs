@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Zco\Bundle\BlogBundle\Controller\BaseController;
 
 /**
@@ -30,7 +31,9 @@ class GestionAction extends BaseController
 {
 	public function execute()
 	{
-		zCorrecteurs::VerifierFormatageUrl(null, false, false, 1);
+        if (!verifier_array([['blog_editer_valide', 'blog_supprimer']])) {
+            throw new AccessDeniedHttpException();
+        }
 		Page::$titre .= ' - Liste des billets en ligne';
 
 		$nbBilletsParPage = 30;

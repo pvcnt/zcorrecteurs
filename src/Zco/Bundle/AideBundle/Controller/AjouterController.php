@@ -21,6 +21,8 @@
 
 namespace Zco\Bundle\AideBundle\Controller;
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+
 /**
  * Ajout d'un nouveau sujet d'aide.
  *
@@ -30,6 +32,9 @@ class AjouterController
 {
 	public function defaultAction()
 	{
+        if (!verifier('aide_ajouter')) {
+            throw new AccessDeniedHttpException();
+        }
 		\Page::$titre = 'Nouveau sujet d\'aide';
 
 		if (!empty($_POST['texte']) && !empty($_POST['titre']))

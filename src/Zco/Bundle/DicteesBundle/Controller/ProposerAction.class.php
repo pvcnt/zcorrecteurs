@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Zco\Bundle\DicteesBundle\Controller\BaseController;
 
 /**
@@ -30,7 +31,9 @@ class ProposerAction extends BaseController
 {
 	public function execute()
 	{
-		zCorrecteurs::VerifierFormatageUrl(null, true);
+        if (!verifier('connecte')) {
+            throw new AccessDeniedHttpException();
+        }
 
 		// On veut proposer une dictée
 		if(!empty($_GET['id']))

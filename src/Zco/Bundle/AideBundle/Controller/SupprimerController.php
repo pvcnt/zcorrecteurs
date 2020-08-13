@@ -22,6 +22,7 @@
 namespace Zco\Bundle\AideBundle\Controller;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Confirmation de la suppression d'un sujet d'aide.
@@ -32,7 +33,9 @@ class SupprimerController
 {
 	public function defaultAction()
 	{
-		\zCorrecteurs::VerifierFormatageUrl(null, true);
+        if (!verifier('aide_supprimer')) {
+            throw new AccessDeniedHttpException();
+        }
 
 		if (!empty($_GET['id']) && is_numeric($_GET['id']))
 		{

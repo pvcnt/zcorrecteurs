@@ -19,6 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+
 /**
  * Contrôleur pour les statistiques d'utilisation de géolocalisation.
  *
@@ -28,7 +30,9 @@ class GeolocalisationAction
 {
 	public function execute()
 	{
-		zCorrecteurs::VerifierFormatageUrl();
+        if (!verifier('stats_geolocalisation')) {
+            throw new AccessDeniedHttpException();
+        }
 		Page::$titre = 'Statistiques de géolocalisation';
 
 		//Inclusion du modèle et récupération des données

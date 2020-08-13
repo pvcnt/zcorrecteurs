@@ -31,8 +31,8 @@ class GraphiqueInscriptionAction
 	public function execute()
 	{
 		zCorrecteurs::VerifierFormatageUrl();
-		include_once(BASEPATH."/vendor/Artichow/LinePlot.class.php");
-		include_once(BASEPATH."/vendor/Artichow/Graph.class.php");
+		include_once(BASEPATH."/lib/Artichow/LinePlot.class.php");
+		include_once(BASEPATH."/lib/Artichow/Graph.class.php");
 
 		if (!isset($_SESSION['graphe_inscription']))
 		{

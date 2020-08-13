@@ -21,6 +21,8 @@
 
 namespace Zco\Bundle\AideBundle\Controller;
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+
 /**
  * Gestion des sujets d'aide. Permet d'avoir une liste de tous
  * les sujets créés, qu'ils soient affichés à la racine ou pas.
@@ -31,6 +33,10 @@ class GestionController
 {
 	public function defaultAction()
 	{
+        if (!verifier_array([['aide_ajouter', 'aide_modifier', 'aide_supprimer']])) {
+            throw new AccessDeniedHttpException();
+        }
+
 		\Page::$titre = 'Gestion des sujets d\'aide';
 
 		return render_to_response(array(

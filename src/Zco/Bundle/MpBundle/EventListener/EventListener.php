@@ -74,14 +74,14 @@ class EventListener implements EventSubscriberInterface
 		{
 			$this->cache->delete('MPnonLu'.$_SESSION['id']);
 		}
-		if (verifier('mp_voir') && ($rafraichir || !isset($_SESSION['MPsnonLus'])))
+		if (verifier('connecte') && ($rafraichir || !isset($_SESSION['MPsnonLus'])))
 		{
 			include_once(__DIR__.'/../modeles/mp_cache.php');
 			$_SESSION['MPsnonLus'] = CompteMPnonLu();
 		}
 
 		// Mise à jour du nombre de MP total.
-		if (verifier('mp_voir') && ($rafraichir || !isset($_SESSION['MPs'])))
+		if (verifier('connecte') && ($rafraichir || !isset($_SESSION['MPs'])))
 		{
 			include_once(__DIR__.'/../modeles/mp_cache.php');
 			$_SESSION['MPs'] = CompteMPTotal();
@@ -95,7 +95,7 @@ class EventListener implements EventSubscriberInterface
 	 */
 	public function onFilterSpeedbarre(FilterMenuEvent $event)
 	{
-		if (!verifier('mp_voir'))
+		if (!verifier('connecte'))
 		{
 		    return;
 	    }
