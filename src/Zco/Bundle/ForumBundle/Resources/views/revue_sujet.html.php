@@ -56,8 +56,6 @@
 					<?php
 					}
 					echo $view->get('messages')->afficherGroupe($valeur) ?><br/>
-				<?php if(!empty($valeur['utilisateur_titre']))
-					echo '<br />'.htmlspecialchars($valeur['utilisateur_titre']); ?>
 				</td>
 				<td class="message">
 					<div class="msgbox">

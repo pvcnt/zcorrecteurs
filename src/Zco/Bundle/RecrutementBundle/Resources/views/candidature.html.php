@@ -319,11 +319,7 @@ in_array($InfosCandidature['candidature_etat'], array(CANDIDATURE_ACCEPTE, CANDI
                         </a><br />
 					<?php endif; ?>
 					<?php echo $view->get('messages')->afficherGroupe($valeur) ?><br/>
-
-					<?php if(!empty($valeur['utilisateur_titre']))
-						echo htmlspecialchars($valeur['utilisateur_titre']);
-					?>
-				</td>
+                </td>
 				<td class="message">
 					<div class="msgbox">
 						<?php echo preg_replace('`&amp;#(\d+);`', '&#$1;', $view['messages']->parse($valeur['commentaire_texte']));

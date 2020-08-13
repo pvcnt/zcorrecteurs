@@ -270,23 +270,7 @@ class Utilisateur extends BaseUtilisateur
 	{
 		return $this->nb_sanctions;
 	}
-	
-	public function incrementPercentage($step)
-	{
-		$this->percentage = max(0, min($this->percentage + $step, 100));
-		$this->save();
-	}
-	
-	public function decrementPercentage($step)
-	{
-		$this->incrementPercentage(-$step);
-	}
-	
-	public function getPercentage()
-	{
-		return $this->percentage;
-	}
-	
+
 	public function hasJob()
 	{
 		return !empty($this->job);

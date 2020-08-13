@@ -223,11 +223,7 @@ if($autoriser_ecrire AND ($NombreParticipants > 1 OR $MPTotal < verifier('mp_quo
 				<?php
 				}
 			echo $view->get('messages')->afficherGroupe($valeur) ?><br/>
-			<?php if(!empty($valeur['utilisateur_titre']))
-			{
-				echo htmlspecialchars($valeur['utilisateur_titre']).'<br />';
-			}
-			if(verifier('sanctionner'))
+			<?php if(verifier('sanctionner'))
 			{
 			?>
 			<br /><a href="<?php echo $view['router']->generate('zco_user_admin_punish', array('id' => htmlspecialchars($valeur['mp_message_auteur_id']))) ?>">

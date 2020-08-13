@@ -176,7 +176,7 @@ function RevueMP()
 	$stmt = $dbh->prepare("
 	SELECT mp_message_id, mp_message_mp_id, mp_message_auteur_id, utilisateur_pseudo, utilisateur_citation, 
 	utilisateur_sexe, mp_message_date, mp_message_texte, groupe_nom, groupe_class, groupe_logo, groupe_logo_feminin, 
-	utilisateur_avatar, utilisateur_signature, utilisateur_titre
+	utilisateur_avatar, utilisateur_signature
 	FROM zcov2_mp_participants
 	LEFT JOIN zcov2_mp_messages ON zcov2_mp_participants.mp_participant_mp_id = zcov2_mp_messages.mp_message_mp_id
 	LEFT JOIN zcov2_utilisateurs ON mp_message_auteur_id = utilisateur_id

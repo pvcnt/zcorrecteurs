@@ -200,39 +200,6 @@ class DefaultController extends Controller
 		
 		return render_to_response('ZcoUserBundle::profile.html.php', $vars);
 	}
-
-	/**
-	 * Modifie le titre d'un membre.
-	 *
-	 * @author Vanger
-	 */
-	public function editTitleAction(Request $request, $id)
-	{
-		if (!($user = \Doctrine_Core::getTable('Utilisateur')->getById($id)))
-		{
-			throw new NotFoundHttpException('Cet utilisateur n\'existe pas.');
-		}
-		if (!(verifier('membres_editer_titre') || ($_SESSION['id'] == $user->getId() && verifier('membres_editer_propre_titre'))))
-		{
-			throw new AccessDeniedHttpException;
-		}
-		
-		if ($request->getMethod() === 'POST' && $request->request->has('user_title'))
-		{
-			$user->setTitle($request->request->get('user_title'));
-			$user->save();
-			
-			return redirect('Le titre a bien été modifié.', 
-				$this->generateUrl('zco_user_profile', array('id' => $id, 'slug' => rewrite($user->getUsername()))));
-		}
-		
-		fil_ariane('Modifier le titre');
-		\Page::$titre = 'Modifier le titre';
-			
-		return render_to_response('ZcoUserBundle::editTitle.html.php', array(
-			'user' => $user,
-		));
-	}
 	
 	/**
 	 * Demande un changement de pseudo.

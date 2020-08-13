@@ -49,8 +49,6 @@ function ListerCommentairesBillet($id, $page)
 			"Ma.utilisateur_sexe, " .
 			"Ma.utilisateur_signature AS signature_auteur, " .
 			"Ma.utilisateur_nb_sanctions AS nb_sanctions_auteur, " .
-			"Ma.utilisateur_pourcentage AS pourcentage_auteur, " .
-			"Ma.utilisateur_titre, " .
 			"Ma.utilisateur_citation, " .
 
 			"Mb.utilisateur_id AS id_edite, " .
@@ -303,7 +301,7 @@ function ListerTousLesCommentaires($page)
 	$stmt = $dbh->prepare("
 	SELECT commentaire_id, commentaire_texte, commentaire_ip,
 	Ma.utilisateur_id AS id_auteur, Ma.utilisateur_pseudo AS pseudo_auteur, Ma.utilisateur_avatar AS avatar_auteur,
-	Ma.utilisateur_signature AS signature_auteur, Ma.utilisateur_nb_sanctions AS nb_sanctions_auteur, Ma.utilisateur_pourcentage AS pourcentage_auteur,
+	Ma.utilisateur_signature AS signature_auteur, Ma.utilisateur_nb_sanctions AS nb_sanctions_auteur,
 	Mb.utilisateur_id AS id_edite, Mb.utilisateur_pseudo AS pseudo_edite, groupe_class, groupe_nom, groupe_logo,
 	blog_id, version_titre, blog_commentaires, commentaire_date, commentaire_edite_date
 	FROM zcov2_blog_commentaires
@@ -367,7 +365,6 @@ function ListerCommentairesNonValides($page = 1)
 		.'Ma.utilisateur_avatar AS avatar_auteur, '
 		.'Ma.utilisateur_signature AS signature_auteur, '
 		.'Ma.utilisateur_nb_sanctions AS nb_sanctions_auteur, '
-		.'Ma.utilisateur_pourcentage AS pourcentage_auteur, '
 		.'Mb.utilisateur_id AS id_edite, Mb.utilisateur_pseudo AS pseudo_edite, '
 		.'groupe_class, groupe_nom, groupe_logo, groupe_logo_feminin, '
 		.'blog_id, version_titre, blog_commentaires, commentaire_date, commentaire_edite_date '

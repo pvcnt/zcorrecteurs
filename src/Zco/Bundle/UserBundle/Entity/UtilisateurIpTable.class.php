@@ -39,7 +39,7 @@ class UtilisateurIpTable extends Doctrine_Table
 	{
 		$query = Doctrine_Query::create()
 			->select('u.utilisateur_id, u.utilisateur_pseudo, '.
-				'u.utilisateur_valide, u.utilisateur_forum_messages, u.utilisateur_pourcentage, '.
+				'u.utilisateur_valide, u.utilisateur_forum_messages, '.
 				'g.groupe_id, g.groupe_nom, g.class, u.utilisateur_date_inscription, '.
 				'u.utilisateur_ip, i.ip_date_debut, i.ip_date_last')
 			->from('UtilisateurIp i')

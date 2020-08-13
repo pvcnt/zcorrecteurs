@@ -26,7 +26,6 @@
  * @property decimal $latitude
  * @property decimal $longitude
  * @property integer $nb_sanctions
- * @property integer $percentage
  * @property boolean $email_displayed
  * @property string $job
  * @property date $birth_date
@@ -152,10 +151,6 @@ abstract class BaseUtilisateur extends Doctrine_Record
              'type' => 'integer',
              'length' => '11',
              ));
-        $this->hasColumn('utilisateur_titre as title', 'string', 50, array(
-             'type' => 'string',
-             'length' => '50',
-             ));
         $this->hasColumn('utilisateur_adresse as address', 'string', 80, array(
              'type' => 'string',
              'length' => '80',
@@ -171,10 +166,6 @@ abstract class BaseUtilisateur extends Doctrine_Record
              'scale' => ' 6',
              ));
         $this->hasColumn('utilisateur_nb_sanctions as nb_sanctions', 'integer', 1, array(
-             'type' => 'integer',
-             'length' => '1',
-             ));
-        $this->hasColumn('utilisateur_pourcentage as percentage', 'integer', 1, array(
              'type' => 'integer',
              'length' => '1',
              ));

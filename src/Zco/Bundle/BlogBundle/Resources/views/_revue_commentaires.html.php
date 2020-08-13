@@ -45,7 +45,6 @@
 					<?php echo $view->get('messages')->afficherAvatar($valeur, 'avatar_auteur') ?><br/>
 
 					<?php echo $view->get('messages')->afficherGroupe($valeur) ?>
-					<?php if(!empty($valeur['utilisateur_titre'])) echo htmlspecialchars($valeur['utilisateur_titre']).'<br />'; ?>
 				</td>
 
 				<td class="message">

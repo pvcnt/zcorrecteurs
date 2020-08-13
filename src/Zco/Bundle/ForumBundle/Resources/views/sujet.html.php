@@ -328,10 +328,7 @@ if($InfosSujet['sujet_sondage'] > 0)
 
 				<?php } echo $view->get('messages')->afficherGroupe($valeur).'<br/>';
 
-				if(!empty($valeur['utilisateur_titre']))
-				{
-					echo htmlspecialchars($valeur['utilisateur_titre']).'<br />';
-				} if(verifier('sanctionner')){ ?>
+				if(verifier('sanctionner')){ ?>
 				<br /><a href="<?php echo $view['router']->generate('zco_user_admin_punish', array('id' => htmlspecialchars($valeur['message_auteur']))) ?>">
 					Sanctionner
 				</a>
