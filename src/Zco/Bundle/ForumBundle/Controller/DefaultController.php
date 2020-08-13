@@ -239,26 +239,6 @@ class DefaultController extends BaseController
 			return new Response('Vous n\'avez pas les droits requis ou un paramètre a été omis.');
 	}
 
-	public function ajaxReponseAutoAction()
-	{
-		if(verifier('poster_reponse_auto', $_POST['fofo_actuel']))
-		{
-			$messages = \Doctrine_Core::getTable('ForumMessageAuto')->Lister();
-
-			$ret = '<form method="post" action=""><select name="message" id="message">';
-			foreach($messages as $message)
-			{
-				$ret .= '<option value="'.$message['id'].'">'.$message['nom'].'</option>';
-			}
-			$ret .= '</select><input type="submit" value="Aller" /></form>';
-			return new Response($ret);
-		}
-		else
-		{
-			return new Response('Vous n\'avez pas l\'autorisation de voir les messages automatiques.');
-		}
-	}
-
 	public function ajaxRetourSondageAction()
 	{
 		//Inclusion du modèle

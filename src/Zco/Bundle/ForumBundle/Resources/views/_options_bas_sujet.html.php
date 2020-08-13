@@ -1,5 +1,5 @@
 <?php
-if(verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']) OR verifier('poster_reponse_auto', $InfosSujet['sujet_forum_id']) AND !$InfosSujet['sujet_corbeille'])
+if(verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']) AND !$InfosSujet['sujet_corbeille'])
 {
 	?>
 	<script type="text/javascript">
@@ -18,22 +18,6 @@ if(verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']) OR verifier('poste
 			setTimeout(function(){
 				xhr = new Request({method: 'post', url: '/forum/ajax-deplacer-sujet.html', onSuccess: afficher_deplacer_sujet});
 			xhr.send('id='+escape("<?php echo $_GET['id']; ?>")+'&fofo_actuel='+escape("<?php echo $InfosSujet['sujet_forum_id']; ?>"));
-			}, 500);
-		}
-	<?php
-	}
-	if(verifier('poster_reponse_auto', $InfosSujet['sujet_forum_id']))
-	{
-	?>
-		function afficher_reponse_auto(boutonn)
-		{
-			boutonn.setStyle('display', 'none');
-			$('reponse_auto').set('html', '<img src="/img/ajax-loader.gif" alt="" />');
-			setTimeout(function(){
-				xhr = new Request({url: '/forum/ajax-reponse-auto.html', method: 'post', onSuccess: function(text, xml){
-						$('reponse_auto').set('html', unescape(text));
-				}});
-				xhr.send('s='+encodeURIComponent("<?php echo $_GET['id']; ?>")+'&fofo_actuel='+encodeURIComponent("<?php echo $InfosSujet['sujet_forum_id']; ?>"));
 			}, 500);
 		}
 	<?php
@@ -218,7 +202,7 @@ if(verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']) OR verifier('poste
 	</ul>
 </fieldset><br />
 
-<?php if(verifier('epingler_sujets', $InfosSujet['sujet_forum_id']) || verifier('fermer_sujets', $InfosSujet['sujet_forum_id']) || verifier('code') || verifier('poster_reponse_auto', $InfosSujet['sujet_forum_id']) || verifier('editer_sondages', $InfosSujet['sujet_forum_id']) || verifier('fermer_sondage', $InfosSujet['sujet_forum_id']) || verifier('supprimer_sondages', $InfosSujet['sujet_forum_id']) || verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']) || verifier('corbeille_sujets', $InfosSujet['sujet_forum_id']) || verifier('suppr_sujets', $InfosSujet['sujet_forum_id']) || verifier('ajouter_sondages', $InfosSujet['sujet_forum_id']) || verifier('diviser_sujets', $InfosSujet['sujet_forum_id']) || verifier('fusionner_sujets', $InfosSujet['sujet_forum_id'])){ ?>
+<?php if(verifier('epingler_sujets', $InfosSujet['sujet_forum_id']) || verifier('fermer_sujets', $InfosSujet['sujet_forum_id']) || verifier('code') || verifier('editer_sondages', $InfosSujet['sujet_forum_id']) || verifier('fermer_sondage', $InfosSujet['sujet_forum_id']) || verifier('supprimer_sondages', $InfosSujet['sujet_forum_id']) || verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']) || verifier('corbeille_sujets', $InfosSujet['sujet_forum_id']) || verifier('suppr_sujets', $InfosSujet['sujet_forum_id']) || verifier('ajouter_sondages', $InfosSujet['sujet_forum_id']) || verifier('diviser_sujets', $InfosSujet['sujet_forum_id']) || verifier('fusionner_sujets', $InfosSujet['sujet_forum_id'])){ ?>
 <fieldset>
 	<legend>Options de modération</legend>
 	<ul>
@@ -292,19 +276,6 @@ if(verifier('deplacer_sujets', $InfosSujet['sujet_forum_id']) OR verifier('poste
 			<?php
 		}
 		//FIN fusionner sujet
-
-		//DEBUT message automatique
-		if(verifier('poster_reponse_auto', $InfosSujet['sujet_forum_id']))
-		{
-			?>
-			<li><span><img src="/pix.gif" class="fff comment" alt="Réponse auto" title="Réponse automatique" /></span>
-			Réponse automatique :
-			<input type="button" name="xhr0" id="xhr0" onclick="afficher_reponse_auto(this);" value="Afficher" />
-			<div id="reponse_auto" style="display:inline;">
-			</div>
-			<?php
-		}
-		//FIN message automatique
 
 		//DÉBUT éditer sondage
 		if(verifier('editer_sondages', $InfosSujet['sujet_forum_id']) AND $InfosSujet['sujet_sondage'] > 0)

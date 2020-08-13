@@ -1,9 +1,3 @@
-ajouter_message_auto:
-    credentials:  [gerer_mess_autos]
-editer_message_auto:
-    credentials:  [gerer_mess_autos]
-gestion_messages_auto:
-    credentials:  [gerer_mess_autos]
 alertes:
     credentials:  [voir_alertes]
 editer_sondage:

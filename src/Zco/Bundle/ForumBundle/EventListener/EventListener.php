@@ -107,14 +107,6 @@ class EventListener extends ContainerAware implements EventSubscriberInterface
 			'separator' => true,
 		))->secure('mettre_sujets_coup_coeur');
 		
-		$tab->addChild('Ajouter un message automatique', array(
-		    'uri' => '/forum/ajouter-message-auto.html',
-		))->secure('gerer_mess_autos');
-		
-		$tab->addChild('Gérer les messages automatiques', array(
-			'uri' => '/forum/gestion-messages-auto.html',
-		))->secure('gerer_mess_autos');
-		
 		$tab = $event
 		    ->getRoot()
 		    ->getChild('Informations')
