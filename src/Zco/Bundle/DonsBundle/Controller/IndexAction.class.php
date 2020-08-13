@@ -33,8 +33,6 @@ class IndexAction extends Controller
 		\Page::$titre = 'Faire un don';
 		\Page::$description = 'Découvrez comment faire un don au site et consultez la liste de ceux qui nous ont déjà aidé !';
 		
-		return render_to_response(array(
-		    'dons'  => \Doctrine_Core::getTable('Don')->lister(),
-		));
+		return render_to_response([]);
 	}
 }
