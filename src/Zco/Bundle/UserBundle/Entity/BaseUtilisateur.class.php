@@ -288,14 +288,6 @@ abstract class BaseUtilisateur extends Doctrine_Record
              'local' => 'utilisateur_id',
              'foreign' => 'utilisateur_id'));
 
-        $this->hasMany('Don', array(
-             'local' => 'utilisateur_id',
-             'foreign' => 'utilisateur_id'));
-
-        $this->hasMany('EvolutionFeedback', array(
-             'local' => 'utilisateur_id',
-             'foreign' => 'utilisateur_id'));
-
         $this->hasMany('ForumAlerte', array(
              'local' => 'utilisateur_id',
              'foreign' => 'utilisateur_id'));
@@ -353,10 +345,6 @@ abstract class BaseUtilisateur extends Doctrine_Record
              'foreign' => 'utilisateur_id'));
 
         $this->hasMany('SondageVote', array(
-             'local' => 'utilisateur_id',
-             'foreign' => 'utilisateur_id'));
-
-        $this->hasMany('Tag', array(
              'local' => 'utilisateur_id',
              'foreign' => 'utilisateur_id'));
 
